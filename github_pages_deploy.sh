@@ -27,7 +27,12 @@ done
 # ── Step 1: 构建（含数据更新 + 精简 + 生成 fetch 版页面）──
 if [ "$NOFETCH" -eq 0 ]; then
   echo "📊 Step 1: 更新并构建站点产物（deploy/）..."
-  bash update_data.sh
+  # 透传 --force 给 update_data.sh（绕过交易日闸门，用于非交易日补发）
+  if [ "$FORCE" -eq 1 ]; then
+    bash update_data.sh --force
+  else
+    bash update_data.sh
+  fi
 else
   echo "ℹ️  Step 1: 跳过抓取，重建现有 deploy/"
   "$PYTHON" slim_signals.py

@@ -2215,8 +2215,8 @@ function _computeDDX(data) {
     const qj3=qj0*(h-maxCo);
     const qj4=qj0*(maxCo-jj);
     ddx[i]=((qj1+qj2)-(qj3+qj4))/10000;
-    // 归一化：净买量 / 总成交量 * 100 → 百分比
-    ddx[i] = (ddx[i] / Math.max(v, 1)) * 100;
+    // 注意：保持通达信原始 DDX（手/万手单位，非百分比），与 server.py / signals.py 一致。
+    // 若归一化为百分比，V2 量级±数十、DY2<0.02 几乎永不满足 → 金钻起涨(XG2)漏触发。
   }
   return ddx;
 }
@@ -2343,20 +2343,50 @@ function _checkGoldenDiamond(data) {
   const hzRecentOk = hzStreak>=HZ_MIN;
 
   // ══════════════════════════════════════════════════════
-  // 信号判定（唯一合法信号：红区黄柱连续）
+  // 信号判定（三子形态，与 golden_diamond_scan.py / 通达信源码一致）
+  //   优先级: 金钻起涨 > 买入 > 红区黄柱连续
+  //   XG2/XG 检查最近2个交易日窗口（含当日）
   // ══════════════════════════════════════════════════════
-  let result='';
-  if (hzRecentOk) result='红区黄柱连续'+hzReport+'日';
+  function evalBar(di) {
+    if (di < 1) return {xg2:false, xg:false};
+    const ci=closes[di], oi=opens[di], hi=highs[di], li=lows[di];
+    const gbI=gb[di], gtI=gt[di];
+    const m5=ma5[di], m60=ma60[di];
+    const prevC=closes[di-1];
+    const pctI=(ci/prevC-1)*100;
+    const yangI=ci>oi;
+    const dyI=(di===n-1 && ci<prevC)?1:0;
+    const dy2I=(di>=1?v2[di-1]:0)-dyI;
+    const xg2=yangI && dy2I<0.02 && m5>m60 && pctI>=2 && hi<gbI && li<gtI;
+    const gtAbove=gtI>hi, lowTouch=li<=gtI;
+    const vL=var23[di]||0, vP=di>0?var23[di-1]||0:0;
+    const m2L=var23MA2[di]||0, m2P=di>0?var23MA2[di-1]||0:0;
+    let llv7=Infinity;
+    for (let i=Math.max(0,di-6);i<=di;i++) llv7=Math.min(llv7, var23[i]||Infinity);
+    const cnt=(vP<0?1:0)+(vL<0?1:0);
+    const cross=vP<=m2P && vL>m2L;
+    const cb=Math.abs(Math.min(vL,vP)-llv7)<1e-8 && cnt>=1 && cross;
+    const xg=gtAbove && cb && lowTouch;
+    return {xg2, xg};
+  }
+  const gxWinStart=Math.max(1, n-2);
+  let result=''; let triggerIdx=null;
+  for (let di=gxWinStart; di<n; di++){ const r=evalBar(di); if(r.xg2){ result='金钻起涨'; triggerIdx=di; break; } }
+  if (!result) for (let di=gxWinStart; di<n; di++){ const r=evalBar(di); if(r.xg){ result='买入'; triggerIdx=di; break; } }
+  if (!result && hzRecentOk) { result='红区黄柱连续'+hzReport+'日'; triggerIdx=n-1; }
+
+  const daysAgo = triggerIdx!==null ? (n-1-triggerIdx) : 0;
+  const signalDate = triggerIdx!==null ? data[triggerIdx].date : data[n-1].date;
 
   if (!result) return { golden_diamond:'', detail:{
-    reason:'自最新日向前未连续≥3日红区黄柱（严格：今日须为红区黄柱，安全边距1.5%）',
+    reason:'近2日无主力信号(金钻起涨/买入)且未连续≥3日红区黄柱',
     hz_streak:hzStreak, hz_required:HZ_REQ,
     hz_window_run:hzWindowRun, hz_window:HZ_WINDOW, hz_min:HZ_MIN, hz_recent_ok:hzRecentOk,
     red_zone_hz_days:rzDays
   }};
 
   return { golden_diamond:result, detail:{
-    signal_date:data[n-1].date, days_ago:0, signal_type:result,
+    signal_date:signalDate, days_ago:daysAgo, signal_type:result,
     in_red_zone:inRedZone, price_near_gt:priceNearGt,
     xg2_hit:xg2Hit, is_yang:isYang, pct_chg:+pct.toFixed(2), dy2:+dy2.toFixed(6),
     ma5:+m5.toFixed(2), ma60:+m60.toFixed(2),
