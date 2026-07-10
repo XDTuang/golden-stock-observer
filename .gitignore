@@ -1,0 +1,28 @@
+# 中间产物（不入库、不发布）
+/output/
+__pycache__/
+*.pyc
+.DS_Store
+
+# 根目录生成产物（本地预览用；站点统一使用 deploy/ 下的副本，避免重复/不一致）
+/index.html
+/signals.json
+
+# 遗留脚本
+/fetch_data.sh
+
+# 本地记忆 / 构建缓存（不入库）
+.workbuddy/
+/dist/
+/sector_cache/
+
+# 优化验证与备份（本地分析产物，不入库，避免每日自动部署 git add -A 污染仓库）
+_backup_optimized_*/
+walkforward_validation.py
+*报告*.md
+
+# 站点源码 / 构建目录（GitHub Pages 仅服务站点产物，不入库源码与 deploy 暂存）
+deploy/
+*.py
+*.plist
+ARCHITECTURE.md
