@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>金钻起爆 · 副图预览</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --border:#2a3340;
+    --txt:#e6edf3; --txt2:#8b98a5; --red:#ff4d4f; --green:#26a69a;
+    --gold:#ffc53d; --cyan:#36cfc9; --blue:#4096ff; --purple:#b37feb;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;font-size:13px;padding:14px;}
+  header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+  h1{font-size:18px;font-weight:700;letter-spacing:.5px;}
+  h1 .em{color:var(--gold);}
+  .toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;}
+  input.code{background:var(--panel2);border:1px solid var(--border);color:var(--txt);padding:7px 10px;border-radius:8px;width:160px;font-size:13px;outline:none;}
+  input.code:focus{border-color:var(--blue);}
+  button.btn{background:var(--blue);color:#fff;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;}
+  button.btn:hover{filter:brightness(1.1);}
+  button.btn.ghost{background:var(--panel2);color:var(--txt2);border:1px solid var(--border);}
+  .chip{background:var(--panel2);border:1px solid var(--border);color:var(--txt2);padding:5px 10px;border-radius:14px;cursor:pointer;font-size:12px;}
+  .chip:hover{color:var(--txt);border-color:var(--blue);}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0 12px;font-size:12px;color:var(--txt2);}
+  .legend span{display:inline-flex;align-items:center;gap:5px;}
+  .dot{width:10px;height:10px;border-radius:2px;display:inline-block;}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden;}
+  .panel-title{padding:8px 12px;font-size:13px;font-weight:600;border-bottom:1px solid var(--border);color:var(--txt2);display:flex;justify-content:space-between;align-items:center;}
+  .panel-title .meta{font-weight:400;font-size:12px;color:var(--txt2);}
+  canvas{display:block;width:100%;cursor:crosshair;}
+  #mainChart{height:300px;}
+  #subChart{height:340px;}
+  .controls{display:flex;gap:8px;align-items:center;padding:8px 12px;flex-wrap:wrap;border-top:1px solid var(--border);background:var(--panel2);}
+  .controls input[type=range]{flex:1;min-width:160px;}
+  .sigwrap{display:flex;gap:10px;flex-wrap:wrap;padding:12px;}
+  .sigcard{flex:1;min-width:200px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;}
+  .sigcard h3{font-size:13px;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+  .sigcard .cnt{font-size:22px;font-weight:700;}
+  .sigcard.buy h3{color:var(--cyan);} .sigcard.up h3{color:var(--red);} .sigcard.hz h3{color:var(--gold);}
+  table{width:100%;border-collapse:collapse;font-size:12px;}
+  th,td{padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);}
+  th{color:var(--txt2);font-weight:600;position:sticky;top:0;background:var(--panel);}
+  td .ok{color:var(--green);} td .no{color:var(--red);} td .dim{color:var(--txt2);}
+  .status{padding:10px 12px;color:var(--txt2);font-size:12px;}
+  .err{color:var(--red);}
+  .tooltip{position:fixed;pointer-events:none;background:#000d1aee;border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--txt);z-index:50;display:none;max-width:280px;line-height:1.6;}
+  .tooltip b{color:var(--gold);}
+  .subform-filter{display:flex;gap:6px;}
+  .ff{font-size:11px;padding:3px 8px;border-radius:12px;border:1px solid var(--border);color:var(--txt2);cursor:pointer;background:var(--panel2);}
+  .ff.on{color:#fff;border-color:transparent;}
+  .ff.buy.on{background:var(--cyan);} .ff.up.on{background:var(--red);} .ff.hz.on{background:var(--gold);}
+  a.gh{color:var(--blue);text-decoration:none;}
+</style>
+</head>
+<body>
+<header>
+  <h1>💎 <span class="em">金钻起爆</span> · 副图预览</h1>
+  <span style="color:var(--txt2);font-size:12px;">独立预览工具 · 不修改主项目 · 忠实复刻通达信副图</span>
+</header>
+
+<div class="toolbar">
+  <input class="code" id="codeInput" placeholder="股票代码/名称，如 300316 / 晶盛机电" value="sz300316" />
+  <button class="btn" id="queryBtn">查询</button>
+  <span class="chip" data-code="sz300316">晶盛机电</span>
+  <span class="chip" data-code="sz002824">和胜股份</span>
+  <span class="chip" data-code="sz300757">罗博特科</span>
+  <span class="chip" data-code="sh603986">兆易创新(反)</span>
+  <span class="chip" data-code="sz003018">金富科技(反)</span>
+</div>
+
+<div class="legend">
+  <span><i class="dot" style="background:var(--red)"></i>金牛线(红)</span>
+  <span><i class="dot" style="background:var(--gold)"></i>金钻趋势(黄)</span>
+  <span><i class="dot" style="background:#7d8aa0"></i>金牛2(灰)</span>
+  <span><i class="dot" style="background:#7a1f1f"></i>红区(DRAWBAND红带=金钻趋势&gt;金牛2)</span>
+  <span><i class="dot" style="background:var(--gold)"></i>黄柱(STICKLINE=金钻趋势&gt;LOW×1.025)</span>
+  <span><i class="dot" style="background:var(--cyan)"></i>▲买入</span>
+  <span><i class="dot" style="background:var(--red)"></i>金钻起涨</span>
+</div>
+
+<div class="panel">
+  <div class="panel-title">主图 K线 + 成交量 <span class="meta" id="mainMeta"></span></div>
+  <canvas id="mainChart"></canvas>
+  <div class="controls">
+    <button class="btn ghost" id="zoomOut">−</button>
+    <button class="btn ghost" id="zoomIn">＋</button>
+    <input type="range" id="winSlider" min="0" max="100" value="100" />
+    <span class="meta" id="winLabel" style="color:var(--txt2);font-size:12px;"></span>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-title">
+    <span>副图：金钻起爆 <span style="color:var(--txt2);font-weight:400;font-size:12px;">（金牛 / 金钻趋势 / 金牛2 三线 · 红区带 · 黄柱 · 信号标注）</span></span>
+    <span class="subform-filter">
+      <span class="ff buy on" data-f="buy">▲买入</span>
+      <span class="ff up on" data-f="up">金钻起涨</span>
+      <span class="ff hz on" data-f="hz">红区黄柱连续</span>
+    </span>
+  </div>
+  <canvas id="subChart"></canvas>
+</div>
+
+<div class="panel">
+  <div class="panel-title">信号汇总 <span class="meta" id="sigMeta"></span></div>
+  <div class="sigwrap" id="sigCards"></div>
+</div>
+
+<div class="panel">
+  <div class="panel-title">最近交易日信号判定明细（XG / XG2 分项）</div>
+  <div style="overflow:auto;max-height:340px;">
+    <table id="sigTable">
+      <thead><tr>
+        <th>日期</th><th>信号</th><th>阳线</th><th>DY2&lt;0.02</th><th>MA5&gt;MA60</th><th>涨幅≥2%</th>
+        <th>H&lt;金牛</th><th>L&lt;金钻趋势</th><th>金钻趋势&gt;HIGH</th><th>L≤金钻趋势</th><th>回调买</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="status" id="status">就绪。输入代码开始预览。</div>
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+// API 基地址：同源(系统浏览器直接开 127.0.0.1:8082)用 location.origin；
+// 若是被预览面板/代理包裹(origin 变化)，强制指向本地服务(CORS 已放开 *)，避免相对路径打到代理域 404
+const API = (() => {
+  const host = location.hostname;
+  const base = (host === '127.0.0.1' || host === 'localhost') ? location.origin : 'http://127.0.0.1:8082';
+  return base.replace(/\/$/, '') + '/api/stock?code=';
+})();
+// 全局错误兜底：任何脚本异常直接显示在状态栏，避免静默白屏难以排查
+window.addEventListener('error', e => {
+  const s = document.getElementById('status');
+  if (s){ s.textContent = '⚠ 运行错误: ' + (e.message || e.error) + (e.filename ? ' @' + e.lineno : ''); s.className = 'status err'; }
+});
+let DATA = null;
+let view = { start: 0, end: 0, count: 120 };   // 视图窗口(按索引)
+let filter = { buy: true, up: true, hz: true };
+let hoverIdx = -1;
+
+// ── 颜色 ──
+const C = { red:'#ff4d4f', green:'#26a69a', gold:'#ffc53d', cyan:'#36cfc9',
+            blue:'#4096ff', gray:'#7d8aa0', grid:'#21262d', txt:'#8b98a5',
+            upC:'#ff4d4f', downC:'#26a69a', bandRed:'rgba(255,77,79,.16)', bandGreen:'rgba(38,166,154,.14)' };
+
+// ── 取数 ──
+async function load(code){
+  $('#status').textContent = '加载中… ' + code;
+  $('#status').className = 'status';
+  try{
+    const res = await fetch(API + encodeURIComponent(code));
+    const j = await res.json();
+    if(j.error){ $('#status').textContent = '错误: ' + j.error; $('#status').className='status err'; return; }
+    DATA = j;
+    // 视图默认末 count 根
+    view.count = Math.min(120, j.count);
+    view.end = j.count;
+    view.start = Math.max(0, j.count - view.count);
+    syncSlider();
+    render();
+    $('#status').textContent = `已加载 ${j.name}(${j.code}) · ${j.count} 个交易日 · 数据末日 ${j.dates[j.count-1]}`;
+  }catch(e){ $('#status').textContent = '请求失败: ' + e.message; $('#status').className='status err'; }
+}
+
+// ── 缩放/滑块 ──
+function syncSlider(){
+  const sl = $('#winSlider');
+  // 滑块 0=最旧窗口 100=最新窗口
+  const total = DATA.count;
+  const maxStart = Math.max(0, total - view.count);
+  const pct = maxStart>0 ? Math.round(view.start/maxStart*100) : 100;
+  sl.value = pct;
+  $('#winLabel').textContent = `显示 ${view.start+1}–${view.end} / ${total}  (窗口${view.count}根)`;
+}
+function moveWindow(pct){
+  const total = DATA.count;
+  const maxStart = Math.max(0, total - view.count);
+  view.start = Math.round(maxStart * pct/100);
+  view.end = view.start + view.count;
+  render();
+}
+
+// ── Canvas 基础 ──
+function setupCanvas(cv, cssH){
+  const dpr = window.devicePixelRatio || 1;
+  const w = cv.clientWidth || (cv.parentElement ? cv.parentElement.clientWidth : 0) || 900, h = cssH;
+  cv.width = w*dpr; cv.height = h*dpr;
+  cv.style.height = h+'px';
+  const ctx = cv.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {ctx,w,h};
+}
+
+// 价格→y 映射（返回可调用函数，并挂 .invert/.min/.max）
+function makeScale(vals, pad, top, bottom){
+  let mn=Infinity, mx=-Infinity;
+  vals.forEach(v=>{ if(v!=null){ if(v<mn)mn=v; if(v>mx)mx=v; } });
+  if(!isFinite(mn)){ mn=0; mx=1; }
+  const m = (mx-mn)*pad || 1; mn-=m; mx+=m;
+  const fn = v => bottom - (v-mn)/(mx-mn)*(bottom-top);
+  fn.invert = y => mn + (bottom-y)/(bottom-top)*(mx-mn);
+  fn.min = mn; fn.max = mx;
+  return fn;
+}
+function xAt(i, len, left, right){ return left + (i+0.5)/len*(right-left); }
+
+// ── 主图 ──
+function drawMain(){
+  const cv = $('#mainChart'); const {ctx,w,h} = setupCanvas(cv, 300);
+  ctx.clearRect(0,0,w,h);
+  const L = view.start, R = view.end, N = R-L;
+  const padL=8, padR=58, top=10, bot=h-70, volTop=h-58, volBot=h-8;
+  const dates = DATA.dates.slice(L,R);
+  const o=DATA.open.slice(L,R), c=DATA.close.slice(L,R), hi=DATA.high.slice(L,R), lo=DATA.low.slice(L,R), v=DATA.volume.slice(L,R);
+  // 价格区间(含影线)
+  const scale = makeScale([].concat(hi,lo).filter(x=>x!=null), 0.05, top, bot);
+  const vmax = Math.max(...v.filter(x=>x!=null),1);
+  const vScale = val => volBot - val/vmax*(volBot-volTop);
+  // 网格 + 日期
+  ctx.strokeStyle=C.grid; ctx.fillStyle=C.txt; ctx.font='10px sans-serif'; ctx.lineWidth=1;
+  for(let g=0; g<=4; g++){ const y=top+(bot-top)*g/4; ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(w-padR,y);ctx.stroke(); }
+  // 蜡烛 + 量
+  const bw = (w-padL-padR)/N;
+  for(let k=0;k<N;k++){
+    const x = padL + (k+0.5)*bw;
+    const up = c[k] >= o[k];
+    ctx.strokeStyle = ctx.fillStyle = up?C.upC:C.downC;
+    // 影线
+    ctx.beginPath(); ctx.moveTo(x, scale(hi[k])); ctx.lineTo(x, scale(lo[k])); ctx.stroke();
+    // 实体
+    const yO=scale(o[k]), yC=scale(c[k]); const yo=Math.min(yO,yC), hh=Math.max(1,Math.abs(yC-yO));
+    ctx.fillRect(x-bw*0.32, yo, bw*0.64, hh);
+    // 量
+    ctx.fillStyle = up? 'rgba(255,77,79,.45)':'rgba(38,166,154,.45)';
+    const vy=vScale(v[k]); ctx.fillRect(x-bw*0.32, vy, bw*0.64, volBot-vy);
+  }
+  // MA 线(用全量计算切片)
+  drawMA(ctx, DATA.close, L, R, padL, bw, scale, 5, '#4096ff');
+  drawMA(ctx, DATA.close, L, R, padL, bw, scale, 20, '#ffc53d');
+  drawMA(ctx, DATA.close, L, R, padL, bw, scale, 60, '#b37feb');
+  // hover 竖线
+  if(hoverIdx>=L && hoverIdx<R){
+    const x = padL + (hoverIdx-L+0.5)*bw;
+    ctx.strokeStyle='rgba(255,255,255,.25)'; ctx.setLineDash([3,3]);
+    ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x,h-8);ctx.stroke();ctx.setLineDash([]);
+  }
+  $('#mainMeta').textContent = `MA5蓝 MA20金 MA60紫 · 末收 ${c[N-1]?.toFixed(2)}`;
+}
+function drawMA(ctx, full, L, R, padL, bw, scale, period, color){
+  const N=R-L; ctx.strokeStyle=color; ctx.lineWidth=1.2; ctx.beginPath();
+  let started=false;
+  for(let k=0;k<N;k++){
+    const idx=L+k; if(idx<period-1){ continue; }
+    let s=0; for(let j=idx-period+1;j<=idx;j++) s+=full[j];
+    const ma=s/period; const x=padL+(k+0.5)*bw; const y=scale(ma);
+    if(!started){ctx.moveTo(x,y);started=true;} else ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+}
+
+// ── 副图：金钻起爆 ──
+function drawSub(){
+  const cv = $('#subChart'); const {ctx,w,h} = setupCanvas(cv, 340);
+  ctx.clearRect(0,0,w,h);
+  const L=view.start, R=view.end, N=R-L;
+  const padL=8, padR=58, top=14, bot=h-16;
+  const gb=DATA.golden_bull.slice(L,R), gt=DATA.golden_trend.slice(L,R), g2=DATA.gt2.slice(L,R);
+  const lo=DATA.low.slice(L,R);
+  // 副图价格轴(金牛/金钻趋势/金牛2)
+  const scale = makeScale([].concat(gb,gt,g2).filter(x=>x!=null), 0.06, top, bot);
+  const bw = (w-padL-padR)/N;
+  // 1) 红区 DRAWBAND：相邻点间填带(金钻趋势 vs 金牛2)
+  for(let k=0;k<N-1;k++){
+    if(gt[k]==null||g2[k]==null||gt[k+1]==null||g2[k+1]==null) continue;
+    const x0=padL+k*bw, x1=padL+(k+1)*bw;
+    const yt0=scale(gt[k]), yb0=scale(g2[k]), yt1=scale(gt[k+1]), yb1=scale(g2[k+1]);
+    const topY=Math.min(yt0,yt1), botY=Math.max(yb0,yb1);
+    const red = (gt[k]+gt[k+1])/2 > (g2[k]+g2[k+1])/2;
+    ctx.fillStyle = red?C.bandRed:C.bandGreen;
+    ctx.fillRect(x0, topY, x1-x0, Math.max(0.5,botY-topY));
+  }
+  // 2) 黄柱 STICKLINE：金钻趋势>LOW×1.025 → 黄色立柱(从LOW到金钻趋势)
+  const YM=1.025;
+  for(let k=0;k<N;k++){
+    if(gt[k]==null) continue;
+    if(gt[k] > lo[k]*YM){
+      const x=padL+(k+0.5)*bw;
+      const yTop=scale(gt[k]), yBot=scale(lo[k]);
+      ctx.fillStyle='rgba(255,197,61,.85)';
+      ctx.fillRect(x-bw*0.30, Math.min(yTop,yBot), bw*0.60, Math.abs(yBot-yTop));
+    }
+  }
+  // 3) 三线
+  drawLine(ctx, gt, L, R, padL, bw, scale, C.gold, 1.4);   // 金钻趋势
+  drawLine(ctx, gb, L, R, padL, bw, scale, C.red, 1.4);    // 金牛
+  drawLine(ctx, g2, L, R, padL, bw, scale, C.gray, 1.0);   // 金牛2
+  // 4) 信号标注
+  drawSignals(ctx, L, R, padL, bw, scale, top, bot);
+  // 5) hover
+  if(hoverIdx>=L && hoverIdx<R){
+    const x=padL+(hoverIdx-L+0.5)*bw;
+    ctx.strokeStyle='rgba(255,255,255,.25)';ctx.setLineDash([3,3]);
+    ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x,bot);ctx.stroke();ctx.setLineDash([]);
+  }
+  // y 轴标签
+  ctx.fillStyle=C.txt; ctx.font='10px sans-serif'; ctx.textAlign='left';
+  const ys=[top, (top+bot)/2, bot];
+  ys.forEach(y=>{ ctx.fillText(scale.invert(y).toFixed(1), w-padR+4, y+3); });
+}
+function drawLine(ctx, arr, L, R, padL, bw, scale, color, lw){
+  const N=R-L; ctx.strokeStyle=color; ctx.lineWidth=lw; ctx.beginPath(); let st=false;
+  for(let k=0;k<N;k++){ const v=arr[k]; if(v==null)continue; const x=padL+(k+0.5)*bw; const y=scale(v); if(!st){ctx.moveTo(x,y);st=true;}else ctx.lineTo(x,y); }
+  ctx.stroke();
+}
+function drawSignals(ctx, L, R, padL, bw, scale, top, bot){
+  const N=R-L;
+  DATA.signals.forEach(s=>{
+    const k = s.i - L;
+    if(k<0||k>=N) return;
+    const x = padL+(k+0.5)*bw;
+    const type = s.type;
+    if(type.includes('买入') && filter.buy){
+      // ▲买入：青色三角(在副图顶部)
+      ctx.fillStyle=C.cyan; ctx.beginPath();
+      ctx.moveTo(x, top+2); ctx.lineTo(x-5, top+12); ctx.lineTo(x+5, top+12); ctx.closePath(); ctx.fill();
+    }
+    if(type.includes('金钻起涨') && filter.up){
+      ctx.fillStyle=C.red; ctx.font='bold 11px sans-serif'; ctx.textAlign='center';
+      ctx.fillText('金钻起涨', x, top+12);
+    }
+    if(type.includes('红区黄柱连续') && filter.hz){
+      const m=type.match(/(\d+)天/); const nd=m?m[1]:'3';
+      ctx.fillStyle=C.gold; ctx.font='bold 11px sans-serif'; ctx.textAlign='center';
+      ctx.fillText('红区黄柱连'+nd+'天', x, top+12);
+      // 高亮连续区间背景
+      ctx.fillStyle='rgba(255,197,61,.10)';
+      const x0=padL+Math.max(0,k-(parseInt(nd)-1))*bw;
+      ctx.fillRect(x0, top, parseInt(nd)*bw, bot-top);
+    }
+  });
+}
+
+// ── 渲染 ──
+function render(){
+  if(!DATA) return;
+  drawMain(); drawSub(); renderSigCards(); renderSigTable();
+}
+
+// ── 信号卡片 ──
+function renderSigCards(){
+  const sigs = DATA.signals;
+  const buy = sigs.filter(s=>s.type.includes('买入'));
+  const up = sigs.filter(s=>s.type.includes('金钻起涨'));
+  const hz = sigs.filter(s=>s.type.includes('红区黄柱连续'));
+  const card = (cls,title,list)=>`
+    <div class="sigcard ${cls}"><h3>${title}</h3>
+      <div class="cnt">${list.length}</div>
+      <div style="margin-top:6px;font-size:12px;color:var(--txt2);">
+        ${list.length? list.map(s=>`${s.date} <span style="color:var(--txt)">${s.type}</span>`).join('<br>'):'（窗口内无）'}</div>
+    </div>`;
+  $('#sigCards').innerHTML = card('buy','▲买入 (XG) · 两天窗口',buy)
+    + card('up','金钻起涨 (XG2) · 两天窗口',up)
+    + card('hz','红区黄柱连续 · 5日窗口',hz);
+  $('#sigMeta').textContent = `末日 ${DATA.dates[DATA.count-1]}`;
+}
+
+// ── 判定明细表(窗口日) ──
+function renderSigTable(){
+  const tbody = $('#sigTable tbody'); tbody.innerHTML='';
+  const show = [DATA.count-2, DATA.count-1].filter(i=>i>=0);
+  show.forEach(i=>{
+    const d = (DATA.signals.find(s=>s.i===i)||{}).detail;
+    const sig = DATA.signals.filter(s=>s.i===i).map(s=>s.type).join(' / ')|| '—';
+    const row = (k,v)=>{ const cls = v===true?'ok':(v===false?'no':'dim'); const txt = v===true?'✓':(v===false?'✗':'·'); return `<td class="${cls}">${txt}</td>`; };
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${DATA.dates[i]}</td><td>${sig}</td>
+      ${row('阳线',d&&d.yang)} ${row('DY2<0.02',d&&d.dy2<0.02)} ${row('MA5>MA60',d&&d['ma5>ma60'])}
+      ${row('涨幅≥2%',d&&d.pct>=2.0)} ${row('H<金牛',d&&d['H<金牛'])} ${row('L<金钻趋势',d&&d['L<金钻趋势'])}
+      ${row('金钻趋势>HIGH',d&&d['gt>high'])} ${row('L<=gt',d&&d['L<=gt'])} ${row('回调买',d&&d.callback)}`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ── 交互 ──
+$('#queryBtn').addEventListener('click', ()=>load($('#codeInput').value.trim()));
+$('#codeInput').addEventListener('keydown', e=>{ if(e.key==='Enter') load($('#codeInput').value.trim()); });
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{ $('#codeInput').value=c.dataset.code; load(c.dataset.code); }));
+$('#winSlider').addEventListener('input', e=>moveWindow(+e.target.value));
+$('#zoomIn').addEventListener('click', ()=>{ view.count=Math.max(40, view.count-20); view.end=view.start+view.count; if(view.end>DATA.count){view.end=DATA.count;view.start=Math.max(0,view.end-view.count);} syncSlider(); render(); });
+$('#zoomOut').addEventListener('click', ()=>{ view.count=Math.min(DATA.count, view.count+20); view.end=view.start+view.count; if(view.end>DATA.count){view.end=DATA.count;view.start=Math.max(0,view.end-view.count);} syncSlider(); render(); });
+document.querySelectorAll('.ff').forEach(f=>f.addEventListener('click',()=>{ const k=f.dataset.f; filter[k]=!filter[k]; f.classList.toggle('on',filter[k]); drawSub(); }));
+
+// 十字光标 tooltip
+function bindHover(cv, isSub){
+  cv.addEventListener('mousemove', e=>{
+    const rect=cv.getBoundingClientRect();
+    const x=e.clientX-rect.left;
+    const L=view.start,R=view.end,N=R-L;
+    const padL=8, padR=58, plotW=cv.clientWidth-padL-padR;
+    let k=Math.floor((x-padL)/plotW*N);
+    if(k<0)k=0; if(k>=N)k=N-1;
+    hoverIdx=L+k; render();
+    showTip(e, L+k);
+  });
+  cv.addEventListener('mouseleave', ()=>{ hoverIdx=-1; $('#tooltip').style.display='none'; render(); });
+}
+function showTip(e, i){
+  const t=$('#tooltip');
+  const rz = DATA.red_zone[i], yb = DATA.yellow_bar[i];
+  const gb=DATA.golden_bull[i], gt=DATA.golden_trend[i], g2=DATA.gt2[i];
+  const sig = DATA.signals.filter(s=>s.i===i).map(s=>s.type).join(' / ')||'无';
+  t.innerHTML = `<b>${DATA.dates[i]}</b> (${DATA.name})<br>
+    收 ${DATA.close[i]?.toFixed(2)} 高 ${DATA.high[i]?.toFixed(2)} 低 ${DATA.low[i]?.toFixed(2)}<br>
+    金牛 ${gb!=null?gb.toFixed(2):'—'} · 金钻趋势 ${gt!=null?gt.toFixed(2):'—'} · 金牛2 ${g2!=null?g2.toFixed(2):'—'}<br>
+    红区 ${rz?'<span style="color:#ff4d4f">是</span>':'否'} · 黄柱 ${yb?'<span style="color:#ffc53d">是</span>':'否'}<br>
+    信号: <b style="color:#36cfc9">${sig}</b>`;
+  t.style.display='block'; t.style.left=(e.clientX+14)+'px'; t.style.top=(e.clientY+14)+'px';
+}
+bindHover($('#mainChart'), false);
+bindHover($('#subChart'), true);
+
+// 启动
+load('sz300316');
+
+// 兜底自检：4s 后若仍未拿到数据，给出明确提示（避免静默白屏）
+setTimeout(() => {
+  if (!DATA) {
+    const s = document.getElementById('status');
+    if (s && !s.className.includes('err')) {
+      s.textContent = '⚠ 数据未加载：请确认本地服务 http://127.0.0.1:8082 已启动，并用系统浏览器（Safari/Chrome）直接打开该地址。';
+      s.className = 'status err';
+    }
+  }
+}, 4000);
+</script>
+</body>
+</html>

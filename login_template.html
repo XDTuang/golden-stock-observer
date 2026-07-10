@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>login</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0e17;color:#e2e8f0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+canvas{position:fixed;inset:0;pointer-events:none;z-index:0}
+.box{position:relative;z-index:1;width:400px;max-width:92vw;background:#111827;border:1px solid #1e293b;border-radius:14px;padding:36px 32px;box-shadow:0 4px 24px rgba(0,0,0,.4)}
+.logo{text-align:center;margin-bottom:28px}
+.logo .d{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#7c3aed);color:#fff;font-size:22px;font-weight:800;margin-bottom:12px;box-shadow:0 2px 12px rgba(99,102,241,.3)}
+.logo h1{font-size:20px;font-weight:800;background:linear-gradient(135deg,#e2e8f0,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo .sub{font-size:12px;color:#64748b;margin-top:4px}
+.lv{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+.lv button{padding:12px 8px;border:1px solid #1e293b;border-radius:10px;background:transparent;color:#94a3b8;font-size:13px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .2s}
+.lv button:hover{border-color:#6366f1;color:#e2e8f0}
+.lv button.on{border-color:#6366f1;background:rgba(99,102,241,.1);color:#818cf8}
+.lv button.on.admin{border-color:#f59e0b;background:rgba(245,158,11,.1);color:#f59e0b}
+.lv .ic{font-size:20px}
+.lv .hint{font-size:10px;color:#64748b;font-weight:400}
+.ig{margin-bottom:16px}
+.ig label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6px}
+.pw{position:relative}
+.pw input{width:100%;padding:12px 44px 12px 14px;font-size:15px;border:1px solid #334155;border-radius:10px;background:#0f172a;color:#e2e8f0;outline:none;font-family:"SF Mono",Menlo,monospace;letter-spacing:3px}
+.pw input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.pw .eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#64748b;cursor:pointer;font-size:16px;padding:4px}
+.em{font-size:11px;color:#ef4444;margin-top:6px;min-height:16px;opacity:0;transition:opacity .2s}
+.em.on{opacity:1}
+.btn{width:100%;padding:12px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#6366f1,#7c3aed);color:#fff;transition:all .2s}
+.btn:hover{box-shadow:0 4px 16px rgba(99,102,241,.3)}
+.ov{display:none;position:fixed;inset:0;z-index:100;background:rgba(10,14,23,.95);flex-direction:column;align-items:center;justify-content:center}
+.ov.show{display:flex}
+.rocket{width:100px;height:160px;animation:hop .5s ease-in-out infinite alternate}
+@keyframes hop{0%{transform:translateY(0)}100%{transform:translateY(-10px)}}
+.lt{font-size:14px;font-weight:600;margin-top:14px}
+.ld{display:inline-block;animation:dots 1.2s infinite}
+@keyframes dots{0%,20%{opacity:0}50%{opacity:1}100%{opacity:0}}
+.pb{width:180px;height:3px;background:rgba(99,102,241,.1);border-radius:2px;margin-top:20px;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,#6366f1,#a78bfa);border-radius:2px;animation:pg 1.8s ease-in-out infinite}
+@keyframes pg{0%{width:0}50%{width:65%}100%{width:100%}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+
+<div class="box">
+  <div class="logo"><div class="d">D</div><h1>兜金观测</h1><div class="sub">量化信号池 · 登录验证</div></div>
+  <div class="lv">
+    <button id="ba" class="on admin" onclick="ch('admin')"><span class="ic">&#128081;</span><span>管理员</span><span class="hint">不限</span></button>
+    <button id="bv" class="" onclick="ch('vip')"><span class="ic">&#128142;</span><span>VIP</span><span class="hint">7天</span></button>
+  </div>
+  <div class="ig">
+    <label>密码</label>
+    <div class="pw"><input type="password" id="pw" placeholder="请输入密码" onkeydown="if(event.key==='Enter')go()"><button class="eye" onclick="tg()">&#128065;</button></div>
+    <div class="em" id="em"></div>
+  </div>
+  <button class="btn" onclick="go()">登 录</button>
+</div>
+
+<div class="ov" id="ov">
+  <div class="rocket"><svg viewBox="0 0 100 160" width="100" height="160">
+    <rect x="35" y="65" width="30" height="60" rx="6" fill="#6366f1"/>
+    <path d="M35,65 Q50,30 65,65 Z" fill="#818cf8"/>
+    <circle cx="50" cy="90" r="8" fill="#1e293b" stroke="#6366f1" stroke-width="1.5"/>
+    <circle cx="47.5" cy="90" r="2" fill="#fff"/><circle cx="52.5" cy="90" r="2" fill="#fff"/>
+    <path d="M49,93 L50,93 L50,94 Z" fill="#f472b6"/>
+    <path d="M35,80 L27,88 L35,96 Z" fill="#6366f1" opacity=".7"/>
+    <path d="M65,80 L73,88 L65,96 Z" fill="#6366f1" opacity=".7"/>
+    <path d="M35,120 L22,128 L35,126 Z" fill="#a78bfa" opacity=".7"/>
+    <path d="M65,120 L78,128 L65,126 Z" fill="#a78bfa" opacity=".7"/>
+    <ellipse cx="50" cy="140" rx="10" ry="14" fill="#f59e0b" opacity=".8"/>
+  </svg></div>
+  <div class="lt">正在验证<span class="ld">...</span></div>
+  <div class="pb"><div class="pf"></div></div>
+</div>
+
+<script>
+/* 所有逻辑放在这里有意识地不用 IIFE，确保逐行执行 */
+var _K = 'doudou_auth';
+var _C = {admin:{p:'LYY',x:null}, vip:{p:'DDDYB',x:7*24*60*60*1000}};
+var _L = 'admin';
+
+/* 星空 */
+var _Cv = document.getElementById('c');
+var _X = _Cv.getContext('2d');
+function _rs(){_Cv.width=innerWidth;_Cv.height=innerHeight;}
+_rs();
+window.addEventListener('resize',_rs);
+var _S = [];
+for(var _i=0;_i<100;_i++) _S.push({x:Math.random()*_Cv.width,y:Math.random()*_Cv.height,r:Math.random()*1.5+.3,a:Math.random()});
+function _dr(){_X.clearRect(0,0,_Cv.width,_Cv.height);for(var i=0;i<_S.length;i++){var s=_S[i];s.a+=.02*(Math.random()>.5?1:-1);s.a=Math.max(.1,Math.min(.8,s.a));_X.beginPath();_X.arc(s.x,s.y,s.r,0,Math.PI*2);_X.fillStyle='rgba(148,163,184,'+s.a+')';_X.fill();}requestAnimationFrame(_dr);}
+_dr();
+
+/* 级别切换 */
+function ch(lv){
+  _L = lv;
+  document.getElementById('ba').className = lv==='admin'?'on admin':'';
+  document.getElementById('bv').className = lv==='vip'?'on':'';
+  var e = document.getElementById('em'); if(e){e.className='em';e.textContent='';}
+  document.getElementById('pw').focus();
+}
+
+/* 密码显示 */
+function tg(){
+  var i = document.getElementById('pw');
+  i.type = i.type==='password'?'text':'password';
+}
+
+/* 读取 auth */
+function _ga(){
+  try {
+    var r = localStorage.getItem(_K);
+    if(!r) return null;
+    var a = JSON.parse(r);
+    if(a.expiresAt && Date.now() > a.expiresAt){ localStorage.removeItem(_K); return null; }
+    return a;
+  } catch(e){ return null; }
+}
+
+/* 保存 auth */
+function _sa(lv){
+  var c = _C[lv];
+  var d = {level:lv, loginAt:Date.now()};
+  if(c.x) d.expiresAt = Date.now() + c.x;
+  localStorage.setItem(_K, JSON.stringify(d));
+}
+
+/* 错误 */
+function _er(msg){
+  var e = document.getElementById('em'); if(!e) return;
+  e.textContent = msg; e.className = 'em on';
+  var box = document.querySelector('.box');
+  box.style.animation = 'none';
+  box.offsetHeight;
+  box.style.animation = 'shake 0.4s ease';
+}
+
+/* 登录 */
+function go(){
+  var pwd = document.getElementById('pw').value.trim();
+  var e = document.getElementById('em'); e.className = 'em'; e.textContent = '';
+  if(!pwd){ _er('请输入密码'); return; }
+  if(pwd !== _C[_L].p){
+    _er('密码错误');
+    document.getElementById('pw').value = '';
+    document.getElementById('pw').focus();
+    return;
+  }
+  /* 验证通过 */
+  document.getElementById('ov').className = 'ov show';
+  _sa(_L);
+  setTimeout(function(){
+    window.location.replace('index.html?from=login');
+  }, 1800);
+}
+
+/* 初始化：检查是否已登录 */
+(function(){
+  var a = _ga();
+  if(a){
+    /* 已登录，直接跳转（用 replace 避免回退循环）*/
+    window.location.replace('index.html?from=login');
+    return;
+  }
+  /* 未登录，聚焦输入框 */
+  var pw = document.getElementById('pw');
+  if(pw) pw.focus();
+})();
+</script>
+</body>
+</html>
