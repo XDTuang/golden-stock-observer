@@ -91,7 +91,7 @@ echo "🚀 Step 4: 提交并推送 ..."
 git add -A
 git add -f index.html signals.json lh_calendar.json \
   output/top10_history.json output/sector_flow.json output/national_team_etf.json \
-  output/golden_diamond.json \
+  output/golden_diamond.json output/golden_diamond_history.json \
   build_manifest.json .nojekyll
 if git diff --cached --quiet; then
   echo "  无新更改需要提交"
