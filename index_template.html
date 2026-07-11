@@ -1261,7 +1261,50 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text-muted);margin:4px 0 10px;}
     #tab-diamond .gd-legend span{display:inline-flex;align-items:center;gap:5px;}
     #tab-diamond .gd-legend i{width:10px;height:10px;border-radius:2px;display:inline-block;}
-    @media(max-width:880px){ #tab-diamond .gd-layout{grid-template-columns:1fr;} #tab-diamond .gd-stats{grid-template-columns:repeat(2,1fr);} #tab-diamond .gd-sigcards{grid-template-columns:1fr;} }
+    /* ── 金钻池跟踪（合并卡，可折叠）── */
+    #tab-diamond .gd-track{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:14px;box-shadow:var(--shadow-card);overflow:hidden;}
+    #tab-diamond .gd-track-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;}
+    #tab-diamond .gd-track-head .t{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;}
+    #tab-diamond .gd-track-head .t .gem{color:var(--gold);}
+    #tab-diamond .gd-track-head .chev{color:var(--text-muted);transition:transform var(--transition-fast);font-size:13px;}
+    #tab-diamond .gd-track.collapsed .chev{transform:rotate(-90deg);}
+    #tab-diamond .gd-track-body{padding:0 16px 16px;}
+    #tab-diamond .gd-track.collapsed .gd-track-body{display:none;}
+    #tab-diamond .gd-stat .gd-note{font-size:12px;margin-top:7px;font-weight:600;letter-spacing:.2px;}
+    #tab-diamond .gd-note.gd-pos{color:var(--green);} #tab-diamond .gd-note.gd-neg{color:var(--red);} #tab-diamond .gd-note.gd-flat{color:var(--text-muted);}
+    #tab-diamond .gd-track-ctrl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 4px;}
+    #tab-diamond .gd-track-ctrl select{background:var(--bg-input);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:13px;}
+    #tab-diamond .gd-track-ctrl .gd-hint{font-size:12px;color:var(--text-muted);}
+    #tab-diamond .gd-track-sec{font-size:14px;font-weight:700;margin:18px 0 10px;display:flex;align-items:center;gap:8px;}
+    #tab-diamond .gd-track-sec .bar{width:4px;height:15px;background:var(--gold);border-radius:2px;}
+    #tab-diamond .gd-tcards{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    #tab-diamond .gd-tcard{background:var(--bg-subtle);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;}
+    #tab-diamond .gd-tcard h4{margin:0 0 4px;font-size:14px;font-weight:600;}
+    #tab-diamond .gd-tcard .sub{color:var(--text-muted);font-size:12px;margin-bottom:10px;}
+    #tab-diamond .gd-grp{margin-top:10px;}
+    #tab-diamond .gd-grp .gh{font-size:12px;font-weight:700;margin-bottom:6px;display:flex;justify-content:space-between;}
+    #tab-diamond .gd-grp .gh.add{color:var(--green);} #tab-diamond .gd-grp .gh.rem{color:var(--red);} #tab-diamond .gd-grp .gh.keep{color:var(--cyan);}
+    #tab-diamond .gd-item{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;background:var(--bg-card);margin-bottom:5px;font-size:13px;}
+    #tab-diamond .gd-mk{font-size:11px;font-weight:700;border-radius:6px;padding:1px 6px;flex:none;}
+    #tab-diamond .gd-mk.add{background:var(--green-bg);color:var(--green);}
+    #tab-diamond .gd-mk.rem{background:var(--red-bg);color:var(--red);}
+    #tab-diamond .gd-mk.keep{background:rgba(118,228,247,.16);color:var(--cyan);}
+    #tab-diamond .gd-nm{font-weight:600;}
+    #tab-diamond .gd-cd{color:var(--text-muted);font-size:12px;}
+    #tab-diamond .gd-arrow{color:var(--cyan);font-size:11px;margin-left:4px;}
+    #tab-diamond .gd-empty{color:var(--text-muted);font-size:12px;padding:6px 2px;}
+    /* ── 个股详情：行内手风琴展开 ── */
+    #tab-diamond .gd-table tr.gd-row{cursor:pointer;transition:background var(--transition-fast);}
+    #tab-diamond .gd-table tr.gd-row:hover{background:var(--bg-subtle);}
+    #tab-diamond .gd-table tr.gd-row.active{background:var(--bg-subtle);}
+    #tab-diamond .gd-table tr.gd-row.active td:first-child{box-shadow:inset 3px 0 0 var(--gold);}
+    #tab-diamond .gd-table th.gd-c,#tab-diamond .gd-table td.gd-c{width:28px;text-align:center;padding-left:6px;padding-right:6px;color:var(--text-muted);}
+    #tab-diamond .gd-caret{display:inline-block;transition:transform var(--transition-fast);font-size:11px;}
+    #tab-diamond .gd-row.open .gd-caret{transform:rotate(90deg);color:var(--gold);}
+    #tab-diamond tr.gd-inrow>td{padding:0;border-top:1px solid var(--border);}
+    #tab-diamond tr.gd-inrow .gd-inline{padding:14px 10px 16px 34px;background:var(--bg-subtle);}
+    #tab-diamond tr.gd-inrow .gd-livehead{font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:10px;}
+    @media(max-width:880px){ #tab-diamond .gd-layout{grid-template-columns:1fr;} #tab-diamond .gd-stats{grid-template-columns:repeat(2,1fr);} #tab-diamond .gd-sigcards{grid-template-columns:1fr;} #tab-diamond .gd-tcards{grid-template-columns:1fr;} }
   </style>
 
   <!-- 首栏：当日金钻总览 + 简单分析 -->
@@ -1287,16 +1330,36 @@ td { border-color: var(--border-light); }
     <span><i style="background:var(--red)"></i>金钻起涨</span>
   </div>
 
-  <div class="gd-layout">
-    <div class="gd-tablewrap">
-      <div class="gd-subtitle">命中个股（<span id="gdCount">0</span>）· 点击查看副图</div>
-      <table class="gd-table" id="gdTable">
-        <thead><tr><th>代码</th><th>名称</th><th>主信号</th><th>信号日</th></tr></thead>
-        <tbody></tbody>
-      </table>
+  <!-- 金钻池跟踪（合并卡，可折叠） -->
+  <div class="gd-track" id="gdTrack">
+    <div class="gd-track-head" id="gdTrackToggle">
+      <span class="t"><span class="gem">💎</span> 金钻池跟踪 · 近 20 交易日演化</span>
+      <span class="chev">▾</span>
     </div>
+    <div class="gd-track-body">
+      <div class="gd-track-ctrl">
+        <span class="gd-hint">选择交易日查看明细：</span>
+        <select id="gdTrackDay"></select>
+      </div>
+      <div class="gd-stats" id="gdTrackStats"></div>
+      <div class="gd-track-sec"><span class="bar"></span>当日金钻池明细</div>
+      <div id="gdTrackDetail"></div>
+      <div class="gd-track-sec"><span class="bar"></span>金钻变动跟踪（最新交易日 → 前1日 / 前2日）</div>
+      <div class="gd-tcards" id="gdTrackCompare"></div>
+    </div>
+  </div>
 
-    <div class="gd-charts">
+  <div class="gd-tablewrap">
+    <div class="gd-subtitle">命中个股（<span id="gdCount">0</span>）· 点击任意行，在该行下方直接展开主图 / 副图 / 三子信号 / 判定明细</div>
+    <table class="gd-table" id="gdTable">
+      <thead><tr><th class="gd-c"></th><th>代码</th><th>名称</th><th>主信号</th><th>信号日</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- 个股详情容器：持久 DOM 节点，运行时移动到展开行下方 -->
+  <div id="gdChartsPark" hidden>
+    <div class="gd-charts" id="gdCharts">
       <div class="gd-panel">
         <div class="gd-panel-title">主图 K线 + 成交量 <span class="meta" id="gdMainMeta"></span></div>
         <canvas id="gdMain"></canvas>
@@ -3364,8 +3427,8 @@ async function loadDiamondTab(){
     GD.loaded=true;
     gdRenderOverview(GD.cache);
     gdRenderTable(GD.cache);
-    if(GD.cache.stocks && GD.cache.stocks.length){ gdSelectStock(GD.cache.stocks[0].code); }
-    setGdStatus(`已加载 ${GD.cache.stocks?GD.cache.stocks.length:0} 只命中个股 · 数据日期 ${GD.cache.data_date||'—'}（实时查询不依赖此文件）`);
+    gdLoadHistory();
+    setGdStatus(`已加载 ${GD.cache.stocks?GD.cache.stocks.length:0} 只命中个股 · 数据日期 ${GD.cache.data_date||'—'} · 点击左侧个股展开主图/副图（实时查询不依赖此文件）`);
   }catch(e){
     setGdStatus('⚠ 当日金钻数据未生成（请先运行 golden_diamond_scan.py）。可直接用上方输入框实时查询任意个股。','err');
   }
@@ -3393,18 +3456,22 @@ function gdRenderTable(d){
   const tb=document.querySelector('#gdTable tbody'); tb.innerHTML=stocks.map(s=>{
     const sig=s.primary||'—';
     const sigDate=(s.signals&&s.signals.length)?s.signals[0].date:'—';
-    return `<tr data-code="${s.code}">
+    return `<tr class="gd-row" data-code="${s.code}">
+      <td class="gd-c"><span class="gd-caret">▸</span></td>
       <td>${s.code}</td><td>${s.name||'—'}</td>
       <td><span class="gd-tag ${tagCls(sig)}">${sig}</span></td>
       <td>${sigDate}</td></tr>`;
   }).join('');
-  tb.querySelectorAll('tr').forEach(tr=>tr.addEventListener('click',()=>gdSelectStock(tr.dataset.code)));
+  tb.querySelectorAll('tr.gd-row').forEach(tr=>tr.addEventListener('click',()=>gdOpenStock(tr.dataset.code,tr)));
 }
 
-function gdSelectStock(code){
+const GD_CHARTS=document.getElementById('gdCharts');
+
+function gdOpenStock(code, tr){
   if(!GD.cache) return;
   const s=GD.cache.stocks.find(x=>x.code===code); if(!s) return;
-  document.querySelectorAll('#gdTable tbody tr').forEach(tr=>tr.classList.toggle('active',tr.dataset.code===code));
+  // 再次点击已展开的行 -> 收起
+  if(tr && tr.classList.contains('open')){ closeInlineDetail(); return; }
   const k=s.kline||[];
   GD.data={
     code:s.code, name:s.name||s.code,
@@ -3413,8 +3480,34 @@ function gdSelectStock(code){
     golden_bull:s.golden_bull, golden_trend:s.golden_trend, gt2:s.gt2,
     red_zone:s.red_zone, yellow_bar:s.yellow_bar, signals:s.signals||[], count:k.length,
   };
-  gdResetView(); gdRender();
+  gdResetView();
+  openInlineDetail(tr);
   setGdStatus(`已加载 ${s.name}(${s.code}) · ${k.length} 个交易日 · 末日 ${k.length?k[k.length-1].date:'—'}`);
+}
+
+function closeInlineDetail(){
+  const ex=document.querySelector('#gdTable tbody tr.gd-inrow'); if(ex) ex.remove();
+  document.querySelectorAll('#gdTable tbody tr.gd-row').forEach(tr=>tr.classList.remove('active','open'));
+}
+function openInlineDetail(tr){
+  closeInlineDetail();
+  const inrow=document.createElement('tr');
+  inrow.className='gd-inrow';
+  inrow.innerHTML='<td colspan="5"><div class="gd-inline"></div></td>';
+  inrow.querySelector('.gd-inline').appendChild(GD_CHARTS);
+  if(tr){ tr.classList.add('active','open'); tr.after(inrow); }
+  else { document.querySelector('#gdTable tbody').appendChild(inrow); }
+  requestAnimationFrame(()=>{ gdRender(); });
+}
+function openInlineDetailLive(code,res){
+  closeInlineDetail();
+  const inrow=document.createElement('tr');
+  inrow.className='gd-inrow';
+  const sig=res.signals.length?res.signals.map(s=>s.type).join(' / '):'无命中';
+  inrow.innerHTML=`<td colspan="5"><div class="gd-inline"><div class="gd-livehead">🔎 实时查询：${code} · 命中 ${sig}</div></div></td>`;
+  inrow.querySelector('.gd-inline').appendChild(GD_CHARTS);
+  document.querySelector('#gdTable tbody').appendChild(inrow);
+  requestAnimationFrame(()=>{ gdRender(); });
 }
 
 async function gdLiveQuery(){
@@ -3432,7 +3525,8 @@ async function gdLiveQuery(){
     const rows=k.map(r=>({date:r[0],open:+r[1],close:+r[2],high:+r[3],low:+r[4],volume:+r[5]}));
     const res=gdAnalyze(rows);
     res.code=code; res.name=code;
-    GD.data=res; gdResetView(); gdRender();
+    GD.data=res; gdResetView();
+    openInlineDetailLive(code,res);
     const sig=res.signals.length?res.signals.map(s=>s.type).join(' / '):'无命中';
     setGdStatus(`实时查询 ${code} · 末日 ${rows[rows.length-1].date} · 信号: ${sig}`);
   }catch(e){ setGdStatus('⚠ 实时查询失败: '+e.message,'err'); }
@@ -3610,6 +3704,110 @@ function gdBindHover(cv){ cv.addEventListener('mousemove',e=>{ const rect=cv.get
   const L=GD.view.start,R=GD.view.end,N=R-L,padL=8,padR=58,pw=cv.clientWidth-padL-padR; let k=Math.floor((x-padL)/pw*N); if(k<0)k=0; if(k>=N)k=N-1;
   GD.hoverIdx=L+k; gdRender(); }); cv.addEventListener('mouseleave',()=>{ GD.hoverIdx=-1; gdRender(); }); }
 
+// ── 个股详情折叠盒（主图/副图 默认折叠，点击个股展开）──
+// ── 金钻池跟踪（历史数据仓库）──
+let GD_HIST=null;
+async function gdLoadHistory(){
+  try{
+    const res=await fetch('./output/golden_diamond_history.json?'+Date.now());
+    if(!res.ok) return;
+    GD_HIST=await res.json();
+    gdBuildTrackDays();
+    gdRenderTrack(GD_HIST.trading_days[GD_HIST.trading_days.length-1]);
+  }catch(e){ /* 跟踪数据缺失不阻塞主功能 */ }
+}
+function gdCountByPrimary(snap){
+  let c={up:0,buy:0,hz:0,total:0};
+  for(const code in snap){ const p=snap[code].primary; c.total++;
+    if(p==='金钻起涨')c.up++; else if(p==='买入')c.buy++;
+    else if(p.startsWith('红区黄柱连续'))c.hz++; }
+  return c;
+}
+function gdRankOf(p){ return p==='金钻起涨'?3:(p==='买入'?2:(p.startsWith('红区黄柱连续')?1:0)); }
+function gdPclass(p){
+  if(p==='金钻起涨') return 'gd-tag up';
+  if(p==='买入') return 'gd-tag buy';
+  if(p.startsWith('红区黄柱连续')) return 'gd-tag hz';
+  return 'gd-tag';
+}
+function gdBuildTrackDays(){
+  const sel=document.getElementById('gdTrackDay'); if(!sel||!GD_HIST) return;
+  sel.innerHTML='';
+  GD_HIST.trading_days.slice().reverse().forEach((d,i)=>{
+    const o=document.createElement('option'); o.value=d; o.textContent=d+(i===0?'（最新）':''); sel.appendChild(o);
+  });
+  sel.onchange=e=>gdRenderTrack(e.target.value);
+}
+function gdDeltaNote(curr,prev,unit){
+  if(prev===null||prev===undefined) return `<div class="gd-note gd-flat">无前一交易日</div>`;
+  const d=curr-prev;
+  if(d>0) return `<div class="gd-note gd-pos">较前一交易日 ▲ +${d} ${unit}</div>`;
+  if(d<0) return `<div class="gd-note gd-neg">较前一交易日 ▼ ${d} ${unit}</div>`;
+  return `<div class="gd-note gd-flat">较前一交易日 持平</div>`;
+}
+function gdRenderTrack(date){
+  if(!GD_HIST) return;
+  const snaps=GD_HIST.snapshots, days=GD_HIST.trading_days;
+  const idx=days.indexOf(date);
+  const prevDate=idx>0?days[idx-1]:null;
+  const snap=snaps[date]||{}, prevSnap=prevDate?(snaps[prevDate]||{}):{};
+  const c=gdCountByPrimary(snap), pc=prevDate?gdCountByPrimary(prevSnap):null;
+  const stats=[
+    {n:c.total,l:'金钻池总数',c:'',note:gdDeltaNote(c.total,pc?pc.total:null,'只')},
+    {n:c.up,l:'金钻起涨',c:'s-up',note:gdDeltaNote(c.up,pc?pc.up:null,'只')},
+    {n:c.buy,l:'买入',c:'s-buy',note:gdDeltaNote(c.buy,pc?pc.buy:null,'只')},
+    {n:c.hz,l:'红区黄柱连续',c:'s-hz',note:gdDeltaNote(c.hz,pc?pc.hz:null,'只')},
+  ];
+  document.getElementById('gdTrackStats').innerHTML=stats.map(x=>
+    `<div class="gd-stat ${x.c}"><div class="n">${x.n}</div><div class="l">${x.l}</div>${x.note}</div>`).join('');
+  const codes=Object.keys(snap).sort((a,b)=>{
+    const ra=gdRankOf(snap[a].primary), rb=gdRankOf(snap[b].primary);
+    return rb-ra || a.localeCompare(b);
+  });
+  let rows=codes.length?codes.map(code=>{ const s=snap[code];
+    return `<tr><td>${code}</td><td>${s.name||'—'}</td><td><span class="${gdPclass(s.primary)}">${s.primary}</span></td>
+      <td class="gd-cd">${s.signal_date||'-'}</td></tr>`;
+  }).join(''):`<tr><td colspan="4" class="gd-empty">当日无金钻信号命中</td></tr>`;
+  document.getElementById('gdTrackDetail').innerHTML=
+    `<div class="gd-subtitle" style="border:none;padding:14px 0 8px;font-weight:700;">${date} · 金钻池明细（${c.total} 只）</div>
+     <table class="gd-table"><thead><tr><th>代码</th><th>名称</th><th>主信号</th><th>触发日</th></tr></thead><tbody>${rows}</tbody></table>`;
+  const d0=days[days.length-1], d1=days[days.length-2], d2=days[days.length-3];
+  document.getElementById('gdTrackCompare').innerHTML=gdCompareCard(d0,d1)+gdCompareCard(d0,d2);
+}
+function gdDiffSets(a,b){
+  const sa=new Set(Object.keys(a)),sb=new Set(Object.keys(b));
+  const added=[...sa].filter(x=>!sb.has(x));
+  const removed=[...sb].filter(x=>!sa.has(x));
+  const retained=[...sa].filter(x=>sb.has(x));
+  const changed=retained.filter(x=>a[x].primary!==b[x].primary);
+  return {added,removed,retained,changed};
+}
+function gdItemHtml(snap,code,mk){
+  const s=snap[code];
+  return `<div class="gd-item"><span class="gd-mk ${mk}">${mk==='add'?'新增':mk==='rem'?'消除':'留存'}</span>
+    <span class="gd-nm">${s.name}</span><span class="gd-cd">${code}</span><span class="${gdPclass(s.primary)}">${s.primary}</span></div>`;
+}
+function gdChangedHtml(a,b,code){
+  const s=a[code];
+  return `<div class="gd-item"><span class="gd-mk keep">留存</span><span class="gd-nm">${s.name}</span><span class="gd-cd">${code}</span>
+    <span class="${gdPclass(b[code].primary)}">${b[code].primary}</span><span class="gd-arrow">→</span><span class="${gdPclass(s.primary)}">${s.primary}</span></div>`;
+}
+function gdCompareCard(d0,d1){
+  if(!d1) return `<div class="gd-tcard"><h4>前1交易日对比</h4><div class="gd-empty">历史数据不足</div></div>`;
+  const snaps=GD_HIST.snapshots;
+  const cmp=gdDiffSets(snaps[d0],snaps[d1]);
+  const c0=gdCountByPrimary(snaps[d0]).total, c1=gdCountByPrimary(snaps[d1]).total;
+  return `<div class="gd-tcard"><h4>${d0} ↔ ${d1}</h4>
+    <div class="sub">最新池 ${c0} 只 · 前1日池 ${c1} 只 · 净增 ${c0-c1>=0?'+':''}${c0-c1}</div>
+    <div class="gd-grp"><div class="gh add"><span>＋ 新增（${cmp.added.length}）</span></div>
+      ${cmp.added.length?cmp.added.map(c=>gdItemHtml(snaps[d0],c,'add')).join(''):'<div class="gd-empty">无</div>'}</div>
+    <div class="gd-grp"><div class="gh rem"><span>－ 消除（${cmp.removed.length}）</span></div>
+      ${cmp.removed.length?cmp.removed.map(c=>gdItemHtml(snaps[d1],c,'rem')).join(''):'<div class="gd-empty">无</div>'}</div>
+    <div class="gd-grp"><div class="gh keep"><span>● 留存（${cmp.retained.length}）｜其中信号变更 ${cmp.changed.length}</span></div>
+      ${cmp.retained.length?cmp.retained.map(c=>cmp.changed.includes(c)?gdChangedHtml(snaps[d0],snaps[d1],c):gdItemHtml(snaps[d0],c,'keep')).join(''):'<div class="gd-empty">无</div>'}</div>
+  </div>`;
+}
+
 // 事件绑定（仅在钻石 tab 内）
 document.getElementById('gdQuery').addEventListener('click',gdLiveQuery);
 document.getElementById('gdCode').addEventListener('keydown',e=>{ if(e.key==='Enter') gdLiveQuery(); });
@@ -3619,6 +3817,8 @@ document.getElementById('gdZoomOut').addEventListener('click',()=>{ if(!GD.data)
 document.querySelectorAll('#tab-diamond .gd-ff').forEach(f=>f.addEventListener('click',()=>{ const k=f.dataset.f; GD.filter[k]=!GD.filter[k]; f.classList.toggle('on',GD.filter[k]); if(GD.data) gdDrawSub(); }));
 gdBindHover(document.getElementById('gdMain'));
 gdBindHover(document.getElementById('gdSub'));
+const _gdTrackToggle=document.getElementById('gdTrackToggle');
+if(_gdTrackToggle) _gdTrackToggle.addEventListener('click',()=>document.getElementById('gdTrack').classList.toggle('collapsed'));
 
 document.addEventListener('DOMContentLoaded', initPage);
 </script>
