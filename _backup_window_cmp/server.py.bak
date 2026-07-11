@@ -1,0 +1,456 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+金钻起爆 · 独立可视化预览工具  (server.py)
+=========================================
+与主项目 golden_stock_observer 完全隔离，不修改任何总项目文件。
+
+功能：
+  1. 通过腾讯 gtimg 接口实时拉取前复权日线 K 线（250 日）
+  2. 完整复刻通达信「金钻起爆」指标（金牛 / 金钻趋势 / 金牛2 / DDX / VAR23）
+  3. 计算三种子形态信号：
+       - 买入 (XG)            —— 时间窗口：当天收盘 + 最近前一天（两天内任意一天）
+       - 金钻起涨 (XG2)       —— 时间窗口：同上
+       - 红区黄柱连续3天      —— 最近 5 日窗口内连续 ≥3 天（红区=金钻趋势>金牛2，
+                                 黄柱=金钻趋势>LOW×1.025，DRAWBAND + STICKLINE 形态）
+  4. 提供 HTTP API + 内嵌 index.html，浏览器实时预览副图
+
+用法：
+  python3 server.py [--port 8082] [--code sz300316]   # 命令行调试打印 JSON
+  python3 server.py                                    # 启动 HTTP 服务 (localhost:8082)
+
+依赖：仅标准库（urllib/subprocess 调用 curl 直连，无 numpy/pandas）
+"""
+
+import sys
+import os
+import json
+import subprocess
+import math
+import datetime
+import urllib.parse
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+# ──────────────────────────────────────────────────────────────
+# 1. 数据获取（腾讯 gtimg，curl 直连）
+# ──────────────────────────────────────────────────────────────
+def normalize_code(code: str) -> str:
+    code = code.strip().lower()
+    if code.startswith(("sh", "sz", "bj")):
+        return code
+    if len(code) == 6 and code.isdigit():
+        if code[0] in ("6", "9"):
+            return "sh" + code
+        if code[0] in ("0", "3"):
+            return "sz" + code
+        if code[0] == "8" or (code[0] == "4"):
+            return "bj" + code
+    return code
+
+
+def _curl(url: str, timeout: int = 20) -> bytes:
+    p = subprocess.run(
+        ["curl", "-s", "-m", str(timeout), "-A", "Mozilla/5.0",
+         "-H", "Referer: https://gu.qq.com/", url],
+        capture_output=True,
+    )
+    return p.stdout
+
+
+def fetch_kline(code: str, days: int = 250):
+    """返回 (name, [rows])  rows: {date,open,close,high,low,volume}"""
+    code = normalize_code(code)
+    url = f"https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param={code},day,,,{days},qfq"
+    raw = _curl(url)
+    d = json.loads(raw.decode("utf-8", "replace"))
+    node = d.get("data", {}).get(code)
+    if not node:
+        raise ValueError(f"无数据: {code}")
+    k = node.get("qfqday") or node.get("day")
+    if not k:
+        raise ValueError(f"无K线: {code}")
+
+    # 腾讯顺序: [date, open, close, high, low, volume]
+    rows = []
+    for r in k:
+        rows.append({
+            "date": r[0],
+            "open": float(r[1]),
+            "close": float(r[2]),
+            "high": float(r[3]),
+            "low": float(r[4]),
+            "volume": float(r[5]),
+        })
+
+    # 名称（qt.gtimg.cn 为 GBK 编码）
+    name = code
+    try:
+        qt = _curl(f"https://qt.gtimg.cn/q={code}")
+        seg = qt.decode("gb18030", "replace").split('"', 1)[1].rstrip('";').split("~")
+        if len(seg) > 1 and seg[1]:
+            name = seg[1]
+    except Exception:
+        pass
+    return name, rows
+
+
+# ──────────────────────────────────────────────────────────────
+# 2. 指标计算（纯 Python，复刻通达信）
+# ──────────────────────────────────────────────────────────────
+def ema(arr, n):
+    """通达信 EMA：seed=前n有效值简单平均，递推 k=2/(n+1)；跳过 None"""
+    res = [None] * len(arr)
+    valid = [i for i, x in enumerate(arr) if x is not None]
+    if len(valid) < n:
+        return res
+    seed = sum(arr[i] for i in valid[:n]) / n
+    seed_idx = valid[n - 1]
+    res[seed_idx] = seed
+    k = 2.0 / (n + 1)
+    prev = seed
+    for idx in range(seed_idx + 1, len(arr)):
+        x = arr[idx]
+        if x is None:
+            continue
+        prev = x * k + prev * (1 - k)
+        res[idx] = prev
+    return res
+
+
+def xma(arr, n):
+    """通达信 XMA(X,N): 居中对称移动平均（未来函数）。
+
+    与 TDX 自带 XMA 严格对齐：XMA[i] = 以 i 为中心、半径 (N-1)/2 的窗口算术均值，
+    边界处裁剪到可用数据（最后一根 K 线用不到未来数据，退化为尾部均值）。
+    偶数 N 按 TDX 规则视为 N+1（如 N=2 等同 N=3）。
+    这是「偏移移动平均」——使用了未来 N/2 根 K 线，故为未来函数，也是金钻趋势轨位
+    与实盘一致的关键（此前用 2·EMA−EMA(EMA) 滞后近似会导致轨位偏移、假阳性）。
+    """
+    L = len(arr)
+    eff = n if n % 2 == 1 else n + 1
+    r = (eff - 1) // 2
+    res = [None] * L
+    valid = [i for i, x in enumerate(arr) if x is not None]
+    if not valid:
+        return res
+    lo0, hi0 = valid[0], valid[-1]
+    for idx in valid:
+        lo = max(lo0, idx - r)
+        hi = min(hi0, idx + r)
+        seg = arr[lo:hi + 1]
+        s = 0.0
+        cnt = 0
+        for x in seg:
+            if x is not None:
+                s += x
+                cnt += 1
+        if cnt > 0:
+            res[idx] = s / cnt
+    return res
+
+
+def sma2(x, prev):
+    """SMA(X,2,1) = (X + prev)/2"""
+    return (x + prev) / 2.0
+
+
+def analyze(rows):
+    n = len(rows)
+    dates = [r["date"] for r in rows]
+    o = [r["open"] for r in rows]
+    c = [r["close"] for r in rows]
+    h = [r["high"] for r in rows]
+    l = [r["low"] for r in rows]
+    v = [r["volume"] for r in rows]
+
+    # ── 金牛 / 金钻趋势 / 金牛2 ──
+    xh = xma(h, 25)
+    xl = xma(l, 25)
+    xh2 = xma(xh, 25)
+    xl2 = xma(xl, 25)
+    golden_bull = [None if (a is None or b is None) else 2 * a - b for a, b in zip(xh2, xl2)]
+    golden_trend = [None if (a is None or b is None) else 2 * b - a for a, b in zip(xh2, xl2)]
+    # 金牛2 = EMA(金钻趋势, 25)，对含 None 序列稳健递推
+    gt2_full = _ema_with_none(golden_trend, 25)
+
+    # ── DDX（绝对量，/10000） ──
+    ddx = [0.0] * n
+    for i in range(n):
+        hi, lo, cl, op, vo = h[i], l[i], c[i], o[i], (v[i] if v[i] else 1)
+        jj = (hi + lo + cl) / 3.0
+        hl_range = (hi - lo) if (hi - lo) != 0 else 4
+        qj0 = vo / hl_range
+        min_co = min(cl, op)
+        max_co = max(cl, op)
+        qj1 = qj0 * (jj - min_co)
+        qj2 = qj0 * (min_co - lo)
+        qj3 = qj0 * (hi - max_co)
+        qj4 = qj0 * (max_co - jj)
+        ddx[i] = ((qj1 + qj2) - (qj3 + qj4)) / 10000.0
+
+    # ── V2 = SMA(IF(C>=REF(C,1), DDX, -DDX/100), 2, 1) ──
+    v2 = [0.0] * n
+    for i in range(1, n):
+        adj = ddx[i] if c[i] >= c[i - 1] else -ddx[i] / 100.0
+        v2[i] = sma2(adj, v2[i - 1])
+
+    # ── VAR23 = 100 * XMA2(delta_C,6) / XMA2(|delta_C|,6) ──
+    chg = [0.0] + [c[i] - c[i - 1] for i in range(1, n)]
+    xchg_raw = xma(xma(chg, 6), 6)
+    xchg_abs = xma(xma([abs(x) for x in chg], 6), 6)
+    var23 = [None] * n
+    for i in range(n):
+        if xchg_raw[i] is not None and xchg_abs[i] not in (None, 0):
+            var23[i] = 100.0 * xchg_raw[i] / xchg_abs[i]
+    var23_ma2 = _ema_with_none(var23, 2)  # 简单近似 MA2
+
+    # ── 全序列红区 / 黄柱 ──
+    _YM = 1.025
+    red_zone = [False] * n
+    yellow_bar = [False] * n
+    for i in range(n):
+        if golden_trend[i] is not None and gt2_full[i] is not None:
+            red_zone[i] = golden_trend[i] > gt2_full[i]
+        if golden_trend[i] is not None:
+            yellow_bar[i] = golden_trend[i] > l[i] * _YM
+
+    # ── 最近两天窗口：买入 / 金钻起涨 ──
+    signals = []
+    window_start = max(1, n - 2)
+    for i in range(window_start, n):
+        sig, detail = _eval_day_detail(i, c, o, h, l, golden_bull, golden_trend,
+                                       gt2_full, v2, var23, var23_ma2, n)
+        if sig:
+            signals.append({"i": i, "date": dates[i], "type": sig, "detail": detail})
+
+    # ── 红区黄柱连续（窗口5日，连续≥3） ──
+    HZ_WINDOW = 5
+    HZ_MIN = 3
+    # 从当日向前连续
+    streak = 0
+    for i in range(n - 1, -1, -1):
+        if red_zone[i] and yellow_bar[i]:
+            streak += 1
+        else:
+            break
+    # 窗口内最长连续段
+    win_start = max(0, n - HZ_WINDOW)
+    run = 0
+    max_run = 0
+    run_end = -1
+    for i in range(win_start, n):
+        if red_zone[i] and yellow_bar[i]:
+            run += 1
+            if run > max_run:
+                max_run = run
+                run_end = i
+        else:
+            run = 0
+    if max_run >= HZ_MIN:
+        signals.append({
+            "i": run_end, "date": dates[run_end],
+            "type": f"红区黄柱连续{max_run}天",
+            "streak": streak,
+        })
+
+    return {
+        "code": "",
+        "name": "",
+        "count": n,
+        "dates": dates,
+        "open": o, "close": c, "high": h, "low": l, "volume": v,
+        "golden_trend": golden_trend,
+        "golden_bull": golden_bull,
+        "gt2": gt2_full,
+        "ddx": ddx,
+        "v2": v2,
+        "var23": var23,
+        "var23_ma2": var23_ma2,
+        "red_zone": red_zone,
+        "yellow_bar": yellow_bar,
+        "signals": signals,
+    }
+
+
+def _ema_with_none(arr, n):
+    """对含 None 的序列做 EMA，None 视为「无数据」跳过递推起点"""
+    res = [None] * len(arr)
+    filled = [(i, x) for i, x in enumerate(arr) if x is not None]
+    if len(filled) < n:
+        return res
+    # 找到第一个有足够前置数据的起点
+    vals = [x for _, x in filled]
+    seed = sum(vals[:n]) / n
+    # 将 seed 放回第一个窗口末位
+    start_idx = filled[n - 1][0]
+    res[start_idx] = seed
+    k = 2.0 / (n + 1)
+    prev = seed
+    pos = n
+    for i in range(start_idx + 1, len(arr)):
+        if arr[i] is None:
+            continue
+        prev = arr[i] * k + prev * (1 - k)
+        res[i] = prev
+    return res
+
+
+def _eval_day(i, c, o, h, l, gb, gt, g2, v2, var23, var23_ma2, n):
+    """返回信号类型字符串或 None（detail 见 _eval_day_detail）"""
+    res, _ = _eval_day_detail(i, c, o, h, l, gb, gt, g2, v2, var23, var23_ma2, n)
+    return res
+
+
+def _eval_day_detail(i, c, o, h, l, gb, gt, g2, v2, var23, var23_ma2, n):
+    """调试版：返回 (sig_type, detail_dict)，detail 含 XG2/XG 各分项"""
+    detail = {}
+    if i < 1:
+        return None, detail
+    ci, oi, hi, li = c[i], o[i], h[i], l[i]
+    prev_c = c[i - 1]
+    gbv = gb[i]
+    gtv = gt[i]
+    g2v = g2[i]
+    if gtv is None or g2v is None or gbv is None:
+        return None, detail
+    ma5 = sum(c[i - 4:i + 1]) / 5.0 if i >= 4 else None
+    ma60 = sum(c[i - 59:i + 1]) / 60.0 if i >= 59 else None
+    pct = (ci / prev_c - 1.0) * 100.0
+    yang = ci > oi
+    # DY = CURRBARSCOUNT=1 AND C<REF(C,1)  → 仅在最后一根K线
+    dy = 1.0 if (i == n - 1 and ci < prev_c) else 0.0
+    # 权威源码: DY2 := REF(V2,1) - DY   —— 用「前一天的 V2」减 DY
+    v2_prev = v2[i - 1] if i >= 1 else 0.0
+    dy2 = v2_prev - dy
+
+    var_last = var23[i] if var23[i] is not None else 0.0
+    var_prev = var23[i - 1] if (i >= 1 and var23[i - 1] is not None) else 0.0
+    llv2 = min(var_last, var_prev)
+    llv7 = min(var23[max(0, i - 6):i + 1]) if all(x is not None for x in var23[max(0, i - 6):i + 1]) else var_last
+    count_neg = (1 if var_prev < 0 else 0) + (1 if var_last < 0 else 0)
+    # MA(VAR23,2) = 简单双日均值（权威源码用 MA 非 EMA）
+    vma2_last = (var23[i] + var23[i - 1]) / 2.0 if (i >= 1 and var23[i] is not None and var23[i - 1] is not None) else var_last
+    vma2_prev = (var23[i - 1] + var23[i - 2]) / 2.0 if (i >= 2 and var23[i - 1] is not None and var23[i - 2] is not None) else var_prev
+    cross = var_prev <= vma2_prev and var_last > vma2_last
+    callback = (abs(llv2 - llv7) < 1e-8) and (count_neg >= 1) and cross
+
+    gt_above_high = gtv > hi
+    low_touch = li <= gtv
+    # XG2 权威源码 (金钻选股校正报告 2026-07-09 第4条):
+    #   XG2 := C>O AND DY2<0.02 AND MA(C,5)>MA(C,60) AND C/REF(C,1)>=1.02 AND H<金牛 AND L<金钻趋势
+    #   末项 L<金钻趋势 为「回踩趋势线启动」核心条件，漏掉会导致强趋势未回踩股被误判为起涨。
+    xg2 = (yang and dy2 < 0.02 and (ma60 is not None and ma5 > ma60)
+           and pct >= 2.0 and hi < gbv and li < gtv)
+    xg = gt_above_high and callback and low_touch
+
+    detail = {
+        "yang": yang, "dy2": round(dy2, 5), "V2[prev]": round(v2_prev, 5),
+        "ma5>ma60": (ma60 is not None and ma5 > ma60),
+        "pct": round(pct, 2), "H<金牛": hi < gbv, "L<金钻趋势": li < gtv,
+        "gt>high": gt_above_high, "L<=gt": low_touch,
+        "var_last": round(var_last, 3), "var_prev": round(var_prev, 3),
+        "llv2==llv7": abs(llv2 - llv7) < 1e-8, "count_neg": count_neg, "cross": cross,
+        "callback": callback,
+    }
+    if xg2:
+        return "金钻起涨", detail
+    if xg:
+        return "买入", detail
+    return None, detail
+
+
+# ──────────────────────────────────────────────────────────────
+# 3. HTTP 服务
+# ──────────────────────────────────────────────────────────────
+INDEX_HTML = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
+
+
+class Handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        parsed = urllib.parse.urlparse(self.path)
+        if parsed.path in ("/", "/index.html"):
+            try:
+                with open(INDEX_HTML, "r", encoding="utf-8") as f:
+                    body = f.read()
+                self._send(200, "text/html; charset=utf-8", body.encode("utf-8"))
+            except FileNotFoundError:
+                self._send(404, "text/plain", b"index.html not found")
+            return
+
+        if parsed.path == "/api/stock":
+            qs = urllib.parse.parse_qs(parsed.query)
+            code = qs.get("code", ["sz300316"])[0]
+            try:
+                name, rows = fetch_kline(code)
+                result = analyze(rows)
+                result["code"] = code
+                result["name"] = name
+                self._send(200, "application/json; charset=utf-8",
+                           json.dumps(result, ensure_ascii=False).encode("utf-8"))
+            except Exception as e:
+                self._send(500, "application/json",
+                           json.dumps({"error": str(e)}, ensure_ascii=False).encode("utf-8"))
+            return
+
+        self._send(404, "text/plain", b"not found")
+
+    def _send(self, code, ctype, body):
+        self.send_response(code)
+        self.send_header("Content-Type", ctype)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(body)
+
+    def log_message(self, *args):
+        pass  # 静默
+
+
+def main():
+    port = 8082
+    if "--port" in sys.argv:
+        idx = sys.argv.index("--port")
+        port = int(sys.argv[idx + 1])
+    # 命令行调试模式
+    if "--code" in sys.argv:
+        idx = sys.argv.index("--code")
+        code = sys.argv[idx + 1]
+        name, rows = fetch_kline(code)
+        res = analyze(rows)
+        res["code"] = code
+        res["name"] = name
+        # 打印信号 + 末段指标
+        print(f"=== {name}({code}) 共{res['count']}日 ===")
+        print("信号:", json.dumps(res["signals"], ensure_ascii=False))
+        # 扫描全序列：所有 XG2 / XG 命中
+        hits = []
+        for i in range(1, res["count"]):
+            sig, _ = _eval_day_detail(
+                i, res["close"], res["open"], res["high"], res["low"],
+                res["golden_bull"], res["golden_trend"], res["gt2"],
+                res["v2"], res["var23"], res["var23_ma2"], res["count"])
+            if sig:
+                hits.append((res["dates"][i], sig))
+        print("全序列 XG2/XG 命中:", json.dumps(hits, ensure_ascii=False))
+        # 调试：最近两天 XG2/XG 分项
+        for i in [max(1, res["count"] - 2), res["count"] - 1]:
+            sig, det = _eval_day_detail(
+                i, res["close"], res["open"], res["high"], res["low"],
+                res["golden_bull"], res["golden_trend"], res["gt2"],
+                res["v2"], res["var23"], res["var23_ma2"], res["count"])
+            print(f"  {res['dates'][i]}: {sig}  {det}")
+        last = -1
+        print(f"末日 {res['dates'][last]}: 收{res['close'][last]} 金钻趋势={_r(res['golden_trend'][last])} "
+              f"金牛={_r(res['golden_bull'][last])} 金牛2={_r(res['gt2'][last])} "
+              f"红区={res['red_zone'][last]} 黄柱={res['yellow_bar'][last]}")
+        return
+    print(f"金钻起爆预览服务已启动: http://localhost:{port}")
+    HTTPServer(("127.0.0.1", port), Handler).serve_forever()
+
+
+def _r(x, nd=3):
+    return round(x, nd) if isinstance(x, (int, float)) else x
+
+
+if __name__ == "__main__":
+    main()

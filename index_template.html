@@ -2345,7 +2345,7 @@ function _checkGoldenDiamond(data) {
   // ══════════════════════════════════════════════════════
   // 信号判定（三子形态，与 golden_diamond_scan.py / 通达信源码一致）
   //   优先级: 金钻起涨 > 买入 > 红区黄柱连续
-  //   XG2/XG 检查最近2个交易日窗口（含当日）
+  //   XG2/XG 检查最近5个交易日窗口（含当日，连续前五天）
   // ══════════════════════════════════════════════════════
   function evalBar(di) {
     if (di < 1) return {xg2:false, xg:false};
@@ -2369,7 +2369,7 @@ function _checkGoldenDiamond(data) {
     const xg=gtAbove && cb && lowTouch;
     return {xg2, xg};
   }
-  const gxWinStart=Math.max(1, n-2);
+  const gxWinStart=Math.max(1, n-5);
   let result=''; let triggerIdx=null;
   for (let di=gxWinStart; di<n; di++){ const r=evalBar(di); if(r.xg2){ result='金钻起涨'; triggerIdx=di; break; } }
   if (!result) for (let di=gxWinStart; di<n; di++){ const r=evalBar(di); if(r.xg){ result='买入'; triggerIdx=di; break; } }
