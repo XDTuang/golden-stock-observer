@@ -1245,6 +1245,7 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-ff.up.on{background:var(--red);}
     #tab-diamond .gd-ff.hz.on{background:var(--gold);}
   #tab-diamond .gd-ff.chan.on{background:var(--purple);}
+  #tab-diamond .gd-ff.four.on{background:#3b82f6;}
     #tab-diamond .gd-sigcards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
     #tab-diamond .gd-sigcard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;}
     #tab-diamond .gd-sigcard h3{font-size:12px;margin-bottom:4px;}
@@ -1258,6 +1259,8 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-sigcard .lst{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.6;}
   #tab-diamond .gd-chan-cell{font-size:11px;line-height:1.6;}
   #tab-diamond .gd-chan-badge{display:inline-block;margin:1px 2px;padding:1px 6px;border-radius:10px;font-size:10px;font-weight:700;background:rgba(128,90,213,.12);color:var(--purple);}
+  #tab-diamond .gd-inst-badge{display:inline-block;margin:1px 2px;padding:1px 6px;border-radius:10px;font-size:10px;font-weight:700;background:rgba(59,130,246,.14);color:#3b82f6;}
+  #tab-diamond .gd-youzi-badge{display:inline-block;margin:1px 2px;padding:1px 6px;border-radius:10px;font-size:10px;font-weight:700;background:rgba(245,158,11,.14);color:#d97706;}
   #tab-diamond .gd-muted{color:var(--text-muted);}
     #tab-diamond .gd-detail{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;font-size:12px;}
     #tab-diamond .gd-detail table{width:100%;border-collapse:collapse;}
@@ -1279,10 +1282,16 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-track.collapsed .gd-track-body{display:none;}
     #tab-diamond .gd-stat .gd-note{font-size:12px;margin-top:7px;font-weight:600;letter-spacing:.2px;}
     #tab-diamond .gd-note.gd-pos{color:var(--green);} #tab-diamond .gd-note.gd-neg{color:var(--red);} #tab-diamond .gd-note.gd-flat{color:var(--text-muted);}
+    #tab-diamond .gd-stat .gd-note.gd-desc{font-size:11px;margin-top:5px;font-weight:500;color:var(--text-muted);letter-spacing:0;line-height:1.45;}
+    #tab-diamond .gd-track-summary{font-size:12.5px;color:var(--text-secondary);background:var(--bg-subtle);border-left:3px solid var(--gold);border-radius:6px;padding:9px 12px;margin:12px 0 4px;line-height:1.65;}
+    #tab-diamond .gd-item .gd-nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    #tab-diamond .gd-item{flex-wrap:wrap;}
+    #tab-diamond .gd-trig{color:var(--text-muted);font-size:11.5px;margin-left:auto;flex:none;white-space:nowrap;}
     #tab-diamond .gd-track-ctrl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 4px;}
     #tab-diamond .gd-track-ctrl select{background:var(--bg-input);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:13px;}
     #tab-diamond .gd-track-ctrl .gd-hint{font-size:12px;color:var(--text-muted);}
     #tab-diamond .gd-track-sec{font-size:14px;font-weight:700;margin:18px 0 10px;display:flex;align-items:center;gap:8px;}
+    #tab-diamond .gd-track-note{font-size:12.5px;color:var(--text-muted);background:var(--bg-subtle);border:1px dashed var(--border);border-radius:8px;padding:9px 12px;margin-top:12px;line-height:1.6;}
     #tab-diamond .gd-track-sec .bar{width:4px;height:15px;background:var(--gold);border-radius:2px;}
     #tab-diamond .gd-tcards{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
     #tab-diamond .gd-tcard{background:var(--bg-subtle);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;}
@@ -1337,8 +1346,8 @@ td { border-color: var(--border-light); }
     <span><i style="background:var(--red)"></i>金钻起涨</span>
   </div>
 
-  <!-- 金钻池跟踪（合并卡，可折叠） -->
-  <div class="gd-track" id="gdTrack">
+  <!-- 金钻池跟踪（合并卡，可折叠，默认折叠） -->
+  <div class="gd-track collapsed" id="gdTrack">
     <div class="gd-track-head" id="gdTrackToggle">
       <span class="t"><span class="gem">💎</span> 金钻池跟踪 · 近 20 交易日演化</span>
       <span class="chev">▾</span>
@@ -1349,17 +1358,16 @@ td { border-color: var(--border-light); }
         <select id="gdTrackDay"></select>
       </div>
       <div class="gd-stats" id="gdTrackStats"></div>
-      <div class="gd-track-sec"><span class="bar"></span>当日金钻池明细</div>
-      <div id="gdTrackDetail"></div>
+      <div class="gd-track-summary" id="gdTrackSummary">加载中…</div>
       <div class="gd-track-sec"><span class="bar"></span>金钻变动跟踪（最新交易日 → 前1日 / 前2日）</div>
       <div class="gd-tcards" id="gdTrackCompare"></div>
     </div>
   </div>
 
   <div class="gd-tablewrap">
-    <div class="gd-subtitle">命中个股（<span id="gdCount">0</span>）· 点击任意行，在该行下方直接展开主图 / 副图 / 三子信号 / 判定明细</div>
+    <div class="gd-subtitle">命中个股 / 当日金钻池明细（<span id="gdCount">0</span> 只）· 点击任意行，在该行下方直接展开主图 / 副图 / 四量图 / 三子信号 / 判定明细</div>
     <table class="gd-table" id="gdTable">
-      <thead><tr><th class="gd-c"></th><th>代码</th><th>名称</th><th>主信号</th><th>近3日缠论</th><th>信号日</th></tr></thead>
+      <thead><tr><th class="gd-c"></th><th>代码</th><th>名称</th><th>主信号</th><th>近3日缠论</th><th>机构信号</th><th>游资信号</th><th>触发日</th></tr></thead>
       <tbody></tbody>
     </table>
   </div>
@@ -1387,6 +1395,15 @@ td { border-color: var(--border-light); }
           </span>
         </div>
         <canvas id="gdSub"></canvas>
+      </div>
+      <div class="gd-panel">
+        <div class="gd-panel-title">
+          <span>四量图：机构 / 散户 / 游资 / 主力（蓝=正 · 绿=负 · ▲=机构/游资信号日）</span>
+          <span class="gd-ffwrap">
+            <span class="gd-ff four on" data-f="four">四量图</span>
+          </span>
+        </div>
+        <canvas id="gdFour"></canvas>
       </div>
       <div class="gd-sigcards" id="gdSigCards"></div>
       <div class="gd-detail" id="gdDetail"></div>
@@ -3409,7 +3426,7 @@ function updateThemeIcon(theme) {
 // ═══════════════════════════════════════════════════════════════
 // 兜宝金钻 Tab —— 三子形态策略可视化（移植自 golden_diamond_viewer 验证引擎）
 // ═══════════════════════════════════════════════════════════════
-const GD = { cache:null, data:null, view:{start:0,end:0,count:120}, filter:{buy:true,up:true,hz:true,chan:true}, hoverIdx:-1, loaded:false };
+const GD = { cache:null, data:null, view:{start:0,end:0,count:120}, filter:{buy:true,up:true,hz:true,chan:true,four:true}, hoverIdx:-1, loaded:false };
 
 function gdColors(){
   const cs=getComputedStyle(document.documentElement); const g=n=>cs.getPropertyValue(n).trim()||'#888';
@@ -3455,6 +3472,7 @@ function gdRenderOverview(d){
   document.getElementById('gdStats').innerHTML=cards.map(x=>
     `<div class="gd-stat ${x.c}"><div class="n">${x.n}</div><div class="l">${x.l}</div></div>`).join('');
   document.getElementById('gdAnalysis').textContent = o.analysis || '—';
+  const ts=document.getElementById('gdTrackSummary'); if(ts) ts.textContent = o.analysis || '—';
 }
 
 function gdRenderTable(d){
@@ -3467,11 +3485,16 @@ function gdRenderTable(d){
     const ch=(s.kline&&window.ChanEngine)?ChanEngine.computeChan(s.kline):{last3Buy:[]};
     const has=ch.last3Buy&&ch.last3Buy.length>0;
     const chanCell=has?ch.last3Buy.map(b=>`<span class="gd-chan-badge">${b.date.slice(5)}</span>`).join(''):'<span class="gd-muted">无</span>';
+    const four=(s.kline&&window.FourEngine)?FourEngine.computeFour(s.kline):{last3Inst:[],last3Youzi:[]};
+    const instCell=(four.last3Inst&&four.last3Inst.length)?four.last3Inst.map(b=>`<span class="gd-inst-badge">${b.date.slice(5)}</span>`).join(''):'<span class="gd-muted">无</span>';
+    const youziCell=(four.last3Youzi&&four.last3Youzi.length)?four.last3Youzi.map(b=>`<span class="gd-youzi-badge">${b.date.slice(5)}</span>`).join(''):'<span class="gd-muted">无</span>';
     return `<tr class="gd-row" data-code="${s.code}">
       <td class="gd-c"><span class="gd-caret">▸</span></td>
       <td>${s.code}</td><td>${s.name||'—'}</td>
       <td><span class="gd-tag ${tagCls(sig)}">${sig}</span></td>
       <td class="gd-chan-cell">${chanCell}</td>
+      <td class="gd-chan-cell">${instCell}</td>
+      <td class="gd-chan-cell">${youziCell}</td>
       <td>${sigDate}</td></tr>`;
   }).join('');
   tb.querySelectorAll('tr.gd-row').forEach(tr=>tr.addEventListener('click',()=>gdOpenStock(tr.dataset.code,tr)));
@@ -3486,6 +3509,7 @@ function gdOpenStock(code, tr){
   if(tr && tr.classList.contains('open')){ gdCloseInline(); return; }
   const k=s.kline||[];
   const ch=(window.ChanEngine?ChanEngine.computeChan(k):{buy:[],sell:[],last3Buy:[]});
+  const four=(window.FourEngine?FourEngine.computeFour(k):{牛线1:[],马线1:[],牛线:[],马线:[],GB:[],GBB:[],W2:[],V6:[],instSig:[],youziSig:[]});
   GD.data={
     code:s.code, name:s.name||s.code,
     dates:k.map(r=>r.date), open:k.map(r=>r.open), close:k.map(r=>r.close),
@@ -3493,9 +3517,10 @@ function gdOpenStock(code, tr){
     golden_bull:s.golden_bull, golden_trend:s.golden_trend, gt2:s.gt2,
     red_zone:s.red_zone, yellow_bar:s.yellow_bar, signals:s.signals||[], count:k.length,
     chanBuy:ch.buy, chanSell:ch.sell, chanLast3:ch.last3Buy,
+    four:four,
   };
   gdResetView();
-  gdOpenInline(tr, '#gdTable tbody', 6);
+  gdOpenInline(tr, '#gdTable tbody', 8);
   setGdStatus(`已加载 ${s.name}(${s.code}) · ${k.length} 个交易日 · 末日 ${k.length?k[k.length-1].date:'—'}`);
 }
 
@@ -3505,13 +3530,13 @@ function gdParkCharts(){
 }
 // 跨主表/跟踪表统一收起：找到任意已展开行，先把图节点安全回收到 parked 容器，再移除行
 function gdCloseInline(){
-  const ex=document.querySelector('#gdTable tbody tr.gd-inrow')||document.querySelector('#gdTrackDetail tbody tr.gd-inrow');
+  const ex=document.querySelector('#gdTable tbody tr.gd-inrow');
   if(ex){
     const inc=ex.querySelector('.gd-inline');
     if(inc && GD_CHARTS.parentNode===inc) gdParkCharts();
     ex.remove();
   }
-  document.querySelectorAll('#gdTable tbody tr.gd-row, #gdTrackDetail tbody tr.gd-track-row')
+  document.querySelectorAll('#gdTable tbody tr.gd-row')
     .forEach(tr=>tr.classList.remove('active','open'));
 }
 // 在某张表（tbodySel）的某行 tr 下方插入展开行；colspan 需匹配该表列数
@@ -3543,36 +3568,15 @@ async function gdLiveQuery(){
     const rows=k.map(r=>({date:r[0],open:+r[1],close:+r[2],high:+r[3],low:+r[4],volume:+r[5]}));
     const res=gdAnalyze(rows);
     const ch=(window.ChanEngine?ChanEngine.computeChan(rows):{buy:[],sell:[],last3Buy:[]});
+    const four=(window.FourEngine?FourEngine.computeFour(rows):{牛线1:[],马线1:[],牛线:[],马线:[],GB:[],GBB:[],W2:[],V6:[],instSig:[],youziSig:[]});
     res.chanBuy=ch.buy; res.chanSell=ch.sell; res.chanLast3=ch.last3Buy;
+    res.four=four;
     res.code=code; res.name=code;
     GD.data=res; gdResetView();
-    gdOpenInline(null, '#gdTable tbody', 6, `🔎 实时查询：${code} · 命中 ${sig}`);
+    gdOpenInline(null, '#gdTable tbody', 8, `🔎 实时查询：${code} · 命中 ${sig}`);
     const sig=res.signals.length?res.signals.map(s=>s.type).join(' / '):'无命中';
     setGdStatus(`实时查询 ${code} · 末日 ${rows[rows.length-1].date} · 信号: ${sig}`);
   }catch(e){ setGdStatus('⚠ 实时查询失败: '+e.message,'err'); }
-}
-
-// 跟踪卡历史池个股：走实时拉 K 线（不依赖当天缓存），在跟踪表内联展开
-async function gdOpenTrackStock(code, tr){
-  if(tr && tr.classList.contains('open')){ gdCloseInline(); return; }
-  setGdStatus('实时查询历史池个股 '+code+' …');
-  try{
-    const url=`https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,250,qfq`;
-    const j=await fetch(url); const d=await j.json();
-    const node=(d.data&&(d.data[code]||d.data[code.replace(/^(sh|sz|bj)/,'')]))||null;
-    if(!node) throw new Error('无数据');
-    const k=node.qfqday||node.day;
-    if(!k||k.length<60) throw new Error('K线不足');
-    const rows=k.map(r=>({date:r[0],open:+r[1],close:+r[2],high:+r[3],low:+r[4],volume:+r[5]}));
-    const res=gdAnalyze(rows);
-    const ch=(window.ChanEngine?ChanEngine.computeChan(rows):{buy:[],sell:[],last3Buy:[]});
-    res.chanBuy=ch.buy; res.chanSell=ch.sell; res.chanLast3=ch.last3Buy;
-    res.code=code; res.name=code;
-    GD.data=res; gdResetView();
-    gdOpenInline(tr, '#gdTrackDetail tbody', 5);
-    const sig=res.signals.length?res.signals.map(s=>s.type).join(' / '):'无命中';
-    setGdStatus(`历史池个股 ${code} · 末日 ${rows[rows.length-1].date} · 信号: ${sig}`);
-  }catch(e){ setGdStatus('⚠ 查询失败: '+e.message,'err'); }
 }
 
 // ── JS 版 analyze（忠实移植 server.py 验证引擎）──
@@ -3734,6 +3738,61 @@ function gdEvalDay(i,c,o,h,l,gb,gt,g2,v2,var23,n){
   if (global) global.ChanEngine = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : this));
 
+// ── 四量图引擎 FourEngine（忠实移植通达信四量图公式：机构 / 散户 / 游资 / 主力 四面板 + 信号）──
+(function (global) {
+  function ma(arr, n){ const N=arr.length, out=new Array(N).fill(null);
+    for(let i=0;i<N;i++){ if(i<n-1) continue; let s=0; for(let j=i-n+1;j<=i;j++) s+=arr[j]; out[i]=s/n; } return out; }
+  function ema(arr, n){ const N=arr.length, out=new Array(N).fill(null); const k=2/(n+1); let prev=null;
+    for(let i=0;i<N;i++){ const v=arr[i]; if(v==null) continue; prev=(prev==null)?v:(v*k+prev*(1-k)); out[i]=prev; } return out; }
+  // 20 期加权移动均线（公式：20*M + 19*REF(M,1) + … + 2*REF(M,18) + 1*REF(M,20)，除 210）
+  function wma20(src){ const N=src.length, out=new Array(N).fill(null);
+    for(let i=20;i<N;i++){ let s=20*src[i]; for(let j=1;j<=18;j++) s+=(20-j)*src[i-j]; s+=1*src[i-20]; out[i]=s/210; } return out; }
+  function computeFour(k){
+    const N=k.length;
+    if(N<25) return { 牛线1:new Array(N).fill(null),马线1:new Array(N).fill(null),牛线:new Array(N).fill(null),马线:new Array(N).fill(null),
+      GB:new Array(N).fill(null),GBB:new Array(N).fill(null),W2:new Array(N).fill(null),V6:new Array(N).fill(null),
+      instSig:new Array(N).fill(false),youziSig:new Array(N).fill(false),last3Inst:[],last3Youzi:[],dates:k.map(r=>r.date) };
+    const C=k.map(r=>r.close), O=k.map(r=>r.open), H=k.map(r=>r.high), L=k.map(r=>r.low), V=k.map(r=>r.volume);
+    const MID=k.map(r=>(3*r.close+r.low+r.open+r.high)/6);
+    // 机构面板：牛线1 = 20 期加权 MA(MID9)；马线1 = MA(牛线1,6)
+    const 牛线1=wma20(MID), 马线1=ma(牛线1,6);
+    // 散户面板：牛线 = 20 期加权 MA(MID1)；马线 = MA(牛线,3)；换手近似值(缺流通股本)→ 主/散 为换手动量
+    const 牛线=wma20(MID), 马线=ma(牛线,3);
+    const GB=C.map((c,i)=> (牛线[i]!=null)? c-牛线[i] : null);
+    const maV60=ma(V,60);
+    const 换手=V.map((v,i)=> (maV60[i]!=null&&maV60[i]>0)? v/maV60[i]*3 : null);
+    const 主=ma(换手,5), 散=ma(换手,34);
+    const GBB=主.map((m,i)=> (m!=null&&散[i]!=null)? m-散[i] : null);
+    // 游资面板：Q=EMA(V,5), Q1=EMA(V,50); OBV 累积; W2 = (Q-Q1)*1e-5 + (OBV1-OBV2)*1e-6
+    const Q=ema(V,5), Q1=ema(V,50);
+    const OBV=new Array(N); OBV[0]=0;
+    for(let i=1;i<N;i++) OBV[i]=OBV[i-1]+(C[i]>C[i-1]?V[i]:(C[i]<C[i-1]?-V[i]:0));
+    const OBV1=ema(OBV,5), OBV2=ema(OBV,50);
+    const W=Q.map((q,i)=> (q!=null&&Q1[i]!=null)? (q-Q1[i])*0.00001 : null);
+    const W1=OBV1.map((o,i)=> (o!=null&&OBV2[i]!=null)? (o-OBV2[i])*0.000001 : null);
+    const W2=W.map((w,i)=> (w!=null&&W1[i]!=null)? w+W1[i] : null);
+    // 主力面板：DKX = 20 期加权 MA(MID); MDD=(DKX-MA(DKX,6))*1.2; V6 = MDD + (V2-V3)*0.06
+    const DKX=wma20(MID), MADKX=ma(DKX,6);
+    const MDD=DKX.map((d,i)=> (d!=null&&MADKX[i]!=null)? (d-MADKX[i])*1.2 : null);
+    const V1=k.map(r=> (r.close*2+r.high+r.low)/4*10);
+    const e1=ema(V1,6), e2=ema(V1,55);
+    const V2=e1.map((v,i)=> (v!=null&&e2[i]!=null)? v-e2[i] : null);
+    const V3=ema(V2,6);
+    const V5=V2.map((v,i)=> (v!=null&&V3[i]!=null)? (v-V3[i])*0.06 : null);
+    const V6=MDD.map((m,i)=> (m!=null&&V5[i]!=null)? m+V5[i] : null);
+    // 信号：机构 = 收盘价上穿牛线1；游资 = W2 上穿 0
+    const instSig=new Array(N).fill(false), youziSig=new Array(N).fill(false);
+    for(let i=1;i<N;i++){ if(牛线1[i-1]!=null&&牛线1[i]!=null&&C[i-1]!=null&&C[i]!=null){ if(C[i-1]<=牛线1[i-1]&&C[i]>牛线1[i]) instSig[i]=true; } }
+    for(let i=1;i<N;i++){ if(W2[i-1]!=null&&W2[i]!=null){ if(W2[i-1]<=0&&W2[i]>0) youziSig[i]=true; } }
+    const last3Inst=[], last3Youzi=[];
+    for(let i=N-3;i<N;i++) if(i>=0){ if(instSig[i]) last3Inst.push({i,date:k[i].date}); if(youziSig[i]) last3Youzi.push({i,date:k[i].date}); }
+    return { 牛线1,马线1,牛线,马线,GB,GBB,W2,V6, instSig,youziSig,last3Inst,last3Youzi, dates:k.map(r=>r.date) };
+  }
+  const api={ computeFour };
+  if(typeof module!=='undefined'&&module.exports) module.exports=api;
+  if(global) global.FourEngine=api;
+})(typeof window!=='undefined'?window:(typeof globalThis!=='undefined'?globalThis:this));
+
 // ── 视图 / 渲染 ──
 function gdResetView(){ const tot=GD.data.count; GD.view.count=Math.min(120,tot); GD.view.end=tot; GD.view.start=Math.max(0,tot-GD.view.count); gdSyncSlider(); }
 function gdSyncSlider(){ const sl=document.getElementById('gdSlider'); const tot=GD.data.count; const mx=Math.max(0,tot-GD.view.count);
@@ -3782,7 +3841,7 @@ function gdDrawSub(){
   const cv=document.getElementById('gdSub'); const {ctx,w,h}=gdSetupCanvas(cv,340); ctx.clearRect(0,0,w,h);
   const C=gdColors(); const L=GD.view.start,R=GD.view.end,N=R-L;
   const padL=8,padR=58,top=14,bot=h-16;
-  const gb=GD.data.golden_bull.slice(L,R),gt=GD.data.golden_trend.slice(L,R),g2=GD.data.gt2.slice(L,R),lo=GD.data.low.slice(L,R);
+  const gb=GD.data.golden_bull.slice(L,R),gt=GD.data.golden_trend.slice(L,R),g2=GD.data.gt2.slice(L,R),lo=GD.data.low.slice(L,R),hi=GD.data.high.slice(L,R);
   const scale=gdMakeScale([].concat(gb,gt,g2,lo,hi).filter(x=>x!=null),0.06,top,bot);
   const bw=(w-padL-padR)/N;
   for(let k=0;k<N-1;k++){ if(gt[k]==null||g2[k]==null||gt[k+1]==null||g2[k+1]==null)continue;
@@ -3823,7 +3882,45 @@ function gdDrawChan(ctx,L,R,padL,bw,scale,top,bot){ const N=R-L; const cb=GD.dat
       ctx.fillStyle=gdColors().purple;ctx.font='bold 10px sans-serif';ctx.textAlign='center';ctx.fillText('缠',x,yB+s+14); }
   }
 }
-function gdRender(){ if(!GD.data)return; gdDrawMain(); gdDrawSub(); gdRenderSigCards(); gdRenderDetail(); }
+function gdRender(){ if(!GD.data)return; gdDrawMain(); gdDrawSub(); gdDrawFour(); gdRenderSigCards(); gdRenderDetail(); }
+// 四量图：机构 / 散户 / 游资 / 主力 四面板振荡器（蓝=正 绿=负），机构/游资信号日画三角标记
+function gdDrawFour(){
+  const cv=document.getElementById('gdFour'); if(!cv) return;
+  const {ctx,w,h}=gdSetupCanvas(cv,300); ctx.clearRect(0,0,w,h);
+  if(!GD.data||!GD.data.four) return;
+  const C=gdColors(); const L=GD.view.start,R=GD.view.end,N=R-L;
+  const padL=8,padR=58, bw=(w-padL-padR)/N;
+  const f=GD.data.four;
+  const panels=[
+    {name:'机构', arr:f.GB,  sig:f.instSig,  color:'#3b82f6'},
+    {name:'散户', arr:f.GBB, sig:null,       color:'#22a861'},
+    {name:'游资', arr:f.W2,  sig:f.youziSig, color:'#f59e0b'},
+    {name:'主力', arr:f.V6,  sig:null,       color:'#8b5cf6'},
+  ];
+  const n=panels.length, gap=8, ph=(h-gap*(n-1))/n;
+  if(GD.hoverIdx>=L&&GD.hoverIdx<R){ const x=padL+(GD.hoverIdx-L+0.5)*bw;
+    ctx.strokeStyle='rgba(128,128,128,.25)';ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(x,4);ctx.lineTo(x,h-4);ctx.stroke();ctx.setLineDash([]); }
+  for(let p=0;p<n;p++){
+    const top=p*(ph+gap), bot=top+ph, mid=(top+bot)/2;
+    const arr=panels[p].arr, sig=panels[p].sig;
+    let mn=Infinity,mx=-Infinity;
+    for(let k=0;k<N;k++){ const v=arr[L+k]; if(v!=null){ if(v<mn)mn=v; if(v>mx)mx=v; } }
+    if(!isFinite(mn)){mn=-1;mx=1;}
+    const m=(mx-mn)*0.12||1; mn-=m; mx+=m;
+    const fn=v=>mid-(v-mn)/(mx-mn)*(ph/2-5);
+    ctx.strokeStyle=C.grid; ctx.lineWidth=1; ctx.beginPath();ctx.moveTo(padL,mid);ctx.lineTo(w-padR,mid);ctx.stroke();
+    for(let k=0;k<N;k++){ const v=arr[L+k]; if(v==null) continue;
+      const x=padL+(k+0.5)*bw, y=fn(v);
+      ctx.fillStyle=v>=0?'#3b82f6':C.green;
+      const yTop=Math.min(mid,y), hh=Math.max(1,Math.abs(y-mid));
+      ctx.fillRect(x-bw*0.32,yTop,bw*0.64,hh);
+    }
+    if(sig){ for(let k=0;k<N;k++){ const gi=L+k; if(sig[gi]){ const x=padL+(k+0.5)*bw, s=4;
+      ctx.fillStyle=panels[p].color; ctx.beginPath();ctx.moveTo(x,top+2);ctx.lineTo(x-s,top+9);ctx.lineTo(x+s,top+9);ctx.closePath();ctx.fill();
+    } } }
+    ctx.fillStyle=panels[p].color; ctx.font='bold 11px sans-serif'; ctx.textAlign='left'; ctx.fillText(panels[p].name,w-padR+4,mid+4);
+  }
+}
 function gdRenderSigCards(){ const sigs=GD.data.signals;
   const buy=sigs.filter(s=>s.type.includes('买入')),up=sigs.filter(s=>s.type.includes('金钻起涨')),hz=sigs.filter(s=>s.type.includes('红区黄柱连续'));
   const chanBuyAll=GD.data.chanBuy?GD.data.chanBuy.filter(Boolean).length:0;
@@ -3901,26 +3998,14 @@ function gdRenderTrack(date){
   const snap=snaps[date]||{}, prevSnap=prevDate?(snaps[prevDate]||{}):{};
   const c=gdCountByPrimary(snap), pc=prevDate?gdCountByPrimary(prevSnap):null;
   const stats=[
-    {n:c.total,l:'金钻池总数',c:'',note:gdDeltaNote(c.total,pc?pc.total:null,'只')},
-    {n:c.up,l:'金钻起涨',c:'s-up',note:gdDeltaNote(c.up,pc?pc.up:null,'只')},
-    {n:c.buy,l:'买入',c:'s-buy',note:gdDeltaNote(c.buy,pc?pc.buy:null,'只')},
-    {n:c.hz,l:'红区黄柱连续',c:'s-hz',note:gdDeltaNote(c.hz,pc?pc.hz:null,'只')},
+    {n:c.total,l:'金钻池总数',c:'',desc:'当日命中金钻选股策略的全部个股',note:gdDeltaNote(c.total,pc?pc.total:null,'只')},
+    {n:c.up,l:'金钻起涨',c:'s-up',desc:'触发 XG2（金钻起涨）信号',note:gdDeltaNote(c.up,pc?pc.up:null,'只')},
+    {n:c.buy,l:'买入',c:'s-buy',desc:'触发 XG（买入）信号',note:gdDeltaNote(c.buy,pc?pc.buy:null,'只')},
+    {n:c.hz,l:'红区黄柱连续',c:'s-hz',desc:'金钻趋势>金牛2 且连续出现黄柱',note:gdDeltaNote(c.hz,pc?pc.hz:null,'只')},
   ];
   document.getElementById('gdTrackStats').innerHTML=stats.map(x=>
-    `<div class="gd-stat ${x.c}"><div class="n">${x.n}</div><div class="l">${x.l}</div>${x.note}</div>`).join('');
-  const codes=Object.keys(snap).sort((a,b)=>{
-    const ra=gdRankOf(snap[a].primary), rb=gdRankOf(snap[b].primary);
-    return rb-ra || a.localeCompare(b);
-  });
-  let rows=codes.length?codes.map(code=>{ const s=snap[code];
-    return `<tr class="gd-track-row" data-code="${code}"><td class="gd-c"><span class="gd-caret">▸</span></td><td>${code}</td><td>${s.name||'—'}</td><td><span class="${gdPclass(s.primary)}">${s.primary}</span></td>
-      <td class="gd-cd">${s.signal_date||'-'}</td></tr>`;
-  }).join(''):`<tr><td colspan="5" class="gd-empty">当日无金钻信号命中</td></tr>`;
-  document.getElementById('gdTrackDetail').innerHTML=
-    `<div class="gd-subtitle" style="border:none;padding:14px 0 8px;font-weight:700;">${date} · 金钻池明细（${c.total} 只）· 点击任意行，在该行下方展开主图 / 副图</div>
-     <table class="gd-table"><thead><tr><th class="gd-c"></th><th>代码</th><th>名称</th><th>主信号</th><th>触发日</th></tr></thead><tbody>${rows}</tbody></table>`;
-  document.querySelectorAll('#gdTrackDetail tbody tr.gd-track-row').forEach(tr=>
-    tr.addEventListener('click',()=>gdOpenTrackStock(tr.dataset.code,tr)));
+    `<div class="gd-stat ${x.c}"><div class="n">${x.n}</div><div class="l">${x.l}</div>${x.desc?`<div class="gd-note gd-desc">${x.desc}</div>`:''}${x.note}</div>`).join('');
+  // 当日金钻池逐股明细已移至底部「命中个股」表（gdTable），此处不再重复渲染，减少页面冗余
   const d0=days[days.length-1], d1=days[days.length-2], d2=days[days.length-3];
   document.getElementById('gdTrackCompare').innerHTML=gdCompareCard(d0,d1)+gdCompareCard(d0,d2);
 }
@@ -3934,13 +4019,15 @@ function gdDiffSets(a,b){
 }
 function gdItemHtml(snap,code,mk){
   const s=snap[code];
+  const sd=s.signal_date||(s.signals&&s.signals[0]&&s.signals[0].date)||'-';
   return `<div class="gd-item"><span class="gd-mk ${mk}">${mk==='add'?'新增':mk==='rem'?'消除':'留存'}</span>
-    <span class="gd-nm">${s.name}</span><span class="gd-cd">${code}</span><span class="${gdPclass(s.primary)}">${s.primary}</span></div>`;
+    <span class="gd-nm">${s.name}</span><span class="gd-cd">${code}</span><span class="${gdPclass(s.primary)}">${s.primary}</span><span class="gd-trig">触发 ${sd}</span></div>`;
 }
 function gdChangedHtml(a,b,code){
   const s=a[code];
+  const sd=s.signal_date||(s.signals&&s.signals[0]&&s.signals[0].date)||'-';
   return `<div class="gd-item"><span class="gd-mk keep">留存</span><span class="gd-nm">${s.name}</span><span class="gd-cd">${code}</span>
-    <span class="${gdPclass(b[code].primary)}">${b[code].primary}</span><span class="gd-arrow">→</span><span class="${gdPclass(s.primary)}">${s.primary}</span></div>`;
+    <span class="${gdPclass(b[code].primary)}">${b[code].primary}</span><span class="gd-arrow">→</span><span class="${gdPclass(s.primary)}">${s.primary}</span><span class="gd-trig">触发 ${sd}</span></div>`;
 }
 function gdCompareCard(d0,d1){
   if(!d1) return `<div class="gd-tcard"><h4>前1交易日对比</h4><div class="gd-empty">历史数据不足</div></div>`;
@@ -3964,7 +4051,7 @@ document.getElementById('gdCode').addEventListener('keydown',e=>{ if(e.key==='En
 document.getElementById('gdSlider').addEventListener('input',e=>{ const tot=GD.data?GD.data.count:0,mx=Math.max(0,tot-GD.view.count); GD.view.start=Math.round(mx*(+e.target.value)/100); GD.view.end=GD.view.start+GD.view.count; if(GD.data)gdRender(); });
 document.getElementById('gdZoomIn').addEventListener('click',()=>{ if(!GD.data)return; GD.view.count=Math.max(40,GD.view.count-20); GD.view.end=GD.view.start+GD.view.count; if(GD.view.end>GD.data.count){GD.view.end=GD.data.count;GD.view.start=Math.max(0,GD.view.end-GD.view.count);} gdSyncSlider(); gdRender(); });
 document.getElementById('gdZoomOut').addEventListener('click',()=>{ if(!GD.data)return; GD.view.count=Math.min(GD.data.count,GD.view.count+20); GD.view.end=GD.view.start+GD.view.count; if(GD.view.end>GD.data.count){GD.view.end=GD.data.count;GD.view.start=Math.max(0,GD.view.end-GD.view.count);} gdSyncSlider(); gdRender(); });
-document.querySelectorAll('#tab-diamond .gd-ff').forEach(f=>f.addEventListener('click',()=>{ const k=f.dataset.f; GD.filter[k]=!GD.filter[k]; f.classList.toggle('on',GD.filter[k]); if(GD.data) gdDrawSub(); }));
+document.querySelectorAll('#tab-diamond .gd-ff').forEach(f=>f.addEventListener('click',()=>{ const k=f.dataset.f; GD.filter[k]=!GD.filter[k]; f.classList.toggle('on',GD.filter[k]); if(GD.data){ gdDrawSub(); if(k==='four') gdDrawFour(); } }));
 gdBindHover(document.getElementById('gdMain'));
 gdBindHover(document.getElementById('gdSub'));
 const _gdTrackToggle=document.getElementById('gdTrackToggle');
