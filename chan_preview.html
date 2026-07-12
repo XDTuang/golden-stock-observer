@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金钻池 × 缠论买点 · 临时预览</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --bg-card:#fff; --bg-subtle:#f0f2f5; --border:#e6e8ec; --border-light:#eef0f3;
+    --text:#1a2027; --text-secondary:#5b6675; --text-muted:#9aa4b2;
+    --red:#e53e3e; --green:#22a861; --gold:#d69e2e; --cyan:#00a3c4; --orange:#ed8936; --purple:#805ad5;
+    --accent:#4f6ef7; --shadow-card:0 1px 3px rgba(0,0,0,.05),0 1px 2px rgba(0,0,0,.03);
+    --radius:12px; --radius-sm:8px; --transition-fast:.15s;
+    --purple-bg:rgba(128,90,213,.08); --cyan-bg:rgba(0,163,196,.08); --gold-bg:rgba(214,158,46,.08);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0e1117; --bg-card:#161a22; --bg-subtle:#1c212b; --border:#262c38; --border-light:#222834;
+      --text:#e6e9ef; --text-secondary:#aab3c2; --text-muted:#6b7585;
+      --red:#fc8181; --green:#4ade80; --gold:#f6e05e; --cyan:#76e4f7; --orange:#f6ad55; --purple:#c4b5fd;
+      --accent:#6b85fa; --shadow-card:0 1px 3px rgba(0,0,0,.3),0 1px 2px rgba(0,0,0,.2);
+      --purple-bg:rgba(183,148,244,.1); --cyan-bg:rgba(118,228,247,.1); --gold-bg:rgba(246,224,94,.1);
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);padding:18px;}
+  .wrap{max-width:1180px;margin:0 auto;}
+  header h1{font-size:19px;margin:0 0 4px;font-weight:800;}
+  header .sub{color:var(--text-muted);font-size:13px;margin-bottom:14px;}
+  .summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+  .stat{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;box-shadow:var(--shadow-card);min-width:120px;}
+  .stat .n{font-size:24px;font-weight:800;}
+  .stat .l{font-size:12px;color:var(--text-muted);margin-top:2px;}
+  .stat.gate .n{color:var(--gold);} .stat.hit .n{color:var(--purple);}
+  .toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px;}
+  .toggle{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);cursor:pointer;user-select:none;
+    background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:6px 12px;}
+  .toggle input{accent-color:var(--purple);}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--text-secondary);margin-bottom:10px;align-items:center;}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px;}
+  .lg-golden{background:var(--cyan);} .lg-chan{background:var(--purple);} .lg-sell{background:#9aa4b2;}
+  .tbl{width:100%;border-collapse:collapse;background:var(--bg-card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-card);font-size:13px;}
+  .tbl th,.tbl td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--border-light);}
+  .tbl th{background:var(--bg-subtle);font-weight:600;color:var(--text-secondary);font-size:12px;}
+  .tbl tbody tr.row{cursor:pointer;transition:background var(--transition-fast);}
+  .tbl tbody tr.row:hover{background:var(--bg-subtle);}
+  .tbl tbody tr.row.active{background:var(--bg-subtle);}
+  .tbl tbody tr.row.active td:first-child{box-shadow:inset 3px 0 0 var(--purple);}
+  .tbl td.c{width:26px;text-align:center;color:var(--text-muted);}
+  .caret{display:inline-block;transition:transform var(--transition-fast);font-size:11px;}
+  .row.open .caret{transform:rotate(90deg);color:var(--purple);}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:12px;font-weight:600;}
+  .tag.buy{background:var(--cyan-bg);color:var(--cyan);} .tag.up{background:var(--red);color:#fff;} .tag.hz{background:var(--gold-bg);color:var(--gold);}
+  .badge{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:20px;font-size:11px;font-weight:700;background:var(--purple-bg);color:var(--purple);}
+  .badge.none{background:var(--bg-subtle);color:var(--text-muted);}
+  .inrow td{background:var(--bg-subtle);padding:0!important;border-bottom:1px solid var(--border);}
+  .inline{padding:14px;}
+  .panel{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:12px;overflow:hidden;}
+  .panel-title{padding:8px 12px;font-weight:700;font-size:13px;border-bottom:1px solid var(--border-light);display:flex;justify-content:space-between;align-items:center;}
+  .panel-title .meta{font-weight:500;color:var(--text-muted);font-size:11px;}
+  canvas{display:block;width:100%;}
+  .sigcards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px;}
+  .sigcard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;}
+  .sigcard.buy{border-left:3px solid var(--cyan);} .sigcard.up{border-left:3px solid var(--red);}
+  .sigcard.hz{border-left:3px solid var(--gold);} .sigcard.chan{border-left:3px solid var(--purple);}
+  .sigcard h3{margin:0 0 4px;font-size:12px;color:var(--text-secondary);}
+  .sigcard .cnt{font-size:20px;font-weight:800;}
+  .sigcard.chan .cnt{color:var(--purple);}
+  .sigcard .lst{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.5;}
+  .detail{font-size:12px;color:var(--text-secondary);}
+  .detail table{width:100%;border-collapse:collapse;margin-top:6px;font-size:11px;}
+  .detail th,.detail td{padding:4px 6px;border-bottom:1px solid var(--border-light);text-align:left;}
+  .detail .ok{color:var(--green);} .detail .no{color:var(--red);} .detail .dim{color:var(--text-muted);}
+  .status{margin:8px 0;font-size:13px;color:var(--text-secondary);}
+  .status.err{color:var(--red);}
+  .ff{display:inline-flex;gap:4px;align-items:center;}
+  .ff span{font-size:11px;padding:2px 8px;border-radius:20px;cursor:pointer;background:var(--bg-subtle);color:var(--text-muted);border:1px solid var(--border);}
+  .ff span.on{background:var(--purple-bg);color:var(--purple);border-color:transparent;}
+  .empty{padding:18px;text-align:center;color:var(--text-muted);}
+  .park{display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>💎 金钻池 × 缠论买点 · 临时预览</h1>
+    <div class="sub">筛选门空：每日金钻池股票 → 在最近连续 3 个交易日内标注通达信缠论「买」点（极点保留 = −1）。缠论买点与金钻买入标注已区分。</div>
+  </header>
+
+  <div class="summary" id="summary"></div>
+
+  <div class="toolbar">
+    <label class="toggle"><input type="checkbox" id="onlyHit"> 仅显示「近3日有缠论买点」</label>
+    <span class="status" id="status"></span>
+  </div>
+
+  <div class="legend">
+    <span><i class="lg-golden"></i>金钻买入（▲ 青色，副图）</span>
+    <span><i class="lg-chan"></i>缠论买点（◆ 紫色「缠」）</span>
+    <span><i class="lg-sell"></i>缠论卖点（灰，副图）</span>
+  </div>
+
+  <table class="tbl" id="listTbl">
+    <thead><tr><th class="c"></th><th>代码</th><th>名称</th><th>金钻主信号</th><th>近3日缠论买点</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<!-- parked charts (moved inline on row click) -->
+<div class="park" id="chanPark">
+  <div id="chanCharts">
+    <div class="panel">
+      <div class="panel-title">主图 K线 + 成交量 <span class="meta" id="chanMainMeta"></span></div>
+      <canvas id="chanMain"></canvas>
+    </div>
+    <div class="panel">
+      <div class="panel-title">
+        <span>副图：金钻起爆（金牛/金钻趋势/金牛2 · 红区带 · 黄柱）＋ 缠论买/卖标注</span>
+        <span class="ff"><span data-f="buy" class="on">▲金钻买</span><span data-f="up" class="on">金钻起涨</span><span data-f="hz" class="on">红区黄柱</span><span data-f="chan" class="on">缠论买</span></span>
+      </div>
+      <canvas id="chanSub"></canvas>
+    </div>
+    <div class="sigcards" id="chanSigCards"></div>
+    <div class="detail" id="chanDetail"></div>
+  </div>
+</div>
+
+<script src="chan_engine.js"></script>
+<script>
+// ===== 复用 兜宝金钻 图表引擎（微调：副图叠加缠论买/卖）=====
+const GD={data:null,view:{start:0,end:0,count:120},filter:{buy:true,up:true,hz:true,chan:true},hoverIdx:-1};
+let CACHE=null, META={};
+
+function gdColors(){
+  const cs=getComputedStyle(document.documentElement); const g=n=>cs.getPropertyValue(n).trim()||'#888';
+  return { red:g('--red'), gold:g('--gold'), green:g('--green'), accent:g('--accent'),
+    cyan:(cs.getPropertyValue('--cyan').trim()||'#00a3c4'), purple:(cs.getPropertyValue('--purple').trim()||'#805ad5'),
+    gray:'#7d8aa0', grid:g('--border'), txt:g('--text-secondary'),
+    bandRed:'rgba(229,62,62,.16)', bandGreen:'rgba(34,168,97,.14)' };
+}
+function gdMakeScale(vals,pad,top,bot){ let mn=Infinity,mx=-Infinity;
+  vals.forEach(v=>{ if(v!=null){ if(v<mn)mn=v; if(v>mx)mx=v; } });
+  if(!isFinite(mn)){mn=0;mx=1;} const m=(mx-mn)*pad||1; mn-=m; mx+=m;
+  const fn=v=>bot-(v-mn)/(mx-mn)*(bot-top); fn.invert=y=>mn+(bot-y)/(bot-top)*(mx-mn); fn.min=mn; fn.max=mx; return fn; }
+function gdSetupCanvas(cv,cssH){ const dpr=window.devicePixelRatio||1;
+  const w=cv.clientWidth||(cv.parentElement?cv.parentElement.clientWidth:0)||900;
+  cv.width=w*dpr; cv.height=cssH*dpr; cv.style.height=cssH+'px';
+  const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); return {ctx,w,h:cssH}; }
+function gdDrawMA(ctx,full,L,R,padL,bw,scale,period,color){ const N=R-L; ctx.strokeStyle=color;ctx.lineWidth=1.2;ctx.beginPath();let st=false;
+  for(let k=0;k<N;k++){ const idx=L+k; if(idx<period-1)continue; let s=0; for(let j=idx-period+1;j<=idx;j++)s+=full[j];
+    const ma=s/period,x=padL+(k+0.5)*bw,y=scale(ma); if(!st){ctx.moveTo(x,y);st=true;}else ctx.lineTo(x,y);} ctx.stroke(); }
+function gdDrawLine(ctx,arr,L,R,padL,bw,scale,color,lw){ const N=R-L;ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.beginPath();let st=false;
+  for(let k=0;k<N;k++){const v=arr[k];if(v==null)continue;const x=padL+(k+0.5)*bw,y=scale(v);if(!st){ctx.moveTo(x,y);st=true;}else ctx.lineTo(x,y);}ctx.stroke(); }
+function gdResetView(){ const tot=GD.data.count; GD.view.count=Math.min(120,tot); GD.view.end=tot; GD.view.start=Math.max(0,tot-GD.view.count); }
+function gdDrawMain(){
+  const cv=document.getElementById('chanMain'); const {ctx,w,h}=gdSetupCanvas(cv,300); ctx.clearRect(0,0,w,h);
+  const C=gdColors(); const L=GD.view.start,R=GD.view.end,N=R-L;
+  const padL=8,padR=58,top=10,bot=h-70,vT=h-58,vB=h-8;
+  const dates=GD.data.dates.slice(L,R),o=GD.data.open.slice(L,R),c=GD.data.close.slice(L,R),
+        hi=GD.data.high.slice(L,R),lo=GD.data.low.slice(L,R),v=GD.data.volume.slice(L,R);
+  const scale=gdMakeScale([].concat(hi,lo).filter(x=>x!=null),0.05,top,bot);
+  const vmax=Math.max(...v.filter(x=>x!=null),1); const vS=val=>vB-val/vmax*(vB-vT);
+  ctx.strokeStyle=C.grid; ctx.fillStyle=C.txt; ctx.font='10px sans-serif'; ctx.lineWidth=1;
+  for(let g=0;g<=4;g++){ const y=top+(bot-top)*g/4; ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(w-padR,y);ctx.stroke(); }
+  const bw=(w-padL-padR)/N;
+  for(let k=0;k<N;k++){ const x=padL+(k+0.5)*bw, up=c[k]>=o[k];
+    ctx.strokeStyle=ctx.fillStyle=up?C.red:C.green;
+    ctx.beginPath();ctx.moveTo(x,scale(hi[k]));ctx.lineTo(x,scale(lo[k]));ctx.stroke();
+    const yO=scale(o[k]),yC=scale(c[k]),yo=Math.min(yO,yC),hh=Math.max(1,Math.abs(yC-yO));
+    ctx.fillRect(x-bw*0.32,yo,bw*0.64,hh);
+    ctx.fillStyle=up?C.red+'66':C.green+'66'; ctx.fillRect(x-bw*0.32,vS(v[k]),bw*0.64,vB-vS(v[k]));
+  }
+  gdDrawMA(ctx,GD.data.close,L,R,padL,bw,scale,5,C.accent);
+  gdDrawMA(ctx,GD.data.close,L,R,padL,bw,scale,20,C.gold);
+  gdDrawMA(ctx,GD.data.close,L,R,padL,bw,scale,60,C.purple);
+  if(GD.hoverIdx>=L&&GD.hoverIdx<R){ const x=padL+(GD.hoverIdx-L+0.5)*bw; ctx.strokeStyle='rgba(128,128,128,.3)';ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x,h-8);ctx.stroke();ctx.setLineDash([]); }
+  document.getElementById('chanMainMeta').textContent=`MA5蓝 MA20金 MA60紫 · 末收 ${c[N-1]?.toFixed(2)}`;
+}
+function gdDrawSub(){
+  const cv=document.getElementById('chanSub'); const {ctx,w,h}=gdSetupCanvas(cv,360); ctx.clearRect(0,0,w,h);
+  const C=gdColors(); const L=GD.view.start,R=GD.view.end,N=R-L;
+  const padL=8,padR=58,top=14,bot=h-16;
+  const gb=GD.data.golden_bull.slice(L,R),gt=GD.data.golden_trend.slice(L,R),g2=GD.data.gt2.slice(L,R),
+        lo=GD.data.low.slice(L,R),hi=GD.data.high.slice(L,R);
+  // 副图刻度同时覆盖 金牛指标 与 真实价位，使缠论买/卖落在正确价格位置
+  const scale=gdMakeScale([].concat(gb,gt,g2,lo,hi).filter(x=>x!=null),0.06,top,bot);
+  const bw=(w-padL-padR)/N;
+  for(let k=0;k<N-1;k++){ if(gt[k]==null||g2[k]==null||gt[k+1]==null||g2[k+1]==null)continue;
+    const x0=padL+k*bw,x1=padL+(k+1)*bw,yt0=scale(gt[k]),yb0=scale(g2[k]),yt1=scale(gt[k+1]),yb1=scale(g2[k+1]);
+    const tY=Math.min(yt0,yt1),bY=Math.max(yb0,yb1),red=(gt[k]+gt[k+1])/2>(g2[k]+g2[k+1])/2;
+    ctx.fillStyle=red?C.bandRed:C.bandGreen; ctx.fillRect(x0,tY,x1-x0,Math.max(0.5,bY-tY)); }
+  const YM=1.025;
+  for(let k=0;k<N;k++){ if(gt[k]==null)continue; if(gt[k]>lo[k]*YM){ const x=padL+(k+0.5)*bw,yT=scale(gt[k]),yB=scale(lo[k]);
+    ctx.fillStyle='rgba(214,158,46,.85)'; ctx.fillRect(x-bw*0.30,Math.min(yT,yB),bw*0.60,Math.abs(yB-yT)); } }
+  gdDrawLine(ctx,gt,L,R,padL,bw,scale,C.gold,1.4);
+  gdDrawLine(ctx,gb,L,R,padL,bw,scale,C.red,1.4);
+  gdDrawLine(ctx,g2,L,R,padL,bw,scale,C.gray,1.0);
+  gdDrawSignals(ctx,L,R,padL,bw,scale,top,bot);
+  gdDrawChan(ctx,L,R,padL,bw,scale,top,bot);
+  if(GD.hoverIdx>=L&&GD.hoverIdx<R){ const x=padL+(GD.hoverIdx-L+0.5)*bw; ctx.strokeStyle='rgba(128,128,128,.3)';ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x,bot);ctx.stroke();ctx.setLineDash([]); }
+  ctx.fillStyle=C.txt;ctx.font='10px sans-serif';ctx.textAlign='left';
+  [top,(top+bot)/2,bot].forEach(y=>ctx.fillText(scale.invert(y).toFixed(1),w-padR+4,y+3));
+}
+function gdDrawSignals(ctx,L,R,padL,bw,scale,top,bot){ const N=R-L;
+  GD.data.signals.forEach(s=>{ const k=s.i-L; if(k<0||k>=N)return; const x=padL+(k+0.5)*bw,t=s.type;
+    if(t.includes('买入')&&GD.filter.buy){ ctx.fillStyle=gdColors().cyan;ctx.beginPath();ctx.moveTo(x,top+2);ctx.lineTo(x-5,top+12);ctx.lineTo(x+5,top+12);ctx.closePath();ctx.fill(); }
+    if(t.includes('金钻起涨')&&GD.filter.up){ ctx.fillStyle=gdColors().red;ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillText('金钻起涨',x,top+12); }
+    if(t.includes('红区黄柱连续')&&GD.filter.hz){ const m=t.match(/(\d+)天/),nd=m?m[1]:'3';
+      ctx.fillStyle=gdColors().gold;ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillText('红区黄柱连'+nd+'天',x,top+12);
+      ctx.fillStyle='rgba(214,158,46,.10)'; const x0=padL+Math.max(0,k-(parseInt(nd)-1))*bw; ctx.fillRect(x0,top,parseInt(nd)*bw,bot-top); }
+  });
+}
+// 缠论买（紫菱形◆+「缠」）/ 卖（灰▼）标注，与金钻买入明显区分
+function gdDrawChan(ctx,L,R,padL,bw,scale,top,bot){ const N=R-L; const cb=GD.data.chanBuy,cs=GD.data.chanSell,lo=GD.data.low,hi=GD.data.high;
+  if(!cb) return;
+  for(let k=0;k<N;k++){ const gi=L+k;
+    if(cs[gi]&&GD.filter.chan){ const x=padL+(k+0.5)*bw,yT=scale(hi[gi]); const s=4;
+      ctx.fillStyle='rgba(150,160,175,.85)'; ctx.beginPath();ctx.moveTo(x,yT-s-3);ctx.lineTo(x-s,yT-3);ctx.lineTo(x,yT+s-3);ctx.lineTo(x+s,yT-3);ctx.closePath();ctx.fill(); }
+    if(cb[gi]&&GD.filter.chan){ const x=padL+(k+0.5)*bw,yB=scale(lo[gi]); const s=5;
+      ctx.fillStyle=gdColors().purple; ctx.beginPath();ctx.moveTo(x,yB+s+3);ctx.lineTo(x-s,yB+3);ctx.lineTo(x,yB-s+3);ctx.lineTo(x+s,yB+3);ctx.closePath();ctx.fill();
+      ctx.fillStyle=gdColors().purple;ctx.font='bold 10px sans-serif';ctx.textAlign='center';ctx.fillText('缠',x,yB+s+14); }
+  }
+}
+function gdRender(){ if(!GD.data)return; gdDrawMain(); gdDrawSub(); gdRenderSigCards(); gdRenderDetail(); }
+function gdRenderSigCards(){ const sigs=GD.data.signals;
+  const buy=sigs.filter(s=>s.type.includes('买入')),up=sigs.filter(s=>s.type.includes('金钻起涨')),hz=sigs.filter(s=>s.type.includes('红区黄柱连续'));
+  const chanBuyAll=GD.data.chanBuy.filter(Boolean).length;
+  const chanRecent=GD.data.chanLast3.map(b=>b.date);
+  const card=(cls,title,list)=>`<div class="sigcard ${cls}"><h3>${title}</h3><div class="cnt">${list.length}</div>
+    <div class="lst">${list.length?list.map(s=>`${s.date}`).join('<br>'):'（窗口内无）'}</div></div>`;
+  const chanCard=`<div class="sigcard chan"><h3>缠论买点（极点保留=−1）</h3><div class="cnt">${chanBuyAll}</div>
+    <div class="lst">近3交易日：${chanRecent.length?chanRecent.join('<br>'):'无'}</div></div>`;
+  document.getElementById('chanSigCards').innerHTML=card('buy','▲买入 (XG)',buy)+card('up','金钻起涨 (XG2)',up)+card('hz','红区黄柱连续',hz)+chanCard;
+}
+function gdRenderDetail(){ const t=document.getElementById('chanDetail');
+  const show=[GD.data.count-2,GD.data.count-1].filter(i=>i>=0);
+  let rows='';
+  show.forEach(i=>{ const d=(GD.data.signals.find(s=>s.i===i)||{}).detail;
+    const sig=GD.data.signals.filter(s=>s.i===i).map(s=>s.type).join(' / ')||'—';
+    const cell=(v)=>{const cls=v===true?'ok':(v===false?'no':'dim');const tx=v===true?'✓':(v===false?'✗':'·');return `<td class="${cls}">${tx}</td>`;};
+    rows+=`<tr><td>${GD.data.dates[i]}</td><td>${sig}</td>${cell(d&&d.yang)}${cell(d&&d.dy2<0.02)}${cell(d&&d['ma5>ma60'])}${cell(d&&d.pct>=2.0)}${cell(d&&d['H<金牛'])}${cell(d&&d['gt>high'])}${cell(d&&d.callback)}</tr>`;
+  });
+  const cbR=GD.data.chanLast3.map(b=>b.date).join('、')||'无';
+  t.innerHTML=`<div style="font-weight:600;margin-bottom:6px;">最近交易日信号判定明细（金钻 XG / XG2）</div>
+    <table><thead><tr><th>日期</th><th>信号</th><th>阳线</th><th>DY2</th><th>MA5&gt;MA60</th><th>涨幅≥2%</th><th>H&lt;金牛</th><th>金钻趋势&gt;H</th><th>回调买</th></tr></thead><tbody>${rows}</tbody></table>
+    <div style="margin-top:8px;">缠论买点（近3交易日）：<b style="color:var(--purple)">${cbR}</b></div>`;
+}
+function gdBindHover(cv){ cv.addEventListener('mousemove',e=>{ const rect=cv.getBoundingClientRect(); const x=e.clientX-rect.left;
+  const L=GD.view.start,R=GD.view.end,N=R-L,padL=8,padR=58,pw=cv.clientWidth-padL-padR; let k=Math.floor((x-padL)/pw*N); if(k<0)k=0; if(k>=N)k=N-1;
+  GD.hoverIdx=L+k; gdRender(); }); cv.addEventListener('mouseleave',()=>{ GD.hoverIdx=-1; gdRender(); }); }
+
+// ===== 金钻 analyze（与线上一致，用于副图指标/信号）=====
+function gdEma(arr,n){ const res=new Array(arr.length).fill(null); const filled=[];
+  for(let i=0;i<arr.length;i++) if(arr[i]!=null) filled.push([i,arr[i]]);
+  if(filled.length<n) return res; let sum=0; for(let i=0;i<n;i++) sum+=filled[i][1];
+  const seed=sum/n,seedIdx=filled[n-1][0]; res[seedIdx]=seed; const k=2/(n+1); let prev=seed;
+  for(let i=seedIdx+1;i<arr.length;i++){ if(arr[i]==null) continue; prev=arr[i]*k+prev*(1-k); res[i]=prev; } return res; }
+function gdXma(arr,n){ const e1=gdEma(arr,n),e2=gdEma(e1,n); const o=new Array(arr.length).fill(null);
+  for(let i=0;i<arr.length;i++) o[i]=(e1[i]!=null&&e2[i]!=null)?2*e1[i]-e2[i]:null; return o; }
+function gdAnalyze(rows){ const n=rows.length;
+  const dates=rows.map(r=>r.date),o=rows.map(r=>r.open),c=rows.map(r=>r.close),h=rows.map(r=>r.high),l=rows.map(r=>r.low),v=rows.map(r=>r.volume);
+  const xh=gdXma(h,25),xl=gdXma(l,25),xh2=gdXma(xh,25),xl2=gdXma(xl,25);
+  const golden_bull=new Array(n).fill(null),golden_trend=new Array(n).fill(null);
+  for(let i=0;i<n;i++){ if(xh2[i]!=null&&xl2[i]!=null){ golden_bull[i]=2*xh2[i]-xl2[i]; golden_trend[i]=2*xl2[i]-xh2[i]; } }
+  const gt2=gdEma(golden_trend,25);
+  const ddx=new Array(n).fill(0);
+  for(let i=0;i<n;i++){ const hi=h[i],lo=l[i],cl=c[i],op=o[i],vo=(v[i]||1);
+    const jj=(hi+lo+cl)/3,hl=(hi-lo)!==0?hi-lo:4,qj0=vo/hl,min_co=Math.min(cl,op),max_co=Math.max(cl,op);
+    const qj1=qj0*(jj-min_co),qj2=qj0*(min_co-lo),qj3=qj0*(hi-max_co),qj4=qj0*(max_co-jj);
+    ddx[i]=((qj1+qj2)-(qj3+qj4))/10000; }
+  const v2=new Array(n).fill(0); for(let i=1;i<n;i++){ const adj=c[i]>=c[i-1]?ddx[i]:-ddx[i]/100; v2[i]=(adj+v2[i-1])/2; }
+  const chg=[0].concat(c.map((x,i)=>i>0?x-c[i-1]:0));
+  const xraw=gdXma(gdXma(chg,6),6),xabs=gdXma(gdXma(chg.map(Math.abs),6),6);
+  const var23=new Array(n).fill(null);
+  for(let i=0;i<n;i++){ if(xraw[i]!=null&&xabs[i]!=null&&xabs[i]!==0) var23[i]=100*xraw[i]/xabs[i]; }
+  const YM=1.025,red_zone=new Array(n).fill(false),yellow_bar=new Array(n).fill(false);
+  for(let i=0;i<n;i++){ if(golden_trend[i]!=null&&gt2[i]!=null) red_zone[i]=golden_trend[i]>gt2[i];
+    if(golden_trend[i]!=null) yellow_bar[i]=golden_trend[i]>l[i]*YM; }
+  const signals=[];
+  for(let i=Math.max(1,n-2);i<n;i++){ const sig=gdEvalDay(i,c,o,h,l,golden_bull,golden_trend,gt2,v2,var23,n); if(sig) signals.push({i,date:dates[i],type:sig}); }
+  let streak=0; for(let i=n-1;i>=0;i--){ if(red_zone[i]&&yellow_bar[i]) streak++; else break; }
+  let run=0,maxRun=0,runEnd=-1; const ws=Math.max(0,n-5);
+  for(let i=ws;i<n;i++){ if(red_zone[i]&&yellow_bar[i]){ run++; if(run>maxRun){maxRun=run;runEnd=i;} } else run=0; }
+  if(maxRun>=3) signals.push({i:runEnd,date:dates[runEnd],type:`红区黄柱连续${maxRun}天`,streak});
+  return {count:n,dates,open:o,close:c,high:h,low:l,volume:v,golden_bull,golden_trend,gt2,red_zone,yellow_bar,signals};
+}
+function gdEvalDay(i,c,o,h,l,gb,gt,g2,v2,var23,n){ if(i<1) return null;
+  const ci=c[i],oi=o[i],hi=h[i],li=l[i],pc=c[i-1]; const gtv=gt[i],g2v=g2[i],gbv=gb[i]; if(gtv==null||g2v==null||gbv==null) return null;
+  const ma5=(i>=4)?(c[i-4]+c[i-3]+c[i-2]+c[i-1]+ci)/5:null;
+  const ma60=(i>=59)?c.slice(i-59,i+1).reduce((a,b)=>a+b,0)/60:null;
+  const pct=(ci/pc-1)*100,yang=ci>oi,dy=(i===n-1&&ci<pc)?1:0,dy2=(v2[i-1]||0)-dy;
+  const vl=var23[i]!=null?var23[i]:0,vp=var23[i-1]!=null?var23[i-1]:0;
+  const llv2=Math.min(vl,vp); const win=var23.slice(Math.max(0,i-6),i+1).filter(x=>x!=null); const llv7=win.length?Math.min(...win):vl;
+  const cntNeg=(vp<0?1:0)+(vl<0?1:0);
+  const vma2l=(var23[i]!=null&&var23[i-1]!=null)?(var23[i]+var23[i-1])/2:vl;
+  const vma2p=(var23[i-1]!=null&&var23[i-2]!=null)?(var23[i-1]+var23[i-2])/2:vp;
+  const cross=vp<=vma2p&&vl>vma2l; const callback=(Math.abs(llv2-llv7)<1e-8)&&cntNeg>=1&&cross;
+  const xg2=yang&&dy2<0.02&&(ma60!=null&&ma5>ma60)&&pct>=2&&hi<gbv&&li<gtv;
+  const xg=(gtv>hi)&&callback&&(li<=gtv);
+  if(xg2) return '金钻起涨'; if(xg) return '买入'; return null;
+}
+
+// ===== 页面逻辑 =====
+const CHARTS=document.getElementById('chanCharts');
+function setStatus(m,cls){ const s=document.getElementById('status'); s.textContent=m; s.className='status'+(cls?(' '+cls):''); }
+function tagCls(t){ return t==='买入'?'buy':(t.startsWith('红区黄柱连续')?'hz':'up'); }
+function buildList(){
+  const stocks=CACHE.stocks||[];
+  const gate=stocks.length;
+  const hit=stocks.filter(s=>s._chan&&s._chan.last3Buy.length>0).length;
+  document.getElementById('summary').innerHTML=
+    `<div class="stat gate"><div class="n">${gate}</div><div class="l">金钻池（门空）</div></div>
+     <div class="stat hit"><div class="n">${hit}</div><div class="l">近3日有缠论买点</div></div>
+     <div class="stat"><div class="n">${gate-hit}</div><div class="l">近3日无缠论买点</div></div>`;
+  renderRows();
+}
+function renderRows(){
+  const only=document.getElementById('onlyHit').checked;
+  const stocks=(CACHE.stocks||[]).filter(s=>!only || (s._chan&&s._chan.last3Buy.length>0));
+  const tb=document.querySelector('#listTbl tbody');
+  tb.innerHTML=stocks.map((s,idx)=>{
+    const has= s._chan&&s._chan.last3Buy.length>0;
+    const dates= has? s._chan.last3Buy.map(b=>b.date).join('、') : '—';
+    return `<tr class="row" data-code="${s.code}">
+      <td class="c"><span class="caret">▸</span></td>
+      <td>${s.code}</td><td>${s.name||'—'}</td>
+      <td><span class="tag ${tagCls(s.primary)}">${s.primary}</span></td>
+      <td>${has?`<span class="badge">${dates}</span>`:`<span class="badge none">无</span>`}</td></tr>`;
+  }).join('') || `<tr><td colspan="5" class="empty">无匹配股票</td></tr>`;
+  tb.querySelectorAll('tr.row').forEach(tr=>tr.addEventListener('click',()=>openStock(tr.dataset.code,tr)));
+}
+function parkCharts(){ if(CHARTS.parentNode) CHARTS.parentNode.removeChild(CHARTS); document.getElementById('chanPark').appendChild(CHARTS); }
+function closeInline(){
+  const ex=document.querySelector('#listTbl tbody tr.inrow');
+  if(ex){ const inc=ex.querySelector('.inline'); if(inc&&CHARTS.parentNode===inc) parkCharts(); ex.remove(); }
+  document.querySelectorAll('#listTbl tbody tr.row').forEach(tr=>tr.classList.remove('active','open'));
+}
+function openStock(code,tr){
+  if(tr.classList.contains('open')){ closeInline(); return; }
+  const s=CACHE.stocks.find(x=>x.code===code); if(!s) return;
+  const k=s.kline||[];
+  const a=gdAnalyze(k); const ch=s._chan;
+  GD.data={ ...a,
+    code:s.code,name:s.name||s.code,
+    chanBuy:ch.buy, chanSell:ch.sell,
+    chanPivot:ch.pivot, chanLast3:ch.last3Buy };
+  gdResetView();
+  closeInline();
+  const inrow=document.createElement('tr'); inrow.className='inrow';
+  inrow.innerHTML=`<td colspan="5"><div class="inline"></div></td>`;
+  inrow.querySelector('.inline').appendChild(CHARTS);
+  tr.classList.add('active','open'); tr.after(inrow);
+  requestAnimationFrame(()=>gdRender());
+  setStatus(`已加载 ${s.name}(${s.code}) · ${k.length} 交易日 · 末日 ${k.length?k[k.length-1].date:'—'} · 缠论买点累计 ${ch.buy.filter(Boolean).length} 个`);
+}
+document.getElementById('onlyHit').addEventListener('change',renderRows);
+document.querySelectorAll('.ff span').forEach(f=>f.addEventListener('click',()=>{ const k=f.dataset.f; GD.filter[k]=!GD.filter[k]; f.classList.toggle('on',GD.filter[k]); if(GD.data)gdRender(); }));
+gdBindHover(document.getElementById('chanMain'));
+gdBindHover(document.getElementById('chanSub'));
+
+(async function init(){
+  setStatus('加载金钻池数据（门空）…');
+  try{
+    const res=await fetch('./output/golden_diamond.json?'+Date.now());
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    CACHE=await res.json();
+    setStatus('计算缠论买点（逐股运行通达信公式）…');
+    // 逐股计算缠论（同步，64 只约 <1s）
+    (CACHE.stocks||[]).forEach(s=>{ try{ s._chan=ChanEngine.computeChan(s.kline||[]); }catch(e){ s._chan={buy:[],sell:[],pivot:[],last3Buy:[]}; } });
+    buildList();
+    setStatus(`完成：金钻池 ${CACHE.stocks.length} 只 · 数据日期 ${CACHE.data_date||'—'} · 点击任意行展开主图/副图`);
+  }catch(e){ setStatus('⚠ 加载失败：'+e.message+'（请通过本地服务器打开，勿用 file://）','err'); }
+})();
+</script>
+</body>
+</html>

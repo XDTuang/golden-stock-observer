@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>兜宝金钻 · 金钻池跟踪（预览）</title>
+<style>
+  :root{
+    --bg:#0b0e14; --panel:#151a23; --panel2:#1b2230; --border:#232b38;
+    --text:#e6edf3; --muted:#8b949e; --gold:#f5c518; --green:#3fb950;
+    --orange:#f0883e; --added:#3fb950; --removed:#f85149; --kept:#58a6ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:14px;line-height:1.5}
+  .wrap{max-width:1080px;margin:0 auto;padding:24px 18px 60px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:20px}
+  .title{font-size:20px;font-weight:700;letter-spacing:.5px}
+  .title .gem{color:var(--gold)}
+  .badge-prev{font-size:11px;color:#0b0e14;background:var(--gold);padding:2px 8px;border-radius:10px;font-weight:700}
+  .ctrl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  select{background:var(--panel2);color:var(--text);border:1px solid var(--border);
+    border-radius:8px;padding:7px 10px;font-size:13px}
+  .hint{color:var(--muted);font-size:12px}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0 22px}
+  .stat{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+  .stat .k{color:var(--muted);font-size:12px}
+  .stat .v{font-size:26px;font-weight:700;margin-top:4px}
+  .stat.up .v{color:var(--gold)} .stat.buy .v{color:var(--green)} .stat.hz .v{color:var(--orange)}
+  .stat .note{font-size:12px;margin-top:7px;font-weight:600;letter-spacing:.3px}
+  .note.pos{color:var(--added)} .note.neg{color:var(--removed)} .note.flat{color:var(--muted)}
+  .sec-title{font-size:15px;font-weight:700;margin:26px 0 12px;display:flex;align-items:center;gap:8px}
+  .sec-title .bar{width:4px;height:16px;background:var(--gold);border-radius:2px}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--border);
+    border-radius:12px;overflow:hidden}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);font-size:13px}
+  th{color:var(--muted);font-weight:600;background:var(--panel2)}
+  tr:last-child td{border-bottom:none}
+  .pill{display:inline-block;padding:2px 9px;border-radius:10px;font-size:12px;font-weight:600}
+  .p-up{background:rgba(245,197,24,.15);color:var(--gold)}
+  .p-buy{background:rgba(63,185,80,.15);color:var(--green)}
+  .p-hz{background:rgba(240,136,62,.15);color:var(--orange)}
+  .ago{color:var(--muted);font-size:12px}
+  .track{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .tcard{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+  .tcard h4{margin:0 0 4px;font-size:14px}
+  .tcard .sub{color:var(--muted);font-size:12px;margin-bottom:10px}
+  .grp{margin-top:10px}
+  .grp .gh{font-size:12px;font-weight:700;margin-bottom:6px;display:flex;justify-content:space-between}
+  .gh.add{color:var(--added)} .gh.rem{color:var(--removed)} .gh.keep{color:var(--kept)}
+  .item{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;background:var(--panel2);
+    margin-bottom:5px;font-size:13px}
+  .mk{font-size:11px;font-weight:700;border-radius:6px;padding:1px 6px;flex:none}
+  .mk.add{background:rgba(63,185,80,.18);color:var(--added)}
+  .mk.rem{background:rgba(248,81,73,.18);color:var(--removed)}
+  .mk.keep{background:rgba(88,166,255,.16);color:var(--kept)}
+  .nm{font-weight:600}
+  .cd{color:var(--muted);font-size:12px}
+  .arrow{color:var(--kept);font-size:11px;margin-left:4px}
+  .empty{color:var(--muted);font-size:12px;padding:6px 2px}
+  @media(max-width:760px){.cards{grid-template-columns:repeat(2,1fr)}.track{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="title"><span class="gem">💎 兜宝金钻</span> · 金钻池跟踪 <span class="badge-prev">PREVIEW</span></div>
+    <div class="ctrl">
+      <span class="hint">选择交易日查看明细：</span>
+      <select id="daySel"></select>
+    </div>
+  </div>
+
+  <div id="overview"></div>
+
+  <div class="sec-title"><span class="bar"></span>金钻变动跟踪（最新交易日 → 前1日 / 前2日）</div>
+  <div id="tracking" class="track"></div>
+</div>
+
+<script>
+const APP = {"history": {"built_at": "2026-07-11 13:27", "pool_size": 64, "keep_days": 20, "trading_days": ["2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-03", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10"], "snapshots": {"2026-06-12": {"sz300763": {"name": "锦浪科技", "primary": "红区黄柱连续5天", "signal_date": "2026-06-12", "days_ago": 0}}, "2026-06-15": {"sz300763": {"name": "锦浪科技", "primary": "红区黄柱连续5天", "signal_date": "2026-06-15", "days_ago": 0}}, "2026-06-16": {"sz300763": {"name": "锦浪科技", "primary": "红区黄柱连续5天", "signal_date": "2026-06-16", "days_ago": 0}}, "2026-06-17": {"sz300763": {"name": "锦浪科技", "primary": "红区黄柱连续3天", "signal_date": "2026-06-15", "days_ago": 2}}, "2026-06-18": {}, "2026-06-22": {}, "2026-06-23": {}, "2026-06-24": {}, "2026-06-25": {}, "2026-06-26": {}, "2026-06-29": {}, "2026-06-30": {}, "2026-07-01": {}, "2026-07-02": {"sz300763": {"name": "锦浪科技", "primary": "买入", "signal_date": "2026-07-02", "days_ago": 0}}, "2026-07-03": {}, "2026-07-06": {}, "2026-07-07": {"sh603618": {"name": "杭电股份", "primary": "买入", "signal_date": "2026-07-07", "days_ago": 0}}, "2026-07-08": {"sh603773": {"name": "沃格光电", "primary": "红区黄柱连续3天", "signal_date": "2026-07-08", "days_ago": 0}, "sz301188": {"name": "力诺药包", "primary": "买入", "signal_date": "2026-07-08", "days_ago": 0}, "sh603936": {"name": "博敏电子", "primary": "红区黄柱连续3天", "signal_date": "2026-07-08", "days_ago": 0}, "sz301362": {"name": "民爆光电", "primary": "红区黄柱连续3天", "signal_date": "2026-07-08", "days_ago": 0}, "sh600596": {"name": "新安股份", "primary": "买入", "signal_date": "2026-07-08", "days_ago": 0}, "sh600869": {"name": "XD远东股", "primary": "红区黄柱连续3天", "signal_date": "2026-07-08", "days_ago": 0}, "sh603688": {"name": "石英股份", "primary": "红区黄柱连续3天", "signal_date": "2026-07-08", "days_ago": 0}, "sh605006": {"name": "山东玻纤", "primary": "红区黄柱连续3天", "signal_date": "2026-07-08", "days_ago": 0}, "sz002491": {"name": "通鼎互联", "primary": "红区黄柱连续3天", "signal_date": "2026-07-08", "days_ago": 0}, "sz300548": {"name": "长芯博创", "primary": "红区黄柱连续3天", "signal_date": "2026-07-08", "days_ago": 0}, "sz300620": {"name": "光库科技", "primary": "红区黄柱连续3天", "signal_date": "2026-07-08", "days_ago": 0}, "sz300747": {"name": "锐科激光", "primary": "红区黄柱连续3天", "signal_date": "2026-07-08", "days_ago": 0}}, "2026-07-09": {"sh600345": {"name": "长江通信", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 0}, "sh600500": {"name": "中化国际", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 0}, "sh603115": {"name": "海星股份", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 0}, "sh603256": {"name": "宏和科技", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 0}, "sh603773": {"name": "沃格光电", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 0}, "sh605589": {"name": "圣泉集团", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 0}, "sz000823": {"name": "超声电子", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 0}, "sz002741": {"name": "光华科技", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 0}, "sz300429": {"name": "强力新材", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 0}, "sz300570": {"name": "太辰光", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 0}, "sz300726": {"name": "宏达电子", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 0}, "sz301123": {"name": "奕东电子", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 0}, "sz301128": {"name": "强瑞技术", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 0}, "sz301188": {"name": "力诺药包", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 0}, "sh600459": {"name": "贵研铂业", "primary": "买入", "signal_date": "2026-07-09", "days_ago": 0}, "sh601868": {"name": "中国能建", "primary": "买入", "signal_date": "2026-07-09", "days_ago": 0}, "sh601958": {"name": "金钼股份", "primary": "买入", "signal_date": "2026-07-09", "days_ago": 0}, "sh603936": {"name": "博敏电子", "primary": "买入", "signal_date": "2026-07-09", "days_ago": 0}, "sz300014": {"name": "亿纬锂能", "primary": "买入", "signal_date": "2026-07-09", "days_ago": 0}, "sz301362": {"name": "民爆光电", "primary": "买入", "signal_date": "2026-07-09", "days_ago": 0}, "sh600367": {"name": "红星发展", "primary": "红区黄柱连续3天", "signal_date": "2026-07-09", "days_ago": 0}, "sh600549": {"name": "厦门钨业", "primary": "买入", "signal_date": "2026-07-09", "days_ago": 0}, "sh600869": {"name": "XD远东股", "primary": "红区黄柱连续4天", "signal_date": "2026-07-09", "days_ago": 0}, "sh603011": {"name": "合锻智能", "primary": "红区黄柱连续3天", "signal_date": "2026-07-09", "days_ago": 0}, "sh603618": {"name": "杭电股份", "primary": "红区黄柱连续3天", "signal_date": "2026-07-09", "days_ago": 0}, "sh603688": {"name": "石英股份", "primary": "红区黄柱连续3天", "signal_date": "2026-07-09", "days_ago": 0}, "sh605006": {"name": "山东玻纤", "primary": "红区黄柱连续4天", "signal_date": "2026-07-09", "days_ago": 0}, "sz000657": {"name": "中钨高新", "primary": "红区黄柱连续3天", "signal_date": "2026-07-09", "days_ago": 0}, "sz002378": {"name": "章源钨业", "primary": "红区黄柱连续3天", "signal_date": "2026-07-09", "days_ago": 0}, "sz002491": {"name": "通鼎互联", "primary": "红区黄柱连续4天", "signal_date": "2026-07-09", "days_ago": 0}, "sz002975": {"name": "博杰股份", "primary": "红区黄柱连续3天", "signal_date": "2026-07-09", "days_ago": 0}, "sz300302": {"name": "同有科技", "primary": "红区黄柱连续3天", "signal_date": "2026-07-09", "days_ago": 0}, "sz300548": {"name": "长芯博创", "primary": "红区黄柱连续4天", "signal_date": "2026-07-09", "days_ago": 0}, "sz300620": {"name": "光库科技", "primary": "红区黄柱连续4天", "signal_date": "2026-07-09", "days_ago": 0}, "sz300747": {"name": "锐科激光", "primary": "买入", "signal_date": "2026-07-07", "days_ago": 2}, "sz300835": {"name": "龙磁科技", "primary": "红区黄柱连续3天", "signal_date": "2026-07-09", "days_ago": 0}, "sz301196": {"name": "唯科科技", "primary": "红区黄柱连续3天", "signal_date": "2026-07-09", "days_ago": 0}, "sz301205": {"name": "联特科技", "primary": "红区黄柱连续3天", "signal_date": "2026-07-09", "days_ago": 0}, "sz301319": {"name": "唯特偶", "primary": "红区黄柱连续3天", "signal_date": "2026-07-09", "days_ago": 0}}, "2026-07-10": {"sh600345": {"name": "长江通信", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 1}, "sh600500": {"name": "中化国际", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 1}, "sh603115": {"name": "海星股份", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 1}, "sh603256": {"name": "宏和科技", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 1}, "sh603773": {"name": "沃格光电", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 1}, "sh605589": {"name": "圣泉集团", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 1}, "sz000823": {"name": "超声电子", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 1}, "sz002741": {"name": "光华科技", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 1}, "sz300429": {"name": "强力新材", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 1}, "sz300570": {"name": "太辰光", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 1}, "sz300726": {"name": "宏达电子", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 1}, "sz301123": {"name": "奕东电子", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 1}, "sz301128": {"name": "强瑞技术", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 1}, "sz301188": {"name": "力诺药包", "primary": "金钻起涨", "signal_date": "2026-07-09", "days_ago": 1}, "sh600459": {"name": "贵研铂业", "primary": "买入", "signal_date": "2026-07-09", "days_ago": 1}, "sh601012": {"name": "隆基绿能", "primary": "买入", "signal_date": "2026-07-09", "days_ago": 1}, "sh601868": {"name": "中国能建", "primary": "买入", "signal_date": "2026-07-09", "days_ago": 1}, "sh601958": {"name": "金钼股份", "primary": "买入", "signal_date": "2026-07-09", "days_ago": 1}, "sh603659": {"name": "璞泰来", "primary": "买入", "signal_date": "2026-07-10", "days_ago": 0}, "sh603936": {"name": "博敏电子", "primary": "买入", "signal_date": "2026-07-09", "days_ago": 1}, "sz300014": {"name": "亿纬锂能", "primary": "买入", "signal_date": "2026-07-09", "days_ago": 1}, "sz300763": {"name": "锦浪科技", "primary": "买入", "signal_date": "2026-07-10", "days_ago": 0}, "sz301362": {"name": "民爆光电", "primary": "买入", "signal_date": "2026-07-09", "days_ago": 1}, "sh600186": {"name": "莲花控股", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sh600367": {"name": "红星发展", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sh600392": {"name": "盛和资源", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sh600397": {"name": "江钨装备", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sh600549": {"name": "厦门钨业", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sh600563": {"name": "法拉电子", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sh600596": {"name": "新安股份", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sh600869": {"name": "XD远东股", "primary": "红区黄柱连续5天", "signal_date": "2026-07-10", "days_ago": 0}, "sh601208": {"name": "东材科技", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sh603011": {"name": "合锻智能", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sh603186": {"name": "华正新材", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sh603267": {"name": "鸿远电子", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sh603618": {"name": "杭电股份", "primary": "红区黄柱连续4天", "signal_date": "2026-07-10", "days_ago": 0}, "sh603688": {"name": "石英股份", "primary": "红区黄柱连续3天", "signal_date": "2026-07-09", "days_ago": 1}, "sh603738": {"name": "泰晶科技", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sh605006": {"name": "山东玻纤", "primary": "红区黄柱连续5天", "signal_date": "2026-07-10", "days_ago": 0}, "sz000510": {"name": "新金路", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz000657": {"name": "中钨高新", "primary": "红区黄柱连续4天", "signal_date": "2026-07-10", "days_ago": 0}, "sz000733": {"name": "振华科技", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz000831": {"name": "中国稀土", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz000969": {"name": "安泰科技", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz002138": {"name": "顺络电子", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz002171": {"name": "楚江新材", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz002254": {"name": "泰和新材", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz002378": {"name": "章源钨业", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz002491": {"name": "通鼎互联", "primary": "买入", "signal_date": "2026-07-07", "days_ago": 3}, "sz002842": {"name": "翔鹭钨业", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz002975": {"name": "博杰股份", "primary": "红区黄柱连续3天", "signal_date": "2026-07-09", "days_ago": 1}, "sz003031": {"name": "中瓷电子", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz300302": {"name": "同有科技", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz300319": {"name": "麦捷科技", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz300548": {"name": "长芯博创", "primary": "红区黄柱连续4天", "signal_date": "2026-07-09", "days_ago": 1}, "sz300576": {"name": "容大感光", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz300620": {"name": "光库科技", "primary": "红区黄柱连续5天", "signal_date": "2026-07-10", "days_ago": 0}, "sz300747": {"name": "锐科激光", "primary": "红区黄柱连续4天", "signal_date": "2026-07-10", "days_ago": 0}, "sz300835": {"name": "龙磁科技", "primary": "红区黄柱连续4天", "signal_date": "2026-07-10", "days_ago": 0}, "sz300870": {"name": "欧陆通", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz301196": {"name": "唯科科技", "primary": "红区黄柱连续4天", "signal_date": "2026-07-10", "days_ago": 0}, "sz301205": {"name": "联特科技", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}, "sz301319": {"name": "唯特偶", "primary": "红区黄柱连续4天", "signal_date": "2026-07-10", "days_ago": 0}, "sz301511": {"name": "德福科技", "primary": "红区黄柱连续3天", "signal_date": "2026-07-10", "days_ago": 0}}}}, "today_overview": {"total": 64, "buy": 10, "up": 14, "hz": 40, "data_date": "2026-07-10", "analysis": "2026-07-10 金钻策略共命中 64 只个股（基于成交额 TOP 池扫描）。其中「金钻起涨」14 只，为强势启动信号，资金面（DY2）与量价配合达标，可优先跟踪；「买入」10 只，属回调结束、金钻趋势上穿高位后的回补买点；「红区黄柱连续」40 只，处红区（金钻趋势>金牛2）且连续筑底企稳，偏蓄势待发。提示：金钻为技术共振信号，须结合大盘环境与个股基本面，勿单一依赖。"}, "today_data_date": "2026-07-10"};
+const H = APP.history;
+const days = H.trading_days;
+const snaps = H.snapshots;
+const latest = days[days.length-1];
+
+function pclass(p){
+  if(p==="金钻起涨") return "p-up";
+  if(p==="买入") return "p-buy";
+  if(p.startsWith("红区黄柱连续")) return "p-hz";
+  return "";
+}
+function pill(p){ return `<span class="pill ${pclass(p)}">${p}</span>`; }
+
+function countByPrimary(snap){
+  let c={up:0,buy:0,hz:0,total:0};
+  for(const code in snap){
+    const p=snap[code].primary; c.total++;
+    if(p==="金钻起涨")c.up++;
+    else if(p==="买入")c.buy++;
+    else if(p.startsWith("红区黄柱连续"))c.hz++;
+  }
+  return c;
+}
+
+function renderOverview(date){
+  const snap=snaps[date]||{};
+  const c=countByPrimary(snap);
+  const idx=days.indexOf(date);
+  const prevDate = idx>0 ? days[idx-1] : null;
+  const prevC = prevDate ? countByPrimary(snaps[prevDate]||{}) : null;
+  function note(curr,prev,label){
+    if(prev===null) return `<div class="note flat">无前一交易日</div>`;
+    const d=curr-prev;
+    if(d>0) return `<div class="note pos">较前一交易日 ▲ +${d} ${label}</div>`;
+    if(d<0) return `<div class="note neg">较前一交易日 ▼ ${d} ${label}</div>`;
+    return `<div class="note flat">较前一交易日 持平</div>`;
+  }
+  const codes=Object.keys(snap).sort((a,b)=>{
+    const ra=rankOf(snap[a].primary), rb=rankOf(snap[b].primary);
+    return rb-ra || a.localeCompare(b);
+  });
+  let rows = codes.length ? codes.map(code=>{
+    const s=snap[code];
+    return `<tr><td><b>${code}</b></td><td>${s.name}</td><td>${pill(s.primary)}</td>
+      <td class="cd">${s.signal_date||"-"}</td><td class="ago">${s.days_ago==null?"":s.days_ago+"天前"}</td></tr>`;
+  }).join("") : `<tr><td colspan="5" class="empty">当日无金钻信号命中</td></tr>`;
+
+  document.getElementById("overview").innerHTML = `
+    <div class="cards">
+      <div class="stat"><div class="k">金钻池总数</div><div class="v">${c.total}</div>${note(c.total,prevC?prevC.total:null,"只")}</div>
+      <div class="stat up"><div class="k">金钻起涨</div><div class="v">${c.up}</div>${note(c.up,prevC?prevC.up:null,"只")}</div>
+      <div class="stat buy"><div class="k">买入</div><div class="v">${c.buy}</div>${note(c.buy,prevC?prevC.buy:null,"只")}</div>
+      <div class="stat hz"><div class="k">红区黄柱连续</div><div class="v">${c.hz}</div>${note(c.hz,prevC?prevC.hz:null,"只")}</div>
+    </div>
+    <div class="sec-title"><span class="bar"></span>${date} · 金钻池明细（${c.total} 只）</div>
+    <table><thead><tr><th>代码</th><th>名称</th><th>主信号</th><th>触发日</th><th>距今天数</th></tr></thead>
+    <tbody>${rows}</tbody></table>`;
+}
+
+function rankOf(p){ return p==="金钻起涨"?3 : p==="买入"?2 : p.startsWith("红区黄柱连续")?1 : 0; }
+
+function diffSets(a,b){
+  const sa=new Set(Object.keys(a)), sb=new Set(Object.keys(b));
+  const added=[...sa].filter(x=>!sb.has(x));
+  const removed=[...sb].filter(x=>!sa.has(x));
+  const retained=[...sa].filter(x=>sb.has(x));
+  const changed=retained.filter(x=>a[x].primary!==b[x].primary);
+  return {added,removed,retained,changed};
+}
+
+function itemHtml(snap,code,mk){
+  const s=snap[code];
+  return `<div class="item"><span class="mk ${mk}">${mk==="add"?"新增":mk==="rem"?"消除":"留存"}</span>
+    <span class="nm">${s.name}</span><span class="cd">${code}</span>${pill(s.primary)}</div>`;
+}
+function changedHtml(a,b,code){
+  const s=a[code];
+  return `<div class="item"><span class="mk keep">留存</span>
+    <span class="nm">${s.name}</span><span class="cd">${code}</span>
+    ${pill(b[code].primary)}<span class="arrow">→</span>${pill(s.primary)}</div>`;
+}
+
+function renderCompare(d0,d1){
+  if(!d1) return `<div class="tcard"><h4>前1交易日对比</h4><div class="empty">历史数据不足</div></div>`;
+  const cmp=diffSets(snaps[d0],snaps[d1]);
+  const c0=countByPrimary(snaps[d0]).total, c1=countByPrimary(snaps[d1]).total;
+  return `<div class="tcard">
+    <h4>${d0} ↔ ${d1}</h4>
+    <div class="sub">最新池 ${c0} 只 · 前1日池 ${c1} 只 · 净增 ${c0-c1>=0?"+":""}${c0-c1}</div>
+    <div class="grp"><div class="gh add"><span>＋ 新增（${cmp.added.length}）</span></div>
+      ${cmp.added.length?cmp.added.map(c=>itemHtml(snaps[d0],c,"add")).join(""):'<div class="empty">无</div>'}</div>
+    <div class="grp"><div class="gh rem"><span>－ 消除（${cmp.removed.length}）</span></div>
+      ${cmp.removed.length?cmp.removed.map(c=>itemHtml(snaps[d1],c,"rem")).join(""):'<div class="empty">无</div>'}</div>
+    <div class="grp"><div class="gh keep"><span>● 留存（${cmp.retained.length}）｜其中信号变更 ${cmp.changed.length}</span></div>
+      ${cmp.retained.length?cmp.retained.map(c=>cmp.changed.includes(c)?changedHtml(snaps[d0],snaps[d1],c):itemHtml(snaps[d0],c,"keep")).join(""):'<div class="empty">无</div>'}</div>
+  </div>`;
+}
+
+function renderTracking(){
+  const d0=latest, d1=days[days.length-2], d2=days[days.length-3];
+  document.getElementById("tracking").innerHTML = renderCompare(d0,d1)+renderCompare(d0,d2);
+}
+
+// 初始化
+const sel=document.getElementById("daySel");
+days.slice().reverse().forEach(d=>{
+  const o=document.createElement("option"); o.value=d; o.textContent=d+(d===latest?"（最新）":""); sel.appendChild(o);
+});
+sel.value=latest;
+sel.addEventListener("change",e=>renderOverview(e.target.value));
+renderOverview(latest);
+renderTracking();
+</script>
+</body>
+</html>
