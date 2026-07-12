@@ -1294,13 +1294,13 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-arrow{color:var(--cyan);font-size:11px;margin-left:4px;}
     #tab-diamond .gd-empty{color:var(--text-muted);font-size:12px;padding:6px 2px;}
     /* ── 个股详情：行内手风琴展开 ── */
-    #tab-diamond .gd-table tr.gd-row{cursor:pointer;transition:background var(--transition-fast);}
-    #tab-diamond .gd-table tr.gd-row:hover{background:var(--bg-subtle);}
-    #tab-diamond .gd-table tr.gd-row.active{background:var(--bg-subtle);}
-    #tab-diamond .gd-table tr.gd-row.active td:first-child{box-shadow:inset 3px 0 0 var(--gold);}
+    #tab-diamond .gd-table tr.gd-row,#tab-diamond .gd-table tr.gd-track-row{cursor:pointer;transition:background var(--transition-fast);}
+    #tab-diamond .gd-table tr.gd-row:hover,#tab-diamond .gd-table tr.gd-track-row:hover{background:var(--bg-subtle);}
+    #tab-diamond .gd-table tr.gd-row.active,#tab-diamond .gd-table tr.gd-track-row.active{background:var(--bg-subtle);}
+    #tab-diamond .gd-table tr.gd-row.active td:first-child,#tab-diamond .gd-table tr.gd-track-row.active td:first-child{box-shadow:inset 3px 0 0 var(--gold);}
     #tab-diamond .gd-table th.gd-c,#tab-diamond .gd-table td.gd-c{width:28px;text-align:center;padding-left:6px;padding-right:6px;color:var(--text-muted);}
     #tab-diamond .gd-caret{display:inline-block;transition:transform var(--transition-fast);font-size:11px;}
-    #tab-diamond .gd-row.open .gd-caret{transform:rotate(90deg);color:var(--gold);}
+    #tab-diamond .gd-row.open .gd-caret,#tab-diamond .gd-table tr.gd-track-row.open .gd-caret{transform:rotate(90deg);color:var(--gold);}
     #tab-diamond tr.gd-inrow>td{padding:0;border-top:1px solid var(--border);}
     #tab-diamond tr.gd-inrow .gd-inline{padding:14px 10px 16px 34px;background:var(--bg-subtle);}
     #tab-diamond tr.gd-inrow .gd-livehead{font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:10px;}
@@ -3471,7 +3471,7 @@ function gdOpenStock(code, tr){
   if(!GD.cache) return;
   const s=GD.cache.stocks.find(x=>x.code===code); if(!s) return;
   // 再次点击已展开的行 -> 收起
-  if(tr && tr.classList.contains('open')){ closeInlineDetail(); return; }
+  if(tr && tr.classList.contains('open')){ gdCloseInline(); return; }
   const k=s.kline||[];
   GD.data={
     code:s.code, name:s.name||s.code,
@@ -3481,32 +3481,36 @@ function gdOpenStock(code, tr){
     red_zone:s.red_zone, yellow_bar:s.yellow_bar, signals:s.signals||[], count:k.length,
   };
   gdResetView();
-  openInlineDetail(tr);
+  gdOpenInline(tr, '#gdTable tbody', 5);
   setGdStatus(`已加载 ${s.name}(${s.code}) · ${k.length} 个交易日 · 末日 ${k.length?k[k.length-1].date:'—'}`);
 }
 
-function closeInlineDetail(){
-  const ex=document.querySelector('#gdTable tbody tr.gd-inrow'); if(ex) ex.remove();
-  document.querySelectorAll('#gdTable tbody tr.gd-row').forEach(tr=>tr.classList.remove('active','open'));
+function gdParkCharts(){
+  if(GD_CHARTS && GD_CHARTS.parentNode) GD_CHARTS.parentNode.removeChild(GD_CHARTS);
+  document.getElementById('gdChartsPark').appendChild(GD_CHARTS);
 }
-function openInlineDetail(tr){
-  closeInlineDetail();
+// 跨主表/跟踪表统一收起：找到任意已展开行，先把图节点安全回收到 parked 容器，再移除行
+function gdCloseInline(){
+  const ex=document.querySelector('#gdTable tbody tr.gd-inrow')||document.querySelector('#gdTrackDetail tbody tr.gd-inrow');
+  if(ex){
+    const inc=ex.querySelector('.gd-inline');
+    if(inc && GD_CHARTS.parentNode===inc) gdParkCharts();
+    ex.remove();
+  }
+  document.querySelectorAll('#gdTable tbody tr.gd-row, #gdTrackDetail tbody tr.gd-track-row')
+    .forEach(tr=>tr.classList.remove('active','open'));
+}
+// 在某张表（tbodySel）的某行 tr 下方插入展开行；colspan 需匹配该表列数
+function gdOpenInline(tr, tbodySel, colspan, liveHead){
+  gdCloseInline();
+  const tb=document.querySelector(tbodySel); if(!tb) return;
   const inrow=document.createElement('tr');
   inrow.className='gd-inrow';
-  inrow.innerHTML='<td colspan="5"><div class="gd-inline"></div></td>';
+  const head=liveHead?`<div class="gd-livehead">${liveHead}</div>`:'';
+  inrow.innerHTML=`<td colspan="${colspan}"><div class="gd-inline">${head}</div></td>`;
   inrow.querySelector('.gd-inline').appendChild(GD_CHARTS);
   if(tr){ tr.classList.add('active','open'); tr.after(inrow); }
-  else { document.querySelector('#gdTable tbody').appendChild(inrow); }
-  requestAnimationFrame(()=>{ gdRender(); });
-}
-function openInlineDetailLive(code,res){
-  closeInlineDetail();
-  const inrow=document.createElement('tr');
-  inrow.className='gd-inrow';
-  const sig=res.signals.length?res.signals.map(s=>s.type).join(' / '):'无命中';
-  inrow.innerHTML=`<td colspan="5"><div class="gd-inline"><div class="gd-livehead">🔎 实时查询：${code} · 命中 ${sig}</div></div></td>`;
-  inrow.querySelector('.gd-inline').appendChild(GD_CHARTS);
-  document.querySelector('#gdTable tbody').appendChild(inrow);
+  else { tb.appendChild(inrow); }
   requestAnimationFrame(()=>{ gdRender(); });
 }
 
@@ -3526,10 +3530,31 @@ async function gdLiveQuery(){
     const res=gdAnalyze(rows);
     res.code=code; res.name=code;
     GD.data=res; gdResetView();
-    openInlineDetailLive(code,res);
+    gdOpenInline(null, '#gdTable tbody', 5, `🔎 实时查询：${code} · 命中 ${sig}`);
     const sig=res.signals.length?res.signals.map(s=>s.type).join(' / '):'无命中';
     setGdStatus(`实时查询 ${code} · 末日 ${rows[rows.length-1].date} · 信号: ${sig}`);
   }catch(e){ setGdStatus('⚠ 实时查询失败: '+e.message,'err'); }
+}
+
+// 跟踪卡历史池个股：走实时拉 K 线（不依赖当天缓存），在跟踪表内联展开
+async function gdOpenTrackStock(code, tr){
+  if(tr && tr.classList.contains('open')){ gdCloseInline(); return; }
+  setGdStatus('实时查询历史池个股 '+code+' …');
+  try{
+    const url=`https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,250,qfq`;
+    const j=await fetch(url); const d=await j.json();
+    const node=(d.data&&(d.data[code]||d.data[code.replace(/^(sh|sz|bj)/,'')]))||null;
+    if(!node) throw new Error('无数据');
+    const k=node.qfqday||node.day;
+    if(!k||k.length<60) throw new Error('K线不足');
+    const rows=k.map(r=>({date:r[0],open:+r[1],close:+r[2],high:+r[3],low:+r[4],volume:+r[5]}));
+    const res=gdAnalyze(rows);
+    res.code=code; res.name=code;
+    GD.data=res; gdResetView();
+    gdOpenInline(tr, '#gdTrackDetail tbody', 5);
+    const sig=res.signals.length?res.signals.map(s=>s.type).join(' / '):'无命中';
+    setGdStatus(`历史池个股 ${code} · 末日 ${rows[rows.length-1].date} · 信号: ${sig}`);
+  }catch(e){ setGdStatus('⚠ 查询失败: '+e.message,'err'); }
 }
 
 // ── JS 版 analyze（忠实移植 server.py 验证引擎）──
@@ -3747,6 +3772,7 @@ function gdDeltaNote(curr,prev,unit){
 }
 function gdRenderTrack(date){
   if(!GD_HIST) return;
+  gdCloseInline(); // 重渲染前先回收图节点，避免遗留在旧行里
   const snaps=GD_HIST.snapshots, days=GD_HIST.trading_days;
   const idx=days.indexOf(date);
   const prevDate=idx>0?days[idx-1]:null;
@@ -3765,12 +3791,14 @@ function gdRenderTrack(date){
     return rb-ra || a.localeCompare(b);
   });
   let rows=codes.length?codes.map(code=>{ const s=snap[code];
-    return `<tr><td>${code}</td><td>${s.name||'—'}</td><td><span class="${gdPclass(s.primary)}">${s.primary}</span></td>
+    return `<tr class="gd-track-row" data-code="${code}"><td class="gd-c"><span class="gd-caret">▸</span></td><td>${code}</td><td>${s.name||'—'}</td><td><span class="${gdPclass(s.primary)}">${s.primary}</span></td>
       <td class="gd-cd">${s.signal_date||'-'}</td></tr>`;
-  }).join(''):`<tr><td colspan="4" class="gd-empty">当日无金钻信号命中</td></tr>`;
+  }).join(''):`<tr><td colspan="5" class="gd-empty">当日无金钻信号命中</td></tr>`;
   document.getElementById('gdTrackDetail').innerHTML=
-    `<div class="gd-subtitle" style="border:none;padding:14px 0 8px;font-weight:700;">${date} · 金钻池明细（${c.total} 只）</div>
-     <table class="gd-table"><thead><tr><th>代码</th><th>名称</th><th>主信号</th><th>触发日</th></tr></thead><tbody>${rows}</tbody></table>`;
+    `<div class="gd-subtitle" style="border:none;padding:14px 0 8px;font-weight:700;">${date} · 金钻池明细（${c.total} 只）· 点击任意行，在该行下方展开主图 / 副图</div>
+     <table class="gd-table"><thead><tr><th class="gd-c"></th><th>代码</th><th>名称</th><th>主信号</th><th>触发日</th></tr></thead><tbody>${rows}</tbody></table>`;
+  document.querySelectorAll('#gdTrackDetail tbody tr.gd-track-row').forEach(tr=>
+    tr.addEventListener('click',()=>gdOpenTrackStock(tr.dataset.code,tr)));
   const d0=days[days.length-1], d1=days[days.length-2], d2=days[days.length-3];
   document.getElementById('gdTrackCompare').innerHTML=gdCompareCard(d0,d1)+gdCompareCard(d0,d2);
 }
