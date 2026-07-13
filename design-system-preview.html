@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>兜宝金钻 · 设计系统预览 (Aurum Terminal)</title>
+<style>
+:root,[data-theme="dark"]{
+  --bg-root:#0a0c12; --bg-surface:#11141d; --bg-card:#151926; --bg-card-hover:#1b2030;
+  --bg-subtle:#1a1f2e; --bg-input:#11141d; --bg-overlay:rgba(10,12,18,.80);
+  --border:#252b3b; --border-light:#1f2433; --border-focus:#e6b53c;
+  --text:#e8ebf2; --text-secondary:#9aa1b8; --text-muted:#656c82; --text-inverse:#0a0c12;
+  --accent:#6b85fa; --accent-light:#8ba0fb; --accent-bg:rgba(107,133,250,.10); --accent-bg-hover:rgba(107,133,250,.16);
+  --red:#ff7b7b; --red-bg:rgba(255,123,123,.10);
+  --green:#4ade80; --green-bg:rgba(74,222,128,.10);
+  --gold:#e6b53c; --gold-strong:#f0c04e; --gold-bg:rgba(230,181,60,.10); --gold-bg-strong:rgba(230,181,60,.16);
+  --purple:#b794f4; --purple-bg:rgba(183,148,244,.12);
+  --cyan:#5fd4e6;
+  --radius-sm:8px; --radius:12px; --radius-lg:18px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.40); --shadow-card:0 1px 2px rgba(0,0,0,.40),0 10px 30px rgba(0,0,0,.30);
+  --shadow-card-hover:0 4px 12px rgba(0,0,0,.45),0 18px 50px rgba(0,0,0,.38);
+  --shadow-popup:0 12px 40px rgba(0,0,0,.55); --shadow-gold:0 8px 30px rgba(230,181,60,.18);
+  --font-sans:-apple-system,BlinkMacSystemFont,'SF Pro Display','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:radial-gradient(1200px 700px at 50% -10%,#1a2236 0%,var(--bg-root) 60%);
+  color:var(--text);font-family:var(--font-sans);-webkit-font-smoothing:antialiased;padding:32px 20px 64px;}
+.wrap{max-width:1080px;margin:0 auto;}
+header.brand{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+header.brand .gem{font-size:30px;filter:drop-shadow(0 0 14px rgba(230,181,60,.4));}
+header.brand h1{font-size:22px;font-weight:800;letter-spacing:-0.01em;margin:0;}
+header.brand .sub{color:var(--text-muted);font-size:13px;margin-left:auto;}
+.lede{color:var(--text-secondary);font-size:13px;line-height:1.7;margin:0 0 28px;max-width:720px;}
+section{margin-bottom:36px;}
+.sec-h{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);
+  margin:0 0 14px;display:flex;align-items:center;gap:8px;}
+.sec-h::before{content:"";width:4px;height:14px;background:var(--gold);border-radius:2px;}
+
+/* Buttons */
+.btn{font-family:inherit;border-radius:10px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;}
+.btn-primary{background:var(--gold);color:#1a1205;border:none;box-shadow:0 4px 14px rgba(230,181,60,.28);}
+.btn-primary:hover{filter:brightness(1.06);}
+.btn-secondary{background:var(--accent-bg);color:var(--accent-light);border:1px solid var(--border);}
+.btn-secondary:hover{background:var(--accent-bg-hover);border-color:var(--accent);}
+.btn-ghost{background:transparent;color:var(--text-secondary);border:1px solid var(--border);}
+.btn-ghost:hover{color:var(--text);background:var(--bg-subtle);}
+.btn-danger{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.3);}
+.btn-danger:hover{background:rgba(248,113,113,.2);}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+
+/* Stat cards */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.stat{background:linear-gradient(180deg,#1a2030,#151926);border:1px solid var(--border);border-top:3px solid var(--accent);
+  border-radius:var(--radius);padding:16px 14px;text-align:center;box-shadow:var(--shadow-sm);}
+.stat.s-up{border-top-color:var(--red);} .stat.s-buy{border-top-color:var(--cyan);} .stat.s-hz{border-top-color:var(--gold);}
+.stat .n{font-size:28px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-0.01em;}
+.stat.s-up .n{color:var(--red);} .stat.s-buy .n{color:var(--cyan);} .stat.s-hz .n{color:var(--gold);}
+.stat .l{font-size:12px;color:var(--text-secondary);margin-top:8px;}
+
+/* Tags */
+.tag{display:inline-flex;align-items:center;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:600;}
+.tag.up{background:var(--red-bg);color:var(--red);} .tag.buy{background:rgba(95,212,230,.12);color:var(--cyan);}
+.tag.hz{background:var(--gold-bg);color:var(--gold);} .tag.chan{background:var(--purple-bg);color:var(--purple);}
+
+/* Inputs */
+.input{background:var(--bg-input);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:9px 13px;font-size:13px;outline:none;transition:.15s;font-family:inherit;}
+.input::placeholder{color:var(--text-muted);}
+.input:focus{border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(230,181,60,.14);}
+
+/* Card */
+.card{background:linear-gradient(180deg,#161b29,#131722);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--shadow-card);}
+.card h3{margin:0 0 8px;font-size:15px;font-weight:700;}
+.card p{margin:0;color:var(--text-secondary);font-size:13px;line-height:1.7;}
+
+/* Table */
+.table{width:100%;border-collapse:collapse;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;font-size:12.5px;box-shadow:var(--shadow-card);}
+.table th,.table td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--border-light);}
+.table th{color:var(--text-secondary);font-weight:600;background:var(--bg-subtle);}
+.table tbody tr{cursor:pointer;transition:background .15s;}
+.table tbody tr:hover{background:var(--gold-bg-strong);}
+.table tbody tr.active{background:var(--gold-bg);box-shadow:inset 3px 0 0 var(--gold);}
+.num{font-variant-numeric:tabular-nums;}
+
+/* Login gate preview */
+.gate{position:relative;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);
+  background:radial-gradient(1200px 700px at 50% -10%,#1a2236 0%,#0a0c12 60%);min-height:280px;display:flex;align-items:center;justify-content:center;}
+.gate-card{background:linear-gradient(180deg,rgba(26,32,48,.72),rgba(19,23,34,.72));border:1px solid rgba(230,181,60,.28);border-radius:18px;
+  padding:32px 36px;width:330px;text-align:center;backdrop-filter:blur(14px);box-shadow:0 20px 60px rgba(0,0,0,.55),0 0 40px rgba(230,181,60,.08);}
+.gate-logo{font-size:26px;font-weight:800;color:var(--gold);letter-spacing:1px;}
+.gate-sub{color:var(--text-secondary);font-size:13px;margin:6px 0 22px;}
+.gate-pw{display:flex;gap:8px;}
+.gate-pw input{flex:1;padding:11px 13px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(10,12,18,.4);color:var(--text);font-size:15px;outline:none;font-family:inherit;}
+.gate-btn{padding:11px 20px;border:none;border-radius:10px;background:var(--gold);color:#1a1205;font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 4px 14px rgba(230,181,60,.30);}
+.gate-hint{color:var(--text-muted);font-size:11px;margin-top:14px;}
+
+.swatches{display:flex;gap:10px;flex-wrap:wrap;}
+.sw{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:var(--text-muted);}
+.sw i{width:44px;height:44px;border-radius:10px;display:block;border:1px solid var(--border);}
+footer{color:var(--text-muted);font-size:12px;text-align:center;margin-top:40px;border-top:1px solid var(--border);padding-top:20px;}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr);} .wrap{padding:0 4px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brand">
+    <span class="gem">💎</span>
+    <h1>兜宝金钻 · 设计系统</h1>
+    <span class="sub">Aurum Terminal · 深色金融终端 + 琥珀金</span>
+  </header>
+  <p class="lede">统一设计系统预览页。所有组件复用同一套 CSS 变量（见 <code>DESIGN.md</code>），可直接拷进金钻站或其他页面。金色为唯一英雄色，红=起涨 / 青=买入 / 金=红区黄柱。</p>
+
+  <section>
+    <h2 class="sec-h">色板 · Palette</h2>
+    <div class="swatches">
+      <div class="sw"><i style="background:#e6b53c"></i>--gold</div>
+      <div class="sw"><i style="background:#ff7b7b"></i>--red</div>
+      <div class="sw"><i style="background:#5fd4e6"></i>--cyan</div>
+      <div class="sw"><i style="background:#4ade80"></i>--green</div>
+      <div class="sw"><i style="background:#b794f4"></i>--purple</div>
+      <div class="sw"><i style="background:#6b85fa"></i>--accent</div>
+      <div class="sw"><i style="background:#151926"></i>--bg-card</div>
+      <div class="sw"><i style="background:#252b3b"></i>--border</div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-h">按钮 · Buttons</h2>
+    <div class="row">
+      <button class="btn btn-primary">进入金钻</button>
+      <button class="btn btn-secondary">查看候选池</button>
+      <button class="btn btn-ghost">取消</button>
+      <button class="btn btn-danger">清除筛选</button>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-h">统计卡 · Signal Stats</h2>
+    <div class="stats">
+      <div class="stat s-up"><div class="n">11</div><div class="l">金钻起涨</div></div>
+      <div class="stat s-buy"><div class="n">12</div><div class="l">买入</div></div>
+      <div class="stat s-hz"><div class="n">24</div><div class="l">红区黄柱连续</div></div>
+      <div class="stat"><div class="n">47</div><div class="l">金钻总数</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-h">标签 / 徽章 · Tags</h2>
+    <div class="row">
+      <span class="tag up">金钻起涨</span>
+      <span class="tag buy">买入</span>
+      <span class="tag hz">红区黄柱连续5天</span>
+      <span class="tag chan">缠论买点</span>
+      <span class="tag">机构变红</span>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-h">输入框 · Inputs</h2>
+    <div class="row">
+      <input class="input" placeholder="输入代码 / 名称实时查询…" style="width:260px">
+      <select class="input"><option>选择交易日</option><option>2026-07-13</option><option>2026-07-10</option></select>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-h">卡片 · Cards</h2>
+    <div class="card">
+      <h3>💡 当日策略解读</h3>
+      <p>金钻为技术共振信号（机构 + 游资 + 金钻三因子），须结合大盘环境与个股基本面，勿单一依赖。强势启动优先跟踪，回调结束回补次之，红区蓄势待发观察。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-h">表格 · Table</h2>
+    <table class="table">
+      <thead><tr><th>代码</th><th>名称</th><th>信号</th><th class="num">金钻趋势</th><th class="num">金牛2</th></tr></thead>
+      <tbody>
+        <tr class="active"><td>sh600345</td><td>长江通信</td><td><span class="tag up">金钻起涨</span></td><td class="num">12.34</td><td class="num">11.02</td></tr>
+        <tr><td>sz300763</td><td>锦浪科技</td><td><span class="tag hz">红区黄柱连续5天</span></td><td class="num">28.10</td><td class="num">25.40</td></tr>
+        <tr><td>sh603618</td><td>杭电股份</td><td><span class="tag buy">买入</span></td><td class="num">7.88</td><td class="num">7.20</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2 class="sec-h">登录门 · Access Gate</h2>
+    <div class="gate">
+      <div class="gate-card">
+        <div class="gate-logo">💎 兜宝金钻</div>
+        <div class="gate-sub">独立版 · 请输入访问密码</div>
+        <div class="gate-pw">
+          <input placeholder="访问密码">
+          <button class="gate-btn">进入</button>
+        </div>
+        <div class="gate-hint">密码请联系管理员获取</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>兜宝金钻 · Aurum Terminal 设计系统 · 配色与组件定义见仓库根目录 DESIGN.md</footer>
+</div>
+</body>
+</html>
