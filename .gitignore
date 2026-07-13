@@ -18,8 +18,12 @@ __pycache__/
 
 # 优化验证与备份（本地分析产物，不入库，避免每日自动部署 git add -A 污染仓库）
 _backup_optimized_*/
+_backup_window_cmp/
 walkforward_validation.py
 *报告*.md
+
+# 独立站构建产物（独立仓库 golden-diamond-observer 发布，不混入主仓库）
+diamond_site/
 
 # 站点源码 / 构建目录（GitHub Pages 仅服务站点产物，不入库源码与 deploy 暂存）
 deploy/
