@@ -1349,8 +1349,31 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-tablewrap ::-webkit-scrollbar{width:10px;height:10px;}
     #tab-diamond .gd-tablewrap ::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px;}
     #tab-diamond .gd-tablewrap ::-webkit-scrollbar-track{background:transparent;}
-    @media(max-width:880px){ #tab-diamond .gd-layout{grid-template-columns:1fr;} #tab-diamond .gd-stats{grid-template-columns:repeat(2,1fr);} #tab-diamond .gd-sigcards{grid-template-columns:1fr;} #tab-diamond .gd-tcards{grid-template-columns:1fr;} #tab-diamond .gd-ov-title{font-size:18px;} }
+    @media(max-width:880px){ #tab-diamond .gd-layout{grid-template-columns:1fr;} #tab-diamond .gd-stats{grid-template-columns:repeat(2,1fr);} #tab-diamond .gd-sigcards{grid-template-columns:1fr;} #tab-diamond .gd-tcards{grid-template-columns:1fr;}     #tab-diamond .gd-ov-title{font-size:18px;} }
+  /* ── 三档选股门控选择器（位于当日总览之上）── */
+  #tab-diamond .gd-gates{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:linear-gradient(180deg,#161b29,#141927);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:14px;box-shadow:var(--shadow-card);}
+  #tab-diamond .gd-gates-label{font-size:12px;font-weight:700;color:var(--text-secondary);letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:6px;}
+  #tab-diamond .gd-gates-label::before{content:"";width:8px;height:8px;border-radius:2px;background:linear-gradient(135deg,var(--gold),#b9892a);box-shadow:0 0 8px rgba(230,181,60,.5);}
+  #tab-diamond .gd-gate-seg{display:inline-flex;background:var(--bg-subtle);border:1px solid var(--border);border-radius:12px;padding:3px;gap:2px;}
+  #tab-diamond .gd-gate{border:none;background:transparent;color:var(--text-secondary);font-size:13px;font-weight:600;padding:7px 15px;border-radius:9px;cursor:pointer;transition:all .18s;white-space:nowrap;}
+  #tab-diamond .gd-gate:hover{color:var(--text);}
+  #tab-diamond .gd-gate.on{background:linear-gradient(180deg,var(--gold),#cf9e2e);color:#1a1205;box-shadow:0 4px 14px rgba(230,181,60,.32);}
+  #tab-diamond .gd-gate-meta{font-size:12px;color:var(--text-muted);margin-left:auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  #tab-diamond .gd-gate-meta b{color:var(--text-secondary);font-weight:700;font-variant-numeric:tabular-nums;}
+  #tab-diamond .gd-gate-meta .dot{width:4px;height:4px;border-radius:50%;background:var(--border);}
+  @media(max-width:880px){ #tab-diamond .gd-gate-meta{margin-left:0;width:100%;} }
   </style>
+
+  <!-- 三档选股门控（位于当日总览之上） -->
+  <div class="gd-gates" id="gdGates">
+    <div class="gd-gates-label">选股门控</div>
+    <div class="gd-gate-seg" id="gdGateSeg">
+      <button class="gd-gate" data-gate="all_a">全A</button>
+      <button class="gd-gate" data-gate="pool">当前门控（成交额TOP800）</button>
+      <button class="gd-gate" data-gate="sector_top100_to4">板块前100·换手≥4%</button>
+    </div>
+    <div class="gd-gate-meta" id="gdGateMeta"></div>
+  </div>
 
   <!-- 首栏：当日金钻总览 + 简单分析 -->
   <div class="gd-overview" id="gdOverview">
@@ -3473,19 +3496,58 @@ function gdNormCode(c){
 
 async function loadDiamondTab(){
   if(GD.loaded) return;
-  setGdStatus('加载当日金钻选股结果…');
+  setGdStatus('加载三档门控金钻选股结果…');
   try{
-    const res=await fetch('./output/golden_diamond.json?'+Date.now());
+    const res=await fetch('./output/gate_data.json?'+Date.now());
     if(!res.ok) throw new Error('HTTP '+res.status);
-    GD.cache=await res.json();
+    GD.gateData=await res.json();
+    if(!GD.gateData.gates) throw new Error('数据格式异常');
+    gdSetGate(GD.gateData.default_gate || 'pool');
     GD.loaded=true;
+    gdInitGates();
     gdRenderOverview(GD.cache);
     gdRenderTable(GD.cache);
     gdLoadHistory();
-    setGdStatus(`已加载 ${GD.cache.stocks?GD.cache.stocks.length:0} 只命中个股 · 数据日期 ${GD.cache.data_date||'—'} · 点击左侧个股展开主图/副图（实时查询不依赖此文件）`);
+    const g=GD.gateData.gates[GD.currentGate];
+    setGdStatus(`已加载【${g.label}】门控 · 扫描范围 ${g.scope_size} 只 · 命中 ${g.stocks.length} 只 · 数据日期 ${GD.gateData.data_date||'—'} · 点击左侧个股展开主图/副图（实时查询不依赖此文件）`);
   }catch(e){
-    setGdStatus('⚠ 当日金钻数据未生成（请先运行 golden_diamond_scan.py）。可直接用上方输入框实时查询任意个股。','err');
+    setGdStatus('⚠ 门控数据未生成（请先运行 gate_scan.py）。可直接用上方输入框实时查询任意个股。','err');
   }
+}
+function gdSetGate(gate){
+  const g=GD.gateData.gates[gate]; if(!g) return;
+  GD.currentGate=gate;
+  GD.cache={data_date:g.overview.data_date, updated_at:GD.gateData.updated_at,
+            overview:g.overview, stocks:g.stocks, scope_size:g.scope_size, label:g.label};
+}
+function gdInitGates(){
+  const seg=document.getElementById('gdGateSeg'); if(!seg) return;
+  seg.querySelectorAll('.gd-gate').forEach(b=>{
+    const g=b.dataset.gate;
+    // 隔离策略：gate_data.json 中不存在的档（线上仅发布当前门控 pool，无全A/板块档）→ 隐藏按钮
+    if(!GD.gateData.gates[g]){ b.style.display='none'; return; }
+    b.style.display='';
+    b.classList.toggle('on', g===GD.currentGate);
+    b.onclick=()=>gdSelectGate(g);
+  });
+  gdUpdateGateMeta();
+}
+function gdSelectGate(gate){
+  if(!GD.gateData || !GD.gateData.gates[gate]) return;
+  gdSetGate(gate);
+  const seg=document.getElementById('gdGateSeg');
+  if(seg) seg.querySelectorAll('.gd-gate').forEach(b=>b.classList.toggle('on', b.dataset.gate===gate));
+  gdUpdateGateMeta();
+  gdCloseInline();
+  gdRenderOverview(GD.cache);
+  gdRenderTable(GD.cache);
+}
+function gdUpdateGateMeta(){
+  const el=document.getElementById('gdGateMeta'); if(!el || !GD.cache) return;
+  const o=GD.cache.overview||{};
+  el.innerHTML=`<span>扫描范围 <b>${(GD.cache.scope_size||0).toLocaleString()}</b> 只</span>`
+    +`<span class="dot"></span><span>命中 <b>${(o.total||0).toLocaleString()}</b> 只</span>`
+    +`<span class="dot"></span><span>起涨 ${o.up||0} · 买入 ${o.buy||0} · 红区 ${o.hz||0}</span>`;
 }
 function setGdStatus(msg, cls){ const s=document.getElementById('gdStatus'); if(s){ s.textContent=msg; s.className='gd-status'+(cls?(' '+cls):''); } }
 
