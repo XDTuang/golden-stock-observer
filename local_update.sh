@@ -25,4 +25,19 @@ else
   echo "[$(date)] ✗ 发布失败（详见 $LOG）" >> "$LOG"
   exit 1
 fi
+
+echo "[$(date)] 构建并发布钻石副站..." >> "$LOG"
+if bash _build_diamond.py >> "$LOG" 2>&1; then
+  git -C diamond_site add -A
+  git -C diamond_site add -f output/gate_data.json
+  if git -C diamond_site diff --cached --quiet; then
+    echo "[$(date)] 钻石副站无新更改，跳过推送" >> "$LOG"
+  else
+    git -C diamond_site commit -m "数据更新: $(date '+%Y-%m-%d %H:%M')" >> "$LOG" 2>&1
+    git -C diamond_site push origin main >> "$LOG" 2>&1
+    echo "[$(date)] ✓ 钻石副站已发布" >> "$LOG"
+  fi
+else
+  echo "[$(date)] ✗ 钻石副站构建失败（详见 $LOG）" >> "$LOG"
+fi
 echo "[$(date)] ===== 完成 =====" >> "$LOG"

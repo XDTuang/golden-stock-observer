@@ -1213,13 +1213,16 @@ td { border-color: var(--border-light); }
       border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:16px;box-shadow:var(--shadow-card);}
     #tab-diamond .gd-ov-title{font-size:20px;font-weight:800;letter-spacing:-0.01em;display:flex;align-items:center;gap:9px;margin-bottom:14px;}
     #tab-diamond .gd-ov-title #gdDate{font-size:12px;font-weight:500;color:var(--text-muted);letter-spacing:0;}
-    #tab-diamond .gd-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px;}
+    #tab-diamond .gd-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px;}
     #tab-diamond .gd-stat{background:linear-gradient(180deg,#1a2030,#151926);border:1px solid var(--border);border-top:3px solid var(--accent);
       border-radius:var(--radius);padding:16px 14px;text-align:center;box-shadow:var(--shadow-sm);transition:transform .18s,box-shadow .18s,border-color .18s;}
     #tab-diamond .gd-stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-card);}
     #tab-diamond .gd-stat.s-up{border-top-color:var(--red);}
     #tab-diamond .gd-stat.s-buy{border-top-color:var(--cyan);}
     #tab-diamond .gd-stat.s-hz{border-top-color:var(--gold);}
+    #tab-diamond .gd-stat.s-chan{border-top-color:var(--purple);cursor:pointer;}
+    #tab-diamond .gd-stat.s-chan .n{color:var(--purple);}
+    #tab-diamond .gd-stat.s-chan.on{background:linear-gradient(180deg,#241a33,#1a1426);box-shadow:0 0 0 1px var(--purple) inset, var(--shadow-card);}
     #tab-diamond .gd-stat .n{font-size:28px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-0.01em;}
     #tab-diamond .gd-stat.s-up .n{color:var(--red);}
     #tab-diamond .gd-stat.s-buy .n{color:var(--cyan);}
@@ -1368,7 +1371,6 @@ td { border-color: var(--border-light); }
   <div class="gd-gates" id="gdGates">
     <div class="gd-gates-label">选股门控</div>
     <div class="gd-gate-seg" id="gdGateSeg">
-      <button class="gd-gate" data-gate="all_a">全A</button>
       <button class="gd-gate" data-gate="pool">当前门控（成交额TOP800）</button>
       <button class="gd-gate" data-gate="sector_top100_to4">板块前100·换手≥4%</button>
     </div>
@@ -3478,7 +3480,7 @@ function updateThemeIcon(theme) {
 // ═══════════════════════════════════════════════════════════════
 // 兜宝金钻 Tab —— 三子形态策略可视化（移植自 golden_diamond_viewer 验证引擎）
 // ═══════════════════════════════════════════════════════════════
-const GD = { cache:null, data:null, view:{start:0,end:0,count:120}, filter:{buy:true,up:true,hz:true,chan:true,four:true}, hoverIdx:-1, loaded:false };
+const GD = { cache:null, data:null, view:{start:0,end:0,count:120}, filter:{buy:true,up:true,hz:true,chan:true,four:true}, gateChanOnly:false, hoverIdx:-1, loaded:false };
 
 function gdColors(){
   const cs=getComputedStyle(document.documentElement); const g=n=>cs.getPropertyValue(n).trim()||'#888';
@@ -3518,7 +3520,8 @@ function gdSetGate(gate){
   const g=GD.gateData.gates[gate]; if(!g) return;
   GD.currentGate=gate;
   GD.cache={data_date:g.overview.data_date, updated_at:GD.gateData.updated_at,
-            overview:g.overview, stocks:g.stocks, scope_size:g.scope_size, label:g.label};
+            overview:g.overview, stocks:g.stocks, scope_size:g.scope_size, label:g.label,
+            chan:g.chan||{total:0,codes:[]}};
 }
 function gdInitGates(){
   const seg=document.getElementById('gdGateSeg'); if(!seg) return;
@@ -3534,6 +3537,7 @@ function gdInitGates(){
 }
 function gdSelectGate(gate){
   if(!GD.gateData || !GD.gateData.gates[gate]) return;
+  GD.gateChanOnly=false;
   gdSetGate(gate);
   const seg=document.getElementById('gdGateSeg');
   if(seg) seg.querySelectorAll('.gd-gate').forEach(b=>b.classList.toggle('on', b.dataset.gate===gate));
@@ -3551,23 +3555,31 @@ function gdUpdateGateMeta(){
 }
 function setGdStatus(msg, cls){ const s=document.getElementById('gdStatus'); if(s){ s.textContent=msg; s.className='gd-status'+(cls?(' '+cls):''); } }
 
+function gdToggleChanGate(){ GD.gateChanOnly=!GD.gateChanOnly; gdRenderOverview(GD.cache); gdRenderTable(GD.cache); }
 function gdRenderOverview(d){
   document.getElementById('gdDate').textContent = d.data_date?('· '+d.data_date):'';
   const o=d.overview||{};
+  const chanTotal=(GD.cache.chan?GD.cache.chan.total:0);
   const cards=[
     {n:o.total||0,l:'命中总数',c:''},
     {n:o.up||0,l:'金钻起涨 (XG2)',c:'s-up'},
     {n:o.buy||0,l:'买入 (XG)',c:'s-buy'},
     {n:o.hz||0,l:'红区黄柱连续',c:'s-hz'},
+    {n:chanTotal,l:'缠论买点 (门控)',c:'s-chan',f:'chanGate'},
   ];
   document.getElementById('gdStats').innerHTML=cards.map(x=>
-    `<div class="gd-stat ${x.c}"><div class="n">${x.n}</div><div class="l">${x.l}</div></div>`).join('');
+    `<div class="gd-stat ${x.c}${(x.f==='chanGate'&&GD.gateChanOnly)?' on':''}"${(x.f==='chanGate')?` onclick="gdToggleChanGate()" title="点击仅看本门控内的缠论买点"`:''}><div class="n">${x.n}</div><div class="l">${x.l}</div></div>`).join('');
   document.getElementById('gdAnalysis').textContent = o.analysis || '—';
   const ts=document.getElementById('gdTrackSummary'); if(ts) ts.textContent = o.analysis || '—';
 }
 
 function gdRenderTable(d){
-  const stocks=d.stocks||[];
+  let stocks=d.stocks||[];
+  const allChan=GD.cache.chan?new Set(GD.cache.chan.codes):new Set();
+  // 门控级缠论筛选：仅显示本门控范围内同时触发缠论买点的个股
+  if(GD.gateChanOnly && allChan.size){
+    stocks=stocks.filter(s=>allChan.has(s.code));
+  }
   document.getElementById('gdCount').textContent=stocks.length;
   const tagCls=t=>t==='买入'?'buy':(t.startsWith('红区黄柱连续')?'hz':'up');
   const tb=document.querySelector('#gdTable tbody'); tb.innerHTML=stocks.map(s=>{
@@ -3579,9 +3591,10 @@ function gdRenderTable(d){
     const four=(s.kline&&window.FourEngine)?FourEngine.computeFour(s.kline):{last3Inst:[],last3Youzi:[]};
     const instCell=(four.last3Inst&&four.last3Inst.length)?four.last3Inst.map(b=>`<span class="gd-inst-badge">${b.date.slice(5)}</span>`).join(''):'<span class="gd-muted">无</span>';
     const youziCell=(four.last3Youzi&&four.last3Youzi.length)?four.last3Youzi.map(b=>`<span class="gd-youzi-badge">${b.date.slice(5)}</span>`).join(''):'<span class="gd-muted">无</span>';
+    const chanBadge=allChan.has(s.code)?' <span class="gd-chan-badge">缠</span>':'';
     return `<tr class="gd-row" data-code="${s.code}">
       <td class="gd-c"><span class="gd-caret">▸</span></td>
-      <td>${s.code}</td><td>${s.name||'—'}</td>
+      <td>${s.code}</td><td>${s.name||'—'}${chanBadge}</td>
       <td><span class="gd-tag ${tagCls(sig)}">${sig}</span></td>
       <td class="gd-chan-cell">${chanCell}</td>
       <td class="gd-chan-cell">${instCell}</td>
@@ -3601,12 +3614,17 @@ function gdOpenStock(code, tr){
   const k=s.kline||[];
   const ch=(window.ChanEngine?ChanEngine.computeChan(k):{buy:[],sell:[],last3Buy:[]});
   const four=(window.FourEngine?FourEngine.computeFour(k):{牛线1:[],马线1:[],牛线:[],马线:[],GB:[],GBB:[],W2:[],V6:[],instSig:[],youziSig:[]});
+  // 金钻副图数组：sector 档自带真值 golden 数组；pool 档数据未带，用 JS 金钻引擎从 kline 现算（与 sector 同源）
+  let ga;
+  if(s.golden_bull && s.golden_bull.length){ ga={golden_bull:s.golden_bull, golden_trend:s.golden_trend, gt2:s.gt2, red_zone:s.red_zone, yellow_bar:s.yellow_bar}; }
+  else if(k.length){ try{ ga=gdAnalyze(k); }catch(e){ console.warn('gdAnalyze 失败',s.code,e); ga={}; } }
+  else ga={};
   GD.data={
     code:s.code, name:s.name||s.code,
     dates:k.map(r=>r.date), open:k.map(r=>r.open), close:k.map(r=>r.close),
     high:k.map(r=>r.high), low:k.map(r=>r.low), volume:k.map(r=>r.volume),
-    golden_bull:s.golden_bull, golden_trend:s.golden_trend, gt2:s.gt2,
-    red_zone:s.red_zone, yellow_bar:s.yellow_bar, signals:s.signals||[], count:k.length,
+    golden_bull:ga.golden_bull||[], golden_trend:ga.golden_trend||[], gt2:ga.gt2||[],
+    red_zone:ga.red_zone||[], yellow_bar:ga.yellow_bar||[], signals:s.signals||[], count:k.length,
     chanBuy:ch.buy, chanSell:ch.sell, chanLast3:ch.last3Buy,
     four:four,
   };
@@ -3932,7 +3950,14 @@ function gdDrawSub(){
   const cv=document.getElementById('gdSub'); const {ctx,w,h}=gdSetupCanvas(cv,340); ctx.clearRect(0,0,w,h);
   const C=gdColors(); const L=GD.view.start,R=GD.view.end,N=R-L;
   const padL=8,padR=58,top=14,bot=h-16;
-  const gb=GD.data.golden_bull.slice(L,R),gt=GD.data.golden_trend.slice(L,R),g2=GD.data.gt2.slice(L,R),lo=GD.data.low.slice(L,R),hi=GD.data.high.slice(L,R);
+  // 防御：golden 数组缺失/为空时不抛错（否则会中断 gdRender，连累四量图与判定明细），仅画占位
+  const _gb=GD.data.golden_bull||[], _gt=GD.data.golden_trend||[], _g2=GD.data.gt2||[];
+  if(!_gb.length || !_gt.length || !_g2.length){
+    ctx.fillStyle=C.txt; ctx.font='12px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('暂无金钻副图数据', w/2, h/2);
+    return;
+  }
+  const gb=_gb.slice(L,R),gt=_gt.slice(L,R),g2=_g2.slice(L,R),lo=GD.data.low.slice(L,R),hi=GD.data.high.slice(L,R);
   const scale=gdMakeScale([].concat(gb,gt,g2,lo,hi).filter(x=>x!=null),0.06,top,bot);
   const bw=(w-padL-padR)/N;
   for(let k=0;k<N-1;k++){ if(gt[k]==null||g2[k]==null||gt[k+1]==null||g2[k+1]==null)continue;

@@ -55,6 +55,10 @@ echo "💾 Step 2.5: 金钻池快照追加进数据仓库（保留最近20交易
 "$PYTHON" build_gd_history.py --append || echo "  ⚠️  金钻池历史追加失败（跳过，不影响主流程）"
 
 echo ""
+echo "💠 Step 2.6: 门控扫描（pool + 板块前100·换手≥4%，复用金钻真值 + 缠论按门控）"
+"$PYTHON" gate_scan.py --daily || echo "  ⚠️  门控扫描失败（跳过，不影响主流程）"
+
+echo ""
 echo "📈 Step 3: 刷新辅助数据（ETF / 板块 / 龙虎榜，best-effort）"
 "$PYTHON" fetch_national_team_etf.py 2>/dev/null || echo "  ⚠️  ETF 数据刷新失败（跳过）"
 "$PYTHON" fetch_sector_flow.py 2>/dev/null || echo "  ⚠️  板块资金流刷新失败（跳过）"
