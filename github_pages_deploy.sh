@@ -94,6 +94,8 @@ echo "  ✓ 已同步站点文件到根目录"
 # ── Step 4: 提交并推送（GitHub Pages 直接服务分支根目录）──
 echo ""
 echo "🚀 Step 4: 提交并推送 ..."
+# 失效 index stat 缓存，防止 racy-git 漏提交（与主站 history / 副站数据同理）
+git update-index --really-refresh 2>/dev/null || true
 git add -A
 git add -f index.html signals.json lh_calendar.json \
   output/top10_history.json output/sector_flow.json output/national_team_etf.json \
