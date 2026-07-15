@@ -3719,8 +3719,8 @@ async function gdLiveQuery(){
     res.four=four;
     res.code=code; res.name=code;
     GD.data=res; gdResetView();
-    gdOpenInline(null, '#gdTable tbody', 8, `🔎 实时查询：${code} · 命中 ${sig}`);
     const sig=res.signals.length?res.signals.map(s=>s.type).join(' / '):'无命中';
+    gdOpenInline(null, '#gdTable tbody', 8, `🔎 实时查询：${code} · 命中 ${sig}`);
     setGdStatus(`实时查询 ${code} · 末日 ${rows[rows.length-1].date} · 信号: ${sig}`);
   }catch(e){ setGdStatus('⚠ 实时查询失败: '+e.message,'err'); }
 }
