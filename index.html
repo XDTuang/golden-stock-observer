@@ -1349,6 +1349,11 @@ td { border-color: var(--border-light); }
     #tab-diamond tr.gd-inrow>td{padding:0;border-top:1px solid var(--border);}
     #tab-diamond tr.gd-inrow .gd-inline{padding:16px 12px 18px 36px;background:var(--bg-subtle);}
     #tab-diamond tr.gd-inrow .gd-livehead{font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;}
+    /* 实时查询：结果紧贴查询框下方显示（不再塞进表格底部） */
+    #tab-diamond .gd-livebox{margin:10px 0 6px;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--bg-subtle);box-shadow:var(--shadow-card);overflow:hidden;}
+    #tab-diamond .gd-livebox[hidden]{display:none;}
+    #tab-diamond .gd-livebox .gd-inline{padding:16px 16px 18px;}
+    #tab-diamond .gd-livebox .gd-livehead{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;border-left:3px solid var(--gold);padding-left:10px;}
     #tab-diamond .gd-tablewrap ::-webkit-scrollbar{width:10px;height:10px;}
     #tab-diamond .gd-tablewrap ::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px;}
     #tab-diamond .gd-tablewrap ::-webkit-scrollbar-track{background:transparent;}
@@ -1389,6 +1394,9 @@ td { border-color: var(--border-light); }
     <button id="gdQuery" class="gd-btn">实时查询</button>
     <span class="gd-hint">基于当日更新的金钻选股结果浏览；实时查询直连腾讯行情（无需后端）</span>
   </div>
+
+  <!-- 实时查询结果：紧贴查询框下方显示 -->
+  <div id="gdLiveBox" class="gd-livebox" hidden></div>
 
   <div class="gd-legend">
     <span><i style="background:var(--red)"></i>金牛线</span>
@@ -3685,16 +3693,34 @@ function gdCloseInline(){
     if(inc && GD_CHARTS.parentNode===inc) gdParkCharts();
     ex.remove();
   }
+  // 收起实时查询浮层（紧贴查询框的结果面板）
+  const lb=document.getElementById('gdLiveBox');
+  if(lb){
+    if(GD_CHARTS.parentNode && lb.contains(GD_CHARTS)) gdParkCharts();
+    lb.innerHTML=''; lb.hidden=true;
+  }
   document.querySelectorAll('#gdTable tbody tr.gd-row')
     .forEach(tr=>tr.classList.remove('active','open'));
 }
 // 在某张表（tbodySel）的某行 tr 下方插入展开行；colspan 需匹配该表列数
-function gdOpenInline(tr, tbodySel, colspan, liveHead){
+// mountSel 提供时（实时查询），结果渲染到该容器（紧贴查询框），不进表格
+function gdOpenInline(tr, tbodySel, colspan, liveHead, mountSel){
   gdCloseInline();
+  const head=liveHead?`<div class="gd-livehead">${liveHead}</div>`:'';
+  if(mountSel){
+    const box=document.querySelector(mountSel); if(!box) return;
+    box.innerHTML=''; box.hidden=false;
+    const wrap=document.createElement('div');
+    wrap.className='gd-inrow gd-live';
+    wrap.innerHTML=`<div class="gd-inline">${head}</div>`;
+    wrap.querySelector('.gd-inline').appendChild(GD_CHARTS);
+    box.appendChild(wrap);
+    requestAnimationFrame(()=>{ gdRender(); });
+    return;
+  }
   const tb=document.querySelector(tbodySel); if(!tb) return;
   const inrow=document.createElement('tr');
   inrow.className='gd-inrow';
-  const head=liveHead?`<div class="gd-livehead">${liveHead}</div>`:'';
   inrow.innerHTML=`<td colspan="${colspan}"><div class="gd-inline">${head}</div></td>`;
   inrow.querySelector('.gd-inline').appendChild(GD_CHARTS);
   if(tr){ tr.classList.add('active','open'); tr.after(inrow); }
@@ -3723,7 +3749,7 @@ async function gdLiveQuery(){
     res.code=code; res.name=code;
     GD.data=res; gdResetView();
     const sig=res.signals.length?res.signals.map(s=>s.type).join(' / '):'无命中';
-    gdOpenInline(null, '#gdTable tbody', 8, `🔎 实时查询：${code} · 命中 ${sig}`);
+    gdOpenInline(null, '#gdTable tbody', 8, `🔎 实时查询：${code} · 命中 ${sig}`, '#gdLiveBox');
     setGdStatus(`实时查询 ${code} · 末日 ${rows[rows.length-1].date} · 信号: ${sig}`);
   }catch(e){ setGdStatus('⚠ 实时查询失败: '+e.message,'err'); }
 }
