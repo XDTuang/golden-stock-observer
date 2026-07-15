@@ -29,7 +29,7 @@ fi
 echo "[$(date)] 构建并发布钻石副站..." >> "$LOG"
 if bash _build_diamond.py >> "$LOG" 2>&1; then
   git -C diamond_site add -A
-  git -C diamond_site add -f output/gate_data.json
+  git -C diamond_site add -f output/golden_pool_*.json output/golden_pool_meta.json output/golden_pool_manifest.json
   if git -C diamond_site diff --cached --quiet; then
     echo "[$(date)] 钻石副站无新更改，跳过推送" >> "$LOG"
   else

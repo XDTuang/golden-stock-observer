@@ -81,6 +81,10 @@ cp -R "$DEPLOY/lh_calendar.json" .
 # 清空根 output/ 后仅复制前端真正 fetch 的精简文件，避免把 kline_raw 等重型文件带上 Pages
 # 先保留门控数据（gate_scan.py 产出，slim_signals 不处理；否则会被下方 rm -rf 清掉）
 cp -R output/gate_data.json "$DEPLOY/output/gate_data.json" 2>/dev/null || true
+# 保留兜宝金钻分片（build_diamond_pool.py 产出，含 K线，供点开个股渲染；slim_signals 不处理）
+cp output/golden_pool_*.json "$DEPLOY/output/" 2>/dev/null || true
+cp output/golden_pool_meta.json "$DEPLOY/output/" 2>/dev/null || true
+cp output/golden_pool_manifest.json "$DEPLOY/output/" 2>/dev/null || true
 rm -rf output
 cp -R "$DEPLOY/output" .
 cp -R "$DEPLOY/build_manifest.json" .
@@ -95,6 +99,7 @@ git add -f index.html signals.json lh_calendar.json \
   output/top10_history.json output/sector_flow.json output/national_team_etf.json \
   output/golden_diamond.json output/golden_diamond_history.json \
   output/gate_data.json \
+  output/golden_pool_*.json output/golden_pool_meta.json output/golden_pool_manifest.json \
   build_manifest.json .nojekyll
 if git diff --cached --quiet; then
   echo "  无新更改需要提交"

@@ -59,6 +59,10 @@ echo "💠 Step 2.6: 门控扫描（pool + 板块前100·换手≥4%，复用金
 "$PYTHON" gate_scan.py --daily || echo "  ⚠️  门控扫描失败（跳过，不影响主流程）"
 
 echo ""
+echo "💠 Step 2.7: 生成兜宝金钻分片（主站 output/ + 钻石副站 diamond_site/output/，含 K线，供点开个股渲染主图/副图/四量图）"
+"$PYTHON" build_diamond_pool.py || echo "  ⚠️  金钻分片生成失败（跳过，不影响主流程）"
+
+echo ""
 echo "📈 Step 3: 刷新辅助数据（ETF / 板块 / 龙虎榜，best-effort）"
 "$PYTHON" fetch_national_team_etf.py 2>/dev/null || echo "  ⚠️  ETF 数据刷新失败（跳过）"
 "$PYTHON" fetch_sector_flow.py 2>/dev/null || echo "  ⚠️  板块资金流刷新失败（跳过）"
