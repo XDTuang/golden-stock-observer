@@ -3500,7 +3500,7 @@ async function loadDiamondTab(){
   if(GD.loaded) return;
   setGdStatus('加载原始兜宝金钻数据（分片并行）…');
   try{
-    // 读取分片清单：仅含原始兜宝金钻(pool档)，不含沙盒 all_a/sector（隔离原则）
+    // 读取分片清单：含原始兜宝金钻(pool档) + 板块前100·换手≥4%(sector档，嵌于 meta)
     const manifest = await (await fetch('./output/golden_pool_manifest.json?'+Date.now())).json();
     if(!manifest.parts || !manifest.parts.length) throw new Error('清单为空');
     // 并行加载所有分片并合并 stocks
@@ -3508,9 +3508,11 @@ async function loadDiamondTab(){
       fetch('./output/'+p+'?'+Date.now()).then(r => { if(!r.ok) throw new Error('HTTP '+r.status+' '+p); return r.json(); })
     ));
     const stocks = partJsons.flatMap(p => p.stocks || []);
-    // 读取 meta（label/scope_size/overview/chan）
+    // 读取 meta（label/scope_size/overview/chan）；板块前100·换手≥4% 档也来自 meta.sector
     const meta = await (await fetch('./output/'+manifest.meta+'?'+Date.now())).json();
     const pool = meta.pool || {};
+    const sector = meta.sector || {};
+    const sectorStocks = sector.stocks || [];
     GD.gateData = {
       data_date: meta.data_date,
       updated_at: meta.updated_at,
@@ -3522,9 +3524,21 @@ async function loadDiamondTab(){
           overview: pool.overview || {},
           stocks: stocks,
           chan: pool.chan || {total:0, codes:[]}
+        },
+        sector_top100_to4: {
+          label: sector.label || '板块前100·换手≥4%',
+          scope_size: sector.scope_size || sectorStocks.length,
+          overview: sector.overview || {},
+          stocks: sectorStocks,
+          chan: sector.chan || {total:0, codes:[]}
         }
       }
     };
+    // 跨档个股查找表：板块档个股可能不在 pool 的 131 只内，点开需能跨档定位
+    GD.allStocks = new Map();
+    for(const g of Object.values(GD.gateData.gates)){
+      for(const s of (g.stocks||[])){ if(!GD.allStocks.has(s.code)) GD.allStocks.set(s.code, s); }
+    }
     if(!GD.gateData.gates.pool.stocks.length) throw new Error('数据为空');
     gdSetGate(GD.gateData.default_gate || 'pool');
     GD.loaded=true;
@@ -3533,7 +3547,7 @@ async function loadDiamondTab(){
     gdRenderTable(GD.cache);
     gdLoadHistory();
     const g=GD.gateData.gates[GD.currentGate];
-    setGdStatus(`已加载【原始兜宝金钻】 · 扫描范围 ${g.scope_size} 只 · 命中 ${g.stocks.length} 只 · 数据日期 ${GD.gateData.data_date||'—'} · 点击左侧个股展开主图/副图（实时查询不依赖此文件）`);
+    setGdStatus(`已加载【${g.label}】 · 扫描范围 ${g.scope_size} 只 · 命中 ${g.stocks.length} 只 · 数据日期 ${GD.gateData.data_date||'—'} · 点击左侧个股展开主图/副图（实时查询不依赖此文件）`);
   }catch(e){
     setGdStatus('⚠ 金钻数据加载失败：'+e.message+'。可直接用上方输入框实时查询任意个股。','err');
   }
@@ -3630,7 +3644,8 @@ const GD_CHARTS=document.getElementById('gdCharts');
 
 function gdOpenStock(code, tr){
   if(!GD.cache) return;
-  const s=GD.cache.stocks.find(x=>x.code===code); if(!s) return;
+  // 跨档查找：板块档个股可能不在 pool 的 131 只内，优先从 GD.allStocks（合并所有档）定位
+  const s=(GD.allStocks&&GD.allStocks.get(code))||GD.cache.stocks.find(x=>x.code===code); if(!s) return;
   // 再次点击已展开的行 -> 收起
   if(tr && tr.classList.contains('open')){ gdCloseInline(); return; }
   const k=s.kline||[];
