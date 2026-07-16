@@ -27,7 +27,7 @@ else
 fi
 
 echo "[$(date)] 构建并发布钻石副站..." >> "$LOG"
-if bash _build_diamond.py >> "$LOG" 2>&1; then
+if /Users/samt/.workbuddy/binaries/python/envs/default/bin/python3 _build_diamond.py >> "$LOG" 2>&1; then
   # 失效 index stat 缓存，防止 racy-git：_build_diamond.py 写入与 git add 落在同一秒时，
   # git 按 stat 误判文件未变而漏提交数据更新（曾导致副站演化历史停在昨日）
   git -C diamond_site update-index --really-refresh 2>/dev/null || true
