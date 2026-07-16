@@ -3725,19 +3725,47 @@ function gdOpenInline(tr, tbodySel, colspan, liveHead, mountSel){
   requestAnimationFrame(()=>{ gdRender(); });
 }
 
+// 实时查询拉日K线：腾讯官方 CORS 代理(proxy.finance.qq.com) 优先，老域名+_var 兜底
+// 两者均返回 Access-Control-Allow-Origin:*，可从 GitHub Pages / CloudStudio 跨域直连
+async function gdFetchKline(code){
+  const eps=[
+    `https://proxy.finance.qq.com/ifzqgtimg/appstock/app/fqkline/get?param=${code},day,,,250,qfq`,
+    `https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,250,qfq&_var=kline_dayqfq`
+  ];
+  let lastErr=null;
+  for(let i=0;i<eps.length;i++){
+    try{
+      const ctrl=new AbortController();
+      const to=setTimeout(()=>ctrl.abort(),12000);
+      const r=await fetch(eps[i],{signal:ctrl.signal,cache:'no-store'});
+      clearTimeout(to);
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const txt=await r.text();
+      let d;
+      if(i===1){ // 老域名 JSONP 包裹: kline_dayqfq={...}
+        const m=txt.match(/^[A-Za-z_]+\(([\s\S]*)\)\s*;?\s*$/);
+        if(!m) throw new Error('JSONP 解析失败');
+        d=JSON.parse(m[1]);
+      }else{
+        d=JSON.parse(txt);
+      }
+      const node=(d.data&&(d.data[code]||d.data[code.replace(/^(sh|sz|bj)/,'')]))||null;
+      if(!node) throw new Error('无数据');
+      const k=node.qfqday||node.day;
+      if(!k||k.length<60) throw new Error('K线不足 '+k.length+'根');
+      return k.map(r=>({date:r[0],open:+r[1],close:+r[2],high:+r[3],low:+r[4],volume:+r[5]}));
+    }catch(e){ lastErr=e; }
+  }
+  throw lastErr||new Error('所有数据源失败');
+}
+
 async function gdLiveQuery(){
   const raw=document.getElementById('gdCode').value.trim();
   if(!raw){ setGdStatus('请输入股票代码，如 300316','err'); return; }
   const code=gdNormCode(raw);
   setGdStatus('实时查询中… '+code);
   try{
-    const url=`https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,250,qfq`;
-    const j=await fetch(url); const d=await j.json();
-    const node=(d.data&&(d.data[code]||d.data[code.replace(/^(sh|sz|bj)/,'')]))||null;
-    if(!node){ throw new Error('无数据'); }
-    const k=node.qfqday||node.day;
-    if(!k||k.length<60) throw new Error('K线不足');
-    const rows=k.map(r=>({date:r[0],open:+r[1],close:+r[2],high:+r[3],low:+r[4],volume:+r[5]}));
+    const rows=await gdFetchKline(code);
     const res=gdAnalyze(rows);
     const ch=(window.ChanEngine?ChanEngine.computeChan(rows):{buy:[],sell:[],last3Buy:[]});
     const four=(window.FourEngine?FourEngine.computeFour(rows):{牛线1:[],马线1:[],牛线:[],马线:[],GB:[],GBB:[],W2:[],V6:[],instSig:[],youziSig:[]});
@@ -3748,7 +3776,7 @@ async function gdLiveQuery(){
     const sig=res.signals.length?res.signals.map(s=>s.type).join(' / '):'无命中';
     gdOpenInline(null, '#gdTable tbody', 8, `🔎 实时查询：${code} · 命中 ${sig}`, '#gdLiveBox');
     setGdStatus(`实时查询 ${code} · 末日 ${rows[rows.length-1].date} · 信号: ${sig}`);
-  }catch(e){ setGdStatus('⚠ 实时查询失败: '+e.message,'err'); }
+  }catch(e){ setGdStatus('⚠ 实时查询失败: '+(e&&e.message?e.message:e),'err'); }
 }
 
 // ── JS 版 analyze（忠实移植 server.py 验证引擎）──
