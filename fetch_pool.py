@@ -56,7 +56,13 @@ HEADERS = [
 
 # 腾讯接口
 QT_URL = "https://qt.gtimg.cn/q"                       # 实时快照（成交额排行）
-KLINE_URL = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get"  # 前复权日线
+# K线主源：腾讯官方 finance 代理（proxy.finance.qq.com）—— 数据正确、带 CORS、结构与原
+#   web.ifzq.gtimg.cn 完全一致（同 qfqday 数组）。原 web.ifzq.gtimg.cn 自 2026-07 起被 WAF
+#   拦成 501，故改走此代理域名；web.ifzq 仍作二级兜底（加 _var 参数亦可返回 200+CORS）。
+#   新浪 money.finance.sina.com.cn 实测存在偶发脏 bar（如 603538 在 7-06~08 出现 37~45 价位的
+#   错乱 K线，污染金钻趋势未来函数线导致假信号），仅作绝对最后的兜底。
+KLINE_URL = "https://proxy.finance.qq.com/ifzqgtimg/appstock/app/fqkline/get"  # 前复权日线（官方代理）
+KLINE_URL_FALLBACK = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get"       # 原域名（二级兜底）
 
 
 def _curl_text(url: str) -> str:
@@ -280,7 +286,8 @@ def _fetch_kline_sina(stock: dict) -> dict | None:
 def fetch_kline(stock: dict) -> dict | None:
     """
     拉取单只股票 250 日 K线（前复权）。
-    数据源：腾讯 gtimg(主) → 新浪(兜底，稳且不被限流)。
+    数据源优先级：腾讯官方代理(主) → 腾讯原域名(二级兜底) → 新浪(绝对兜底)。
+    腾讯两源返回的数据结构完全一致（qfqday 数组），均正确；新浪偶有脏 bar，仅作最后兜底。
 
     Returns:
         {code, name, market, kline:[{date, open, last, high, low, volume}]} or None
@@ -288,30 +295,20 @@ def fetch_kline(stock: dict) -> dict | None:
     """
     code = stock["code"]
     params = {"param": f"{code},day,,,{KLINE_DAYS},qfq"}
-    kline_url = f"{KLINE_URL}?{urlencode(params)}"
 
-    # 1) 腾讯 gtimg（主）
-    #    仅当返回有效 JSON 时使用；接口返回非 JSON（如 501 维护页）视为确定性不可用，
-    #    立即降级新浪兜底，避免对故障接口空耗重试时间（否则 800 只会被拖到数小时）。
-    for _ in range(RETRY_LIMIT):
+    def _parse_tencent(out: str) -> list | None:
+        """解析腾讯两源返回的 qfqday 数组，成功返回 bars，失败返回 None。"""
         try:
-            out = _curl_text(kline_url)
-            if not out.strip():
-                _backoff(_); continue
             j = json.loads(out)
-        except json.JSONDecodeError:
-            break  # 非 JSON（501/网关页），确定性失败，直接转新浪兜底
-        except Exception as e:
-            if _ == RETRY_LIMIT - 1:
-                print(f"  ⚠️  {stock['name']} ({code}) gtimg K线失败: {e}")
-            _backoff(_); continue
+        except Exception:
+            return None
         node = (j.get("data") or {}).get(code) or \
                (j.get("data") or {}).get(stock.get("code6", ""))
         if not node:
-            break
+            return None
         arr = node.get("qfqday") or node.get("day")
         if not arr or len(arr) < 60:
-            break
+            return None
         bars = []
         for p in arr:
             # [date, open, close, high, low, volume(手)]
@@ -323,14 +320,28 @@ def fetch_kline(stock: dict) -> dict | None:
                 "low": float(p[4]),
                 "volume": float(p[5]),
             })
-        return {
-            "code": code,
-            "name": stock["name"],
-            "market": stock["market"],
-            "kline": bars,
-        }
+        return bars
 
-    # 2) 新浪兜底（稳，不被限流）
+    # 依次尝试腾讯两源（正确数据优先）；任一返回有效 JSON 即采用
+    for turl in (KLINE_URL, KLINE_URL_FALLBACK):
+        full = f"{turl}?{urlencode(params)}"
+        for _ in range(RETRY_LIMIT):
+            try:
+                out = _curl_text(full)
+                if not out.strip():
+                    _backoff(_); continue
+                bars = _parse_tencent(out)
+                if bars:
+                    return {"code": code, "name": stock["name"],
+                            "market": stock["market"], "kline": bars}
+                _backoff(_)  # 返回了但无节点/不足 60 根，重试
+            except json.JSONDecodeError:
+                break  # 非 JSON（501/网关页），此源确定性不可用，跳到下一源
+            except Exception:
+                _backoff(_)
+        # 本源重试耗尽（含非 JSON 提前 break），继续尝试下一源
+
+    # 3) 新浪兜底（稳，不被限流；偶有脏 bar，仅作最后兜底）
     try:
         sina = _fetch_kline_sina(stock)
         if sina:
