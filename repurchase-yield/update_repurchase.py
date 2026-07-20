@@ -18,7 +18,7 @@
     python update_repurchase.py --index /path/index.html --store /path/records.json
 
 反拦截策略:
-    - 默认源: 新浪个股公告(sina) — 按 candidate_pool.json 逐股扫, 下钻正文正则抠"回购价格上限"
+    - 默认源: 新浪个股公告(sina) — 按股票池(默认主站当日 Top800)逐股扫, 下钻正文正则抠"回购价格上限"
     - 备选源: 巨潮 cninfo(部分网络被风控, 用 --source cninfo 切换)
     - 浏览器 UA + Referer + Accept 头
     - 随机延时 + 指数退避重试 (MAX_RETRY)
@@ -68,8 +68,6 @@ PRICE_RES = [
     re.compile(r'不超过([0-9]+\.[0-9]{1,3})元/股'),
     re.compile(r'回购价格.{0,20}?([0-9]+\.[0-9]{1,3})元'),
 ]
-# 股票池(腾讯格式代码 sh/sz + 6位, 位于仓库根)
-POOL_PATH = HERE.parent / "candidate_pool.json"
 
 # 随机延时 / 重试
 MIN_DELAY, MAX_DELAY = 0.6, 2.4
@@ -139,6 +137,43 @@ def fetch_cninfo_announcements(date_from, date_to):
         time.sleep(random.uniform(MIN_DELAY, MAX_DELAY))
     return out
 
+# ---------- 股票池加载 (默认覆盖全策略宇宙 Top800) ----------
+def load_pool(override=None):
+    """返回 (codes列表, 来源说明)。优先级:
+       1) --pool 指定文件
+       2) 主站 signals.json -> stocks[].code   (当日成交额 TOP800, 每日主管线刷新)
+       3) 本目录 pool.json 快照                (可由 signals.json 导出, 离线兜底)
+       4) 仓库根 candidate_pool.json           (旧 64 只)
+    codes 为腾讯格式 sh/sz/bj + 6位。"""
+    candidates = []
+    if override:
+        candidates.append(("指定 --pool", Path(override)))
+    candidates.append(("signals.json (Top800)", HERE.parent / "signals.json"))
+    candidates.append(("pool.json 快照", HERE / "pool.json"))
+    candidates.append(("candidate_pool.json", HERE.parent / "candidate_pool.json"))
+    for label, p in candidates:
+        if not p.exists():
+            continue
+        try:
+            arr = json.loads(p.read_text(encoding="utf-8"))
+        except Exception as e:
+            print(f"  [warn] 读取 {label} 失败: {e}", file=sys.stderr)
+            continue
+        if isinstance(arr, dict):
+            arr = arr.get("stocks") or arr.get("data") or []
+        codes = []
+        if isinstance(arr, list):
+            for x in arr:
+                if isinstance(x, str):
+                    codes.append(x)
+                elif isinstance(x, dict) and x.get("code"):
+                    codes.append(x["code"])
+        codes = [c for c in codes if isinstance(c, str) and len(c) >= 7
+                 and c[:2] in ("sh", "sz", "bj")]
+        if codes:
+            return codes, f"{label} -> {len(codes)}只"
+    return [], "无可用股票池"
+
 # ---------- 公告抓取 (新浪个股公告, 按股票池逐股扫) ----------
 def pool_code_to_full(raw):
     """'sh600186' -> '600186.SH'"""
@@ -146,13 +181,14 @@ def pool_code_to_full(raw):
     exg = {"sh": "SH", "sz": "SZ", "bj": "BJ"}.get(pre, "SH")
     return f"{six}.{exg}"
 
-def fetch_sina_announcements(date_from, date_to):
-    """按 candidate_pool.json 逐股扫新浪公告, 返回窗口内含'回购目标价'的公告。
+def fetch_sina_announcements(date_from, date_to, pool_override=None):
+    """按股票池(默认主站当日 Top800)逐股扫新浪公告, 返回窗口内含'回购目标价'的公告。
     返回 [{code, name, ann_date, title, target}]。"""
-    if not POOL_PATH.exists():
-        print(f"  [warn] 股票池缺失: {POOL_PATH}, 跳过新浪源", file=sys.stderr)
+    pool, src = load_pool(pool_override)
+    if not pool:
+        print("  [warn] 股票池缺失, 跳过新浪源", file=sys.stderr)
         return []
-    pool = json.loads(POOL_PATH.read_text(encoding="utf-8"))
+    print(f"  [info] 股票池: {src}")
     out, seen = [], set()
     for raw in pool:
         six = raw[2:] if raw[:2] in ("sh", "sz", "bj") else raw
@@ -323,14 +359,14 @@ def write_index(index_path, store):
 
 # ---------- 入口 ----------
 def main():
-    global PROXIES, POOL_PATH
+    global PROXIES
     ap = argparse.ArgumentParser(description="兜金隐含空间 每日自动更新")
     ap.add_argument("--dry-run", action="store_true", help="只打印, 不写文件")
     ap.add_argument("--from", dest="f", default=None, help="窗口起始日 YYYY-MM-DD")
     ap.add_argument("--to", dest="t", default=None, help="窗口结束日 YYYY-MM-DD")
     ap.add_argument("--index", default=str(INDEX_HTML), help="index.html 路径")
     ap.add_argument("--store", default=str(STORE_JSON), help="records.json 路径")
-    ap.add_argument("--pool", default=str(POOL_PATH), help="股票池 json 路径")
+    ap.add_argument("--pool", default=None, help="股票池 json 路径(覆盖默认 Top800)")
     ap.add_argument("--source", default="sina", choices=["sina", "cninfo"],
                     help="公告源: sina(默认, 新浪逐股扫+正文抠价) / cninfo(巨潮)")
     ap.add_argument("--proxy", default=None, help="代理 http://host:port")
@@ -338,8 +374,6 @@ def main():
 
     if args.proxy:
         PROXIES = {"http": args.proxy, "https": args.proxy}
-    if args.pool:
-        POOL_PATH = Path(args.pool)
 
     now = dt.datetime.now()
     to_d = args.t or now.strftime("%Y-%m-%d")
@@ -354,7 +388,7 @@ def main():
         ann = fetch_cninfo_announcements(from_d, to_d)
         tag = "巨潮"
     else:
-        ann = fetch_sina_announcements(from_d, to_d)
+        ann = fetch_sina_announcements(from_d, to_d, args.pool)
         tag = "新浪"
     print(f"[info] {tag}命中含'回购目标价'公告 {len(ann)} 条")
     recs = build_records(ann)
