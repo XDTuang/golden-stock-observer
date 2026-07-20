@@ -1,0 +1,6 @@
+# CloudBase 云函数依赖（按需增删）
+# fetch_pool.py / golden_diamond_scan.py 主要用标准库 + 子进程调用系统 curl，
+# 若脚本用到以下三方库再取消注释：
+requests>=2.31.0
+# pandas>=2.0.0
+# numpy>=1.24.0
