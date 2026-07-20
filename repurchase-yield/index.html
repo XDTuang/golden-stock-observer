@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>兜金隐含空间 · 回购目标价隐含收益率追踪</title>
+<style>
+  :root{
+    --bg:#0B0E14;
+    --surface:#131722;
+    --surface-2:#1A2030;
+    --border:#232A3A;
+    --border-strong:#2E3850;
+    --text:#E6E9EF;
+    --text-2:#9AA3B8;
+    --text-3:#6B7388;
+    --brand:#5B8DEF;
+    --brand-soft:rgba(91,141,239,.14);
+    --pos:#2EBD85;
+    --pos-soft:rgba(46,189,133,.14);
+    --neg:#F6465D;
+    --neg-soft:rgba(246,70,93,.14);
+    --amber:#F0B90B;
+    --amber-soft:rgba(240,185,11,.14);
+    --radius:14px;
+    --radius-sm:9px;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+    --font:'Inter','PingFang SC','Microsoft YaHei',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:radial-gradient(900px 500px at 85% -10%,rgba(91,141,239,.10),transparent 60%),var(--bg);
+    color:var(--text);font-family:var(--font);line-height:1.55;
+    -webkit-font-smoothing:antialiased;padding:36px 20px 80px;
+  }
+  .wrap{max-width:1180px;margin:0 auto}
+
+  /* Login gate */
+  .login{position:fixed;inset:0;z-index:100;background:radial-gradient(900px 600px at 50% -10%,rgba(91,141,239,.14),transparent 60%),var(--bg);display:grid;place-items:center;padding:20px}
+  .login .box{width:350px;max-width:100%;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px 28px;box-shadow:var(--shadow);text-align:center}
+  .login .logo{width:48px;height:48px;border-radius:13px;margin:0 auto 16px;background:linear-gradient(135deg,#5B8DEF,#7C5CFF);display:grid;place-items:center;font-weight:800;font-size:22px;color:#fff;box-shadow:0 6px 18px rgba(91,141,239,.35)}
+  .login h2{font-size:20px;font-weight:750;margin-bottom:6px}
+  .login p{font-size:13px;color:var(--text-2);margin-bottom:22px}
+  .login input{width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:12px 14px;font-family:inherit;font-size:15px;text-align:center;letter-spacing:3px;margin-bottom:12px}
+  .login input:focus{outline:none;border-color:var(--brand)}
+  .login button{width:100%;background:var(--brand);color:#fff;border:0;border-radius:10px;padding:12px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:.15s}
+  .login button:hover{filter:brightness(1.08)}
+  .login .err{color:var(--neg);font-size:12.5px;min-height:16px;margin-top:8px}
+  .login .hint{font-size:11px;color:var(--text-3);margin-top:14px}
+
+  /* Header */
+  .top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+  .brand{display:flex;align-items:center;gap:13px}
+  .logo2{width:42px;height:42px;border-radius:12px;flex:none;background:linear-gradient(135deg,#5B8DEF,#7C5CFF);display:grid;place-items:center;font-weight:800;font-size:19px;color:#fff;box-shadow:0 6px 18px rgba(91,141,239,.35)}
+  h1{font-size:22px;font-weight:750;letter-spacing:.2px}
+  .sub{font-size:13px;color:var(--text-2);margin-top:2px}
+  .pill{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;font-size:12.5px;font-weight:600;background:var(--amber-soft);color:var(--amber);border:1px solid rgba(240,185,11,.28)}
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--amber)}
+
+  /* Window bar */
+  .window{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 18px;margin-bottom:20px;box-shadow:var(--shadow)}
+  .window .lbl{font-size:12px;color:var(--text-3);text-transform:uppercase;letter-spacing:.6px}
+  .window .val{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+  .window .arrow{color:var(--text-3)}
+  .window .spacer{flex:1}
+  .cron{font-size:12.5px;color:var(--text-2);display:flex;align-items:center;gap:7px}
+  .cron b{color:var(--brand);font-weight:700}
+  .upd{font-size:11.5px;color:var(--text-3);background:var(--surface-2);border:1px solid var(--border);border-radius:7px;padding:4px 9px}
+
+  /* Stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15px 18px;box-shadow:var(--shadow)}
+  .stat .k{font-size:12px;color:var(--text-3);margin-bottom:6px}
+  .stat .v{font-size:24px;font-weight:750;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+  .stat .v small{font-size:13px;font-weight:600;color:var(--text-2);margin-left:3px}
+  .stat.green .v{color:var(--pos)} .stat.blue .v{color:var(--brand)}
+
+  /* Toolbar */
+  .toolbar{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 16px;margin-bottom:14px;box-shadow:var(--shadow)}
+  .seg{display:flex;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:3px;gap:3px}
+  .seg button{appearance:none;border:0;background:transparent;color:var(--text-2);font-family:inherit;font-size:13px;font-weight:600;padding:7px 12px;border-radius:7px;cursor:pointer;transition:.15s;white-space:nowrap}
+  .seg button.active{background:var(--brand);color:#fff;box-shadow:0 2px 8px rgba(91,141,239,.4)}
+  .seg button:not(.active):hover{color:var(--text)}
+  .seg .lbl{font-size:12px;color:var(--text-3);align-self:center;padding-left:4px;padding-right:2px}
+  .field{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-3)}
+  .field input,.field select{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:7px 10px;font-family:inherit;font-size:13px;font-variant-numeric:tabular-nums}
+  .field input::placeholder{color:var(--text-3)}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--brand)}
+  .toolbar .spacer{flex:1}
+  .count{font-size:12.5px;color:var(--text-3);white-space:nowrap}
+
+  /* Card / table */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .table-scroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+  thead th{text-align:left;font-size:11.5px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;padding:12px 14px;border-bottom:1px solid var(--border);background:var(--surface-2);white-space:nowrap}
+  thead th.num,tbody td.num{text-align:right}
+  tbody td{padding:13px 14px;border-bottom:1px solid var(--border);font-size:13.5px;vertical-align:middle}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr.click{cursor:pointer}
+  tbody tr.click:hover{background:rgba(91,141,239,.06)}
+  .co{display:flex;flex-direction:column}
+  .co .nm{font-weight:700;font-size:14px}
+  .co .cd{font-size:11.5px;color:var(--text-3);margin-top:1px}
+  .num.strong{font-weight:700}
+  .muted{color:var(--text-3)}
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums}
+  .badge.pos{background:var(--pos-soft);color:var(--pos)}
+  .badge.neg{background:var(--neg-soft);color:var(--neg)}
+  .tag{display:inline-block;font-size:11px;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:3px 8px;white-space:nowrap}
+
+  /* Group headers */
+  .grp{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-2);border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .grp .gname{font-weight:700;font-size:14px}
+  .grp .gcode{font-size:12px;color:var(--text-3)}
+  .grp .gspacer{flex:1}
+  .grp .gmeta{font-size:12.5px;color:var(--text-2)}
+  .grp .gmeta b{color:var(--text);font-weight:700}
+  .grp.batch .gname{color:var(--brand)}
+
+  /* Pagination */
+  .pager{display:flex;align-items:center;gap:10px;padding:13px 16px;flex-wrap:wrap}
+  .pager .spacer{flex:1}
+  .pager button{appearance:none;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);font-family:inherit;font-size:13px;font-weight:600;padding:7px 13px;border-radius:8px;cursor:pointer}
+  .pager button:disabled{opacity:.4;cursor:not-allowed}
+  .pager button:not(:disabled):hover{color:var(--text);border-color:var(--border-strong)}
+  .pager .pginfo{font-size:12.5px;color:var(--text-3);font-variant-numeric:tabular-nums}
+
+  /* Drawer */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:.2s;z-index:50}
+  .overlay.open{opacity:1;pointer-events:auto}
+  .drawer{position:fixed;top:0;right:0;height:100%;width:440px;max-width:94vw;background:var(--surface);border-left:1px solid var(--border-strong);transform:translateX(100%);transition:.28s cubic-bezier(.4,0,.2,1);z-index:51;overflow-y:auto;box-shadow:-10px 0 40px rgba(0,0,0,.5)}
+  .drawer.open{transform:translateX(0)}
+  .dh{display:flex;align-items:flex-start;gap:12px;padding:22px 22px 16px;border-bottom:1px solid var(--border)}
+  .dh .dn{font-size:19px;font-weight:750}
+  .dh .dc{font-size:12.5px;color:var(--text-3);margin-top:2px}
+  .dh .x{margin-left:auto;appearance:none;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;flex:none}
+  .dh .x:hover{color:var(--text);border-color:var(--border-strong)}
+  .dgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:18px 22px}
+  .dcell{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 13px}
+  .dcell .k{font-size:11.5px;color:var(--text-3);margin-bottom:5px}
+  .dcell .v{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+  .dcell .v small{font-size:12px;font-weight:600;color:var(--text-2);margin-left:3px}
+  .dcell.span2{grid-column:span 2}
+  .dcell .v.pos{color:var(--pos)} .dcell .v.neg{color:var(--neg)}
+  .dnote{margin:4px 22px 22px;background:var(--brand-soft);border:1px solid rgba(91,141,239,.28);border-radius:var(--radius-sm);padding:12px 14px;font-size:12.5px;color:var(--text-2);line-height:1.6}
+  .dnote b{color:var(--text)}
+
+  .note{margin-top:18px;display:flex;gap:11px;align-items:flex-start;background:var(--brand-soft);border:1px solid rgba(91,141,239,.28);border-radius:var(--radius-sm);padding:13px 16px;font-size:13px;color:var(--text-2);line-height:1.6}
+  .note b{color:var(--text)} .note .ic{flex:none;color:var(--brand);font-weight:800}
+  .foot{margin-top:24px;font-size:12px;color:var(--text-3);text-align:center;line-height:1.7}
+  .foot code{background:var(--surface-2);border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:var(--text-2);font-size:11.5px}
+
+  @media (max-width:720px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .dgrid{grid-template-columns:repeat(2,1fr)}
+    table{min-width:780px}
+  }
+</style>
+</head>
+<body>
+
+<!-- Login gate (client-side only — not real security, just an access threshold) -->
+<div class="login" id="login">
+  <div class="box">
+    <div class="logo">兜</div>
+    <h2>兜金隐含空间</h2>
+    <p>请输入访问密码以查看回购隐含收益率数据</p>
+    <input id="pw" type="password" placeholder="PASSWORD" autocomplete="off" />
+    <button id="pwBtn">进入</button>
+    <div class="err" id="pwErr"></div>
+    <div class="hint">数据每日 20:00 自动更新（独立于主站其他数据节奏）</div>
+  </div>
+</div>
+
+<div class="wrap" id="app" style="visibility:hidden">
+
+  <div class="top">
+    <div class="brand">
+      <div class="logo2">兜</div>
+      <div>
+        <h1>兜金隐含空间</h1>
+        <div class="sub">上市公司回购公告 · 目标价 vs 当日收盘 · 隐含上行空间</div>
+      </div>
+    </div>
+    <div class="pill"><span class="dot"></span>实时样本 · 2026-07-01 ~ 07-20</div>
+  </div>
+
+  <div class="window">
+    <div>
+      <div class="lbl">数据窗口（单批次）</div>
+      <div class="val">前一日 20:00 <span class="arrow">→</span> 当日 20:00</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="cron">⏱ 自动更新 <b>每日 20:00</b></div>
+    <div class="upd">更新节奏 ≠ 主站其他数据</div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="toolbar">
+    <div class="seg" id="viewSeg">
+      <span class="lbl">视图</span>
+      <button data-view="ann" class="active">按公告</button>
+      <button data-view="stock">按股票</button>
+      <button data-view="batch">按抓取日</button>
+    </div>
+    <div class="seg" id="sortSeg">
+      <span class="lbl">排序</span>
+      <button data-sort="date" class="active">公告日期 ↓</button>
+      <button data-sort="yield">隐含收益率 ↓</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="field"><span>股票</span><input id="fSearch" placeholder="名称/代码" style="width:120px"></div>
+    <div class="field"><span>最低收益率</span><input id="fYield" type="number" placeholder="0" style="width:74px">%</div>
+    <div class="field"><span>公告日</span><input id="fFrom" type="date"><span>~</span><input id="fTo" type="date"></div>
+    <div class="field"><span>每页</span>
+      <select id="fSize"><option>10</option><option>20</option><option>50</option></select>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="table-scroll">
+      <table>
+        <thead id="thead"></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="pager" id="pager"></div>
+  </div>
+
+  <div class="note">
+    <span class="ic">ⓘ</span>
+    <div>
+      <b>隐含收益率（冻结@抓取日）：</b><code>(回购目标价 − 当天收盘价) ÷ 当天收盘价</code>，以公告被抓取当日的收盘价为基准冻结，作为可排序历史指标，保证跨日排序稳定。
+      本批为公开检索样本（2026-07-01 ~ 07-20），非全市场完整清单。
+    </div>
+  </div>
+
+  <div class="foot">
+    兜金隐含空间 · 访问需密码 · 全量版由后端每日 20:00 入库，批次留存、按公告去重、支持排序/筛选/导出。
+  </div>
+
+</div>
+
+<!-- Drawer -->
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="dh">
+    <div>
+      <div class="dn" id="dName">—</div>
+      <div class="dc" id="dCode">—</div>
+    </div>
+    <button class="x" id="dClose">✕</button>
+  </div>
+  <div class="dgrid" id="dGrid"></div>
+  <div class="dnote" id="dNote"></div>
+</aside>
+
+<script>
+  // ===== Login gate =====
+  const PW = 'DDDYB';
+  const login = document.getElementById('login');
+  const app = document.getElementById('app');
+  function tryLogin(){
+    const v = document.getElementById('pw').value;
+    if(v === PW){
+      sessionStorage.setItem('dj_auth','1');
+      login.style.display='none';
+      app.style.visibility='visible';
+    } else {
+      document.getElementById('pwErr').textContent='密码错误，请重试';
+      document.getElementById('pw').value='';
+    }
+  }
+  document.getElementById('pwBtn').addEventListener('click',tryLogin);
+  document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();});
+  // 若被主站 iframe 内嵌，父页已做登录门控，此处自动放行（避免二次输密）
+  if(window.self !== window.top || sessionStorage.getItem('dj_auth')==='1'){ login.style.display='none'; app.style.visibility='visible'; }
+
+  // ===== Data (real, best-effort public retrieval 2026-07-01 ~ 07-20) =====
+  // 收盘基准日 = 抓取日（冻结收益率）。字段：stock, code, ann(公告日期), cap(抓取日), target, close, chg(当日涨跌), amt, shares, pct, use, period, note
+  // ===== DATA START (auto-generated by update_repurchase.py — DO NOT EDIT MANUALLY) =====
+  const DATA = [
+    // ── 2026-07-03 批次 ──
+    {stock:'大中矿业', code:'001203.SZ', ann:'2026-07-03', cap:'2026-07-03', target:53.00, close:31.56, chg:-1.71, amt:'4亿–8亿元', shares:'—', pct:'—', use:'员工持股/股权激励/可转债', period:'12个月', note:'7-2过会7-3公告，隐含约+68%'},
+    // ── 2026-07-19 批次 ──
+    {stock:'晶华新材', code:'603683.SH', ann:'2026-07-19', cap:'2026-07-19', target:45.98, close:23.00, chg:-10.02, amt:'5000万–1亿元', shares:'—', pct:'—', use:'出售或注销', period:'—', note:'停牌/跌停态，取最近可得收盘23.00，隐含约+100%'},
+    {stock:'世运电路', code:'603920.SH', ann:'2026-07-19', cap:'2026-07-19', target:55.00, close:34.20, chg:-9.24, amt:'2亿–3亿元', shares:'—', pct:'—', use:'员工持股/股权激励', period:'6个月', note:'隐含上行约+61%'},
+    {stock:'荣昌生物', code:'688331.SH', ann:'2026-07-19', cap:'2026-07-19', target:149.00, close:116.01, chg:-15.51, amt:'2500万–5000万元', shares:'—', pct:'—', use:'员工持股/股权激励', period:'12个月', note:'当日-15.51%，隐含约+28%'},
+    {stock:'建龙微纳', code:'688357.SH', ann:'2026-07-19', cap:'2026-07-19', target:40.00, close:23.85, chg:-2.69, amt:'2000万–4000万元', shares:'—', pct:'—', use:'员工持股/股权激励', period:'12个月', note:'隐含上行约+68%'},
+    // ── 2026-07-20 批次 ──
+    {stock:'东山精密', code:'002384.SZ', ann:'2026-07-20', cap:'2026-07-20', target:367.04, close:217.73, chg:-10.00, amt:'2亿–3亿元', shares:'54.49万–81.73万股', pct:'0.030%–0.045%', use:'员工持股/股权激励', period:'12个月', note:'当日跌停，目标价高现价约+69%'},
+    {stock:'三花智控', code:'002050.SZ', ann:'2026-07-20', cap:'2026-07-20', target:60.00, close:36.12, chg:-9.13, amt:'2亿–4亿元', shares:'—', pct:'—', use:'股权激励/员工持股', period:'12个月', note:'临近跌停，隐含约+66%'},
+    {stock:'大洋电机', code:'002249.SZ', ann:'2026-07-20', cap:'2026-07-20', target:11.50, close:6.67, chg:0.30, amt:'1.2亿–1.6亿元', shares:'—', pct:'—', use:'员工持股/股权激励', period:'12个月', note:'逆势，目标价近2倍，隐含约+72%'},
+    {stock:'呈和科技', code:'688625.SH', ann:'2026-07-20', cap:'2026-07-20', target:122.00, close:52.00, chg:-9.96, amt:'1亿–1.5亿元', shares:'—', pct:'—', use:'维护价值及股东权益', period:'3个月', note:'回购维护价值，隐含约+135%'},
+    {stock:'白云电器', code:'603861.SH', ann:'2026-07-20', cap:'2026-07-20', target:22.12, close:10.79, chg:-2.88, amt:'2000万–4000万元', shares:'—', pct:'—', use:'员工持股/股权激励', period:'12个月', note:'隐含上行约+105%'},
+    {stock:'*ST网达', code:'603189.SH', ann:'2026-07-20', cap:'2026-07-20', target:12.00, close:8.11, chg:-5.59, amt:'2000万–3000万元', shares:'—', pct:'—', use:'维护价值及股东权益', period:'—', note:'ST股，隐含约+48%'},
+    {stock:'荣旗科技', code:'301360.SZ', ann:'2026-07-20', cap:'2026-07-20', target:106.00, close:44.17, chg:-7.28, amt:'2500万–5000万元', shares:'—', pct:'—', use:'维护价值及股东权益', period:'12个月', note:'隐含上行约+140%'},
+    {stock:'浙江医药', code:'600216.SH', ann:'2026-07-20', cap:'2026-07-20', target:17.90, close:12.32, chg:1.90, amt:'1亿–2亿元', shares:'—', pct:'—', use:'员工持股/股权激励', period:'—', note:'当日+1.90%，隐含约+45%'}
+  ];
+  // ===== DATA END =====
+
+  const fmt = n => n.toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const yld = d => (d.target - d.close) / d.close * 100;
+  const pct = n => (n>=0?'+':'') + n.toFixed(2) + '%';
+  const badge = n => `<span class="badge ${n>=0?'pos':'neg'}">${pct(n)}</span>`;
+
+  const HEAD = { ann:['公司','公告日期','抓取日','回购目标价(元)','收盘(元)','隐含收益率','当日涨跌','关键标注'],
+                 stock:['公司','公告日期','抓取日','回购目标价(元)','收盘(元)','隐含收益率','当日涨跌','关键标注'],
+                 batch:['公司','公告日期','抓取日','回购目标价(元)','收盘(元)','隐含收益率','当日涨跌','关键标注'] };
+  const NUMCOLS = [3,4,5,6];
+  const state = { view:'ann', sortKey:'date', sortDir:-1, search:'', minYield:null, from:'', to:'', size:10, page:1 };
+
+  function filtered(){
+    return DATA.filter(d=>{
+      if(state.search){
+        const q=state.search.toLowerCase();
+        if(!d.stock.toLowerCase().includes(q) && !d.code.toLowerCase().includes(q)) return false;
+      }
+      if(state.minYield!==null && yld(d) < state.minYield) return false;
+      if(state.from && d.ann < state.from) return false;
+      if(state.to && d.ann > state.to) return false;
+      return true;
+    });
+  }
+  function sortList(list){
+    return [...list].sort((a,b)=>{
+      if(state.sortKey==='yield') return (yld(a)-yld(b))*state.sortDir;
+      return (a.ann<b.ann?-1:1)*state.sortDir;
+    });
+  }
+  function rowHTML(d){
+    return `<tr class="click" data-code="${d.code}" data-ann="${d.ann}">
+      <td><div class="co"><span class="nm">${d.stock}</span><span class="cd">${d.code}</span></div></td>
+      <td>${d.ann}</td>
+      <td class="muted">${d.cap}</td>
+      <td class="num strong">${fmt(d.target)}</td>
+      <td class="num strong">${fmt(d.close)}</td>
+      <td class="num">${badge(yld(d))}</td>
+      <td class="num">${badge(d.chg)}</td>
+      <td><span class="tag">${d.note}</span></td>
+    </tr>`;
+  }
+  function renderStats(){
+    const n=DATA.length;
+    const ys=DATA.map(yld);
+    const avg=ys.reduce((a,b)=>a+b,0)/n;
+    const max=Math.max(...ys);
+    const stocks=new Set(DATA.map(d=>d.code)).size;
+    document.getElementById('stats').innerHTML=`
+      <div class="stat"><div class="k">命中公告</div><div class="v">${n}<small>条</small></div></div>
+      <div class="stat green"><div class="k">平均隐含收益率</div><div class="v">${pct(avg)}</div></div>
+      <div class="stat green"><div class="k">最高隐含收益率</div><div class="v">${pct(max)}</div></div>
+      <div class="stat blue"><div class="k">涉及公司</div><div class="v">${stocks}<small>家</small></div></div>`;
+  }
+  function render(){
+    const list = sortList(filtered());
+    document.getElementById('thead').innerHTML = `<tr>${HEAD[state.view].map((h,i)=>`<th class="${NUMCOLS.includes(i)?'num':''}">${h}</th>`).join('')}</tr>`;
+    let body='', pager='';
+    if(state.view==='ann'){
+      const total=list.length, pages=Math.max(1,Math.ceil(total/state.size));
+      state.page=Math.min(state.page,pages);
+      const start=(state.page-1)*state.size, items=list.slice(start,start+state.size);
+      body = items.length ? items.map(rowHTML).join('') : `<tr><td colspan="8" class="muted" style="text-align:center;padding:28px">无匹配记录</td></tr>`;
+      const from=total?start+1:0, to=Math.min(start+state.size,total);
+      pager = `<span class="pginfo">显示 ${from}–${to} / 共 ${total} 条</span><span class="spacer"></span>
+        <button id="prev" ${state.page<=1?'disabled':''}>上一页</button>
+        <span class="pginfo">第 ${state.page} / ${pages} 页</span>
+        <button id="next" ${state.page>=pages?'disabled':''}>下一页</button>`;
+    } else if(state.view==='stock'){
+      const g={}; list.forEach(d=>(g[d.code]=g[d.code]||[]).push(d));
+      const groups=Object.values(g).sort((a,b)=>b[0].ann<a[0].ann?-1:1);
+      groups.forEach(grp=>{
+        const latest=[...grp].sort((a,b)=>b.ann<a.ann?-1:1)[0];
+        body+=`<tr><td colspan="8" class="grp"><span class="gname">${grp[0].stock}</span><span class="gcode">${grp[0].code}</span>
+          <span class="gspacer"></span><span class="gmeta">公告 <b>${grp.length}</b> 条 · 最新隐含收益率 <b>${pct(yld(latest))}</b> · 最新公告日 <b>${latest.ann}</b></span></td></tr>`;
+        [...grp].sort((a,b)=>b.ann<a.ann?-1:1).forEach(d=>body+=rowHTML(d));
+      });
+      pager=`<span class="pginfo">按股票分组 · 共 ${Object.keys(g).length} 只 · ${list.length} 条公告</span><span class="spacer"></span><span class="pginfo muted">分组视图生产环境采用虚拟滚动</span>`;
+    } else {
+      const g={}; list.forEach(d=>(g[d.cap]=g[d.cap]||[]).push(d));
+      const batches=Object.keys(g).sort((a,b)=>b<a?-1:1);
+      batches.forEach(b=>{
+        const arr=g[b];
+        body+=`<tr><td colspan="8" class="grp batch"><span class="gname">抓取日 ${b}</span><span class="gspacer"></span>
+          <span class="gmeta">本批 <b>${arr.length}</b> 条公告</span></td></tr>`;
+        [...arr].sort((a,b)=>state.sortKey==='yield'?(yld(a)-yld(b))*state.sortDir:(a.ann<b.ann?-1:1)*state.sortDir).forEach(d=>body+=rowHTML(d));
+      });
+      pager=`<span class="pginfo">按抓取日（批次）分组 · 共 ${batches.length} 个批次</span>`;
+    }
+    document.getElementById('rows').innerHTML=body;
+    document.getElementById('pager').innerHTML=pager;
+    if(state.view==='ann'){
+      document.getElementById('prev')?.addEventListener('click',()=>{state.page--;render();});
+      document.getElementById('next')?.addEventListener('click',()=>{state.page++;render();});
+    }
+    document.querySelectorAll('tbody tr.click').forEach(tr=>{
+      tr.addEventListener('click',()=>{ const rec=DATA.find(d=>d.code===tr.dataset.code && d.ann===tr.dataset.ann); if(rec) openDrawer(rec); });
+    });
+  }
+
+  function openDrawer(d){
+    document.getElementById('dName').textContent=d.stock;
+    document.getElementById('dCode').textContent=`${d.code} · 深交所/上交所`;
+    const cell=(k,v,cls='',span=false)=>`<div class="dcell ${span?'span2':''}"><div class="k">${k}</div><div class="v ${cls}">${v}</div></div>`;
+    document.getElementById('dGrid').innerHTML=
+      cell('回购价格上限（目标价）',fmt(d.target)+' <small>元/股</small>')+
+      cell('当天收盘价（基准日）',fmt(d.close)+' <small>元</small>')+
+      cell('隐含收益率（冻结@抓取日）',pct(yld(d)),yld(d)>=0?'pos':'neg')+
+      cell('当日涨跌幅',pct(d.chg),d.chg>=0?'pos':'neg')+
+      cell('回购金额区间',d.amt)+
+      cell('回购期限',d.period)+
+      cell('预计回购股数 / 占比', d.shares!=='—' ? `${d.shares} <small>(${d.pct})</small>` : '—', '', true)+
+      cell('回购用途',d.use)+
+      cell('公告日期',d.ann)+
+      cell('抓取日期（批次）',d.cap)+
+      cell('收盘基准日',d.cap+' <small>= 抓取日</small>', '', true);
+    document.getElementById('dNote').innerHTML=`<b>标注：</b>${d.note}。隐含收益率为"若股价回升至回购上限"的理论空间，非承诺回报，需结合回购进度与资金落地判断。`;
+    document.getElementById('overlay').classList.add('open');
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('drawer').setAttribute('aria-hidden','false');
+  }
+  function closeDrawer(){
+    document.getElementById('overlay').classList.remove('open');
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawer').setAttribute('aria-hidden','true');
+  }
+  document.getElementById('overlay').addEventListener('click',closeDrawer);
+  document.getElementById('dClose').addEventListener('click',closeDrawer);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
+
+  document.getElementById('viewSeg').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    state.view=b.dataset.view; state.page=1;
+    document.querySelectorAll('#viewSeg button').forEach(x=>x.classList.toggle('active',x===b));
+    render();
+  });
+  document.getElementById('sortSeg').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    const k=b.dataset.sort;
+    if(state.sortKey===k) state.sortDir*=-1; else {state.sortKey=k;state.sortDir=-1;}
+    document.querySelectorAll('#sortSeg button').forEach(x=>{
+      const active=x.dataset.sort===state.sortKey;
+      x.classList.toggle('active',active);
+      if(active) x.textContent=(k==='date'?'公告日期 ':'隐含收益率 ')+(state.sortDir<0?'↓':'↑');
+    });
+    render();
+  });
+  document.getElementById('fSearch').addEventListener('input',e=>{state.search=e.target.value.trim();state.page=1;render();});
+  document.getElementById('fYield').addEventListener('input',e=>{state.minYield=e.target.value===''?null:parseFloat(e.target.value);state.page=1;render();});
+  document.getElementById('fFrom').addEventListener('change',e=>{state.from=e.target.value;state.page=1;render();});
+  document.getElementById('fTo').addEventListener('change',e=>{state.to=e.target.value;state.page=1;render();});
+  document.getElementById('fSize').addEventListener('change',e=>{state.size=parseInt(e.target.value);state.page=1;render();});
+
+  renderStats();
+  render();
+</script>
+</body>
+</html>

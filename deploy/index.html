@@ -1097,6 +1097,7 @@ td { border-color: var(--border-light); }
   <button class="nav-btn" data-tab="signalstock">信号选股</button>
   <button class="nav-btn" data-tab="diamond">💎 兜宝金钻</button>
   <button class="nav-btn" data-tab="calendar">机游共振日历</button>
+  <button class="nav-btn" data-tab="repurchase">📈 回购隐含收益</button>
 </nav>
 </div>
 <div class="header-right">
@@ -1529,6 +1530,12 @@ td { border-color: var(--border-light); }
       </table>
     </div>
   </div>
+</div>
+
+<!-- Tab: 回购隐含收益（独立子应用 · iframe 内嵌 · 每日20:00独立更新，与主站其他数据节奏解耦） -->
+<div class="tab-content" id="tab-repurchase">
+  <iframe src="repurchase-yield/index.html" title="回购隐含收益" loading="lazy"
+          style="width:100%;height:calc(100vh - 140px);border:0;background:var(--bg,#0B0E14);border-radius:12px;"></iframe>
 </div>
 
 <div class="footer">

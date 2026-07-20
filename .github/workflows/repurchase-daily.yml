@@ -1,0 +1,45 @@
+name: 回购隐含收益 · 每日更新
+
+on:
+  schedule:
+    # 北京 20:00 = UTC 12:00（每日 20:00 抓取前一日 20:00 → 当日 20:00 区间）
+    - cron: '0 12 * * *'
+  workflow_dispatch:   # 允许在 GitHub Actions 页面手动点 Run workflow 测试
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 配置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖
+        run: pip install requests
+
+      - name: 运行每日更新脚本
+        working-directory: repurchase-yield
+        run: python update_repurchase.py
+
+      - name: 提交并推送（仅当有变更）
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f repurchase-yield/index.html repurchase-yield/records.json repurchase-yield/update_repurchase.py
+          if git diff --cached --quiet; then
+            echo "无新数据，跳过提交"
+          else
+            git commit -m "chore: 回购隐含收益每日更新 $(date +%F)"
+            git push
+            echo "已推送更新"
+          fi
