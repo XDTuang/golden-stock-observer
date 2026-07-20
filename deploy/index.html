@@ -1657,7 +1657,7 @@ function scoreClass(s) { return s >= 80 ? 'high' : s >= 60 ? 'mid' : 'low'; }
 const SIGNAL_CARDS = [
   // 6种选股策略（EMA不作为单独策略，只作为门槛）
   { key:'chan_buy', icon:'C', name:'缠论买字', desc:'TDX三层分型枢轴，最近2日内出现买点', color:'var(--blue)' },
-  { key:'golden', icon:'G', name:'金钻信号', desc:'TDX严格逻辑，金钻起涨/红区黄柱连续', color:'var(--gold)' },
+  { key:'golden', icon:'G', name:'金钻信号', desc:'金钻三子形态(红区黄柱连续)·需过EMA强趋势门槛[强门控]', color:'var(--gold)' },
   { key:'inst_red', icon:'I', name:'机构变红', desc:'价格>EMA20中线，机构资金介入', color:'var(--green)' },
   { key:'uptrend', icon:'U', name:'上涨趋势', desc:'均线多头排列，MA5>MA10>MA20>MA60', color:'var(--red)' },
   { key:'duck', icon:'D', name:'老鸭头', desc:'MA5/MA10金叉→回调→拐头，上涨中继', color:'var(--purple)' },
