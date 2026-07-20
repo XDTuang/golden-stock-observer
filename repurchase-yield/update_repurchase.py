@@ -18,14 +18,15 @@
     python update_repurchase.py --index /path/index.html --store /path/records.json
 
 反拦截策略:
-    - 官方源(巨潮 cninfo)优先, 东方财富(eastmoney)备选
+    - 默认源: 新浪个股公告(sina) — 按 candidate_pool.json 逐股扫, 下钻正文正则抠"回购价格上限"
+    - 备选源: 巨潮 cninfo(部分网络被风控, 用 --source cninfo 切换)
     - 浏览器 UA + Referer + Accept 头
     - 随机延时 + 指数退避重试 (MAX_RETRY)
     - 可选代理池: 环境变量 REPO_PROXY=http://host:port 或 --proxy
 
 依赖: pip install requests
-注意: 回购目标价目前从公告标题/摘要正则估算; 精确值需解析公告正文(PDF),
-      生产环境应接入公告正文解析(见 parse_target_price 处 TODO)。
+注意: 回购目标价从新浪公告正文正则提取(回购价格上限 X 元/股);
+      非"集中竞价设目标价"类(如回购注销/减资)已过滤, 不计入隐含收益率。
 """
 import argparse, json, os, random, re, sys, time, datetime as dt
 from pathlib import Path
@@ -51,6 +52,24 @@ CNINFO_API = "https://www.cninfo.com.cn/new/hisAnnouncement/query"
 EM_API     = "https://datacenter.eastmoney.com/securities/api/data/v1/get"
 # 行情(腾讯 gtimg, 无需登录)
 GTIMG_KLINE = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get"
+
+# 公告源(新浪个股公告, 稳定且正文可直接解析目标价) —— 默认首选
+SINA_BULLETIN = "https://money.finance.sina.com.cn/corp/go.php/vCB_AllBulletin/stockid/{code}/page/{page}.phtml"
+SINA_HOST     = "https://money.finance.sina.com.cn"
+SINA_ROW_RE   = re.compile(r'(\d{4}-\d{2}-\d{2})&nbsp;<a[^>]*href=\'([^\']+)\'>(.*?)</a>')
+# 非"集中竞价回购设目标价"类的回购公告(无隐含收益率意义), 跳过
+REPO_EXCLUDE  = ("注销", "减资", "通知债权人", "限制性股票", "减持已回购", "法律意见书",
+                 "核查意见", "股东大会", "实施", "进展公告")
+# 目标价正则(按优先级匹配)
+PRICE_RES = [
+    re.compile(r'回购价格[^0-9]{0,8}不超过[^\d]{0,3}([0-9]+\.[0-9]{1,3})'),
+    re.compile(r'回购价格上限[^\d]{0,3}([0-9]+\.[0-9]{1,3})'),
+    re.compile(r'回购股份[^0-9]{0,20}?价格[^0-9]{0,8}不超过[^\d]{0,3}([0-9]+\.[0-9]{1,3})'),
+    re.compile(r'不超过([0-9]+\.[0-9]{1,3})元/股'),
+    re.compile(r'回购价格.{0,20}?([0-9]+\.[0-9]{1,3})元'),
+]
+# 股票池(腾讯格式代码 sh/sz + 6位, 位于仓库根)
+POOL_PATH = HERE.parent / "candidate_pool.json"
 
 # 随机延时 / 重试
 MIN_DELAY, MAX_DELAY = 0.6, 2.4
@@ -120,24 +139,99 @@ def fetch_cninfo_announcements(date_from, date_to):
         time.sleep(random.uniform(MIN_DELAY, MAX_DELAY))
     return out
 
+# ---------- 公告抓取 (新浪个股公告, 按股票池逐股扫) ----------
+def pool_code_to_full(raw):
+    """'sh600186' -> '600186.SH'"""
+    pre, six = raw[:2], raw[2:]
+    exg = {"sh": "SH", "sz": "SZ", "bj": "BJ"}.get(pre, "SH")
+    return f"{six}.{exg}"
+
+def fetch_sina_announcements(date_from, date_to):
+    """按 candidate_pool.json 逐股扫新浪公告, 返回窗口内含'回购目标价'的公告。
+    返回 [{code, name, ann_date, title, target}]。"""
+    if not POOL_PATH.exists():
+        print(f"  [warn] 股票池缺失: {POOL_PATH}, 跳过新浪源", file=sys.stderr)
+        return []
+    pool = json.loads(POOL_PATH.read_text(encoding="utf-8"))
+    out, seen = [], set()
+    for raw in pool:
+        six = raw[2:] if raw[:2] in ("sh", "sz", "bj") else raw
+        full = pool_code_to_full(raw)
+        for page in range(1, 4):
+            url = SINA_BULLETIN.format(code=six, page=page)
+            r = http_get(url, headers={"Referer": "https://finance.sina.com.cn/"})
+            if not r:
+                break
+            r.encoding = "gb2312"
+            rows = list(SINA_ROW_RE.finditer(r.text))
+            if not rows:
+                break
+            oldest = rows[-1].group(1)
+            for m in rows:
+                date, href, title = m.group(1), m.group(2), m.group(3)
+                if not (date_from <= date <= date_to):
+                    continue
+                if "回购" not in title or any(k in title for k in REPO_EXCLUDE):
+                    continue
+                name = title.split("：")[0].split(":")[0]
+                key = (full, date, name)
+                if key in seen:
+                    continue
+                seen.add(key)
+                detail = SINA_HOST + href if href.startswith("/") else href
+                target = parse_target_from_detail(detail)
+                if target is None:
+                    continue
+                out.append({"code": full, "name": name,
+                            "ann_date": date, "title": title, "target": target})
+            if oldest < date_from:
+                break
+            time.sleep(random.uniform(MIN_DELAY, MAX_DELAY))
+        time.sleep(random.uniform(MIN_DELAY, MAX_DELAY))
+    return out
+
+def parse_target_from_detail(url):
+    """下钻新浪公告正文, 正则提取'回购价格上限 X 元/股'。"""
+    r = http_get(url, headers={"Referer": "https://finance.sina.com.cn/"})
+    if not r:
+        return None
+    r.encoding = "gb2312"
+    txt = re.sub(r"<[^>]+>", " ", r.text)
+    txt = re.sub(r"\s+", " ", txt)
+    for p in PRICE_RES:
+        m = p.search(txt)
+        if m:
+            return float(m.group(1))
+    return None
+
 # ---------- 收盘价 (腾讯 gtimg) ----------
 def code_to_gtimg(code):
     pre, suf = code.split(".")
     return ("sh" if suf.upper() == "SH" else "sz") + pre
 
 def fetch_close(code, date):
+    """腾讯 gtimg 日线收盘价。gtimg 返回 qfqday/day 为数组的数组:
+       [日期, 开, 收, 高, 低, 量...], 收盘价在索引 2。
+       公告日若为非交易日, 向前回退最多 3 个交易日取收盘。"""
     g = code_to_gtimg(code)
-    r = http_get(GTIMG_KLINE, params={"param": f"{g},day,{date},{date},1,qfq"})
-    if not r:
-        return None
-    try:
-        j = r.json()
-        node = j["data"][g]
-        for key in ("qfqday", "day"):
-            if key in node and node[key]:
-                return float(node[key][0]["close"])
-    except Exception:
-        pass
+    for back in range(0, 4):
+        d = (dt.datetime.strptime(date, "%Y-%m-%d") - dt.timedelta(days=back)).strftime("%Y-%m-%d")
+        r = http_get(GTIMG_KLINE, params={"param": f"{g},day,{d},{d},1,qfq"})
+        if not r:
+            continue
+        try:
+            j = r.json()
+            if not isinstance(j.get("data"), dict):
+                continue
+            node = j["data"].get(g)
+            if not isinstance(node, dict):
+                continue
+            for key in ("qfqday", "day"):
+                arr = node.get(key)
+                if arr and isinstance(arr[0], (list, tuple)) and len(arr[0]) >= 3:
+                    return float(arr[0][2])
+        except Exception:
+            continue
     return None
 
 # ---------- 解析回购目标价 ----------
@@ -163,18 +257,20 @@ def build_records(ann_list):
         if close is None or close <= 0:
             print(f"  [skip] {a['name']} 无收盘价", file=sys.stderr)
             continue
-        target = parse_target_price(a["title"])
+        target = a.get("target")
         if target is None:
-            # 标题未含明确价格, 略过(生产环境应下钻正文)
+            target = parse_target_price(a["title"])
+        if target is None:
             continue
         yld = (target - close) / close * 100
+        src = "新浪" if "target" in a else "巨潮"
         recs.append({
             "stock": a["name"], "code": a["code"],
             "ann": a["ann_date"], "cap": a["ann_date"],
             "target": target, "close": round(close, 2), "chg": None,
             "amt": "—", "shares": "—", "pct": "—",
             "use": "—", "period": "—",
-            "note": f"巨潮命中, 隐含{yld:+.1f}%",
+            "note": f"{src}命中, 隐含{yld:+.1f}%",
         })
         time.sleep(random.uniform(MIN_DELAY, MAX_DELAY))
     return recs
@@ -189,8 +285,8 @@ def load_store(path):
     return []
 
 def dedupe_key(r):
-    # (代码, 公告日期, 公告类型摘要) 去重
-    return (r["code"], r["ann"], r.get("note", "")[:10])
+    # (代码, 公告日期, 股票名) 去重, 避免同股同日重复入库
+    return (r["code"], r["ann"], r["stock"])
 
 def merge_store(store, new_recs):
     seen = {dedupe_key(r) for r in store}
@@ -227,18 +323,23 @@ def write_index(index_path, store):
 
 # ---------- 入口 ----------
 def main():
+    global PROXIES, POOL_PATH
     ap = argparse.ArgumentParser(description="兜金隐含空间 每日自动更新")
     ap.add_argument("--dry-run", action="store_true", help="只打印, 不写文件")
     ap.add_argument("--from", dest="f", default=None, help="窗口起始日 YYYY-MM-DD")
     ap.add_argument("--to", dest="t", default=None, help="窗口结束日 YYYY-MM-DD")
     ap.add_argument("--index", default=str(INDEX_HTML), help="index.html 路径")
     ap.add_argument("--store", default=str(STORE_JSON), help="records.json 路径")
+    ap.add_argument("--pool", default=str(POOL_PATH), help="股票池 json 路径")
+    ap.add_argument("--source", default="sina", choices=["sina", "cninfo"],
+                    help="公告源: sina(默认, 新浪逐股扫+正文抠价) / cninfo(巨潮)")
     ap.add_argument("--proxy", default=None, help="代理 http://host:port")
     args = ap.parse_args()
 
     if args.proxy:
-        global PROXIES
         PROXIES = {"http": args.proxy, "https": args.proxy}
+    if args.pool:
+        POOL_PATH = Path(args.pool)
 
     now = dt.datetime.now()
     to_d = args.t or now.strftime("%Y-%m-%d")
@@ -249,8 +350,13 @@ def main():
         from_d = y.strftime("%Y-%m-%d")
 
     print(f"[info] 数据窗口 {from_d} ~ {to_d} (每日 {WINDOW_HOUR}:00 触发)")
-    ann = fetch_cninfo_announcements(from_d, to_d)
-    print(f"[info] 巨潮命中含'回购'公告 {len(ann)} 条")
+    if args.source == "cninfo":
+        ann = fetch_cninfo_announcements(from_d, to_d)
+        tag = "巨潮"
+    else:
+        ann = fetch_sina_announcements(from_d, to_d)
+        tag = "新浪"
+    print(f"[info] {tag}命中含'回购目标价'公告 {len(ann)} 条")
     recs = build_records(ann)
     print(f"[info] 可计算隐含收益率 {len(recs)} 条")
 
