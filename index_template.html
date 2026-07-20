@@ -3553,7 +3553,7 @@ async function loadDiamondTab(){
     gdInitGates();
     gdRenderOverview(GD.cache);
     gdRenderTable(GD.cache);
-    gdLoadHistory();
+    gdLoadHistory(GD.currentGate);
     const g=GD.gateData.gates[GD.currentGate];
     setGdStatus(`已加载【${g.label}】 · 扫描范围 ${g.scope_size} 只 · 命中 ${g.stocks.length} 只 · 数据日期 ${GD.gateData.data_date||'—'} · 点击左侧个股展开主图/副图（实时查询不依赖此文件）`);
   }catch(e){
@@ -3589,6 +3589,7 @@ function gdSelectGate(gate){
   gdCloseInline();
   gdRenderOverview(GD.cache);
   gdRenderTable(GD.cache);
+  gdLoadHistory(gate);   // 切换门控 → 加载并渲染该门控独立的金钻池跟踪
 }
 function gdUpdateGateMeta(){
   const el=document.getElementById('gdGateMeta'); if(!el || !GD.cache) return;
@@ -4157,15 +4158,30 @@ function gdBindHover(cv){ cv.addEventListener('mousemove',e=>{ const rect=cv.get
 
 // ── 个股详情折叠盒（主图/副图 默认折叠，点击个股展开）──
 // ── 金钻池跟踪（历史数据仓库）──
-let GD_HIST=null;
-async function gdLoadHistory(){
+// 各门控独立的「金钻池跟踪 · 近 20 交易日演化」数据仓库（pool / sector 分别建档、互不干扰）
+const GD_HIST_FILES = {
+  pool: 'golden_diamond_history.json',                       // 当前门控（成交额TOP800）
+  sector_top100_to4: 'sector_golden_diamond_history.json'   // 板块前100·换手≥4%
+};
+let GD_HIST = {};  // gate -> history 对象（按门控分别缓存）
+function gdHistFile(gate){ return GD_HIST_FILES[gate] || GD_HIST_FILES.pool; }
+async function gdLoadHistory(gate){
+  gate = gate || GD.currentGate || 'pool';
+  if(GD_HIST[gate]){ gdRenderTrackGate(gate); return; }   // 已缓存 → 直接渲染
   try{
-    const res=await fetch('./output/golden_diamond_history.json?'+Date.now());
+    const res=await fetch('./output/'+gdHistFile(gate)+'?'+Date.now());
     if(!res.ok) return;
-    GD_HIST=await res.json();
-    gdBuildTrackDays();
-    gdRenderTrack(GD_HIST.trading_days[GD_HIST.trading_days.length-1]);
+    GD_HIST[gate]=await res.json();
+    gdRenderTrackGate(gate);
   }catch(e){ /* 跟踪数据缺失不阻塞主功能 */ }
+}
+function gdRenderTrackGate(gate){
+  const H=GD_HIST[gate]; if(!H) return;
+  const gateLabel=(GD.gateData && GD.gateData.gates[gate] && GD.gateData.gates[gate].label) || gate;
+  const sum=document.getElementById('gdTrackSummary');
+  if(sum) sum.textContent = `${gateLabel} · 数据日期 ${H.data_date||(H.trading_days[H.trading_days.length-1])} · 共 ${H.trading_days.length} 个交易日`;
+  gdBuildTrackDays(H);
+  gdRenderTrack(H.trading_days[H.trading_days.length-1], H);
 }
 function gdCountByPrimary(snap){
   let c={up:0,buy:0,hz:0,total:0};
@@ -4181,13 +4197,13 @@ function gdPclass(p){
   if(p.startsWith('红区黄柱连续')) return 'gd-tag hz';
   return 'gd-tag';
 }
-function gdBuildTrackDays(){
-  const sel=document.getElementById('gdTrackDay'); if(!sel||!GD_HIST) return;
+function gdBuildTrackDays(H){
+  const sel=document.getElementById('gdTrackDay'); if(!sel||!H) return;
   sel.innerHTML='';
-  GD_HIST.trading_days.slice().reverse().forEach((d,i)=>{
+  H.trading_days.slice().reverse().forEach((d,i)=>{
     const o=document.createElement('option'); o.value=d; o.textContent=d+(i===0?'（最新）':''); sel.appendChild(o);
   });
-  sel.onchange=e=>gdRenderTrack(e.target.value);
+  sel.onchange=e=>gdRenderTrack(e.target.value, H);
 }
 function gdDeltaNote(curr,prev,unit){
   if(prev===null||prev===undefined) return `<div class="gd-note gd-flat">无前一交易日</div>`;
@@ -4196,10 +4212,11 @@ function gdDeltaNote(curr,prev,unit){
   if(d<0) return `<div class="gd-note gd-neg">较前一交易日 ▼ ${d} ${unit}</div>`;
   return `<div class="gd-note gd-flat">较前一交易日 持平</div>`;
 }
-function gdRenderTrack(date){
-  if(!GD_HIST) return;
+function gdRenderTrack(date, H){
+  if(!H) H=GD_HIST[GD.currentGate];
+  if(!H) return;
   gdCloseInline(); // 重渲染前先回收图节点，避免遗留在旧行里
-  const snaps=GD_HIST.snapshots, days=GD_HIST.trading_days;
+  const snaps=H.snapshots, days=H.trading_days;
   const idx=days.indexOf(date);
   const prevDate=idx>0?days[idx-1]:null;
   const snap=snaps[date]||{}, prevSnap=prevDate?(snaps[prevDate]||{}):{};
@@ -4214,7 +4231,7 @@ function gdRenderTrack(date){
     `<div class="gd-stat ${x.c}"><div class="n">${x.n}</div><div class="l">${x.l}</div>${x.desc?`<div class="gd-note gd-desc">${x.desc}</div>`:''}${x.note}</div>`).join('');
   // 当日金钻池逐股明细已移至底部「命中个股」表（gdTable），此处不再重复渲染，减少页面冗余
   const d0=days[days.length-1], d1=days[days.length-2], d2=days[days.length-3];
-  document.getElementById('gdTrackCompare').innerHTML=gdCompareCard(d0,d1)+gdCompareCard(d0,d2);
+  document.getElementById('gdTrackCompare').innerHTML=gdCompareCard(d0,d1,H)+gdCompareCard(d0,d2,H);
 }
 function gdDiffSets(a,b){
   const sa=new Set(Object.keys(a)),sb=new Set(Object.keys(b));
@@ -4236,9 +4253,9 @@ function gdChangedHtml(a,b,code){
   return `<div class="gd-item"><span class="gd-mk keep">留存</span><span class="gd-nm">${s.name}</span><span class="gd-cd">${code}</span>
     <span class="${gdPclass(b[code].primary)}">${b[code].primary}</span><span class="gd-arrow">→</span><span class="${gdPclass(s.primary)}">${s.primary}</span><span class="gd-trig">触发 ${sd}</span></div>`;
 }
-function gdCompareCard(d0,d1){
+function gdCompareCard(d0,d1,H){
   if(!d1) return `<div class="gd-tcard"><h4>前1交易日对比</h4><div class="gd-empty">历史数据不足</div></div>`;
-  const snaps=GD_HIST.snapshots;
+  const snaps=H.snapshots;
   const cmp=gdDiffSets(snaps[d0],snaps[d1]);
   const c0=gdCountByPrimary(snaps[d0]).total, c1=gdCountByPrimary(snaps[d1]).total;
   return `<div class="gd-tcard"><h4>${d0} ↔ ${d1}</h4>

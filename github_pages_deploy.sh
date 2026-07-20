@@ -99,7 +99,7 @@ git update-index --really-refresh 2>/dev/null || true
 git add -A
 git add -f index.html signals.json lh_calendar.json \
   output/top10_history.json output/sector_flow.json output/national_team_etf.json \
-  output/golden_diamond.json output/golden_diamond_history.json \
+  output/golden_diamond.json output/golden_diamond_history.json output/sector_golden_diamond_history.json \
   output/gate_data.json \
   output/golden_pool_*.json output/golden_pool_meta.json output/golden_pool_manifest.json \
   build_manifest.json .nojekyll

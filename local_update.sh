@@ -43,4 +43,11 @@ if /Users/samt/.workbuddy/binaries/python/envs/default/bin/python3 _build_diamon
 else
   echo "[$(date)] ✗ 钻石副站构建失败（详见 $LOG）" >> "$LOG"
 fi
+echo "[$(date)] 同步钻石副站到腾讯云 CloudBase（国内盘后镜像，日后每日自动）..." >> "$LOG"
+CLOUDBASE_ENV_ID="${CLOUDBASE_ENV_ID:-golden-diamond-observer-d805c7e7}"
+if bash cloudbase/deploy_cloudbase.sh >> "$LOG" 2>&1; then
+  echo "[$(date)] ✓ 已同步到腾讯云 CloudBase" >> "$LOG"
+else
+  echo "[$(date)] ⚠️ 腾讯云同步失败/跳过（详见 $LOG），不影响主流程" >> "$LOG"
+fi
 echo "[$(date)] ===== 完成 =====" >> "$LOG"

@@ -63,6 +63,10 @@ echo "💠 Step 2.7: 生成兜宝金钻分片（主站 output/ + 钻石副站 di
 "$PYTHON" build_diamond_pool.py || echo "  ⚠️  金钻分片生成失败（跳过，不影响主流程）"
 
 echo ""
+echo "💾 Step 2.8: 板块门控(板块前100·换手≥4%)金钻池快照追加进独立数据仓库（与 TOP800 跟踪互不干扰）"
+"$PYTHON" build_sector_gd_history.py --append || echo "  ⚠️  板块门控金钻池历史追加失败（跳过，不影响主流程）"
+
+echo ""
 echo "📈 Step 3: 刷新辅助数据（ETF / 板块 / 龙虎榜，best-effort）"
 "$PYTHON" fetch_national_team_etf.py 2>/dev/null || echo "  ⚠️  ETF 数据刷新失败（跳过）"
 "$PYTHON" fetch_sector_flow.py 2>/dev/null || echo "  ⚠️  板块资金流刷新失败（跳过）"
