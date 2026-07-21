@@ -76,7 +76,11 @@ fi
 echo ""
 echo "📁 Step 3: 同步 deploy/ → 根目录 ..."
 cp -R "$DEPLOY/index.html" .
-cp -R "$DEPLOY/signals.json" .
+# ⚠️ 根 signals.json 保持完整版（供 slim_signals 源），不覆盖为精简版
+# 精简版仅在 deploy/signals.json（由 slim_signals 产出，已写入 deploy/）
+if [ -f "$DEPLOY/signals_full.json" ]; then
+  cp "$DEPLOY/signals_full.json" signals.json
+fi
 cp -R "$DEPLOY/lh_calendar.json" .
 # 清空根 output/ 后仅复制前端真正 fetch 的精简文件，避免把 kline_raw 等重型文件带上 Pages
 # 先保留门控数据（gate_scan.py 产出，slim_signals 不处理；否则会被下方 rm -rf 清掉）
