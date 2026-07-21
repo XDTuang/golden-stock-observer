@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>兜金观测 — 量化信号池 v2026-07-21</title>
+<title>兜金观测 — 量化信号池 v2026-07-22</title>
 <!-- 登录保护：内嵌覆盖层，不跳转 -->
 <script>
 (function(){
@@ -86,6 +86,7 @@
   --gd-grad-to: #dde2ef;
   --gd-grad-active-from: #d8d4e8;
   --gd-grad-active-to: #cdc9dc;
+  --gd-th-bg: rgba(248,249,252,0.92);
 
   --radius-sm: 8px;
   --radius: 12px;
@@ -153,6 +154,7 @@
   --gd-grad-to: #151926;
   --gd-grad-active-from: #241a33;
   --gd-grad-active-to: #1a1426;
+  --gd-th-bg: rgba(21,25,38,0.92);
 }
 
 /* ── Body ── */
@@ -1222,7 +1224,7 @@ td { border-color: var(--border-light); }
       -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
     #tab-diamond ::selection{ background:rgba(230,181,60,.22); }
 
-    #tab-diamond .gd-overview{background:linear-gradient(180deg,#161b29 0%,#131722 100%);border:1px solid var(--border);
+    #tab-diamond .gd-overview{background:linear-gradient(180deg,var(--gd-grad-from),var(--gd-grad-to));border:1px solid var(--border);
       border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:16px;box-shadow:var(--shadow-card);}
     #tab-diamond .gd-ov-title{font-size:20px;font-weight:800;letter-spacing:-0.01em;display:flex;align-items:center;gap:9px;margin-bottom:14px;}
     #tab-diamond .gd-ov-title #gdDate{font-size:12px;font-weight:500;color:var(--text-muted);letter-spacing:0;}
@@ -1259,7 +1261,7 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-subtitle{padding:12px 16px;font-weight:600;border-bottom:1px solid var(--border);font-size:14px;}
     #tab-diamond .gd-table{width:100%;border-collapse:collapse;font-size:12.5px;}
     #tab-diamond .gd-table th,#tab-diamond .gd-table td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--border-light);}
-    #tab-diamond .gd-table th{color:var(--text-secondary);font-weight:600;position:sticky;top:0;background:rgba(21,25,38,.92);backdrop-filter:blur(8px);}
+    #tab-diamond .gd-table th{color:var(--text-secondary);font-weight:600;position:sticky;top:0;background:var(--gd-th-bg);backdrop-filter:blur(8px);}
     #tab-diamond .gd-table tbody tr{cursor:pointer;transition:background var(--transition-fast);}
     #tab-diamond .gd-table tbody tr:hover{background:var(--gold-bg-strong);}
     #tab-diamond .gd-table tbody tr.active{background:var(--gold-bg);}
@@ -1372,7 +1374,7 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-tablewrap ::-webkit-scrollbar-track{background:transparent;}
     @media(max-width:880px){ #tab-diamond .gd-layout{grid-template-columns:1fr;} #tab-diamond .gd-stats{grid-template-columns:repeat(2,1fr);} #tab-diamond .gd-sigcards{grid-template-columns:1fr;} #tab-diamond .gd-tcards{grid-template-columns:1fr;}     #tab-diamond .gd-ov-title{font-size:18px;} }
   /* ── 三档选股门控选择器（位于当日总览之上）── */
-  #tab-diamond .gd-gates{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:linear-gradient(180deg,#161b29,#141927);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:14px;box-shadow:var(--shadow-card);}
+  #tab-diamond .gd-gates{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:linear-gradient(180deg,var(--gd-grad-from),var(--gd-grad-to));border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:14px;box-shadow:var(--shadow-card);}
   #tab-diamond .gd-gates-label{font-size:12px;font-weight:700;color:var(--text-secondary);letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:6px;}
   #tab-diamond .gd-gates-label::before{content:"";width:8px;height:8px;border-radius:2px;background:linear-gradient(135deg,var(--gold),#b9892a);box-shadow:0 0 8px rgba(230,181,60,.5);}
   #tab-diamond .gd-gate-seg{display:inline-flex;background:var(--bg-subtle);border:1px solid var(--border);border-radius:12px;padding:3px;gap:2px;}
@@ -1519,6 +1521,19 @@ td { border-color: var(--border-light); }
     <div style="overflow-x:auto;">
       <table id="calDetailTable" style="width:100%;border-collapse:collapse;font-size:13px;background:var(--card-bg);border-radius:12px;overflow:hidden;">
         <thead><tr style="background:var(--bg-subtle);"><th>代码</th><th>名称</th><th>机构净买</th><th>游资净买</th><th>分类/标记</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 逐日龙虎榜明细（全部交易日汇总） -->
+  <div class="cal-all-wrap" style="margin-top:20px;">
+    <div class="section-title" style="margin-top:8px;">逐日龙虎榜明细</div>
+    <div style="overflow-x:auto;">
+      <table id="calAllTable" style="width:100%;border-collapse:collapse;font-size:13px;background:var(--card-bg);border-radius:12px;overflow:hidden;">
+        <thead><tr style="background:var(--bg-subtle);">
+          <th>日期</th><th>代码</th><th>名称</th><th>机构净买</th><th>游资净买</th><th>合计净买</th><th>分类/标记</th>
+        </tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -2967,6 +2982,9 @@ function showCalDetail(dateKey) {
     else grouped["不达标"].push(s);
   });
   
+  const fmtY = v => (v==null||isNaN(v)) ? '—' : (v>=0?'+':'') + Number(v).toFixed(2) + '亿';
+  const yColor = v => (v==null||isNaN(v)) ? 'inherit' : (v>=0 ? '#e74c3c' : '#27ae60');
+  
   let tbody = '';
   Object.keys(CATEGORY_CONFIG).forEach(cat => {
     const stocks = grouped[cat];
@@ -2974,22 +2992,18 @@ function showCalDetail(dateKey) {
     
     const cfg = CATEGORY_CONFIG[cat];
     tbody += `<tr style="background:${cfg.bg}">
-      <td colspan="6" style="font-weight:600;color:${cfg.color};padding:8px;">
+      <td colspan="5" style="font-weight:600;color:${cfg.color};padding:8px;">
         ${cfg.label} (${stocks.length}只) — ${cfg.desc}
       </td>
     </tr>`;
     
     stocks.forEach(s => {
-      const chg = s.chg_pct >= 0 ? `+${s.chg_pct.toFixed(2)}%` : `${s.chg_pct.toFixed(2)}%`;
-      const chgColor = s.chg_pct >= 0 ? '#e74c3c' : '#27ae60';
-      const netColor = s.net_amt >= 0 ? '#e74c3c' : '#27ae60';
       tbody += `<tr>
         <td>${s.code}</td>
         <td style="font-weight:600;">${s.name}</td>
-        <td style="color:${netColor};font-weight:600;">${s.net_amt >= 0 ? '+' : ''}${s.net_amt.toFixed(2)}亿</td>
-        <td style="color:${chgColor};font-weight:600;">${chg}</td>
-        <td>${s.reason || '—'}</td>
-        <td>${s.turnover ? s.turnover.toFixed(2) + '%' : '—'}</td>
+        <td style="color:${yColor(s.inst_net)};font-weight:600;">${fmtY(s.inst_net)}</td>
+        <td style="color:${yColor(s.retail_net)};font-weight:600;">${fmtY(s.retail_net)}</td>
+        <td>${s.reason || '—'}${s.has_hotmoney ? ' · 游资' : ''}</td>
       </tr>`;
     });
   });
@@ -3000,38 +3014,75 @@ function showCalDetail(dateKey) {
 function renderCalAllTable(data) {
   let tbody = '';
   const dates = Object.keys(data).sort((a,b) => b.localeCompare(a)); // 降序
+  const fmtY = v => (v==null||isNaN(v)) ? '—' : (v>=0?'+':'') + Number(v).toFixed(2) + '亿';
+  const yColor = v => (v==null||isNaN(v)) ? 'inherit' : (v>=0 ? '#e74c3c' : '#27ae60');
   
   dates.forEach(d => {
     const dayData = data[d];
     // 按分类排序：纯共振 > 准共振 > 机构独买 > 游资主导 > 机构大卖 > 不达标
     const catOrder = {"纯共振":0,"准共振":1,"机构独买":2,"游资主导":3,"机构大卖":4,"不达标":5};
-    dayData.sort((a,b) => {
+    dayData.slice().sort((a,b) => {
       const ca = catOrder[a.category] !== undefined ? catOrder[a.category] : 99;
       const cb = catOrder[b.category] !== undefined ? catOrder[b.category] : 99;
       return ca - cb;
     }).forEach(s => {
       const cfg = CATEGORY_CONFIG[s.category] || CATEGORY_CONFIG["不达标"];
-      const chg = s.chg_pct >= 0 ? `+${s.chg_pct.toFixed(2)}%` : `${s.chg_pct.toFixed(2)}%`;
-      const chgColor = s.chg_pct >= 0 ? '#e74c3c' : '#27ae60';
-      const netColor = s.net_amt >= 0 ? '#e74c3c' : '#27ae60';
-      
       tbody += `<tr>
         <td style="white-space:nowrap;">${d}</td>
         <td>${s.code}</td>
         <td style="font-weight:600;">${s.name}</td>
-        <td>
-          <span class="cat-badge" style="background:${cfg.bg};color:${cfg.color};padding:2px 8px;border-radius:4px;font-size:12px;">
-            ${cfg.label}
-          </span>
-        </td>
-        <td style="color:${netColor};font-weight:600;">${s.net_amt >= 0 ? '+' : ''}${s.net_amt.toFixed(2)}亿</td>
-        <td style="color:${chgColor};font-weight:600;">${chg}</td>
-        <td>${s.reason || '—'}</td>
+        <td style="color:${yColor(s.inst_net)};font-weight:600;">${fmtY(s.inst_net)}</td>
+        <td style="color:${yColor(s.retail_net)};font-weight:600;">${fmtY(s.retail_net)}</td>
+        <td style="color:${yColor(s.total_net)};font-weight:600;">${fmtY(s.total_net)}</td>
+        <td><span class="cat-badge" style="background:${cfg.bg};color:${cfg.color};padding:2px 8px;border-radius:4px;font-size:12px;">${cfg.label}</span>${s.reason ? ' '+s.reason : ''}</td>
       </tr>`;
     });
   });
   
-  document.querySelector('#calAllTable tbody').innerHTML = tbody || '<tr><td colspan="7" style="text-align:center;padding:20px;color:#999;">暂无龙虎榜数据</td></tr>';
+  const el = document.querySelector('#calAllTable tbody');
+  if (el) el.innerHTML = tbody || '<tr><td colspan="7" style="text-align:center;padding:20px;color:#999;">暂无龙虎榜数据</td></tr>';
+}
+
+// 月初至今累计净买入 TOP10（机构+游资合计）
+function renderCumulativeTop() {
+  const wrap = document.getElementById('cumulativeTopWrap');
+  const tbody = document.querySelector('#cumBuyTopTable tbody');
+  if (!wrap || !tbody) return;
+  const data = buildCalendarData();
+  if (!data) { wrap.style.display = 'none'; return; }
+  
+  const agg = {}; // code -> {name, inst, retail, total, days}
+  Object.keys(data).forEach(d => {
+    (data[d]||[]).forEach(s => {
+      if (!s.code) return;
+      if (!agg[s.code]) agg[s.code] = { name:s.name, inst:0, retail:0, total:0, days:0 };
+      const a = agg[s.code];
+      a.name = s.name;
+      a.inst += (s.inst_net||0);
+      a.retail += (s.retail_net||0);
+      a.total += (s.total_net||0);
+      a.days += 1;
+    });
+  });
+  
+  const list = Object.keys(agg).map(code => ({ code, ...agg[code] }))
+    .sort((a,b) => b.total - a.total).slice(0, 10);
+  
+  if (list.length === 0) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  
+  const fmtY = v => (v>=0?'+':'') + v.toFixed(2) + '亿';
+  const yColor = v => v>=0 ? '#e74c3c' : '#27ae60';
+  
+  tbody.innerHTML = list.map((s,i) => `<tr>
+    <td style="font-weight:700;color:var(--text-secondary);">${i+1}</td>
+    <td>${s.code}</td>
+    <td style="font-weight:600;">${s.name}</td>
+    <td style="color:${yColor(s.inst)};font-weight:600;">${fmtY(s.inst)}</td>
+    <td style="color:${yColor(s.retail)};font-weight:600;">${fmtY(s.retail)}</td>
+    <td style="color:${yColor(s.total)};font-weight:600;">${fmtY(s.total)}</td>
+    <td style="text-align:center;">${s.days}</td>
+  </tr>`).join('');
 }
 
 function changeCalMonth(delta) {
@@ -3347,23 +3398,13 @@ async function initPage() {
   await Promise.all(loadTasks);
   console.log('[兜金] 所有数据加载完成');
   
-  // 加载龙虎榜数据并渲染日历（独立运行，不依赖 SIGNALS_DATA）
-  await loadLhbData();
-  renderCalendar();
-  
-  // 初始化日期选择器 / 板块 / ETF（次要 tab，失败不影响主数据渲染）
-  try { initOverviewDatePicker(); } catch(e){ console.warn('[兜金] 日期选择器渲染失败:', e); }
-  try { renderSectorFlow(); } catch(e){ console.warn('[兜金] 板块资金流渲染失败:', e); }
-  try { renderEtfFlow(); } catch(e){ console.warn('[兜金] ETF资金流渲染失败:', e); }
-  
-  // 如果有信号数据，则渲染统计概览（不依赖 stocks）
+  // ── 主数据优先：总览 / 短线 / 中长线（绝不被日历异常中断）──
   var SIGNALS_DATA = window.SIGNALS_DATA;
   console.log('[兜金] SIGNALS_DATA 检查:', !!SIGNALS_DATA, 'stocks:', SIGNALS_DATA ? (SIGNALS_DATA.stocks||[]).length : 0);
   if (SIGNALS_DATA) {
-    console.log('[兜金] 开始渲染（先统计概览，stocks 异步加载）');
+    console.log('[兜金] 开始渲染主数据（总览/短线/中长线）');
     const sigTime = (SIGNALS_DATA.generated_at||'未知').substring(0,19);
-    const lhbStatus = LHB_DATA_LOADED ? ' | 龙虎榜: ' + Object.keys(LHB_CALENDAR_DATA).length + '天' : '';
-    document.getElementById('updateTime').textContent = `更新: ${sigTime}${lhbStatus}`;
+    document.getElementById('updateTime').textContent = `更新: ${sigTime}`;
     renderStats();
 
     // stocks 可能因 GitHub Pages CDN 大文件截断而缺失，从独立文件补拉
@@ -3379,7 +3420,7 @@ async function initPage() {
         renderSignalPickCards();
       }).catch(e => console.warn('[兜金] stocks 补拉失败:', e));
     } else {
-      // stocks 已在内联数据中（本地模式）
+      // stocks 已在 signals.json 内
       buildStockDataMap();
       renderTopTable();
       renderShortTerm();
@@ -3387,6 +3428,21 @@ async function initPage() {
       renderSignalPickCards();
     }
   }
+
+  // ── 机游共振日历 + 当月TOP（独立运行，失败不影响主数据）──
+  try {
+    await loadLhbData();
+    renderCalendar();
+    renderCumulativeTop();
+    const ut = document.getElementById('updateTime');
+    if (ut && LHB_CALENDAR_DATA) ut.textContent += ` | 龙虎榜: ${Object.keys(LHB_CALENDAR_DATA).length}天`;
+    LHB_DATA_LOADED = true;
+  } catch(e) { console.warn('[兜金] 机游共振渲染失败(不影响主数据):', e); }
+
+  // 初始化日期选择器 / 板块 / ETF（次要 tab，失败不影响主数据渲染）
+  try { initOverviewDatePicker(); } catch(e){ console.warn('[兜金] 日期选择器渲染失败:', e); }
+  try { renderSectorFlow(); } catch(e){ console.warn('[兜金] 板块资金流渲染失败:', e); }
+  try { renderEtfFlow(); } catch(e){ console.warn('[兜金] ETF资金流渲染失败:', e); }
 }
 
 // 页面加载完成后初始化
