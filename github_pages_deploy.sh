@@ -102,6 +102,7 @@ git add -f index.html signals.json lh_calendar.json \
   output/golden_diamond.json output/golden_diamond_history.json output/sector_golden_diamond_history.json \
   output/gate_data.json \
   output/golden_pool_*.json output/golden_pool_meta.json output/golden_pool_manifest.json \
+  output/stocks.json \
   build_manifest.json .nojekyll
 if git diff --cached --quiet; then
   echo "  无新更改需要提交"
