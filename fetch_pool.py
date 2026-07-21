@@ -214,11 +214,20 @@ def fetch_turnover_ranking(codes: list, limit: int) -> list:
     Returns: [{code, code6, name, market, turnover}, ...] 已排序
     """
     print(f"📊 Step 1: 获取 A股成交额 TOP{limit} (腾讯 qt 快照)...")
-    # 接口探活：先确认 qt.gtimg.cn 可达，避免批量拉取时整体卡死（launchd 不再挂 15 分钟）
-    try:
-        _curl_text(f"{QT_URL}=sh000001")
-    except Exception as e:
-        print(f"  ❌ qt.gtimg.cn 探活失败，网络可能不可达: {e}")
+    # 接口探活：先确认 qt.gtimg.cn 可达，避免批量拉取时整体卡死
+    # 探活本身也做重试兜底，避免瞬时网络抖动（DNS 抖动/超时）直接整段 sys.exit(2)
+    probe_ok = False
+    for _pa in range(RETRY_LIMIT):
+        try:
+            _curl_text(f"{QT_URL}=sh000001")
+            probe_ok = True
+            break
+        except Exception as e:
+            print(f"  ⚠️ qt.gtimg.cn 探活第 {_pa+1}/{RETRY_LIMIT} 次失败: {e}")
+            if _pa < RETRY_LIMIT - 1:
+                time.sleep(3)
+    if not probe_ok:
+        print(f"  ❌ qt.gtimg.cn 探活 {RETRY_LIMIT} 次均失败，网络可能不可达")
         sys.exit(2)
     t0 = time.time()
 

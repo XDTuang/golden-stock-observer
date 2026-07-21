@@ -1,10 +1,12 @@
 name: 回购隐含收益 · 每日更新
 
+# ⏸️ 已暂停（2026-07-21）：用户决定停止回购自动更新，数据冻结于 2026-07-20。
+# 代码已封存、未删除，后续解决方案待定。恢复时只需把下方 schedule 注释取消即可。
 on:
-  schedule:
-    # 北京 20:00 = UTC 12:00（每日 20:00 抓取前一日 20:00 → 当日 20:00 区间）
-    - cron: '0 12 * * *'
-  workflow_dispatch:   # 允许在 GitHub Actions 页面手动点 Run workflow 测试
+  # schedule:
+  #   # 北京 20:00 = UTC 12:00（每日 20:00 抓取前一日 20:00 → 当日 20:00 区间）
+  #   - cron: '0 12 * * *'
+  workflow_dispatch:   # 仅保留手动触发，便于将来恢复时测试
 
 permissions:
   contents: write

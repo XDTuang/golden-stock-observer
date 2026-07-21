@@ -57,6 +57,10 @@
   .sub{font-size:13px;color:var(--text-2);margin-top:2px}
   .pill{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;font-size:12.5px;font-weight:600;background:var(--amber-soft);color:var(--amber);border:1px solid rgba(240,185,11,.28)}
   .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--amber)}
+  /* 暂停更新横幅 */
+  .paused-banner{display:flex;align-items:center;gap:9px;margin:0 0 20px;padding:12px 16px;border-radius:12px;background:var(--amber-soft);border:1px solid rgba(240,185,11,.34);color:var(--amber);font-size:13px;font-weight:600;line-height:1.5}
+  .paused-banner .ic{font-size:16px;flex:none}
+  .paused-banner b{color:var(--text);font-weight:700}
 
   /* Window bar */
   .window{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 18px;margin-bottom:20px;box-shadow:var(--shadow)}
@@ -184,8 +188,10 @@
         <div class="sub">上市公司回购公告 · 目标价 vs 当日收盘 · 隐含上行空间</div>
       </div>
     </div>
-    <div class="pill"><span class="dot"></span>实时样本 · 2026-07-01 ~ 07-20</div>
+    <div class="pill"><span class="dot"></span>冻结样本 · 2026-07-01 ~ 07-20（暂停更新）</div>
   </div>
+
+  <div class="paused-banner"><span class="ic">⏸️</span><span>本页数据已<b>暂停自动更新</b>（冻结于 2026-07-20），相关代码已封存、未删除，后续解决方案待定。</span></div>
 
   <div class="window">
     <div>
