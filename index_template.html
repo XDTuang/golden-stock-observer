@@ -81,6 +81,12 @@
   --shadow-card-hover: 0 4px 16px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.03);
   --shadow-popup: 0 8px 32px rgba(0,0,0,0.08);
 
+  /* 金钻卡片渐变（日间模式用浅色渐变） */
+  --gd-grad-from: #e8ecf4;
+  --gd-grad-to: #dde2ef;
+  --gd-grad-active-from: #d8d4e8;
+  --gd-grad-active-to: #cdc9dc;
+
   --radius-sm: 8px;
   --radius: 12px;
   --radius-lg: 18px;
@@ -141,6 +147,12 @@
   --shadow-card-hover: 0 4px 12px rgba(0,0,0,0.45), 0 18px 50px rgba(0,0,0,0.38);
   --shadow-popup: 0 12px 40px rgba(0,0,0,0.55);
   --shadow-gold: 0 8px 30px rgba(230,181,60,0.18);
+
+  /* 金钻卡片渐变（夜间模式保持深色奢华） */
+  --gd-grad-from: #1a2030;
+  --gd-grad-to: #151926;
+  --gd-grad-active-from: #241a33;
+  --gd-grad-active-to: #1a1426;
 }
 
 /* ── Body ── */
@@ -1148,7 +1160,7 @@ td { border-color: var(--border-light); }
   <div class="section-title">综合评分 TOP10</div>
   <div style="overflow-x:auto;">
     <table id="topTable" style="width:100%;border-collapse:collapse;font-size:13px;">
-      <thead><tr style="background:rgba(255,255,255,.02);text-align:left;"></tr></thead>
+      <thead><tr style="background:var(--bg-subtle);text-align:left;"></tr></thead>
       <tbody></tbody>
     </table>
   </div>
@@ -1215,7 +1227,7 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-ov-title{font-size:20px;font-weight:800;letter-spacing:-0.01em;display:flex;align-items:center;gap:9px;margin-bottom:14px;}
     #tab-diamond .gd-ov-title #gdDate{font-size:12px;font-weight:500;color:var(--text-muted);letter-spacing:0;}
     #tab-diamond .gd-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px;}
-    #tab-diamond .gd-stat{background:linear-gradient(180deg,#1a2030,#151926);border:1px solid var(--border);border-top:3px solid var(--accent);
+    #tab-diamond .gd-stat{background:linear-gradient(180deg,var(--gd-grad-from),var(--gd-grad-to));border:1px solid var(--border);border-top:3px solid var(--accent);
       border-radius:var(--radius);padding:16px 14px;text-align:center;box-shadow:var(--shadow-sm);transition:transform .18s,box-shadow .18s,border-color .18s;}
     #tab-diamond .gd-stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-card);}
     #tab-diamond .gd-stat.s-up{border-top-color:var(--red);}
@@ -1223,7 +1235,7 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-stat.s-hz{border-top-color:var(--gold);}
     #tab-diamond .gd-stat.s-chan{border-top-color:var(--purple);cursor:pointer;}
     #tab-diamond .gd-stat.s-chan .n{color:var(--purple);}
-    #tab-diamond .gd-stat.s-chan.on{background:linear-gradient(180deg,#241a33,#1a1426);box-shadow:0 0 0 1px var(--purple) inset, var(--shadow-card);}
+    #tab-diamond .gd-stat.s-chan.on{background:linear-gradient(180deg,var(--gd-grad-active-from),var(--gd-grad-active-to));box-shadow:0 0 0 1px var(--purple) inset, var(--shadow-card);}
     #tab-diamond .gd-stat .n{font-size:28px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-0.01em;}
     #tab-diamond .gd-stat.s-up .n{color:var(--red);}
     #tab-diamond .gd-stat.s-buy .n{color:var(--cyan);}
@@ -1273,10 +1285,10 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-ff.buy.on{background:var(--cyan);}
     #tab-diamond .gd-ff.up.on{background:var(--red);}
     #tab-diamond .gd-ff.hz.on{background:var(--gold);}
-    #tab-diamond .gd-ff.chan.on{background:var(--purple);color:#0a0c12;}
+    #tab-diamond .gd-ff.chan.on{background:var(--purple);color:var(--text-inverse);}
     #tab-diamond .gd-ff.four.on{background:#3b82f6;color:#fff;}
     #tab-diamond .gd-sigcards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-    #tab-diamond .gd-sigcard{background:linear-gradient(180deg,#1a2030,#151926);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;transition:transform .18s,box-shadow .18s,border-color .18s;}
+    #tab-diamond .gd-sigcard{background:linear-gradient(180deg,var(--gd-grad-from),var(--gd-grad-to));border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;transition:transform .18s,box-shadow .18s,border-color .18s;}
     #tab-diamond .gd-sigcard:hover{transform:translateY(-2px);box-shadow:var(--shadow-card);border-color:rgba(230,181,60,.22);}
     #tab-diamond .gd-sigcard h3{font-size:13px;margin-bottom:5px;font-weight:700;}
     #tab-diamond .gd-sigcard.up h3{color:var(--red);}
@@ -1506,7 +1518,7 @@ td { border-color: var(--border-light); }
     <div class="section-title" id="calDetailTitle">选中日期详情</div>
     <div style="overflow-x:auto;">
       <table id="calDetailTable" style="width:100%;border-collapse:collapse;font-size:13px;background:var(--card-bg);border-radius:12px;overflow:hidden;">
-        <thead><tr style="background:rgba(255,255,255,.02);"><th>代码</th><th>名称</th><th>机构净买</th><th>游资净买</th><th>分类/标记</th></tr></thead>
+        <thead><tr style="background:var(--bg-subtle);"><th>代码</th><th>名称</th><th>机构净买</th><th>游资净买</th><th>分类/标记</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -1535,7 +1547,7 @@ td { border-color: var(--border-light); }
 <!-- Tab: 回购隐含收益（独立子应用 · iframe 内嵌 · 每日20:00独立更新，与主站其他数据节奏解耦） -->
 <div class="tab-content" id="tab-repurchase">
   <iframe src="repurchase-yield/index.html" title="回购隐含收益" loading="lazy"
-          style="width:100%;height:calc(100vh - 140px);border:0;background:var(--bg,#0B0E14);border-radius:12px;"></iframe>
+          style="width:100%;height:calc(100vh - 140px);border:0;background:var(--bg-card);border-radius:12px;"></iframe>
 </div>
 
 <div class="footer">
@@ -3341,21 +3353,36 @@ async function initPage() {
   try { renderSectorFlow(); } catch(e){ console.warn('[兜金] 板块资金流渲染失败:', e); }
   try { renderEtfFlow(); } catch(e){ console.warn('[兜金] ETF资金流渲染失败:', e); }
   
-  // 如果有信号数据，则渲染其他模块
+  // 如果有信号数据，则渲染统计概览（不依赖 stocks）
   var SIGNALS_DATA = window.SIGNALS_DATA;
   console.log('[兜金] SIGNALS_DATA 检查:', !!SIGNALS_DATA, 'stocks:', SIGNALS_DATA ? (SIGNALS_DATA.stocks||[]).length : 0);
-  if (SIGNALS_DATA && SIGNALS_DATA.stocks) {
-    console.log('[兜金] 开始渲染信号模块');
-    buildStockDataMap();
+  if (SIGNALS_DATA) {
+    console.log('[兜金] 开始渲染（先统计概览，stocks 异步加载）');
     const sigTime = (SIGNALS_DATA.generated_at||'未知').substring(0,19);
     const lhbStatus = LHB_DATA_LOADED ? ' | 龙虎榜: ' + Object.keys(LHB_CALENDAR_DATA).length + '天' : '';
     document.getElementById('updateTime').textContent = `更新: ${sigTime}${lhbStatus}`;
     renderStats();
-    renderTopTable();
-    renderShortTerm();
-    renderLongTerm();
-    // renderCharts(); // 已屏蔽：信号等级分布 + EMA趋势评分分布图表
-    renderSignalPickCards();
+
+    // stocks 可能因 GitHub Pages CDN 大文件截断而缺失，从独立文件补拉
+    if (!SIGNALS_DATA.stocks || SIGNALS_DATA.stocks.length === 0) {
+      console.log('[兜金] stocks 为空，异步补拉 output/stocks.json...');
+      fetch('./output/stocks.json', { cache: 'no-store' }).then(r => r.json()).then(stocks => {
+        window.SIGNALS_DATA.stocks = stocks;
+        console.log('[兜金] stocks 补拉成功:', stocks.length, '只');
+        buildStockDataMap();
+        renderTopTable();
+        renderShortTerm();
+        renderLongTerm();
+        renderSignalPickCards();
+      }).catch(e => console.warn('[兜金] stocks 补拉失败:', e));
+    } else {
+      // stocks 已在内联数据中（本地模式）
+      buildStockDataMap();
+      renderTopTable();
+      renderShortTerm();
+      renderLongTerm();
+      renderSignalPickCards();
+    }
   }
 }
 
