@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国家队ETF资金流 · 本地预览</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
+<style>
+:root {
+  --bg: #0b0e14;
+  --card-bg: #111722;
+  --text: #e8eaed;
+  --text-secondary: #8b8fa3;
+  --accent: #4f8cff;
+  --positive: #ef4444;
+  --negative: #22c55e;
+  --border: rgba(255,255,255,0.06);
+  --btn-bg: rgba(255,255,255,0.06);
+  --btn-active: rgba(79,140,255,0.2);
+  --btn-border: rgba(79,140,255,0.5);
+  --radius: 10px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 32px 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1100px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.controls select {
+  background: var(--btn-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 7px 32px 7px 12px;
+  font-size: 13px;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%238b8fa3' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 14px;
+}
+
+.controls select:hover { border-color: rgba(255,255,255,0.15); }
+
+.btn-group {
+  display: flex;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.btn-group button {
+  background: var(--btn-bg);
+  border: none;
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  border-right: 1px solid var(--border);
+  transition: all .2s;
+}
+
+.btn-group button:last-child { border-right: none; }
+.btn-group button:hover { color: var(--text); background: rgba(255,255,255,0.1); }
+.btn-group button.active {
+  color: var(--accent);
+  background: var(--btn-active);
+  border-color: var(--btn-border);
+}
+
+.chart-wrap {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 20px 16px 12px;
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.chart-wrap h2 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+}
+
+.chart-wrap .etf-label {
+  font-size: 12px;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+#chart {
+  width: 100%;
+  height: 420px;
+}
+
+.summary-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.summary-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 20px;
+}
+
+.summary-card .label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.summary-card .value {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.summary-card .sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.positive { color: var(--positive) !important; }
+.negative { color: var(--negative) !important; }
+
+.date-range {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.loading {
+  text-align: center;
+  padding: 80px 0;
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>国家队ETF资金流时间轴</h1>
+    <div class="controls">
+      <select id="etfSelect" onchange="onEtfChange()">
+        <option value="__all__">全部汇总</option>
+      </select>
+      <div class="btn-group" id="rangeBtns">
+        <button data-range="60" class="active">60日</button>
+        <button data-range="120">120日</button>
+        <button data-range="2026">2026年</button>
+        <button data-range="all">全部</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="etf-label" id="etfLabel">全部ETF汇总 · 日均主力净流入</div>
+    <div id="chart"></div>
+    <div class="date-range" id="dateRange"></div>
+  </div>
+
+  <div class="summary-row">
+    <div class="summary-card">
+      <div class="label" id="card1Label">区间主力净流入</div>
+      <div class="value" id="card1Value">--</div>
+      <div class="sub" id="card1Sub"></div>
+    </div>
+    <div class="summary-card">
+      <div class="label">单日主力净流入</div>
+      <div class="value" id="card2Value">--</div>
+      <div class="sub" id="card2Sub"></div>
+    </div>
+    <div class="summary-card">
+      <div class="label">净流入天数 / 总天数</div>
+      <div class="value" id="card3Value">--</div>
+      <div class="sub" id="card3Sub"></div>
+    </div>
+    <div class="summary-card">
+      <div class="label">数据日期范围</div>
+      <div class="value" style="font-size:16px;" id="card4Value">--</div>
+      <div class="sub" id="card4Sub"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── 数据加载 ──
+let RAW_DATA = null;
+let currentEtf = "__all__";
+let currentRange = "60";
+let chartInst = null;
+
+async function init() {
+  // 数据 URL 使用绝对路径（避免预览面板代理导致 origin 不一致）
+  const DATA_URL = "http://localhost:8088/preview_data.json";
+  try {
+    const resp = await fetch(DATA_URL);
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
+    RAW_DATA = await resp.json();
+    console.log(`ETF数据已加载: ${Object.keys(RAW_DATA.history).length} 个交易日`);
+  } catch(e) {
+    console.error("ETF数据加载失败:", e);
+    document.getElementById("chart").outerHTML =
+      '<div class="loading">⚠️ 数据加载失败: ' + e.message + '<br><small>确认已运行: cd etf_preview && python3 -m http.server 8088</small></div>';
+    return;
+  }
+
+  // 填充 ETF 下拉
+  const select = document.getElementById("etfSelect");
+  const seen = new Set();
+  const dates = Object.keys(RAW_DATA.history).sort();
+  for (const d of dates) {
+    const etfs = RAW_DATA.history[d]?.etfs || [];
+    for (const e of etfs) {
+      const key = e.code;
+      if (!seen.has(key)) {
+        seen.add(key);
+        const opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = `${e.short_name || e.name} (${e.code.replace(/^(sh|sz)/,"")})`;
+        select.appendChild(opt);
+      }
+    }
+  }
+
+  // 时间范围按钮事件
+  document.querySelectorAll("#rangeBtns button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("#rangeBtns button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentRange = btn.dataset.range;
+      renderChart();
+    });
+  });
+
+  renderChart();
+}
+
+// ── 数据提取 ──
+function getFilteredData() {
+  const dates = Object.keys(RAW_DATA.history).sort();
+  if (dates.length === 0) return { dates: [], flows: [], cum: [], name: "无数据" };
+
+  // 按时间范围过滤
+  let startIdx = 0;
+  const lastDate = dates[dates.length - 1];
+  if (currentRange === "60") {
+    startIdx = Math.max(0, dates.length - 60);
+  } else if (currentRange === "120") {
+    startIdx = Math.max(0, dates.length - 120);
+  } else if (currentRange === "2026") {
+    startIdx = dates.findIndex(d => d >= "2026-01-01");
+    if (startIdx < 0) startIdx = 0;
+  }
+  // "all" = no filter
+
+  const filtered = dates.slice(startIdx);
+  const flows = [];
+  const datesOut = [];
+  let etfName = "全部汇总";
+
+  for (const d of filtered) {
+    const day = RAW_DATA.history[d];
+    let net = 0;
+
+    if (currentEtf === "__all__") {
+      net = day?.summary?.total_main_net_flow || 0;
+    } else {
+      const etf = (day?.etfs || []).find(e => e.code === currentEtf);
+      if (etf) {
+        net = etf.main_net_flow || 0;
+        if (!etfName || etfName === "全部汇总") {
+          etfName = `${etf.short_name || etf.name} (${etf.code.replace(/^(sh|sz)/,"")})`;
+        }
+      }
+    }
+
+    flows.push(net);
+    datesOut.push(d);
+  }
+
+  // 累计
+  let cum = 0;
+  const cumArr = [];
+  for (const f of flows) {
+    cum += f;
+    cumArr.push(cum);
+  }
+
+  return { dates: datesOut, flows, cum: cumArr, name: etfName, allDates: dates };
+}
+
+// ── 图表渲染 ──
+function renderChart() {
+  const { dates, flows, cum, name, allDates } = getFilteredData();
+  if (dates.length === 0) {
+    document.getElementById("chart").innerHTML = '<div class="loading">暂无数据</div>';
+    return;
+  }
+
+  // 更新标签
+  document.getElementById("etfLabel").textContent = name + " · 单日主力净流入";
+
+  // 更新日期范围
+  document.getElementById("dateRange").innerHTML =
+    `<span>${dates[0]} — ${dates[dates.length-1]}</span><span>共 ${dates.length} 个交易日</span>`;
+
+  // 更新摘要卡片
+  const totalFlow = cum[cum.length - 1];
+  const latestFlow = flows[flows.length - 1];
+  const posDays = flows.filter(f => f > 0).length;
+  const negDays = flows.filter(f => f < 0).length;
+
+  const card1 = document.getElementById("card1Value");
+  card1.textContent = fmtBillions(totalFlow);
+  card1.className = "value " + (totalFlow >= 0 ? "positive" : "negative");
+  document.getElementById("card1Sub").textContent = `${dates[0]} — ${dates[dates.length-1]} 累计`;
+
+  const card2 = document.getElementById("card2Value");
+  card2.textContent = fmtBillions(latestFlow);
+  card2.className = "value " + (latestFlow >= 0 ? "positive" : "negative");
+  document.getElementById("card2Sub").textContent = `最新: ${dates[dates.length-1]}`;
+
+  document.getElementById("card3Value").textContent = `${posDays} ↑ / ${negDays} ↓`;
+  document.getElementById("card3Sub").textContent = `净流入比例: ${(posDays/dates.length*100).toFixed(0)}%`;
+
+  document.getElementById("card4Value").textContent = `${allDates[0]} → ${allDates[allDates.length-1]}`;
+  document.getElementById("card4Sub").textContent = `总历史 ${allDates.length} 个交易日`;
+
+  // ── ECharts 渲染 ──
+  const dom = document.getElementById("chart");
+  if (!chartInst) {
+    chartInst = echarts.init(dom);
+  }
+  chartInst.resize();
+
+  const isAll = currentEtf === "__all__";
+
+  const option = {
+    tooltip: {
+      trigger: "axis",
+      backgroundColor: "rgba(17,23,34,0.95)",
+      borderColor: "rgba(255,255,255,0.1)",
+      textStyle: { color: "#e8eaed", fontSize: 12 },
+      formatter: function(params) {
+        const idx = params[0].dataIndex;
+        const d = dates[idx];
+        const f = flows[idx];
+        const c = cum[idx];
+        const sign = f >= 0 ? "+" : "";
+        const cSign = c >= 0 ? "+" : "";
+        return `<b>${d}</b><br/>
+                <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${f>=0?'#ef4444':'#22c55e'};margin-right:6px;"></span>
+                单日净流入: <b style="color:${f>=0?'#ef4444':'#22c55e'}">${sign}${(f/1e8).toFixed(2)}亿</b><br/>
+                <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#4f8cff;margin-right:6px;"></span>
+                累计净流入: <b style="color:#4f8cff">${cSign}${(c/1e8).toFixed(2)}亿</b>`;
+      }
+    },
+    grid: { left: 60, right: 50, top: 20, bottom: 36 },
+    xAxis: {
+      type: "category",
+      data: dates,
+      axisLabel: { color: "#8b8fa3", fontSize: 10, formatter: v => v.slice(5) },
+      axisLine: { lineStyle: { color: "rgba(255,255,255,0.08)" } },
+      axisTick: { show: false },
+    },
+    yAxis: [
+      {
+        type: "value",
+        name: isAll ? "亿" : "千万",
+        nameTextStyle: { color: "#8b8fa3", fontSize: 11 },
+        axisLabel: {
+          color: "#8b8fa3", fontSize: 11,
+          formatter: v => isAll ? (v/1e8).toFixed(1) : (v/1e7).toFixed(1)
+        },
+        splitLine: { lineStyle: { color: "rgba(255,255,255,0.04)" } },
+      },
+      {
+        type: "value",
+        name: isAll ? "" : "",
+        axisLabel: {
+          color: "#8b8fa3", fontSize: 11,
+          formatter: v => isAll ? (v/1e8).toFixed(1) : (v/1e7).toFixed(1)
+        },
+        splitLine: { show: false },
+      }
+    ],
+    series: [
+      {
+        name: "单日净流入",
+        type: "bar",
+        data: flows.map((f, i) => ({
+          value: f,
+          itemStyle: {
+            color: f >= 0
+              ? new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: "rgba(239,68,68,0.8)" },
+                  { offset: 1, color: "rgba(239,68,68,0.15)" }
+                ])
+              : new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: "rgba(34,197,94,0.8)" },
+                  { offset: 1, color: "rgba(34,197,94,0.15)" }
+                ])
+          }
+        })),
+        barWidth: dates.length > 60 ? "60%" : 14,
+        emphasis: {
+          itemStyle: { shadowBlur: 8, shadowColor: "rgba(255,255,255,0.3)" }
+        },
+      },
+      {
+        name: "累计净流入",
+        type: "line",
+        yAxisIndex: 1,
+        data: cum,
+        smooth: true,
+        lineStyle: { color: "#4f8cff", width: 2 },
+        itemStyle: { color: "#4f8cff" },
+        symbol: "none",
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: "rgba(79,140,255,0.25)" },
+            { offset: 1, color: "rgba(79,140,255,0.02)" }
+          ])
+        },
+      }
+    ]
+  };
+
+  chartInst.setOption(option, true);
+}
+
+function onEtfChange() {
+  currentEtf = document.getElementById("etfSelect").value;
+  renderChart();
+}
+
+function fmtBillions(v) {
+  const sign = v >= 0 ? "+" : "";
+  const abs = Math.abs(v);
+  if (abs >= 1e8) return sign + (abs / 1e8).toFixed(2) + " 亿";
+  if (abs >= 1e4) return sign + (abs / 1e4).toFixed(2) + " 万";
+  return sign + abs.toFixed(0);
+}
+
+// 响应式
+window.addEventListener("resize", () => { if (chartInst) chartInst.resize(); });
+
+// 启动
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+#!/usr/bin/env python3
+"""
+兜金观测 — 国家队ETF资金流向采集脚本
+
+查询21只核心国家队ETF的每日资金流向数据，
+缓存20个交易日，输出 output/national_team_etf.json 供前端展示。
+
+用法: python fetch_national_team_etf.py [--date YYYY-MM-DD]
+"""
+
+import json
+import os
+import sys
+import subprocess
+from datetime import datetime, timedelta
+
+# 路径配置
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_FILE = os.path.join(SCRIPT_DIR, "output", "national_team_etf.json")
+NODE_BIN = "/Users/samt/.workbuddy/binaries/node/versions/22.22.2/bin/node"
+WESTOCK_SCRIPT = "/Applications/WorkBuddy.app/Contents/Resources/app.asar.unpacked/resources/builtin-skills/westock-data/scripts/index.js"
+MAX_HISTORY_DAYS = 20
+
+# 国家队核心ETF列表（中央汇金投资+中央汇金资管 2025年报公开持仓）
+# 数据来源：2025基金年报 / Wind
+NATIONAL_TEAM_ETFS = [
+    # ═══ 沪深300（4只）═══ 中央汇金持股市值最大品类，约9780亿元
+    {"code": "sh510300", "name": "华泰柏瑞沪深300交易型开放式指数证券投资基金", "category": "沪深300", "short_name": "沪深300ETF华泰柏瑞"},
+    {"code": "sh510310", "name": "易方达沪深300交易型开放式指数发起式证券投资基金", "category": "沪深300", "short_name": "沪深300ETF易方达"},
+    {"code": "sh510330", "name": "华夏沪深300交易型开放式指数证券投资基金", "category": "沪深300", "short_name": "沪深300ETF华夏"},
+    {"code": "sz159919", "name": "嘉实沪深300交易型开放式指数证券投资基金", "category": "沪深300", "short_name": "沪深300ETF嘉实"},
+
+    # ═══ 上证50（2只）═══ 约1517亿元
+    {"code": "sh510050", "name": "华夏上证50交易型开放式指数证券投资基金", "category": "上证50", "short_name": "上证50ETF华夏"},
+    {"code": "sh510100", "name": "易方达上证50交易型开放式指数证券投资基金", "category": "上证50", "short_name": "上证50ETF易方达"},
+
+    # ═══ 中证500（3只）═══ 约1234亿元
+    {"code": "sh510500", "name": "南方中证500交易型开放式指数证券投资基金", "category": "中证500", "short_name": "中证500ETF南方"},
+    {"code": "sh512500", "name": "华夏中证500交易型开放式指数证券投资基金", "category": "中证500", "short_name": "中证500ETF华夏"},
+    {"code": "sz159922", "name": "嘉实中证500交易型开放式指数证券投资基金", "category": "中证500", "short_name": "中证500ETF嘉实"},
+
+    # ═══ 创业板（3只）═══
+    {"code": "sz159915", "name": "易方达创业板交易型开放式指数证券投资基金", "category": "创业板", "short_name": "创业板ETF易方达"},
+    {"code": "sz159952", "name": "广发创业板交易型开放式指数证券投资基金", "category": "创业板", "short_name": "创业板ETF广发"},
+    {"code": "sz159977", "name": "天弘创业板交易型开放式指数证券投资基金", "category": "创业板", "short_name": "创业板ETF天弘"},
+
+    # ═══ 科创50（3只）═══
+    {"code": "sh588000", "name": "华夏上证科创板50成份交易型开放式指数证券投资基金", "category": "科创50", "short_name": "科创50ETF华夏"},
+    {"code": "sh588080", "name": "易方达上证科创板50成份交易型开放式指数证券投资基金", "category": "科创50", "short_name": "科创50ETF易方达"},
+    {"code": "sh588050", "name": "工银瑞信上证科创板50成份交易型开放式指数证券投资基金", "category": "科创50", "short_name": "科创50ETF工银"},
+
+    # ═══ 中证1000（4只）═══ 约1556亿元
+    {"code": "sh512100", "name": "南方中证1000交易型开放式指数证券投资基金", "category": "中证1000", "short_name": "中证1000ETF南方"},
+    {"code": "sz159845", "name": "华夏中证1000交易型开放式指数证券投资基金", "category": "中证1000", "short_name": "中证1000ETF华夏"},
+    {"code": "sh560010", "name": "广发中证1000交易型开放式指数证券投资基金", "category": "中证1000", "short_name": "中证1000ETF广发"},
+    {"code": "sz159629", "name": "富国中证1000交易型开放式指数证券投资基金", "category": "中证1000", "short_name": "中证1000ETF富国"},
+
+    # ═══ 其他宽基（2只）═══
+    {"code": "sh510180", "name": "华安上证180交易型开放式指数证券投资基金", "category": "上证180", "short_name": "上证180ETF华安"},
+    {"code": "sz159901", "name": "易方达深证100交易型开放式指数证券投资基金", "category": "深证100", "short_name": "深证100ETF易方达"},
+]
+
+
+def run_westock(cmd_args: list) -> str:
+    """运行 westock-data 命令并返回 stdout"""
+    result = subprocess.run(
+        [NODE_BIN, WESTOCK_SCRIPT] + cmd_args,
+        capture_output=True, text=True, timeout=30
+    )
+    if result.returncode != 0:
+        print(f"  ⚠️ 命令失败: {' '.join(cmd_args)}", file=sys.stderr)
+        print(f"  stderr: {result.stderr}", file=sys.stderr)
+        return ""
+    return result.stdout
+
+
+def parse_fund_flow(output: str) -> dict | None:
+    """解析 fund flow 的 markdown 表格输出，返回字段字典"""
+    lines = output.strip().split("\n")
+    if len(lines) < 3:
+        return None
+
+    # 第一行是表头（| code | BlockNetFlow | ...），第二行是分隔符，第三行是数据
+    header_line = lines[0]
+    data_line = lines[2] if len(lines) > 2 else None
+
+    if not data_line:
+        return None
+
+    headers = [h.strip() for h in header_line.split("|") if h.strip()]
+    values = [v.strip() for v in data_line.split("|") if v.strip()]
+
+    if len(headers) != len(values):
+        return None
+
+    result = {}
+    for h, v in zip(headers, values):
+        # 尝试转换为数字
+        try:
+            result[h] = float(v)
+        except ValueError:
+            result[h] = v
+
+    return result
+
+
+def fetch_etf_fund_flows() -> list:
+    """获取所有国家队ETF的资金流向数据"""
+    etfs = []
+    for etf in NATIONAL_TEAM_ETFS:
+        code = etf["code"]
+        print(f"  查询 {etf['name']} ({code})...")
+
+        # 获取资金流向
+        flow_output = run_westock(["fund", "flow", code])
+        flow_data = parse_fund_flow(flow_output)
+
+        # 获取实时行情（用于获取涨跌幅、成交额）
+        quote_output = run_westock(["quote", code])
+        quote_data = None
+        if quote_output:
+            lines = quote_output.strip().split("\n")
+            if len(lines) >= 3:
+                h_line = lines[0]
+                d_line = lines[2]
+                headers = [h.strip() for h in h_line.split("|") if h.strip()]
+                values = [v.strip() for v in d_line.split("|") if v.strip()]
+                if len(headers) == len(values):
+                    quote_data = dict(zip(headers, values))
+
+        if not flow_data:
+            print(f"    ⚠️ 未获取到资金流向数据")
+            etfs.append({
+                **etf,
+                "main_net_flow": None,
+                "jumbo_net_flow": None,
+                "main_net_flow_5d": None,
+                "main_net_flow_10d": None,
+                "main_net_flow_20d": None,
+                "close_price": quote_data.get("price") if quote_data else None,
+                "change_pct": quote_data.get("change_percent") if quote_data else None,
+                "amount": quote_data.get("amount") if quote_data else None,
+                "has_data": False,
+            })
+            continue
+
+        close_price = float(quote_data.get("price", 0)) if quote_data else flow_data.get("ClosePrice", 0)
+        change_pct = float(quote_data.get("change_percent", 0)) if quote_data else 0
+
+        main_net_flow = flow_data.get("MainNetFlow", 0)
+        jumbo_net_flow = flow_data.get("JumboNetFlow", 0)
+        main_net_flow_5d = flow_data.get("MainNetFlow5D", 0)
+        main_net_flow_10d = flow_data.get("MainNetFlow10D", 0)
+        main_net_flow_20d = flow_data.get("MainNetFlow20D", 0)
+        main_in_flow = flow_data.get("MainInFlow", 0)
+        main_out_flow = flow_data.get("MainOutFlow", 0)
+        block_net_flow = flow_data.get("BlockNetFlow", 0)
+        retail_in_flow = flow_data.get("RetailInFlow", 0)
+        retail_out_flow = flow_data.get("RetailOutFlow", 0)
+
+        amount = float(quote_data.get("amount", 0)) if quote_data else (main_in_flow + main_out_flow) / 2
+
+        etf_entry = {
+            **etf,
+            "main_net_flow": main_net_flow,        # 主力净流入
+            "jumbo_net_flow": jumbo_net_flow,      # 超大单净流入
+            "main_net_flow_5d": main_net_flow_5d,   # 5日主力净流入
+            "main_net_flow_10d": main_net_flow_10d, # 10日主力净流入
+            "main_net_flow_20d": main_net_flow_20d, # 20日主力净流入
+            "main_in_flow": main_in_flow,           # 主力流入
+            "main_out_flow": main_out_flow,         # 主力流出
+            "block_net_flow": block_net_flow,       # 大宗净流入
+            "retail_in_flow": retail_in_flow,       # 散户流入
+            "retail_out_flow": retail_out_flow,     # 散户流出
+            "close_price": close_price,             # 收盘价
+            "change_pct": change_pct,               # 涨跌幅
+            "amount": amount,                       # 成交额
+            "has_data": True,
+        }
+
+        print(f"    ✅ 主力净流入: {main_net_flow/1e8:.2f}亿")
+        etfs.append(etf_entry)
+
+    return etfs
+
+
+def analyze_etf_flows(etfs: list) -> dict:
+    """分析ETF资金流向，生成汇总统计"""
+    total_main_net = sum(e.get("main_net_flow", 0) or 0 for e in etfs)
+    total_jumbo_net = sum(e.get("jumbo_net_flow", 0) or 0 for e in etfs)
+    total_amount = sum(e.get("amount", 0) or 0 for e in etfs)
+    total_main_in = sum(e.get("main_in_flow", 0) or 0 for e in etfs)
+    total_main_out = sum(e.get("main_out_flow", 0) or 0 for e in etfs)
+
+    # 分类汇总
+    category_nets = {}
+    for e in etfs:
+        cat = e.get("category", "其他")
+        cat_net = e.get("main_net_flow", 0) or 0
+        category_nets[cat] = category_nets.get(cat, 0) + cat_net
+
+    # 按主力净流入排序
+    etfs_sorted = sorted(etfs, key=lambda x: x.get("main_net_flow", 0) or 0, reverse=True)
+
+    # 判断国家队行为特征
+    # 信号规则：
+    #   强烈买入: 总主力净流入 > 20亿
+    #   温和买入: 总主力净流入 > 5亿
+    #   中性: 总主力净流入 -3亿~5亿
+    #   减仓: 总主力净流入 < -3亿
+    signal = "中性"
+    signal_color = "gray"
+    if total_main_net > 2e9:
+        signal = "强烈买入"
+        signal_color = "#ef4444"
+    elif total_main_net > 5e8:
+        signal = "温和买入"
+        signal_color = "#f97316"
+    elif total_main_net < -3e8:
+        signal = "减仓"
+        signal_color = "#22c55e"
+
+    # 连续多日趋势
+    trend_5d = sum(e.get("main_net_flow_5d", 0) or 0 for e in etfs)
+    trend_10d = sum(e.get("main_net_flow_10d", 0) or 0 for e in etfs)
+
+    return {
+        "total_main_net_flow": total_main_net,
+        "total_jumbo_net_flow": total_jumbo_net,
+        "total_amount": total_amount,
+        "total_main_in": total_main_in,
+        "total_main_out": total_main_out,
+        "category_nets": category_nets,          # 各品类主力净流入汇总
+        "signal": signal,
+        "signal_color": signal_color,
+        "trend_5d": trend_5d,
+        "trend_10d": trend_10d,
+        "etf_count": len([e for e in etfs if e.get("has_data")]),
+        "net_in_count": len([e for e in etfs if (e.get("main_net_flow") or 0) > 0]),
+        "net_out_count": len([e for e in etfs if (e.get("main_net_flow") or 0) < 0]),
+    }
+
+
+def load_history():
+    """加载已有历史数据"""
+    if os.path.exists(OUTPUT_FILE):
+        with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        # 兼容旧格式：如果是旧格式（有date/summary/etfs字段），转换为新格式
+        if "history" not in data:
+            old_date = data.get("date", "")
+            old = {
+                "history": {},
+                "last_updated": data.get("generated_at", ""),
+            }
+            if old_date:
+                old["history"][old_date] = {
+                    "date": old_date,
+                    "generated_at": data.get("generated_at", ""),
+                    "summary": data.get("summary", {}),
+                    "etfs": data.get("etfs", []),
+                }
+            return old
+        return data
+    return {"history": {}, "last_updated": None}
+
+
+def save_history(data: dict):
+    """保存历史数据，保留最多 MAX_HISTORY_DAYS 个交易日"""
+    dates = sorted(data["history"].keys(), reverse=True)
+    if len(dates) > MAX_HISTORY_DAYS:
+        for old_date in dates[MAX_HISTORY_DAYS:]:
+            del data["history"][old_date]
+
+    os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2, default=str)
+
+
+def main():
+    date_str = None
+    if len(sys.argv) > 2 and sys.argv[1] == "--date":
+        date_str = sys.argv[2]
+    else:
+        date_str = datetime.now().strftime("%Y-%m-%d")
+
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] 开始获取国家队ETF资金流向 ({date_str})...")
+
+    # 加载历史数据
+    data = load_history()
+
+    # 获取资金流向数据
+    etfs = fetch_etf_fund_flows()
+
+    # 分析汇总
+    summary = analyze_etf_flows(etfs)
+
+    # 写入历史
+    data["history"][date_str] = {
+        "date": date_str,
+        "generated_at": datetime.now().isoformat(),
+        "summary": summary,
+        "etfs": etfs,
+    }
+    data["last_updated"] = datetime.now().isoformat()
+
+    save_history(data)
+
+    # 打印汇总
+    main_net = summary["total_main_net_flow"]
+    sign = "+" if main_net >= 0 else ""
+    print(f"\n  === 国家队ETF资金流汇总 ({date_str}) ===")
+    print(f"  总主力净流入: {sign}{main_net/1e8:.2f}亿")
+    print(f"  总超大单净流入: {summary['total_jumbo_net_flow']/1e8:.2f}亿")
+    print(f"  总成交额: {summary['total_amount']/1e8:.2f}亿")
+    for cat, cat_net in sorted(summary['category_nets'].items()):
+        cat_sign = "+" if cat_net >= 0 else ""
+        print(f"  {cat}: {cat_sign}{cat_net/1e8:.2f}亿")
+    print(f"  行为信号: {summary['signal']} (5日累计: {summary['trend_5d']/1e8:.1f}亿, 10日累计: {summary['trend_10d']/1e8:.1f}亿)")
+    print(f"  净流入ETF: {summary['net_in_count']}只 / 净流出ETF: {summary['net_out_count']}只")
+    print(f"  历史缓存: {len(data['history'])}个交易日")
+    print(f"  结果已保存至: {OUTPUT_FILE}")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,24 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script></head>
+<body style="background:#111;color:#fff;">
+<div id="ch" style="width:900px;height:400px;"></div>
+<script>
+var c = echarts.init(document.getElementById('ch'));
+fetch('http://localhost:8089/output/sh_index_kline.json')
+  .then(r => r.json()).then(data => {
+    var d = data.slice(0,20);
+    c.setOption({
+      tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
+      xAxis: { type:'category', data: d.map(x=>x.date.slice(5)) },
+      yAxis: { type:'value', scale:true },
+      series: [{
+        type: 'candlestick',
+        data: d.map(x=>[x.open, x.close, x.low, x.high]),
+        itemStyle: { color: '#ff7b7b', color0: '#4ade80', borderColor: '#ff7b7b', borderColor0: '#4ade80' }
+      }]
+    });
+    console.log('data[0]:', d[0]);
+  });
+</script>
+<p id="msg">loading...</p>
+<script>document.getElementById('msg').textContent='ready';</script>
+</body></html>
