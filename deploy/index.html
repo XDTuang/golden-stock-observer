@@ -3193,9 +3193,13 @@ function changeCalMonth(delta) {
 
 function getAvailableOverviewDates() {
   const dates = new Set();
-  // From ETF data
+  // From ETF data（跳过无有效 ETF 数据的空日期，避免卡片渲染全 0）
   const etf = window.ETF_FLOW_DATA;
-  if (etf && etf.history) Object.keys(etf.history).forEach(d => dates.add(d));
+  if (etf && etf.history) Object.keys(etf.history).forEach(d => {
+    const e = etf.history[d];
+    const cnt = e && e.summary ? e.summary.etf_count : 0;
+    if (cnt > 0) dates.add(d);
+  });
   else if (etf && etf.date) dates.add(etf.date);
   // From sector data
   const sec = window.SECTOR_FLOW_DATA;
@@ -3265,7 +3269,11 @@ function getSectorDataForDate(dateStr) {
 function getAvailableOverviewDates() {
   const dates = new Set();
   const etf = window.ETF_FLOW_DATA;
-  if (etf && etf.history) Object.keys(etf.history).forEach(d => dates.add(d));
+  if (etf && etf.history) Object.keys(etf.history).forEach(d => {
+    const e = etf.history[d];
+    const cnt = e && e.summary ? e.summary.etf_count : 0;
+    if (cnt > 0) dates.add(d);
+  });
   else if (etf && etf.date) dates.add(etf.date);
   const sec = window.SECTOR_FLOW_DATA;
   if (sec && sec.history) Object.keys(sec.history).forEach(d => dates.add(d));
