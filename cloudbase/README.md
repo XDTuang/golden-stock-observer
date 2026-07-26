@@ -103,6 +103,6 @@ tcb fn deploy gd-daily --envId <环境ID> --runtime python3   # 在控制台把�
 - `diamond_site/.gitignore` 已忽略 `output/gate_*.json`，本脚手架也只复制 `diamond_site/` 目录，天然隔离。
 
 ## 访问地址
-- 国内镜像：`https://<环境ID>.tcloudbase.com`（密码 DDDYB）
+- 国内镜像：部署后访问 `https://<环境ID>-<AppID>.tcloudbaseapp.com`（密码 DDDYB；用 `tcb hosting detail --env-id <环境ID>` 可查正确域名，注意是 tcloudbase**app**.com 不是 tcloudbase.com）
 - 国际原站：`https://XDTuang.github.io/golden-diamond-observer/`（密码 DDDYB）
 - 主站：`https://xdtuang.github.io/golden-stock-observer/`

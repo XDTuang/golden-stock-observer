@@ -28,4 +28,6 @@ tcb hosting deploy "$TMP" / --env-id "$ENV_ID"
 
 rm -rf "$TMP"
 
-echo "✅ 完成。国内访问: https://$ENV_ID.tcloudbase.com"
+# 从 hosting detail 中提取正确域名（tcloudbase.com 是控制台，tcloudbaseapp.com 才是托管）
+HOSTING_URL=$(tcb hosting detail --env-id "$ENV_ID" 2>/dev/null | grep 'Domain:' | head -1 | sed 's/.*Domain: //')
+echo "✅ 完成。国内访问: ${HOSTING_URL:-https://$ENV_ID.tcloudbase.com}"
