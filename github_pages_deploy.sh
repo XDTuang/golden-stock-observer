@@ -42,16 +42,16 @@ fi
 echo ""
 echo "🔍 Step 2: 发布前校验（新鲜度 + 完整性）..."
 if [ "$FORCE" -eq 0 ]; then
-  GATE=$("$PYTHON" - "$DEPLOY/signals.json" <<'PY'
+  GATE=$("$PYTHON" - "$DEPLOY/signals_full.json" <<'PY'
 import json, sys, os
 p = sys.argv[1]
 if not os.path.exists(p):
-    print("FAIL:deploy/signals.json 不存在，请先运行 update_data.sh"); sys.exit(1)
+    print("FAIL:deploy/signals_full.json 不存在，请先运行 update_data.sh"); sys.exit(1)
 try:
     d = json.load(open(p, encoding="utf-8"))
     fr = d.get("freshness", {})
 except Exception as e:
-    print("FAIL:无法解析 deploy/signals.json: %s" % e); sys.exit(1)
+    print("FAIL:无法解析 deploy/signals_full.json: %s" % e); sys.exit(1)
 stocks = d.get("stocks", [])
 if len(stocks) < 50:
     print("FAIL:股票数量异常(%d)，疑似抓取不完整" % len(stocks)); sys.exit(1)
