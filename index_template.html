@@ -3684,7 +3684,8 @@ function _renderIdxKline() {
       formatter: function(p) {
         var i = p[0].dataIndex, d = slice[i];
         if (!d) return '';
-        var chg = d.last && d.open ? ((d.last-d.open)/d.open*100).toFixed(2) : '0.00';
+        var prevClose = i > 0 ? (slice[i-1].last || d.open) : d.open;
+        var chg = d.last && prevClose ? ((d.last-prevClose)/prevClose*100).toFixed(2) : '0.00';
         var clr = chg >= 0 ? up : down;
         return '<b>'+d.date+'</b><br/>'+
           _idxKlineNames[_idxKlineCode]+' 📈 <b>'+(d.last?d.last.toFixed(2):'-')+'</b> '+
