@@ -89,6 +89,8 @@ cp -R output/gate_data.json "$DEPLOY/output/gate_data.json" 2>/dev/null || true
 cp output/golden_pool_*.json "$DEPLOY/output/" 2>/dev/null || true
 cp output/golden_pool_meta.json "$DEPLOY/output/" 2>/dev/null || true
 cp output/golden_pool_manifest.json "$DEPLOY/output/" 2>/dev/null || true
+# 保留 gate_scan 缓存（kline_all.json ~34MB），否则次日全量重建会卡死
+cp output/kline_all.json "$DEPLOY/output/kline_all.json" 2>/dev/null || true
 rm -rf output
 cp -R "$DEPLOY/output" .
 cp -R "$DEPLOY/build_manifest.json" .
