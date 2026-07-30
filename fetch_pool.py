@@ -29,6 +29,21 @@ import datetime
 import subprocess
 import concurrent.futures as cf
 from urllib.parse import urlencode
+from datetime import datetime, timedelta
+
+
+# ── 日期工具（增量拉取用）──
+def _parse_date(s: str) -> datetime:
+    return datetime.strptime(s, "%Y-%m-%d")
+
+
+def _fmt_date(d: datetime) -> str:
+    return d.strftime("%Y-%m-%d")
+
+
+def _shift_date(s: str, days: int) -> str:
+    """ISO 日期字符串按天数平移（days 可为负）。"""
+    return _fmt_date(_parse_date(s) + timedelta(days=days))
 
 
 # ── 路径配置 ──
@@ -41,7 +56,7 @@ CODES_CACHE_DAYS = 7
 # ── 参数 ──
 KLINE_DAYS = 250          # 需要获取的 K 线天数（前复权）
 RETRY_LIMIT = 3           # 单只股票 / 单次请求最大重试次数
-CONCURRENCY = 4           # K线并发拉取的工作线程数（温柔：避免单 IP 令牌桶被耗尽触发限流）
+CONCURRENCY = 12          # K线并发拉取的工作线程数（实测 12 为接口吞吐甜点，0 失败；>12 不再增益）
 HTTP_TIMEOUT = 12         # 单次请求总超时（秒，curl --max-time）
 CONNECT_TIMEOUT = 5       # 连接阶段超时（秒，curl --connect-timeout）
 SUBPROC_TIMEOUT = 18      # subprocess 兜底硬超时（秒）：curl 卡死不返回时由 Python 强杀回收
@@ -292,46 +307,54 @@ def _fetch_kline_sina(stock: dict) -> dict | None:
     return None
 
 
-def fetch_kline(stock: dict) -> dict | None:
-    """
-    拉取单只股票 250 日 K线（前复权）。
-    数据源优先级：腾讯官方代理(主) → 腾讯原域名(二级兜底) → 新浪(绝对兜底)。
-    腾讯两源返回的数据结构完全一致（qfqday 数组），均正确；新浪偶有脏 bar，仅作最后兜底。
+def _parse_tencent(out: str, code: str, code6: str = "") -> list | None:
+    """解析腾讯两源返回的 qfqday 数组，成功返回 bars，失败返回 None。"""
+    try:
+        j = json.loads(out)
+    except Exception:
+        return None
+    node = (j.get("data") or {}).get(code) or (j.get("data") or {}).get(code6)
+    if not node:
+        return None
+    arr = node.get("qfqday") or node.get("day")
+    if not arr or len(arr) < 60:
+        return None
+    bars = []
+    for p in arr:
+        # [date, open, close, high, low, volume(手)]
+        bars.append({
+            "date": p[0],
+            "open": float(p[1]),
+            "last": float(p[2]),
+            "high": float(p[3]),
+            "low": float(p[4]),
+            "volume": float(p[5]),
+        })
+    return bars
 
-    Returns:
-        {code, name, market, kline:[{date, open, last, high, low, volume}]} or None
-        volume 单位：手（data_pipeline 会 ×100 转回股，与原 thsdk 口径一致）
+
+def _entry(stock: dict, kline: list) -> dict:
+    """构造与 fetch_kline 同构的输出条目。"""
+    return {"code": stock["code"], "name": stock["name"],
+            "market": stock["market"], "kline": kline}
+
+
+def _fetch_kline_raw(stock: dict, start_date: str | None = None,
+                     count: int = KLINE_DAYS) -> list | None:
+    """
+    核心拉取：返回 bars 列表或 None。
+    start_date 给定时仅拉取该日(含)起的 count 根（增量模式）；
+    为 None 时拉取完整 KLINE_DAYS 日（全量模式）。
+    数据源优先级：腾讯官方代理 → 腾讯原域名 → 新浪(仅全量模式兜底)。
     """
     code = stock["code"]
-    params = {"param": f"{code},day,,,{KLINE_DAYS},qfq"}
+    code6 = stock.get("code6", "")
+    if start_date:
+        param = f"{code},day,{start_date},,{count},qfq"
+    else:
+        param = f"{code},day,,,{count},qfq"
+    params = {"param": param}
 
-    def _parse_tencent(out: str) -> list | None:
-        """解析腾讯两源返回的 qfqday 数组，成功返回 bars，失败返回 None。"""
-        try:
-            j = json.loads(out)
-        except Exception:
-            return None
-        node = (j.get("data") or {}).get(code) or \
-               (j.get("data") or {}).get(stock.get("code6", ""))
-        if not node:
-            return None
-        arr = node.get("qfqday") or node.get("day")
-        if not arr or len(arr) < 60:
-            return None
-        bars = []
-        for p in arr:
-            # [date, open, close, high, low, volume(手)]
-            bars.append({
-                "date": p[0],
-                "open": float(p[1]),
-                "last": float(p[2]),
-                "high": float(p[3]),
-                "low": float(p[4]),
-                "volume": float(p[5]),
-            })
-        return bars
-
-    # 依次尝试腾讯两源（正确数据优先）；任一返回有效 JSON 即采用
     for turl in (KLINE_URL, KLINE_URL_FALLBACK):
         full = f"{turl}?{urlencode(params)}"
         for _ in range(RETRY_LIMIT):
@@ -339,35 +362,89 @@ def fetch_kline(stock: dict) -> dict | None:
                 out = _curl_text(full)
                 if not out.strip():
                     _backoff(_); continue
-                bars = _parse_tencent(out)
+                bars = _parse_tencent(out, code, code6)
                 if bars:
-                    return {"code": code, "name": stock["name"],
-                            "market": stock["market"], "kline": bars}
-                _backoff(_)  # 返回了但无节点/不足 60 根，重试
+                    return bars
+                _backoff(_)
             except json.JSONDecodeError:
-                break  # 非 JSON（501/网关页），此源确定性不可用，跳到下一源
+                break
             except Exception:
                 _backoff(_)
-        # 本源重试耗尽（含非 JSON 提前 break），继续尝试下一源
 
-    # 3) 新浪兜底（稳，不被限流；偶有脏 bar，仅作最后兜底）
-    try:
-        sina = _fetch_kline_sina(stock)
-        if sina:
-            return sina
-    except Exception as e:
-        print(f"  ⚠️  {stock['name']} ({code}) 新浪兜底也失败: {e}")
+    # 新浪兜底仅用于全量模式（其返回固定 250 日，无法按 start_date 切片）
+    if not start_date:
+        try:
+            sina = _fetch_kline_sina(stock)
+            if sina:
+                return sina["kline"]
+        except Exception as e:
+            print(f"  ⚠️  {stock['name']} ({code}) 新浪兜底也失败: {e}")
     return None
 
 
-def fetch_all_klines(stocks: list, concurrency: int = CONCURRENCY) -> tuple:
+def fetch_kline(stock: dict, cache_entry: dict | None = None) -> dict | None:
     """
-    并发拉取全部候选股的 K 线，含自适应降级。
+    拉取单只股票 K线（前复权）。
+    - 提供 cache_entry（昨日已缓存）时走增量：用 4 日重叠窗口重拉最后几根+新 bar，
+      校验 qfq 调整因子一致后仅追加新 bar；若检测到除权(调整因子突变)则降级全量重拉。
+    - 无缓存则全量抓取 250 日。
+    Returns:
+        {code, name, market, kline:[{date, open, last, high, low, volume}]} or None
+        volume 单位：手（data_pipeline 会 ×100 转回股，与原 thsdk 口径一致）
+    """
+    code = stock["code"]
+    cached_kline = (cache_entry or {}).get("kline") or []
+
+    # 短路：缓存已含当日(或更新)数据 → 直接复用，省去网络请求（重复运行/同日重跑时生效）
+    today_str = _fmt_date(datetime.now())
+    if cached_kline and cached_kline[-1]["date"] >= today_str:
+        return _entry(stock, cached_kline)
+
+    if cached_kline:
+        last_date = cached_kline[-1]["date"]
+        start = _shift_date(last_date, -4)        # 重叠 4 日，重拉时对齐 qfq 因子
+        bars = _fetch_kline_raw(stock, start_date=start, count=30)
+        if bars:
+            overlap = next((b for b in bars if b["date"] == last_date), None)
+            if overlap:
+                cl = cached_kline[-1]
+                tol = 0.005
+                ok = (abs(overlap["open"] - cl["open"]) / max(cl["open"], 1e-9) < tol and
+                      abs(overlap["last"] - cl["last"]) / max(cl["last"], 1e-9) < tol)
+                if ok:
+                    new_bars = [b for b in bars if b["date"] > last_date]
+                    if new_bars:
+                        merged = cached_kline + new_bars
+                        return _entry(stock, merged[-KLINE_DAYS:])
+                    return _entry(stock, cached_kline)   # 无新交易日，缓存不变
+                # 调整因子突变（疑似除权）→ 落入下方全量兜底
+                print(f"  ⚠️  {stock['name']} ({code}) qfq 因子突变，降级全量重拉")
+            # 未找到重叠 bar → 落入全量兜底
+        # 增量失败/为空 → 全量重拉
+        full = _fetch_kline_raw(stock)
+        if full:
+            return _entry(stock, full)
+        if cached_kline:
+            print(f"  ⚠️  {stock['name']} ({code}) 增量+全量均失败，沿用昨日缓存")
+            return _entry(stock, cached_kline)
+        return None
+
+    # 无缓存：全量
+    full = _fetch_kline_raw(stock)
+    if full:
+        return _entry(stock, full)
+    return None
+
+
+def fetch_all_klines(stocks: list, cache: dict, concurrency: int = CONCURRENCY) -> tuple:
+    """
+    并发拉取全部候选股的 K 线，含自适应降级 + 增量补拉。
+    cache: {code: 昨日 kline_raw 条目}，用于增量模式（见 fetch_kline）。
 
     逻辑：
       1. 先用小批量(min(4, N))以 `concurrency` 并发探测网络；
       2. 若探测成功率 < 50%，自动降级为串行 (workers=1)；
-      3. 否则全程并发。
+      3. 否则全程并发；已在缓存中的股票自动走增量补拉。
 
     Returns:
         (results, failed_codes)
@@ -376,7 +453,7 @@ def fetch_all_klines(stocks: list, concurrency: int = CONCURRENCY) -> tuple:
         out, fails = [], []
         t0 = time.time()
         with cf.ThreadPoolExecutor(max_workers=workers) as ex:
-            fmap = {ex.submit(fetch_kline, s): s for s in batch}
+            fmap = {ex.submit(fetch_kline, s, cache.get(s["code"])): s for s in batch}
             done = 0
             for fut in cf.as_completed(fmap):
                 done += 1
@@ -401,7 +478,7 @@ def fetch_all_klines(stocks: list, concurrency: int = CONCURRENCY) -> tuple:
         return [], []
 
     probe_n = min(4, total)
-    print(f"\n📈 Step 2: K线拉取 (每只{KLINE_DAYS}日)...")
+    print(f"\n📈 Step 2: K线拉取 (增量补拉模式, 每只{KLINE_DAYS}日上限)...")
     print(f"  🔍 探测网络并发能力 (前 {probe_n} 只, 并发 {concurrency})...")
     probe_res, probe_fail = _run(stocks[:probe_n], concurrency)
 
@@ -457,15 +534,31 @@ def main():
         print("\n  ⏭️  --dry-run 模式，仅获取列表")
         return
 
-    # Step 2: 并发拉取 K线（含自适应降级，见 fetch_all_klines）
+    # Step 2: 载入昨日 K线缓存（增量补拉，省去重复全量请求）
+    cache = {}
+    if os.path.exists(OUTPUT_FILE):
+        try:
+            with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
+                for e in json.load(f):
+                    cache[e["code"]] = e
+            print(f"  📦 载入 K线缓存: {len(cache)} 只 → 增量补拉模式")
+        except Exception:
+            cache = {}
+    else:
+        print("  🆕 无历史缓存，首次全量拉取")
+
     t0_global = time.time()
     total = len(stocks)
-    results, failed_codes = fetch_all_klines(stocks, CONCURRENCY)
+    results, failed_codes = fetch_all_klines(stocks, cache, CONCURRENCY)
 
     elapsed = time.time() - t0_global
     print(f"  ✅ K线拉取完成: {len(results)}只有效数据 ({elapsed:.0f}s)")
     if total:
         print(f"     成功率: {len(results)/total*100:.1f}%")
+
+    # 按成交额排名重排输出（确定性顺序，下游一致）
+    results_by_code = {r["code"]: r for r in results}
+    results = [results_by_code[s["code"]] for s in stocks if s["code"] in results_by_code]
 
     # Step 3: 写入 kline_raw.json（原子替换，防中断损坏）
     os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
