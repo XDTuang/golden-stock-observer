@@ -1299,7 +1299,9 @@ td { border-color: var(--border-light); }
 
 <!-- Tab: 信号选股 -->
 <div class="tab-content" id="tab-signalstock">
-  <div class="section-title">信号选股 — 多策略筛选</div>
+  <div class="section-title">信号选股 — 多策略筛选
+    <button class="cal-nav-btn" style="margin-left:auto;font-size:12px;" onclick="exportSignalXls()">⬇ 导出XLS</button>
+  </div>
   <div class="signal-pick-grid" id="signalPickGrid"></div>
 
   <div class="scan-controls" id="scanControls" style="display:none;">
@@ -1603,6 +1605,7 @@ td { border-color: var(--border-light); }
     <button id="btnYouziJigou" class="cal-nav-btn" onclick="toggleYouziJigouFilter()" style="margin-left:10px;font-size:12px;">
       游资+机构
     </button>
+    <button class="cal-nav-btn" onclick="exportCalendarXls()" style="margin-left:8px;font-size:12px;">⬇ 导出XLS</button>
   </div>
 
   <!-- 统计卡片 -->
@@ -3193,6 +3196,135 @@ function renderCumulativeTop() {
 function changeCalMonth(delta) {
   calCurrentDate.setMonth(calCurrentDate.getMonth() + delta);
   renderCalendar();
+}
+
+// ===== XLS 导出（纯前端 SpreadsheetML 2003 · 多工作表 · 无 CDN 依赖）=====
+function _xlsCell(v, t) {
+  if (v === null || v === undefined || v === '') return '<Cell><Data ss:Type="String"></Data></Cell>';
+  if (t === 'Number') {
+    var n = Number(v);
+    if (!isFinite(n)) {
+      var s0 = String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      return '<Cell><Data ss:Type="String">' + s0 + '</Data></Cell>';
+    }
+    return '<Cell><Data ss:Type="Number">' + n + '</Data></Cell>';
+  }
+  var s = String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return '<Cell><Data ss:Type="String">' + s + '</Data></Cell>';
+}
+function _xlsRow(cells) {
+  return '<Row>' + cells.map(function(c){ return _xlsCell(c[0], c[1]); }).join('') + '</Row>';
+}
+function _xlsSheet(name, headers, rows) {
+  var wsName = String(name).substring(0, 31).replace(/[\\/?*\[\]:]/g, '');
+  var t = '<Worksheet ss:Name="' + wsName + '"><Table>';
+  t += _xlsRow(headers.map(function(h){ return [h, 'String']; }));
+  rows.forEach(function(r){ t += _xlsRow(r); });
+  t += '</Table></Worksheet>';
+  return t;
+}
+function exportSheetsToXls(sheets, filename) {
+  var ws = '';
+  sheets.forEach(function(sh){ ws += _xlsSheet(sh.name, sh.headers, sh.rows); });
+  var xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<?mso-application progid="Excel.Sheet"?>\n' +
+    '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">\n' +
+    ws + '</Workbook>';
+  var blob = new Blob(['﻿' + xml], { type: 'application/vnd.ms-excel;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 200);
+}
+
+// 信号选股 → 每策略一工作表 + 汇总
+function exportSignalXls() {
+  var SD = window.SIGNALS_DATA;
+  if (!SD || !SD.stocks) { alert('数据尚未加载，请稍候再试'); return; }
+  var all = SD.stocks.filter(function(r){ return r.has_data && r.score && r.score.ema_strong; });
+  var hdr = ['代码','名称','市场','行业','信号等级','信号数','总分','收盘','涨跌幅%','成交量(M股)','缠论买字','金钻信号','机构变红','上涨趋势','老鸭头','强势股','短期目标','中期目标','强势目标','止损参考','RSI(14)','20日涨幅%'];
+  function toRow(r) {
+    var s = r.score || {};
+    var tp = r.target_prices || {};
+    var ind = [r.industry && r.industry.level1, r.industry && r.industry.level2, r.industry && r.industry.level3].filter(Boolean).join('/');
+    return [
+      [r.code,'String'],[r.name,'String'],[marketLabel(r.market),'String'],[ind,'String'],
+      [s.grade || '无','String'],[s.signal_count||0,'Number'],[s.total_score||0,'Number'],
+      [r.close!=null?Number(r.close.toFixed(2)):0,'Number'],[r.change_pct!=null?Number(r.change_pct.toFixed(2)):0,'Number'],
+      [(r.volume||0)/1000000,'Number'],
+      [r.chan_buy?'✓':'✗','String'],[(r.golden_diamond&&r.golden_diamond!=='')?r.golden_diamond:'无','String'],
+      [r.inst_red?'✓':'✗','String'],[r.uptrend?'✓':'✗','String'],[r.old_duck_head?'✓':'✗','String'],[r.strong_stock?'✓':'✗','String'],
+      [tp.short_term?Number(tp.short_term.price.toFixed(2)):0,'Number'],[tp.mid_term?Number(tp.mid_term.price.toFixed(2)):0,'Number'],
+      [tp.aggressive?Number(tp.aggressive.price.toFixed(2)):0,'Number'],[tp.stop_loss?Number(tp.stop_loss.price.toFixed(2)):0,'Number'],
+      [s.rsi!=null?Number(s.rsi):0,'Number'],[s.ret_20d!=null?Number(s.ret_20d):0,'Number']
+    ];
+  }
+  function matchKey(r, key) {
+    if (key.indexOf('combo_') === 0) {
+      var n = parseInt(key.replace('combo_',''));
+      if (key === 'combo_6') return r.score.signal_count >= 6;
+      return r.score.signal_count === n;
+    }
+    if (key === 'chan_buy') return r.chan_buy;
+    if (key === 'golden') return r.golden_diamond && r.golden_diamond !== '';
+    if (key === 'inst_red') return r.inst_red;
+    if (key === 'uptrend') return r.uptrend;
+    if (key === 'duck') return r.old_duck_head;
+    if (key === 'strong') return r.strong_stock;
+    return false;
+  }
+  var sheets = [];
+  SIGNAL_CARDS.forEach(function(card){
+    var list = all.filter(function(r){ return matchKey(r, card.key); }).map(toRow);
+    sheets.push({ name: card.name, headers: hdr, rows: list });
+  });
+  var sumHdr = ['命中分类'].concat(hdr);
+  var sumRows = all.map(function(r){
+    var cats = SIGNAL_CARDS.filter(function(c){ return matchKey(r, c.key); }).map(function(c){ return c.name; }).join('/');
+    return [[cats,'String']].concat(toRow(r));
+  });
+  sheets.push({ name: '汇总', headers: sumHdr, rows: sumRows });
+  var d = (SD.data_date || '').replace(/-/g,'');
+  exportSheetsToXls(sheets, '信号选股_导出' + (d ? ('_'+d) : '') + '.xls');
+}
+
+// 机游共振日历 → 每分类一工作表 + 汇总
+function exportCalendarXls() {
+  var data = LHB_CALENDAR_DATA;
+  if (!data) { alert('龙虎榜数据尚未加载，请稍候再试'); return; }
+  var hdr = ['日期','代码','名称','机构净买(亿)','游资净买(亿)','合计净买(亿)','分类/标记','游资榜'];
+  var catKeys = Object.keys(CATEGORY_CONFIG);
+  var sheets = [];
+  catKeys.forEach(function(cat){
+    var rows = [];
+    Object.keys(data).sort().forEach(function(dd){
+      (data[dd]||[]).forEach(function(s){
+        if ((s.category||'不达标') !== cat) return;
+        rows.push([
+          [dd,'String'],[s.code,'String'],[s.name,'String'],
+          [Number((s.inst_net||0).toFixed(2)),'Number'],[Number((s.retail_net||0).toFixed(2)),'Number'],[Number((s.total_net||0).toFixed(2)),'Number'],
+          [(s.reason||'') + (s.has_hotmoney?' ·游资':''),'String'],[s.has_hotmoney?'✓':'','String']
+        ]);
+      });
+    });
+    sheets.push({ name: cat, headers: hdr, rows: rows });
+  });
+  var sumHdr = ['日期','代码','名称','机构净买(亿)','游资净买(亿)','合计净买(亿)','分类','标记'];
+  var sumRows = [];
+  Object.keys(data).sort().forEach(function(dd){
+    (data[dd]||[]).forEach(function(s){
+      var cfg = CATEGORY_CONFIG[s.category] || CATEGORY_CONFIG['不达标'];
+      sumRows.push([
+        [dd,'String'],[s.code,'String'],[s.name,'String'],
+        [Number((s.inst_net||0).toFixed(2)),'Number'],[Number((s.retail_net||0).toFixed(2)),'Number'],[Number((s.total_net||0).toFixed(2)),'Number'],
+        [cfg.label,'String'],[(s.reason||'') + (s.has_hotmoney?' ·游资':''),'String']
+      ]);
+    });
+  });
+  sheets.push({ name: '汇总', headers: sumHdr, rows: sumRows });
+  var d = new Date().toISOString().substring(0,10).replace(/-/g,'');
+  exportSheetsToXls(sheets, '机游共振日历_导出_' + d + '.xls');
 }
 
 function getAvailableOverviewDates() {
