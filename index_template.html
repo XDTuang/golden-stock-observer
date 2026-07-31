@@ -3335,6 +3335,10 @@ function renderEtfFlow() {
       <div class="val" style="font-size:14px;color:${s.trend_10d >= 0 ? 'var(--red)' : 'var(--green)'};">${signedFmt(s.trend_10d)}亿</div>
       <div class="lbl">10日累计</div>
     </div>
+    <div class="etf-flow-item">
+      <div class="val" style="font-size:14px;color:${s.trend_mtd >= 0 ? 'var(--red)' : 'var(--green)'};">${signedFmt(s.trend_mtd)}亿</div>
+      <div class="lbl">本月累计</div>
+    </div>
   </div>`;
   
   // 品类汇总条
