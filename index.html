@@ -51,11 +51,11 @@
 
   --border: #e8ecf1;
   --border-light: #f0f2f5;
-  --border-focus: #4f6ef7;
+  --border-focus: #d69e2e;
 
   --text: #1a1d2e;
   --text-secondary: #5a6178;
-  --text-muted: #9ca3b8;
+  --text-muted: #767d91;
   --text-inverse: #ffffff;
 
   --accent: #4f6ef7;
@@ -94,6 +94,35 @@
 
   --transition-fast: 0.15s ease;
   --transition-base: 0.25s ease;
+
+  /* ── 语义色（原仅 Dark 有，补全 Light） ── */
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --info: #2563eb;
+
+  /* ── 金色增强（原仅 Dark 有，补全 Light） ── */
+  --gold-strong: #c99220;
+  --gold-bg-strong: rgba(214,158,46,0.16);
+  --shadow-gold: 0 8px 30px rgba(214,158,46,0.15);
+
+  /* ── 间距令牌（4px 基数） ── */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px;
+  --sp-4: 16px; --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
+
+  /* ── 排版令牌 ── */
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 13px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 34px;
+
+  /* ── 字体栈令牌 ── */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', ui-monospace, 'Menlo', monospace;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -114,7 +143,7 @@
 
   --text: #e8ebf2;
   --text-secondary: #9aa1b8;
-  --text-muted: #656c82;
+  --text-muted: #7a8198;
   --text-inverse: #0a0c12;
 
   --accent: #6b85fa;
@@ -155,11 +184,29 @@
   --gd-grad-active-from: #241a33;
   --gd-grad-active-to: #1a1426;
   --gd-th-bg: rgba(21,25,38,0.92);
+
+  /* ── 间距令牌（4px 基数） ── */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px;
+  --sp-4: 16px; --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
+
+  /* ── 排版令牌 ── */
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 13px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 34px;
+
+  /* ── 字体栈令牌 ── */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', ui-monospace, 'Menlo', monospace;
 }
 
 /* ── Body ── */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+  font-family: var(--font-sans);
   background: var(--bg-root);
   color: var(--text);
   line-height: 1.6;
@@ -167,6 +214,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ── 全局聚焦态（WCAG AA: 键盘可见聚焦） ── */
+*:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+*:focus:not(:focus-visible) { outline: none; }
+
+/* ── 数字等宽（金融产品底线） ── */
+.stat-value, .score-value, .gd-stat .n, .gd-note,
+table td, .cal-day-num, .cal-count-badge,
+.etf-flow-table .flow-val, .sector-flow, .sector-cat-card .sector-flow {
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── Keyframes ── */
@@ -203,16 +265,18 @@ body {
 }
 .logo .logo-icon {
   width: 32px; height: 32px;
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--gold), var(--gold-strong, #c99220));
   border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
   color: #fff; font-size: 16px; font-weight: 800;
+  box-shadow: 0 2px 8px rgba(230,181,60,0.3);
 }
 
 /* ── Navigation ── */
 .nav { display: flex; gap: 2px; background: var(--bg-subtle); border-radius: 10px; padding: 3px; }
 .nav-btn {
-  padding: 7px 16px; border: none; border-radius: 8px;
+  padding: 10px 16px; border: none; border-radius: 8px;
+  min-height: 40px;
   background: transparent; color: var(--text-secondary);
   cursor: pointer; font-size: 13px; font-weight: 500;
   transition: all var(--transition-fast);
@@ -228,7 +292,7 @@ body {
 /* ── Theme Toggle ── */
 .theme-toggle {
   display: flex; align-items: center; justify-content: center;
-  width: 36px; height: 36px; border-radius: 10px;
+  width: 40px; height: 40px; border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--bg-card);
   color: var(--text-secondary);
@@ -345,7 +409,7 @@ body {
 
 /* Market tags */
 .market-tag {
-  font-size: 10px; padding: 3px 10px; border-radius: 6px;
+  font-size: 11px; padding: 3px 10px; border-radius: 6px;
   font-weight: 600; letter-spacing: 0.3px;
 }
 .market-tag.cyb { background: rgba(0,163,196,0.08); color: var(--cyan); border: 1px solid rgba(0,163,196,0.15); }
@@ -372,10 +436,12 @@ body {
   gap: 4px; margin-bottom: 10px;
 }
 .signal-item {
-  font-size: 10px; padding: 5px 3px; border-radius: 5px;
+  font-size: 11px; padding: 7px 4px; border-radius: 5px;
+  min-height: 32px;
   text-align: center; background: var(--bg-subtle);
   color: var(--text-muted); transition: all var(--transition-fast);
   line-height: 1.3; border: 1px solid transparent;
+  display: flex; align-items: center; justify-content: center;
 }
 .signal-item.on {
   background: var(--accent-bg);
@@ -385,7 +451,7 @@ body {
 .signal-item.off {
   background: var(--bg-subtle); color: var(--text-muted);
 }
-.gd-sub { font-size: 9px; margin-left: 2px; color: var(--gold); font-weight: 600; opacity: 0.85; }
+.gd-sub { font-size: 11px; margin-left: 2px; color: var(--gold); font-weight: 600; opacity: 0.85; }
 
 /* EMA bar */
 .ema-bar { display: flex; gap: 4px; margin: 8px 0; align-items: center; }
@@ -533,7 +599,7 @@ body {
   overflow: hidden; max-height: 60px; overflow-y: auto;
 }
 .cal-stock-tag {
-  font-size: 9px; padding: 1px 5px; border-radius: 4px;
+  font-size: 11px; padding: 1px 5px; border-radius: 4px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.5;
 }
 .cal-stock-tag.inst-only { background: var(--red-bg); color: var(--red); }
@@ -543,7 +609,7 @@ body {
 }
 .cal-count-badge {
   position: absolute; top: 3px; right: 4px;
-  font-size: 9px; background: var(--accent-bg);
+  font-size: 11px; background: var(--accent-bg);
   color: var(--accent); padding: 1px 5px;
   border-radius: 8px; font-weight: 600;
 }
@@ -696,7 +762,7 @@ body {
 .signal-pick-card .sp-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: var(--text); }
 .signal-pick-card .sp-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
 .signal-pick-card .sp-count { font-size: 20px; font-weight: 700; color: var(--accent); margin-top: 8px; }
-.signal-pick-card .sp-count-label { font-size: 10px; color: var(--text-muted); }
+.signal-pick-card .sp-count-label { font-size: 11px; color: var(--text-muted); }
 
 .scan-controls { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
 .scan-btn {
@@ -747,9 +813,9 @@ body {
 .target-item.mid { background: var(--accent-bg); border-color: rgba(79,110,247,0.15); }
 .target-item.agg { background: var(--gold-bg); border-color: rgba(214,158,46,0.15); }
 .target-item.stop { background: var(--red-bg); border-color: rgba(229,62,62,0.15); }
-.target-item .t-label { font-size: 10px; color: var(--text-muted); }
+.target-item .t-label { font-size: 11px; color: var(--text-muted); }
 .target-item .t-price { font-weight: 700; font-size: 13px; color: var(--cyan); }
-.target-item .t-pct { font-size: 10px; color: var(--cyan); margin-top: 2px; }
+.target-item .t-pct { font-size: 11px; color: var(--cyan); margin-top: 2px; }
 .target-item.mid .t-price { color: var(--accent); }
 .target-item.mid .t-pct { color: var(--accent-light); }
 .target-item.agg .t-price { color: var(--gold); }
@@ -795,7 +861,7 @@ body {
 /* ── Industry tags ── */
 .industry-tags { display: flex; gap: 5px; flex-wrap: wrap; margin: 6px 0; }
 .industry-tag {
-  font-size: 10px; padding: 2px 8px; border-radius: 6px;
+  font-size: 11px; padding: 2px 8px; border-radius: 6px;
   background: rgba(0,163,196,0.06); color: var(--cyan);
   border: 1px solid rgba(0,163,196,0.12);
   white-space: nowrap;
@@ -860,7 +926,7 @@ body {
 .etf-flow-table tr:hover td { background: var(--accent-bg); }
 .etf-flow-table .etf-name { font-weight: 600; }
 .etf-flow-table .etf-cat {
-  font-size: 10px; color: var(--text-muted);
+  font-size: 11px; color: var(--text-muted);
   background: var(--bg-subtle);
   padding: 3px 8px; border-radius: 6px; margin-left: 6px;
 }
@@ -972,7 +1038,7 @@ body {
 }
 .date-picker-bar .dp-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
 .date-picker-bar .dp-badge {
-  font-size: 10px; color: var(--accent);
+  font-size: 11px; color: var(--accent);
   background: var(--accent-bg);
   padding: 3px 10px; border-radius: 12px;
 }
@@ -998,7 +1064,7 @@ body {
 .sector-flow-item .val.net-in { color: var(--red); }
 .sector-flow-item .val.net-out { color: var(--green); }
 .sector-flow-item .val.neutral { color: var(--text-secondary); }
-.sector-flow-item .lbl { font-size: 10px; color: var(--text-muted); margin-top: 3px; }
+.sector-flow-item .lbl { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
 
 .sector-cat-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -1095,7 +1161,7 @@ td { border-color: var(--border-light); }
 .login-lv button.on{border-color:#6366f1;background:rgba(99,102,241,.1);color:#818cf8}
 .login-lv button.on.admin{border-color:#f59e0b;background:rgba(245,158,11,.1);color:#f59e0b}
 .login-lv .ic{font-size:20px}
-.login-lv .hint{font-size:10px;color:#64748b;font-weight:400}
+.login-lv .hint{font-size:11px;color:#64748b;font-weight:400}
 .login-ig{margin-bottom:16px}
 .login-ig label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6px}
 .login-pw{position:relative}
@@ -1405,9 +1471,9 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-sigcard .cnt{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-0.01em;}
     #tab-diamond .gd-sigcard .lst{font-size:11px;color:var(--text-muted);margin-top:5px;line-height:1.6;}
     #tab-diamond .gd-chan-cell{font-size:11px;line-height:1.6;}
-    #tab-diamond .gd-chan-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(183,148,244,.14);color:var(--purple);}
-    #tab-diamond .gd-inst-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(59,130,246,.16);color:#63b3ed;}
-    #tab-diamond .gd-youzi-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(246,173,85,.16);color:#f6ad55;}
+    #tab-diamond .gd-chan-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(183,148,244,.14);color:var(--purple);}
+    #tab-diamond .gd-inst-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(59,130,246,.16);color:#63b3ed;}
+    #tab-diamond .gd-youzi-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(246,173,85,.16);color:#f6ad55;}
     #tab-diamond .gd-muted{color:var(--text-muted);}
     #tab-diamond .gd-detail{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 16px;font-size:12px;box-shadow:var(--shadow-card);}
     #tab-diamond .gd-detail table{width:100%;border-collapse:collapse;}
@@ -2017,7 +2083,7 @@ function renderStockCard(r, tabSuffix) {
         ${s.rsi!=null ? `<div class="detail-item"><span class="label">RSI(14)</span><br><span class="value ${s.rsi>70?'down':s.rsi<30?'up':''}">${s.rsi}</span></div>` : ''}
         ${s.ret_20d!=null ? `<div class="detail-item"><span class="label">20日涨幅</span><br><span class="value ${s.ret_20d>=0?'up':'down'}">${s.ret_20d>=0?'+':''}${s.ret_20d}%</span></div>` : ''}
         <div class="detail-item"><span class="label">缠论买字</span><br><span class="value">${r.chan_buy?'✓ 触发':'✗ 未触发'}${cd.low_price ? ' (低点¥'+cd.low_price+')' : ''}</span></div>
-        <div class="detail-item"><span class="label">金钻信号</span><br><span class="value">${r.golden_diamond||'无'} ${gd.pct_chg!=null ? '(+'+gd.pct_chg+'%)' : ''}</span>${gd.streak_len ? `<br><span style="font-size:10px;color:${gd.streak_len>=4?'var(--red)':gd.streak_len>=2?'var(--gold)':'var(--text-gray)'}">${gd.streak_start||''} → ${gd.streak_end||''} 连续${gd.streak_len}日</span>` : (gd.days_ago!=null ? `<br><span style="font-size:10px;color:${gd.days_ago===0?'var(--red)':gd.days_ago<=2?'var(--gold)':'var(--text-gray)'}">${gd.days_ago===0?'今日触发':'距今'+gd.days_ago+'个交易日'} (${gd.signal_date||''})</span>` : '')}<br><span style="font-size:10px;color:var(--text-gray)">金钻趋势¥${(gd.golden_trend||0).toFixed(1)} 金牛¥${(gd.golden_bull||0).toFixed(1)} DDX${(gd.ddx_last||0).toFixed(3)} 窗口${gd.window_days||5}日</span></div>
+        <div class="detail-item"><span class="label">金钻信号</span><br><span class="value">${r.golden_diamond||'无'} ${gd.pct_chg!=null ? '(+'+gd.pct_chg+'%)' : ''}</span>${gd.streak_len ? `<br><span style="font-size:11px;color:${gd.streak_len>=4?'var(--red)':gd.streak_len>=2?'var(--gold)':'var(--text-gray)'}">${gd.streak_start||''} → ${gd.streak_end||''} 连续${gd.streak_len}日</span>` : (gd.days_ago!=null ? `<br><span style="font-size:11px;color:${gd.days_ago===0?'var(--red)':gd.days_ago<=2?'var(--gold)':'var(--text-gray)'}">${gd.days_ago===0?'今日触发':'距今'+gd.days_ago+'个交易日'} (${gd.signal_date||''})</span>` : '')}<br><span style="font-size:11px;color:var(--text-gray)">金钻趋势¥${(gd.golden_trend||0).toFixed(1)} 金牛¥${(gd.golden_bull||0).toFixed(1)} DDX${(gd.ddx_last||0).toFixed(3)} 窗口${gd.window_days||5}日</span></div>
         <div class="detail-item"><span class="label">均线多头</span><br><span class="value">MA5:${(ud.ma5||0).toFixed(1)} MA10:${(ud.ma10||0).toFixed(1)} MA20:${(ud.ma20||0).toFixed(1)}</span></div>
         <div class="detail-item"><span class="label">机构变红（牛线1）</span><br><span class="value">${r.inst_red?'✓ 红色':'✗ 未变红'} 收盘¥${(id.close||0).toFixed(2)} ${id.above_niuxian!=null ? (id.above_niuxian?'>':'<') : ''} 牛线1¥${(id.niuxian1||0).toFixed(2)}</span></div>
         <div class="detail-item"><span class="label">老鸭头形态</span><br><span class="value">${r.old_duck_head?'✓ 触发':'✗ 未触发'}${dd.pullback_days!=null ? ' (回调'+dd.pullback_days+'天)' : ''}${dd.reason ? ' — '+dd.reason : ''}</span></div>
@@ -2343,7 +2409,7 @@ function renderFourVolumeChart(containerId, fv) {
   const labelDiv = document.createElement('div');
   labelDiv.style.cssText = 'display:flex;justify-content:flex-start;padding-left:40px;gap:12px;margin-top:4px;';
   labelDiv.innerHTML = names.map((n,i) =>
-    `<span style="font-size:10px;color:var(--text-secondary);">${['🏛️','👥','💰','⚡'][i]} ${n}</span>`
+    `<span style="font-size:11px;color:var(--text-secondary);">${['🏛️','👥','💰','⚡'][i]} ${n}</span>`
   ).join('');
   container.appendChild(labelDiv);
 }
@@ -3521,7 +3587,7 @@ function renderEtfFlow() {
     html += `<tbody><tr class="etf-cat-head"><td colspan="7" style="padding:10px 10px;background:rgba(212,175,55,.04);border-bottom:1px solid rgba(212,175,55,.1);">
       <span style="font-weight:700;color:var(--gold);">${cat}</span>
       <span style="margin-left:8px;font-size:11px;color:${catCls};">${signedFmt(catNet)}亿</span>
-      <span style="float:right;font-size:10px;color:var(--text-muted);">${items.length}只</span>
+      <span style="float:right;font-size:11px;color:var(--text-muted);">${items.length}只</span>
     </td></tr>`;
     
     items.forEach(e => {
