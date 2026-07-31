@@ -6,12 +6,20 @@
 <title>金钻起爆 · 副图预览</title>
 <style>
   :root{
-    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --border:#2a3340;
-    --txt:#e6edf3; --txt2:#8b98a5; --red:#ff4d4f; --green:#26a69a;
-    --gold:#ffc53d; --cyan:#36cfc9; --blue:#4096ff; --purple:#b37feb;
+    /* ── 对齐主站 Aurum Terminal 令牌 ── */
+    --bg:#0a0c12; --panel:#151926; --panel2:#1a1f2e; --border:#252b3b;
+    --txt:#e8ebf2; --txt2:#9aa1b8; --red:#ff7b7b; --green:#4ade80;
+    --gold:#e6b53c; --cyan:#5fd4e6; --blue:#6b85fa; --purple:#b794f4;
+    --gold-strong:#f0c04e; --gold-bg:rgba(230,181,60,.10);
+    --red-bg:rgba(255,123,123,.10); --green-bg:rgba(74,222,128,.10);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;font-size:13px;padding:14px;}
+  /* ── 全局聚焦态 ── */
+  *:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px;}
+  *:focus:not(:focus-visible){outline:none;}
+  /* ── 数字等宽 ── */
+  .sigcard .cnt,table td,.tooltip{font-variant-numeric:tabular-nums;}
   header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
   h1{font-size:18px;font-weight:700;letter-spacing:.5px;}
   h1 .em{color:var(--gold);}
@@ -45,7 +53,7 @@
   td .ok{color:var(--green);} td .no{color:var(--red);} td .dim{color:var(--txt2);}
   .status{padding:10px 12px;color:var(--txt2);font-size:12px;}
   .err{color:var(--red);}
-  .tooltip{position:fixed;pointer-events:none;background:#000d1aee;border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--txt);z-index:50;display:none;max-width:280px;line-height:1.6;}
+  .tooltip{position:fixed;pointer-events:none;background:rgba(10,12,18,0.93);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--txt);z-index:200;display:none;max-width:280px;line-height:1.6;}
   .tooltip b{color:var(--gold);}
   .subform-filter{display:flex;gap:6px;}
   .ff{font-size:11px;padding:3px 8px;border-radius:12px;border:1px solid var(--border);color:var(--txt2);cursor:pointer;background:var(--panel2);}
@@ -73,8 +81,8 @@
 <div class="legend">
   <span><i class="dot" style="background:var(--red)"></i>金牛线(红)</span>
   <span><i class="dot" style="background:var(--gold)"></i>金钻趋势(黄)</span>
-  <span><i class="dot" style="background:#7d8aa0"></i>金牛2(灰)</span>
-  <span><i class="dot" style="background:#7a1f1f"></i>红区(DRAWBAND红带=金钻趋势&gt;金牛2)</span>
+  <span><i class="dot" style="background:#7a8198"></i>金牛2(灰)</span>
+  <span><i class="dot" style="background:rgba(255,123,123,.35)"></i>红区(DRAWBAND红带=金钻趋势&gt;金牛2)</span>
   <span><i class="dot" style="background:var(--gold)"></i>黄柱(STICKLINE=金钻趋势&gt;LOW×1.025)</span>
   <span><i class="dot" style="background:var(--cyan)"></i>▲买入</span>
   <span><i class="dot" style="background:var(--red)"></i>金钻起涨</span>
@@ -144,9 +152,9 @@ let filter = { buy: true, up: true, hz: true };
 let hoverIdx = -1;
 
 // ── 颜色 ──
-const C = { red:'#ff4d4f', green:'#26a69a', gold:'#ffc53d', cyan:'#36cfc9',
-            blue:'#4096ff', gray:'#7d8aa0', grid:'#21262d', txt:'#8b98a5',
-            upC:'#ff4d4f', downC:'#26a69a', bandRed:'rgba(255,77,79,.16)', bandGreen:'rgba(38,166,154,.14)' };
+const C = { red:'#ff7b7b', green:'#4ade80', gold:'#e6b53c', cyan:'#5fd4e6',
+            blue:'#6b85fa', gray:'#7a8198', grid:'#1f2433', txt:'#9aa1b8',
+            upC:'#ff7b7b', downC:'#4ade80', bandRed:'rgba(255,123,79,.10)', bandGreen:'rgba(74,222,128,.10)' };
 
 // ── 取数 ──
 async function load(code){
@@ -222,7 +230,7 @@ function drawMain(){
   const vmax = Math.max(...v.filter(x=>x!=null),1);
   const vScale = val => volBot - val/vmax*(volBot-volTop);
   // 网格 + 日期
-  ctx.strokeStyle=C.grid; ctx.fillStyle=C.txt; ctx.font='10px sans-serif'; ctx.lineWidth=1;
+  ctx.strokeStyle=C.grid; ctx.fillStyle=C.txt; ctx.font='11px sans-serif'; ctx.lineWidth=1;
   for(let g=0; g<=4; g++){ const y=top+(bot-top)*g/4; ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(w-padR,y);ctx.stroke(); }
   // 蜡烛 + 量
   const bw = (w-padL-padR)/N;
@@ -236,13 +244,13 @@ function drawMain(){
     const yO=scale(o[k]), yC=scale(c[k]); const yo=Math.min(yO,yC), hh=Math.max(1,Math.abs(yC-yO));
     ctx.fillRect(x-bw*0.32, yo, bw*0.64, hh);
     // 量
-    ctx.fillStyle = up? 'rgba(255,77,79,.45)':'rgba(38,166,154,.45)';
+    ctx.fillStyle = up? 'rgba(255,123,123,.45)':'rgba(74,222,128,.45)';
     const vy=vScale(v[k]); ctx.fillRect(x-bw*0.32, vy, bw*0.64, volBot-vy);
   }
   // MA 线(用全量计算切片)
-  drawMA(ctx, DATA.close, L, R, padL, bw, scale, 5, '#4096ff');
-  drawMA(ctx, DATA.close, L, R, padL, bw, scale, 20, '#ffc53d');
-  drawMA(ctx, DATA.close, L, R, padL, bw, scale, 60, '#b37feb');
+  drawMA(ctx, DATA.close, L, R, padL, bw, scale, 5, '#6b85fa');
+  drawMA(ctx, DATA.close, L, R, padL, bw, scale, 20, '#e6b53c');
+  drawMA(ctx, DATA.close, L, R, padL, bw, scale, 60, '#b794f4');
   // hover 竖线
   if(hoverIdx>=L && hoverIdx<R){
     const x = padL + (hoverIdx-L+0.5)*bw;
@@ -291,7 +299,7 @@ function drawSub(){
     if(gt[k] > lo[k]*YM){
       const x=padL+(k+0.5)*bw;
       const yTop=scale(gt[k]), yBot=scale(lo[k]);
-      ctx.fillStyle='rgba(255,197,61,.85)';
+      ctx.fillStyle='rgba(230,181,60,.85)';
       ctx.fillRect(x-bw*0.30, Math.min(yTop,yBot), bw*0.60, Math.abs(yBot-yTop));
     }
   }
@@ -308,7 +316,7 @@ function drawSub(){
     ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x,bot);ctx.stroke();ctx.setLineDash([]);
   }
   // y 轴标签
-  ctx.fillStyle=C.txt; ctx.font='10px sans-serif'; ctx.textAlign='left';
+  ctx.fillStyle=C.txt; ctx.font='11px sans-serif'; ctx.textAlign='left';
   const ys=[top, (top+bot)/2, bot];
   ys.forEach(y=>{ ctx.fillText(scale.invert(y).toFixed(1), w-padR+4, y+3); });
 }
@@ -338,7 +346,7 @@ function drawSignals(ctx, L, R, padL, bw, scale, top, bot){
       ctx.fillStyle=C.gold; ctx.font='bold 11px sans-serif'; ctx.textAlign='center';
       ctx.fillText('红区黄柱连'+nd+'天', x, top+12);
       // 高亮连续区间背景
-      ctx.fillStyle='rgba(255,197,61,.10)';
+      ctx.fillStyle='rgba(230,181,60,.10)';
       const x0=padL+Math.max(0,k-(parseInt(nd)-1))*bw;
       ctx.fillRect(x0, top, parseInt(nd)*bw, bot-top);
     }
@@ -417,8 +425,8 @@ function showTip(e, i){
   t.innerHTML = `<b>${DATA.dates[i]}</b> (${DATA.name})<br>
     收 ${DATA.close[i]?.toFixed(2)} 高 ${DATA.high[i]?.toFixed(2)} 低 ${DATA.low[i]?.toFixed(2)}<br>
     金牛 ${gb!=null?gb.toFixed(2):'—'} · 金钻趋势 ${gt!=null?gt.toFixed(2):'—'} · 金牛2 ${g2!=null?g2.toFixed(2):'—'}<br>
-    红区 ${rz?'<span style="color:#ff4d4f">是</span>':'否'} · 黄柱 ${yb?'<span style="color:#ffc53d">是</span>':'否'}<br>
-    信号: <b style="color:#36cfc9">${sig}</b>`;
+    红区 ${rz?'<span style="color:#ff7b7b">是</span>':'否'} · 黄柱 ${yb?'<span style="color:#e6b53c">是</span>':'否'}<br>
+    信号: <b style="color:#5fd4e6">${sig}</b>`;
   t.style.display='block'; t.style.left=(e.clientX+14)+'px'; t.style.top=(e.clientY+14)+'px';
 }
 bindHover($('#mainChart'), false);

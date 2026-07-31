@@ -6,23 +6,30 @@
 <title>兜宝金钻 · 金钻池跟踪（预览）</title>
 <style>
   :root{
-    --bg:#0b0e14; --panel:#151a23; --panel2:#1b2230; --border:#232b38;
-    --text:#e6edf3; --muted:#8b949e; --gold:#f5c518; --green:#3fb950;
-    --orange:#f0883e; --added:#3fb950; --removed:#f85149; --kept:#58a6ff;
+    /* ── 对齐主站 Aurum Terminal 令牌 ── */
+    --bg:#0a0c12; --panel:#151926; --panel2:#1a1f2e; --border:#252b3b;
+    --text:#e8ebf2; --muted:#7a8198; --gold:#e6b53c; --green:#4ade80;
+    --orange:#f6ad55; --added:#4ade80; --removed:#ff7b7b; --kept:#6b85fa;
+    --gold-strong:#f0c04e; --gold-bg:rgba(230,181,60,.10);
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--text);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
     font-size:14px;line-height:1.5}
+  /* ── 全局聚焦态 ── */
+  *:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px;}
+  *:focus:not(:focus-visible){outline:none;}
+  /* ── 数字等宽 ── */
+  .stat .v,.note,table td{font-variant-numeric:tabular-nums;}
   .wrap{max-width:1080px;margin:0 auto;padding:24px 18px 60px}
   .topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
     border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:20px}
   .title{font-size:20px;font-weight:700;letter-spacing:.5px}
   .title .gem{color:var(--gold)}
-  .badge-prev{font-size:11px;color:#0b0e14;background:var(--gold);padding:2px 8px;border-radius:10px;font-weight:700}
+  .badge-prev{font-size:11px;color:#0a0c12;background:var(--gold);padding:2px 8px;border-radius:10px;font-weight:700}
   .ctrl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   select{background:var(--panel2);color:var(--text);border:1px solid var(--border);
-    border-radius:8px;padding:7px 10px;font-size:13px}
+    border-radius:8px;padding:9px 10px;font-size:13px;min-height:40px;cursor:pointer;}
   .hint{color:var(--muted);font-size:12px}
   .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0 22px}
   .stat{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
@@ -39,9 +46,9 @@
   th{color:var(--muted);font-weight:600;background:var(--panel2)}
   tr:last-child td{border-bottom:none}
   .pill{display:inline-block;padding:2px 9px;border-radius:10px;font-size:12px;font-weight:600}
-  .p-up{background:rgba(245,197,24,.15);color:var(--gold)}
-  .p-buy{background:rgba(63,185,80,.15);color:var(--green)}
-  .p-hz{background:rgba(240,136,62,.15);color:var(--orange)}
+  .p-up{background:rgba(230,181,60,.12);color:var(--gold)}
+  .p-buy{background:rgba(74,222,128,.12);color:var(--green)}
+  .p-hz{background:rgba(246,173,85,.12);color:var(--orange)}
   .ago{color:var(--muted);font-size:12px}
   .track{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .tcard{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
@@ -53,14 +60,14 @@
   .item{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;background:var(--panel2);
     margin-bottom:5px;font-size:13px}
   .mk{font-size:11px;font-weight:700;border-radius:6px;padding:1px 6px;flex:none}
-  .mk.add{background:rgba(63,185,80,.18);color:var(--added)}
-  .mk.rem{background:rgba(248,81,73,.18);color:var(--removed)}
-  .mk.keep{background:rgba(88,166,255,.16);color:var(--kept)}
+  .mk.add{background:rgba(74,222,128,.18);color:var(--added)}
+  .mk.rem{background:rgba(255,123,123,.18);color:var(--removed)}
+  .mk.keep{background:rgba(107,133,250,.16);color:var(--kept)}
   .nm{font-weight:600}
   .cd{color:var(--muted);font-size:12px}
   .arrow{color:var(--kept);font-size:11px;margin-left:4px}
   .empty{color:var(--muted);font-size:12px;padding:6px 2px}
-  @media(max-width:760px){.cards{grid-template-columns:repeat(2,1fr)}.track{grid-template-columns:1fr}}
+  @media(max-width:760px){.cards{grid-template-columns:repeat(2,1fr)}.track{grid-template-columns:1fr}table{font-size:12px}th,td{padding:7px 8px}}
 </style>
 </head>
 <body>
