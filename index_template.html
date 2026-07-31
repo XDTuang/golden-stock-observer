@@ -3243,7 +3243,7 @@ function exportSignalXls() {
   var SD = window.SIGNALS_DATA;
   if (!SD || !SD.stocks) { alert('数据尚未加载，请稍候再试'); return; }
   var all = SD.stocks.filter(function(r){ return r.has_data && r.score && r.score.ema_strong; });
-  var hdr = ['代码','名称','市场','行业','信号等级','信号数','总分','收盘','涨跌幅%','成交量(M股)','缠论买字','金钻信号','机构变红','上涨趋势','老鸭头','强势股','短期目标','中期目标','强势目标','止损参考','RSI(14)','20日涨幅%'];
+  var hdr = ['代码','名称','市场','行业','信号等级','信号数','总分','收盘','涨跌幅%','成交量(M股)','缠论买字','金钻信号','机构变红','上涨趋势','老鸭头','强势股','短期目标','中期目标','强势目标','止损参考','RSI(14)','20日涨幅%','最高价','最低价','EMA评分','ATR波动率','基础分'];
   function toRow(r) {
     var s = r.score || {};
     var tp = r.target_prices || {};
@@ -3257,7 +3257,8 @@ function exportSignalXls() {
       [r.inst_red?'✓':'✗','String'],[r.uptrend?'✓':'✗','String'],[r.old_duck_head?'✓':'✗','String'],[r.strong_stock?'✓':'✗','String'],
       [tp.short_term?Number(tp.short_term.price.toFixed(2)):0,'Number'],[tp.mid_term?Number(tp.mid_term.price.toFixed(2)):0,'Number'],
       [tp.aggressive?Number(tp.aggressive.price.toFixed(2)):0,'Number'],[tp.stop_loss?Number(tp.stop_loss.price.toFixed(2)):0,'Number'],
-      [s.rsi!=null?Number(s.rsi):0,'Number'],[s.ret_20d!=null?Number(s.ret_20d):0,'Number']
+      [s.rsi!=null?Number(s.rsi):0,'Number'],[s.ret_20d!=null?Number(s.ret_20d):0,'Number'],
+      [r.high!=null?Number(r.high.toFixed(2)):0,'Number'],[r.low!=null?Number(r.low.toFixed(2)):0,'Number'],[s.ema_score!=null?Number(s.ema_score):0,'Number'],[tp.atr14!=null?Number(Number(tp.atr14).toFixed(2)):0,'Number'],[s.base_score!=null?Number(s.base_score):0,'Number']
     ];
   }
   function matchKey(r, key) {
