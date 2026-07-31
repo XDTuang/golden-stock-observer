@@ -74,7 +74,7 @@ bash cloudbase/deploy_cloudbase.sh
 
 ### 4. 关于「访问提醒中转页」
 CloudBase 自 2025-10 起，默认子域访问会先弹「访问提醒中转页」，访客点一次「确认访问」即可（cookie 内短期有效）。
-**去掉中转页需绑定已备案自定义域名**（买域名 ~50 元/年 + 免费 ICP 备案 1–20 天）。副站本身有 DDDYB 密码门，中转页影响很小，可先不管。
+**去掉中转页需绑定已备案自定义域名**（买域名 ~50 元/年 + 免费 ICP 备案 1–20 天）。副站本身有 ILOVEDB 密码门，中转页影响很小，可先不管。
 
 ---
 
@@ -103,6 +103,6 @@ tcb fn deploy gd-daily --envId <环境ID> --runtime python3   # 在控制台把�
 - `diamond_site/.gitignore` 已忽略 `output/gate_*.json`，本脚手架也只复制 `diamond_site/` 目录，天然隔离。
 
 ## 访问地址
-- 国内镜像：部署后访问 `https://<环境ID>-<AppID>.tcloudbaseapp.com`（密码 DDDYB；用 `tcb hosting detail --env-id <环境ID>` 可查正确域名，注意是 tcloudbase**app**.com 不是 tcloudbase.com）
-- 国际原站：`https://XDTuang.github.io/golden-diamond-observer/`（密码 DDDYB）
+- 国内镜像：部署后访问 `https://<环境ID>-<AppID>.tcloudbaseapp.com`（密码 ILOVEDB；用 `tcb hosting detail --env-id <环境ID>` 可查正确域名，注意是 tcloudbase**app**.com 不是 tcloudbase.com）
+- 国际原站：`https://XDTuang.github.io/golden-diamond-observer/`（密码 ILOVEDB）
 - 主站：`https://xdtuang.github.io/golden-stock-observer/`
