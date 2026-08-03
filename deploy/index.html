@@ -1408,6 +1408,7 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-chan-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(183,148,244,.14);color:var(--purple);}
     #tab-diamond .gd-inst-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(59,130,246,.16);color:#63b3ed;}
     #tab-diamond .gd-youzi-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(246,173,85,.16);color:#f6ad55;}
+    #tab-diamond .gd-qd-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(250,204,21,.18);color:#facc15;border:1px solid rgba(250,204,21,.4);}
     #tab-diamond .gd-muted{color:var(--text-muted);}
     #tab-diamond .gd-detail{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 16px;font-size:12px;box-shadow:var(--shadow-card);}
     #tab-diamond .gd-detail table{width:100%;border-collapse:collapse;}
@@ -1547,7 +1548,7 @@ td { border-color: var(--border-light); }
   <div class="gd-tablewrap">
     <div class="gd-subtitle">命中个股 / 当日金钻池明细（<span id="gdCount">0</span> 只）· 点击任意行，在该行下方直接展开主图 / 副图 / 四量图 / 三子信号 / 判定明细</div>
     <table class="gd-table" id="gdTable">
-      <thead><tr><th class="gd-c"></th><th>代码</th><th>名称</th><th>主信号</th><th>近3日缠论</th><th>机构信号</th><th>游资信号</th><th>触发日</th></tr></thead>
+      <thead><tr><th class="gd-c"></th><th>代码</th><th>名称</th><th>主信号</th><th>近3日缠论</th><th>机构信号</th><th>游资信号</th><th>终极信号</th><th>触发日</th></tr></thead>
       <tbody></tbody>
     </table>
   </div>
@@ -1578,7 +1579,7 @@ td { border-color: var(--border-light); }
       </div>
       <div class="gd-panel">
         <div class="gd-panel-title">
-          <span>四量图：机构 / 散户 / 游资 / 主力（蓝=正 · 绿=负 · ▲=机构/游资信号日）</span>
+          <span>四量图（终极版）：机构 / 散户 / 游资 / 主力（蓝=正 · 绿=负 · ▲=机构/游资信号日 · ◆终=终极信号日）</span>
           <span class="gd-ffwrap">
             <span class="gd-ff four on" data-f="four">四量图</span>
           </span>
@@ -4298,9 +4299,10 @@ function gdRenderTable(d){
     const ch=(s.kline&&window.ChanEngine)?ChanEngine.computeChan(s.kline):{last3Buy:[]};
     const has=ch.last3Buy&&ch.last3Buy.length>0;
     const chanCell=has?ch.last3Buy.map(b=>`<span class="gd-chan-badge">${b.date.slice(5)}</span>`).join(''):'<span class="gd-muted">无</span>';
-    const four=(s.kline&&window.FourEngine)?FourEngine.computeFour(s.kline):{last3Inst:[],last3Youzi:[]};
+    const four=(s.kline&&window.FourEngine)?FourEngine.computeFour(s.kline):{last3Inst:[],last3Youzi:[],last3Qd:[]};
     const instCell=(four.last3Inst&&four.last3Inst.length)?four.last3Inst.map(b=>`<span class="gd-inst-badge">${b.date.slice(5)}</span>`).join(''):'<span class="gd-muted">无</span>';
     const youziCell=(four.last3Youzi&&four.last3Youzi.length)?four.last3Youzi.map(b=>`<span class="gd-youzi-badge">${b.date.slice(5)}</span>`).join(''):'<span class="gd-muted">无</span>';
+    const qdCell=(four.last3Qd&&four.last3Qd.length)?four.last3Qd.map(b=>`<span class="gd-qd-badge">${b.date.slice(5)}</span>`).join(''):'<span class="gd-muted">无</span>';
     const chanBadge=allChan.has(s.code)?' <span class="gd-chan-badge">缠</span>':'';
     return `<tr class="gd-row" data-code="${s.code}">
       <td class="gd-c"><span class="gd-caret">▸</span></td>
@@ -4309,6 +4311,7 @@ function gdRenderTable(d){
       <td class="gd-chan-cell">${chanCell}</td>
       <td class="gd-chan-cell">${instCell}</td>
       <td class="gd-chan-cell">${youziCell}</td>
+      <td class="gd-chan-cell">${qdCell}</td>
       <td>${sigDate}</td></tr>`;
   }).join('');
   tb.querySelectorAll('tr.gd-row').forEach(tr=>tr.addEventListener('click',()=>gdOpenStock(tr.dataset.code,tr)));
@@ -4324,7 +4327,7 @@ function gdOpenStock(code, tr){
   if(tr && tr.classList.contains('open')){ gdCloseInline(); return; }
   const k=s.kline||[];
   const ch=(window.ChanEngine?ChanEngine.computeChan(k):{buy:[],sell:[],last3Buy:[]});
-  const four=(window.FourEngine?FourEngine.computeFour(k):{牛线1:[],马线1:[],牛线:[],马线:[],GB:[],GBB:[],W2:[],V6:[],instSig:[],youziSig:[]});
+  const four=(window.FourEngine?FourEngine.computeFour(k):{牛线1:[],马线1:[],牛线:[],马线:[],GB:[],GBB:[],GB1:[],W2:[],V6:[],instSig:[],youziSig:[],qdSig:[],last3Inst:[],last3Youzi:[],last3Qd:[]});
   // 金钻副图数组：sector 档自带真值 golden 数组；pool 档数据未带，用 JS 金钻引擎从 kline 现算（与 sector 同源）
   let ga;
   if(s.golden_bull && s.golden_bull.length){ ga={golden_bull:s.golden_bull, golden_trend:s.golden_trend, gt2:s.gt2, red_zone:s.red_zone, yellow_bar:s.yellow_bar}; }
@@ -4434,7 +4437,7 @@ async function gdLiveQuery(){
     const rows=await gdFetchKline(code);
     const res=gdAnalyze(rows);
     const ch=(window.ChanEngine?ChanEngine.computeChan(rows):{buy:[],sell:[],last3Buy:[]});
-    const four=(window.FourEngine?FourEngine.computeFour(rows):{牛线1:[],马线1:[],牛线:[],马线:[],GB:[],GBB:[],W2:[],V6:[],instSig:[],youziSig:[]});
+    const four=(window.FourEngine?FourEngine.computeFour(rows):{牛线1:[],马线1:[],牛线:[],马线:[],GB:[],GBB:[],GB1:[],W2:[],V6:[],instSig:[],youziSig:[],qdSig:[],last3Inst:[],last3Youzi:[],last3Qd:[]});
     res.chanBuy=ch.buy; res.chanSell=ch.sell; res.chanLast3=ch.last3Buy;
     res.four=four;
     res.code=code; res.name=code;
@@ -4604,7 +4607,7 @@ function gdEvalDay(i,c,o,h,l,gb,gt,g2,v2,var23,n){
   if (global) global.ChanEngine = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : this));
 
-// ── 四量图引擎 FourEngine（忠实移植通达信四量图公式：机构 / 散户 / 游资 / 主力 四面板 + 信号）──
+// ── 四量图引擎 FourEngine（终极版：游资点火+机构托底+当天金叉+四路同时翻多）──
 (function (global) {
   function ma(arr, n){ const N=arr.length, out=new Array(N).fill(null);
     for(let i=0;i<N;i++){ if(i<n-1) continue; let s=0; for(let j=i-n+1;j<=i;j++) s+=arr[j]; out[i]=s/n; } return out; }
@@ -4616,20 +4619,31 @@ function gdEvalDay(i,c,o,h,l,gb,gt,g2,v2,var23,n){
   function computeFour(k){
     const N=k.length;
     if(N<25) return { 牛线1:new Array(N).fill(null),马线1:new Array(N).fill(null),牛线:new Array(N).fill(null),马线:new Array(N).fill(null),
-      GB:new Array(N).fill(null),GBB:new Array(N).fill(null),W2:new Array(N).fill(null),V6:new Array(N).fill(null),
-      instSig:new Array(N).fill(false),youziSig:new Array(N).fill(false),last3Inst:[],last3Youzi:[],dates:k.map(r=>r.date) };
+      GB:new Array(N).fill(null),GBB:new Array(N).fill(null),GB1:new Array(N).fill(null),W2:new Array(N).fill(null),V6:new Array(N).fill(null),
+      JG:new Array(N).fill(false),JGC:new Array(N).fill(false),SHC:new Array(N).fill(false),YZC:new Array(N).fill(false),ZLC:new Array(N).fill(false),
+      XC:new Array(N).fill(false),FOUR:new Array(N).fill(false),QD:new Array(N).fill(false),
+      instSig:new Array(N).fill(false),youziSig:new Array(N).fill(false),qdSig:new Array(N).fill(false),
+      last3Inst:[],last3Youzi:[],last3Qd:[],dates:k.map(r=>r.date) };
     const C=k.map(r=>r.close), O=k.map(r=>r.open), H=k.map(r=>r.high), L=k.map(r=>r.low), V=k.map(r=>r.volume);
     const MID=k.map(r=>(3*r.close+r.low+r.open+r.high)/6);
-    // 机构面板：牛线1 = 20 期加权 MA(MID9)；马线1 = MA(牛线1,6)
+    // 机构面板（终极版）：NLJ = 20 期加权 MA(MID9)；马线1 = MA(NLJ,6)
+    //   JG = C>NLJ（机构托底）；JGC = CROSS(NLJ, MA(NLJ,6))（机构金叉：牛线上穿马线）
     const 牛线1=wma20(MID), 马线1=ma(牛线1,6);
-    // 散户面板：牛线 = 20 期加权 MA(MID1)；马线 = MA(牛线,3)；换手近似值(缺流通股本)→ 主/散 为换手动量
-    const 牛线=wma20(MID), 马线=ma(牛线,3);
-    const GB=C.map((c,i)=> (牛线[i]!=null)? c-牛线[i] : null);
+    const GB=C.map((c,i)=> (牛线1[i]!=null)? c-牛线1[i] : null);
+    const JG=C.map((c,i)=> (牛线1[i]!=null)? c>牛线1[i] : false);
+    const JGC=new Array(N).fill(false);
+    for(let i=1;i<N;i++){ if(牛线1[i-1]!=null&&马线1[i-1]!=null&&牛线1[i]!=null&&马线1[i]!=null){ if(牛线1[i-1]<=马线1[i-1]&&牛线1[i]>马线1[i]) JGC[i]=true; } }
+    // 散户面板（终极版）：牛线 = 20 期加权 MA(MID1)；ZH=MA(换手,5) SHH=MA(换手,55)
+    //   GB = C-牛线（价格差）；GBB = ZH-SHH（换手差）；GB1 = GB+GBB（散户线）；SHC = CROSS(GB1,0)
+    const 牛线=wma20(MID);
     const maV60=ma(V,60);
-    const 换手=V.map((v,i)=> (maV60[i]!=null&&maV60[i]>0)? v/maV60[i]*3 : null);
-    const 主=ma(换手,5), 散=ma(换手,34);
-    const GBB=主.map((m,i)=> (m!=null&&散[i]!=null)? m-散[i] : null);
-    // 游资面板：Q=EMA(V,5), Q1=EMA(V,50); OBV 累积; W2 = (Q-Q1)*1e-5 + (OBV1-OBV2)*1e-6
+    const 换手=V.map((v,i)=> (maV60[i]!=null&&maV60[i]>0)? v/maV60[i]*3 : null);   // 换手近似（缺流通股本，用量比替代）
+    const ZH=ma(换手,5), SHH=ma(换手,55);
+    const GBB=ZH.map((z,i)=> (z!=null&&SHH[i]!=null)? z-SHH[i] : null);
+    const GB1=GB.map((g,i)=> (g!=null&&GBB[i]!=null)? g+GBB[i] : null);
+    const SHC=new Array(N).fill(false);
+    for(let i=1;i<N;i++){ if(GB1[i-1]!=null&&GB1[i]!=null){ if(GB1[i-1]<=0&&GB1[i]>0) SHC[i]=true; } }
+    // 游资面板：Q=EMA(V,5), Q1=EMA(V,50); OBV 累积; W2 = (Q-Q1)*1e-5 + (OBV1-OBV2)*1e-6；YZC = CROSS(W2,0)
     const Q=ema(V,5), Q1=ema(V,50);
     const OBV=new Array(N); OBV[0]=0;
     for(let i=1;i<N;i++) OBV[i]=OBV[i-1]+(C[i]>C[i-1]?V[i]:(C[i]<C[i-1]?-V[i]:0));
@@ -4637,7 +4651,9 @@ function gdEvalDay(i,c,o,h,l,gb,gt,g2,v2,var23,n){
     const W=Q.map((q,i)=> (q!=null&&Q1[i]!=null)? (q-Q1[i])*0.00001 : null);
     const W1=OBV1.map((o,i)=> (o!=null&&OBV2[i]!=null)? (o-OBV2[i])*0.000001 : null);
     const W2=W.map((w,i)=> (w!=null&&W1[i]!=null)? w+W1[i] : null);
-    // 主力面板：DKX = 20 期加权 MA(MID); MDD=(DKX-MA(DKX,6))*1.2; V6 = MDD + (V2-V3)*0.06
+    const YZC=new Array(N).fill(false);
+    for(let i=1;i<N;i++){ if(W2[i-1]!=null&&W2[i]!=null){ if(W2[i-1]<=0&&W2[i]>0) YZC[i]=true; } }
+    // 主力面板：DKX = 20 期加权 MA(MID); MDD=(DKX-MA(DKX,6))*1.2; V6 = MDD + (V2-V3)*0.06；ZLC = CROSS(V6,0)
     const DKX=wma20(MID), MADKX=ma(DKX,6);
     const MDD=DKX.map((d,i)=> (d!=null&&MADKX[i]!=null)? (d-MADKX[i])*1.2 : null);
     const V1=k.map(r=> (r.close*2+r.high+r.low)/4*10);
@@ -4646,13 +4662,24 @@ function gdEvalDay(i,c,o,h,l,gb,gt,g2,v2,var23,n){
     const V3=ema(V2,6);
     const V5=V2.map((v,i)=> (v!=null&&V3[i]!=null)? (v-V3[i])*0.06 : null);
     const V6=MDD.map((m,i)=> (m!=null&&V5[i]!=null)? m+V5[i] : null);
-    // 信号：机构 = 收盘价上穿牛线1；游资 = W2 上穿 0
-    const instSig=new Array(N).fill(false), youziSig=new Array(N).fill(false);
-    for(let i=1;i<N;i++){ if(牛线1[i-1]!=null&&牛线1[i]!=null&&C[i-1]!=null&&C[i]!=null){ if(C[i-1]<=牛线1[i-1]&&C[i]>牛线1[i]) instSig[i]=true; } }
-    for(let i=1;i<N;i++){ if(W2[i-1]!=null&&W2[i]!=null){ if(W2[i-1]<=0&&W2[i]>0) youziSig[i]=true; } }
-    const last3Inst=[], last3Youzi=[];
-    for(let i=N-3;i<N;i++) if(i>=0){ if(instSig[i]) last3Inst.push({i,date:k[i].date}); if(youziSig[i]) last3Youzi.push({i,date:k[i].date}); }
-    return { 牛线1,马线1,牛线,马线,GB,GBB,W2,V6, instSig,youziSig,last3Inst,last3Youzi, dates:k.map(r=>r.date) };
+    const ZLC=new Array(N).fill(false);
+    for(let i=1;i<N;i++){ if(V6[i-1]!=null&&V6[i]!=null){ if(V6[i-1]<=0&&V6[i]>0) ZLC[i]=true; } }
+    // 终极信号体系：
+    //   XC   = JGC OR SHC OR YZC OR ZLC（四路任一金叉）
+    //   FOUR = JG AND GB1>=0 AND W2>=0 AND V6>=0（四路同时翻多）
+    //   QD   = YZC AND JG AND XC AND FOUR（终极：游资点火+机构托底+当天金叉+四路翻多）
+    const XC=new Array(N).fill(false), FOUR=new Array(N).fill(false), QD=new Array(N).fill(false);
+    for(let i=0;i<N;i++){
+      XC[i]=JGC[i]||SHC[i]||YZC[i]||ZLC[i];
+      FOUR[i]=JG[i]&&(GB1[i]!=null&&GB1[i]>=0)&&(W2[i]!=null&&W2[i]>=0)&&(V6[i]!=null&&V6[i]>=0);
+      QD[i]=YZC[i]&&JG[i]&&XC[i]&&FOUR[i];
+    }
+    // 页面信号：机构 = JGC（机构金叉日）；游资 = YZC（游资金叉日）；终极 = QD
+    const instSig=JGC, youziSig=YZC, qdSig=QD;
+    const last3Inst=[], last3Youzi=[], last3Qd=[];
+    for(let i=N-3;i<N;i++) if(i>=0){ if(instSig[i]) last3Inst.push({i,date:k[i].date}); if(youziSig[i]) last3Youzi.push({i,date:k[i].date}); if(qdSig[i]) last3Qd.push({i,date:k[i].date}); }
+    return { 牛线1,马线1,牛线,马线:马线1,GB,GBB,GB1,W2,V6, JG,JGC,SHC,YZC,ZLC,XC,FOUR,QD,
+      instSig,youziSig,qdSig,last3Inst,last3Youzi,last3Qd, dates:k.map(r=>r.date) };
   }
   const api={ computeFour };
   if(typeof module!=='undefined'&&module.exports) module.exports=api;
@@ -4756,7 +4783,8 @@ function gdDrawChan(ctx,L,R,padL,bw,scale,top,bot){ const N=R-L; const cb=GD.dat
   }
 }
 function gdRender(){ if(!GD.data)return; gdDrawMain(); gdDrawSub(); gdDrawFour(); gdRenderSigCards(); gdRenderDetail(); }
-// 四量图：机构 / 散户 / 游资 / 主力 四面板振荡器（蓝=正 绿=负），机构/游资信号日画三角标记
+// 四量图（终极版）：机构 / 散户 / 游资 / 主力 四面板振荡器（蓝=正 绿=负）
+//   ▲ = 机构(JGC)/游资(YZC)信号日；◆ 黄 = 终极(QD)信号日
 function gdDrawFour(){
   const cv=document.getElementById('gdFour'); if(!cv) return;
   const {ctx,w,h}=gdSetupCanvas(cv,300); ctx.clearRect(0,0,w,h);
@@ -4766,7 +4794,7 @@ function gdDrawFour(){
   const f=GD.data.four;
   const panels=[
     {name:'机构', arr:f.GB,  sig:f.instSig,  color:'#3b82f6'},
-    {name:'散户', arr:f.GBB, sig:null,       color:'#22a861'},
+    {name:'散户', arr:f.GB1, sig:null,       color:'#22a861'},
     {name:'游资', arr:f.W2,  sig:f.youziSig, color:'#f59e0b'},
     {name:'主力', arr:f.V6,  sig:null,       color:'#8b5cf6'},
   ];
@@ -4793,6 +4821,18 @@ function gdDrawFour(){
     } } }
     ctx.fillStyle=panels[p].color; ctx.font='bold 11px sans-serif'; ctx.textAlign='left'; ctx.fillText(panels[p].name,w-padR+4,mid+4);
   }
+  // 终极(QD)信号日：四面板右侧画 ◆ 黄菱形标记
+  if(f.qdSig){ for(let k=0;k<N;k++){ const gi=L+k; if(f.qdSig[gi]){ const x=padL+(k+0.5)*bw;
+    ctx.save();
+    ctx.fillStyle='#facc15'; ctx.strokeStyle='#ca8a04';
+    ctx.beginPath(); ctx.moveTo(x,h-6); ctx.lineTo(x-5,h-14); ctx.lineTo(x,h-22); ctx.lineTo(x+5,h-14); ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#facc15'; ctx.font='bold 9px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('终',x,h-9);
+    ctx.restore();
+  } } }
+  ctx.fillStyle='#facc15'; ctx.font='bold 10px sans-serif'; ctx.textAlign='right';
+  ctx.fillText('◆终',w-2,h-2);
 }
 function gdRenderSigCards(){ const sigs=GD.data.signals;
   const buy=sigs.filter(s=>s.type.includes('买入')),up=sigs.filter(s=>s.type.includes('金钻起涨')),hz=sigs.filter(s=>s.type.includes('红区黄柱连续'));
