@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>兜金观测 — 量化信号池 v2026-08-03</title>
+<title>兜金观测 — 量化信号池 v2026-08-04</title>
 <!-- 登录保护：内嵌覆盖层，不跳转 -->
 <script>
 (function(){
@@ -1797,7 +1797,7 @@ const SIGNAL_CARDS = [
   // 6种选股策略（EMA不作为单独策略，只作为门槛）
   { key:'chan_buy', icon:'C', name:'缠论买字', desc:'TDX三层分型枢轴，最近2日内出现买点', color:'var(--blue)' },
   { key:'golden', icon:'G', name:'金钻信号', desc:'金钻三子形态(红区黄柱连续)·需过EMA强趋势门槛[强门控]', color:'var(--gold)' },
-  { key:'inst_red', icon:'I', name:'机构变红', desc:'价格>EMA20中线，机构资金介入', color:'var(--green)' },
+  { key:'four_sig', icon:'Z', name:'终极信号', desc:'四量图终极版：终极信号(QD) 或 机构金叉(JGC) 或 游资金叉(YZC)，任一触发', color:'var(--gold)' },
   { key:'uptrend', icon:'U', name:'上涨趋势', desc:'均线多头排列，MA5>MA10>MA20>MA60', color:'var(--red)' },
   { key:'duck', icon:'D', name:'老鸭头', desc:'MA5/MA10金叉→回调→拐头，上涨中继', color:'var(--purple)' },
   { key:'strong', icon:'S', name:'强势股', desc:'阳线放量>2% 或 突破20日高点且收盘>EMA20', color:'var(--orange)' },
@@ -1839,7 +1839,7 @@ function renderSignalPickCards() {
         if (!r.score || !r.score.ema_strong) return false;
         if (card.key === 'chan_buy') return r.chan_buy;
         if (card.key === 'golden') return r.golden_diamond && r.golden_diamond !== '';
-        if (card.key === 'inst_red') return r.inst_red;
+        if (card.key === 'four_sig') return (r.four_volume && (r.four_volume.qd_now || r.four_volume.jgc_now || r.four_volume.yzc_now));
         if (card.key === 'uptrend') return r.uptrend;
         if (card.key === 'duck') return r.old_duck_head;
         if (card.key === 'strong') return r.strong_stock;
@@ -1886,7 +1886,7 @@ function selectSignalCard(key) {
       if (!r.score || !r.score.ema_strong) return false;
       if (key === 'chan_buy') return r.chan_buy;
       if (key === 'golden') return r.golden_diamond && r.golden_diamond !== '';
-      if (key === 'inst_red') return r.inst_red;
+      if (key === 'four_sig') return (r.four_volume && (r.four_volume.qd_now || r.four_volume.jgc_now || r.four_volume.yzc_now));
       if (key === 'uptrend') return r.uptrend;
       if (key === 'duck') return r.old_duck_head;
       if (key === 'strong') return r.strong_stock;
@@ -1961,7 +1961,9 @@ function renderStockCard(r, tabSuffix) {
   const signals = [
     { key:'chan_buy', label:'缠论', on:r.chan_buy },
     { key:'golden', label:'金钻', on:(r.golden_diamond && r.golden_diamond !== ''), sub:gdShort },
-    { key:'inst_red', label:'机构', on:r.inst_red },
+    { key:'qd_sig', label:'终极', on:!!(r.four_volume && r.four_volume.qd_now) },
+    { key:'jgc_sig', label:'机构', on:!!(r.four_volume && r.four_volume.jgc_now) },
+    { key:'yzc_sig', label:'游资', on:!!(r.four_volume && r.four_volume.yzc_now) },
     { key:'uptrend', label:'趋势', on:r.uptrend },
     { key:'duck', label:'老鸭头', on:r.old_duck_head },
     { key:'strong', label:'强势', on:r.strong_stock },
@@ -2020,7 +2022,7 @@ function renderStockCard(r, tabSuffix) {
         <div class="detail-item"><span class="label">缠论买字</span><br><span class="value">${r.chan_buy?'✓ 触发':'✗ 未触发'}${cd.low_price ? ' (低点¥'+cd.low_price+')' : ''}</span></div>
         <div class="detail-item"><span class="label">金钻信号</span><br><span class="value">${r.golden_diamond||'无'} ${gd.pct_chg!=null ? '(+'+gd.pct_chg+'%)' : ''}</span>${gd.streak_len ? `<br><span style="font-size:10px;color:${gd.streak_len>=4?'var(--red)':gd.streak_len>=2?'var(--gold)':'var(--text-gray)'}">${gd.streak_start||''} → ${gd.streak_end||''} 连续${gd.streak_len}日</span>` : (gd.days_ago!=null ? `<br><span style="font-size:10px;color:${gd.days_ago===0?'var(--red)':gd.days_ago<=2?'var(--gold)':'var(--text-gray)'}">${gd.days_ago===0?'今日触发':'距今'+gd.days_ago+'个交易日'} (${gd.signal_date||''})</span>` : '')}<br><span style="font-size:10px;color:var(--text-gray)">金钻趋势¥${(gd.golden_trend||0).toFixed(1)} 金牛¥${(gd.golden_bull||0).toFixed(1)} DDX${(gd.ddx_last||0).toFixed(3)} 窗口${gd.window_days||5}日</span></div>
         <div class="detail-item"><span class="label">均线多头</span><br><span class="value">MA5:${(ud.ma5||0).toFixed(1)} MA10:${(ud.ma10||0).toFixed(1)} MA20:${(ud.ma20||0).toFixed(1)}</span></div>
-        <div class="detail-item"><span class="label">机构变红（牛线1）</span><br><span class="value">${r.inst_red?'✓ 红色':'✗ 未变红'} 收盘¥${(id.close||0).toFixed(2)} ${id.above_niuxian!=null ? (id.above_niuxian?'>':'<') : ''} 牛线1¥${(id.niuxian1||0).toFixed(2)}</span></div>
+        <div class="detail-item"><span class="label">四量图终极信号</span><br><span class="value">${(r.four_volume&&r.four_volume.qd_now)?'✓ 终极信号(QD)':(r.four_volume&&(r.four_volume.jgc_now||r.four_volume.yzc_now))?'✓ 机构/游资金叉':'✗ 未触发'}</span>${r.four_volume ? `<br><span style="font-size:10px;color:var(--text-gray)">机构托底 ${r.four_volume.jg_now?'✓':'✗'} · 四路翻多 ${r.four_volume.four_now?'✓':'✗'} · 近3日机构金叉 ${(r.four_volume.last3_jgc||[]).join('/')||'无'} · 近3日游资金叉 ${(r.four_volume.last3_yzc||[]).join('/')||'无'} · 近3日终极 ${(r.four_volume.last3_qd||[]).join('/')||'无'}</span>` : ''}</div>
         <div class="detail-item"><span class="label">老鸭头形态</span><br><span class="value">${r.old_duck_head?'✓ 触发':'✗ 未触发'}${dd.pullback_days!=null ? ' (回调'+dd.pullback_days+'天)' : ''}${dd.reason ? ' — '+dd.reason : ''}</span></div>
         <div class="detail-item" style="display:none"><span class="label">N字形态'✓ 突破进攻线¥'+(nd.attack_line||0).toFixed(2):'✗ 未触发'}${nd.reason ? ' — '+nd.reason : ''}</span></div>
         ${s.bonus_details && s.bonus_details.length > 0 ? `
@@ -3291,7 +3293,7 @@ function exportSignalXls() {
   var SD = window.SIGNALS_DATA;
   if (!SD || !SD.stocks) { alert('数据尚未加载，请稍候再试'); return; }
   var all = SD.stocks.filter(function(r){ return r.has_data && r.score && r.score.ema_strong; });
-  var hdr = ['代码','名称','市场','行业','信号等级','信号数','总分','收盘','涨跌幅%','成交量(M股)','缠论买字','金钻信号','机构变红','上涨趋势','老鸭头','强势股','短期目标','中期目标','强势目标','止损参考','RSI(14)','20日涨幅%','最高价','最低价','EMA评分','ATR波动率','基础分'];
+  var hdr = ['代码','名称','市场','行业','信号等级','信号数','总分','收盘','涨跌幅%','成交量(M股)','缠论买字','金钻信号','终极信号','机构金叉','游资金叉','上涨趋势','老鸭头','强势股','短期目标','中期目标','强势目标','止损参考','RSI(14)','20日涨幅%','最高价','最低价','EMA评分','ATR波动率','基础分'];
   function toRow(r) {
     var s = r.score || {};
     var tp = r.target_prices || {};
@@ -3302,7 +3304,8 @@ function exportSignalXls() {
       [r.close!=null?Number(r.close.toFixed(2)):0,'Number'],[r.change_pct!=null?Number(r.change_pct.toFixed(2)):0,'Number'],
       [(r.volume||0)/1000000,'Number'],
       [r.chan_buy?'✓':'✗','String'],[(r.golden_diamond&&r.golden_diamond!=='')?r.golden_diamond:'无','String'],
-      [r.inst_red?'✓':'✗','String'],[r.uptrend?'✓':'✗','String'],[r.old_duck_head?'✓':'✗','String'],[r.strong_stock?'✓':'✗','String'],
+      [(r.four_volume&&r.four_volume.qd_now)?'✓':'✗','String'],[(r.four_volume&&r.four_volume.jgc_now)?'✓':'✗','String'],[(r.four_volume&&r.four_volume.yzc_now)?'✓':'✗','String'],
+      [r.uptrend?'✓':'✗','String'],[r.old_duck_head?'✓':'✗','String'],[r.strong_stock?'✓':'✗','String'],
       [tp.short_term?Number(tp.short_term.price.toFixed(2)):0,'Number'],[tp.mid_term?Number(tp.mid_term.price.toFixed(2)):0,'Number'],
       [tp.aggressive?Number(tp.aggressive.price.toFixed(2)):0,'Number'],[tp.stop_loss?Number(tp.stop_loss.price.toFixed(2)):0,'Number'],
       [s.rsi!=null?Number(s.rsi):0,'Number'],[s.ret_20d!=null?Number(s.ret_20d):0,'Number'],
@@ -3317,7 +3320,7 @@ function exportSignalXls() {
     }
     if (key === 'chan_buy') return r.chan_buy;
     if (key === 'golden') return r.golden_diamond && r.golden_diamond !== '';
-    if (key === 'inst_red') return r.inst_red;
+    if (key === 'four_sig') return !!(r.four_volume && (r.four_volume.qd_now || r.four_volume.jgc_now || r.four_volume.yzc_now));
     if (key === 'uptrend') return r.uptrend;
     if (key === 'duck') return r.old_duck_head;
     if (key === 'strong') return r.strong_stock;
