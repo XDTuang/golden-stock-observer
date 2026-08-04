@@ -76,10 +76,11 @@ fi
 echo ""
 echo "📁 Step 3: 同步 deploy/ → 根目录 ..."
 cp -R "$DEPLOY/index.html" .
-# ⚠️ 根 signals.json 保持完整版（供 slim_signals 源），不覆盖为精简版
-# 精简版仅在 deploy/signals.json（由 slim_signals 产出，已写入 deploy/）
-if [ -f "$DEPLOY/signals_full.json" ]; then
-  cp "$DEPLOY/signals_full.json" signals.json
+# ✅ 根 signals.json 用精简版（~100KB，不含 stocks）：前端 fetch 秒下、免截断；
+#    stocks 由前端异步补拉 output/stocks.json（大文件单独走 CDN，带重试）。
+#    signals_full.json 仍保留在 deploy/ 供 Step 2 新鲜度闸门使用。
+if [ -f "$DEPLOY/signals.json" ]; then
+  cp "$DEPLOY/signals.json" signals.json
 fi
 cp -R "$DEPLOY/lh_calendar.json" .
 # 清空根 output/ 后仅复制前端真正 fetch 的精简文件，避免把 kline_raw 等重型文件带上 Pages

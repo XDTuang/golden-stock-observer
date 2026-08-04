@@ -4049,28 +4049,45 @@ async function initPage() {
   // ── 并行加载所有外部 JSON 数据 ──
   const loadTasks = [];
   
+  // 带重试的 fetch（GitHub Pages 大文件在国内网络易截断，重试3次）
+  async function fetchRetry(url, retries) {
+    let lastErr;
+    for (let attempt = 0; attempt <= (retries||2); attempt++) {
+      try {
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 60000); // 60s 超时
+        const r = await fetch(url, { cache: 'no-store', signal: ctrl.signal });
+        clearTimeout(timer);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return await r.json();
+      } catch(e) {
+        lastErr = e;
+        console.warn('[兜金] fetch 重试(' + (attempt+1) + '/' + ((retries||2)+1) + ') ' + url + ':', e.message);
+        await new Promise(res => setTimeout(res, 1500 * (attempt + 1)));
+      }
+    }
+    throw lastErr;
+  }
+  
   // SIGNALS_DATA
   if (!window.SIGNALS_DATA) {
     console.log('[兜金] 开始 fetch signals.json');
-    loadTasks.push(fetch('./signals.json', { cache: 'no-store' }).then(r => {
-      console.log('[兜金] signals.json 响应:', r.status, r.statusText);
-      return r.json();
-    }).then(d => {
+    loadTasks.push(fetchRetry('./signals.json', 3).then(d => {
       window.SIGNALS_DATA = d;
       console.log('[兜金] signals.json 加载成功, stocks:', (d.stocks||[]).length, 'pool:', (d.observation_pool||[]).length);
     }).catch(e => console.warn('[兜金] signals.json 加载失败:', e)));
   }
   // ETF_FLOW_DATA
   if (!window.ETF_FLOW_DATA) {
-    loadTasks.push(fetch('./output/national_team_etf.json', { cache: 'no-store' }).then(r => r.json()).then(d => { window.ETF_FLOW_DATA = d; }).catch(e => console.warn('ETF数据加载失败:', e)));
+    loadTasks.push(fetchRetry('./output/national_team_etf.json', 2).then(d => { window.ETF_FLOW_DATA = d; }).catch(e => console.warn('ETF数据加载失败:', e)));
   }
   // SECTOR_FLOW_DATA
   if (!window.SECTOR_FLOW_DATA) {
-    loadTasks.push(fetch('./output/sector_flow.json', { cache: 'no-store' }).then(r => r.json()).then(d => { window.SECTOR_FLOW_DATA = d; }).catch(e => console.warn('板块数据加载失败:', e)));
+    loadTasks.push(fetchRetry('./output/sector_flow.json', 2).then(d => { window.SECTOR_FLOW_DATA = d; }).catch(e => console.warn('板块数据加载失败:', e)));
   }
   // TOP10_HISTORY
   if (!window.TOP10_HISTORY) {
-    loadTasks.push(fetch('./output/top10_history.json', { cache: 'no-store' }).then(r => r.json()).then(d => { window.TOP10_HISTORY = d; }).catch(e => console.warn('TOP10历史加载失败:', e)));
+    loadTasks.push(fetchRetry('./output/top10_history.json', 2).then(d => { window.TOP10_HISTORY = d; }).catch(e => console.warn('TOP10历史加载失败:', e)));
   }
   
   console.log('[兜金] 等待数据加载, tasks:', loadTasks.length);
@@ -4086,10 +4103,10 @@ async function initPage() {
     document.getElementById('updateTime').textContent = `更新: ${sigTime}`;
     renderStats();
 
-    // stocks 可能因 GitHub Pages CDN 大文件截断而缺失，从独立文件补拉
+    // stocks 可能因 GitHub Pages CDN 大文件截断而缺失，从独立文件补拉（带重试）
     if (!SIGNALS_DATA.stocks || SIGNALS_DATA.stocks.length === 0) {
       console.log('[兜金] stocks 为空，异步补拉 output/stocks.json...');
-      fetch('./output/stocks.json', { cache: 'no-store' }).then(r => r.json()).then(stocks => {
+      fetchRetry('./output/stocks.json', 3).then(stocks => {
         window.SIGNALS_DATA.stocks = stocks;
         console.log('[兜金] stocks 补拉成功:', stocks.length, '只');
         buildStockDataMap();
@@ -4097,7 +4114,12 @@ async function initPage() {
         renderShortTerm();
         renderLongTerm();
         renderSignalPickCards();
-      }).catch(e => console.warn('[兜金] stocks 补拉失败:', e));
+        renderObservationPool();
+      }).catch(e => {
+        console.warn('[兜金] stocks 补拉失败:', e);
+        const st = document.getElementById('gdStatus');
+        if (st) st.textContent = '⚠️ 数据加载失败（网络原因），请刷新页面重试';
+      });
     } else {
       // stocks 已在 signals.json 内
       buildStockDataMap();
