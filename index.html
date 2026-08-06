@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>兜金观测 — 量化信号池 v2026-08-05</title>
+<title>兜金观测 — 量化信号池 v2026-08-06</title>
 <!-- 登录保护：内嵌覆盖层，不跳转 -->
 <script>
 (function(){
@@ -1293,6 +1293,7 @@ td { border-color: var(--border-light); }
   <div class="pool-date-bar" id="poolDateBar">
     <span>日期：</span>
     <select id="poolDateSel" onchange="renderObservationPool()"></select>
+    <button class="cal-nav-btn" onclick="exportObservationPoolXls()" style="margin-left:10px;font-size:12px;">⬇ 导出XLS</button>
   </div>
   <div class="stock-grid" id="poolGrid"></div>
 </div>
@@ -2098,34 +2099,104 @@ function renderAll() {
 
 // ===== 渲染观测池 =====
 function renderObservationPool() {
-  const pool = (window.SIGNALS_DATA.observation_pool || []).filter(r => r.has_data);
   const sel = document.getElementById('poolDateSel');
   const grid = document.getElementById('poolGrid');
   if (!grid) return;
   
-  // 按日期分组
-  const dates = {};
-  pool.forEach(r => {
-    const d = r.pool_date || '2026-06-26';
-    if (!dates[d]) dates[d] = [];
-    dates[d].push(r);
-  });
+  // 数据源：优先按日期缓存的观测池历史（output/observation_pool.json）
+  // 结构: { "2026-08-05": [ {全字段股票}, ... ], "2026-08-04": [...] }
+  // 回退：signals.json 当天 observation_pool（按 pool_date 分组）
+  let dates = {};
+  const hist = window.OBSERVATION_POOL_HISTORY;
+  if (hist && typeof hist === 'object' && Object.keys(hist).length) {
+    Object.keys(hist).forEach(d => { if (Array.isArray(hist[d])) dates[d] = hist[d]; });
+  } else {
+    const pool = (window.SIGNALS_DATA.observation_pool || []).filter(r => r.has_data);
+    pool.forEach(r => {
+      const d = r.pool_date || '2026-06-26';
+      if (!dates[d]) dates[d] = [];
+      dates[d].push(r);
+    });
+  }
   
   // 填充日期选择器
   const dateList = Object.keys(dates).sort().reverse();
-  if (sel && dateList.length > 0) {
-    sel.innerHTML = dateList.map(d => `<option value="${d}">${d} (${dates[d].length}只)</option>`);
+  if (sel) {
+    const prevVal = sel.value;
+    sel.innerHTML = dateList.map(d => `<option value="${d}">${d} (${dates[d].length}只)</option>`).join('');
+    if (prevVal && dateList.includes(prevVal)) sel.value = prevVal;
+    else sel.value = dateList[0] || '';
   }
   
   // 渲染选中日期的股票
   const selectedDate = sel ? sel.value : (dateList[0] || '');
-  const stocks = selectedDate ? (dates[selectedDate] || []) : pool;
+  const stocks = selectedDate ? (dates[selectedDate] || []) : [];
   stocks.sort((a, b) => (b.score?.total_score || 0) - (a.score?.total_score || 0));
   
   grid.innerHTML = stocks.length ? stocks.map(s => renderStockCard(s, 'pool')).join('') : '<div class="empty-state"><div class="icon">📋</div>暂无数据</div>';
   
   // 渲染迷你K线图
   setTimeout(() => renderMiniCharts('poolGrid'), 100);
+}
+
+// ===== 观测池 XLS 导出（导出当前选中日期池内每只股票的全字段细化指标） =====
+function exportObservationPoolXls() {
+  const sel = document.getElementById('poolDateSel');
+  const dateStr = sel ? sel.value : '';
+  if (!dateStr) { alert('无观测池数据可导出'); return; }
+  
+  // 获取选中日期的股票（与 renderObservationPool 同源逻辑）
+  let stocks = [];
+  const hist = window.OBSERVATION_POOL_HISTORY;
+  if (hist && typeof hist === 'object' && Array.isArray(hist[dateStr])) {
+    stocks = hist[dateStr];
+  } else {
+    stocks = (window.SIGNALS_DATA.observation_pool || []).filter(r => r.has_data && (r.pool_date || '') === dateStr);
+  }
+  if (!stocks.length) { alert('所选日期无观测池数据'); return; }
+  stocks = stocks.slice().sort((a,b) => (b.score?.total_score || 0) - (a.score?.total_score || 0));
+  
+  // 导出列：基础 + 评分 + 四量图终极信号 + 缠论/金钻/机构/趋势/老鸭头/强势 + 目标价 + 细化指标
+  const hdr = [
+    '代码','名称','市场','一级行业','二级行业','三级行业','数据日期',
+    '信号等级','信号数','总分','基础分','EMA评分','EMA组','RSI(14)','20日涨幅%',
+    '收盘','涨跌幅%','成交量(手)','最高价','最低价',
+    '终极信号','机构金叉','游资金叉','机构托底','四路翻多','近3日终极','近3日机构金叉','近3日游资金叉',
+    '缠论买字','金钻信号','机构变红','上涨趋势','老鸭头','强势股',
+    '短期目标价','中期目标价','强势目标价','止损价','ATR(14)',
+    '牛线1(现)','马线1(现)'
+  ];
+  const fmt = v => (v===null||v===undefined||isNaN(v)) ? '' : (typeof v==='number' ? Number(v.toFixed(2)) : v);
+  const y = v => v>=0 ? '+' + fmt(v) : fmt(v);
+  
+  const rows = stocks.map(r => {
+    const s = r.score || {};
+    const tp = r.target_prices || {};
+    const fv = r.four_volume || {};
+    const ind = r.industry || {};
+    return [
+      [r.code||'','String'],[r.name||'','String'],[r.market||'','String'],
+      [ind.level1||'','String'],[ind.level2||'','String'],[ind.level3||'','String'],
+      [r.date||r.pool_date||'','String'],
+      [s.grade||'','String'],[s.signal_count||0,'Number'],[s.total_score||0,'Number'],
+      [s.base_score!=null?s.base_score:'','Number'],[s.ema_score!=null?s.ema_score:'','Number'],[(r.ema_groups||[]).join('/'),'String'],
+      [s.rsi!=null?s.rsi:'','Number'],[s.ret_20d!=null?s.ret_20d:'','Number'],
+      [fmt(r.close),'Number'],[fmt(r.change_pct),'Number'],[r.volume!=null?Math.round(r.volume):'','Number'],
+      [fmt(r.high),'Number'],[fmt(r.low),'Number'],
+      [fv.qd_now?'✓':'✗','String'],[fv.jgc_now?'✓':'✗','String'],[fv.yzc_now?'✓':'✗','String'],
+      [fv.jg_now?'✓':'✗','String'],[fv.four_now?'✓':'✗','String'],
+      [(fv.last3_qd||[]).join('/')||'','String'],[(fv.last3_jgc||[]).join('/')||'','String'],[(fv.last3_yzc||[]).join('/')||'','String'],
+      [r.chan_buy?'✓':'✗','String'],[r.golden_diamond||'','String'],[r.inst_red?'✓':'✗','String'],
+      [r.uptrend?'✓':'✗','String'],[r.old_duck_head?'✓':'✗','String'],[r.strong_stock?'✓':'✗','String'],
+      [tp.short_term?fmt(tp.short_term.price):'','Number'],[tp.mid_term?fmt(tp.mid_term.price):'','Number'],
+      [tp.aggressive?fmt(tp.aggressive.price):'','Number'],[tp.stop_loss?fmt(tp.stop_loss.price):'','Number'],
+      [tp.atr14!=null?fmt(tp.atr14):'','Number'],
+      [fmt(fv.niuxian1_last),'Number'],[fmt(fv.maxian1_last),'Number']
+    ];
+  });
+  
+  const sheets = [{ name: '观测池_' + dateStr, headers: hdr, rows: rows }];
+  exportSheetsToXls(sheets, '观测池_' + dateStr + '.xls');
 }
 // ===== 渲染TOP表格 =====
 function getTop10ForDate(dateStr) {
@@ -4088,6 +4159,10 @@ async function initPage() {
   // TOP10_HISTORY
   if (!window.TOP10_HISTORY) {
     loadTasks.push(fetchRetry('./output/top10_history.json', 2).then(d => { window.TOP10_HISTORY = d; }).catch(e => console.warn('TOP10历史加载失败:', e)));
+  }
+  // OBSERVATION_POOL_HISTORY（按日期缓存的观测池历史，供日期选择器）
+  if (!window.OBSERVATION_POOL_HISTORY) {
+    loadTasks.push(fetchRetry('./output/observation_pool.json', 2).then(d => { window.OBSERVATION_POOL_HISTORY = d; }).catch(e => console.warn('观测池历史加载失败:', e)));
   }
   
   console.log('[兜金] 等待数据加载, tasks:', loadTasks.length);
