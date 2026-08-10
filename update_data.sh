@@ -16,7 +16,9 @@
 set -e
 cd "$(dirname "$0")"
 
-PYTHON="/Users/samt/.workbuddy/binaries/python/envs/default/bin/python"
+# Python 解释器：优先使用环境变量 PYTHON（GitHub Actions 等 CI 场景可注入 python3），
+# 未设置则 fallback 到本机 workbuddy 路径（保持本机日常使用体验）
+PYTHON="${PYTHON:-/Users/samt/.workbuddy/binaries/python/envs/default/bin/python}"
 FORCE=0
 LIMIT=800
 

@@ -16,6 +16,7 @@ jobs:
     # runner 是 UTC，必须设 TZ 才能让交易日+收盘判断正确
     env:
       TZ: Asia/Shanghai
+      PYTHON: python
 
     steps:
       - name: Checkout
