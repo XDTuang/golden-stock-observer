@@ -59,8 +59,9 @@ jobs:
           set -e
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-          # 闸门由 update_data.sh 内部处理（line 35），非交易日/盘中会自动 SKIP 并 exit 0
-          bash update_data.sh
+          # 用 --force 跳过闸门判断，让手动触发也能跑（GitHub UI 可能在白天手动测）。
+          # 定时触发 (cron) 自动在 16:35 BJT 触发时，update_data.sh 内部闸门会放行。
+          bash update_data.sh --force
 
       - name: Sync Deploy to Root and Push
         id: sync
