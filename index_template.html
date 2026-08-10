@@ -4172,7 +4172,13 @@ async function initPage() {
   if (SIGNALS_DATA) {
     console.log('[兜金] 开始渲染主数据（总览/短线/中长线）');
     const sigTime = (SIGNALS_DATA.generated_at||'未知').substring(0,19);
-    document.getElementById('updateTime').textContent = `更新: ${sigTime}`;
+    const dataDate = SIGNALS_DATA.data_date || '';
+    const today = new Date().toISOString().substring(0,10);
+    if (dataDate && dataDate < today) {
+      document.getElementById('updateTime').innerHTML = '<span style="color:#ef4444">数据更新中...</span> 最新数据日期: ' + dataDate + ' (预计19:00前完成今日更新)';
+    } else {
+      document.getElementById('updateTime').textContent = `更新: ${sigTime}`;
+    }
     renderStats();
 
     // stocks 可能因 GitHub Pages CDN 大文件截断而缺失，从独立文件补拉（带重试）
