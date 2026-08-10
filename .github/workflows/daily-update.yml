@@ -12,6 +12,11 @@ jobs:
     permissions:
       contents: write   # 允许 git push
 
+    # ⚠️ market_calendar.py 用 datetime.now() 假定本地 Asia/Shanghai
+    # runner 是 UTC，必须设 TZ 才能让交易日+收盘判断正确
+    env:
+      TZ: Asia/Shanghai
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,7 +24,7 @@ jobs:
           fetch-depth: 1
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: setup-python@v5
         with:
           python-version: '3.13'
           cache: 'pip'
@@ -33,6 +38,8 @@ jobs:
           echo ""
           echo "成交额接口:" && curl -sL -o /dev/null -w "%{http_code}" "https://qt.gtimg.cn/q=sh600519,sz000858"
           echo ""
+          echo "时区确认:"
+          date '+%Z %Y-%m-%d %H:%M:%S'
 
       - name: Restore Kline Cache
         uses: actions/cache@v4
@@ -46,25 +53,24 @@ jobs:
       - name: Run Full Update Pipeline
         id: update
         run: |
+          set -e
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-          # 闸门判断（交易日+已收盘）
-          GUARD=$(python -c "from market_calendar import should_update_now; ok,reason=should_update_now(); print(('OK' if ok else 'SKIP')+':'+reason)")
-          echo "闸门: $GUARD"
-          if [[ "$GUARD" != OK:* ]]; then
-            echo "SKIP_REASON=$GUARD" >> $GITHUB_ENV
-            echo "跳过：非交易日或盘中"
-            exit 0
-          fi
-          # 运行完整数据管线
+          # 闸门由 update_data.sh 内部处理（line 35），非交易日/盘中会自动 SKIP 并 exit 0
           bash update_data.sh
 
       - name: Sync Deploy to Root and Push
+        id: sync
         if: success()
         run: |
           set -e
-          # 同步 slim 产出的 deploy/ 到仓库根目录（与 github_pages_deploy.sh Step 3 一致）
           DEPLOY="deploy"
+          if [ ! -d "$DEPLOY" ]; then
+            echo "⚠️ $DEPLOY 不存在（可能是 update_data.sh SKIP 了非交易日），跳过推送"
+            exit 0
+          fi
+          echo "deploy/ 内容: $(ls $DEPLOY)"
+          # 同步 slim 产出的 deploy/ 到仓库根目录（与 github_pages_deploy.sh Step 3 一致）
           cp "$DEPLOY/index.html" index.html
           cp "$DEPLOY/signals.json" signals.json
           cp "$DEPLOY/lh_calendar.json" lh_calendar.json 2>/dev/null || true
@@ -98,9 +104,13 @@ jobs:
           CLOUDBASE_API_KEY: ${{ secrets.CLOUDBASE_API_KEY }}
         run: |
           npm install -g @cloudbase/cli
-          if [ -n "$CLOUDBASE_API_KEY" ]; then
-            tcb login --cloudbase-api-key "$CLOUDBASE_API_KEY" -e "$CLOUDBASE_ENV_ID"
-            bash cloudbase/deploy_cloudbase.sh
-          else
+          if [ -z "$CLOUDBASE_API_KEY" ]; then
             echo "⚠️ CLOUDBASE_API_KEY 未配置，跳过 CloudBase"
+            exit 0
           fi
+          if [ ! -d "diamond_site" ]; then
+            echo "⚠️ diamond_site/ 不存在，跳过 CloudBase 部署"
+            exit 0
+          fi
+          tcb login --cloudbase-api-key "$CLOUDBASE_API_KEY" -e "$CLOUDBASE_ENV_ID"
+          bash cloudbase/deploy_cloudbase.sh
