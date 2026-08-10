@@ -8,15 +8,17 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 180  # 最多3小时
+    timeout-minutes: 360  # 6小时（GitHub Actions 免费版上限）
     permissions:
       contents: write   # 允许 git push
 
     # ⚠️ market_calendar.py 用 datetime.now() 假定本地 Asia/Shanghai
     # runner 是 UTC，必须设 TZ 才能让交易日+收盘判断正确
+    # 云端限制 LIMIT=300（避免网络慢导致超时；本机仍跑全量800）
     env:
       TZ: Asia/Shanghai
       PYTHON: python
+      LIMIT: '300'
 
     steps:
       - name: Checkout

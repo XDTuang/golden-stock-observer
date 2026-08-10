@@ -20,7 +20,7 @@ cd "$(dirname "$0")"
 # 未设置则 fallback 到本机 workbuddy 路径（保持本机日常使用体验）
 PYTHON="${PYTHON:-/Users/samt/.workbuddy/binaries/python/envs/default/bin/python}"
 FORCE=0
-LIMIT=800
+LIMIT="${LIMIT:-800}"
 
 for arg in "$@"; do
   case "$arg" in
