@@ -31,7 +31,7 @@ jobs:
           cache: 'pip'
 
       - name: Install Dependencies
-        run: pip install pandas numpy requests
+        run: pip install pandas numpy requests akshare
 
       - name: Verify API Reachability
         run: |
