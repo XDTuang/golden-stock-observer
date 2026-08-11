@@ -481,10 +481,11 @@ def fetch_all_klines(stocks: list, cache: dict, concurrency: int = CONCURRENCY) 
                     out.append(r)
                 else:
                     fails.append(s["code"])
-                if done % 50 == 0 or done == len(batch):
+                if done % 20 == 0 or done == len(batch):
                     el = time.time() - t0
                     rate = done / el if el > 0 else 0
-                    print(f"  [{done}/{len(batch)}] ✓{len(out)} ✗{len(fails)} | {rate:.1f}只/s")
+                    remain = (len(batch) - done) / rate if rate > 0 else 0
+                    print(f"  [{done}/{len(batch)}] ✓{len(out)} ✗{len(fails)} | {rate:.2f}只/s | 预估剩余 {remain/60:.1f}分钟", flush=True)
         return out, fails
 
     total = len(stocks)
