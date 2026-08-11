@@ -51,6 +51,8 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PYTHON_BIN = "/Users/samt/.workbuddy/binaries/python/envs/default/bin/python"
 OUTPUT_FILE = os.path.join(SCRIPT_DIR, "output", "kline_raw.json")
 CODES_CACHE = os.path.join(SCRIPT_DIR, "output", "all_a_codes.json")
+# 仓库内置的全量股票代码（云端 akshare 不可达时优先用，本机 fallback）
+CODES_CACHE_REPO = os.path.join(SCRIPT_DIR, "data", "all_a_codes.json")
 CODES_CACHE_DAYS = 7
 
 # ── 参数 ──
@@ -155,6 +157,16 @@ def get_all_a_codes(force=False) -> list:
     Returns: [{code:"sh600519", code6:"600519", name, market}, ...]
     """
     now = time.time()
+    # 优先用仓库内置的全量代码（云端 akshare 不可达，本机也可用，避免 akshare 网络坑）
+    if not force and os.path.exists(CODES_CACHE_REPO):
+        try:
+            with open(CODES_CACHE_REPO, "r", encoding="utf-8") as f:
+                cached = json.load(f)
+            if isinstance(cached, list) and cached:
+                print(f"  ✓ 用仓库内置代码列表 ({len(cached)} 只, data/all_a_codes.json)")
+                return cached
+        except Exception:
+            pass
     if not force and os.path.exists(CODES_CACHE):
         try:
             meta = os.path.getmtime(CODES_CACHE)
