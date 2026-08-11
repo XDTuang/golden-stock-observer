@@ -4278,7 +4278,9 @@ async function loadDiamondTab(){
   setGdStatus('加载原始兜宝金钻数据（分片并行）…');
   try{
     // 读取分片清单：含原始兜宝金钻(pool档) + 板块前100·换手≥4%(sector档，嵌于 meta)
-    const manifest = await (await fetch('./output/golden_pool_manifest.json?'+Date.now())).json();
+    const manifestResp = await fetch('./output/golden_pool_manifest.json?'+Date.now());
+    if(!manifestResp.ok) throw new Error('金钻门控分片暂未生成（门控扫描跳过或文件缺失）');
+    const manifest = await manifestResp.json();
     if(!manifest.parts || !manifest.parts.length) throw new Error('清单为空');
     // 并行加载所有分片并合并 stocks
     const partJsons = await Promise.all(manifest.parts.map(p =>
