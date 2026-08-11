@@ -48,7 +48,9 @@ def _shift_date(s: str, days: int) -> str:
 
 # ── 路径配置 ──
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PYTHON_BIN = "/Users/samt/.workbuddy/binaries/python/envs/default/bin/python"
+# Python 解释器：优先环境变量 PYTHON（GitHub Actions 等 CI 场景注入），
+# 未设置则用当前运行的解释器 sys.executable，均不可用时 fallback 本机 workbuddy 路径
+PYTHON_BIN = os.environ.get("PYTHON") or sys.executable or "/Users/samt/.workbuddy/binaries/python/envs/default/bin/python"
 OUTPUT_FILE = os.path.join(SCRIPT_DIR, "output", "kline_raw.json")
 CODES_CACHE = os.path.join(SCRIPT_DIR, "output", "all_a_codes.json")
 # 仓库内置的全量股票代码（云端 akshare 不可达时优先用，本机 fallback）
