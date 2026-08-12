@@ -235,6 +235,24 @@ def fetch_snapshot(codes, force=False):
         if d:
             print(f"  ↺ 复用快照缓存 ({len(d)} 只)")
             return d
+    # 云端 / 首次冷启动：SNAP_FILE 不存在 → 尝试从 kline_raw.json 构造成交额/换手率
+    # 避免在 GitHub Actions runner 上拉 4600 只 qt.gtimg.cn 快照超时
+    if os.path.exists(KLINE_RAW):
+        print(f"  🔄 从 kline_raw.json 提取成交额快照({len(codes)} 只, 免网络)...")
+        raw = json.load(open(KLINE_RAW, encoding="utf-8"))
+        out = {}
+        by_code = {r["code"]: r for r in raw}
+        for c in codes:
+            r = by_code.get(c["code"]) or by_code.get(c.get("code6", ""))
+            if r and r.get("kline"):
+                last_bar = r["kline"][-1]
+                vol = last_bar.get("volume", 0) * 100  # 手 → 股
+                close = last_bar.get("last", 0)
+                out[c["code"]] = {"amount": close * vol, "turnover": 99}
+        if out:
+            print(f"  ✓ 从 kline_raw 提取 {len(out)} 只 (无网络)")
+            json.dump(out, open(SNAP_FILE, "w", encoding="utf-8"), ensure_ascii=False)
+            return out
     print(f"  📊 拉取成交额/换手率快照 ({len(codes)} 只)...")
     t0 = time.time()
     out = {}
