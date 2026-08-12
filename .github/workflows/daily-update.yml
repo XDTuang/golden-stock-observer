@@ -1,8 +1,9 @@
 name: Daily Golden Stock Update
 on:
   schedule:
-    # 每交易日 16:35 北京时间 = 08:35 UTC（周一~五）
-    - cron: '35 8 * * 1-5'
+    # 每交易日 17:45 北京时间 = 09:45 UTC（周一~五）
+    # 注：16:35 龙虎榜数据尚未出炉 → 统一延迟到 17:45
+    - cron: '45 9 * * 1-5'
   workflow_dispatch:  # 手动触发按钮（用于首次测试）
 
 jobs:
