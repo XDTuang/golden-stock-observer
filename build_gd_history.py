@@ -260,8 +260,26 @@ def append_today(keep_days=20):
     history["built_at"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     history["pool_size"] = max(history.get("pool_size", 0), len(snap))
     history["keep_days"] = keep_days
+
+    # 自动补缺：检查最近 5 个交易日是否都进入了 trading_days，缺失的插入空 snap
+    # 解决 cron 偶发漏触发导致日期跳断（如 08-11 漏过了 08-10→08-12 跳过一天）
+    all_days_sorted = sorted(history["snapshots"].keys())
+    if len(all_days_sorted) >= 2:
+        from market_calendar import is_trading_day
+        import datetime as _dt_b
+        latest = all_days_sorted[-1]
+        d0 = _dt_b.datetime.strptime(latest, "%Y-%m-%d").date()
+        # 回看 5 个交易日，找出缺失
+        for back in range(1, 6):
+            check_date = (d0 - _dt_b.timedelta(days=back)).strftime("%Y-%m-%d")
+            if is_trading_day(check_date) and check_date not in history["snapshots"]:
+                history["snapshots"][check_date] = {}
+                print(f"  🩹 自动补缺: {check_date}（cron 漏触发，插入空快照）")
+        # 重新排序
+        all_days_sorted = sorted(history["snapshots"].keys())
+
     json.dump(history, open(HISTORY_PATH, "w", encoding="utf-8"), ensure_ascii=False)
-    print(f"  ✓ 已追加 {data_date} 金钻池快照（{len(snap)} 只），保留 {len(all_days)} 个交易日")
+    print(f"  ✓ 已追加 {data_date} 金钻池快照（{len(snap)} 只），保留 {len(all_days_sorted)} 个交易日")
     return history
 
 
