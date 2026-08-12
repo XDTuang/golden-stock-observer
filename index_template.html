@@ -4281,7 +4281,10 @@ async function loadDiamondTab(){
     const manifestResp = await fetch('./output/golden_pool_manifest.json?'+Date.now());
     if(!manifestResp.ok) throw new Error('金钻门控分片暂未生成（门控扫描跳过或文件缺失）');
     const manifest = await manifestResp.json();
-    if(!manifest.parts || !manifest.parts.length) throw new Error('清单为空');
+    if(!manifest.parts || !manifest.parts.length) {
+      // 空档日：让后续代码用空 stocks + 空 meta 继续渲染（不抛错）
+      manifest.parts = [];
+    }
     // 并行加载所有分片并合并 stocks
     const partJsons = await Promise.all(manifest.parts.map(p =>
       fetch('./output/'+p+'?'+Date.now()).then(r => { if(!r.ok) throw new Error('HTTP '+r.status+' '+p); return r.json(); })
@@ -4318,7 +4321,7 @@ async function loadDiamondTab(){
     for(const g of Object.values(GD.gateData.gates)){
       for(const s of (g.stocks||[])){ if(!GD.allStocks.has(s.code)) GD.allStocks.set(s.code, s); }
     }
-    if(!GD.gateData.gates.pool.stocks.length) throw new Error('数据为空');
+    // 注意：空档日 (manifest.parts=[]) 不 throw，正常渲染空档表格
     gdSetGate(GD.gateData.default_gate || 'pool');
     GD.loaded=true;
     gdInitGates();
@@ -4326,7 +4329,10 @@ async function loadDiamondTab(){
     gdRenderTable(GD.cache);
     gdLoadHistory(GD.currentGate);
     const g=GD.gateData.gates[GD.currentGate];
-    setGdStatus(`已加载【${g.label}】 · 扫描范围 ${g.scope_size} 只 · 命中 ${g.stocks.length} 只 · 数据日期 ${GD.gateData.data_date||'—'} · 点击左侧个股展开主图/副图（实时查询不依赖此文件）`);
+    const isEmpty = !g.stocks.length;
+    setGdStatus(isEmpty
+      ? `今日金钻池为空（${g.label}） · 数据日期 ${GD.gateData.data_date||'—'} · 点击上方输入框可实时查询任意个股`
+      : `已加载【${g.label}】 · 扫描范围 ${g.scope_size} 只 · 命中 ${g.stocks.length} 只 · 数据日期 ${GD.gateData.data_date||'—'} · 点击左侧个股展开主图/副图（实时查询不依赖此文件）`);
   }catch(e){
     setGdStatus('⚠ 金钻数据加载失败：'+e.message+'。可直接用上方输入框实时查询任意个股。','err');
   }

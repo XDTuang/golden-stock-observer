@@ -265,6 +265,29 @@ def main():
     for kfile in ["sh_index_kline.json", "sz_index_kline.json", "cyb_index_kline.json", "kc50_index_kline.json", "hs300_index_kline.json"]:
         copy_file(kfile, "output")
 
+    # 2.6 兜底：金钻门控分片缺失时生成空 manifest（云端 gate_scan 失败时避免前端 404）
+    manifest_dst = os.path.join(DEPLOY, "output", "golden_pool_manifest.json")
+    meta_dst = os.path.join(DEPLOY, "output", "golden_pool_meta.json")
+    gate_data_dst = os.path.join(DEPLOY, "output", "gate_data.json")
+    if not os.path.exists(manifest_dst):
+        # 从最近的 deploy（如果有）找 meta 文件名，否则用默认
+        meta_name = "golden_pool_meta.json"
+        # 生成最小可用结构：空 parts 让前端显示"今日金钻池为空"
+        os.makedirs(os.path.dirname(manifest_dst), exist_ok=True)
+        with open(manifest_dst, "w", encoding="utf-8") as f:
+            json.dump({"parts": [], "meta": meta_name, "data_date": "", "scope_size": 0}, f, ensure_ascii=False)
+        print(f"  ⚠️  分片清单缺失，已生成空 manifest.json (兜底)")
+    if not os.path.exists(meta_dst):
+        os.makedirs(os.path.dirname(meta_dst), exist_ok=True)
+        with open(meta_dst, "w", encoding="utf-8") as f:
+            json.dump({"data_date": "", "updated_at": "", "pool": {"label": "原始兜宝金钻", "scope_size": 0, "overview": {"total": 0}, "stocks": [], "chan": {"total": 0, "codes": []}}, "sector": {"label": "板块前100·换手≥4%", "scope_size": 0, "overview": {"total": 0}, "stocks": [], "chan": {"total": 0, "codes": []}}}, f, ensure_ascii=False)
+        print(f"  ⚠️  meta 缺失，已生成空 meta.json (兜底)")
+    if not os.path.exists(gate_data_dst):
+        os.makedirs(os.path.dirname(gate_data_dst), exist_ok=True)
+        with open(gate_data_dst, "w", encoding="utf-8") as f:
+            json.dump({"data_date": "", "updated_at": "", "default_gate": "pool", "gates": {}}, f, ensure_ascii=False)
+        print(f"  ⚠️  gate_data 缺失，已生成空 gate_data.json (兜底)")
+
     # 3. 复制龙虎榜数据
     print("\n[3/5] 复制龙虎榜数据...")
     lh_src = os.path.join(BASE, "lh_calendar.json")
