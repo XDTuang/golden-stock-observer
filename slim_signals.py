@@ -288,6 +288,43 @@ def main():
             json.dump({"data_date": "", "updated_at": "", "default_gate": "pool", "gates": {}}, f, ensure_ascii=False)
         print(f"  ⚠️  gate_data 缺失，已生成空 gate_data.json (兜底)")
 
+    # 2.7 兜底升级：若 gate_data 的 pool/sector 档位 stocks 为空（gate_scan 云端失败），用 golden_diamond.json
+    # 反向构建最小可用的 gate_data（让前端能看到命中列表，至少不"扫描范围 0"）
+    with open(os.path.join(DEPLOY, "output", "gate_data.json"), "r", encoding="utf-8") as f:
+        _gd = json.load(f)
+    _pool_empty = not _gd.get("gates", {}).get("pool", {}).get("stocks")
+    if _pool_empty:
+        _gd_src = os.path.join(DEPLOY, "output", "golden_diamond.json")
+        if os.path.exists(_gd_src):
+            with open(_gd_src, "r", encoding="utf-8") as f:
+                _gds = json.load(f)
+            _dd = _gds.get("data_date", "")
+            _ov = _gds.get("overview", {})
+            _stocks = _gds.get("stocks", [])
+            # pool 档：把金钻命中作为最小可用的池（让前端能渲染命中行）
+            _pool_stocks = []
+            for s in _stocks:
+                _p = s.get("primary") or (s.get("signals", [{}])[0].get("type", "") if s.get("signals") else "")
+                _pool_stocks.append({
+                    "code": s.get("code", ""), "name": s.get("name", ""),
+                    "market": s.get("market", ""),
+                    "primary": _p, "signals": s.get("signals", []) or [],
+                    "pct_chg": s.get("pct_chg"), "close": s.get("close"),
+                })
+            _gd["data_date"] = _dd
+            _gd["updated_at"] = _gds.get("updated_at", "")
+            _gd["default_gate"] = "pool"
+            _gd["gates"] = {
+                "pool": {"label": "原始兜宝金钻(云端兜底)", "scope_size": len(_pool_stocks) or _ov.get("total", 0),
+                         "overview": _ov, "stocks": _pool_stocks,
+                         "chan": {"total": 0, "codes": []}},
+                "sector_top100_to4": {"label": "板块前100·换手≥4%(云端兜底)", "scope_size": 0,
+                                      "overview": {"total": 0}, "stocks": [], "chan": {"total": 0, "codes": []}},
+            }
+            with open(os.path.join(DEPLOY, "output", "gate_data.json"), "w", encoding="utf-8") as f:
+                json.dump(_gd, f, ensure_ascii=False)
+            print(f"  🛡️  gate_data 兜底升级：用 golden_diamond.json 构造池 ({len(_pool_stocks)} 只命中)")
+
     # 3. 复制龙虎榜数据
     print("\n[3/5] 复制龙虎榜数据...")
     lh_src = os.path.join(BASE, "lh_calendar.json")
