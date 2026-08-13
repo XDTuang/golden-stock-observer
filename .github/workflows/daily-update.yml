@@ -15,11 +15,11 @@ jobs:
 
     # ⚠️ market_calendar.py 用 datetime.now() 假定本地 Asia/Shanghai
     # runner 是 UTC，必须设 TZ 才能让交易日+收盘判断正确
-    # 云端限制 LIMIT=300（避免网络慢导致超时；本机仍跑全量800）
+    # 云端 LIMIT=800（与本机一致，金钻票池不漏扫联创光电等）
     env:
       TZ: Asia/Shanghai
       PYTHON: python
-      LIMIT: '300'
+      LIMIT: '800'
 
     steps:
       - name: Checkout
