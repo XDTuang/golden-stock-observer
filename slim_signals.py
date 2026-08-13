@@ -19,6 +19,7 @@ import re
 import shutil
 import tempfile
 import time
+import glob
 import datetime as _dt
 
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -264,6 +265,18 @@ def main():
     # 2.5 复制指数 K 线数据
     for kfile in ["sh_index_kline.json", "sz_index_kline.json", "cyb_index_kline.json", "kc50_index_kline.json", "hs300_index_kline.json"]:
         copy_file(kfile, "output")
+
+    # 2.55 复制金钻门控文件（gate_scan 成功产出时，主动从 output 同步到 deploy）
+    # 关键：此前缺这段复制逻辑，gate_scan 即使成功，deploy 里仍是旧数据（如 08-13 跑出 08-12 的 gate_data）
+    for gate_f in ["gate_data.json", "golden_pool_manifest.json", "golden_pool_meta.json"]:
+        src_g = os.path.join(BASE, "output", gate_f)
+        if os.path.exists(src_g):
+            shutil.copy2(src_g, os.path.join(DEPLOY, "output", gate_f))
+    # golden_pool_*.json 分片也同步
+    for fp in glob.glob(os.path.join(BASE, "output", "golden_pool_*.json")):
+        shutil.copy2(fp, os.path.join(DEPLOY, "output", os.path.basename(fp)))
+    if os.path.exists(os.path.join(BASE, "output", "gate_data.json")):
+        print("  ✓ 金钻门控文件已从 output 同步到 deploy（gate_data + 分片）")
 
     # 2.6 兜底：金钻门控分片缺失时生成空 manifest（云端 gate_scan 失败时避免前端 404）
     manifest_dst = os.path.join(DEPLOY, "output", "golden_pool_manifest.json")
