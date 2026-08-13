@@ -18,7 +18,7 @@ from datetime import datetime, timedelta
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_FILE = os.path.join(SCRIPT_DIR, "output", "sector_flow.json")
 NODE_BIN = "/Users/samt/.workbuddy/binaries/node/versions/22.22.2/bin/node"
-WESTOCK_SCRIPT = "/Applications/WorkBuddy.app/Contents/Resources/app.asar.unpacked/resources/builtin-skills/westock-data/scripts/index.js"
+WESTOCK_SCRIPT = "/Users/samt/.workbuddy/plugins/marketplaces/experts/plugins/stock-partner-team/skills/westock-data/scripts/index.js"
 
 # 申万一级行业板块代码 → 名称映射
 SW1_SECTORS = {

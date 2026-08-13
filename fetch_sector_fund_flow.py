@@ -21,7 +21,7 @@ OUTPUT_DIR = os.path.join(SCRIPT_DIR, "sector_cache")  # 板块资金流向缓�
 CACHE_DAYS = 20  # 缓存20个交易日
 
 NODE_BIN = "/Users/samt/.workbuddy/binaries/node/versions/22.22.2/bin/node"
-WESTOCK_SCRIPT = "/Applications/WorkBuddy.app/Contents/Resources/app.asar.unpacked/resources/builtin-skills/westock-data/scripts/index.js"
+WESTOCK_SCRIPT = "/Users/samt/.workbuddy/plugins/marketplaces/experts/plugins/stock-partner-team/skills/westock-data/scripts/index.js"
 
 
 def get_sector_list():

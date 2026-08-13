@@ -23,7 +23,7 @@ from datetime import datetime, timedelta
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_FILE = os.path.join(SCRIPT_DIR, "output", "national_team_etf.json")
 NODE_BIN = "/Users/samt/.workbuddy/binaries/node/versions/22.22.2/bin/node"
-WESTOCK_SCRIPT = "/Applications/WorkBuddy.app/Contents/Resources/app.asar.unpacked/resources/builtin-skills/westock-data/scripts/index.js"
+WESTOCK_SCRIPT = "/Users/samt/.workbuddy/plugins/marketplaces/experts/plugins/stock-partner-team/skills/westock-data/scripts/index.js"
 
 # 国家队核心ETF列表（中央汇金投资+中央汇金资管 2025年报公开持仓）
 NATIONAL_TEAM_ETFS = [
