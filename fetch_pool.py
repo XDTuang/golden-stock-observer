@@ -27,6 +27,7 @@ import time
 import argparse
 import datetime
 import subprocess
+import threading
 import concurrent.futures as cf
 from urllib.parse import urlencode
 from datetime import datetime, timedelta
@@ -82,6 +83,12 @@ QT_URL = "https://qt.gtimg.cn/q"                       # 实时快照（成交�
 #   错乱 K线，污染金钻趋势未来函数线导致假信号），仅作绝对最后的兜底。
 KLINE_URL = "https://proxy.finance.qq.com/ifzqgtimg/appstock/app/fqkline/get"  # 前复权日线（官方代理）
 KLINE_URL_FALLBACK = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get"       # 原域名（二级兜底）
+
+# ── 兜底触发可观测性 ──
+# 记录「主源失败 → 切兜底源」事件，运行结束汇总打印（此前静默切换、无告警）。
+# 多线程并发拉 K线，用锁保护计数器。
+_FALLBACK_LOCK = threading.Lock()
+FALLBACK_STATS = {"count": 0, "stocks": []}   # 兜底触发次数 + 触发股票代码列表
 
 
 def _curl_text(url: str) -> str:
@@ -369,7 +376,13 @@ def _fetch_kline_raw(stock: dict, start_date: str | None = None,
         param = f"{code},day,,,{count},qfq"
     params = {"param": param}
 
-    for turl in (KLINE_URL, KLINE_URL_FALLBACK):
+    for idx, turl in enumerate((KLINE_URL, KLINE_URL_FALLBACK)):
+        if idx > 0:
+            # 主源(KLINE_URL)重试耗尽仍失败 → 进入二级兜底源，记录可观测事件
+            with _FALLBACK_LOCK:
+                FALLBACK_STATS["count"] += 1
+                FALLBACK_STATS["stocks"].append(code)
+            print(f"  ⚠️  兜底触发: {stock['name']} ({code}) 主源失败，切换 web.ifzq 兜底源")
         full = f"{turl}?{urlencode(params)}"
         for _ in range(RETRY_LIMIT):
             try:
@@ -570,6 +583,14 @@ def main():
     print(f"  ✅ K线拉取完成: {len(results)}只有效数据 ({elapsed:.0f}s)")
     if total:
         print(f"     成功率: {len(results)/total*100:.1f}%")
+    # 兜底触发可观测性汇总：主源失败切兜底源的次数与股票（0 次=主源全程正常）
+    fb_count = FALLBACK_STATS["count"]
+    if fb_count:
+        fb_stocks = FALLBACK_STATS["stocks"]
+        sample = ", ".join(fb_stocks[:10]) + ("..." if len(fb_stocks) > 10 else "")
+        print(f"  ⚠️  兜底触发汇总: {fb_count} 次切到 web.ifzq 兜底源（涉及 {len(set(fb_stocks))} 只: {sample}）")
+    else:
+        print(f"  ✅ 兜底触发汇总: 0 次（主源 proxy.finance.qq.com 全程正常）")
 
     # 按成交额排名重排输出（确定性顺序，下游一致）
     results_by_code = {r["code"]: r for r in results}
