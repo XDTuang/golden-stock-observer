@@ -154,8 +154,23 @@ def main():
         _mark_strongest(sector_obj["stocks"], strongest_sector)
         sector_obj["overview"]["strongest"] = len(strongest_sector)
         sector_obj["overview"]["strongest_codes"] = list(strongest_sector)
+        # 全A市场档：从 gate_data.json 提取（含每只 kline + 金钻真值），前端按门控展示
+        all_a = g.get("gates", {}).get("all_a", {})
+        all_a_obj = {
+            "label": all_a.get("label", "全A市场"),
+            "scope_size": all_a.get("scope_size", 0),
+            "overview": dict(all_a.get("overview", {})),
+            "chan": all_a.get("chan", {"total": 0, "codes": []}),
+            "stocks": all_a.get("stocks", []),
+        }
+        # all_a 档最强金钻（同一口径）
+        strongest_all_a = compute_strongest(all_a_obj["stocks"])
+        _mark_strongest(all_a_obj["stocks"], strongest_all_a)
+        all_a_obj["overview"]["strongest"] = len(strongest_all_a)
+        all_a_obj["overview"]["strongest_codes"] = list(strongest_all_a)
     else:
         sector_obj = None
+        all_a_obj = None
 
     stocks = []
     for s in gd.get("stocks", []):
@@ -207,6 +222,13 @@ def main():
             "scope_size": scope_size,
             "overview": overview,
             "chan": chan,
+        },
+        "all_a": all_a_obj if all_a_obj else {
+            "label": "全A市场",
+            "scope_size": 0,
+            "overview": {},
+            "chan": {"total": 0, "codes": []},
+            "stocks": [],
         },
         "sector": sector_obj if sector_obj else {
             "label": "板块前100·换手≥4%",

@@ -68,6 +68,7 @@ from signals import check_chan_buy_signal  # noqa: E402  主站通达信缠论�
 
 RANK = {"金钻起涨": 3, "买入": 2, "红区黄柱连续": 1}
 GATE_LABELS = {
+    "all_a": "全A市场",
     "pool": "当前门控（成交额TOP800）",
     "sector_top100_to4": "板块前100·换手≥4%",
 }
@@ -591,6 +592,7 @@ def resolve_scopes(codes, snapshot, sector, klines):
     pool_codes = load_top800_codes()   # 主门控 = TOP800（与主站/金钻口径一致）
     all_codes = set(klines.keys())
     scopes = {}
+    scopes["all_a"] = all_codes        # 全A市场 = 所有已缓存 K 线的股票
     scopes["pool"] = all_codes & pool_codes
     se = sector.get("code_sector", {}) if sector else {}
     by_sec = {}
@@ -732,10 +734,10 @@ def compute_gate(gate, klines, snapshot, sector, scopes, sec_stats,
     note = ""
     if gate == "sector_top100_to4" and not sector:
         note = "板块数据源暂不可用，门控未生效"
-    # 缠论按门控：板块档用板块范围；pool 退回重算时用 TOP800 范围
+    # 缠论按门控：sector/all_a 档用各自范围；pool 退回重算时用 TOP800 范围
     chan_payload = None
     if chan_klines is not None:
-        ch_scope = scope if gate == "sector_top100_to4" else (top800_codes or scope)
+        ch_scope = scope if gate in ("sector_top100_to4", "all_a") else (top800_codes or scope)
         ch_hits, ch_total = scan_chan(chan_klines, ch_scope)
         chan_payload = {"total": ch_total, "codes": [h["code"] for h in ch_hits],
                         "stocks": ch_hits}
@@ -770,7 +772,7 @@ def write_gate_data(gates_dict, sec_stats, data_date):
 def main():
     import argparse
     ap = argparse.ArgumentParser()
-    ap.add_argument("--gates", default="pool,sector_top100_to4")
+    ap.add_argument("--gates", default="all_a,pool,sector_top100_to4")
     ap.add_argument("--no-kline", action="store_true")
     ap.add_argument("--daily", action="store_true", help="增量日更：只追加最新 K线并重算门控（推荐每日自动化）")
     ap.add_argument("--full", action="store_true", help="全量重建 K线（带续传，耗时较长，偶尔跑一次）")
@@ -780,7 +782,7 @@ def main():
     args = ap.parse_args()
     gates = [g.strip() for g in args.gates.split(",")]
 
-    print("═══ 兜宝金钻 · 门控扫描（主门控 TOP800 + 板块前100·换手≥4%）═══")
+    print("═══ 兜宝金钻 · 门控扫描（全A市场 + 主门控 TOP800 + 板块前100·换手≥4%）═══")
     t0 = time.time()
 
     if args.sectors_only:

@@ -1502,6 +1502,7 @@ td { border-color: var(--border-light); }
   <div class="gd-gates" id="gdGates">
     <div class="gd-gates-label">选股门控</div>
     <div class="gd-gate-seg" id="gdGateSeg">
+      <button class="gd-gate" data-gate="all_a">全A市场</button>
       <button class="gd-gate" data-gate="pool">当前门控（成交额TOP800）</button>
       <button class="gd-gate" data-gate="sector_top100_to4">板块前100·换手≥4%</button>
     </div>
@@ -4299,9 +4300,11 @@ async function loadDiamondTab(){
       fetch('./output/'+p+'?'+Date.now()).then(r => { if(!r.ok) throw new Error('HTTP '+r.status+' '+p); return r.json(); })
     ));
     const stocks = partJsons.flatMap(p => p.stocks || []);
-    // 读取 meta（label/scope_size/overview/chan）；板块前100·换手≥4% 档也来自 meta.sector
+    // 读取 meta（label/scope_size/overview/chan）；全A/板块档也来自 meta.all_a / meta.sector
     const meta = await (await fetch('./output/'+manifest.meta+'?'+Date.now())).json();
     const pool = meta.pool || {};
+    const allA = meta.all_a || {};
+    const allAStocks = allA.stocks || [];
     const sector = meta.sector || {};
     const sectorStocks = sector.stocks || [];
     GD.gateData = {
@@ -4315,6 +4318,13 @@ async function loadDiamondTab(){
           overview: pool.overview || {},
           stocks: stocks,
           chan: pool.chan || {total:0, codes:[]}
+        },
+        all_a: {
+          label: allA.label || '全A市场',
+          scope_size: allA.scope_size || allAStocks.length,
+          overview: allA.overview || {},
+          stocks: allAStocks,
+          chan: allA.chan || {total:0, codes:[]}
         },
         sector_top100_to4: {
           label: sector.label || '板块前100·换手≥4%',
