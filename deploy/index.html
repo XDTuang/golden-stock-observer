@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>兜金观测 — 量化信号池 v2026-08-13</title>
+<title>兜金观测 — 量化信号池 v2026-08-15</title>
 <!-- 登录保护：内嵌覆盖层，不跳转 -->
 <script>
 (function(){
@@ -1332,9 +1332,9 @@ td { border-color: var(--border-light); }
       border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:16px;box-shadow:var(--shadow-card);}
     #tab-diamond .gd-ov-title{font-size:20px;font-weight:800;letter-spacing:-0.01em;display:flex;align-items:center;gap:9px;margin-bottom:14px;}
     #tab-diamond .gd-ov-title #gdDate{font-size:12px;font-weight:500;color:var(--text-muted);letter-spacing:0;}
-    #tab-diamond .gd-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px;}
+    #tab-diamond .gd-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:14px;}
     #tab-diamond .gd-stat{background:linear-gradient(180deg,var(--gd-grad-from),var(--gd-grad-to));border:1px solid var(--border);border-top:3px solid var(--accent);
-      border-radius:var(--radius);padding:16px 14px;text-align:center;box-shadow:var(--shadow-sm);transition:transform .18s,box-shadow .18s,border-color .18s;}
+      border-radius:var(--radius);padding:16px 14px;text-align:center;box-shadow:var(--shadow-sm);transition:transform .18s,box-shadow .18s,border-color .18s;position:relative;}
     #tab-diamond .gd-stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-card);}
     #tab-diamond .gd-stat.s-up{border-top-color:var(--red);}
     #tab-diamond .gd-stat.s-buy{border-top-color:var(--cyan);}
@@ -1346,6 +1346,10 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-stat.s-up .n{color:var(--red);}
     #tab-diamond .gd-stat.s-buy .n{color:var(--cyan);}
     #tab-diamond .gd-stat.s-hz .n{color:var(--gold);}
+    #tab-diamond .gd-stat.s-strong{border-top-color:#ffb300;background:linear-gradient(180deg,var(--gd-grad-from),var(--gd-grad-to));box-shadow:0 0 0 1px rgba(255,179,0,.35) inset, var(--shadow-sm);}
+    #tab-diamond .gd-stat.s-strong .n{color:#ffb300;}
+    #tab-diamond .gd-stat.s-strong:hover{box-shadow:0 0 0 1px rgba(255,179,0,.55) inset, var(--shadow-card);}
+    #tab-diamond .gd-stat .gd-strong-new{position:absolute;top:-9px;right:-7px;font-size:9px;font-weight:800;color:#fff;background:#ffb300;border-radius:6px;padding:1px 5px;letter-spacing:.3px;}
     #tab-diamond .gd-stat .l{font-size:12px;color:var(--text-secondary);margin-top:8px;}
     #tab-diamond .gd-note{font-size:12px;margin-top:8px;font-weight:600;letter-spacing:.2px;font-variant-numeric:tabular-nums;}
     #tab-diamond .gd-note.gd-pos{color:var(--green);} #tab-diamond .gd-note.gd-neg{color:var(--red);} #tab-diamond .gd-note.gd-flat{color:var(--text-muted);}
@@ -1407,6 +1411,8 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-sigcard .lst{font-size:11px;color:var(--text-muted);margin-top:5px;line-height:1.6;}
     #tab-diamond .gd-chan-cell{font-size:11px;line-height:1.6;}
     #tab-diamond .gd-chan-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(183,148,244,.14);color:var(--purple);}
+    #tab-diamond .gd-strong-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:800;background:rgba(255,179,0,.16);color:#ffb300;border:1px solid rgba(255,179,0,.4);}
+    #tab-diamond .gd-table tr.gd-strong-row{background:rgba(255,179,0,.05);}
     #tab-diamond .gd-inst-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(59,130,246,.16);color:#63b3ed;}
     #tab-diamond .gd-youzi-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(246,173,85,.16);color:#f6ad55;}
     #tab-diamond .gd-qd-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(250,204,21,.18);color:#facc15;border:1px solid rgba(250,204,21,.4);}
@@ -4391,9 +4397,10 @@ function gdRenderOverview(d){
     {n:o.buy||0,l:'买入 (XG)',c:'s-buy'},
     {n:o.hz||0,l:'红区黄柱连续',c:'s-hz'},
     {n:chanTotal,l:'缠论买点 (门控)',c:'s-chan',f:'chanGate'},
+    {n:o.strongest||0,l:'最强金钻',c:'s-strong',tag:'NEW',title:'5日内金钻三形态任一 + 机构翻多 + 缠论买点'},
   ];
   document.getElementById('gdStats').innerHTML=cards.map(x=>
-    `<div class="gd-stat ${x.c}${(x.f==='chanGate'&&GD.gateChanOnly)?' on':''}"${(x.f==='chanGate')?` onclick="gdToggleChanGate()" title="点击仅看本门控内的缠论买点"`:''}><div class="n">${x.n}</div><div class="l">${x.l}</div></div>`).join('');
+    `<div class="gd-stat ${x.c}${(x.f==='chanGate'&&GD.gateChanOnly)?' on':''}"${(x.f==='chanGate')?` onclick="gdToggleChanGate()" title="点击仅看本门控内的缠论买点"`:(x.title?` title="${x.title}"`:'')}><div class="n">${x.n}</div><div class="l">${x.l}</div>${x.tag?`<span class="gd-strong-new">${x.tag}</span>`:''}</div>`).join('');
   document.getElementById('gdAnalysis').textContent = o.analysis || '—';
   const ts=document.getElementById('gdTrackSummary'); if(ts) ts.textContent = o.analysis || '—';
 }
@@ -4418,9 +4425,10 @@ function gdRenderTable(d){
     const youziCell=(four.last3Youzi&&four.last3Youzi.length)?four.last3Youzi.map(b=>`<span class="gd-youzi-badge">${b.date.slice(5)}</span>`).join(''):'<span class="gd-muted">无</span>';
     const qdCell=(four.last3Qd&&four.last3Qd.length)?four.last3Qd.map(b=>`<span class="gd-qd-badge">${b.date.slice(5)}</span>`).join(''):'<span class="gd-muted">无</span>';
     const chanBadge=allChan.has(s.code)?' <span class="gd-chan-badge">缠</span>':'';
-    return `<tr class="gd-row" data-code="${s.code}">
+    const strongestBadge=s.strongest?' <span class="gd-strong-badge">最强</span>':'';
+    return `<tr class="gd-row${s.strongest?' gd-strong-row':''}" data-code="${s.code}">
       <td class="gd-c"><span class="gd-caret">▸</span></td>
-      <td>${s.code}</td><td>${s.name||'—'}${chanBadge}</td>
+      <td>${s.code}</td><td>${s.name||'—'}${chanBadge}${strongestBadge}</td>
       <td><span class="gd-tag ${tagCls(sig)}">${sig}</span></td>
       <td class="gd-chan-cell">${chanCell}</td>
       <td class="gd-chan-cell">${instCell}</td>

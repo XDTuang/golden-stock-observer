@@ -15,8 +15,13 @@
 """
 import json
 import os
+import sys
 
 BASE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, BASE)
+import pandas as pd  # noqa: E402  最强金钻逐票滑动窗口 DataFrame 构建
+from signals import compute_four_volume, check_chan_buy_signal  # noqa: E402  机构翻多 + 缠论买点（与回测同源）
+
 DS_OUT = os.path.join(BASE, "diamond_site", "output")
 MAIN_OUT = os.path.join(BASE, "output")
 GD = os.path.join(BASE, "output", "golden_diamond.json")
@@ -31,6 +36,11 @@ def load(p):
 
 def write_target(out_dir, parts, meta, manifest, remove_gate):
     os.makedirs(out_dir, exist_ok=True)
+    # 清理旧分片：股票数量减少时，残留的 golden_pool_*.json 已过时（manifest 不再指向），
+    # 不清理会导致线上仓库堆积冗余分片、且可能误加载旧数据。
+    import glob
+    for old in glob.glob(os.path.join(out_dir, "golden_pool_*.json")):
+        os.remove(old)
     part_names = []
     for i, part in enumerate(parts):
         fn = f"golden_pool_{i}.json"
@@ -51,6 +61,72 @@ def write_target(out_dir, parts, meta, manifest, remove_gate):
             print(f"  [{os.path.basename(out_dir)}] 已移除 gate_data.json (隔离)")
 
 
+def compute_strongest(stocks, window=5):
+    """最强金钻 = 金钻三形态任一(买入/金钻起涨/红区黄柱连续) + 机构翻多 + 缠论买点，window 日内齐备。
+
+    对每只金钻命中股票，从其金钻信号日起 window 日内逐日滑动，检查是否同时出现
+    「机构翻多(收盘价 > 机构牛线1)」与「缠论买点(近2交易日内买字)」。
+    与回测 v7b 同源（signals.compute_four_volume + signals.check_chan_buy_signal）。
+
+    返回 {code: {"signal_date", "jg_date", "chan_date", "ready_date"}}。
+    """
+    strongest = {}
+    for s in stocks:
+        code = s.get("code")
+        kline = s.get("kline", [])
+        if len(kline) < 60:
+            continue
+        sigs = s.get("signals", []) or []
+        sig_date = sigs[0].get("date") if sigs else s.get("signal_date")
+        if not sig_date:
+            continue
+        dates = [r.get("date") for r in kline]
+        try:
+            i0 = dates.index(sig_date)
+        except ValueError:
+            continue
+        n = len(kline)
+        jg_day = chan_day = ready_idx = None
+        for j in range(i0, min(i0 + window, n)):
+            sub = kline[:j + 1]
+            try:
+                df = pd.DataFrame([{
+                    "date": r["date"], "open": r["open"],
+                    "close": r.get("close", r.get("last")),
+                    "high": r["high"], "low": r["low"], "volume": r["volume"],
+                } for r in sub])
+                df["date"] = pd.to_datetime(df["date"])
+                df = df.set_index("date").sort_index()
+                if jg_day is None and compute_four_volume(df).get("jg_now"):
+                    jg_day = dates[j]
+                if chan_day is None:
+                    ok, det = check_chan_buy_signal(df)
+                    if ok:
+                        chan_day = det.get("buy_date") or dates[j]
+            except Exception:
+                continue
+            if jg_day is not None and chan_day is not None:
+                ready_idx = j
+                break
+        if jg_day is not None and chan_day is not None:
+            strongest[code] = {
+                "signal_date": sig_date,
+                "jg_date": jg_day,
+                "chan_date": chan_day,
+                "ready_date": dates[ready_idx],
+            }
+    return strongest
+
+
+def _mark_strongest(stocks, strongest):
+    """给 stocks 里命中最强金钻的项打 strongest 标记，返回命中的 code 有序列表。"""
+    for s in stocks:
+        if s.get("code") in strongest:
+            s["strongest"] = True
+            s["strongest_detail"] = strongest[s["code"]]
+    return [c for c in strongest]
+
+
 def main():
     gd = load(GD)
 
@@ -69,10 +145,15 @@ def main():
         sector_obj = {
             "label": sec.get("label", "板块前100·换手≥4%"),
             "scope_size": sec.get("scope_size", 0),
-            "overview": sec.get("overview", {}),
+            "overview": dict(sec.get("overview", {})),
             "chan": sec.get("chan", {"total": 0, "codes": []}),
             "stocks": sec.get("stocks", []),
         }
+        # sector 档最强金钻（同一口径，跟随当前门控）
+        strongest_sector = compute_strongest(sector_obj["stocks"])
+        _mark_strongest(sector_obj["stocks"], strongest_sector)
+        sector_obj["overview"]["strongest"] = len(strongest_sector)
+        sector_obj["overview"]["strongest_codes"] = list(strongest_sector)
     else:
         sector_obj = None
 
@@ -99,7 +180,14 @@ def main():
         ns["score"] = {"signal_count": 1 if primary else 0}
         stocks.append(ns)
 
+    # ── 最强金钻：金钻三形态任一 + 机构翻多 + 缠论买点，5日内齐备 ──
+    strongest_pool = compute_strongest(stocks)
+    strongest_codes = _mark_strongest(stocks, strongest_pool)
+
     overview = gd.get("overview", {})
+    # 命中总数(overview.total)保持不变（三形态并集）；最强金钻为独立子集卡片，不叠加进 total
+    overview["strongest"] = len(strongest_codes)
+    overview["strongest_codes"] = strongest_codes
     data_date = gd.get("data_date")
     updated_at = gd.get("updated_at")
 
