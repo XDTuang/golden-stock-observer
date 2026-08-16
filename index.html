@@ -1118,6 +1118,35 @@ td { border-color: var(--border-light); }
 @keyframes loginPg{0%{width:0}50%{width:65%}100%{width:100%}}
 @keyframes loginShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 </style>
+
+<style>
+/* === 重要事件日历 === */
+.eventcal-week-row { display: grid; grid-template-columns: 110px repeat(7, 1fr); border-top: 1px solid var(--border); min-height: 110px; }
+.eventcal-week-row:first-child { border-top: none; }
+.eventcal-week-label { padding: 8px 10px; background: rgba(255,255,255,.02); color: var(--text-muted); font-size: 11px; line-height: 1.5; border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; }
+.eventcal-week-label .week-num { font-weight: 700; color: var(--text-secondary); font-size: 12px; }
+.eventcal-day-header, .eventcal-day-cell { padding: 6px; border-right: 1px solid var(--border); position: relative; }
+.eventcal-day-header { background: rgba(255,255,255,.03); color: var(--text-muted); text-align: center; font-size: 11px; font-weight: 600; padding: 8px 4px; }
+.eventcal-day-header .dnum { font-size: 14px; color: var(--text); }
+.eventcal-day-cell { background: var(--bg-card); cursor: pointer; min-height: 100px; }
+.eventcal-day-cell:hover { background: var(--bg-subtle); }
+.eventcal-day-cell.today { background: rgba(99,102,241,.06); border-left: 2px solid var(--accent); }
+.eventcal-day-cell.outside { opacity: 0.4; }
+.eventcal-event { display: block; padding: 3px 6px; margin-bottom: 3px; border-radius: 4px; font-size: 11px; line-height: 1.3; cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.eventcal-event.published { background: rgba(46,204,113,.12); color: #27ae60; border-left: 2px solid #27ae60; font-weight: 600; }
+.eventcal-event.unpublished { background: rgba(255,255,255,.05); color: var(--text-muted); border-left: 2px solid var(--border); }
+.eventcal-event.high { background: rgba(231,76,60,.12); color: #e74c3c; border-left: 2px solid #e74c3c; }
+.eventcal-event .ec-flag { display: inline-block; margin-right: 3px; }
+.eventcal-detail-row { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.eventcal-detail-row:last-child { border-bottom: none; }
+.eventcal-detail-row .ecr-name { font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+.eventcal-detail-row .ecr-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+.eventcal-detail-row .ecr-data { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 6px; padding: 8px; background: rgba(255,255,255,.04); border-radius: 6px; }
+.eventcal-detail-row .ecr-data div { font-size: 12px; }
+.eventcal-detail-row .ecr-data .label { color: var(--text-muted); font-size: 11px; }
+.eventcal-detail-row .ecr-data .val.published { color: #27ae60; font-weight: 700; }
+.eventcal-detail-row .ecr-data .val.unpublished { color: var(--text-muted); }
+</style>
 </head>
 <body>
 
@@ -1171,6 +1200,7 @@ td { border-color: var(--border-light); }
   <button class="nav-btn" data-tab="signalstock">信号选股</button>
   <button class="nav-btn" data-tab="diamond">💎 兜宝金钻</button>
   <button class="nav-btn" data-tab="calendar">机游共振日历</button>
+  <button class="nav-btn" data-tab="eventcal">📅 重要事件日历</button>
   <button class="nav-btn" data-tab="repurchase">📈 回购隐含收益（暂停更新）</button>
 </nav>
 </div>
@@ -1682,6 +1712,33 @@ td { border-color: var(--border-light); }
         <thead><tr><th>排名</th><th>代码</th><th>名称</th><th>累计机构净卖</th><th>累计游资净买</th><th>累计总净买</th><th>上榜天数</th></tr></thead>
         <tbody></tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<!-- Tab: 重要事件日历（按月缓存 · 财经事件周视图 · 已发布检测+点击展开） -->
+<div class="tab-content" id="tab-eventcal">
+  <div class="eventcal-wrap" style="padding:12px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <div>
+        <span class="section-title" id="eventcalMonthLabel" style="font-size:15px;font-weight:700;">重要事件日历</span>
+        <span id="eventcalUpdated" style="margin-left:12px;font-size:12px;color:var(--text-muted);">加载中...</span>
+      </div>
+      <div class="eventcal-nav">
+        <button class="cal-nav-btn" onclick="eventcalPrev()">‹ 上月</button>
+        <button class="cal-nav-btn" onclick="eventcalNext()">下月 ›</button>
+        <button class="cal-nav-btn" onclick="eventcalJumpToday()">回到本月</button>
+      </div>
+    </div>
+    <div id="eventcalGrid" style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <div style="padding:40px;text-align:center;color:var(--text-muted);">加载中...</div>
+    </div>
+    <div id="eventcalDetail" style="margin-top:14px;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:16px;display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div class="section-title" id="eventcalDetailTitle" style="font-size:14px;font-weight:700;"></div>
+        <button onclick="eventcalCloseDetail()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px;">×</button>
+      </div>
+      <div id="eventcalDetailContent"></div>
     </div>
   </div>
 </div>
@@ -5191,6 +5248,188 @@ if(_gdTrackToggle) _gdTrackToggle.addEventListener('click',()=>document.getEleme
 
 // 启动页面（异步加载外部 JSON 后渲染）
 initPage();
+</script>
+
+<script>
+// ═══════════ 重要事件日历（按月缓存 · 周视图 · 已发布检测）═══════════
+let eventcalCurrentMonth = null;
+let eventcalDataCache = {};
+const eventcalCountryFlag = {
+  '中国':'🇨🇳', '美国':'🇺🇸', '日本':'🇯🇵', '英国':'🇬🇧',
+  '欧盟':'🇪🇺', '德国':'🇩🇪', '法国':'🇫🇷', '意大利':'🇮🇹',
+  '加拿大':'🇨🇦', '澳大利亚':'🇦🇺', '韩国':'🇰🇷', '新加坡':'🇸🇬',
+  '巴西':'🇧🇷', '马来西亚':'🇲🇾', '泰国':'🇹🇭', '印度':'🇮🇳',
+  '俄罗斯':'🇷🇺', '中国香港':'🇭🇰'
+};
+
+async function eventcalLoadMonth(monthStr) {
+  if (eventcalDataCache[monthStr]) return eventcalDataCache[monthStr];
+  try {
+    const r = await fetch('./output/event_calendar_' + monthStr + '.json?' + Date.now());
+    if (r.ok) {
+      const d = await r.json();
+      eventcalDataCache[monthStr] = d;
+      return d;
+    }
+  } catch(e) { console.warn('eventcal load error:', monthStr, e); }
+  return null;
+}
+
+function eventcalPrev() {
+  if (!eventcalCurrentMonth) return;
+  const [y, m] = eventcalCurrentMonth.split('-').map(Number);
+  const d = new Date(y, m - 2, 1);
+  eventcalCurrentMonth = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  eventcalRender();
+}
+
+function eventcalNext() {
+  if (!eventcalCurrentMonth) return;
+  const [y, m] = eventcalCurrentMonth.split('-').map(Number);
+  const d = new Date(y, m, 1);
+  eventcalCurrentMonth = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  eventcalRender();
+}
+
+function eventcalJumpToday() {
+  const now = new Date();
+  eventcalCurrentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  eventcalRender();
+}
+
+function eventcalGetWeeks(year, month) {
+  // month is 0-indexed
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const weeks = [];
+  let start = new Date(firstDay);
+  const startDay = start.getDay();
+  const offset = startDay === 0 ? -6 : 1 - startDay;
+  start.setDate(start.getDate() + offset);
+  while (start <= lastDay) {
+    const week = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(start);
+      d.setDate(start.getDate() + i);
+      week.push(d);
+    }
+    weeks.push(week);
+    start.setDate(start.getDate() + 7);
+  }
+  return weeks;
+}
+
+function eventcalFormatDate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+async function eventcalRender() {
+  if (!eventcalCurrentMonth) { eventcalJumpToday(); return; }
+  const [year, month] = eventcalCurrentMonth.split('-').map(Number);
+  const data = await eventcalLoadMonth(eventcalCurrentMonth);
+  const events = (data && data.events) || {};
+  const generatedAt = data ? data.generated_at : '—';
+  const totalEvents = data ? data.total_events : 0;
+  const publishedEvents = data ? data.published_events : 0;
+  const todayStr = eventcalFormatDate(new Date());
+
+  document.getElementById('eventcalMonthLabel').textContent = `${year}年${month}月 · 重要事件日历`;
+  document.getElementById('eventcalUpdated').innerHTML =
+    `更新于 ${generatedAt} · 事件 ${totalEvents} 条 · <span style="color:#27ae60;">已发布 ${publishedEvents}</span> · 周度长线`;
+
+  const weeks = eventcalGetWeeks(year, month - 1);
+  const dayNames = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+  let html = '';
+  html += '<div class="eventcal-week-row" style="grid-template-columns:110px repeat(7, 1fr);">';
+  html += '<div class="eventcal-week-label" style="background:rgba(255,255,255,.01);"></div>';
+  for (let d = 0; d < 7; d++) html += `<div class="eventcal-day-header">${dayNames[d]}</div>`;
+  html += '</div>';
+
+  for (let w = 0; w < weeks.length; w++) {
+    const week = weeks[w];
+    const wStart = week[0], wEnd = week[6];
+    html += '<div class="eventcal-week-row">';
+    html += `<div class="eventcal-week-label"><span class="week-num">第${w + 1}周</span>${wStart.getMonth() + 1}/${wStart.getDate()}-${wEnd.getMonth() + 1}/${wEnd.getDate()}</div>`;
+    for (let d = 0; d < 7; d++) {
+      const day = week[d];
+      const ds = eventcalFormatDate(day);
+      const inMonth = day.getMonth() === month - 1;
+      const isToday = ds === todayStr;
+      const dayEvents = events[ds] || [];
+      let cls = 'eventcal-day-cell';
+      if (!inMonth) cls += ' outside';
+      if (isToday) cls += ' today';
+      html += `<div class="${cls}" onclick="eventcalShowDay('${ds}')">`;
+      html += `<div class="dnum" style="font-size:13px;font-weight:600;${isToday?'color:var(--accent);':''}">${day.getDate()}</div>`;
+      const maxShow = 4;
+      for (let i = 0; i < Math.min(dayEvents.length, maxShow); i++) {
+        const e = dayEvents[i];
+        const flag = eventcalCountryFlag[e.country] || (e.country ? e.country.substring(0, 1) : '');
+        const ecCls = e.has_data ? 'published' : 'unpublished';
+        const highCls = e.importance === 'high' ? ' high' : '';
+        const txt = e.time ? `${e.time} ${e.name}` : e.name;
+        const dataMark = e.has_data ? ' ✓' : '';
+        const titleAttr = `${e.name||''} | ${e.category||''} | ${e.country||''}${e.has_data ? ' | 已发布' : ''}`.replace(/"/g, '&quot;');
+        html += `<span class="eventcal-event ${ecCls}${highCls}" title="${titleAttr}">` +
+          `<span class="ec-flag">${flag}</span>${txt}${dataMark}</span>`;
+      }
+      if (dayEvents.length > maxShow) {
+        html += `<span style="font-size:10px;color:var(--text-muted);">+${dayEvents.length - maxShow} 更多</span>`;
+      }
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+  document.getElementById('eventcalGrid').innerHTML = html;
+}
+
+function eventcalShowDay(ds) {
+  eventcalLoadMonth(eventcalCurrentMonth).then(data => {
+    if (!data) return;
+    const dayEvents = (data.events && data.events[ds]) || [];
+    if (dayEvents.length === 0) { eventcalCloseDetail(); return; }
+    document.getElementById('eventcalDetailTitle').textContent = `📅 ${ds} · ${dayEvents.length} 个事件`;
+    let html = '';
+    for (const e of dayEvents) {
+      const flag = eventcalCountryFlag[e.country] || (e.country ? e.country.substring(0, 1) : '');
+      html += `<div class="eventcal-detail-row">`;
+      const statusMark = e.has_data
+        ? '<span style="color:#27ae60;font-size:11px;margin-left:6px;">✓ 已发布</span>'
+        : '<span style="color:var(--text-muted);font-size:11px;margin-left:6px;">未发布</span>';
+      html += `<div class="ecr-name"><span class="ec-flag">${flag}</span>${e.name || '—'} ${statusMark}</div>`;
+      html += `<div class="ecr-meta">${e.category || ''} · ${e.region || e.country || ''} · ${e.importance || ''} · ${e.time || '全天'}</div>`;
+      if (e.has_data && (e.actual_value || e.previous_value || e.forecast_value)) {
+        html += '<div class="ecr-data">';
+        if (e.actual_value) html += `<div><div class="label">实际值</div><div class="val published">${e.actual_value}</div></div>`;
+        if (e.previous_value) html += `<div><div class="label">前值</div><div class="val">${e.previous_value}</div></div>`;
+        if (e.forecast_value) html += `<div><div class="label">预期值</div><div class="val">${e.forecast_value}</div></div>`;
+        html += '</div>';
+      } else if (e.has_data) {
+        html += `<div class="ecr-data" style="grid-template-columns:1fr;"><div><div class="label">发布时间</div><div class="val published">${e.published_at || '—'}</div></div></div>`;
+      }
+      if (e.description) {
+        html += `<div class="ecr-meta" style="margin-top:6px;color:var(--text-secondary);">${e.description}</div>`;
+      }
+      html += '</div>';
+    }
+    document.getElementById('eventcalDetailContent').innerHTML = html;
+    document.getElementById('eventcalDetail').style.display = 'block';
+  });
+}
+
+function eventcalCloseDetail() {
+  document.getElementById('eventcalDetail').style.display = 'none';
+}
+
+let _eventcalInit = false;
+const _eventcalBtn = document.querySelector('[data-tab="eventcal"]');
+if (_eventcalBtn) {
+  _eventcalBtn.addEventListener('click', () => {
+    if (_eventcalInit) return;
+    _eventcalInit = true;
+    eventcalJumpToday();
+  });
+}
 </script>
 
 <!-- 研报加强弹窗 -->
