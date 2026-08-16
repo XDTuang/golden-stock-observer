@@ -77,6 +77,9 @@ echo "📈 Step 3: 刷新辅助数据（ETF / 板块 / 龙虎榜，best-effort�
 bash update_calendar_js.py 2>/dev/null || echo "  ⚠️  日历JS模板刷新失败（跳过）"
 "$PYTHON" fetch_index_kline.py 2>/dev/null || echo "  ⚠️  指数K线刷新失败（跳过）"
 
+echo "📄 Step 3.5: 研报分析（星球研报接入，四类命中股票研报加强，best-effort）"
+"$PYTHON" report_analysis.py || echo "  ⚠️  研报分析失败（跳过，不影响主流程）"
+
 echo ""
 echo "🧹 Step 4: 精简数据 + 生成 fetch 版页面（单一构建路径）"
 "$PYTHON" slim_signals.py

@@ -259,6 +259,8 @@ def main():
     sizes["output/golden_diamond.json"] = copy_file("golden_diamond.json", "output")
     sizes["output/golden_diamond_history.json"] = copy_file("golden_diamond_history.json", "output")
     sizes["output/sector_golden_diamond_history.json"] = copy_file("sector_golden_diamond_history.json", "output")
+    # 研报加强（星球研报接入，命中股票的研报标签数据）
+    sizes["output/report_analysis.json"] = copy_file("report_analysis.json", "output")
     # 观测池历史（按日期缓存，供前端日期选择器读取；全字段含细化指标供 XLS 导出）
     sizes["output/observation_pool.json"] = copy_file("observation_pool.json", "output")
 

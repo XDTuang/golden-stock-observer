@@ -76,8 +76,8 @@ DEFAULT_GATE = "pool"
 
 HEADERS = ["-A", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
            "-H", "Referer: https://gu.qq.com/"]
-HTTP_TIMEOUT = 15
-CONCURRENCY = 3           # K线并发（温柔：单 IP 令牌桶不被耗尽；新浪对并发敏感，不宜更高）
+HTTP_TIMEOUT = 30
+CONCURRENCY = 5           # K线并发（从3提到5，配合双倍超时提升全A拉取吞吐；单 IP 令牌桶仍可控）
 JITTER = (0.2, 0.6)       # 每次请求前的随机抖动延迟区间（秒）
 KL_RETRIES = 5
 MIN_BARS = 60             # analyze() 要求的最低 K 线数

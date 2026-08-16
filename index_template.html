@@ -1413,6 +1413,20 @@ td { border-color: var(--border-light); }
     #tab-diamond .gd-chan-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(183,148,244,.14);color:var(--purple);}
     #tab-diamond .gd-strong-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:800;background:rgba(255,179,0,.16);color:#ffb300;border:1px solid rgba(255,179,0,.4);}
     #tab-diamond .gd-table tr.gd-strong-row{background:rgba(255,179,0,.05);}
+    /* 研报加强徽章（全局，四个 tab 共用） */
+    .report-badge{display:inline-block;margin:1px 4px;padding:1px 8px;border-radius:999px;font-size:10px;font-weight:800;background:rgba(167,139,250,.16);color:#a78bfa;border:1px solid rgba(167,139,250,.45);cursor:pointer;user-select:none;white-space:nowrap;vertical-align:middle;}
+    .report-badge:hover{background:rgba(167,139,250,.3);box-shadow:0 0 8px rgba(167,139,250,.4);}
+    #reportModal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;display:none;align-items:center;justify-content:center;}
+    #reportModal.show{display:flex;}
+    #reportModal .rm-box{width:min(680px,92vw);background:var(--bg-card,#1a1d24);border:1px solid rgba(167,139,250,.5);border-radius:14px;padding:20px;max-height:80vh;overflow:auto;box-shadow:0 12px 40px rgba(0,0,0,.5);}
+    #reportModal .rm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+    #reportModal .rm-head h3{font-size:17px;color:#a78bfa;margin:0;}
+    #reportModal .rm-close{background:none;border:none;color:var(--text-muted,#8b93a3);font-size:24px;cursor:pointer;line-height:1;}
+    #reportModal .rm-rep{border-left:3px solid rgba(167,139,250,.6);padding:8px 12px;margin-bottom:10px;background:rgba(167,139,250,.06);border-radius:0 8px 8px 0;}
+    #reportModal .rm-meta{font-size:11px;color:var(--text-muted,#8b93a3);margin-bottom:4px;}
+    #reportModal .rm-txt{font-size:13px;white-space:pre-wrap;max-height:220px;overflow:auto;line-height:1.7;}
+    #reportModal .rm-nontext{color:#a78bfa;font-size:13px;font-weight:600;}
+    #reportModal .rm-nontext .rm-link{color:var(--accent,#e6b53c);text-decoration:underline;}
     #tab-diamond .gd-inst-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(59,130,246,.16);color:#63b3ed;}
     #tab-diamond .gd-youzi-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(246,173,85,.16);color:#f6ad55;}
     #tab-diamond .gd-qd-badge{display:inline-block;margin:1px 2px;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;background:rgba(250,204,21,.18);color:#facc15;border:1px solid rgba(250,204,21,.4);}
@@ -1814,6 +1828,55 @@ const SIGNAL_CARDS = [
   { key:'combo_6', icon:'6', name:'六六大顺', desc:'同时满足6个选股策略（含EMA强趋势）', color:'var(--purple)' },
 ];
 
+// ===== 研报加强（星球研报接入）=====
+window.REPORT_DATA = null;
+async function loadReportData() {
+  try {
+    const r = await fetch('./output/report_analysis.json?' + Date.now());
+    if (!r.ok) return;
+    window.REPORT_DATA = await r.json();
+  } catch (e) {
+    window.REPORT_DATA = null;
+  }
+}
+function _normCode(code) {
+  if (!code) return '';
+  const c = String(code).toLowerCase();
+  if (c.startsWith('sh') || c.startsWith('sz')) return c;
+  if (c.startsWith('60') || c.startsWith('68') || c.startsWith('90')) return 'sh' + c;
+  return 'sz' + c;
+}
+function reportBadge(code) {
+  if (!window.REPORT_DATA || !window.REPORT_DATA.matched) return '';
+  const key = _normCode(code);
+  const r = window.REPORT_DATA.matched[key];
+  if (!r) return '';
+  const n = (r.reports || []).length;
+  return '<span class="report-badge" data-code="' + key + '" onclick="event.stopPropagation();openReportModal(\'' + key + '\')" title="研报加强（近3日 ' + n + ' 条）">📄 研报' + (n > 1 ? '×' + n : '') + '</span>';
+}
+function openReportModal(code) {
+  const key = _normCode(code);
+  const r = (window.REPORT_DATA && window.REPORT_DATA.matched) ? window.REPORT_DATA.matched[key] : null;
+  if (!r) return;
+  const box = document.getElementById('reportModal');
+  if (!box) return;
+  document.getElementById('rmTitle').textContent = r.name + ' — 研报加强（近3日）';
+  let h = '';
+  (r.reports || []).forEach(rep => {
+    if (rep.format === 'text') {
+      h += '<div class="rm-rep"><div class="rm-meta">[' + rep.group + '] ' + rep.title + ' · ' + (rep.create_time || '').slice(0, 16) + '</div><div class="rm-txt">' + (rep.content || '').replace(/</g, '&lt;') + '</div></div>';
+    } else {
+      h += '<div class="rm-rep"><div class="rm-meta">[' + rep.group + '] ' + rep.title + ' · ' + (rep.create_time || '').slice(0, 16) + '</div><div class="rm-nontext">📎 卖方机构推荐（PPT/音频等格式）— 请前往知识星球查阅具体内容</div></div>';
+    }
+  });
+  document.getElementById('rmBody').innerHTML = h || '<div class="rm-nontext">无研报内容</div>';
+  box.classList.add('show');
+}
+function closeReportModal() {
+  const box = document.getElementById('reportModal');
+  if (box) box.classList.remove('show');
+}
+
 // ===== 渲染信号选股卡片 =====
 function renderSignalPickCards() {
   const grid = document.getElementById('signalPickGrid');
@@ -1983,7 +2046,7 @@ function renderStockCard(r, tabSuffix) {
   <div class="stock-card" onclick="toggleStockCard(this)" data-code="${r.code}">
     <div class="card-header">
       <div>
-        <span class="stock-name">${r.name}</span>
+        <span class="stock-name">${r.name}</span>${reportBadge(r.code)}
         <span class="stock-code">${r.code}</span>
         <span class="market-tag ${marketClass(r.market)}">${marketLabel(r.market)}</span>
         ${r.industry && (r.industry.level1 || r.industry.level2 || r.industry.level3) ? `<span class="industry-tag l1">${r.industry.level1||''}</span>${r.industry.level2 ? '<span class="industry-tag l2">'+r.industry.level2+'</span>' : ''}${r.industry.level3 ? '<span class="industry-tag l3">'+r.industry.level3+'</span>' : ''}` : ''}
@@ -2246,7 +2309,7 @@ function renderTopTable() {
     const ind = r.industry || {};
     return `<tr style="border-bottom:1px solid var(--border);">
       <td style="padding:8px 12px;">${i+1}</td>
-      <td style="padding:8px 12px;"><strong>${r.name}</strong> <span style="color:var(--text-secondary);font-size:11px;">${r.code}</span></td>
+      <td style="padding:8px 12px;"><strong>${r.name}</strong>${reportBadge(r.code)} <span style="color:var(--text-secondary);font-size:11px;">${r.code}</span></td>
       <td style="padding:8px 12px;"><span class="market-tag ${marketClass(r.market)}">${marketLabel(r.market)}</span></td>
       <td style="padding:8px 12px;font-size:11px;"><span class="industry-tag l1">${ind.level1||'-'}</span></td>
       <td style="padding:8px 12px;font-size:11px;"><span class="industry-tag l2">${ind.level2||'-'}</span></td>
@@ -3202,7 +3265,7 @@ function showCalDetail(dateKey) {
     stocks.forEach(s => {
       tbody += `<tr>
         <td>${s.code}</td>
-        <td style="font-weight:600;">${s.name}</td>
+        <td style="font-weight:600;">${s.name}${reportBadge(s.code)}</td>
         <td style="color:${yColor(s.inst_net)};font-weight:600;">${fmtY(s.inst_net)}</td>
         <td style="color:${yColor(s.retail_net)};font-weight:600;">${fmtY(s.retail_net)}</td>
         <td>${s.reason || '—'}${s.has_hotmoney ? ' · 游资' : ''}</td>
@@ -3235,7 +3298,7 @@ function renderCalAllTable(data) {
       tbody += `<tr>
         <td style="white-space:nowrap;">${d}</td>
         <td>${s.code}</td>
-        <td style="font-weight:600;">${s.name}</td>
+        <td style="font-weight:600;">${s.name}${reportBadge(s.code)}</td>
         <td style="color:${yColor(s.inst_net)};font-weight:600;">${fmtY(s.inst_net)}</td>
         <td style="color:${yColor(s.retail_net)};font-weight:600;">${fmtY(s.retail_net)}</td>
         <td style="color:${yColor(s.total_net)};font-weight:600;">${fmtY(s.total_net)}</td>
@@ -4168,6 +4231,10 @@ async function initPage() {
   if (!window.OBSERVATION_POOL_HISTORY) {
     loadTasks.push(fetchRetry('./output/observation_pool.json', 2).then(d => { window.OBSERVATION_POOL_HISTORY = d; }).catch(e => console.warn('观测池历史加载失败:', e)));
   }
+  // REPORT_DATA（研报加强：星球研报接入，命中股票的研报标签）
+  if (!window.REPORT_DATA) {
+    loadTasks.push(fetchRetry('./output/report_analysis.json', 2).then(d => { window.REPORT_DATA = d; }).catch(e => { window.REPORT_DATA = null; console.warn('研报数据加载失败:', e); }));
+  }
   
   console.log('[兜金] 等待数据加载, tasks:', loadTasks.length);
   await Promise.all(loadTasks);
@@ -4435,7 +4502,7 @@ function gdRenderTable(d){
     const strongestBadge=s.strongest?' <span class="gd-strong-badge">最强</span>':'';
     return `<tr class="gd-row${s.strongest?' gd-strong-row':''}" data-code="${s.code}">
       <td class="gd-c"><span class="gd-caret">▸</span></td>
-      <td>${s.code}</td><td>${s.name||'—'}${chanBadge}${strongestBadge}</td>
+      <td>${s.code}</td><td>${s.name||'—'}${reportBadge(s.code)}${chanBadge}${strongestBadge}</td>
       <td><span class="gd-tag ${tagCls(sig)}">${sig}</span></td>
       <td class="gd-chan-cell">${chanCell}</td>
       <td class="gd-chan-cell">${instCell}</td>
@@ -5119,5 +5186,12 @@ if(_gdTrackToggle) _gdTrackToggle.addEventListener('click',()=>document.getEleme
 initPage();
 </script>
 
+<!-- 研报加强弹窗 -->
+<div id="reportModal" onclick="if(event.target===this)closeReportModal()">
+  <div class="rm-box">
+    <div class="rm-head"><h3 id="rmTitle"></h3><button class="rm-close" onclick="closeReportModal()">×</button></div>
+    <div id="rmBody"></div>
+  </div>
+</div>
 </body>
 </html>
