@@ -3078,7 +3078,7 @@ const CATEGORY_CONFIG = {
 // 加载龙虎榜日历数据
 async function loadLhbData() {
   try {
-    const r = await fetch('./lh_calendar.json');
+    const r = await fetch('./lh_calendar.json?' + Date.now());
     if (r.ok) {
       LHB_CALENDAR_DATA = await r.json();
       console.log('✅ 龙虎榜数据加载成功:', Object.keys(LHB_CALENDAR_DATA).length, '天');
