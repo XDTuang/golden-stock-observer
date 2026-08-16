@@ -85,7 +85,7 @@ assert 'await loadLhbData()' not in html, "机游共振调用块未移除"
 
 # ── 3. HTML：独立登录门（在 <body> 之后注入）──
 GATE = """
-<!-- ═══════════ 独立版登录门（密码 ILOVEDB）═══════════ -->
+<!-- ═══════════ 独立版登录门（密码 DB20260816，7天有效）═══════════ -->
 <div class="diamond-gate" id="diamondGate">
   <div class="dg-card">
     <div class="dg-logo">\U0001F48E 兜宝金钻</div>
@@ -102,7 +102,7 @@ GATE = """
 assert "<body>" in html, "找不到 <body>"
 html = html.replace("<body>", "<body>\n" + GATE, 1)
 
-# ── 4. JS：ILOVEDB 鉴权 + 金钻数据仅在授权后加载 ──
+# ── 4. JS：DB20260816 鉴权（7天有效）+ 金钻数据仅在授权后加载 ──
 JS = """
 <script>
 (function(){
@@ -112,12 +112,14 @@ JS = """
   window.dgGo=function(){
     var p=document.getElementById('dgPw'); if(!p)return;
     var v=(p.value||'').trim();
-    if(v==='ILOVEDB'||v==='LYY'){
+    // 访问密码 DB20260816，有效期至 2026-08-23 18:00（7 天）；管理员 LYY 永久有效
+    var pwdOk = (v==='DB20260816' && Date.now()<Date.parse('2026-08-23T18:00:00+08:00')) || v==='LYY';
+    if(pwdOk){
       try{localStorage.setItem(KEY,'1');}catch(e){}
       dgHide();
       if(window.loadDiamondTab) loadDiamondTab();
     }else{
-      var e=document.getElementById('dgErr'); if(e)e.textContent='请联系管理员更新密码';
+      var e=document.getElementById('dgErr'); if(e)e.textContent='密码已失效，请联系管理员更新';
       p.value='';
     }
   };
