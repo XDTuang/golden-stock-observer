@@ -91,11 +91,15 @@ def collect_target_stocks():
         for s in gd.get('stocks', []):
             add(s.get('code'), s.get('name'), 'gd')
 
-    # 4. 龙虎榜（最新日）
+    # 4. 龙虎榜（最近一个有数据的交易日，跳过非交易日空数据）
     p = os.path.join(BASE, 'lh_calendar.json')
     if os.path.exists(p):
         lh = json.load(open(p, encoding='utf-8'))
-        latest_lh = lh[sorted(lh.keys())[-1]]
+        latest_lh = []
+        for _k in sorted(lh.keys(), reverse=True):
+            if lh[_k]:
+                latest_lh = lh[_k]
+                break
         for s in latest_lh:
             add(s.get('code'), s.get('name'), 'lhb')
 
