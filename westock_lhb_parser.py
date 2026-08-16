@@ -112,10 +112,11 @@ def generate_calendar(date_str):
 
     flt = f"(TRADE_DATE='{date_str}')"
 
-    # 1. 个股汇总（代码→名称 + 净买入额）
+    # 1. 个股汇总（代码→名称 + 净买入额 + 涨跌幅）
     details = _dc_get("RPT_DAILYBILLBOARD_DETAILS", flt, sort_col="BILLBOARD_NET_AMT")
     name_map = {}
     net_map = {}
+    change_map = {}
     for x in details:
         code = str(x.get("SECURITY_CODE") or "")
         if not code:
@@ -125,6 +126,10 @@ def generate_calendar(date_str):
             net_map[code] = float(x.get("BILLBOARD_NET_AMT") or 0)
         except (ValueError, TypeError):
             net_map[code] = 0.0
+        try:
+            change_map[code] = float(x.get("CHANGE_RATE") or 0)
+        except (ValueError, TypeError):
+            change_map[code] = 0.0
 
     # 2. 席位明细（按股票聚合机构买入额 + 游资买入额）
     seats = _dc_get("RPT_BILLBOARD_DAILYDETAILSBUY", flt, sort_col="BUY")
@@ -167,6 +172,7 @@ def generate_calendar(date_str):
             'inst_net': round(inst_net, 2),
             'retail_net': round(retail_net, 2),
             'total_net': round(total_net_e, 2),
+            'change_pct': round(change_map.get(code, 0.0), 2),
             'category': category,
             'reason': reason,
             'has_hotmoney': has_hotmoney,

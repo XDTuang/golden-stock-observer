@@ -1647,7 +1647,7 @@ td { border-color: var(--border-light); }
     <div class="section-title" id="calDetailTitle">选中日期详情</div>
     <div style="overflow-x:auto;">
       <table id="calDetailTable" style="width:100%;border-collapse:collapse;font-size:13px;background:var(--card-bg);border-radius:12px;overflow:hidden;">
-        <thead><tr style="background:var(--bg-subtle);"><th>代码</th><th>名称</th><th>机构净买</th><th>游资净买</th><th>分类/标记</th></tr></thead>
+        <thead><tr style="background:var(--bg-subtle);"><th>代码</th><th>名称</th><th>涨跌幅</th><th>机构净买</th><th>游资净买</th><th>分类/标记</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -1659,7 +1659,7 @@ td { border-color: var(--border-light); }
     <div style="overflow-x:auto;">
       <table id="calAllTable" style="width:100%;border-collapse:collapse;font-size:13px;background:var(--card-bg);border-radius:12px;overflow:hidden;">
         <thead><tr style="background:var(--bg-subtle);">
-          <th>日期</th><th>代码</th><th>名称</th><th>机构净买</th><th>游资净买</th><th>合计净买</th><th>分类/标记</th>
+          <th>日期</th><th>代码</th><th>名称</th><th>涨跌幅</th><th>机构净买</th><th>游资净买</th><th>合计净买</th><th>分类/标记</th>
         </tr></thead>
         <tbody></tbody>
       </table>
@@ -3252,6 +3252,7 @@ function showCalDetail(dateKey) {
   
   const fmtY = v => (v==null||isNaN(v)) ? '—' : (v>=0?'+':'') + Number(v).toFixed(2) + '亿';
   const yColor = v => (v==null||isNaN(v)) ? 'inherit' : (v>=0 ? '#e74c3c' : '#27ae60');
+  const fmtChg = v => (v==null||isNaN(v)) ? '—' : (v>=0?'+':'') + Number(v).toFixed(2) + '%';
   
   let tbody = '';
   Object.keys(CATEGORY_CONFIG).forEach(cat => {
@@ -3260,7 +3261,7 @@ function showCalDetail(dateKey) {
     
     const cfg = CATEGORY_CONFIG[cat];
     tbody += `<tr style="background:${cfg.bg}">
-      <td colspan="5" style="font-weight:600;color:${cfg.color};padding:8px;">
+      <td colspan="6" style="font-weight:600;color:${cfg.color};padding:8px;">
         ${cfg.label} (${stocks.length}只) — ${cfg.desc}
       </td>
     </tr>`;
@@ -3269,6 +3270,7 @@ function showCalDetail(dateKey) {
       tbody += `<tr>
         <td>${s.code}</td>
         <td style="font-weight:600;">${s.name}${reportBadge(s.code)}</td>
+        <td style="color:${yColor(s.change_pct)};font-weight:600;">${fmtChg(s.change_pct)}</td>
         <td style="color:${yColor(s.inst_net)};font-weight:600;">${fmtY(s.inst_net)}</td>
         <td style="color:${yColor(s.retail_net)};font-weight:600;">${fmtY(s.retail_net)}</td>
         <td>${s.reason || '—'}${s.has_hotmoney ? ' · 游资' : ''}</td>
@@ -3287,6 +3289,7 @@ function renderCalAllTable(data) {
   const dates = Object.keys(data).sort((a,b) => b.localeCompare(a)); // 降序
   const fmtY = v => (v==null||isNaN(v)) ? '—' : (v>=0?'+':'') + Number(v).toFixed(2) + '亿';
   const yColor = v => (v==null||isNaN(v)) ? 'inherit' : (v>=0 ? '#e74c3c' : '#27ae60');
+  const fmtChg = v => (v==null||isNaN(v)) ? '—' : (v>=0?'+':'') + Number(v).toFixed(2) + '%';
   
   dates.forEach(d => {
     const dayData = data[d];
@@ -3302,6 +3305,7 @@ function renderCalAllTable(data) {
         <td style="white-space:nowrap;">${d}</td>
         <td>${s.code}</td>
         <td style="font-weight:600;">${s.name}${reportBadge(s.code)}</td>
+        <td style="color:${yColor(s.change_pct)};font-weight:600;">${fmtChg(s.change_pct)}</td>
         <td style="color:${yColor(s.inst_net)};font-weight:600;">${fmtY(s.inst_net)}</td>
         <td style="color:${yColor(s.retail_net)};font-weight:600;">${fmtY(s.retail_net)}</td>
         <td style="color:${yColor(s.total_net)};font-weight:600;">${fmtY(s.total_net)}</td>
@@ -3311,7 +3315,7 @@ function renderCalAllTable(data) {
   });
   
   const el = document.querySelector('#calAllTable tbody');
-  if (el) el.innerHTML = tbody || '<tr><td colspan="7" style="text-align:center;padding:20px;color:#999;">暂无龙虎榜数据</td></tr>';
+  if (el) el.innerHTML = tbody || '<tr><td colspan="8" style="text-align:center;padding:20px;color:#999;">暂无龙虎榜数据</td></tr>';
 }
 
 // 月初至今累计净买入 TOP10（机构+游资合计） / 机构净卖出 TOP10（机构合计）
