@@ -34,6 +34,21 @@ GROUPS = [
 NON_TEXT_EXT = ('.ppt', '.pptx', '.pdf', '.mp3', '.m4a', '.wav', '.aac', '.amr', '.mp4', '.mov', '.avi')
 
 
+def _find_zsxq_cli():
+    """查找 zsxq-cli（优先 PATH，launchd 环境 PATH 不含时 fallback 到 WorkBuddy connector 完整路径）。"""
+    import shutil
+    p = shutil.which('zsxq-cli')
+    if p:
+        return 'zsxq-cli'
+    for c in [
+        '/Users/samt/.workbuddy/binaries/node/cli-connector-packages/bin/zsxq-cli',
+        os.path.expanduser('~/.workbuddy/binaries/node/cli-connector-packages/bin/zsxq-cli'),
+    ]:
+        if os.path.exists(c):
+            return c
+    return 'zsxq-cli'  # 兜底：subprocess 抛 FileNotFoundError，被 try/except 容错
+
+
 def today_str():
     return datetime.date.today().strftime('%Y-%m-%d')
 
@@ -99,11 +114,12 @@ def fetch_zsxq_reports():
         except Exception:
             pass
     reports = []
+    cli = _find_zsxq_cli()
     for gid, gname in GROUPS:
         print(f"  📡 拉取 [{gname}] 最近主题...")
         try:
             r = subprocess.run(
-                ['zsxq-cli', 'group', '+topics', '--group-id', gid, '--limit', '30', '--json'],
+                [cli, 'group', '+topics', '--group-id', gid, '--limit', '30', '--json'],
                 capture_output=True, text=True, timeout=60)
             if r.returncode != 0 or not r.stdout.strip():
                 print(f"    ⚠️ 跳过（无权限或返回空）")

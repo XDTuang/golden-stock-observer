@@ -111,6 +111,7 @@ git add -f index.html signals.json lh_calendar.json \
   output/golden_diamond.json output/golden_diamond_history.json output/sector_golden_diamond_history.json \
   output/observation_pool.json \
   output/gate_data.json \
+  output/report_analysis.json \
   output/golden_pool_*.json output/golden_pool_meta.json output/golden_pool_manifest.json \
   output/stocks.json \
   output/sh_index_kline.json output/sz_index_kline.json output/cyb_index_kline.json output/kc50_index_kline.json output/hs300_index_kline.json \

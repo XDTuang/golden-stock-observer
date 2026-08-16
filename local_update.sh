@@ -27,6 +27,8 @@ else
 fi
 
 echo "[$(date)] 构建并发布钻石副站..." >> "$LOG"
+# 研报数据同步到副站（金钻 tab 研报徽章依赖 diamond_site/output/report_analysis.json）
+cp output/report_analysis.json diamond_site/output/report_analysis.json 2>/dev/null || true
 if /Users/samt/.workbuddy/binaries/python/envs/default/bin/python3 _build_diamond.py >> "$LOG" 2>&1; then
   # 失效 index stat 缓存，防止 racy-git：_build_diamond.py 写入与 git add 落在同一秒时，
   # git 按 stat 误判文件未变而漏提交数据更新（曾导致副站演化历史停在昨日）
