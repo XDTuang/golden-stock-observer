@@ -20,6 +20,9 @@ jobs:
       TZ: Asia/Shanghai
       PYTHON: python
       LIMIT: '800'
+      # 研报数据源（知识星球 api.zsxq.com）。在仓库 Settings→Secrets 配置 ZSXQ_ACCESS_TOKEN。
+      # 未配置时 report_analysis.py 会保留本机已推的研报数据、不覆盖、不中断主流程。
+      ZSXQ_ACCESS_TOKEN: ${{ secrets.ZSXQ_ACCESS_TOKEN }}
 
     steps:
       - name: Checkout
@@ -89,7 +92,7 @@ jobs:
           for f in index.html signals.json .nojekyll \
             output/top10_history.json output/sector_flow.json output/national_team_etf.json \
             output/golden_diamond.json output/golden_diamond_history.json output/sector_golden_diamond_history.json \
-            output/observation_pool.json output/gate_data.json \
+            output/observation_pool.json output/gate_data.json output/report_analysis.json \
             output/golden_pool_meta.json output/golden_pool_manifest.json \
             output/stocks.json \
             output/sh_index_kline.json output/sz_index_kline.json output/cyb_index_kline.json \

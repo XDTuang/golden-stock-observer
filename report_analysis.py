@@ -14,7 +14,7 @@
 容错：zsxq-cli 不存在（如 GitHub Actions 云端）或拉取失败时，若已有
 report_analysis.json 则保留不动（不覆盖、不中断主流程）。
 """
-import json, os, re, subprocess, time, random, datetime, sys
+import json, os, re, subprocess, time, random, datetime, sys, urllib.request
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(BASE, "output")
@@ -102,8 +102,54 @@ def collect_target_stocks():
     return stocks
 
 
+def _fetch_group_via_http(gid, token, retries=3):
+    """HTTP API 直调拉取单个星球最近主题（云端/有 token 时）。返回 report dict 列表。
+
+    付费星球接口偶发返回 succeeded=false（限流抖动），故内置重试 + 随机间隔。
+    """
+    url = f"https://api.zsxq.com/v2/groups/{gid}/topics?scope=all&count=20"
+    headers = {
+        'Cookie': f'zsxq_access_token={token}',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
+    }
+    last_err = None
+    for attempt in range(retries):
+        try:
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                data = json.loads(resp.read().decode('utf-8'))
+            if not data.get('succeeded'):
+                last_err = RuntimeError('succeeded=false')
+                if attempt < retries - 1:
+                    time.sleep(random.uniform(2, 4))
+                    continue
+                raise last_err
+            out = []
+            for t_item in (data.get('resp_data', {}) or {}).get('topics', []):
+                talk = t_item.get('talk', {}) or {}
+                out.append({
+                    'group': t_item.get('group', {}).get('name', ''),
+                    'title': t_item.get('title', '') or '',
+                    'content': talk.get('text', '') or '',
+                    'create_time': t_item.get('create_time', '') or '',
+                    'files': talk.get('files', []) or [],
+                    'type': t_item.get('type', ''),
+                })
+            return out
+        except Exception as e:
+            last_err = e
+            if attempt < retries - 1:
+                time.sleep(random.uniform(2, 4))
+                continue
+    raise last_err
+
+
 def fetch_zsxq_reports():
-    """拉取各星球最近主题（每天一次，按日期缓存；低频 + 随机间隔模仿普通用户）。"""
+    """拉取各星球最近主题（每天一次，按日期缓存；低频 + 随机间隔模仿普通用户）。
+
+    优先用 ZSXQ_ACCESS_TOKEN（环境变量/GitHub Secrets）直调 HTTP API（云端可用）；
+    无 token 时回退到本机 zsxq-cli（WorkBuddy 登录态）。
+    """
     t = today_str()
     if os.path.exists(CACHE):
         try:
@@ -114,31 +160,52 @@ def fetch_zsxq_reports():
         except Exception:
             pass
     reports = []
-    cli = _find_zsxq_cli()
-    for gid, gname in GROUPS:
-        print(f"  📡 拉取 [{gname}] 最近主题...")
-        try:
-            r = subprocess.run(
-                [cli, 'group', '+topics', '--group-id', gid, '--limit', '30', '--json'],
-                capture_output=True, text=True, timeout=60)
-            if r.returncode != 0 or not r.stdout.strip():
-                print(f"    ⚠️ 跳过（无权限或返回空）")
-                time.sleep(random.uniform(2, 5))
-                continue
-            data = json.loads(r.stdout)
-            for t_item in data.get('topics_brief', []):
-                reports.append({
-                    'group': gname,
-                    'title': t_item.get('title', '') or '',
-                    'content': t_item.get('content', '') or '',
-                    'create_time': t_item.get('create_time', '') or '',
-                    'files': t_item.get('files', []) or [],
-                    'type': t_item.get('type', ''),
-                })
-        except Exception as e:
-            print(f"    ⚠️ 拉取失败: {e}")
-        # 模仿普通用户阅览频次：随机间隔 2-5 秒
-        time.sleep(random.uniform(2, 5))
+    token = os.environ.get('ZSXQ_ACCESS_TOKEN', '').strip()
+    if token:
+        # 云端 / 有 token：HTTP API 直调（知识星球 api.zsxq.com，无需本机 zsxq-cli）
+        print(f"  🌐 使用 HTTP API 直调（token 已配置）")
+        for gid, gname in GROUPS:
+            print(f"  📡 拉取 [{gname}] 最近主题...")
+            try:
+                items = _fetch_group_via_http(gid, token)
+                for it in items:
+                    it['group'] = it['group'] or gname
+                    reports.append(it)
+                print(f"    ✓ {len(items)} 条")
+            except Exception as e:
+                print(f"    ⚠️ 拉取失败: {type(e).__name__}: {str(e)[:120]}")
+            # 模仿普通用户阅览频次：随机间隔 2-5 秒
+            time.sleep(random.uniform(2, 5))
+    else:
+        # 本机无 token：回退 zsxq-cli
+        print(f"  💻 无 token，回退本机 zsxq-cli")
+        cli = _find_zsxq_cli()
+        for gid, gname in GROUPS:
+            print(f"  📡 拉取 [{gname}] 最近主题...")
+            try:
+                r = subprocess.run(
+                    [cli, 'group', '+topics', '--group-id', gid, '--limit', '30', '--json'],
+                    capture_output=True, text=True, timeout=60)
+                if r.returncode != 0 or not r.stdout.strip():
+                    print(f"    ⚠️ 跳过（无权限或返回空）")
+                    time.sleep(random.uniform(2, 5))
+                    continue
+                data = json.loads(r.stdout)
+                for t_item in data.get('topics_brief', []):
+                    reports.append({
+                        'group': gname,
+                        'title': t_item.get('title', '') or '',
+                        'content': t_item.get('content', '') or '',
+                        'create_time': t_item.get('create_time', '') or '',
+                        'files': t_item.get('files', []) or [],
+                        'type': t_item.get('type', ''),
+                    })
+            except FileNotFoundError:
+                print(f"    ⚠️ zsxq-cli 不存在，跳过")
+            except Exception as e:
+                print(f"    ⚠️ 拉取失败: {e}")
+            # 模仿普通用户阅览频次：随机间隔 2-5 秒
+            time.sleep(random.uniform(2, 5))
     json.dump({'fetched_date': t, 'reports': reports}, open(CACHE, 'w', encoding='utf-8'), ensure_ascii=False)
     print(f"  ✓ 拉取完成，共 {len(reports)} 条主题")
     return reports
