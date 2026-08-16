@@ -101,6 +101,8 @@ jobs:
           done
           # golden_pool_*.json 可能不存在（空池日）
           ls output/golden_pool_*.json 2>/dev/null | while read f; do git add -f "$f"; done
+          # 重要事件日历（按月缓存，fetch_event_calendar.py 产出）
+          ls output/event_calendar_*.json 2>/dev/null | while read f; do git add -f "$f"; done
 
           if git diff --cached --quiet; then
             echo "无更改，跳过推送"

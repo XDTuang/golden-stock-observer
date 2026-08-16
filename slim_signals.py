@@ -263,6 +263,9 @@ def main():
     sizes["output/report_analysis.json"] = copy_file("report_analysis.json", "output")
     # 观测池历史（按日期缓存，供前端日期选择器读取；全字段含细化指标供 XLS 导出）
     sizes["output/observation_pool.json"] = copy_file("observation_pool.json", "output")
+    # 重要事件日历（按月缓存，东财财经日历接口抓取）
+    for ec in glob.glob(os.path.join(BASE, "output", "event_calendar_*.json")):
+        shutil.copy2(ec, os.path.join(DEPLOY, "output", os.path.basename(ec)))
 
     # 2.5 复制指数 K 线数据
     for kfile in ["sh_index_kline.json", "sz_index_kline.json", "cyb_index_kline.json", "kc50_index_kline.json", "hs300_index_kline.json"]:

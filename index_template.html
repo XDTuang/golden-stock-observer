@@ -1146,6 +1146,16 @@ td { border-color: var(--border-light); }
 .eventcal-detail-row .ecr-data .label { color: var(--text-muted); font-size: 11px; }
 .eventcal-detail-row .ecr-data .val.published { color: #27ae60; font-weight: 700; }
 .eventcal-detail-row .ecr-data .val.unpublished { color: var(--text-muted); }
+.eventcal-legend { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+.eventcal-legend .lg-item { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-muted); }
+.eventcal-legend .lg-dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; }
+.eventcal-legend .lg-dot.high { background: rgba(231,76,60,.4); border-left: 2px solid #e74c3c; }
+.eventcal-legend .lg-dot.published { background: rgba(46,204,113,.3); border-left: 2px solid #27ae60; }
+.eventcal-legend .lg-dot.unpublished { background: rgba(255,255,255,.1); border-left: 2px solid var(--border); }
+.eventcal-legend .lg-dot.today { background: rgba(99,102,241,.3); border-left: 2px solid var(--accent); }
+.eventcal-legend .lg-hint { margin-left: auto; font-size: 11px; color: var(--text-muted); }
+.eventcal-empty { padding: 48px 20px; text-align: center; color: var(--text-muted); }
+.eventcal-empty .e-title { font-size: 15px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; }
 </style>
 </head>
 <body>
@@ -1729,6 +1739,13 @@ td { border-color: var(--border-light); }
         <button class="cal-nav-btn" onclick="eventcalNext()">下月 ›</button>
         <button class="cal-nav-btn" onclick="eventcalJumpToday()">回到本月</button>
       </div>
+    </div>
+    <div class="eventcal-legend">
+      <span class="lg-item"><span class="lg-dot high"></span>高重要</span>
+      <span class="lg-item"><span class="lg-dot published"></span>已发布 ✓</span>
+      <span class="lg-item"><span class="lg-dot unpublished"></span>未发布</span>
+      <span class="lg-item"><span class="lg-dot today"></span>今天</span>
+      <span class="lg-hint">点击日期查看详情 · 数据源接入后可自动抓取</span>
     </div>
     <div id="eventcalGrid" style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
       <div style="padding:40px;text-align:center;color:var(--text-muted);">加载中...</div>
@@ -5251,9 +5268,12 @@ initPage();
 // ═══════════ 重要事件日历（按月缓存 · 周视图 · 已发布检测）═══════════
 let eventcalCurrentMonth = null;
 let eventcalDataCache = {};
+function eventcalEsc(s) {
+  return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 const eventcalCountryFlag = {
   '中国':'🇨🇳', '美国':'🇺🇸', '日本':'🇯🇵', '英国':'🇬🇧',
-  '欧盟':'🇪🇺', '德国':'🇩🇪', '法国':'🇫🇷', '意大利':'🇮🇹',
+  '欧盟':'🇪🇺', '欧元区':'🇪🇺', '德国':'🇩🇪', '法国':'🇫🇷', '意大利':'🇮🇹',
   '加拿大':'🇨🇦', '澳大利亚':'🇦🇺', '韩国':'🇰🇷', '新加坡':'🇸🇬',
   '巴西':'🇧🇷', '马来西亚':'🇲🇾', '泰国':'🇹🇭', '印度':'🇮🇳',
   '俄罗斯':'🇷🇺', '中国香港':'🇭🇰'
@@ -5331,6 +5351,17 @@ async function eventcalRender() {
   const todayStr = eventcalFormatDate(new Date());
 
   document.getElementById('eventcalMonthLabel').textContent = `${year}年${month}月 · 重要事件日历`;
+
+  // 空态：该月份无数据（数据源暂未覆盖或尚未生成）
+  if (!data || !data.events || Object.keys(data.events).length === 0) {
+    document.getElementById('eventcalUpdated').textContent = '本月暂无事件数据';
+    document.getElementById('eventcalGrid').innerHTML =
+      '<div class="eventcal-empty"><div class="e-title">📅 本月暂无事件数据</div>' +
+      '<div>该月份尚未生成事件日历，可点击「回到本月」查看当前月份。</div></div>';
+    document.getElementById('eventcalDetail').style.display = 'none';
+    return;
+  }
+
   document.getElementById('eventcalUpdated').innerHTML =
     `更新于 ${generatedAt} · 事件 ${totalEvents} 条 · <span style="color:#27ae60;">已发布 ${publishedEvents}</span> · 周度长线`;
 
@@ -5364,9 +5395,10 @@ async function eventcalRender() {
         const flag = eventcalCountryFlag[e.country] || (e.country ? e.country.substring(0, 1) : '');
         const ecCls = e.has_data ? 'published' : 'unpublished';
         const highCls = e.importance === 'high' ? ' high' : '';
-        const txt = e.time ? `${e.time} ${e.name}` : e.name;
+        const nameEsc = eventcalEsc(e.name);
+        const txt = e.time ? `${e.time} ${nameEsc}` : nameEsc;
         const dataMark = e.has_data ? ' ✓' : '';
-        const titleAttr = `${e.name||''} | ${e.category||''} | ${e.country||''}${e.has_data ? ' | 已发布' : ''}`.replace(/"/g, '&quot;');
+        const titleAttr = eventcalEsc(`${e.name||''} | ${e.category||''} | ${e.country||''}${e.has_data ? ' | 已发布' : ''}`);
         html += `<span class="eventcal-event ${ecCls}${highCls}" title="${titleAttr}">` +
           `<span class="ec-flag">${flag}</span>${txt}${dataMark}</span>`;
       }
@@ -5390,22 +5422,25 @@ function eventcalShowDay(ds) {
     for (const e of dayEvents) {
       const flag = eventcalCountryFlag[e.country] || (e.country ? e.country.substring(0, 1) : '');
       html += `<div class="eventcal-detail-row">`;
+      const isEvt = e.category === '事件';
       const statusMark = e.has_data
-        ? '<span style="color:#27ae60;font-size:11px;margin-left:6px;">✓ 已发布</span>'
+        ? (isEvt
+          ? '<span style="color:#27ae60;font-size:11px;margin-left:6px;">✓ 已发生</span>'
+          : '<span style="color:#27ae60;font-size:11px;margin-left:6px;">✓ 已公布</span>')
         : '<span style="color:var(--text-muted);font-size:11px;margin-left:6px;">未发布</span>';
-      html += `<div class="ecr-name"><span class="ec-flag">${flag}</span>${e.name || '—'} ${statusMark}</div>`;
-      html += `<div class="ecr-meta">${e.category || ''} · ${e.region || e.country || ''} · ${e.importance || ''} · ${e.time || '全天'}</div>`;
+      html += `<div class="ecr-name"><span class="ec-flag">${flag}</span>${eventcalEsc(e.name) || '—'} ${statusMark}</div>`;
+      html += `<div class="ecr-meta">${eventcalEsc(e.category || '')} · ${eventcalEsc(e.region || e.country || '')} · ${eventcalEsc(e.importance || '')} · ${eventcalEsc(e.time || '全天')}</div>`;
       if (e.has_data && (e.actual_value || e.previous_value || e.forecast_value)) {
         html += '<div class="ecr-data">';
-        if (e.actual_value) html += `<div><div class="label">实际值</div><div class="val published">${e.actual_value}</div></div>`;
-        if (e.previous_value) html += `<div><div class="label">前值</div><div class="val">${e.previous_value}</div></div>`;
-        if (e.forecast_value) html += `<div><div class="label">预期值</div><div class="val">${e.forecast_value}</div></div>`;
+        if (e.actual_value) html += `<div><div class="label">实际值</div><div class="val published">${eventcalEsc(e.actual_value)}</div></div>`;
+        if (e.previous_value) html += `<div><div class="label">前值</div><div class="val">${eventcalEsc(e.previous_value)}</div></div>`;
+        if (e.forecast_value) html += `<div><div class="label">预期值</div><div class="val">${eventcalEsc(e.forecast_value)}</div></div>`;
         html += '</div>';
       } else if (e.has_data) {
-        html += `<div class="ecr-data" style="grid-template-columns:1fr;"><div><div class="label">发布时间</div><div class="val published">${e.published_at || '—'}</div></div></div>`;
+        html += `<div class="ecr-data" style="grid-template-columns:1fr;"><div><div class="label">发布时间</div><div class="val published">${eventcalEsc(e.published_at || '—')}</div></div></div>`;
       }
       if (e.description) {
-        html += `<div class="ecr-meta" style="margin-top:6px;color:var(--text-secondary);">${e.description}</div>`;
+        html += `<div class="ecr-meta" style="margin-top:6px;color:var(--text-secondary);">${eventcalEsc(e.description)}</div>`;
       }
       html += '</div>';
     }
