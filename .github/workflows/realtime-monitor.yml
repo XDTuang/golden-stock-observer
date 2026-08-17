@@ -1,0 +1,59 @@
+name: 实时盯盘盘中更新
+on:
+  schedule:
+    # ── A股交易日 9:30-15:00 每 30 分钟自动刷新（UTC = 北京 - 8h）──
+    # 半点：UTC 01:30-06:30 = 北京 09:30,10:30,11:30,12:30,13:30,14:30
+    - cron: '30 1-6 * * 1-5'
+    # 整点：UTC 02:00-07:00 = 北京 10:00,11:00,12:00,13:00,14:00,15:00
+    - cron: '0 2-7 * * 1-5'
+    # 说明：工作日(1-5)触发；周末/法定节假日由 fetch_realtime.py 内部交易日历拦截；
+    #       11:30-13:00 午休由脚本状态机拦截（不写文件、不重复推送）。
+  workflow_dispatch:  # 手动触发按钮（用于首次测试 / 补刷）
+
+concurrency:
+  group: realtime-monitor
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  realtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TZ: Asia/Shanghai
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: 抓取实时数据并计算五层信号
+        run: |
+          python fetch_realtime.py --out realtime.json
+
+      - name: 提交并推送（数据有变化才推）
+        run: |
+          if [ ! -f realtime.json ]; then
+            echo "ℹ️ 非盘中时段（未开盘/午休/收盘/非交易日），脚本未产出新数据，跳过推送"
+            exit 0
+          fi
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git add -f realtime.json
+          if git diff --cached --quiet; then
+            echo "ℹ️ 数据无变化，跳过推送"
+          else
+            git commit -m "实时盯盘数据: $(date '+%Y-%m-%d %H:%M')"
+            git push origin main
+            echo "✅ 已推送 realtime.json"
+          fi

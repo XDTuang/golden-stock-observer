@@ -1,0 +1,452 @@
+{
+ "meta": {
+  "updated_at": "2026-08-17 23:10:07",
+  "data_date": "2026-08-17",
+  "market_status": "closed",
+  "algorithm": "1.0.0",
+  "next_hint": "每 30 分钟自动刷新（交易日 9:30-15:00，GitHub Actions 驱动）"
+ },
+ "L0": {
+  "indexes": [
+   {
+    "code": "000001",
+    "name": "上证指数",
+    "price": 3982.65,
+    "chg_pct": 1.41,
+    "turnover_yi": 11128.2,
+    "high": 3983.51,
+    "low": 3924.47
+   },
+   {
+    "code": "399001",
+    "name": "深证成指",
+    "price": 14704.27,
+    "chg_pct": 2.44,
+    "turnover_yi": 12746.4,
+    "high": 14704.55,
+    "low": 14348.47
+   },
+   {
+    "code": "399006",
+    "name": "创业板指",
+    "price": 3740.16,
+    "chg_pct": 3.14,
+    "turnover_yi": 6290.7,
+    "high": 3740.16,
+    "low": 3604.17
+   },
+   {
+    "code": "000688",
+    "name": "科创50",
+    "price": 1788.85,
+    "chg_pct": 4.14,
+    "turnover_yi": 1272.0,
+    "high": 1788.85,
+    "low": 1718.61
+   },
+   {
+    "code": "000300",
+    "name": "沪深300",
+    "price": 4741.1,
+    "chg_pct": 1.61,
+    "turnover_yi": 6576.0,
+    "high": 4742.4,
+    "low": 4662.72
+   },
+   {
+    "code": "000905",
+    "name": "中证500",
+    "price": 8184.64,
+    "chg_pct": 2.43,
+    "turnover_yi": 4486.1,
+    "high": 8184.64,
+    "low": 7992.36
+   }
+  ],
+  "breadth": {
+   "up": 3563,
+   "down": 899,
+   "flat": 133,
+   "ratio": 3.96,
+   "limit_up": 110,
+   "limit_down": 3,
+   "main_net_yi": 396.48,
+   "turnover_yi": 19845.7,
+   "total": 4595
+  }
+ },
+ "L1": {
+  "sentiment": {
+   "score": 96,
+   "S1": 99,
+   "S2": 92,
+   "S3": 91,
+   "S4": 100,
+   "inputs": {
+    "ratio": 3.96,
+    "limit_up": 110,
+    "avg_idx_pct": 2.53,
+    "main_net_yi": 396.48
+   }
+  },
+  "state": {
+   "state": "overheat",
+   "label": "情绪过热预警",
+   "note": "情绪分极高/涨停过多，禁止追高，仓位收敛至上限以内",
+   "score": 96
+  }
+ },
+ "L2": {
+  "range": [
+   30,
+   50
+  ],
+  "note": "过热收敛，上限 50%，禁止新增追板仓位",
+  "rules": [
+   "单票仓位 ≤ 10%",
+   "单一板块集中度 ≤ 30%",
+   "账户回撤 > 5% 强制降半仓",
+   "情绪分 ≥ 85 触发追高禁令（只允许回踩低吸）"
+  ]
+ },
+ "L3": {
+  "sectors": [
+   {
+    "name": "电子",
+    "net_yi": 309.46,
+    "jumbo_yi": 286.39,
+    "block_yi": 23.07,
+    "pct": 4.22
+   },
+   {
+    "name": "半导体",
+    "net_yi": 195.48,
+    "jumbo_yi": 196.79,
+    "block_yi": -1.31,
+    "pct": 4.98
+   },
+   {
+    "name": "数字芯片设计",
+    "net_yi": 101.93,
+    "jumbo_yi": 99.85,
+    "block_yi": 2.08,
+    "pct": 5.62
+   },
+   {
+    "name": "通信网络设备及器件",
+    "net_yi": 63.82,
+    "jumbo_yi": 43.64,
+    "block_yi": 20.18,
+    "pct": 4.51
+   },
+   {
+    "name": "通信设备",
+    "net_yi": 59.63,
+    "jumbo_yi": 30.25,
+    "block_yi": 29.39,
+    "pct": 2.72
+   },
+   {
+    "name": "通信",
+    "net_yi": 55.59,
+    "jumbo_yi": 25.4,
+    "block_yi": 30.19,
+    "pct": 2.32
+   },
+   {
+    "name": "集成电路封测",
+    "net_yi": 46.09,
+    "jumbo_yi": 41.67,
+    "block_yi": 4.42,
+    "pct": 10.96
+   },
+   {
+    "name": "机械设备",
+    "net_yi": 45.56,
+    "jumbo_yi": 25.43,
+    "block_yi": 20.13,
+    "pct": 2.63
+   },
+   {
+    "name": "电力设备",
+    "net_yi": 39.99,
+    "jumbo_yi": 37.38,
+    "block_yi": 2.61,
+    "pct": 2.38
+   },
+   {
+    "name": "有色金属",
+    "net_yi": 39.82,
+    "jumbo_yi": 34.16,
+    "block_yi": 5.66,
+    "pct": 2.91
+   },
+   {
+    "name": "电子化学品Ⅲ",
+    "net_yi": 30.63,
+    "jumbo_yi": 23.45,
+    "block_yi": 7.17,
+    "pct": 6.74
+   },
+   {
+    "name": "电子化学品Ⅱ",
+    "net_yi": 30.63,
+    "jumbo_yi": 23.45,
+    "block_yi": 7.17,
+    "pct": 6.74
+   },
+   {
+    "name": "半导体材料",
+    "net_yi": 29.56,
+    "jumbo_yi": 23.82,
+    "block_yi": 5.74,
+    "pct": 6.59
+   },
+   {
+    "name": "光学光电子",
+    "net_yi": 29.41,
+    "jumbo_yi": 21.6,
+    "block_yi": 7.81,
+    "pct": 5.46
+   },
+   {
+    "name": "基础化工",
+    "net_yi": 28.62,
+    "jumbo_yi": 19.22,
+    "block_yi": 9.4,
+    "pct": 2.49
+   },
+   {
+    "name": "消费电子零部件及组装",
+    "net_yi": 27.09,
+    "jumbo_yi": 22.71,
+    "block_yi": 4.38,
+    "pct": 3.31
+   },
+   {
+    "name": "消费电子",
+    "net_yi": 26.89,
+    "jumbo_yi": 22.2,
+    "block_yi": 4.69,
+    "pct": 3.19
+   },
+   {
+    "name": "印制电路板",
+    "net_yi": 23.54,
+    "jumbo_yi": 17.49,
+    "block_yi": 6.04,
+    "pct": 2.4
+   },
+   {
+    "name": "面板",
+    "net_yi": 22.44,
+    "jumbo_yi": 15.63,
+    "block_yi": 6.8,
+    "pct": 8.27
+   },
+   {
+    "name": "工业金属",
+    "net_yi": 21.22,
+    "jumbo_yi": 20.09,
+    "block_yi": 1.13,
+    "pct": 4.5
+   }
+  ],
+  "mainline": "电子(+309.46亿) → 半导体(+195.48亿) → 数字芯片设计(+101.93亿)",
+  "resonance": [
+   "全市场涨停 110 只，情绪有温度",
+   "全市场主力净流入 +396.5 亿，资金面偏多",
+   "⚠ 资金高度集中于 电子，追高风险上升"
+  ],
+  "conc": {
+   "lead": "电子",
+   "ratio": 1.58,
+   "alert": true
+  }
+ },
+ "L4": {
+  "candidates": [
+   {
+    "code": "sz300308",
+    "name": "中际旭创",
+    "zdf": 6.15,
+    "zljlr": 21.27,
+    "lb": 1.09,
+    "hsl": 3.27,
+    "turnover_yi": 352.74,
+    "price": 1001.03,
+    "stype": "GP-A-CYB",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz000725",
+    "name": "京东方Ａ",
+    "zdf": 4.65,
+    "zljlr": 16.81,
+    "lb": 1.55,
+    "hsl": 6.2,
+    "turnover_yi": 130.49,
+    "price": 6.08,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sh603986",
+    "name": "兆易创新",
+    "zdf": 6.35,
+    "zljlr": 16.18,
+    "lb": 1.16,
+    "hsl": 8.81,
+    "turnover_yi": 257.1,
+    "price": 444.0,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz002475",
+    "name": "立讯精密",
+    "zdf": 3.99,
+    "zljlr": 12.29,
+    "lb": 1.27,
+    "hsl": 1.73,
+    "turnover_yi": 73.3,
+    "price": 58.84,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz000063",
+    "name": "中兴通讯",
+    "zdf": 2.77,
+    "zljlr": 11.97,
+    "lb": 1.21,
+    "hsl": 4.55,
+    "turnover_yi": 65.18,
+    "price": 36.02,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz300394",
+    "name": "天孚通信",
+    "zdf": 7.04,
+    "zljlr": 10.99,
+    "lb": 1.27,
+    "hsl": 5.8,
+    "turnover_yi": 178.99,
+    "price": 286.56,
+    "stype": "GP-A-CYB",
+    "type": "中继观察"
+   },
+   {
+    "code": "sh603259",
+    "name": "药明康德",
+    "zdf": 4.8,
+    "zljlr": 9.41,
+    "lb": 0.83,
+    "hsl": 2.79,
+    "turnover_yi": 113.65,
+    "price": 166.89,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sh601138",
+    "name": "工业富联",
+    "zdf": 3.08,
+    "zljlr": 8.7,
+    "lb": 1.18,
+    "hsl": 0.81,
+    "turnover_yi": 109.33,
+    "price": 68.23,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz300750",
+    "name": "宁德时代",
+    "zdf": 1.54,
+    "zljlr": 8.06,
+    "lb": 1.02,
+    "hsl": 0.48,
+    "turnover_yi": 80.93,
+    "price": 399.98,
+    "stype": "GP-A-CYB",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz002428",
+    "name": "云南锗业",
+    "zdf": 7.93,
+    "zljlr": 7.41,
+    "lb": 1.06,
+    "hsl": 16.77,
+    "turnover_yi": 117.61,
+    "price": 109.65,
+    "stype": "GP-A",
+    "type": "中继观察"
+   }
+  ],
+  "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
+  "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
+ },
+ "L5": {
+  "alerts": [
+   {
+    "level": "red",
+    "type": "情绪过热",
+    "msg": "情绪分 96 / 涨停 110 只 / 涨跌比 3.96，短线过热，禁止追高"
+   },
+   {
+    "level": "yellow",
+    "type": "板块集中",
+    "msg": "资金高度集中于 电子（第一/第二板块净流入比 1.58），拥挤度风险"
+   },
+   {
+    "level": "yellow",
+    "type": "普涨过热",
+    "msg": "涨跌比 3.96 接近极端，次日分歧概率上升，留意兑现"
+   }
+  ]
+ },
+ "ETF": {
+  "flows": [
+   {
+    "code": "sh510300",
+    "opendate": "2025-04-07",
+    "net_yi": 53.78,
+    "chg_pct": -6.67
+   },
+   {
+    "code": "sh510050",
+    "opendate": "2025-04-16",
+    "net_yi": 16.66,
+    "chg_pct": 0.85
+   },
+   {
+    "code": "sh588000",
+    "opendate": "2026-07-20",
+    "net_yi": 39.51,
+    "chg_pct": 0.39
+   },
+   {
+    "code": "sz159915",
+    "opendate": "2026-07-20",
+    "net_yi": 23.65,
+    "chg_pct": 0.23
+   },
+   {
+    "code": "sh510500",
+    "opendate": "2025-04-08",
+    "net_yi": 36.26,
+    "chg_pct": 0.7
+   },
+   {
+    "code": "sz159949",
+    "opendate": "2026-07-28",
+    "net_yi": 6.46,
+    "chg_pct": -8.09
+   }
+  ]
+ }
+}
