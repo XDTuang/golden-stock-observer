@@ -1313,6 +1313,7 @@ td { border-color: var(--border-light); }
 
 
 
+
 <!-- Tab: 实时盯盘 -->
 <div class="tab-content" id="tab-realtime">
 <style>
@@ -1506,7 +1507,6 @@ td { border-color: var(--border-light); }
 <script>
 
 (function(){
-window.REALTIME_DATA = __REALTIME_JSON__;
 
 function fmtYi(v){ if(v==null) return '--'; return (v>0?'+':'')+v.toFixed(2)+'亿'; }
 function fmtPct(v){ if(v==null) return '--'; return (v>0?'+':'')+v.toFixed(2)+'%'; }

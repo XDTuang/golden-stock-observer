@@ -401,6 +401,8 @@ def main():
     css = TEMPLATE.split("<style>")[1].split("</style>")[0]
     body_html = '<div class="wrap">' + TEMPLATE.split('<div class="wrap">')[1].split("<script>")[0]
     js = TEMPLATE.split("<script>")[1].split("</script>")[0]
+    # snippet 用 fetch 模式，必须删除内联占位符行（__REALTIME_JSON__ 在浏览器会 ReferenceError）
+    js = js.replace("window.REALTIME_DATA = __REALTIME_JSON__;\n", "")
     snippet = "<style>\n" + scope_css(css, "#tab-realtime") + "\n</style>\n" \
               + body_html + "\n<script>\n" + js + "\n</script>"
     with open(args.snippet, "w", encoding="utf-8") as f:
