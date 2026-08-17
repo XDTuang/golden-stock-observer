@@ -231,6 +231,7 @@ TEMPLATE = r"""<!DOCTYPE html>
 </div>
 
 <script>
+(function(){
 window.REALTIME_DATA = __REALTIME_JSON__;
 
 function fmtYi(v){ if(v==null) return '--'; return (v>0?'+':'')+v.toFixed(2)+'亿'; }
@@ -353,6 +354,7 @@ function initRT(){
       if(w) w.innerHTML='<div class="empty" style="padding:24px;text-align:center;color:var(--text-muted)">实时数据加载失败：'+e.message+'（请确认 realtime.json 已部署）</div>'; });
 }
 initRT();
+})();
 </script>
 </body>
 </html>
