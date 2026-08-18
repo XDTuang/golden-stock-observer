@@ -1317,6 +1317,7 @@ td { border-color: var(--border-light); }
 
 
 
+
 <!-- Tab: 实时盯盘 -->
 <div class="tab-content" id="tab-realtime">
 <style>
@@ -1423,11 +1424,21 @@ td { border-color: var(--border-light); }
 #tab-realtime   .empty{color:var(--text-muted);font-size:13px;padding:14px;text-align:center;
     background:var(--bg-subtle);border-radius:10px}
 #tab-realtime   .foot{color:var(--text-muted);font-size:11.5px;padding:12px 0 24px;text-align:center}
+
+  /* 手动刷新按钮（仅刷新本页数据与算法结论，不刷新整个网站） */
+#tab-realtime   .rt-refresh{margin-left:auto;display:inline-flex;align-items:center;gap:5px;
+    padding:7px 16px;border-radius:20px;border:1px solid var(--border);
+    background:var(--bg-surface);color:var(--accent);font-size:12.5px;font-weight:700;
+    cursor:pointer;box-shadow:var(--shadow-card);transition:all .15s;white-space:nowrap}
+#tab-realtime   .rt-refresh:hover{background:var(--accent-bg);border-color:rgba(79,110,247,.45)}
+#tab-realtime   .rt-refresh:active{transform:scale(.96)}
+#tab-realtime   .rt-refresh.loading{opacity:.65;pointer-events:none}
   @media(max-width:720px){
 #tab-realtime     .l1-grid{grid-template-columns:1fr}
 #tab-realtime     .sector-row{grid-template-columns:90px 1fr 70px}
 #tab-realtime     .sector-row .s-extra{display:none}
 #tab-realtime     .statusbar{gap:8px}
+#tab-realtime     .rt-refresh{margin-left:0}
   }
 </style>
 <div class="wrap">
@@ -1435,6 +1446,7 @@ td { border-color: var(--border-light); }
   <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
     <h1>👁 实时盯盘</h1>
     <span class="sub">五层决策架构 · 盘中每 30 分钟自动刷新（GitHub Actions 驱动）</span>
+    <button id="rtRefreshBtn" class="rt-refresh" type="button">🔄 刷新数据</button>
   </div>
 
   <!-- 数据状态条 -->
@@ -1626,16 +1638,41 @@ function render(){
 }
 function loadRT(showErr){
   // ?t= 时间戳防 GitHub Pages 缓存（与龙虎榜 fetch 同款处理）
-  return fetch('realtime.json?t='+Date.now()).then(r=>r.json()).then(d=>{ window.REALTIME_DATA=d; render(); })
+  return fetch('realtime.json?t='+Date.now()).then(r=>r.json()).then(d=>{ window.REALTIME_DATA=d; render(); return true; })
     .catch(e=>{ console.warn('实时数据刷新失败:', e);
       if(showErr){ const w=document.getElementById('tab-realtime')||document.querySelector('.wrap');
-      if(w) w.innerHTML='<div class="empty" style="padding:24px;text-align:center;color:var(--text-muted)">实时数据加载失败：'+e.message+'（请确认 realtime.json 已部署）</div>'; } });
+      if(w) w.innerHTML='<div class="empty" style="padding:24px;text-align:center;color:var(--text-muted)">实时数据加载失败：'+e.message+'（请确认 realtime.json 已部署）</div>'; }
+      return false; });
 }
 function initRT(){
   if (window.REALTIME_DATA && window.REALTIME_DATA.meta) { render(); return; }
   loadRT(true);
 }
 initRT();
+// 手动刷新按钮：仅重拉 realtime.json 并重渲染本页五层策略分析（不刷新整个网站）
+(function(){
+  const rtBtn = document.getElementById('rtRefreshBtn');
+  if(!rtBtn) return;
+  const RESTORE_MS = 2600;
+  function restore(){
+    rtBtn.textContent = '🔄 刷新数据';
+    rtBtn.classList.remove('loading');
+  }
+  rtBtn.addEventListener('click', function(){
+    if(rtBtn.classList.contains('loading')) return;
+    rtBtn.classList.add('loading');
+    rtBtn.textContent = '⏳ 更新中…';
+    loadRT(false).then(function(ok){
+      if(ok){
+        const t = (window.REALTIME_DATA && window.REALTIME_DATA.meta && window.REALTIME_DATA.meta.updated_at)||'';
+        rtBtn.textContent = t ? '✓ 已更新 '+t.slice(11,16) : '✓ 已更新';
+      } else {
+        rtBtn.textContent = '⚠ 更新失败（保留旧数据）';
+      }
+      setTimeout(restore, RESTORE_MS);
+    });
+  });
+})();
 // 盘中每 30 分钟自动重新拉取（GitHub Actions 每 30 分钟更新 realtime.json）。
 // 失败时保留旧数据不破坏页面（loadRT 的 showErr=false 仅 console.warn）。
 setInterval(function(){ loadRT(false); }, 30*60*1000);

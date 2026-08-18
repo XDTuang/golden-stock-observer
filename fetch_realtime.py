@@ -452,7 +452,12 @@ def main():
     if args.debug:
         payload["_raw_count"] = len(breadth.get("stocks") or [])
 
-    os.makedirs(os.path.dirname(args.out), exist_ok=True)
+    # --out 可能为根目录文件名（如 realtime.json，dirname 为 ''），需容错；
+    # 此前 os.makedirs('') 抛 FileNotFoundError，导致盘中 workflow run 必然失败
+    # （realtime.json 自 08-17 23:10 起从未被更新过）。
+    _out_dir = os.path.dirname(args.out)
+    if _out_dir:
+        os.makedirs(_out_dir, exist_ok=True)
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=1)
     print(f"\n✅ 已写入 {args.out}（情绪分 {sent['score']} / 状态 {l1['label']} / 仓位 {l2['range']}）")
