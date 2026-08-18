@@ -1314,6 +1314,7 @@ td { border-color: var(--border-light); }
 
 
 
+
 <!-- Tab: 实时盯盘 -->
 <div class="tab-content" id="tab-realtime">
 <style>
@@ -1621,13 +1622,21 @@ function render(){
     }).join('');
   } else etfEl.innerHTML = '<div class="empty">ETF 数据不可用</div>';
 }
+function loadRT(showErr){
+  // ?t= 时间戳防 GitHub Pages 缓存（与龙虎榜 fetch 同款处理）
+  return fetch('realtime.json?t='+Date.now()).then(r=>r.json()).then(d=>{ window.REALTIME_DATA=d; render(); })
+    .catch(e=>{ console.warn('实时数据刷新失败:', e);
+      if(showErr){ const w=document.getElementById('tab-realtime')||document.querySelector('.wrap');
+      if(w) w.innerHTML='<div class="empty" style="padding:24px;text-align:center;color:var(--text-muted)">实时数据加载失败：'+e.message+'（请确认 realtime.json 已部署）</div>'; } });
+}
 function initRT(){
   if (window.REALTIME_DATA && window.REALTIME_DATA.meta) { render(); return; }
-  fetch('realtime.json').then(r=>r.json()).then(d=>{ window.REALTIME_DATA=d; render(); })
-    .catch(e=>{ const w=document.getElementById('tab-realtime')||document.querySelector('.wrap');
-      if(w) w.innerHTML='<div class="empty" style="padding:24px;text-align:center;color:var(--text-muted)">实时数据加载失败：'+e.message+'（请确认 realtime.json 已部署）</div>'; });
+  loadRT(true);
 }
 initRT();
+// 盘中每 30 分钟自动重新拉取（GitHub Actions 每 30 分钟更新 realtime.json）。
+// 失败时保留旧数据不破坏页面（loadRT 的 showErr=false 仅 console.warn）。
+setInterval(function(){ loadRT(false); }, 30*60*1000);
 })();
 
 </script>

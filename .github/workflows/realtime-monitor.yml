@@ -20,7 +20,9 @@ permissions:
 jobs:
   realtime:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # 全市场分页(25页×15s超时)最坏 ~6.3 分钟 + 指数/板块/ETF + runner 冷启动；
+    # 原 10 分钟太紧，接口延迟波动时 run 被中途杀掉、realtime.json 漏更新。
+    timeout-minutes: 25
     env:
       TZ: Asia/Shanghai
     steps:

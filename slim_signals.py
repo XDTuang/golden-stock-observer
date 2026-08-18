@@ -17,6 +17,7 @@ import json
 import os
 import re
 import shutil
+import sys
 import tempfile
 import time
 import glob
@@ -24,7 +25,10 @@ import datetime as _dt
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 DEPLOY = os.path.join(BASE, "deploy")
-PYTHON_BIN = "/Users/samt/.workbuddy/binaries/python/envs/default/bin/python"
+# 云端(GitHub Actions, PYTHON=python) / 本机(未设 PYTHON 时用当前解释器) 均可移植。
+# 曾经硬编码本机绝对路径，导致云端 rebuild_html.py 从未执行成功、deploy/index.html
+# 长期停留在旧版本（实时盯盘 tab 每次数据更新后被旧页面覆盖而"消失"）。
+PYTHON_BIN = os.environ.get("PYTHON", sys.executable)
 
 # stocks 数组：保留 kline_preview(迷你K线) / four_volume(四量图) / 各 *_detail(详情弹窗)
 # 仅移除前端完全未使用的 ema_detail。
@@ -361,6 +365,14 @@ def main():
         print("  ✅ index.html 已生成并同步到 deploy/")
     else:
         print("  ⚠️ rebuild_html.py 失败")
+
+    # 4.1 注入实时盯盘 tab（幂等：已存在则跳过）。
+    #     此前仅在本地手动注入，云端每次 rebuild 后 tab 即丢失（被旧页面覆盖）。
+    ret = os.system(f'cd "{BASE}" && "{PYTHON_BIN}" inject_realtime_tab.py')
+    if ret == 0:
+        print("  ✅ 实时盯盘 tab 已注入 index.html / index_template.html / deploy/index.html")
+    else:
+        print("  ⚠️ inject_realtime_tab.py 执行异常（不影响主流程）")
 
     # 5. 确保 .nojekyll + 构建清单
     print("\n[5/5] .nojekyll + 构建清单...")
