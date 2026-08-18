@@ -491,15 +491,23 @@ def fetch_klines_full(codes, resume=True):
 
 
 def fetch_klines_daily(existing):
-    """增量日更：对缓存内每只股票只追加最新 K 线（count=8），不足则补满 250。"""
+    """增量日更：对缓存内每只股票只追加最新 K 线（count=8），不足则补满 250。
+
+    注意：腾讯 fqkline 接口对 count=N 实际返回 N+1 根（count=8 → 9 根），
+    曾用 len(nb)<=8 判断"增量"，导致 9 根被误判为全量、直接覆盖旧缓存
+    （250 根 → 9 根），多次日更后 94% 股票 K 线不足 60 根、全 A 门控
+    全部跳过、命中恒为 0。修复：按【请求的 count】区分增量/全量。"""
     print(f"  📈 增量日更 K线 (并发{CONCURRENCY}, 抖动{JITTER}, 多源兜底)...")
     _NAME.update({c: v.get("name", c) for c, v in existing.items()})
     tasks = []
+    task_counts = {}
     for code, stk in existing.items():
         bars = stk.get("kline", [])
         if len(bars) < MIN_BARS:
+            task_counts[code] = 250
             tasks.append(({"code": code, "name": stk.get("name", code), "market": code[:2]}, 250))
         else:
+            task_counts[code] = 8
             tasks.append(({"code": code, "name": stk.get("name", code), "market": code[:2]}, 8))
     print(f"  📦 待更新 {len(tasks)} 只（缓存 {len(existing)}）")
     new_res, ok = _run_pool(tasks)
@@ -507,8 +515,14 @@ def fetch_klines_daily(existing):
     for code, stk in new_res.items():
         ob = existing.get(code, {}).get("kline", [])
         nb = stk["kline"]
-        results[code] = {"code": code, "name": stk["name"], "market": code[:2],
-                         "kline": _merge_append(ob, nb) if len(nb) <= 8 else nb}
+        if task_counts.get(code, 250) <= 10:
+            # 增量追加：按日期去重合并（保留旧全量 + 最新几根）
+            results[code] = {"code": code, "name": stk["name"], "market": code[:2],
+                             "kline": _merge_append(ob, nb)}
+        else:
+            # 全量（250）重建：直接替换
+            results[code] = {"code": code, "name": stk["name"], "market": code[:2],
+                             "kline": nb}
     _save_klines(results, time.time(), len(tasks), len(tasks), "日更")
     print(f"  ✓ 日更完成：{len(results)} 只（更新 {ok}）")
     return results
