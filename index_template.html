@@ -1510,7 +1510,7 @@ html { scroll-behavior: smooth; }
 <div class="wrap">
 
   <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-    <h1>👁 实时盯盘</h1>
+    <h1>实时盯盘</h1>
     <span class="sub">五层决策架构 · 盘中每 30 分钟自动刷新（GitHub Actions 驱动）</span>
     <button id="rtRefreshBtn" class="rt-refresh" type="button">🔄 刷新数据</button>
   </div>
@@ -2003,7 +2003,7 @@ setInterval(function(){ loadRT(false); }, 30*60*1000);
 
   <!-- 首栏：当日金钻总览 + 简单分析 -->
   <div class="gd-overview" id="gdOverview">
-    <div class="gd-ov-title">💎 兜宝金钻 · 当日总览 <span id="gdDate"></span></div>
+    <div class="gd-ov-title">兜宝金钻 · 当日总览 <span id="gdDate"></span></div>
     <div class="gd-stats" id="gdStats"></div>
     <div class="gd-analysis" id="gdAnalysis">加载中…</div>
   </div>
@@ -2030,7 +2030,7 @@ setInterval(function(){ loadRT(false); }, 30*60*1000);
   <!-- 金钻池跟踪（合并卡，可折叠，默认折叠） -->
   <div class="gd-track collapsed" id="gdTrack">
     <div class="gd-track-head" id="gdTrackToggle">
-      <span class="t"><span class="gem">💎</span> 金钻池跟踪 · 近 20 交易日演化</span>
+      <span class="t">金钻池跟踪 · 近 20 交易日演化</span>
       <span class="chev">▾</span>
     </div>
     <div class="gd-track-body">
@@ -2583,7 +2583,7 @@ function renderStockCard(r, tabSuffix) {
     ${r.target_prices ? `
     <div class="target-row">
       <div class="target-item"><div class="t-label">🎯 短期目标</div><div class="t-price">¥${r.target_prices.short_term.price.toFixed(2)}</div><div class="t-pct">+${r.target_prices.short_term.pct}%</div></div>
-      <div class="target-item mid"><div class="t-label">📈 中期目标</div><div class="t-price">¥${r.target_prices.mid_term.price.toFixed(2)}</div><div class="t-pct">+${r.target_prices.mid_term.pct}%</div></div>
+      <div class="target-item mid"><div class="t-label">中期目标</div><div class="t-price">¥${r.target_prices.mid_term.price.toFixed(2)}</div><div class="t-pct">+${r.target_prices.mid_term.pct}%</div></div>
       <div class="target-item agg"><div class="t-label">🚀 强势目标</div><div class="t-price">¥${r.target_prices.aggressive.price.toFixed(2)}</div><div class="t-pct">+${r.target_prices.aggressive.pct}%</div></div>
       <div class="target-item stop"><div class="t-label">🛑 止损参考</div><div class="t-price">¥${r.target_prices.stop_loss.price.toFixed(2)}</div><div class="t-pct">${r.target_prices.stop_loss.pct}%</div></div>
     </div>` : ''}
@@ -2654,7 +2654,7 @@ function renderLongTerm() {
   const stocks = (window.SIGNALS_DATA.stocks||[]).filter(r => r.has_data && r.uptrend && r.inst_red);
   stocks.sort((a,b) => (b.score?.total_score||0) - (a.score?.total_score||0));
   document.getElementById('longCount').textContent = stocks.length;
-  document.getElementById('longGrid').innerHTML = stocks.length ? stocks.map(s => renderStockCard(s, 'long')).join('') : '<div class="empty-state"><div class="icon">📈</div>暂无中长线趋势确认信号</div>';
+  document.getElementById('longGrid').innerHTML = stocks.length ? stocks.map(s => renderStockCard(s, 'long')).join('') : '<div class="empty-state">暂无中长线趋势确认信号</div>';
 }
 
 // ===== 渲染EMA扫描 =====
@@ -3741,7 +3741,7 @@ function showCalDetail(dateKey) {
   
   const detailEl = document.getElementById('calDetail');
   const titleEl = document.getElementById('calDetailTitle');
-  titleEl.textContent = `📅 ${dateKey} 龙虎榜详情 (${arr.length}只)`;
+  titleEl.textContent = `${dateKey} 龙虎榜详情 (${arr.length}只)`;
   
   if (arr.length === 0) {
     detailEl.style.display = 'none';
@@ -4537,7 +4537,7 @@ function _renderIdxKline() {
         var chg = d.last && prevClose ? ((d.last-prevClose)/prevClose*100).toFixed(2) : '0.00';
         var clr = chg >= 0 ? up : down;
         return '<b>'+d.date+'</b><br/>'+
-          _idxKlineNames[_idxKlineCode]+' 📈 <b>'+(d.last?d.last.toFixed(2):'-')+'</b> '+
+          _idxKlineNames[_idxKlineCode]+' <b>'+(d.last?d.last.toFixed(2):'-')+'</b> '+
           '<span style="color:'+clr+'">'+(chg>=0?'+':'')+chg+'%</span><br/>'+
           '开:'+(d.open?d.open.toFixed(2):'-')+' 高:'+(d.high?d.high.toFixed(2):'-')+'<br/>'+
           '低:'+(d.low?d.low.toFixed(2):'-')+' 收:'+(d.last?d.last.toFixed(2):'-')+'<br/>'+
@@ -5794,7 +5794,7 @@ async function eventcalRender() {
   if (!data || !data.events || Object.keys(data.events).length === 0) {
     document.getElementById('eventcalUpdated').textContent = '本月暂无事件数据';
     document.getElementById('eventcalGrid').innerHTML =
-      '<div class="eventcal-empty"><div class="e-title">📅 本月暂无事件数据</div>' +
+      '<div class="eventcal-empty"><div class="e-title">本月暂无事件数据</div>' +
       '<div>该月份尚未生成事件日历，可点击「回到本月」查看当前月份。</div></div>';
     document.getElementById('eventcalDetail').style.display = 'none';
     return;
@@ -5855,7 +5855,7 @@ function eventcalShowDay(ds) {
     if (!data) return;
     const dayEvents = (data.events && data.events[ds]) || [];
     if (dayEvents.length === 0) { eventcalCloseDetail(); return; }
-    document.getElementById('eventcalDetailTitle').textContent = `📅 ${ds} · ${dayEvents.length} 个事件`;
+    document.getElementById('eventcalDetailTitle').textContent = `${ds} · ${dayEvents.length} 个事件`;
     let html = '';
     for (const e of dayEvents) {
       const flag = eventcalCountryFlag[e.country] || (e.country ? e.country.substring(0, 1) : '');
