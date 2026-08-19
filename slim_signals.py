@@ -336,8 +336,13 @@ def main():
             _gd["data_date"] = _dd
             _gd["updated_at"] = _gds.get("updated_at", "")
             _gd["default_gate"] = "pool"
+            # scope_size 取真实 TOP800 universe（与 gate_scan.load_top800_codes 一致），而非 0 hits
+            try:
+                _top800 = len(json.load(open(os.path.join(BASE, "output", "kline_raw.json"), encoding="utf-8")))
+            except Exception:
+                _top800 = 0
             _gd["gates"] = {
-                "pool": {"label": "原始兜宝金钻(云端兜底)", "scope_size": len(_pool_stocks) or _ov.get("total", 0),
+                "pool": {"label": "原始兜宝金钻(云端兜底)", "scope_size": _top800,
                          "overview": _ov, "stocks": _pool_stocks,
                          "chan": {"total": 0, "codes": []}},
                 "sector_top100_to4": {"label": "板块前100·换手≥4%(云端兜底)", "scope_size": 0,

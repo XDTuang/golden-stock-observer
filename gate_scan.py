@@ -677,7 +677,8 @@ def load_original_pool_gate():
         "analysis": ov_in.get("analysis") or _analysis(total, up, buy, hz, dd,
                                                        GATE_LABELS["pool"], total),
     }
-    return {"label": GATE_LABELS["pool"], "scope_size": total,
+    pool_scope = len(load_top800_codes())  # 显示真实 TOP800 universe（而非 0 hits）
+    return {"label": GATE_LABELS["pool"], "scope_size": pool_scope,
             "overview": ov, "stocks": stocks}
 
 
