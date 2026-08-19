@@ -1393,6 +1393,9 @@ html { scroll-behavior: smooth; }
 
 
 
+
+
+
 <!-- Tab: 实时盯盘 -->
 <div class="tab-content" id="tab-realtime">
 <style>
@@ -4768,6 +4771,14 @@ async function initPage() {
   // ── 主数据优先：总览 / 短线 / 中长线（绝不被日历异常中断）──
   var SIGNALS_DATA = window.SIGNALS_DATA;
   console.log('[兜金] SIGNALS_DATA 检查:', !!SIGNALS_DATA, 'stocks:', SIGNALS_DATA ? (SIGNALS_DATA.stocks||[]).length : 0);
+  if (!SIGNALS_DATA) {
+    // 兜底：signals.json 加载失败（CDN 偶发截断）时给出明确提示，避免页面永久停在"数据加载中"
+    const _ut = document.getElementById('updateTime');
+    if (_ut) _ut.innerHTML = '<span style="color:#ef4444">⚠️ 数据加载失败</span> — signals.json 下载异常（网络/CDN 偶发截断），请稍后刷新页面重试';
+    const _gd = document.getElementById('gdStatus');
+    if (_gd) _gd.textContent = '⚠️ signals.json 加载失败，数据未就绪。请刷新页面重试（或稍后再试）。';
+    console.warn('[兜金] signals.json 加载失败，页面数据未就绪，已提示用户刷新');
+  }
   if (SIGNALS_DATA) {
     console.log('[兜金] 开始渲染主数据（总览/短线/中长线）');
     const sigTime = (SIGNALS_DATA.generated_at||'未知').substring(0,19);

@@ -310,12 +310,21 @@ def main():
             json.dump({"data_date": "", "updated_at": "", "default_gate": "pool", "gates": {}}, f, ensure_ascii=False)
         print(f"  ⚠️  gate_data 缺失，已生成空 gate_data.json (兜底)")
 
-    # 2.7 兜底升级：若 gate_data 的 pool/sector 档位 stocks 为空（gate_scan 云端失败），用 golden_diamond.json
-    # 反向构建最小可用的 gate_data（让前端能看到命中列表，至少不"扫描范围 0"）
+    # 2.7 兜底升级：仅当 gate_data 整体为空（所有档 stocks 均为空且无任何命中）时，
+    # 用 golden_diamond.json 反向构建最小可用的 gate_data。
+    # 注意：不能只看 pool 档——TOP800 可能真实 0 命中但 all_a/sector 有命中（如 2026-08-19），
+    # 若误触发会覆盖掉正常的 all_a/sector 数据。
     with open(os.path.join(DEPLOY, "output", "gate_data.json"), "r", encoding="utf-8") as f:
         _gd = json.load(f)
-    _pool_empty = not _gd.get("gates", {}).get("pool", {}).get("stocks")
-    if _pool_empty:
+    _gates_all = _gd.get("gates", {})
+    _all_empty = True
+    for _gk, _gv in _gates_all.items():
+        _stocks_cnt = len(_gv.get("stocks") or [])
+        _ov_total = (_gv.get("overview") or {}).get("total") or 0
+        if _stocks_cnt > 0 or _ov_total > 0:
+            _all_empty = False
+            break
+    if _all_empty:
         _gd_src = os.path.join(DEPLOY, "output", "golden_diamond.json")
         if os.path.exists(_gd_src):
             with open(_gd_src, "r", encoding="utf-8") as f:
