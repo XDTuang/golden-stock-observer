@@ -164,6 +164,10 @@ def eval_freshness(latest_data_date: str,
     """
     now = now or _dt.datetime.now()
     expected = last_trading_day(now.date())
+    if not market_close_passed(now):
+        # 当日尚未收盘（盘前/盘中）：数据最晚只能到上一交易日，期望随之回退，
+        # 避免凌晨/早盘把「昨日收盘数据」误判为 stale（2026-08-20 修复）
+        expected = last_trading_day(now.date() - _dt.timedelta(days=1))
     latest = _parse(latest_data_date)
 
     status = "stale"

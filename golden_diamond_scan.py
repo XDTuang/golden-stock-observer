@@ -82,6 +82,23 @@ def scan(dry_run=False):
     with open(KLINE_RAW, "r", encoding="utf-8") as f:
         raw = json.load(f)
 
+    # ── K线新鲜度自检：kline_raw 最新交易日（防 19:59/20:11 时序错位 → 伪 0 命中）──
+    from market_calendar import last_trading_day  # noqa: 本地模块，非外部数据源
+    try:
+        _latest_in_raw = sorted({
+            (stock.get("kline") or [{}])[-1].get("date", "")
+            for stock in raw if (stock.get("kline") or [])
+        }, reverse=True)
+        _raw_date = _latest_in_raw[0] if _latest_in_raw else ""
+        _expected = str(last_trading_day())
+        if _raw_date != _expected:
+            print(f"  ⚠️  K线新鲜度警告: kline_raw 最新日期={_raw_date}（期望 {_expected}）")
+            print(f"     —— 上次 fetch_pool 可能未完整刷新 K线，金钻扫描结果将基于不完整数据！")
+            if not dry_run:
+                print("  ⚠️  建议先重跑 fetch_pool.py 再扫描（update_data.sh 已强制顺序）")
+    except Exception as _e:
+        print(f"  ⚠️  新鲜度自检跳过: {_e}")
+
     # ── 扫描宇宙：与主站“stock”信号池保持一致（2026-07-14 起生效）──
     # 用户要求 diamond 当前门控采用与主站股票池门控一致的策略：
     # 主站 data_pipeline.py 对 fetch_pool 拉取的「成交额 TOP-800」全量扫描，
@@ -132,6 +149,15 @@ def scan(dry_run=False):
     hz = sum(1 for e in hits if e["primary"].startswith("红区黄柱连续"))
     total = len(hits)
     data_date = hits[0]["last_date"] if hits else ""
+    if not data_date and raw:
+        # 0 命中时兜底：取 kline_raw 最新交易日，避免 overview.data_date 显示空串
+        try:
+            data_date = sorted({
+                (stock.get("kline") or [{}])[-1].get("date", "")
+                for stock in raw if (stock.get("kline") or [])
+            }, reverse=True)[0]
+        except Exception:
+            pass
 
     analysis = _make_analysis(total, up, buy, hz, data_date)
 

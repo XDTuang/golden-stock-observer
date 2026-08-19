@@ -48,6 +48,48 @@ echo ""
 echo "📊 Step 1: 获取候选池 + K线 + 计算信号"
 "$PYTHON" fetch_pool.py --limit "$LIMIT" ${NO_PIPELINE:-}
 
+# ── Step 1.5: K线新鲜度强制闸门 ──
+# 时序错位修复（2026-08-19）：golden_diamond_scan 曾在 fetch_pool 完整刷新前跑，产出伪 0 命中。
+# 此处校验 kline_raw 最新日期 == 最新交易日，不等则重跑 fetch_pool 增量，确保扫描基于完整 K线。
+echo ""
+echo "🔍 Step 1.5: K线新鲜度强制校验（kline_raw 最新日期 == 最新交易日）..."
+KLINE_FRESH=$("$PYTHON" -c "
+import json, os, sys
+sys.path.insert(0, '.')
+try:
+    from market_calendar import last_trading_day
+except Exception:
+    print('SKIP'); sys.exit(0)
+if not os.path.exists('output/kline_raw.json'):
+    print('MISSING'); sys.exit(0)
+raw = json.load(open('output/kline_raw.json', encoding='utf-8'))
+dates = sorted({(s.get('kline') or [{}])[-1].get('date','') for s in raw if (s.get('kline') or [])}, reverse=True)
+latest = dates[0] if dates else ''
+expected = str(last_trading_day())
+if latest == expected:
+    print(f'FRESH:{latest}')
+else:
+    print(f'STALE:{latest}:{expected}')
+")
+echo "  kline_raw: $KLINE_FRESH"
+if [[ "$KLINE_FRESH" == STALE* ]]; then
+  echo "  ⚠️  kline_raw 最新日期 ≠ 最新交易日，重跑 fetch_pool 增量补拉..."
+  "$PYTHON" fetch_pool.py --limit "$LIMIT" ${NO_PIPELINE:-} || echo "  ⚠️  补拉失败（继续，金钻扫描将基于现有数据）"
+  KLINE_FRESH2=$("$PYTHON" -c "
+import json, os, sys
+sys.path.insert(0, '.')
+try:
+    from market_calendar import last_trading_day
+except Exception:
+    print('SKIP'); sys.exit(0)
+raw = json.load(open('output/kline_raw.json', encoding='utf-8'))
+dates = sorted({(s.get('kline') or [{}])[-1].get('date','') for s in raw if (s.get('kline') or [])}, reverse=True)
+latest = dates[0] if dates else ''
+print(f'FRESH:{latest}' if latest == str(last_trading_day()) else f'STALE:{latest}')
+")
+  echo "  补拉后: $KLINE_FRESH2"
+fi
+
 echo ""
 echo "💎 Step 2: 金钻三子形态每日扫描（基于 kline_raw.json，复用验证版引擎）"
 "$PYTHON" golden_diamond_scan.py || echo "  ⚠️  金钻扫描失败（跳过，不影响主流程）"
