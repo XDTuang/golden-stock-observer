@@ -1,0 +1,43 @@
+name: Daily Review Market Update
+
+on:
+  schedule:
+    # 每交易日 08:15 北京时间 = 00:15 UTC（周一~五）
+    # 数据窗口: T-1 A股收盘 + 隔夜美股收盘 + T-1 日韩（日韩在云端不稳定，由本机补充）
+    - cron: '15 0 * * 1-5'
+  workflow_dispatch:   # 手动触发
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    env:
+      TZ: Asia/Shanghai
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Fetch daily review market quotes (Tencent public API, no key)
+        run: |
+          python3 fetch_daily_review_market.py || echo "fetch returned nonzero, continue to inspect output"
+
+      - name: Commit & Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/daily_review/market.json
+          if ! git diff --cached --quiet; then
+            git commit -m "daily-review: update market quotes $(date +%F)"
+            git push
+          else
+            echo "no changes (market.json unchanged)"
+          fi

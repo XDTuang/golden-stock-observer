@@ -1,0 +1,255 @@
+<!--
+  每日复盘 · 分析区（V2 完整结构 · 8/21 成品回填）
+  ── 行情表（drTblA/drTblH/drTblUs）= 主页面 renderDailyReview 注入 market.json 自动填充（云端自动 08:15）
+  ── 分析内容（结论/日韩/双日表/宏观/科技/新闻/指引/自检/来源）= 本机 agent 8/21 实测成品（数据可溯）
+  更新: 本机 WorkBuddy 会话 → 刷新 token → 抓星球摘要(低频) → AI 提炼 → 替换本文件分析区 → push
+-->
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
+  <b>🧠 每日复盘 · V2 完整结构</b>
+  <span class="dr-tag">行情 = 云端 08:15 自动</span>
+  <span class="dr-tag">分析 = 8/21 实测成品（本机回填）</span>
+  <span class="dr-tag">复盘日 2026-08-21（周五）｜ 指引日 08-24（周一）</span>
+</div>
+
+<!-- 0 结论先行 -->
+<div class="dr-h">0 · 结论先行（速览卡）</div>
+<div class="dr-card" style="margin-top:4px">
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0">
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px">
+      <div class="dr-tag">次日开盘预判</div><div style="font-weight:700;color:var(--orange)">震荡 · 不追高</div></div>
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px">
+      <div class="dr-tag">关注板块</div><div style="font-weight:600">锂矿/碳酸锂 · 贵金属 · CPO</div></div>
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px">
+      <div class="dr-tag">风险等级</div><div style="font-weight:700;color:var(--red)">中高（美债长端）</div></div>
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px">
+      <div class="dr-tag">关键事件</div><div style="font-weight:600">8/24 贝森特对伊 · 8/26 NVDA 财报</div></div>
+  </div>
+  <div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px">
+    <b>核心推演：</b>① A股 8/21 缩量反弹（沪深 1.88 万亿 &lt;2 万亿），有色/贵金属/锂矿/CPO 领涨、医药重挫 — 反弹未获量能确认，不追高、保留现金；② 隔夜美股 8/21 反弹（道指 +0.98%）但全周收跌（标普 -1.4%、纳指 -2%），10Y 4.734% / 30Y 5.273% 长端仍高企 — 美债抛售是核心矛盾，贝森特"回购翻倍至 40 亿美元"短期压收益率、利多黄金（中金口径）；③ 碳酸锂广期所主连 +4% 站上 15.7 万、8 月累计 +15%、排产创高 → 锂矿链（融捷涨停、永杉 +7.04%）是当前最强产业逻辑；④ SK 海力士《自然·电子学》：CPO 是 HBM 规模化关键、光互连扩展至内存接口 → 光模块新催化（CPO +1.48%、新易盛 +7%）；⑤ <b>映射背离警示</b>：8/21 美股存储回调（SNDK -0.28%、MU -0.77%），而 A股 8/21 存储/CPO 上涨 = 交易 8/20 美股存储暴涨（MU +3.97% 宣布 100 亿美元实验室）的滞后映射 → 周一防映射回落；⑥ 8/24 贝森特对伊"经济战"发布会 + 8/26 NVDA 财报 = 周中两大变量。
+  </div>
+</div>
+
+<!-- 1 昨日 A股 -->
+<div class="dr-h">1 · 昨日 A 股走势总结（8/21）</div>
+<div class="dr-card" style="margin-top:4px">
+  <div class="dr-tag" style="margin-bottom:4px">主要指数（云端自动填充）</div>
+  <div id="drTblA"></div>
+  <div class="dr-note" style="margin-top:6px">
+    <b>市场广度与资金：</b>两市成交 <b>1.88 万亿（沪深口径，Wind/财联社）</b>，较前日 20794 亿缩量约 2002 亿（跌破 2 万亿）｜ 约 2505 家上涨（涨停 57，交易所口径）｜ 2862 家下跌（跌停 14）｜ 主力净流入前十：中际旭创 <b>35.95 亿</b> 居首（新易盛/士兰微/湖南白银/生益科技/歌尔/紫金/沪电/白银有色/星网锐捷）<span style="color:var(--text-muted)">（Choice）</span>｜ 两融余额（8/20）：约 2.67 万亿，近两日回落（T+1 披露）。
+  </div>
+  <div class="dr-note">
+    <b>领涨：</b>有色金属（湖南白银/盛达资源涨停）、贵金属（赤峰黄金/招金黄金；美债回购翻倍→黄金受益）、锂矿（+3.77%，融捷涨停）、CPO/光模块（+1.48%，国瓷材料 +8%、新易盛 +7% 报 442 元）、通信（星网锐捷涨停）、液冷服务器（NVDA 800HVDC CDU）。
+  </div>
+  <div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--red);padding:8px 12px;border-radius:6px">
+    <b>领跌：</b>医药生物 <b>-3%+</b>（华兰疫苗/安科生物/博腾股份/哈药股份 跌停或跌超 10%；CRO、创新药领跌）；农林牧渔/美容护理/食品饮料/房地产/白酒/零售 跌超 1%。个股：中际旭创 +4.29% 报 943 元（267 亿）｜ 天孚通信 -1.15% 报 273.08｜ 宇树科技 -2.12% 报 672.41（换手 25.28%）。
+  </div>
+</div>
+
+<!-- 1.1 前一日 TOP10 -->
+<div class="dr-h">1.1 · 前一日 TOP10（总站首页综合评分，动态）</div>
+<div class="dr-card" style="margin-top:4px">
+  <div id="drTblTop10"></div>
+  <div class="dr-note" style="margin-top:6px">数据源：<code>output/top10_history.json</code> 最新交易日（自动更新，与总站首页 TOP 表一致）。字段：市场/行业/信号等级/EMA/评分/涨跌/收盘。</div>
+</div>
+
+<!-- 1.2 前一日金钻 -->
+<div class="dr-h">1.2 · 前一日金钻（三个门控分类，动态）</div>
+<div class="dr-card" style="margin-top:4px">
+  <div id="drTblDiamond"></div>
+  <div class="dr-note" style="margin-top:6px">数据源：<code>output/gate_data.json</code> 最新交易日。三个门控分类：全A市场 / 当前门控（成交额TOP800）/ 板块前100·换手≥4%；每只标注 primary 分类（金钻起涨 / 买入 / 红区黄柱连续）及信号日期、涨跌幅、DY2 等明细。</div>
+</div>
+
+<!-- 1.3 重点观测股（30 只）-->
+<div class="dr-h">1.3 · 重点观测股（31 只动态 · 推演）</div>
+<div class="dr-card" style="margin-top:4px">
+<div id="drTblObs">
+<table class="dr-tbl"><thead><tr><th>股票</th><th>8/21 收盘/涨跌</th><th>板块</th><th>技术形态（10日 K 线）</th><th>推演</th><th>开盘方式</th></tr></thead><tbody><tr><td><b>东岳集团</b> <span style="font-size:11px;color:var(--text-muted)">HK00189</span></td><td>13.52 <span class="dr-up">+9.65%</span></td><td style="font-size:12px">港股·氢能材料</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 12.87 偏MA5 <span class='dr-up'>+5.0%</span> 5日<span class='dr-up'>+1.1%</span> 量比1.43</td><td style=";font-size:13px">震荡</td><td style="font-size:12px">高开偏强（恒指 +1.21% + 东岳 +9.65% 强势）</td></tr><tr><td><b>果下科技</b> <span style="font-size:11px;color:var(--text-muted)">HK02655</span></td><td>17.02 <span class="dr-up">+2.28%</span></td><td style="font-size:12px">港股·AI+机器人</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 16.96 偏MA5 <span class='dr-up'>+0.3%</span> 5日<span class='dr-dn'>-4.0%</span> 量比1.68</td><td style="color:var(--green);font-weight:500;font-size:13px">震荡回调</td><td style="font-size:12px">高开偏强（恒指 +1.21% 科技股强势）</td></tr><tr><td><b>五一视界</b> <span style="font-size:11px;color:var(--text-muted)">HK06651</span></td><td>63.25 <span class="dr-up">+3.27%</span></td><td style="font-size:12px">港股·数字孪生</td><td style="font-size:12px"><span class='dr-tag'>空头排列</span> MA5 64.79 偏MA5 <span class='dr-dn'>-2.4%</span> 5日<span class='dr-dn'>-13.7%</span> 量比0.58</td><td style="color:var(--green);font-weight:700;font-size:13px">弱势下跌</td><td style="font-size:12px">高开偏强</td></tr><tr><td><b>中科曙光</b> <span style="font-size:11px;color:var(--text-muted)">SH603019</span></td><td>88.11 <span class="dr-dn">-0.27%</span></td><td style="font-size:12px">算力·服务器</td><td style="font-size:12px"><span class='dr-tag'>空头排列</span> MA5 86.78 偏MA5 <span class='dr-dn'>-3.1%</span> 5日<span class='dr-dn'>-7.1%</span> 量比0.59</td><td style="color:var(--green);font-weight:500;font-size:13px">震荡偏弱</td><td style="font-size:12px">高开偏强（NVDA 800HVDC + 国产替代）</td></tr><tr><td><b>长光华芯</b> <span style="font-size:11px;color:var(--text-muted)">SH688048</span></td><td>307.23 <span class="dr-up">+1.77%</span></td><td style="font-size:12px">半导体激光</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 314.41 偏MA5 <span class='dr-dn'>-2.3%</span> 5日<span class='dr-dn'>-7.7%</span> 量比0.91</td><td style="color:var(--green);font-weight:500;font-size:13px">震荡回调</td><td style="font-size:12px">平开偏弱（半导体链整体回吐压力）</td></tr><tr><td><b>天岳先进</b> <span style="font-size:11px;color:var(--text-muted)">SH688234</span></td><td>101.95 <span class="dr-up">+1.62%</span></td><td style="font-size:12px">SiC 衬底</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 114.33 偏MA5 <span class='dr-dn'>-3.8%</span> 5日<span class='dr-dn'>-8.6%</span> 量比0.83</td><td style="color:var(--blue);font-weight:600;font-size:13px">超跌反弹</td><td style="font-size:12px">高开偏强（受益半导体 + NVDA 800HVDC 间接）</td></tr><tr><td><b>东微半导</b> <span style="font-size:11px;color:var(--text-muted)">SH688261</span></td><td>74.81 <span class="dr-up">+3.53%</span></td><td style="font-size:12px">功率半导体</td><td style="font-size:12px"><span class='dr-tag'>多头排列</span> MA5 73.94 偏MA5 <span class='dr-up'>+1.2%</span> 5日<span class='dr-dn'>-0.5%</span> 量比0.94</td><td style="color:var(--red);font-weight:600;font-size:13px">震荡上行</td><td style="font-size:12px">平开偏强（新能源车链支撑）</td></tr><tr><td><b>兴福电子</b> <span style="font-size:11px;color:var(--text-muted)">SH688545</span></td><td>80.79 <span class="dr-dn">-1.67%</span></td><td style="font-size:12px">半导体材料</td><td style="font-size:12px"><span class='dr-tag'>空头排列</span> MA5 86.9 偏MA5 <span class='dr-dn'>-7.0%</span> 5日<span class='dr-dn'>-11.8%</span> 量比0.63</td><td style="color:var(--green);font-weight:700;font-size:13px">弱势下跌</td><td style="font-size:12px">平开偏弱（半导体回吐）</td></tr><tr><td><b>德明利</b> <span style="font-size:11px;color:var(--text-muted)">SZ001309</span></td><td>415.12 <span class="dr-up">+4.28%</span></td><td style="font-size:12px">存储控制器</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 415.95 偏MA5 <span class='dr-dn'>-0.2%</span> 5日<span class='dr-dn'>-4.7%</span> 量比0.89</td><td style="color:var(--green);font-weight:500;font-size:13px">震荡回调</td><td style="font-size:12px">低开偏弱（美股存储 8/21 回调映射）</td></tr><tr><td><b>国民技术</b> <span style="font-size:11px;color:var(--text-muted)">SZ300077</span></td><td>19.41 <span class="dr-up">+1.15%</span></td><td style="font-size:12px">安全芯片</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 19.86 偏MA5 <span class='dr-dn'>-2.3%</span> 5日<span class='dr-dn'>-5.6%</span> 量比0.63</td><td style="color:var(--green);font-weight:500;font-size:13px">震荡回调</td><td style="font-size:12px">平开震荡</td></tr><tr><td><b>光迅科技</b> <span style="font-size:11px;color:var(--text-muted)">SZ002281</span></td><td>78.58 <span class="dr-up">+3.14%</span></td><td style="font-size:12px">光模块</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 185.4 偏MA5 <span class='dr-dn'>-3.7%</span> 5日<span class='dr-dn'>-10.6%</span> 量比0.89</td><td style="color:var(--blue);font-weight:600;font-size:13px">超跌反弹</td><td style="font-size:12px">低开或平开偏弱（美股映射回吐）</td></tr><tr><td><b>联特科技</b> <span style="font-size:11px;color:var(--text-muted)">SZ301205</span></td><td>302.8 <span class="dr-up">+1.10%</span></td><td style="font-size:12px">光模块</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 294.34 偏MA5 <span class='dr-up'>+2.9%</span> 5日<span class='dr-dn'>-0.4%</span> 量比1.0</td><td style=";font-size:13px">震荡</td><td style="font-size:12px">低开或平开偏弱（美股映射回吐）</td></tr><tr><td><b>新易盛</b> <span style="font-size:11px;color:var(--text-muted)">SZ300502</span></td><td>442.0 <span class="dr-up">+6.75%</span></td><td style="font-size:12px">光模块 800G</td><td style="font-size:12px"><span class='dr-tag'>多头排列</span> MA5 437.28 偏MA5 <span class='dr-up'>+1.1%</span> 5日<span class='dr-dn'>-5.3%</span> 量比1.05</td><td style="color:var(--red);font-weight:500;font-size:13px">震荡偏强</td><td style="font-size:12px">低开（高位回吐压力）</td></tr><tr><td><b>永鼎股份</b> <span style="font-size:11px;color:var(--text-muted)">SH600105</span></td><td>39.72 <span class="dr-up">+2.24%</span></td><td style="font-size:12px">光通信·线缆</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 40.23 偏MA5 <span class='dr-dn'>-1.3%</span> 5日<span class='dr-dn'>-6.5%</span> 量比0.82</td><td style="color:var(--green);font-weight:500;font-size:13px">震荡回调</td><td style="font-size:12px">平开震荡</td></tr><tr><td><b>长飞光纤</b> <span style="font-size:11px;color:var(--text-muted)">SH601869</span></td><td>36.6 <span class="dr-up">+1.65%</span></td><td style="font-size:12px">光纤光缆</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 365.16 偏MA5 <span class='dr-dn'>-0.4%</span> 5日<span class='dr-dn'>-3.4%</span> 量比0.75</td><td style="color:var(--green);font-weight:500;font-size:13px">震荡回调</td><td style="font-size:12px">高开偏强（SK 海力士 CPO 新逻辑）</td></tr><tr><td><b>迅捷兴</b> <span style="font-size:11px;color:var(--text-muted)">SH688655</span></td><td>42.36 <span class="dr-dn">-1.35%</span></td><td style="font-size:12px">PCB 测试</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 42.97 偏MA5 <span class='dr-dn'>-1.4%</span> 5日<span class='dr-dn'>-1.0%</span> 量比0.89</td><td style=";font-size:13px">震荡</td><td style="font-size:12px">平开震荡（PCB 板块分化）</td></tr><tr><td><b>东山精密</b> <span style="font-size:11px;color:var(--text-muted)">SZ002384</span></td><td>20.08 <span class="dr-up">+1.73%</span></td><td style="font-size:12px">PCB+精密制造</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 205.47 偏MA5 <span class='dr-dn'>-2.1%</span> 5日<span class='dr-dn'>-7.6%</span> 量比0.85</td><td style="color:var(--green);font-weight:500;font-size:13px">震荡回调</td><td style="font-size:12px">平开震荡</td></tr><tr><td><b>晶盛机电</b> <span style="font-size:11px;color:var(--text-muted)">SZ300316</span></td><td>42.53 <span class="dr-up">+1.97%</span></td><td style="font-size:12px">光伏/半导体设备</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 44.0 偏MA5 <span class='dr-dn'>-3.3%</span> 5日<span class='dr-dn'>-6.2%</span> 量比0.76</td><td style="color:var(--green);font-weight:500;font-size:13px">震荡回调</td><td style="font-size:12px">高开偏强（晶盛 12 寸大硅片）</td></tr><tr><td><b>罗博特科</b> <span style="font-size:11px;color:var(--text-muted)">SZ300757</span></td><td>504.6 <span class="dr-up">+0.30%</span></td><td style="font-size:12px">光伏设备+存储</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 513.65 偏MA5 <span class='dr-dn'>-1.8%</span> 5日<span class='dr-dn'>-5.0%</span> 量比0.79</td><td style="color:var(--green);font-weight:500;font-size:13px">震荡回调</td><td style="font-size:12px">平开偏强（双概念叠加）</td></tr><tr><td><b>华钰矿业</b> <span style="font-size:11px;color:var(--text-muted)">SH601020</span></td><td>22.14 <span class="dr-up">+4.08%</span></td><td style="font-size:12px">有色·白银/锑</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 21.61 偏MA5 <span class='dr-up'>+2.5%</span> 5日<span class='dr-up'>+0.2%</span> 量比1.24</td><td style=";font-size:13px">震荡</td><td style="font-size:12px">高开延续（碳酸锂 + 黄金 + 白银涨停）</td></tr><tr><td><b>兴业银锡</b> <span style="font-size:11px;color:var(--text-muted)">SZ000426</span></td><td>40.88 <span class="dr-up">+6.02%</span></td><td style="font-size:12px">有色·银锡</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 38.74 偏MA5 <span class='dr-up'>+5.5%</span> 5日<span class='dr-up'>+3.5%</span> 量比1.58</td><td style="color:var(--red);font-weight:600;font-size:13px">震荡上行</td><td style="font-size:12px">高开延续（有色金属领涨两市）</td></tr><tr><td><b>有色ETF浪潮</b> <span style="font-size:11px;color:var(--text-muted)">SZ159652</span></td><td>1.864 <span class="dr-up">+2.93%</span></td><td style="font-size:12px">ETF·有色</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 1.66 偏MA5 <span class='dr-up'>+1.7%</span> 5日<span class='dr-up'>+0.2%</span> 量比1.1</td><td style=";font-size:13px">震荡</td><td style="font-size:12px">高开延续</td></tr><tr><td><b>ST天际</b> <span style="font-size:11px;color:var(--text-muted)">SZ002759</span></td><td>18.47 <span class="dr-up">+4.82%</span></td><td style="font-size:12px">ST·锂电材料</td><td style="font-size:12px"><span class='dr-tag'>MA5 </span> MA5 18.09 偏MA5 <span class='dr-up'>+2.1%</span> 5日<span class='dr-dn'>-3.5%</span> 量比1.0</td><td style="color:var(--red);font-weight:500;font-size:13px">震荡偏强</td><td style="font-size:12px">高开偏强（碳酸锂 +4% 直接催化）</td></tr><tr><td><b>爱美客</b> <span style="font-size:11px;color:var(--text-muted)">SZ300896</span></td><td>51.6 <span class="dr-up">+5.20%</span></td><td style="font-size:12px">医美·玻尿酸</td><td style="font-size:12px"><span class='dr-tag'>空头排列</span> MA5 96.14 偏MA5 <span class='dr-dn'>-3.9%</span> 5日<span class='dr-dn'>-7.2%</span> 量比1.17</td><td style="color:var(--green);font-weight:500;font-size:13px">震荡偏弱</td><td style="font-size:12px">高开震荡偏强（爱美客 8/21 涨 5.20%，但板块 -3% 拖累）</td></tr><tr><td><b>三生国健</b> <span style="font-size:11px;color:var(--text-muted)">SH688336</span></td><td>47.65 <span class="dr-dn">-1.97%</span></td><td style="font-size:12px">创新抗体药</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 48.07 偏MA5 <span class='dr-dn'>-0.9%</span> 5日<span class='dr-dn'>-2.3%</span> 量比1.27</td><td style=";font-size:13px">震荡</td><td style="font-size:12px">低开或平开偏弱（医药生物 -3% 板块拖累）</td></tr><tr><td><b>圣泉集团</b> <span style="font-size:11px;color:var(--text-muted)">SH605589</span></td><td>38.9 <span class="dr-up">+1.94%</span></td><td style="font-size:12px">化工·树脂</td><td style="font-size:12px"><span class='dr-tag'>空头排列</span> MA5 40.41 偏MA5 <span class='dr-dn'>-3.7%</span> 5日<span class='dr-dn'>-11.6%</span> 量比0.53</td><td style="color:var(--green);font-weight:700;font-size:13px">弱势下跌</td><td style="font-size:12px">平开震荡</td></tr><tr><td><b>中策橡胶</b> <span style="font-size:11px;color:var(--text-muted)">SH603049</span></td><td>49.26 <span class="dr-dn">-2.36%</span></td><td style="font-size:12px">橡胶·轮胎</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 49.54 偏MA5 <span class='dr-dn'>-0.6%</span> 5日<span class='dr-up'>+1.4%</span> 量比0.64</td><td style=";font-size:13px">震荡</td><td style="font-size:12px">平开震荡</td></tr><tr><td><b>兴业科技</b> <span style="font-size:11px;color:var(--text-muted)">SZ002674</span></td><td>28.29 <span class="dr-dn">-0.42%</span></td><td style="font-size:12px">皮革·箱包</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 29.09 偏MA5 <span class='dr-dn'>-2.7%</span> 5日<span class='dr-dn'>-6.1%</span> 量比0.62</td><td style="color:var(--green);font-weight:500;font-size:13px">震荡回调</td><td style="font-size:12px">平开震荡</td></tr><tr><td><b>惠科股份</b> <span style="font-size:11px;color:var(--text-muted)">SZ001399</span></td><td>2.308 <span class="dr-up">+3.22%</span></td><td style="font-size:12px">面板</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 24.04 偏MA5 <span class='dr-dn'>-4.0%</span> 5日<span class='dr-dn'>-8.2%</span> 量比0.45</td><td style="color:var(--blue);font-weight:600;font-size:13px">超跌反弹</td><td style="font-size:12px">平开震荡</td></tr><tr><td><b>华工科技</b> <span style="font-size:11px;color:var(--text-muted)">SZ000988</span></td><td>106.78 <span class="dr-up">+2.50%</span></td><td style="font-size:12px">激光+光模块</td><td style="font-size:12px"><span class='dr-tag'>震荡纠缠</span> MA5 107.78 偏MA5 <span class='dr-dn'>-0.9%</span> 5日<span class='dr-dn'>-6.0%</span> 量比0.71</td><td style="color:var(--green);font-weight:500;font-size:13px">震荡回调</td><td style="font-size:12px">平开震荡</td></tr><tr><td><b>肯特股份</b> <span style="font-size:11px;color:var(--text-muted)">SZ301591</span></td><td>37.78 <span class="dr-up">+20.00%</span></td><td style="font-size:12px">化工·PEEK/密封件</td><td style="font-size:12px"><span class='dr-tag'>多头排列</span> MA5 34.49 偏MA5 <span class='dr-up'>+9.6%</span> 5日<span class='dr-up'>+13.3%</span> 量比1.35</td><td style="color:var(--red);font-weight:700;font-size:13px">强势上涨</td><td style="font-size:12px">高开延续但防炸板（涨停+20% 次日，PEEK/PCB/氢能概念）</td></tr>
+</tbody></table>
+</div>
+<div class="dr-note" style="margin-top:6px">数据源：<code>output/obs_tech_2026-08-21.json</code>（腾讯前复权 K 线 8/10-8/21，31 只）。<b>基准说明：</b>表格"8/21 收盘"为截图原始显示价（近期有 10 转 10 除权股票：长飞/光迅/东山/天岳等，截图与 MA/支撑/压力差 10x 即除权因子）。推演依据：技术形态（多头/空头/纠缠/MA5 上穿）+ 偏离 MA5 + 5 日涨跌 + 量比 + 板块属性 + 8/21 复盘商品（碳酸锂 +4%/黄金 4604/白银涨停） + 美股映射（MU/SNDK/AAOI/LITE/MRVL 8/21 回调） + 重大消息（NVDA 800HVDC 泵、SK 海力士 CPO 论文、贝森特 8/24 发布会）。</div>
+</div>
+<!-- 2 日韩 -->
+<div class="dr-h">2 · 日韩股市数据情况（8/21 收盘）</div>
+<div class="dr-card" style="margin-top:4px">
+  <table class="dr-tbl">
+    <thead><tr><th>市场</th><th>指数</th><th>收盘</th><th>涨跌幅</th></tr></thead>
+    <tbody>
+      <tr><td>日本</td><td>日经 225</td><td>66016.36</td><td class="dr-dn">-0.30%</td></tr>
+      <tr><td>韩国</td><td>KOSPI</td><td>6912.94</td><td class="dr-up">+0.88%</td></tr>
+      <tr><td>中国香港</td><td>恒生指数</td><td>26009.46</td><td class="dr-up">+1.21%</td></tr>
+      <tr><td>中国香港</td><td>恒生科技</td><td>4766.16</td><td class="dr-up">+1.40%</td></tr>
+    </tbody>
+  </table>
+  <div class="dr-note" style="margin-top:6px"><span style="color:var(--text-muted)">来源：中国证券网/Choice · 腾讯要情 · 中国基金报</span> ｜ 日韩分化：日经收跌、KOSPI 收涨；港股补录（黄金/锂业/大模型概念强劲，恒指重返 26000）。</div>
+  <div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px">
+    <b>跨资产尾部监测：</b>USD/JPY <b>159.068</b>（+0.58%，8/20 纽约尾盘口径，陆家嘴早餐）｜ 距干预线 163 约 2.4%、距无序线 155 约 2.6%｜ COT 日元空头分位：外部源必填（iFinD/Bloomberg 周度）｜ 韩股半导体：SK 海力士（8/20 +4.43%）作为存储链先导。
+  </div>
+</div>
+
+<!-- 3 隔夜美股 -->
+<div class="dr-h">3 · 隔夜美股复盘（双日表 · V2 核心升级）</div>
+<div class="dr-card" style="margin-top:4px">
+  <div class="dr-note"><b>为什么双日？</b>V1 教训：华尔街见闻 8/21 凌晨快讯实为 <b>8/20</b> 收盘（道指 -1.32%、MU +3.97%），若误当"隔夜"则指引方向完全做反。A股与美股存在 T-1 滞后映射（A股 8/21 存储/CPO 涨 = 交易 8/20 美股暴涨）。双日表强制呈现映射源（8/20）与隔夜（8/21）两日。</div>
+  <table class="dr-tbl">
+    <thead><tr><th>标的</th><th>8/20 收盘</th><th>8/20 涨跌（映射源）</th><th>8/21 收盘</th><th>8/21 涨跌（隔夜）</th></tr></thead>
+    <tbody>
+      <tr><td>道琼斯</td><td>52759.21</td><td class="dr-dn">-1.32%</td><td>53277.01</td><td class="dr-up">+0.98%</td></tr>
+      <tr><td>标普 500</td><td>7641.16</td><td class="dr-dn">-0.87%</td><td>7674.37</td><td class="dr-up">+0.43%</td></tr>
+      <tr><td>纳斯达克</td><td>26067.17</td><td class="dr-dn">-1.00%</td><td>26180.45</td><td class="dr-up">+0.43%</td></tr>
+      <tr><td>费城半导体</td><td>11800.02</td><td class="dr-up">+0.53%</td><td>—</td><td style="color:var(--orange)">-0.51% 点位待补（外部源）</td></tr>
+      <tr><td>MU 美光</td><td>974.33</td><td class="dr-up">+3.97%</td><td>966.78</td><td class="dr-dn">-0.77%</td></tr>
+      <tr><td>SNDK 闪迪</td><td>1600.62</td><td class="dr-up">+2.02%</td><td>1596.08</td><td class="dr-dn">-0.28%</td></tr>
+      <tr><td>MRVL 迈威尔</td><td>251.02</td><td class="dr-up">+5.79%</td><td>237.04</td><td class="dr-dn">-5.57%</td></tr>
+      <tr><td>LITE 朗美通</td><td>879.28</td><td class="dr-up">+6.24%</td><td>866.71</td><td class="dr-dn">-1.43%</td></tr>
+      <tr><td>AAOI</td><td>129.10</td><td class="dr-up">+5.66%</td><td>124.82</td><td class="dr-dn">-3.32%</td></tr>
+      <tr><td>WDC 西部数据</td><td>469.05</td><td class="dr-up">+1.51%</td><td>459.44</td><td class="dr-dn">-2.05%</td></tr>
+      <tr><td>COHR</td><td>290.03</td><td class="dr-up">+0.89%</td><td>289.52</td><td class="dr-dn">-0.18%</td></tr>
+      <tr><td>SKHY 海力士</td><td>163.08</td><td class="dr-up">+4.43%</td><td>163.41</td><td class="dr-up">+0.20%</td></tr>
+    </tbody>
+  </table>
+  <div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--red);padding:8px 12px;border-radius:6px;margin-top:6px">
+    <b>双日结论：</b>8/20 美股存储/光通信逆势暴涨（费半 +0.53% 当日最佳、MU 宣布 100 亿美元实验室）→ 8/21 全线回调（MRVL -5.57%、AAOI -3.32%、LITE -1.43%、WDC -2.05%、MU -0.77%）。A股 8/21 存储/CPO 普涨 = 滞后映射 1 日 → 周一（8/24）映射回吐压力明确。七巨头 8/21：TSLA +5%（周约+5%）、GOOGL +1%、META +0.75%、MSFT +0.43%；AMZN -0.57%、AAPL -0.63%、NVDA -0.98%。全周：标普 -1.4%、纳指 -2%、道指 -0.9%。VIX：外部源必填（8/14 为 14.84）。
+  </div>
+  <div class="dr-tag" style="margin:10px 0 4px">行情接口实时表（云端自动）</div>
+  <div id="drTblUs"></div>
+  <table class="dr-tbl" style="margin-top:8px">
+    <thead><tr><th>商品 · 利率 · 汇率（8/21）</th><th>数值</th><th>变化</th></tr></thead>
+    <tbody>
+      <tr><td>现货黄金</td><td>4604.53</td><td class="dr-up">+1.89%（周 +5%，重回 4600）</td></tr>
+      <tr><td>COMEX 黄金</td><td>4661.60</td><td class="dr-up">+1.97%</td></tr>
+      <tr><td>WTI 原油</td><td>87.06</td><td class="dr-up">+0.26%（六连阳）</td></tr>
+      <tr><td>布伦特</td><td>94.39</td><td class="dr-up">+0.65%</td></tr>
+      <tr><td>10Y 美债</td><td>4.734%</td><td class="dr-up">+3bp（8/18 曾冲 5.337%）</td></tr>
+      <tr><td>30Y 美债</td><td>5.273%</td><td class="dr-up">+3bp（拍卖 5.216%）</td></tr>
+      <tr><td>美元指数 DXY</td><td>98.87</td><td class="dr-up">+0.07%（8/20 纽约尾盘口径）</td></tr>
+      <tr><td>人民币中间价</td><td>6.7817</td><td class="dr-dn">-9bp（2023/2 以来高位）</td></tr>
+      <tr><td>伦铜</td><td>14185</td><td class="dr-up">+1.02%</td></tr>
+      <tr><td>碳酸锂（广期所主连）</td><td>158680</td><td class="dr-up">+4%（8 月累计 +15%）</td></tr>
+    </tbody>
+  </table>
+  <div class="dr-note"><span style="color:var(--text-muted)">来源：证券时报 · 新华社/央行 · 行情接口</span></div>
+</div>
+
+<!-- 4 重点宏观 -->
+<div class="dr-h">4 · 重点宏观信息（提取）</div>
+<div class="dr-card" style="margin-top:4px">
+  <div class="dr-note"><b>利率 · 美债 · 美元：</b>① 长端抛售仍是核心矛盾：10Y 4.734% / 30Y 5.273%（8/18 30Y 一度 5.337%）；美债拍卖 30Y 5.216%、10Y 4.683%；② 财政部干预：回购规模翻倍至 40 亿美元（中金：增加长端买盘改善流动性，但削弱美债与美元信誉 → 黄金最直接受益）；联邦债务破 40 万亿美元；③ 美联储 7 月纪要鹰派残留：多名官员称"若通胀未回落或需进一步加息"、克利夫兰联储哈马克重申紧迫性 → "不加息"叙事未完全坐实；④ 9 月加息概率边际下降（CPI/PPI 降温）。</div>
+  <div class="dr-note"><b>地缘 · 中国宏观 · 商品：</b>① 美伊博弈升级：特朗普称已"完全控制霍尔木兹海峡"、伊朗否认；<b>贝森特 8/24 发布会披露对伊"经济战"细节</b> = 周初地缘变量；② 中国 7 月官方 PMI <b>49.2</b>（收缩区间，新订单 48.5）；7 月出口 +23.9%、进口 +27.5%；美对华 12.5% 关税或致出口承压；③ 碳酸锂：广期所主连 +4% 报 15.87 万（8 月 +15%）；电池级中间价 151600（+500）；锂电排产 8 月 +7~9%、突破 300GWh；连续四周去库；④ 国内商品：集运欧线 +11%（地缘+厄尔尼诺）；沪银/铂 +4%。</div>
+</div>
+
+<!-- 5 重点科技 -->
+<div class="dr-h">5 · 重点科技信息（产业链信号）</div>
+<div class="dr-card" style="margin-top:4px">
+  <div class="dr-note"><b>存储 / 半导体：</b>① MU 宣布 100 亿美元研究实验室（8/20），8/20 +3.97% 后 8/21 回调 -0.77%；② SNDK 8/21 -0.28%（连续大涨后休整）；铠侠 ADR 8/20 +1.08%；③ A股存储 8/21：存储器板块 +0.60%；映射节奏 = 滞后 1 日（防回落）。</div>
+  <div class="dr-note"><b>光模块 / CPO：</b>① <b>SK 海力士《自然·电子学》论文：</b>CPO 是系统级 HBM 创新规模化关键，下一代 AI 基础设施将<b>光互连扩展到内存接口</b> — 光模块新逻辑（8/21 CPO 板块 +1.48%）；② 新易盛：拟推 648.12 万股股权激励（授予价 212 元），考核 2026 营收 ≥500 亿，8/21 +6.76% 报 442 元；③ 中际旭创 +4.29% 报 943 元（净流入 35.95 亿居首）。</div>
+  <div class="dr-note"><b>AI 算力 · 锂矿 · 医药：</b>① 液冷：NVDA 800HVDC CDU 采用高压直流电子屏蔽泵（谷歌 2MW 确认，2027 泵市场超 25 亿）；② 锂矿：融捷涨停、永杉 +7.04%、昊华 +6.06%；<b>超跌修复性质，持续性待验证</b>（财联社口径）；③ 医药：<b>-3%+ 领跌</b>（华兰疫苗/安科生物/博腾跌停或跌超 10%），疫苗 ETF -5%+。</div>
+</div>
+
+<!-- 6 新闻整合 -->
+<div class="dr-h">6 · 新闻整合（多来源 · 逐条标注）</div>
+<div class="dr-card" style="margin-top:4px">
+  <table class="dr-tbl">
+    <thead><tr><th>来源</th><th>状态</th><th>本次使用 / 说明</th></tr></thead>
+    <tbody>
+      <tr><td>华尔街要闻（华尔街见闻）</td><td style="color:var(--green)">✓ 已用</td><td>8/21 凌晨美股快讯（=8/20 收盘，已按双日表归位）</td></tr>
+      <tr><td>腾讯财经 / 腾讯新闻</td><td style="color:var(--green)">✓ 已用</td><td>A股收评（CPO/有色/锂矿催化）</td></tr>
+      <tr><td>同花顺快讯</td><td style="color:var(--orange)">⚠ 每日抓取</td><td>本次未逐条；正式运行每日 17:00 后抓当日快讯</td></tr>
+      <tr><td>新浪财经</td><td style="color:var(--orange)">⚠ 每日抓取</td><td>本次未逐条；正式运行每日抓当日要闻</td></tr>
+      <tr><td>知识星球（权限内）</td><td style="color:var(--orange)">🔒 权限低频</td><td>调研纪要/投资有道/哆唻咪；每星球每天 ≤1 次 + sleep，避免拉黑</td></tr>
+      <tr><td>公开补充（证券时报/财联社/新华社/中国证券网/澎湃/证券之星）</td><td style="color:var(--green)">✓ 主力来源</td><td>本次 A股/美股/日韩/汇率/资金流主数据来源</td></tr>
+    </tbody>
+  </table>
+  <div class="dr-note" style="margin-top:8px">
+    <span style="background:rgba(79,110,247,.14);color:var(--blue);padding:1px 8px;border-radius:5px;font-size:11px;font-weight:600">证券时报</span><b>美股全线反攻，银行/贵金属大涨；特朗普称经济增长将自行化解国债问题</b> —— 8/21 道指 +0.98%，贵金属股创新高，加密概念爆发。
+  </div>
+  <div class="dr-note">
+    <span style="background:rgba(79,110,247,.14);color:var(--blue);padding:1px 8px;border-radius:5px;font-size:11px;font-weight:600">证券时报</span><b>超 19 万人爆仓！比特币周涨 22%，加密股集体走高</b> —— Robinhood +14%、Coinbase +8%；莫德纳周涨 129% 带动医疗保健板块周 +4%。
+  </div>
+  <div class="dr-note">
+    <span style="background:rgba(79,110,247,.14);color:var(--blue);padding:1px 8px;border-radius:5px;font-size:11px;font-weight:600">华尔街见闻</span><b>8/21 04:00 快讯：标普初步收跌 0.8%，存储逆势（美光 +4.1%、闪迪 +2.1%、Lumentum +6.2%）</b> —— 注意：此为 <b>8/20</b> 收盘快讯，8/21 当日美股已反转收涨（双日表已归位）。
+  </div>
+  <div class="dr-note">
+    <span style="background:rgba(34,168,97,.14);color:var(--green);padding:1px 8px;border-radius:5px;font-size:11px;font-weight:600">腾讯新闻</span><b>A股收评：两市成交跌破 2 万亿！有色黄金扛大旗，CPO 卷土重来</b> —— 贝森特"财政部工具箱"口径；SK 海力士 CPO 论文；碳酸锂 +500 元/吨。
+  </div>
+  <div class="dr-note">
+    <span style="background:rgba(214,158,46,.14);color:var(--gold);padding:1px 8px;border-radius:5px;font-size:11px;font-weight:600">财联社（via 网易）</span><b>收评：创业板指涨 1.43%，贵金属、算力硬件走强，两市成交不足 2 万亿</b> —— 美债拍卖利率（30Y 5.216%/10Y 4.683%）与回购翻倍带动美元与长端回落、利多金银。
+  </div>
+  <div class="dr-note">
+    <span style="background:rgba(128,90,213,.14);color:var(--purple);padding:1px 8px;border-radius:5px;font-size:11px;font-weight:600">中国证券网</span><b>日韩股市收盘表现分化：日经 -0.30% vs KOSPI +0.88%；恒指重返 26000</b>。
+  </div>
+  <div class="dr-note">
+    <span style="background:rgba(34,168,97,.14);color:var(--green);padding:1px 8px;border-radius:5px;font-size:11px;font-weight:600">新华社/央行</span><b>8/21 人民币中间价 6.7817（-9bp），处 2023 年 2 月以来高位</b>；纽约尾盘 DXY 98.87、USDJPY 159.068。
+  </div>
+</div>
+
+<!-- 7 开盘指引 -->
+<div class="dr-h">7 · 次日开盘指引（8/24 周一）</div>
+<div class="dr-card" style="margin-top:4px">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0">
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px">
+      <div class="dr-tag">方向判断</div><div style="font-weight:700;color:var(--orange)">震荡 · 不追高</div>
+      <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">缩量反弹（1.88 万亿 &lt;2 万亿）未获量能确认；美股全周收跌（纳指 -2%）；存储/光模块映射回吐压力（8/21 美股已回调，A股滞后 1 日）；长端美债 30Y 5.273% 仍高企。</div></div>
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px">
+      <div class="dr-tag">关注板块与操作</div><div style="font-weight:600">锂矿 · 贵金属 · CPO（分化）</div>
+      <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">锂矿/碳酸锂：15.87 万 + 排产创高 + 四周去库 → 主线，永杉 +7% 后回踩 5 日线再看，不追高开；贵金属：美债回购翻倍 → 黄金受益（中金），沪金/黄金股 ETF 已领涨；光模块：CPO 新逻辑（内存接口），个股分化（旭创强/天孚弱）→ 只做主线强票；回避：医药惯性下杀、存储/CPO 高开不追（映射回吐）；保留现金应对波动。</div></div>
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px">
+      <div class="dr-tag">风险与事件雷达</div><div style="font-weight:600">8/24 · 8/26 · 8/28</div>
+      <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">8/24（一）贝森特对伊"经济战"发布会（美债/油价变量）｜ 8/26（三）NVDA 财报盘后（HBM 降配证伪点 + capex 指引）｜ 8/28（五）沃什杰克逊霍尔演讲 + 7 月 PCE。倒推句：新开仓是否计划持有过 NVDA 8/26 + JH 8/28？是/否/减半。</div></div>
+  </div>
+  <div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--orange);padding:8px 12px;border-radius:6px">
+    <b>预案开关（盘前写死）：</b>① 若 8/24 早盘存储/CPO 高开而美股存储 8/21 已回调 → 不追高开，等回踩承接；② 碳酸锂若回落跌破 15 万 → 锂矿链减仓；③ 若美债 10Y 上破 4.8% → 黄金/微盘逻辑让位于流动性收紧，风险偏好再受压；④ 8/24 若贝森特发布会超预期强硬 → 油价/通胀链异动预案。
+  </div>
+</div>
+
+<!-- 8 自检区 -->
+<div class="dr-h">8 · 数据自检区（V1 堵点 → V2 对账）</div>
+<div class="dr-card" style="margin-top:4px">
+  <table class="dr-tbl">
+    <thead><tr><th>#</th><th>堵点</th><th>状态</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>VIX 当日值</td><td style="color:var(--orange)">🔴 外部源必填</td><td>公开源不可得，需标普官网/行情源快照（8/14 为 14.84）</td></tr>
+      <tr><td>2</td><td>DXY / USDJPY 当日收盘</td><td style="color:var(--gold)">⚠ 部分解决</td><td>8/20 尾盘已得（98.87 / 159.068），8/21 收盘需美股收盘后尾盘源</td></tr>
+      <tr><td>3</td><td>COT 日元空头分位</td><td style="color:var(--orange)">🔴 外部源必填</td><td>iFinD/Bloomberg 周度</td></tr>
+      <tr><td>4</td><td>北向资金</td><td style="color:var(--orange)">🔴 外部源必填</td><td>2026 年已取消盘中实时，改盘后/季度口径</td></tr>
+      <tr><td>5</td><td>成交额三口径</td><td style="color:var(--green)">✓ 已解决</td><td>固定"沪深两市 1.88 万亿"（Wind/财联社），沪深北三市 18923 亿列备选并标口径</td></tr>
+      <tr><td>6</td><td>KOSPI 尾数</td><td style="color:var(--green)">✓ 已解决</td><td>统一 6912.94（中国证券网），6912.95（腾讯）标注差异</td></tr>
+      <tr><td>7</td><td>涨停口径</td><td style="color:var(--green)">✓ 已解决</td><td>涨停 57（交易所）与"涨超 9%"76（大智慧）分开标注</td></tr>
+      <tr><td>8</td><td>科创50/综指</td><td style="color:var(--green)">✓ 已解决</td><td>科创50 +0.04% 为准，科创综指 -0.05% 标注</td></tr>
+      <tr><td>9</td><td>知识星球</td><td style="color:var(--gold)">🔒 权限低频</td><td>每星球 ≤1 次/天 + sleep（模板模块 6 已列计划）</td></tr>
+      <tr><td>10</td><td>同花顺/新浪快讯</td><td style="color:var(--gold)">⚠ 每日抓取计划</td><td>本次以腾讯/证券时报/财联社替代</td></tr>
+      <tr><td>11</td><td>美股映射个股 8/21</td><td style="color:var(--green)">✓ 已解决</td><td>12 只全量补齐（双日表）</td></tr>
+      <tr><td>12</td><td>持仓股明细</td><td style="color:var(--green)">✓ 已解决</td><td>A股 7 只 + 港股 4 只补齐（模块 1.1）</td></tr>
+      <tr><td>13</td><td>两融当日值</td><td style="color:var(--gold)">⚠ T+1 披露</td><td>8/21 值需次日（当前 8/20：2.67 万亿）</td></tr>
+      <tr><td>14</td><td>隔夜美股日期错位</td><td style="color:var(--green)">✓ 已解决</td><td>双日表强制呈现 8/20 映射源 + 8/21 隔夜</td></tr>
+      <tr><td>15</td><td>映射 T-1 滞后</td><td style="color:var(--green)">✓ 已解决</td><td>双日表 + 滞后警示条</td></tr>
+    </tbody>
+  </table>
+  <div class="dr-note" style="margin-top:6px"><b>自检结论：</b>15 项 → <b>✓ 8 项解决</b>（6 项本次实跑补数据解决）、<b>⚠ 4 项部分</b>（T+1/尾盘源/每日抓取）、<b>🔴 3 项外部源必填</b>（VIX/COT/北向）+ 知识星球权限低频。剩余项已在模板字段打标，正式运行由「每日输入清单」对应喂入项补齐。</div>
+</div>
+
+<!-- 9 来源 -->
+<div class="dr-h">9 · 数据来源汇总（8/21 实跑）</div>
+<div class="dr-card" style="margin-top:4px">
+  <div class="dr-note">
+    证券时报：stcn.com/article/detail/4099548（A股缩量收评）、4096187（贵金属收评）、4102408（美股周五收盘/加密）、4102324（美股反攻/特朗普发声）、4102431（黄金重回 4600）｜ 网易/澎湃：163.com L4S7PTNU0514R9P4（三大股指收涨/18792亿）、L4SD3QJO05198CJN（财联社收评）、L4SCDU1R05198UNI（港股收盘）、L4R9TEFJ05198RSU（陆家嘴早餐）、L4RMEBB105346RC6（新华社汇价）｜ 中国证券网/上证报：cnstock.com/commonDetail/765979（日韩分化）、766054（四点半观市/Choice资金）、765444（人民币中间价）｜ 腾讯新闻：view.inews.qq.com/a/20260821A08MXK00（A股收评CPO）｜ 华尔街见闻：wallstreetcn.com/livenews/3152576（8/21凌晨美股快讯=8/20收盘）｜ TradingKey（8/20 美股收盘背景）、瑞达期货晨会纪要（宏观/汇率）、中国基金报（日韩）｜ 行情数据接口：上证/创业板/剑桥/永杉/SNDK/MU/CPO板块/锂矿板块 8/21 OHLC。
+  </div>
+</div>
+
+<!-- 10 输入清单 -->
+<div class="dr-h">10 · 每日输入数据清单（三分类）</div>
+<div class="dr-card" style="margin-top:4px">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0">
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px">
+      <div class="dr-tag">A · 公开源可抓（云端自动）</div>
+      <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">A股指数/持仓/美股指数/美股映射（腾讯公开接口，08:15 Actions 自动）</div></div>
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px">
+      <div class="dr-tag">B · 外部源必填（本机）</div>
+      <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">日韩/费半/商品汇率/VIX/北向/两融（neodata + 公开源，本机 agent 补）</div></div>
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px">
+      <div class="dr-tag">C · 权限低频（本机 agent）</div>
+      <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">知识星球≤1次/天·快讯·AI 分析提炼（调研纪要/投资有道/哆唻咪）</div></div>
+  </div>
+  <div class="dr-note" style="margin-top:8px">
+    更新流程：本机 WorkBuddy 会话 → 刷新 token → 抓星球摘要（低频） → AI 提炼 → 替换本文件分析区 → <code>git add data/daily_review/analysis.html && git commit && git push</code>。云端行情表无需人工（08:15 自动）。
+  </div>
+</div>
