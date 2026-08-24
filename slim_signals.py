@@ -388,6 +388,14 @@ def main():
     else:
         print("  ⚠️ inject_realtime_tab.py 执行异常（不影响主流程）")
 
+    # 4.2 注入每日复盘 tab（幂等：已存在则用最新版整体替换）。
+    #     根治 rebuild 覆盖：每次 rebuild 后自动恢复每日复盘 tab。
+    ret = os.system(f'cd "{BASE}" && "{PYTHON_BIN}" inject_daily_review_tab.py')
+    if ret == 0:
+        print("  ✅ 每日复盘 tab 已注入 index.html / index_template.html / deploy/index.html")
+    else:
+        print("  ⚠️ inject_daily_review_tab.py 执行异常（不影响主流程）")
+
     # 5. 确保 .nojekyll + 构建清单
     print("\n[5/5] .nojekyll + 构建清单...")
     nojekyll = os.path.join(DEPLOY, ".nojekyll")

@@ -88,12 +88,17 @@ def fetch():
         }
 
     now = datetime.datetime.now().astimezone()
-    # 数据日期 = 美股指数时间戳日期（如 2026-08-21），回退运行日
+    # 数据日期 = A股指数时间戳日期（如 20260824 → 2026-08-24），回退美股时间戳，再回退运行日
     data_date = now.strftime("%Y-%m-%d")
-    dji = quotes.get("us_dji", {})
-    t = str(dji.get("time", ""))
-    if t[:4].isdigit() and "-" in t:
-        data_date = t[:10]
+    for key in ("a_sh", "us_dji"):
+        q = quotes.get(key, {})
+        t = str(q.get("time", ""))
+        if len(t) >= 8 and t[:8].isdigit():          # A股: 20260824161402
+            data_date = f"{t[:4]}-{t[4:6]}-{t[6:8]}"
+            break
+        if t[:4].isdigit() and "-" in t[:10]:         # 美股: 2026-08-21 ...
+            data_date = t[:10]
+            break
     out = {
         "date": data_date,
         "run_date": now.strftime("%Y-%m-%d"),
