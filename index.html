@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>兜金观测 — 量化信号池 v2026-08-21</title>
+<title>兜金观测 — 量化信号池 v2026-08-24</title>
 <!-- 登录保护：内嵌覆盖层，不跳转 -->
 <script>
 (function(){
@@ -1267,7 +1267,6 @@ html { scroll-behavior: smooth; }
 <div class="logo"><span class="logo-icon">D</span>兜金观测</div>
 <nav class="nav" id="navBar">
 <button class="nav-btn active" data-tab="overview">总览</button>
-<button class="nav-btn" data-tab="dailyreview">每日复盘</button>
 <button class="nav-btn" data-tab="realtime">实时盯盘</button>
 <button class="nav-btn" data-tab="short">短线信号</button>
 <button class="nav-btn" data-tab="long">中长线确认</button>
@@ -1402,22 +1401,6 @@ html { scroll-behavior: smooth; }
 
 
 
-<!-- Tab: 每日复盘（盘前简报 + 完整复盘合一；行情=云端08:15自动，分析=本机agent） -->
-<div class="tab-content" id="tab-dailyreview">
-<style>
-.dr-h{font-size:14px;font-weight:600;color:var(--text);margin:12px 0 4px}
-.dr-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
-.dr-tbl th,.dr-tbl td{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
-.dr-tbl th:first-child,.dr-tbl td:first-child{text-align:left}
-.dr-tbl th{color:var(--text-muted);font-weight:600}
-.dr-up{color:var(--red)}.dr-dn{color:var(--green)}
-.dr-tag{font-size:11px;color:var(--text-muted)}
-.dr-note{font-size:12.5px;color:var(--text-secondary);margin:6px 0}
-.dr-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:12px 0}
-</style>
-<div class="dr-card" id="drMarket"><p class="dr-note">行情加载中…</p></div>
-<div class="dr-card" id="drAnalysis"><p class="dr-note">分析区加载中…</p></div>
-</div>
 
 <!-- Tab: 实时盯盘 -->
 <div class="tab-content" id="tab-realtime">
@@ -3039,142 +3022,6 @@ function renderFourVolumeChart(containerId, fv) {
   container.appendChild(labelDiv);
 }
 
-// ===== 每日复盘 Tab =====
-function renderDailyReview() {
-  if (window._drInit) return; window._drInit = true;
-  const mkt = document.getElementById('drMarket');
-  const ana = document.getElementById('drAnalysis');
-  const loadAna = (q) => {
-    if (!ana) return;
-    fetch('./data/daily_review/analysis.html', { cache: 'no-store' }).then(r => {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.text();
-    }).then(t => {
-      ana.innerHTML = t;
-      drFillTables(q || {});
-      drLoadTop10();
-      drLoadDiamond();
-    }).catch(err => {
-      ana.innerHTML = `<p class="dr-note">分析区加载失败：${err}</p>`;
-    });
-  };
-  if (mkt) {
-    fetch('./data/daily_review/market.json', { cache: 'no-store' }).then(r => {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json();
-    }).then(d => {
-      const q = d.quotes || {};
-      const cnt = Object.values(q).filter(v => !v.error).length;
-      mkt.innerHTML = `<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-        <b>📊 行情数据（${d.date}）</b><span class="dr-tag">${cnt} 标的 · ${d.source}</span>
-        <span class="dr-tag">云端 08:15 自动更新</span></div>`;
-      loadAna(q);
-    }).catch(err => {
-      mkt.innerHTML = `<p class="dr-note">行情加载失败：${err}</p>`;
-      loadAna();
-    });
-  } else {
-    loadAna();
-  }
-}
-function drFillTables(q) {
-  const mk = (items) => {
-    if (!items || !items.length) return '<div class="dr-note">【待本机补全】</div>';
-    let h = '<table class="dr-tbl"><thead><tr><th>名称</th><th>收盘</th><th>涨跌幅</th><th>最高</th><th>最低</th></tr></thead><tbody>';
-    items.forEach(v => {
-      const n = parseFloat(v.chg_pct);
-      const cls = n > 0 ? 'dr-up' : (n < 0 ? 'dr-dn' : '');
-      h += `<tr><td>${v.name}</td><td>${v.close}</td>
-        <td class="${cls}">${v.chg_pct}%</td><td>${v.high}</td><td>${v.low}</td></tr>`;
-    });
-    return h + '</tbody></table>';
-  };
-  const g = (group) => Object.values(q).filter(v => v.group === group && !v.error);
-  const tA = document.getElementById('drTblA'); if (tA) tA.innerHTML = mk(g('A股指数'));
-  const tH = document.getElementById('drTblH'); if (tH) tH.innerHTML = mk(g('持仓股'));
-  const tU = document.getElementById('drTblUs');
-  if (tU) tU.innerHTML = mk([...g('美股指数'), ...g('美股映射'), ...g('美股映射·参考')]);
-}
-
-// ===== 每日复盘：前一日 TOP10（output/top10_history.json 最新交易日）=====
-function drLoadTop10() {
-  const el = document.getElementById('drTblTop10');
-  if (!el) return;
-  fetch('./output/top10_history.json', { cache: 'no-store' }).then(r => {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
-  }).then(hist => {
-    const dates = Object.keys(hist || {}).filter(d => hist[d] && Array.isArray(hist[d].top10) && hist[d].top10.length);
-    if (!dates.length) { el.innerHTML = '<div class="dr-note">暂无 TOP10 历史数据</div>'; return; }
-    dates.sort();
-    const last = dates[dates.length - 1];
-    const stocks = hist[last].top10;
-    let h = `<div class="dr-tag" style="margin-bottom:4px">数据日：${last} ｜ 共 ${stocks.length} 只（与总站首页 TOP 表一致）</div>`;
-    h += '<table class="dr-tbl"><thead><tr><th>#</th><th>股票</th><th>市场</th><th>信号等级</th><th>EMA</th><th>评分</th><th>涨跌</th><th>收盘</th></tr></thead><tbody>';
-    stocks.forEach((r, i) => {
-      const chg = Number(r.change_pct) || 0;
-      const cls = chg > 0 ? 'dr-up' : (chg < 0 ? 'dr-dn' : '');
-      const mkt = r.market || '主板';
-      h += `<tr><td>${i + 1}</td><td><b>${r.name}</b> <span style="font-size:11px;color:var(--text-muted)">${r.code}</span></td>
-        <td>${mkt}</td><td>${r.grade || '—'}</td><td>${r.ema_score != null ? r.ema_score + '/7' : '—'}</td>
-        <td style="font-weight:700">${r.total_score != null ? r.total_score : '—'}</td>
-        <td class="${cls}">${chg > 0 ? '+' : ''}${chg.toFixed(2)}%</td><td>¥${(Number(r.close) || 0).toFixed(2)}</td></tr>`;
-    });
-    h += '</tbody></table>';
-    el.innerHTML = h;
-  }).catch(err => {
-    el.innerHTML = `<div class="dr-note">TOP10 加载失败：${err}</div>`;
-  });
-}
-
-// ===== 每日复盘：前一日金钻（output/gate_data.json 三个门控分类）=====
-function drLoadDiamond() {
-  const el = document.getElementById('drTblDiamond');
-  if (!el) return;
-  fetch('./output/gate_data.json', { cache: 'no-store' }).then(r => {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
-  }).then(g => {
-    const gates = g.gates || {};
-    const GATE_ORDER = ['all_a', 'pool', 'sector_top100_to4'];
-    const keys = GATE_ORDER.filter(k => gates[k]);
-    if (!keys.length) { el.innerHTML = '<div class="dr-note">暂无金钻门控数据</div>'; return; }
-    const date = g.data_date || '';
-    let h = `<div class="dr-tag" style="margin-bottom:4px">数据日：${date} ｜ 门控：${keys.map(k => gates[k].label).join(' / ')}</div>`;
-    keys.forEach(k => {
-      const gk = gates[k];
-      const ov = gk.overview || {};
-      const stocks = gk.stocks || [];
-      h += `<div style="margin:10px 0 4px;font-weight:600">${gk.label}（扫描 ${gk.scope_size} 只）— 命中 ${ov.total || stocks.length} 只</div>`;
-      if (ov.analysis) h += `<div class="dr-note" style="font-size:12px;color:var(--text-secondary)">${ov.analysis}</div>`;
-      if (!stocks.length) { h += '<div class="dr-note">无命中</div>'; return; }
-      h += '<table class="dr-tbl"><thead><tr><th>股票</th><th>分类</th><th>信号日期</th><th>涨跌幅</th><th>阳线</th><th>DY2</th><th>MA5&gt;MA60</th></tr></thead><tbody>';
-      stocks.forEach(s => {
-        const sig = (s.signals && s.signals[0]) || {};
-        const det = sig.detail || {};
-        const pct = det.pct != null ? Number(det.pct) : null;
-        const pctCls = pct > 0 ? 'dr-up' : (pct < 0 ? 'dr-dn' : '');
-        const prim = s.primary || sig.type || '—';
-        const primCls = prim.includes('起涨') ? 'color:var(--red);font-weight:700'
-          : (prim.includes('买入') ? 'color:var(--blue);font-weight:600'
-          : 'color:var(--gold);font-weight:600');
-        const dy2 = det.dy2 != null ? Number(det.dy2) : null;
-        h += `<tr><td><b>${s.name}</b> <span style="font-size:11px;color:var(--text-muted)">${s.code}</span></td>
-          <td style="${primCls}">${prim}</td>
-          <td>${sig.date || '—'}</td>
-          <td class="${pctCls}">${pct != null ? (pct > 0 ? '+' : '') + pct.toFixed(2) + '%' : '—'}</td>
-          <td>${det.yang ? '✓' : (det.yang === false ? '✗' : '—')}</td>
-          <td>${dy2 != null ? dy2.toFixed(3) : '—'}</td>
-          <td>${det['ma5>ma60'] ? '✓' : (det['ma5>ma60'] === false ? '✗' : '—')}</td></tr>`;
-      });
-      h += '</tbody></table>';
-    });
-    el.innerHTML = h;
-  }).catch(err => {
-    el.innerHTML = `<div class="dr-note">金钻数据加载失败：${err}</div>`;
-  });
-}
-
 // ===== Tab 切换 =====
 document.querySelectorAll('.nav-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -3187,7 +3034,6 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
     if (btn.dataset.tab === 'pool') renderObservationPool();
     if (btn.dataset.tab === 'signalstock') renderSignalPickCards();
     if (btn.dataset.tab === 'diamond') loadDiamondTab();
-    if (btn.dataset.tab === 'dailyreview') renderDailyReview();
     // 切换到含股票卡片的Tab时，限定在对应 grid 内渲染迷你图（避免 ID 重复冲突）
     const gridMap = { short:'shortGrid', long:'longGrid', emascan:'emaGrid', all:'allGrid' };
     const gridId = gridMap[btn.dataset.tab];
