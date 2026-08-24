@@ -50,6 +50,9 @@ QUOTES = [
     ("us_mrvl", "usMRVL", "MRVL迈威尔",  "美股映射"),
     ("us_nvda", "usNVDA", "NVDA",        "美股映射·参考"),
     ("us_tsla", "usTSLA", "TSLA",        "美股映射·参考"),
+    # 港股/亚太（08:15 北京 = 首尔/东京 09:15 已开盘 15 分钟，可抓盘中）
+    ("hk_hsi",   "hkHSI",   "恒生指数",   "港股指数"),
+    ("hk_hstech","hkHSTECH", "恒生科技",  "港股指数"),
 ]
 
 # 统一字段（group(3) split 后）: 0=名称 1=代码 2=现价 3=昨收 4=今开 29=时间

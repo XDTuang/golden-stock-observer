@@ -3102,6 +3102,8 @@ function drFillTables(q) {
   const tH = document.getElementById('drTblH'); if (tH) tH.innerHTML = mk(g('持仓股'));
   const tU = document.getElementById('drTblUs');
   if (tU) tU.innerHTML = mk([...g('美股指数'), ...g('美股映射'), ...g('美股映射·参考')]);
+  const tHK = document.getElementById('drTblHK');
+  if (tHK) tHK.innerHTML = mk(g('港股指数'));
 }
 
 // ===== 每日复盘：前一日 TOP10（output/top10_history.json 最新交易日）=====

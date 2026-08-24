@@ -1,14 +1,14 @@
 <!--
-  每日复盘 · 分析区（V2 完整结构 · 8/21 成品回填）
+  每日复盘 · 分析区（V2 完整结构 · 8/24 成品回填）
   ── 行情表（drTblA/drTblH/drTblUs）= 主页面 renderDailyReview 注入 market.json 自动填充（云端自动 08:15）
-  ── 分析内容（结论/日韩/双日表/宏观/科技/新闻/指引/自检/来源）= 本机 agent 8/21 实测成品（数据可溯）
+  ── 分析内容（结论/日韩/双日表/宏观/科技/新闻/指引/自检/来源）= 本机 agent 8/24 成品（数据可溯）
   更新: 本机 WorkBuddy 会话 → 刷新 token → 抓星球摘要(低频) → AI 提炼 → 替换本文件分析区 → push
 -->
 <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
   <b>🧠 每日复盘 · V2 完整结构</b>
   <span class="dr-tag">行情 = 云端 08:15 自动</span>
-  <span class="dr-tag">分析 = 8/21 实测成品（本机回填）</span>
-  <span class="dr-tag">复盘日 2026-08-21（周五）｜ 指引日 08-24（周一）</span>
+  <span class="dr-tag">分析 = 8/24 成品（本机回填）</span>
+  <span class="dr-tag">复盘日 2026-08-24（周一）｜ 指引日 08-25（周二）</span>
 </div>
 
 <!-- 0 结论先行 -->
@@ -72,18 +72,18 @@
 <div class="dr-note" style="margin-top:6px">数据源：<code>output/obs_deduce_2026-08-24.json</code>（腾讯前复权 K 线，32 只 8/24 收盘）。推演日 8/25（周二）。**推演引擎 v2**（基于 8/21 回测调优：去震荡中间态/超跌反弹加大盘门槛/偏强需置信，见模块 8 备注）。**推演引擎 v2**（基于 8/21 回测调优：去震荡中间态/超跌反弹加大盘门槛/偏强需置信，见模块 8 备注）。盘面背景：8/24 A股大跌（上证 -0.59% / 创业板 -3.21% / 科创50 -3.10%），贵金属·煤炭·有色逆势强；8/25 事件：中际旭创业绩说明会（防 sell the news）。除权提示：长飞/光迅/东山/天岳等近期有 10 转 10 除权，截图原始价与 MA 差 10x 即除权因子。。<b>基准说明：</b>表格"8/21 收盘"为截图原始显示价（近期有 10 转 10 除权股票：长飞/光迅/东山/天岳等，截图与 MA/支撑/压力差 10x 即除权因子）。推演依据：技术形态（多头/空头/纠缠/MA5 上穿）+ 偏离 MA5 + 5 日涨跌 + 量比 + 板块属性 + 8/21 复盘商品（碳酸锂 +4%/黄金 4604/白银涨停） + 美股映射（MU/SNDK/AAOI/LITE/MRVL 8/21 回调） + 重大消息（NVDA 800HVDC 泵、SK 海力士 CPO 论文、贝森特 8/24 发布会）。</div>
 </div>
 <!-- 2 日韩 -->
-<div class="dr-h">2 · 日韩股市数据情况（8/24 收盘）</div>
+<div class="dr-h">2 · 日韩股市数据情况（8/24 收盘 · 港股自动 / 日韩本机补）</div>
 <div class="dr-card" style="margin-top:4px">
-  <table class="dr-tbl">
+  <div class="dr-tag" style="margin-bottom:4px">港股指数（云端自动：8/25 08:15 起抓盘中/收盘）</div>
+  <div id="drTblHK"></div>
+  <table class="dr-tbl" style="margin-top:8px">
     <thead><tr><th>市场</th><th>指数</th><th>收盘</th><th>涨跌幅</th></tr></thead>
     <tbody>
-      <tr><td>日本</td><td>日经 225</td><td>65527.87</td><td class="dr-dn">-0.74%</td></tr>
-      <tr><td>韩国</td><td>KOSPI</td><td>—</td><td style="color:var(--orange)">待补（neodata 无当日）</td></tr>
-      <tr><td>中国香港</td><td>恒生指数</td><td>25517.33</td><td class="dr-dn">-1.89%</td></tr>
-      <tr><td>中国香港</td><td>恒生科技</td><td>4594.04</td><td class="dr-dn">-3.61%</td></tr>
+      <tr><td>日本</td><td>日经 225</td><td>65527.87</td><td class="dr-dn">-0.74%（8/24）</td></tr>
+      <tr><td>韩国</td><td>KOSPI</td><td>—</td><td style="color:var(--orange)">待补（neodata 本机）</td></tr>
     </tbody>
   </table>
-  <div class="dr-note" style="margin-top:6px"><span style="color:var(--text-muted)">来源：腾讯接口（恒指/恒生科技）、neodata（日经）</span> ｜ 亚太普跌：日经 -0.74%、恒指 -1.89%、恒生科技 -3.61%（A股 -0.59% 相对抗跌）。港股科技重挫与 A股创业板同向 —— 全球成长股同步调整。</div>
+  <div class="dr-note" style="margin-top:6px"><span style="color:var(--text-muted)">来源：港股 = 云端 market.json（腾讯 hkHSI/hkHSTECH 自动）；日经 = neodata 本机补；KOSPI 待 neodata 验证。</span> ｜ 8/24 亚太普跌：日经 -0.74%、恒指 -1.89%、恒生科技 -3.61%（A股 -0.59% 相对抗跌）。港股科技重挫与 A股创业板同向 —— 全球成长股同步调整。</div>
   <div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px">
     <b>跨资产尾部监测：</b>USD/JPY 159.068（+0.58%，8/20 尾盘口径）｜ 距干预线 163 约 2.4%｜ COT 日元空头分位：外部源必填（iFinD/Bloomberg 周度）｜ 韩股半导体：SK 海力士（8/20 +4.43%）作为存储链先导。
   </div>
