@@ -96,7 +96,8 @@ jobs:
             output/golden_pool_meta.json output/golden_pool_manifest.json \
             output/stocks.json \
             output/sh_index_kline.json output/sz_index_kline.json output/cyb_index_kline.json \
-            output/kc50_index_kline.json output/hs300_index_kline.json; do
+            output/kc50_index_kline.json output/hs300_index_kline.json \
+            output/market_thermometer.json output/valuation_band.json output/vix_panel.json output/institutional_flow.json; do
             [ -f "$f" ] && git add -f "$f" || true
           done
           # golden_pool_*.json 可能不存在（空池日）

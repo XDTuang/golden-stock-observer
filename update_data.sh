@@ -126,6 +126,16 @@ echo "📅 Step 3.6: 重要事件日历（东财财经日历按月缓存，best-
 "$PYTHON" fetch_event_calendar.py || echo "  ⚠️  重要事件日历刷新失败（跳过，不影响主流程）"
 
 echo ""
+echo "📊 Step 3.7: touzid 数据（市场温度计/估值分位/VIX 面板；股东户数=周更独立 workflow）"
+if [ -n "$GITHUB_ACTIONS" ]; then
+  # 云端轻量：百度估值 240 只逐股太慢且易限流，仅跑温度计+VIX（约 1-2 分钟）
+  "$PYTHON" fetch_touzid_data.py --thermo-only --vix-only || echo "  ⚠️  touzid 轻量数据失败（跳过，不影响主流程）"
+else
+  # 本机 launchd：全量（温度计+估值分位+VIX），估值约 10-13 分钟
+  "$PYTHON" fetch_touzid_data.py || echo "  ⚠️  touzid 数据失败（跳过，不影响主流程）"
+fi
+
+echo ""
 echo "🧹 Step 4: 精简数据 + 生成 fetch 版页面（单一构建路径）"
 "$PYTHON" slim_signals.py
 

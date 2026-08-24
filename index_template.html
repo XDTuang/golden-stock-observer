@@ -1308,6 +1308,67 @@ html { scroll-behavior: smooth; }
     </div>
   </div>
 
+  <!-- 市场温度计（touzid 融合块①：格雷厄姆/巴菲特/破净率/估值分位/ERP） -->
+  <style>
+    .thermo-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:10px 0 6px}
+    .thermo-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+    .thermo-label{font-size:11.5px;color:var(--text-muted);font-weight:600;white-space:nowrap}
+    .thermo-val{font-size:20px;font-weight:800;line-height:1.25;margin-top:2px}
+    .thermo-sub{font-size:11px;color:var(--text-muted);margin-top:2px}
+    .thermo-tag{display:inline-block;font-size:10.5px;font-weight:700;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:2px}
+    .thermo-hot{background:var(--red-bg);color:var(--red)}
+    .thermo-warm{background:var(--orange-bg);color:var(--orange)}
+    .thermo-mid{background:var(--gold-bg);color:#92600a}
+    .thermo-cool{background:var(--green-bg);color:var(--green)}
+    .thermo-chart-wrap{margin-top:8px}
+    .thermo-metric{padding:4px 12px;border-radius:16px;border:1px solid var(--border);font-size:12px;
+      background:var(--bg-surface);color:var(--text-secondary);cursor:pointer}
+    .thermo-metric.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+    @media(max-width:1100px){.thermo-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:640px){.thermo-grid{grid-template-columns:repeat(2,1fr)}}
+  </style>
+  <div class="thermo-section" id="thermoSection">
+    <div class="section-title">市场温度计
+      <span class="dr-tag" id="thermoDate" style="font-weight:400;"></span>
+    </div>
+    <div class="thermo-grid" id="thermoCards"><p class="dr-note" style="grid-column:1/-1;margin:0">温度计加载中…</p></div>
+    <div class="thermo-chart-wrap" id="thermoChartWrap" style="display:none;">
+      <div class="etf-timeline-header">
+        <div class="tl-title">全市场估值趋势（近5年）</div>
+        <div class="etf-timeline-controls" id="thermoMetrics">
+          <button class="thermo-metric active" data-metric="graham">格雷厄姆指数</button>
+          <button class="thermo-metric" data-metric="pe">全A PE</button>
+          <button class="thermo-metric" data-metric="pb_pct">PB分位%(5y)</button>
+          <button class="thermo-metric" data-metric="below_net_ratio">破净率%</button>
+        </div>
+      </div>
+      <div id="thermoChart" style="height:280px;"></div>
+    </div>
+  </div>
+
+  <!-- 全球波动率面板（touzid 融合块④：CBOE VIX / 美股三指数 / A股 QVIX） -->
+  <style>
+    .vix-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:10px 0 6px}
+    .vix-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+    .vix-label{font-size:11.5px;color:var(--text-muted);font-weight:600;white-space:nowrap}
+    .vix-val{font-size:19px;font-weight:800;line-height:1.25;margin-top:2px}
+    .vix-sub{font-size:11px;color:var(--text-muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .vix-up{color:var(--red)} .vix-dn{color:var(--green)}
+    @media(max-width:1100px){.vix-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:640px){.vix-grid{grid-template-columns:repeat(2,1fr)}}
+  </style>
+  <div class="vix-section" id="vixSection">
+    <div class="section-title">全球波动率 <span class="dr-tag" id="vixMeta" style="font-weight:400;"></span></div>
+    <div class="vix-grid" id="vixCards"><p class="dr-note" style="grid-column:1/-1;margin:0">波动率数据加载中…</p></div>
+    <div class="thermo-chart-wrap" id="vixChartWrap" style="display:none;">
+      <div class="etf-timeline-header">
+        <div class="tl-title">CBOE VIX 恐慌指数（近1年）</div>
+        <div class="etf-timeline-controls"><span class="dr-tag">数据源：CBOE 官方</span></div>
+      </div>
+      <div id="vixChart" style="height:220px;"></div>
+    </div>
+  </div>
+
   <!-- 统计卡片 -->
   <div class="stats-grid" id="statsCards"></div>
 
@@ -1372,6 +1433,25 @@ html { scroll-behavior: smooth; }
       <thead><tr style="background:var(--bg-subtle);text-align:left;"></tr></thead>
       <tbody></tbody>
     </table>
+  </div>
+
+  <!-- 估值雷达（touzid 融合块②：信号+金钻命中股 PE/PB 近5年分位） -->
+  <style>
+    .val-radar-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+    .val-radar-col{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+    .val-radar-h{font-size:13.5px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+    .val-row{display:grid;grid-template-columns:88px 1fr 64px 64px;gap:8px;align-items:center;
+      padding:5px 0;font-size:12.5px;border-bottom:1px dashed var(--border-light)}
+    .val-row:last-child{border-bottom:none}
+    .val-name{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .val-bar{height:8px;border-radius:4px;background:var(--bg-subtle);overflow:hidden}
+    .val-fill{height:100%;border-radius:4px}
+    .val-num{text-align:right;font-weight:700}
+    @media(max-width:900px){.val-radar-grid{grid-template-columns:1fr}}
+  </style>
+  <div class="val-radar" id="valRadarSection">
+    <div class="section-title">估值雷达 <span class="dr-tag" id="valRadarMeta"></span></div>
+    <div class="val-radar-grid" id="valRadarGrid"><p class="dr-note">估值数据加载中…</p></div>
   </div>
 </div>
 
@@ -1795,6 +1875,23 @@ setInterval(function(){ loadRT(false); }, 30*60*1000);
 
 <!-- Tab: 中长线确认 -->
 <div class="tab-content" id="tab-long">
+  <style>
+    .inst-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .inst-col{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+    .inst-h{font-size:13.5px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+    .inst-row{display:grid;grid-template-columns:88px 1fr 84px;gap:8px;align-items:center;
+      padding:5px 0;font-size:12.5px;border-bottom:1px dashed var(--border-light)}
+    .inst-row:last-child{border-bottom:none}
+    .inst-name{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .inst-chg{text-align:right;font-weight:700}
+    .inst-conc{color:var(--red)} .inst-disp{color:var(--green)}
+    @media(max-width:900px){.inst-grid{grid-template-columns:1fr}}
+  </style>
+  <div class="dr-card" id="instFlowCard" style="margin:0 0 14px">
+    <div class="tl-title">股东户数趋势 <span class="dr-tag" id="instFlowMeta" style="font-weight:400;"></span></div>
+    <p class="dr-note">户数减少=筹码集中（红，偏强），户数增加=筹码分散（绿，偏弱）。数据源：东财报告期股东户数。</p>
+    <div class="inst-grid" id="instFlowGrid"><p class="dr-note">户数数据加载中…</p></div>
+  </div>
   <div class="section-title">中长线趋势确认 <span class="badge" id="longCount">0</span></div>
   <div class="stock-grid" id="longGrid"></div>
 </div>
@@ -6089,6 +6186,235 @@ if (_eventcalBtn) {
     eventcalJumpToday();
   });
 }
+
+/* ═══════════ touzid 融合：市场温度计 / 估值雷达 / 股东户数 ═══════════ */
+let THERMO_DATA = null, VAL_RADAR_DATA = null, INST_FLOW_DATA = null, VIX_PANEL_DATA = null;
+let _thermoChart = null, _thermoMetric = 'graham', _vixChart = null;
+
+// VIX 色标：值越高越恐慌（红=恐慌，绿=平静）
+function vixTag(v, hi, lo) {
+  if (v == null) return '<span class="thermo-tag thermo-mid">—</span>';
+  const cls = v >= hi ? 'thermo-hot' : v <= lo ? 'thermo-cool' : 'thermo-warm';
+  return '<span class="thermo-tag ' + cls + '">' + v + '</span>';
+}
+
+// 温度色标：估值热度（红=过热/贵，绿=低估/便宜）— 与 A 股红涨绿跌语义一致
+function thermoTag(v, low, high, invert) {
+  if (v == null) return '<span class="thermo-tag thermo-mid">无数据</span>';
+  let cls;
+  if (invert) { // 数值越大越便宜（格雷厄姆指数/破净率/ERP）
+    cls = v >= high ? 'thermo-cool' : v <= low ? 'thermo-hot' : (v > (low + high) / 2 ? 'thermo-warm' : 'thermo-mid');
+  } else {      // 数值越大越贵（分位/指数）
+    cls = v >= high ? 'thermo-hot' : v <= low ? 'thermo-cool' : (v > (low + high) / 2 ? 'thermo-warm' : 'thermo-mid');
+  }
+  return '<span class="thermo-tag ' + cls + '">' + (v > 100 ? v.toFixed(0) : v) + '</span>';
+}
+
+function loadThermometer() {
+  const sec = document.getElementById('thermoSection');
+  if (!sec) return;
+  fetch('./output/market_thermometer.json?t=' + Date.now())
+    .then(r => r.json())
+    .then(d => {
+      THERMO_DATA = d;
+      renderThermometer();
+    })
+    .catch(e => {
+      document.getElementById('thermoCards').innerHTML =
+        '<p class="dr-note" style="grid-column:1/-1;margin:0">温度计数据加载失败：' + e.message + '</p>';
+    });
+}
+
+function renderThermometer() {
+  const d = THERMO_DATA; if (!d) return;
+  const s = d.snapshot || {};
+  document.getElementById('thermoDate').textContent = '数据日期 ' + (s.date || '');
+  const cards = [
+    { label: '格雷厄姆指数', val: s.graham, sub: '盈利收益率÷10Y国债', tag: thermoTag(s.graham, 0.8, 2, true), note: '>2 股票显著便宜' },
+    { label: '巴菲特指数', val: s.buffett, sub: '总市值÷GDP(TTM)', tag: thermoTag(s.buffett, 0.6, 1.0, true), note: '>1 市值偏贵' },
+    { label: '全A破净率', val: s.below_net_ratio, sub: 'PB<1 家数占比', tag: thermoTag(s.below_net_ratio, 3, 10, true), note: '>10% 深度低估' },
+    { label: 'PE 分位(10y)', val: s.pe_pct_10y, sub: '全A PE 历史分位', tag: thermoTag(s.pe_pct_10y, 20, 80, false), note: '>80% 过热' },
+    { label: 'PB 分位(10y)', val: s.pb_pct_10y, sub: '全A PB 历史分位', tag: thermoTag(s.pb_pct_10y, 20, 80, false), note: '>80% 过热' },
+    { label: '股债收益差', val: s.erp, sub: '1/PE−10Y国债', tag: thermoTag(s.erp, 2, 5, true), note: '>5% 股票占优' },
+  ];
+  document.getElementById('thermoCards').innerHTML = cards.map(c => {
+    const v = c.val == null ? '—' : (c.val > 100 ? c.val.toFixed(0) : c.val);
+    return '<div class="thermo-card"><div class="thermo-label">' + c.label + c.tag + '</div>' +
+      '<div class="thermo-val">' + v + '</div><div class="thermo-sub">' + c.sub + '</div></div>';
+  }).join('');
+  if ((d.history || []).length > 20) {
+    document.getElementById('thermoChartWrap').style.display = '';
+    document.querySelectorAll('#thermoMetrics .thermo-metric').forEach(b => {
+      b.onclick = () => {
+        document.querySelectorAll('#thermoMetrics .thermo-metric').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        _thermoMetric = b.dataset.metric;
+        renderThermoChart();
+      };
+    });
+    renderThermoChart();
+  }
+}
+
+function renderThermoChart() {
+  const dom = document.getElementById('thermoChart');
+  if (!dom || !THERMO_DATA || !THERMO_DATA.history) return;
+  if (!_thermoChart) _thermoChart = echarts.init(dom);
+  const hist = THERMO_DATA.history.filter(h => h[_thermoMetric] != null);
+  const labels = { graham: '格雷厄姆指数', pe: '全A PE', pb_pct: 'PB 分位 %(近5年)', below_net_ratio: '破净率 %' };
+  const isPct = _thermoMetric === 'pb_pct' || _thermoMetric === 'below_net_ratio';
+  const series = isPct ? hist.map(h => h[_thermoMetric]) : hist.map(h => h[_thermoMetric]);
+  _thermoChart.setOption({
+    backgroundColor: 'transparent',
+    grid: { left: 48, right: 16, top: 24, bottom: 28 },
+    tooltip: { trigger: 'axis' },
+    xAxis: { type: 'category', data: hist.map(h => h.date.slice(5)), axisLine: { lineStyle: { color: '#888' } },
+      axisLabel: { color: '#999', fontSize: 10 } },
+    yAxis: { type: 'value', scale: true, splitLine: { lineStyle: { color: 'rgba(128,128,128,.15)' } },
+      axisLabel: { color: '#999', fontSize: 10 } },
+    series: [{ type: 'line', name: labels[_thermoMetric] || _thermoMetric, data: series, symbol: 'none',
+      lineStyle: { width: 2, color: '#4f6ef7' }, areaStyle: { color: 'rgba(79,110,247,.12)' } }]
+  }, true);
+}
+
+function loadValRadar() {
+  const sec = document.getElementById('valRadarSection');
+  if (!sec) return;
+  fetch('./output/valuation_band.json?t=' + Date.now())
+    .then(r => r.json())
+    .then(d => { VAL_RADAR_DATA = d; renderValRadar(); })
+    .catch(e => {
+      document.getElementById('valRadarGrid').innerHTML =
+        '<p class="dr-note">估值数据加载失败：' + e.message + '</p>';
+    });
+}
+
+function renderValRadar() {
+  const d = VAL_RADAR_DATA; if (!d) return;
+  const items = (d.items || []).filter(i => i.pe_pct_5y != null);
+  document.getElementById('valRadarMeta').textContent = '命中 ' + d.count + ' 只 · ' + (d.date || '');
+  const low = items.slice().sort((a, b) => a.pe_pct_5y - b.pe_pct_5y).slice(0, 10);
+  const high = items.slice().sort((a, b) => b.pe_pct_5y - a.pe_pct_5y).slice(0, 10);
+  const colHtml = (list, label, cls) => {
+    const rows = list.map(i => {
+      const p = i.pe_pct_5y;
+      return '<div class="val-row"><span class="val-name" title="' + i.name + ' ' + i.tag + '">' + i.name + '</span>' +
+        '<div class="val-bar"><div class="val-fill" style="width:' + p + '%;background:' + cls + '"></div></div>' +
+        '<span class="val-num">' + p.toFixed(0) + '%</span>' +
+        '<span class="val-num" style="color:var(--text-muted);font-size:11px">PE ' + (i.pe ?? '—') + '</span></div>';
+    }).join('');
+    return '<div class="val-radar-col"><div class="val-radar-h">' + label + '</div>' + rows + '</div>';
+  };
+  document.getElementById('valRadarGrid').innerHTML =
+    (items.length ? colHtml(low, '🟢 低估机会（PE分位↓）', 'var(--green)') : '') +
+    (items.length ? colHtml(high, '🔴 高位警示（PE分位↑）', 'var(--red)') : '<p class="dr-note">暂无估值分位数据</p>');
+}
+
+function loadInstFlow() {
+  const card = document.getElementById('instFlowCard');
+  if (!card) return;
+  fetch('./output/institutional_flow.json?t=' + Date.now())
+    .then(r => r.json())
+    .then(d => { INST_FLOW_DATA = d; renderInstFlow(); })
+    .catch(e => {
+      document.getElementById('instFlowGrid').innerHTML =
+        '<p class="dr-note">户数数据加载失败：' + e.message + '</p>';
+    });
+}
+
+function renderInstFlow() {
+  const d = INST_FLOW_DATA; if (!d) return;
+  const items = (d.items || []).filter(i => i.holders_chg_pct != null);
+  document.getElementById('instFlowMeta').textContent = (d.report || '') + ' · 命中 ' + d.count + ' 只';
+  const conc = items.slice().sort((a, b) => a.holders_chg_pct - b.holders_chg_pct).slice(0, 10);
+  const disp = items.slice().sort((a, b) => b.holders_chg_pct - a.holders_chg_pct).slice(0, 10);
+  const colHtml = (list, label, cls) => {
+    const rows = list.map(i => {
+      const p = i.holders_chg_pct;
+      return '<div class="inst-row"><span class="inst-name" title="' + i.name + ' ' + (i.tag || '') + '">' + i.name + '</span>' +
+        '<span class="dr-tag">' + (i.tag || '') + '</span>' +
+        '<span class="inst-chg ' + cls + '">' + (p > 0 ? '+' : '') + p.toFixed(1) + '%</span></div>';
+    }).join('');
+    return '<div class="inst-col"><div class="inst-h">' + label + '</div>' + rows + '</div>';
+  };
+  document.getElementById('instFlowGrid').innerHTML =
+    (conc.length ? colHtml(conc, '🔴 筹码集中（户数↓）', 'inst-conc') : '') +
+    (disp.length ? colHtml(disp, '🟢 筹码分散（户数↑）', 'inst-disp') : '<p class="dr-note">暂无户数数据</p>');
+}
+
+function loadVixPanel() {
+  const sec = document.getElementById('vixSection');
+  if (!sec) return;
+  fetch('./output/vix_panel.json?t=' + Date.now())
+    .then(r => r.json())
+    .then(d => { VIX_PANEL_DATA = d; renderVixPanel(); })
+    .catch(e => {
+      document.getElementById('vixCards').innerHTML =
+        '<p class="dr-note" style="grid-column:1/-1;margin:0">波动率数据加载失败：' + e.message + '</p>';
+    });
+}
+
+function renderVixPanel() {
+  const d = VIX_PANEL_DATA; if (!d) return;
+  const cards = [];
+  // CBOE VIX
+  const v = d.cboe_vix || {};
+  if (v.value != null) {
+    const chg = v.chg_pct != null;
+    cards.push('<div class="vix-card"><div class="vix-label">CBOE VIX 恐慌指数' + vixTag(v.value, 30, 15) + '</div>' +
+      '<div class="vix-val">' + v.value + '</div>' +
+      '<div class="vix-sub ' + (chg && v.chg_pct >= 0 ? 'vix-up' : 'vix-dn') + '">' +
+      (v.date || '') + ' ' + (chg ? (v.chg_pct > 0 ? '+' : '') + v.chg_pct.toFixed(2) + '%' : '') + '</div></div>');
+  }
+  // 美股三指数（红涨绿跌）
+  (d.us || []).forEach(u => {
+    const up = u.chg_pct >= 0;
+    cards.push('<div class="vix-card"><div class="vix-label">' + u.name + '</div>' +
+      '<div class="vix-val">' + u.value.toLocaleString() + '</div>' +
+      '<div class="vix-sub ' + (up ? 'vix-up' : 'vix-dn') + '">' + (up ? '+' : '') + u.chg_pct.toFixed(2) + '%</div></div>');
+  });
+  // A股 QVIX
+  (d.a_share || []).forEach(a => {
+    cards.push('<div class="vix-card"><div class="vix-label">' + a.name + ' QVIX' + vixTag(a.qvix, 45, 30) + '</div>' +
+      '<div class="vix-val">' + (a.qvix != null ? a.qvix : '—') + '</div>' +
+      '<div class="vix-sub">指数 ' + (a.value ?? '—') + ' · 20日波动 ' + (a.vol20 != null ? a.vol20.toFixed(1) + '%' : '—') + '</div></div>');
+  });
+  document.getElementById('vixCards').innerHTML = cards.join('') ||
+    '<p class="dr-note" style="grid-column:1/-1;margin:0">暂无波动率数据</p>';
+  document.getElementById('vixMeta').textContent = '数据日期 ' + (d.date || '');
+  if ((d.vix_history || []).length > 20) {
+    document.getElementById('vixChartWrap').style.display = '';
+    renderVixChart();
+  }
+}
+
+function renderVixChart() {
+  const dom = document.getElementById('vixChart');
+  if (!dom || !VIX_PANEL_DATA) return;
+  if (!_vixChart) _vixChart = echarts.init(dom);
+  const hist = VIX_PANEL_DATA.vix_history;
+  _vixChart.setOption({
+    backgroundColor: 'transparent',
+    grid: { left: 44, right: 16, top: 20, bottom: 26 },
+    tooltip: { trigger: 'axis' },
+    xAxis: { type: 'category', data: hist.map(h => h.date.slice(5)), axisLine: { lineStyle: { color: '#888' } },
+      axisLabel: { color: '#999', fontSize: 10 } },
+    yAxis: { type: 'value', scale: true, splitLine: { lineStyle: { color: 'rgba(128,128,128,.15)' } },
+      axisLabel: { color: '#999', fontSize: 10 } },
+    series: [{ type: 'line', name: 'VIX', data: hist.map(h => h.close), symbol: 'none',
+      lineStyle: { width: 2, color: '#e53e3e' }, areaStyle: { color: 'rgba(229,62,62,.12)' },
+      markLine: { silent: true, symbol: 'none', label: { color: '#999', fontSize: 10 },
+        data: [{ yAxis: 30, lineStyle: { color: '#e53e3e', type: 'dashed' }, label: { formatter: '恐慌30' } },
+               { yAxis: 15, lineStyle: { color: '#22a861', type: 'dashed' }, label: { formatter: '平静15' } }] } }]
+  }, true);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadThermometer();
+  loadValRadar();
+  loadInstFlow();
+  loadVixPanel();
+});
 </script>
 
 <!-- 研报加强弹窗 -->

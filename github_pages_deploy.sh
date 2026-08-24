@@ -116,6 +116,8 @@ git add -f index.html signals.json lh_calendar.json \
   output/golden_pool_*.json output/golden_pool_meta.json output/golden_pool_manifest.json \
   output/stocks.json \
   output/sh_index_kline.json output/sz_index_kline.json output/cyb_index_kline.json output/kc50_index_kline.json output/hs300_index_kline.json \
+  output/market_thermometer.json output/valuation_band.json output/vix_panel.json output/institutional_flow.json \
+  deploy/output/market_thermometer.json deploy/output/valuation_band.json deploy/output/vix_panel.json deploy/output/institutional_flow.json \
   build_manifest.json .nojekyll
 if git diff --cached --quiet; then
   echo "  无新更改需要提交"
