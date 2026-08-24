@@ -108,7 +108,10 @@ def main():
     for f in files:
         date = f.parent.name
         data = json.loads(f.read_text(encoding="utf-8"))
-        print(f"\n=== 推演日 {date}: {len(data)} 只 ===")
+        # 环境因子：读取推演时记录的上证当日涨跌（v2 起 obs_deduce 含 env.sh_chg）
+        env = data[0].get("env", {}).get("sh_chg", None) if data else None
+        print(f"\n=== 推演日 {date}: {len(data)} 只 | 环境: 上证 {env:+.2f}% ===" if env is not None
+              else f"\n=== 推演日 {date}: {len(data)} 只 ===")
         for item in data:
             code = item["code"]
             nxt = fetch_tx_next_day(code, date)
@@ -128,6 +131,18 @@ def main():
             total["by_sector"].setdefault(item["sector"], {"n": 0, "dir_hit": 0})
             total["by_sector"][item["sector"]]["n"] += 1
             total["by_sector"][item["sector"]]["dir_hit"] += 1 if sc["dir_hit"] else 0
+            # 环境分组：弱市(<-1%) / 偏弱(-1~-0.3%) / 中性以上(>-0.3%)
+            if env is not None:
+                if env < -1.0:
+                    env_grp = "弱市(<-1%)"
+                elif env < -0.3:
+                    env_grp = "偏弱(-1%~-0.3%)"
+                else:
+                    env_grp = "中性以上(>-0.3%)"
+                total.setdefault("by_env", {}).setdefault(env_grp, {"n": 0, "dir_hit": 0, "open_hit": 0})
+                total["by_env"][env_grp]["n"] += 1
+                total["by_env"][env_grp]["dir_hit"] += 1 if sc["dir_hit"] else 0
+                total["by_env"][env_grp]["open_hit"] += 1 if sc["open_hit"] else 0
             detail.append({
                 "code": code, "name": item["name"], "trend": item["trend"],
                 "open_label": item["open_label"], "t_close": item["tx_last"],
@@ -143,6 +158,10 @@ def main():
         sys.exit(0)
     print("\n" + "=" * 60)
     print(f"【总体】样本 {total['n']} 只 | 方向准确率 {total['dir_hit']/total['n']*100:.1f}% | 开盘准确率 {total['open_hit']/total['n']*100:.1f}%")
+    print("\n【大盘环境分组】")
+    if "by_env" in total:
+        for g, v in sorted(total["by_env"].items(), key=lambda x: -x[1]["n"]):
+            print(f"  {g:18s} n={v['n']:3d} 方向 {v['dir_hit']/v['n']*100:5.1f}% 开盘 {v['open_hit']/v['n']*100:5.1f}%")
     print("\n【分推演类型】")
     for t, v in sorted(total["by_trend"].items(), key=lambda x: -x[1]["n"]):
         print(f"  {t:8s} n={v['n']:3d} 方向 {v['dir_hit']/v['n']*100:5.1f}% 开盘 {v['open_hit']/v['n']*100:5.1f}%")
