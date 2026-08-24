@@ -53,5 +53,15 @@ if [ -d "$DSB/data" ]; then
   fi
 fi
 
+# 4. 主站 output 权威数据（top10/gate 等，云端 18:50 更新，回测需追溯当日版本）
+OUT_DIR="$MAIN_DIR/output"
+if [ -d "$OUT_DIR" ]; then
+  for f in top10_history.json gate_data.json golden_diamond.json golden_pool_meta.json; do
+    if [ -f "$OUT_DIR/$f" ]; then
+      cp -f "$OUT_DIR/$f" "$BK_DIR/${f%.json}_${DATE}.json" && COPIED=$((COPIED+1))
+    fi
+  done
+fi
+
 echo "[backup] $DATE -> $BK_DIR （$COPIED 个文件）"
 ls -1 "$BK_DIR" 2>/dev/null | head -20
