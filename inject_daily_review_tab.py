@@ -55,6 +55,8 @@ function renderDailyReview() {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.text();
     }).then(t => {
+      // 抹掉 analysis.html 里的硬编码"3·隔夜美股复盘"模块——由 drRenderUsDualDay 数据驱动渲染
+      t = t.replace(/<div class="dr-h">\s*3\s*[·・\.\s]*\s*隔夜美股复盘[\s\S]*?(?=<div class="dr-h">|<\/div>\s*<style|$)/, '');
       ana.innerHTML = t;
       drFillTables(q || {});
       drLoadTop10();
@@ -73,6 +75,8 @@ function renderDailyReview() {
       mkt.innerHTML = `<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
         <b>📊 行情数据（${d.date}）</b><span class="dr-tag">${cnt} 标的 · ${d.source}</span>
         <span class="dr-tag">云端 08:15 自动更新</span></div>`;
+      // 数据驱动双日表（根治 analysis.html 硬编码滞后）
+      drRenderUsDualDay(d);
       loadAna(q);
     }).catch(err => {
       mkt.innerHTML = `<p class="dr-note">行情加载失败：${err}</p>`;
@@ -81,6 +85,41 @@ function renderDailyReview() {
   } else {
     loadAna();
   }
+}
+
+/* ═══════ 隔夜美股复盘（双日表·数据驱动，从 market.json.us_kline 读 prev+latest） ═══════ */
+function drRenderUsDualDay(d) {
+  if (!d || !d.us_kline || Object.keys(d.us_kline).length === 0) return;
+  const k = d.us_kline;
+  const usIdxKeys = ['us_dji', 'us_inx', 'us_ixic'];
+  const usMapKeys = ['us_mu', 'us_sndk', 'us_lite', 'us_aaoi', 'us_cohr', 'us_wdc', 'us_skhy', 'us_mrvl'];
+  const nameMap = {
+    us_dji:'道琼斯', us_inx:'标普500', us_ixic:'纳斯达克',
+    us_mu:'MU 美光', us_sndk:'SNDK 闪迪', us_lite:'LITE 朗美通', us_aaoi:'AAOI',
+    us_cohr:'COHR', us_wdc:'WDC 西部数据', us_skhy:'SKHY 海力士', us_mrvl:'MRVL 迈威尔',
+  };
+  const sample = k[usIdxKeys[0]] || Object.values(k)[0];
+  const latestDate = sample.latest.date, prevDate = sample.prev.date;
+  const rows = (keys) => keys.filter(kk => k[kk]).map(kk => {
+    const e = k[kk], l = e.latest, p = e.prev;
+    const pct = p.chg_pct;
+    const cls = pct >= 0 ? 'dr-up' : 'dr-dn';
+    const sign = pct >= 0 ? '+' : '';
+    return `<tr><td>${nameMap[kk]||kk}</td><td>${l.close.toLocaleString()}</td><td class="${cls}">${sign}${pct.toFixed(2)}%</td><td>${p.close.toLocaleString()}</td><td class="${cls}">${sign}${pct.toFixed(2)}%</td></tr>`;
+  }).join('');
+  const html = `<div class="dr-h">3 · 隔夜美股复盘（双日表 · V2 数据驱动）</div>
+<div class="dr-note"><b>为什么双日？</b>V1 教训：华尔街见闻凌晨快讯实为前一交易日收盘（A 股与美股存在 T-1 映射），若误当"隔夜"则指引方向完全做反。双日表强制呈现<b>映射源</b>与<b>隔夜</b>两日。说明：<b>隔夜最新 = ${latestDate}</b>（最新已收盘美股交易日），<b>前一交易日 = ${prevDate}</b>。</div>
+<table class="dr-tbl"><thead><tr><th>标的</th><th>${prevDate} 收盘</th><th>${prevDate} 涨跌</th><th>${latestDate} 收盘</th><th>${latestDate} 涨跌（隔夜）</th></tr></thead>
+<tbody>${rows(usIdxKeys)}</tbody></table>
+<div class="dr-h" style="margin-top:10px;font-size:13px">美股映射个股</div>
+<table class="dr-tbl"><thead><tr><th>标的</th><th>${prevDate} 收盘</th><th>${prevDate} 涨跌</th><th>${latestDate} 收盘</th><th>${latestDate} 涨跌（隔夜）</th></tr></thead>
+<tbody>${rows(usMapKeys)}</tbody></table>`;
+  const ana = document.getElementById('drAnalysis');
+  if (!ana) return;
+  const div = document.createElement('div');
+  div.id = 'drUsDualDayInjected';
+  div.innerHTML = html;
+  ana.insertBefore(div, ana.firstChild);
 }
 function drFillTables(q) {
   const mk = (items) => {

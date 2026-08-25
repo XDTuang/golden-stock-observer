@@ -60,6 +60,14 @@ QUOTES = [
 F_IDX = dict(close=2, prev=3, open=4, time=29, chg_amt=30, chg_pct=31,
              high=32, low=33, currency=34, vol=35, amt=36, turn=37)
 
+# 美股标的：腾讯实时 code -> akshare stock_us_daily symbol（前一日+最新两日）
+US_DAILY_MAP = {
+    "us_dji": ".DJI", "us_inx": ".INX", "us_ixic": ".IXIC",
+    "us_mu": "MU", "us_sndk": "SNDK", "us_lite": "LITE", "us_aaoi": "AAOI",
+    "us_cohr": "COHR", "us_wdc": "WDC", "us_skhy": "SKHY", "us_mrvl": "MRVL",
+    "us_nvda": "NVDA", "us_tsla": "TSLA",
+}
+
 
 def fetch():
     url = "https://qt.gtimg.cn/q=" + ",".join(q[1] for q in QUOTES)
@@ -102,16 +110,55 @@ def fetch():
         if t[:4].isdigit() and "-" in t[:10]:         # 美股: 2026-08-21 ...
             data_date = t[:10]
             break
+    # ── 美股日 K 双日快照（隔夜复盘双日表数据源，根治硬编码滞后） ──
+    us_kline = {}
+    try:
+        import akshare as _ak
+        for k, sym in US_DAILY_MAP.items():
+            try:
+                df = _ak.stock_us_daily(symbol=sym)
+            except Exception:
+                continue
+            if df is None or len(df) < 2:
+                continue
+            # 取最后两个交易日（latest=最新已收盘，prev=前一交易日，跳过周末自动）
+            latest = df.iloc[-1]
+            prev = df.iloc[-2]
+            try:
+                l_close = float(latest["close"])
+                p_close = float(prev["close"])
+                us_kline[k] = {
+                    "latest": {"date": str(latest["date"])[:10], "close": round(l_close, 2)},
+                    "prev":   {"date": str(prev["date"])[:10],   "close": round(p_close, 2),
+                                "chg_pct": round((l_close / p_close - 1) * 100, 2) if p_close else None,
+                                "chg_amt": round(l_close - p_close, 2)},
+                }
+            except Exception:
+                continue
+        print(f"[daily-review] us_kline 双日: {len(us_kline)}/{len(US_DAILY_MAP)}")
+    except Exception as _e:
+        print(f"[daily-review] us_kline 拉取失败（非致命）: {type(_e).__name__} {str(_e)[:80]}")
+
     out = {
         "date": data_date,
         "run_date": now.strftime("%Y-%m-%d"),
         "updated_at": now.strftime("%Y-%m-%d %H:%M:%S %Z"),
-        "source": "tencent-gtimg(公开接口,无Key)",
-        "coverage": "A股指数/持仓/美股指数/美股映射(云端自动); 日韩·费半·商品汇率·星球·AI分析=本机agent",
+        "source": "tencent-gtimg(实时) + akshare stock_us_daily(双日历史,免费无key)",
+        "coverage": "A股指数/持仓/美股实时(腾讯) + 美股双日(akshare); 日韩·费半·商品汇率·星球·AI分析=本机agent",
         "quotes": quotes,
+        "us_kline": us_kline,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+    text = json.dumps(out, ensure_ascii=False, indent=1)
+    OUT.write_text(text, encoding="utf-8")
+    # 双写 deploy/（本地预览用；云端 deploy 由 git checkout 保证，try 容错）
+    try:
+        from pathlib import Path as _P
+        deploy = _P(__file__).resolve().parent / "deploy" / "data" / "daily_review" / "market.json"
+        deploy.parent.mkdir(parents=True, exist_ok=True)
+        deploy.write_text(text, encoding="utf-8")
+    except Exception as _e:
+        print(f"[daily-review] 双写 deploy/ 跳过: {_e}")
     ok = sum(1 for v in quotes.values() if "error" not in v)
     print(f"[daily-review] OK {ok}/{len(QUOTES)} -> {OUT}")
     return ok
