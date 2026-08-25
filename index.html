@@ -1489,6 +1489,8 @@ html { scroll-behavior: smooth; }
 
 
 
+
+
 <!-- Tab: 每日复盘（盘前简报 + 完整复盘合一；行情=云端08:15自动，分析=本机agent） -->
 <div class="tab-content" id="tab-dailyreview">
 <style>
@@ -3148,21 +3150,26 @@ function renderFourVolumeChart(containerId, fv) {
 
 
 
+
+
 // ===== 每日复盘 Tab =====
 function renderDailyReview() {
   if (window._drInit) return; window._drInit = true;
   const mkt = document.getElementById('drMarket');
   const ana = document.getElementById('drAnalysis');
-  const loadAna = (q) => {
+  const loadAna = (d) => {
     if (!ana) return;
+    const q = (d && d.quotes) || {};
     fetch('./data/daily_review/analysis.html', { cache: 'no-store' }).then(r => {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.text();
     }).then(t => {
-      // 抹掉 analysis.html 里的硬编码"3·隔夜美股复盘"模块——由 drRenderUsDualDay 数据驱动渲染
-      t = t.replace(/<div class="dr-h">\s*3\s*[·・\.\s]*\s*隔夜美股复盘[\s\S]*?(?=<div class="dr-h">|<\/div>\s*<style|$)/, '');
+      // 保留 analysis.html 的"3·隔夜美股复盘"模块（含 agent 推演结论），
+      // 仅用 market.json.us_kline 把双日表数据+说明日期刷新到最新（drRefreshUsDualDayTables）
       ana.innerHTML = t;
-      drFillTables(q || {});
+      drFillTables(q);
+      if (d && d.us_kline) drRefreshUsDualDayTables(d);
+      if (d && d.comm) drRefreshCommRates(d);
       drLoadTop10();
       drLoadDiamond();
     }).catch(err => {
@@ -3179,9 +3186,8 @@ function renderDailyReview() {
       mkt.innerHTML = `<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
         <b>📊 行情数据（${d.date}）</b><span class="dr-tag">${cnt} 标的 · ${d.source}</span>
         <span class="dr-tag">云端 08:15 自动更新</span></div>`;
-      // 数据驱动双日表（根治 analysis.html 硬编码滞后）
-      drRenderUsDualDay(d);
-      loadAna(q);
+      // 保留 analysis.html 的"3"模块，仅刷新数据
+      loadAna(d);
     }).catch(err => {
       mkt.innerHTML = `<p class="dr-note">行情加载失败：${err}</p>`;
       loadAna();
@@ -3191,39 +3197,135 @@ function renderDailyReview() {
   }
 }
 
-/* ═══════ 隔夜美股复盘（双日表·数据驱动，从 market.json.us_kline 读 prev+latest） ═══════ */
-function drRenderUsDualDay(d) {
-  if (!d || !d.us_kline || Object.keys(d.us_kline).length === 0) return;
-  const k = d.us_kline;
-  const usIdxKeys = ['us_dji', 'us_inx', 'us_ixic'];
-  const usMapKeys = ['us_mu', 'us_sndk', 'us_lite', 'us_aaoi', 'us_cohr', 'us_wdc', 'us_skhy', 'us_mrvl'];
-  const nameMap = {
-    us_dji:'道琼斯', us_inx:'标普500', us_ixic:'纳斯达克',
-    us_mu:'MU 美光', us_sndk:'SNDK 闪迪', us_lite:'LITE 朗美通', us_aaoi:'AAOI',
-    us_cohr:'COHR', us_wdc:'WDC 西部数据', us_skhy:'SKHY 海力士', us_mrvl:'MRVL 迈威尔',
-  };
-  const sample = k[usIdxKeys[0]] || Object.values(k)[0];
-  const latestDate = sample.latest.date, prevDate = sample.prev.date;
-  const rows = (keys) => keys.filter(kk => k[kk]).map(kk => {
-    const e = k[kk], l = e.latest, p = e.prev;
-    const pct = p.chg_pct;
-    const cls = pct >= 0 ? 'dr-up' : 'dr-dn';
-    const sign = pct >= 0 ? '+' : '';
-    return `<tr><td>${nameMap[kk]||kk}</td><td>${l.close.toLocaleString()}</td><td class="${cls}">${sign}${pct.toFixed(2)}%</td><td>${p.close.toLocaleString()}</td><td class="${cls}">${sign}${pct.toFixed(2)}%</td></tr>`;
-  }).join('');
-  const html = `<div class="dr-h">3 · 隔夜美股复盘（双日表 · V2 数据驱动）</div>
-<div class="dr-note"><b>为什么双日？</b>V1 教训：华尔街见闻凌晨快讯实为前一交易日收盘（A 股与美股存在 T-1 映射），若误当"隔夜"则指引方向完全做反。双日表强制呈现<b>映射源</b>与<b>隔夜</b>两日。说明：<b>隔夜最新 = ${latestDate}</b>（最新已收盘美股交易日），<b>前一交易日 = ${prevDate}</b>。</div>
-<table class="dr-tbl"><thead><tr><th>标的</th><th>${prevDate} 收盘</th><th>${prevDate} 涨跌</th><th>${latestDate} 收盘</th><th>${latestDate} 涨跌（隔夜）</th></tr></thead>
-<tbody>${rows(usIdxKeys)}</tbody></table>
-<div class="dr-h" style="margin-top:10px;font-size:13px">美股映射个股</div>
-<table class="dr-tbl"><thead><tr><th>标的</th><th>${prevDate} 收盘</th><th>${prevDate} 涨跌</th><th>${latestDate} 收盘</th><th>${latestDate} 涨跌（隔夜）</th></tr></thead>
-<tbody>${rows(usMapKeys)}</tbody></table>`;
+/* ═══════ 隔夜美股复盘（保留 analysis.html 模块，仅刷新双日表数据+说明日期，数据源 market.json.us_kline） ═══════ */
+function drRefreshUsDualDayTables(d) {
   const ana = document.getElementById('drAnalysis');
   if (!ana) return;
-  const div = document.createElement('div');
-  div.id = 'drUsDualDayInjected';
-  div.innerHTML = html;
-  ana.insertBefore(div, ana.firstChild);
+  const k = d.us_kline;
+  if (!k || Object.keys(k).length === 0) return;
+  const sample = k.us_dji || Object.values(k)[0];
+  if (!sample || !sample.latest || !sample.prev) return;
+  const latestDate = sample.latest.date, prevDate = sample.prev.date;
+  const fmt = (s) => (s || '').slice(5).replace('-', '/');  // 2026-08-24 -> 08/24
+  // 1. 定位"3 · 隔夜美股复盘"标题
+  const heads = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'));
+  const h3 = heads.find(h => /3\s*[·・.]?\s*隔夜美股复盘/.test(h.textContent || ''));
+  if (!h3) return;
+  const card = h3.nextElementSibling;
+  if (!card || !card.querySelector) return;
+  // 2. 更新说明文字日期（"为什么双日"段）
+  Array.prototype.slice.call(card.querySelectorAll('.dr-note')).forEach(n => {
+    const t = n.innerHTML || '';
+    if (t.indexOf('为什么双日') >= 0) {
+      n.innerHTML = t
+        .replace(/映射源（[\d/．. ]+）/, '映射源（' + fmt(prevDate) + '）')
+        .replace(/隔夜（[\d/．. ]+）/, '隔夜（' + fmt(latestDate) + '）')
+        .replace(/<b>说明：[\s\S]*?<\/b>/, '<b>说明：隔夜最新 = ' + latestDate + '（最新已收盘美股交易日），前一交易日 = ' + prevDate + '</b>');
+    }
+  });
+  // 3. 更新双日表（表头含"涨跌（映射源）"）
+  const tables = Array.prototype.slice.call(card.querySelectorAll('table.dr-tbl'));
+  const dual = tables.find(t => (t.innerHTML || '').indexOf('涨跌（映射源）') >= 0);
+  if (!dual) return;
+  const thead = dual.querySelector('thead tr');
+  if (thead && thead.children.length >= 5) {
+    thead.children[1].textContent = fmt(prevDate) + ' 收盘';
+    thead.children[2].textContent = fmt(prevDate) + ' 涨跌（映射源）';
+    thead.children[3].textContent = fmt(latestDate) + ' 收盘';
+    thead.children[4].textContent = fmt(latestDate) + ' 涨跌（隔夜）';
+  }
+  // 4. 刷新 tbody（us_kline 数据驱动；费城半导体等无 us_kline 的行保留原文）
+  const nameMap = {
+    '道琼斯':'us_dji', '标普 500':'us_inx', '标普500':'us_inx', '纳斯达克':'us_ixic',
+    'MU 美光':'us_mu', 'SNDK 闪迪':'us_sndk', 'MRVL 迈威尔':'us_mrvl', 'LITE 朗美通':'us_lite',
+    'AAOI':'us_aaoi', 'WDC 西部数据':'us_wdc', 'COHR':'us_cohr', 'SKHY 海力士':'us_skhy',
+  };
+  const tbody = dual.querySelector('tbody');
+  if (!tbody) return;
+  Array.prototype.slice.call(tbody.querySelectorAll('tr')).forEach(tr => {
+    const td = tr.children;
+    if (!td || td.length < 5) return;
+    const nm = (td[0].textContent || '').replace(/\s+/g, ' ').trim();
+    const key = nameMap[nm];
+    const e = key && k[key];
+    if (!e) return;  // 费城半导体等无数据行保留 agent 原文
+    const l = e.latest, p = e.prev;
+    const cls = (v) => v >= 0 ? 'dr-up' : 'dr-dn';
+    const sign = (v) => v >= 0 ? '+' : '';
+    td[1].textContent = p.close.toLocaleString();
+    td[2].textContent = sign(p.chg_pct) + p.chg_pct.toFixed(2) + '%';
+    td[2].className = cls(p.chg_pct);
+    td[3].textContent = l.close.toLocaleString();
+    const ov = (l.close / p.close - 1) * 100;
+    td[4].textContent = sign(ov) + ov.toFixed(2) + '%';
+    td[4].className = cls(ov);
+  });
+  // 5. 隐藏 agent 写的过时"双日结论"推演文字（8/21 口径，无法自动更新），
+  //    由数据驱动的最新摘要（客观数据）接管该位置
+  const notes = Array.prototype.slice.call(card.querySelectorAll('.dr-note'));
+  const concl = notes.find(n => (n.textContent || '').indexOf('双日结论') >= 0);
+  if (concl) {
+    concl.style.cssText = 'display:none';  // 隐藏过时推演，保留模块结构
+    const idxRows = ['us_dji','us_inx','us_ixic'];
+    const parts = idxRows.filter(x => k[x]).map(x => {
+      const nm = {us_dji:'道指', us_inx:'标普', us_ixic:'纳指'}[x];
+      const pct = (k[x].latest.close / k[x].prev.close - 1) * 100;
+      return nm + ' ' + (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+    });
+    const div = document.createElement('div');
+    div.className = 'dr-note';
+    div.style.cssText = 'background:var(--bg-subtle);border-left:3px solid var(--accent);padding:8px 12px;border-radius:6px;margin-top:6px';
+    div.innerHTML = '<b>数据刷新（' + latestDate + ' 收盘，自动）：</b>' + parts.join(' · ') + '。推演结论请以本机 agent 重跑后的分析为准。';
+    concl.parentNode.insertBefore(div, concl.nextSibling);
+  }
+}
+
+/* ═══════ 商品·利率·汇率表（保留 analysis.html 表结构，用 market.json.comm 刷新数据+动态标注） ═══════ */
+function drRefreshCommRates(d) {
+  const ana = document.getElementById('drAnalysis');
+  if (!ana) return;
+  const comm = d.comm;
+  if (!comm || Object.keys(comm).length === 0) return;
+  const heads = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'));
+  const h3 = heads.find(h => /3\s*[·・.]?\s*隔夜美股复盘/.test(h.textContent || ''));
+  if (!h3) return;
+  const card = h3.nextElementSibling;
+  if (!card || !card.querySelector) return;
+  const tables = Array.prototype.slice.call(card.querySelectorAll('table.dr-tbl'));
+  const commTbl = tables.find(t => (t.innerHTML || '').indexOf('商品') >= 0 && (t.innerHTML || '').indexOf('汇率') >= 0);
+  if (!commTbl) return;
+  // 行名 -> comm key
+  const map = {
+    '现货黄金':'gold_spot', 'COMEX 黄金':'gold_comex', 'WTI 原油':'wti', '布伦特':'brent',
+    '10Y 美债':'us10y', '30Y 美债':'us30y', '人民币中间价':'cny',
+  };
+  const tbody = commTbl.querySelector('tbody');
+  if (!tbody) return;
+  Array.prototype.slice.call(tbody.querySelectorAll('tr')).forEach(tr => {
+    const td = tr.children;
+    if (!td || td.length < 3) return;
+    const nm = (td[0].textContent || '').trim();
+    const key = nm.indexOf('碳酸锂') >= 0 ? 'lithium' : map[nm];
+    const e = key && comm[key];
+    if (!e || e.value == null) return;
+    td[1].textContent = e.value.toLocaleString() + (nm.indexOf('美债') >= 0 ? '%' : '');
+    if (e.chg_pct != null) {
+      const cls = e.chg_pct >= 0 ? 'dr-up' : 'dr-dn';
+      td[2].textContent = (e.chg_pct >= 0 ? '+' : '') + e.chg_pct.toFixed(2) + '%';
+      td[2].className = cls;
+    } else if (e.date) {
+      td[2].textContent = (td[2].textContent || '') + '（' + e.date.slice(5) + '）';
+    }
+  });
+  // 更新表底标注：来源 → 数据自动刷新日期（美元指数/伦铜无免费实时源，仍待本机补抓）
+  const notes = Array.prototype.slice.call(card.querySelectorAll('.dr-note'));
+  const src = notes.find(n => (n.textContent || '').indexOf('来源') >= 0);
+  if (src) {
+    const dates = Object.keys(comm).map(k => comm[k].date).filter(Boolean);
+    const latest = dates.sort().pop() || '';
+    src.innerHTML = '<span style="color:var(--text-muted)">来源：腾讯hf国际商品 · 乐咕美债 · 中行中间价 · 广期所主连（数据自动刷新至 ' +
+      (latest || '—') + '；美元指数/伦铜无免费实时源，仍待本机补抓）</span>';
+  }
 }
 function drFillTables(q) {
   const mk = (items) => {

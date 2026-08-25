@@ -139,14 +139,78 @@ def fetch():
     except Exception as _e:
         print(f"[daily-review] us_kline 拉取失败（非致命）: {type(_e).__name__} {str(_e)[:80]}")
 
+    # ── 商品·利率·汇率（comm 字段，根治 analysis.html 里 agent 写死的 8/21 口径） ──
+    comm = {}
+    try:
+        import requests as _req
+        # 腾讯 hf_ 国际商品（现货黄金/COMEX金/WTI/布伦特）
+        hf_codes = {"hf_XAU": "gold_spot", "hf_GC": "gold_comex", "hf_CL": "wti", "hf_OIL": "brent"}
+        hf_names = {"gold_spot": "现货黄金", "gold_comex": "COMEX 黄金", "wti": "WTI 原油", "brent": "布伦特"}
+        r = _req.get("https://qt.gtimg.cn/q=" + ",".join(hf_codes.keys()), timeout=12)
+        r.encoding = "gbk"
+        for line in r.text.strip().split(";"):
+            m = line.split("=", 1)
+            if len(m) < 2:
+                continue
+            code = m[0].replace("v_", "").strip()
+            if code not in hf_codes:
+                continue
+            f = m[1].strip().strip('"').split(",")
+            if len(f) < 13 or not f[0]:
+                continue
+            try:
+                val = float(f[0]); chg = float(f[1])
+                comm[hf_codes[code]] = {"name": hf_names[hf_codes[code]], "value": round(val, 2),
+                                        "chg_pct": round(chg, 2), "date": f[12] if len(f) > 12 else ""}
+            except Exception:
+                pass
+        # 美债 10Y/30Y（bond_zh_us_rate 最新日）
+        try:
+            import akshare as _ak
+            bd = _ak.bond_zh_us_rate()
+            bd = bd.dropna(subset=["美国国债收益率10年"])
+            row = bd.iloc[-1]
+            d10 = str(row["日期"])[:10]
+            comm["us10y"] = {"name": "10Y 美债", "value": round(float(row["美国国债收益率10年"]), 3),
+                             "chg_pct": None, "date": d10}
+            if "美国国债收益率30年" in row.index and row["美国国债收益率30年"] == row["美国国债收益率30年"]:
+                comm["us30y"] = {"name": "30Y 美债", "value": round(float(row["美国国债收益率30年"]), 3),
+                                 "chg_pct": None, "date": d10}
+        except Exception:
+            pass
+        # 人民币中间价（中行当日）
+        try:
+            import akshare as _ak
+            cny = _ak.currency_boc_sina(symbol="美元", start_date="20260801", end_date="20260831")
+            if cny is not None and len(cny):
+                cr = cny.dropna(subset=["央行中间价"]).iloc[-1]
+                comm["cny"] = {"name": "人民币中间价", "value": round(float(cr["央行中间价"]) / 100, 4),
+                               "chg_pct": None, "date": str(cr["日期"])[:10]}
+        except Exception:
+            pass
+        # 碳酸锂（广期所主连 LC0）
+        try:
+            import akshare as _ak
+            lc = _ak.futures_main_sina(symbol="LC0", start_date="20260801", end_date="20260831")
+            if lc is not None and len(lc):
+                lr = lc.iloc[-1]
+                comm["lithium"] = {"name": "碳酸锂（广期所主连）", "value": round(float(lr["收盘价"]), 0),
+                                   "chg_pct": None, "date": str(lr["日期"])[:10]}
+        except Exception:
+            pass
+        print(f"[daily-review] comm 商品利率汇率: {len(comm)} 项")
+    except Exception as _e:
+        print(f"[daily-review] comm 抓取失败（非致命）: {type(_e).__name__} {str(_e)[:80]}")
+
     out = {
         "date": data_date,
         "run_date": now.strftime("%Y-%m-%d"),
         "updated_at": now.strftime("%Y-%m-%d %H:%M:%S %Z"),
-        "source": "tencent-gtimg(实时) + akshare stock_us_daily(双日历史,免费无key)",
-        "coverage": "A股指数/持仓/美股实时(腾讯) + 美股双日(akshare); 日韩·费半·商品汇率·星球·AI分析=本机agent",
+        "source": "tencent-gtimg(实时) + akshare stock_us_daily(双日历史) + 腾讯hf商品/中行中间价(免费无key)",
+        "coverage": "A股指数/持仓/美股实时(腾讯) + 美股双日(akshare) + 商品利率汇率(腾讯hf/中行/乐咕); 日韩·费半·星球·AI分析=本机agent",
         "quotes": quotes,
         "us_kline": us_kline,
+        "comm": comm,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     text = json.dumps(out, ensure_ascii=False, indent=1)
