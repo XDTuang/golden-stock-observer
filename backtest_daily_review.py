@@ -90,6 +90,20 @@ def score_one(item: dict, nxt: dict):
     }
 
 
+def _us_env_chg(anchor_date: str):
+    """推演日 anchor_date 之前最近美股交易日（隔夜）的涨跌 %；失败返回 None"""
+    try:
+        import akshare as ak
+        df = ak.stock_us_daily(symbol=".DJI")
+        rows = df[df["date"].astype(str).str[:10] < str(anchor_date)]  # 严格早于 T：取 T 开盘前看到的隔夜美股
+        if len(rows) >= 2:
+            l, p = float(rows.iloc[-1]["close"]), float(rows.iloc[-2]["close"])
+            return round((l / p - 1) * 100, 2)
+    except Exception:
+        pass
+    return None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=None, help="推演日 T（默认扫描全部）")
@@ -110,7 +124,10 @@ def main():
         data = json.loads(f.read_text(encoding="utf-8"))
         # 环境因子：读取推演时记录的上证当日涨跌（v2 起 obs_deduce 含 env.sh_chg）
         env = data[0].get("env", {}).get("sh_chg", None) if data else None
-        print(f"\n=== 推演日 {date}: {len(data)} 只 | 环境: 上证 {env:+.2f}% ===" if env is not None
+        # 隔夜美股环境：推演日 T 之前最近美股交易日涨跌（akshare .DJI）
+        us_chg = _us_env_chg(date)
+        print(f"\n=== 推演日 {date}: {len(data)} 只 | 环境: 上证 {env:+.2f}% | 隔夜美股 {us_chg:+.2f}% ==="
+              if env is not None and us_chg is not None
               else f"\n=== 推演日 {date}: {len(data)} 只 ===")
         for item in data:
             code = item["code"]
@@ -143,6 +160,18 @@ def main():
                 total["by_env"][env_grp]["n"] += 1
                 total["by_env"][env_grp]["dir_hit"] += 1 if sc["dir_hit"] else 0
                 total["by_env"][env_grp]["open_hit"] += 1 if sc["open_hit"] else 0
+            # 隔夜美股环境分组（验证"隔夜大跌→次日反弹日推演失灵"假设）
+            if us_chg is not None:
+                if us_chg < -0.3:
+                    us_grp = "隔夜美股跌(<-0.3%)"
+                elif us_chg > 0.3:
+                    us_grp = "隔夜美股涨(>+0.3%)"
+                else:
+                    us_grp = "隔夜美股平(±0.3%)"
+                total.setdefault("by_us_env", {}).setdefault(us_grp, {"n": 0, "dir_hit": 0, "open_hit": 0})
+                total["by_us_env"][us_grp]["n"] += 1
+                total["by_us_env"][us_grp]["dir_hit"] += 1 if sc["dir_hit"] else 0
+                total["by_us_env"][us_grp]["open_hit"] += 1 if sc["open_hit"] else 0
             detail.append({
                 "code": code, "name": item["name"], "trend": item["trend"],
                 "open_label": item["open_label"],
@@ -169,6 +198,10 @@ def main():
     print("\n【分板块】")
     for s, v in sorted(total["by_sector"].items(), key=lambda x: -x[1]["n"]):
         print(f"  {s:18s} n={v['n']:3d} 方向 {v['dir_hit']/v['n']*100:5.1f}%")
+    if "by_us_env" in total:
+        print("\n【分隔夜美股环境】（验证'隔夜大跌后反弹日推演失灵'假设）")
+        for g, v in sorted(total["by_us_env"].items(), key=lambda x: -x[1]["n"]):
+            print(f"  {g:20s} n={v['n']:3d} 方向 {v['dir_hit']/v['n']*100:5.1f}% 开盘 {v['open_hit']/v['n']*100:5.1f}%")
 
     out = BASE / "data" / "daily_review_history" / "_backtest_report.json"
     out.write_text(json.dumps({"total": total, "detail": detail}, ensure_ascii=False, indent=2), encoding="utf-8")

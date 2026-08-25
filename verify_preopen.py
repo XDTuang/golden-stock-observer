@@ -4,7 +4,8 @@
 
 输入:
   盘前 JSON:  data/daily_review_history/<T>/preopen_<T>.json   （盘前判断结构化契约）
-  实际行情:   data/daily_review/market.json 的 quotes（A股指数+持仓股 open/close/prev）
+  实际行情:   自拉腾讯 qt.gtimg.cn（A股指数+持仓股 当日收盘，不依赖 market.json 时效）；
+              优先用 data/daily_review/market.json（若其 date 与盘前日一致）
 
 输出:
   1. 终端对照报告：路径判定 / 证伪线 / Kando 判据 / 个股低开区间+关键位 / 环境因子
@@ -16,26 +17,76 @@
 """
 import argparse
 import json
+import re
 import sys
+import urllib.request
 from pathlib import Path
 
 BASE = Path("/Users/samt/golden_stock_observer")
 HIST = BASE / "data" / "daily_review_history"
 MARKET = BASE / "data" / "daily_review" / "market.json"
 
-# 持仓 code → market.json quotes key
+# 盘前契约 code -> 腾讯行情 code（A股指数 + 持仓 + 盘前个股）
+QUOTE_CODES = {
+    "sh000001": "sh000001", "sz399001": "sz399001", "sz399006": "sz399006",
+    "sh000688": "sh000688", "bj899050": "bj899050",
+    "sh603083": "sh603083", "sh603399": "sh603399", "sz000922": "sz000922",
+    "sh600378": "sh600378", "sh600105": "sh600105", "sz002082": "sz002082",
+    "sh688825": "sh688825", "sz000988": "sz000988",
+}
+IDX_KEY = {"sh000001": "a_sh", "sz399001": "a_sz", "sz399006": "a_cyb", "sh000688": "a_kcb", "bj899050": "a_bj"}
 CODE2KEY = {
     "sh603083": "h_jq", "sh603399": "h_ys", "sz000922": None,
     "sh600378": "h_hh", "sh600105": "h_yd", "sz002082": "h_wb",
     "sh688825": "h_cx", "sz000988": "h_hg",
 }
-IDX_KEY = {"sh000001": "a_sh", "sz399001": "a_sz", "sz399006": "a_cyb", "sh000688": "a_kcb", "bj899050": "a_bj"}
+
+
+def get_q(quotes, po_code):
+    """兼容两种 quotes 形态：自拉 {code:...} / market.json {a_sh/h_jq:...}"""
+    if po_code in quotes:
+        return quotes[po_code]
+    k = IDX_KEY.get(po_code) or CODE2KEY.get(po_code)
+    if k and k in quotes:
+        return quotes[k]
+    return {}
+
+
+def fetch_live_quotes():
+    """自拉腾讯实时（A股指数+持仓股 当日收盘），返回 {code: {open,close,prev}}"""
+    codes = list(QUOTE_CODES.values())
+    out = {}
+    try:
+        for i in range(0, len(codes), 50):
+            chunk = codes[i:i + 50]
+            url = "https://qt.gtimg.cn/q=" + ",".join(chunk)
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+            raw = urllib.request.urlopen(req, timeout=20).read().decode("gbk", errors="ignore")
+            for line in raw.split(";"):
+                m = re.match(r'v_(\w+)="(\d+)~(.*)"', line.strip())
+                if not m:
+                    continue
+                code = m.group(1)
+                f = m.group(3).split("~")
+                if len(f) < 34:
+                    continue
+                try:
+                    out[code] = {"open": float(f[4]), "close": float(f[2]), "prev": float(f[3])}
+                except Exception:
+                    pass
+    except Exception as e:
+        print(f"  ⚠️  腾讯自拉失败（回退 market.json）: {e}")
+    return out
 
 
 def load_quotes():
-    if not MARKET.exists():
-        return {}
-    return json.loads(MARKET.read_text(encoding="utf-8")).get("quotes", {})
+    """优先自拉（时效最新），回退 market.json"""
+    live = fetch_live_quotes()
+    if live:
+        return live
+    if MARKET.exists():
+        return json.loads(MARKET.read_text(encoding="utf-8")).get("quotes", {})
+    return {}
 
 
 def verify(po, quotes):
@@ -45,7 +96,7 @@ def verify(po, quotes):
     # 1. 指数：低开幅度 + 收盘涨跌 + 证伪线
     fl = po.get("scenario", {}).get("falsify_line", {})
     idx_code = fl.get("index", "sh000001")
-    q = quotes.get(IDX_KEY.get(idx_code, "a_sh"), {})
+    q = get_q(quotes, idx_code)
     if q and "error" not in q:
         try:
             o, c, p = float(q["open"]), float(q["close"]), float(q["prev"])
@@ -69,8 +120,7 @@ def verify(po, quotes):
 
     # 2. 个股：低开区间 + 关键位
     for s in po.get("stocks", []):
-        key = CODE2KEY.get(s.get("code"))
-        q = quotes.get(key, {}) if key else {}
+        q = get_q(quotes, s.get("code"))
         if not q or "error" in q:
             r["checks"].append({"metric": f"个股·{s['name']}", "expected": "实际数据缺失", "actual": "—", "hit": None})
             continue
@@ -103,7 +153,7 @@ def verify(po, quotes):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--date", default=None)
+    ap.add_argument("--date", default=str(__import__("datetime").date.today()), help="默认今天")
     args = ap.parse_args()
     files = sorted(HIST.glob("*/preopen_*.json"))
     if args.date:
