@@ -253,6 +253,18 @@ def build_thermometer():
             hist = hist[::step]
             if hist[-1]["date"] != today:
                 hist.append(hist[-1])
+        # 乐咕 quantile 列时有时无（8/20 起 NaN、最新行给 0.0 异常）→ 用自算分位回填快照
+        try:
+            if snap.get("pe_pct_10y") in (None, 0):
+                last = next((x for x in reversed(hist) if x.get("pe_pct") is not None), None)
+                if last:
+                    snap["pe_pct_10y"] = last["pe_pct"]
+            if snap.get("pb_pct_10y") in (None, 0):
+                last = next((x for x in reversed(hist) if x.get("pb_pct") is not None), None)
+                if last:
+                    snap["pb_pct_10y"] = last["pb_pct"]
+        except Exception:
+            pass
 
     therm = {"date": today, "snapshot": snap, "history": hist,
              "sources": {"pe_pb": "乐咕乐股", "spot": "腾讯gtimg", "bond": "中美国债",
