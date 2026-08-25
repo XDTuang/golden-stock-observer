@@ -49,6 +49,8 @@ echo "[$(date)] 同步钻石副站到腾讯云 CloudBase（国内盘后镜像，
 export CLOUDBASE_ENV_ID="${CLOUDBASE_ENV_ID:-golden-diamond-observer-d805c7e7}"
 # launchd 环境 PATH 不包含 npm 全局 bin（tcb 所在），补上避免 "未找到 tcb CLI"
 export PATH="$HOME/.npm-global/bin:$PATH"
+# launchd 环境亦缺 node（tcb 是 Node CLI，执行时报 "env: node: No such file or directory"）
+export PATH="/usr/local/bin:$PATH"
 if bash cloudbase/deploy_cloudbase.sh >> "$LOG" 2>&1; then
   echo "[$(date)] ✓ 已同步到腾讯云 CloudBase" >> "$LOG"
 else
