@@ -69,7 +69,7 @@ def score_one(item: dict, nxt: dict):
     """对单只打分：方向 + 开盘"""
     if not nxt or "err" in nxt:
         return None
-    t_close = item["tx_last"] or item["screenshot_close"]
+    t_close = item.get("tx_last") or item.get("screenshot_close") or item.get("close")
     if not t_close:
         return None
     direction = TREND_DIRECTION.get(item["trend"], "flat")
@@ -145,7 +145,8 @@ def main():
                 total["by_env"][env_grp]["open_hit"] += 1 if sc["open_hit"] else 0
             detail.append({
                 "code": code, "name": item["name"], "trend": item["trend"],
-                "open_label": item["open_label"], "t_close": item["tx_last"],
+                "open_label": item["open_label"],
+                "t_close": item.get("tx_last") or item.get("screenshot_close") or item.get("close"),
                 **sc,
             })
             mark = "✓" if sc["dir_hit"] else "✗"
