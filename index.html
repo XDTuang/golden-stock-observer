@@ -3187,7 +3187,9 @@ function renderFourVolumeChart(containerId, fv) {
 
 
 
+
 // ===== 投喂复盘渲染 =====
+// === feed v3: raw-string 修复（整页 JS 语法校验通过）===
 function drLoadFeedReview() {
   drFeedModalInit();
   const el = document.getElementById('drFeedReviewBody');
@@ -3282,28 +3284,22 @@ function drFeedModalInit() {
   document.getElementById('dfGen').onclick = function () {
     const cat = document.getElementById('dfCat').value;
     const src = document.getElementById('dfSrc').value;
-    const title = (document.getElementById('dfTitle').value || '未命名').replace(/[\/:*?"<>|\s]+/g, '_').slice(0, 40).replace(/^_+|_+$/g, '');
+    const title = (document.getElementById('dfTitle').value || '未命名').replace(/[\\/:*?"<>|\s]+/g, '_').slice(0, 40).replace(/^_+|_+$/g, '');
     const text = document.getElementById('dfText').value.trim();
     const file = document.getElementById('dfFile').files[0];
     const today = new Date().toISOString().slice(0, 10);
     const ext = file ? ('.' + ((file.name.split('.').pop() || 'txt').toLowerCase())) : '.txt';
     const fname = today + '_' + src + '_' + title + ext;
     let body = '';
-    if (text) body += text + '
-';
-    if (file) body += '
-[附件] ' + file.name + '（' + Math.round(file.size / 1024) + ' KB）
-';
-    if (!text && !file) body = '（空投喂）
-';
+    if (text) body += text + '\n';
+    if (file) body += '\n[附件] ' + file.name + '（' + Math.round(file.size / 1024) + ' KB）\n';
+    if (!text && !file) body = '（空投喂）\n';
     document.getElementById('dfPvName').textContent = fname;
     document.getElementById('dfPvBody').textContent = body;
     document.getElementById('dfPreview').style.display = 'block';
     document.getElementById('dfOut').textContent = '✅ 已生成（' + cat + '）';
-    document.getElementById('dfCopy').dataset.body = fname + '
-' + body;
-    document.getElementById('dfDl').dataset.body = fname + '
-' + body;
+    document.getElementById('dfCopy').dataset.body = fname + '\n' + body;
+    document.getElementById('dfDl').dataset.body = fname + '\n' + body;
   };
   document.getElementById('dfCopy').onclick = function () {
     navigator.clipboard.writeText(this.dataset.body).then(() => {
@@ -3313,8 +3309,7 @@ function drFeedModalInit() {
   document.getElementById('dfDl').onclick = function () {
     const blob = new Blob([this.dataset.body], { type: 'text/plain;charset=utf-8' });
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob); a.download = this.dataset.body.split('
-')[0]; a.click();
+    a.href = URL.createObjectURL(blob); a.download = this.dataset.body.split('\n')[0]; a.click();
   };
 }
 
