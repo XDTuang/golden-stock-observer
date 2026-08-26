@@ -62,6 +62,7 @@ function renderDailyReview() {
       drFillTables(q);
       if (d && d.us_kline) drRefreshUsDualDayTables(d);
       if (d && d.comm) drRefreshCommRates(d);
+      drDeriveSections(d);
       drLoadTop10();
       drLoadDiamond();
     }).catch(err => {
