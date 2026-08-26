@@ -107,10 +107,15 @@ def _us_env_chg(anchor_date: str):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=None, help="推演日 T（默认扫描全部）")
+    ap.add_argument("--auto", action="store_true", help="回测 derive_obs.py 自动滚动推演（obs_deduce_auto_*.json）")
     args = ap.parse_args()
 
-    # 收集所有 obs_deduce 文件
+    # 收集所有 obs_deduce 文件（默认 agent 归档；--auto 用 derive_obs.py 滚动推演归档）
     files = sorted(HIST.glob("*/obs_deduce_*.json"))
+    if args.auto:
+        files = [f for f in files if "auto" in f.name]
+    else:
+        files = [f for f in files if "auto" not in f.name]
     if args.date:
         files = [f for f in files if args.date in f.name]
     if not files:
@@ -122,14 +127,19 @@ def main():
     for f in files:
         date = f.parent.name
         data = json.loads(f.read_text(encoding="utf-8"))
-        # 环境因子：读取推演时记录的上证当日涨跌（v2 起 obs_deduce 含 env.sh_chg）
-        env = data[0].get("env", {}).get("sh_chg", None) if data else None
+        # 兼容两种归档：agent 的 list / derive_obs auto 的 {items, env}
+        if isinstance(data, dict) and "items" in data:
+            items = data["items"]
+            env = (data.get("env") or {}).get("sh_chg", None)
+        else:
+            items = data
+            env = items[0].get("env", {}).get("sh_chg", None) if items else None
         # 隔夜美股环境：推演日 T 之前最近美股交易日涨跌（akshare .DJI）
         us_chg = _us_env_chg(date)
-        print(f"\n=== 推演日 {date}: {len(data)} 只 | 环境: 上证 {env:+.2f}% | 隔夜美股 {us_chg:+.2f}% ==="
+        print(f"\n=== 推演日 {date}: {len(items)} 只 | 环境: 上证 {env:+.2f}% | 隔夜美股 {us_chg:+.2f}% ==="
               if env is not None and us_chg is not None
-              else f"\n=== 推演日 {date}: {len(data)} 只 ===")
-        for item in data:
+              else f"\n=== 推演日 {date}: {len(items)} 只 ===")
+        for item in items:
             code = item["code"]
             nxt = fetch_tx_next_day(code, date)
             if not nxt:

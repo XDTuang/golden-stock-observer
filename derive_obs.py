@@ -170,7 +170,15 @@ def main():
     SRC.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     (BASE / "deploy" / "output" / "obs_deduce_latest.json").write_text(
         json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
-    print(f"✅ 滚动推演完成：{ok}/{len(items)} 只（date={today}，名单沿用）")
+    # 归档到 history（供 backtest_daily_review.py --auto 回测：T 日推演 vs T+1 实际）
+    try:
+        bk_dir = BASE / "data" / "daily_review_history" / today
+        bk_dir.mkdir(parents=True, exist_ok=True)
+        (bk_dir / f"obs_deduce_auto_{today}.json").write_text(
+            json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+    except Exception as _e:
+        print(f"  ⚠️ 归档失败（不影响推演）: {_e}")
+    print(f"✅ 滚动推演完成：{ok}/{len(items)} 只（date={today}，名单沿用，已归档供回测）")
 
 
 if __name__ == "__main__":
