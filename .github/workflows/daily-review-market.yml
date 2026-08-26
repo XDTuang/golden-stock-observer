@@ -26,9 +26,13 @@ jobs:
         with:
           python-version: '3.13'
 
+      - name: Install deps
+        run: pip install akshare pandas requests --quiet   # us_kline(双日)/comm(商品利率) 依赖 akshare
+
       - name: Fetch daily review market quotes (Tencent public API, no key)
+        # 不用 || echo 吞错误码：fetch 失败必须让 workflow 标红，避免"假成功+静默跳过提交"
         run: |
-          python3 fetch_daily_review_market.py || echo "fetch returned nonzero, continue to inspect output"
+          python3 fetch_daily_review_market.py
 
       - name: Commit & Push
         run: |
