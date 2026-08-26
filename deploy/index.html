@@ -1501,6 +1501,8 @@ html { scroll-behavior: smooth; }
 
 
 
+
+
 <!-- Tab: 每日复盘（盘前简报 + 完整复盘合一；行情=云端08:15自动，分析=本机agent） -->
 <div class="tab-content" id="tab-dailyreview">
 <style>
@@ -3172,6 +3174,8 @@ function renderFourVolumeChart(containerId, fv) {
 
 
 
+
+
 // ===== 每日复盘 Tab =====
 function renderDailyReview() {
   if (window._drInit) return; window._drInit = true;
@@ -3234,7 +3238,7 @@ function drRefreshUsDualDayTables(d) {
   const fmt = (s) => (s || '').slice(5).replace('-', '/');  // 2026-08-24 -> 08/24
   // 1. 定位"3 · 隔夜美股复盘"标题
   const heads = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'));
-  const h3 = heads.find(h => /3\s*[·・.]?\s*隔夜美股复盘/.test(h.textContent || ''));
+  const h3 = heads.find(h => /隔夜美股复盘/.test(h.textContent || ''));
   if (!h3) return;
   const card = h3.nextElementSibling;
   if (!card || !card.querySelector) return;
@@ -3312,7 +3316,7 @@ function drRefreshCommRates(d) {
   const comm = d.comm;
   if (!comm || Object.keys(comm).length === 0) return;
   const heads = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'));
-  const h3 = heads.find(h => /3\s*[·・.]?\s*隔夜美股复盘/.test(h.textContent || ''));
+  const h3 = heads.find(h => /隔夜美股复盘/.test(h.textContent || ''));
   if (!h3) return;
   const card = h3.nextElementSibling;
   if (!card || !card.querySelector) return;
@@ -3378,7 +3382,7 @@ function drAsiaTable(d) {
   const ana = document.getElementById('drAnalysis');
   if (!ana) return;
   const heads = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'));
-  const h2 = heads.find(h => /2\s*[·・.]?\s*日韩股市/.test(h.textContent || ''));
+  const h2 = heads.find(h => /日韩股市/.test(h.textContent || ''));
   if (!h2) return;
   if (d && d.date) {
     h2.textContent = h2.textContent.replace(/（[\d/．. ]+[^）]*）/,
@@ -3413,7 +3417,7 @@ function drAIndexSummary(d) {
   const ana = document.getElementById('drAnalysis');
   if (!ana) return;
   const heads = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'));
-  const h1 = heads.find(h => /1\s*[·・.]?\s*昨日 A 股走势/.test(h.textContent || ''));
+  const h1 = heads.find(h => /昨日 A 股走势/.test(h.textContent || ''));
   if (!h1) return;
   // 标题日期动态化（复盘日 = market.date 的 A 股交易日）
   if (d && d.date) {
@@ -3519,7 +3523,7 @@ function drDeriveSections(d) {
     });
     const evHtml = evs.length ? evs.join('<br>') : '明日无重大事件（待知识星球/研报投喂补充）';
     // ── 渲染 0 · 结论速览卡 ──
-    const h0 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h')).find(h => /0\s*[·・.]?\s*结论先行/.test(h.textContent || ''));
+    const h0 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h')).find(h => /结论先行/.test(h.textContent || ''));
     if (h0 && h0.nextElementSibling && h0.nextElementSibling.querySelector) {
       const card = h0.nextElementSibling;
       card.innerHTML =
@@ -3532,7 +3536,7 @@ function drDeriveSections(d) {
         '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px;margin-top:6px"><b>数据驱动速览（自动）：</b>隔夜美股 ' + (usDate || '—') + ' 收盘 · ' + reasons.join(' · ') + '。深度节奏判读/板块推演请以本机 agent 分析为准。</div>';
     }
     // ── 渲染 7 · 次日开盘指引 ──
-    const h7 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h')).find(h => /7\s*[·・.]?\s*次日开盘指引/.test(h.textContent || ''));
+    const h7 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h')).find(h => /次日开盘指引/.test(h.textContent || ''));
     if (h7 && h7.nextElementSibling && h7.nextElementSibling.querySelector) {
       const card = h7.nextElementSibling;
       card.innerHTML =
