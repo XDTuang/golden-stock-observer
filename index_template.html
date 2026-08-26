@@ -1499,6 +1499,7 @@ html { scroll-behavior: smooth; }
 
 
 
+
 <!-- Tab: 每日复盘（盘前简报 + 完整复盘合一；行情=云端08:15自动，分析=本机agent） -->
 <div class="tab-content" id="tab-dailyreview">
 <style>
@@ -3165,6 +3166,7 @@ function renderFourVolumeChart(containerId, fv) {
 
 
 
+
 // ===== 每日复盘 Tab =====
 function renderDailyReview() {
   if (window._drInit) return; window._drInit = true;
@@ -3182,6 +3184,7 @@ function renderDailyReview() {
       ana.innerHTML = t;
       drFillTables(q);
       drFixHeader(d);
+      drAIndexSummary(d);
       if (d && d.us_kline) drRefreshUsDualDayTables(d);
       if (d && d.comm) drRefreshCommRates(d);
       drDeriveSections(d);
@@ -3360,6 +3363,38 @@ function drFillTables(q) {
   const tH = document.getElementById('drTblH'); if (tH) tH.innerHTML = mk(g('持仓股'));
   const tU = document.getElementById('drTblUs');
   if (tU) tU.innerHTML = mk([...g('美股指数'), ...g('美股映射'), ...g('美股映射·参考')]);
+}
+
+/* ═══════ 1·昨日A股走势总结：标题日期动态 + 写死 note 换数据驱动摘要（指数表 drTblA 保留动态） ═══════ */
+function drAIndexSummary(d) {
+  const ana = document.getElementById('drAnalysis');
+  if (!ana) return;
+  const heads = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'));
+  const h1 = heads.find(h => /1\s*[·・.]?\s*昨日 A 股走势/.test(h.textContent || ''));
+  if (!h1) return;
+  // 标题日期动态化（复盘日 = market.date 的 A 股交易日）
+  if (d && d.date) {
+    h1.textContent = h1.textContent.replace(/（[\d/．. ]+）$/, '（' + d.date.slice(5) + '）');
+  }
+  const card = h1.nextElementSibling;
+  if (!card || !card.querySelector) return;
+  const q = (d && d.quotes) || {};
+  const idx = ['a_sh', 'a_sz', 'a_cyb', 'a_kcb'].map(k => q[k]).filter(v => v && !v.error);
+  if (!idx.length) return;
+  const get = (code) => idx.find(v => v.code === code);
+  const sh = get('sh000001'), cyb = get('sz399006');
+  const style = (sh && cyb)
+    ? (parseFloat(cyb.chg_pct) >= parseFloat(sh.chg_pct) ? '成长占优（创业板/科创强于上证）' : '权重/价值占优（上证强于创业板）')
+    : '风格分化 —';
+  const amtTxt = sh && sh.amt ? '两市成交约 ' + ((parseFloat(sh.amt) + (get('sz399001') ? parseFloat(get('sz399001').amt) : 0)) / 10000).toFixed(0) + ' 亿（腾讯口径）' : '成交额 —';
+  // 替换写死的 3 个 dr-note（市场广度/领涨/领跌）为数据驱动摘要
+  Array.prototype.slice.call(card.querySelectorAll('.dr-note')).forEach(n => n.remove());
+  const div = document.createElement('div');
+  div.className = 'dr-note';
+  div.style.cssText = 'background:var(--bg-subtle);border-left:3px solid var(--accent);padding:8px 12px;border-radius:6px';
+  div.innerHTML = '<b>数据驱动摘要（自动）：</b>' + style + ' ｜ ' + amtTxt +
+    '。涨跌家数 / 板块资金流向 / 领涨领跌明细 待本机 agent 补充。';
+  card.appendChild(div);
 }
 
 /* ═══════ 头部标注动态修正：复盘日保留（分析内容真实日期），指引日→下一交易日，追加行情日期 ═══════ */
