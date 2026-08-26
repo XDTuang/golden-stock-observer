@@ -1232,7 +1232,7 @@ html { scroll-behavior: smooth; }
   <div class="login-logo"><div class="ld">D</div><h1>兜金观测</h1><div class="sub">量化信号池 · 登录验证</div></div>
   <div class="login-lv">
     <button id="loginBtnAdmin" class="on admin" onclick="loginCh('admin')"><span class="ic">&#128081;</span><span>管理员</span><span class="hint">不限</span></button>
-    <button id="loginBtnVip" class="" onclick="loginCh('vip')"><span class="ic">&#128142;</span><span>VIP</span><span class="hint">至27/8/9</span></button>
+    <button id="loginBtnVip" class="" onclick="loginCh('vip')"><span class="ic">&#128142;</span><span>VIP</span><span class="hint">至26/9/30</span></button>
   </div>
   <div class="login-ig">
     <label>密码</label>
@@ -2373,8 +2373,47 @@ setInterval(function(){ loadRT(false); }, 30*60*1000);
 <!-- ═══════════ 数据嵌入 ═══════════ -->
 <script>
 // ===== 登录逻辑 =====
+
+// ===== VIP 权限区隔 v2 =====
+var _VIP_ALLOW = {overview:1, dailyreview:1, realtime:1, diamond:1, calendar:1, eventcal:1};  // VIP 可见 tab：总览/每日复盘(锁投喂)/实时盯盘/兜宝金钻/机游共振日历/重要事件日历
+function _authLevel(){
+  try { var a = JSON.parse(localStorage.getItem('doudou_auth')); return a && a.level ? a.level : null; }
+  catch(e){ return null; }
+}
+function _setLock(btn, lock){
+  if (lock) {
+    btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed'; btn.style.pointerEvents = 'none';
+    if (btn.dataset.locked !== '1') { btn.dataset.locked = '1'; btn.innerHTML = '🔒 ' + btn.innerHTML; }
+  } else {
+    btn.style.opacity = ''; btn.style.cursor = ''; btn.style.pointerEvents = '';
+    if (btn.dataset.locked === '1') { btn.dataset.locked = ''; btn.innerHTML = btn.innerHTML.replace(/^🔒 /, ''); }
+  }
+}
+function _applyAuthPerms(){
+  var lv = _authLevel();
+  if (!lv) return;
+  var isVip = lv === 'vip';
+  // tab 加锁不隐藏：VIP 可见全部 tab 名称，禁止的加 🔒 不可点击
+  document.querySelectorAll('.nav-btn[data-tab]').forEach(function(btn){
+    var t = btn.getAttribute('data-tab');
+    _setLock(btn, isVip && !_VIP_ALLOW[t]);
+  });
+  // VIP 锁定投喂功能（加锁不隐藏）
+  var fb = document.getElementById('drFeedBtn');
+  if (fb) _setLock(fb, isVip);
+  // 当前激活 tab 被禁 → 强制回总览
+  var cur = document.querySelector('.nav-btn.active');
+  if (cur) {
+    var t = cur.getAttribute('data-tab');
+    if (isVip && !_VIP_ALLOW[t]) {
+      var ob = document.querySelector('.nav-btn[data-tab="overview"]');
+      if (ob) ob.click();
+    }
+  }
+}
+
 var _AUTH_KEY = 'doudou_auth';
-var _AUTH_CONFIG = {admin:{p:'LYY',x:null}, vip:{p:'ILOVEDB',exp:Date.parse('2027-08-09T23:59:59')}};
+var _AUTH_CONFIG = {admin:{p:'LYY',x:null}, vip:{p:'ILOVEDB',exp:Date.parse('2026-09-30T23:59:59')}};
 var _AUTH_LEVEL = 'admin';
 
 // 星空背景
@@ -2434,6 +2473,7 @@ function loginGo(){
   var d = {level: _AUTH_LEVEL, loginAt: Date.now()};
   if(cfg.exp) d.expiresAt = cfg.exp; else if(cfg.x) d.expiresAt = Date.now() + cfg.x;
   localStorage.setItem(_AUTH_KEY, JSON.stringify(d));
+  _applyAuthPerms();
   setTimeout(function(){
     document.getElementById('loginOverlay').className = 'login-overlay hidden';
   }, 1800);
@@ -3811,8 +3851,11 @@ function drLoadDiamond() {
 
 
 // ===== Tab 切换 =====
+if (typeof _applyAuthPerms === 'function') _applyAuthPerms();
 document.querySelectorAll('.nav-btn').forEach(btn => {
   btn.addEventListener('click', () => {
+    var _pt = btn.getAttribute('data-tab');
+    if (_authLevel && _authLevel() === 'vip' && !_VIP_ALLOW[_pt]) return;
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
