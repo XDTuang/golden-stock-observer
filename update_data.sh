@@ -140,8 +140,9 @@ echo "📊 Step 3.8: 盘前判断收盘验证（verify_preopen，读当日 preop
 "$PYTHON" verify_preopen.py || echo "  ⚠️  盘前验证失败（跳过，不影响主流程）"
 
 echo ""
-echo "📊 Step 3.9: 观测股推演同步（本机 agent 已生成 obs_deduce 则复制到 output 入库，前端可 fetch）"
-"$PYTHON" sync_obs_deduce.py || echo "  ⚠️  观测股同步失败（跳过，不影响主流程）"
+echo "📊 Step 3.9: 观测股名单同步 + 每日滚动推演（名单沿用，推演自动刷新）"
+"$PYTHON" sync_obs_deduce.py || echo "  ⚠️  观测股名单同步失败（跳过，不影响主流程）"
+"$PYTHON" derive_obs.py || echo "  ⚠️  观测股滚动推演失败（跳过，不影响主流程）"
 
 echo ""
 echo "🧹 Step 4: 精简数据 + 生成 fetch 版页面（单一构建路径）"
