@@ -38,6 +38,7 @@ TAB_BLOCK = """
 # raw 字符串：保留 JS 内的 \n \s 等字面量，避免 Python 转义破坏 JS 语法
 JS_BLOCK = r"""
 // ===== 投喂复盘渲染 =====
+// === feed v3: raw-string 修复（整页 JS 语法校验通过）===
 function drLoadFeedReview() {
   drFeedModalInit();
   const el = document.getElementById('drFeedReviewBody');
@@ -196,13 +197,13 @@ def inject(path):
     else:
         print(f"⏭️ {path}: 投喂复盘卡片已存在")
 
-    # ② JS：函数定义挂在每日复盘 JS 块前；v2 弹框升级时整体替换旧块
-    if JS_MARK in idx and "// ===== 投喂弹框" not in idx:
+    # ② JS：函数定义挂在每日复盘 JS 块前；v3 标记缺失时整体替换（修复历史坏版）
+    if JS_MARK in idx and "feed v3" not in idx:
         s = idx.index(JS_MARK)
         e = idx.index("// ===== 每日复盘 Tab =====", s)
         idx = idx[:s] + JS_BLOCK + "\n" + idx[e:]
         changed = True
-        print(f"✅ {path}: 已升级投喂复盘 JS（v2 弹框）")
+        print(f"✅ {path}: 已升级投喂复盘 JS（v3 raw 修复）")
     elif JS_MARK not in idx:
         js_anchor = "// ===== 每日复盘 Tab ====="
         if js_anchor in idx:
