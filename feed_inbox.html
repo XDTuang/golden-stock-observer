@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>兜来米金融 · 投喂入口</title>
+<style>
+:root{--bg:#0f1420;--card:#171e2e;--line:#26324a;--txt:#e8edf7;--sub:#9aa7bd;--gold:#d4af37;--blue:#5b8cff;--green:#3fd68a;--warn:#f0b56a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;line-height:1.65;padding:26px 16px}
+.wrap{max-width:760px;margin:0 auto}
+h1{font-size:22px;margin-bottom:4px}h1 span{color:var(--gold)}
+.sub{color:var(--sub);font-size:13px;margin-bottom:20px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:12px 0}
+label{display:block;font-size:12.5px;color:var(--sub);margin:12px 0 4px}
+input[type=text],input[type=date],textarea,select{width:100%;background:#0f1626;border:1px solid var(--line);border-radius:8px;color:var(--txt);padding:9px 11px;font-size:13.5px}
+textarea{min-height:90px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.row{grid-template-columns:1fr}}
+.btn{display:inline-block;background:linear-gradient(135deg,#2a3a63,#1e2940);border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;margin-top:14px}
+.btn:hover{background:#2f426f}
+.btn.primary{background:linear-gradient(135deg,#3b4f85,#2a3a63)}
+.btn.sm{padding:5px 12px;font-size:12px;margin:2px 4px 2px 0}
+.out{background:#0f1626;border:1px dashed var(--line);border-radius:8px;padding:12px;margin-top:14px;font-size:12.5px;display:none}
+.out.show{display:block}
+.out b{color:var(--gold)}
+.mono{font-family:Menlo,monospace;font-size:11.5px;color:var(--sub);white-space:pre-wrap;word-break:break-all}
+.hint{font-size:12px;color:var(--sub);margin-top:8px}
+.ok{color:var(--green)}.warn{color:var(--warn)}
+.stepline{border-left:2px solid var(--line);padding-left:14px;margin:10px 0}
+.stepline div{margin:6px 0;font-size:13px}
+</style>
+</head>
+<body><div class="wrap">
+<h1>📥 兜来米金融 <span>· 投喂入口</span></h1>
+<div class="sub">日常投喂 / 专家投喂 → 生成规范投喂文件 → 归档进 feed_inbox（自动建立检索索引）</div>
+
+<div class="card">
+<div class="row">
+  <div>
+    <label>投喂类别</label>
+    <select id="cat">
+      <option value="日常投喂">日常投喂（对话 / 文字 / 信息）</option>
+      <option value="专家投喂">专家投喂（观点 / 框架 / 优化建议）</option>
+    </select>
+  </div>
+  <div>
+    <label>来源类型</label>
+    <select id="src">
+      <option value="对话">对话</option>
+      <option value="研报">研报</option>
+      <option value="观点">观点</option>
+      <option value="文档">文档</option>
+      <option value="新闻">新闻</option>
+      <option value="其他">其他</option>
+    </select>
+  </div>
+</div>
+<label>标题（简短描述，如「永鼎股份放量」）</label>
+<input type="text" id="title" placeholder="示例：光模块景气 / 缠论参数建议 / 大盘异动">
+<label>投喂日期</label>
+<input type="date" id="date">
+<label>内容（文字投喂；附件请在下方选择文件）</label>
+<textarea id="text" placeholder="示例：8/26 盘中放量，疑似光模块订单传闻，关注次日承接…"></textarea>
+<label>附件（可选：图片 / PDF / Excel / 文档）</label>
+<input type="file" id="file">
+<div>
+  <button class="btn primary" id="gen">📤 生成投喂文件</button>
+</div>
+
+<div class="out" id="out">
+  <b>✅ 投喂内容已生成</b>（以下任选一种方式导入投喂箱）<br><br>
+  <b>① 复制内容</b>（推荐）<br>
+  <button class="btn sm" id="copy">📋 复制到剪贴板</button>
+  <button class="btn sm" id="dl">⬇️ 下载 .txt</button><br>
+  <div class="mono" id="preview"></div>
+  <div class="hint">② 粘贴/保存后，放入项目 <b>feed_inbox/{类别}/</b> 目录（文件名即规范名），运行 <span class="mono">feed_archive.py</span> 自动归档；或直接在专家对话中说「投喂：…」由我代为归档。</div>
+</div>
+</div>
+
+<div class="card">
+<b style="color:var(--gold)">📌 投喂 → 复盘 全流程</b>
+<div class="stepline">
+  <div>1️⃣ <b>投喂</b>：本页生成规范文件 / 拖文件到 feed_inbox / 对话中说「投喂：…」</div>
+  <div>2️⃣ <b>归档</b>：feed_archive.py 自动归档 → feed_archive/YYYY-MM-DD/ + feed_index.json 索引</div>
+  <div>3️⃣ <b>复盘</b>：每日 19:30（本地）/ 08:15（云端）汇总当日投喂 + 盘面信号 → 交叉分析 → 后市预测</div>
+  <div>4️⃣ <b>推送</b>：复盘结论 JSON → 主站「每日复盘」页「投喂复盘」板块动态展示</div>
+</div>
+<div class="hint">⚠️ 本页为纯前端生成，不直接写服务器；生成的文件导入投喂箱后由脚本统一处理，保证离线可用、数据可控。</div>
+</div>
+</div>
+
+<script>
+const today = new Date().toISOString().slice(0,10);
+document.getElementById('date').value = today;
+
+function cleanTitle(t){
+  return (t||'未命名').replace(/[\\/:*?"<>|\s]+/g,'_').slice(0,40).replace(/^_+|_+$/g,'');
+}
+function srcName(){
+  const m={对话:'对话',研报:'研报',观点:'观点',文档:'文档',新闻:'新闻',其他:'其他'};
+  return m[document.getElementById('src').value];
+}
+function build(){
+  const cat=document.getElementById('cat').value;
+  const date=document.getElementById('date').value||today;
+  const src=srcName();
+  const title=cleanTitle(document.getElementById('title').value);
+  const text=document.getElementById('text').value.trim();
+  const file=document.getElementById('file').files[0];
+  let fname = date+'_'+src+'_'+title+(file?file.name.replace(/^.*\./,'.'+((file.name.split('.').pop()||'txt').toLowerCase())):'.txt');
+  let body='';
+  if(text) body+=text+'\n';
+  if(file) body+='\n[附件] '+file.name+'（'+Math.round(file.size/1024)+' KB）\n';
+  if(!text&&!file) body='（空投喂）\n';
+  return {cat,date,src,title,fname,body};
+}
+document.getElementById('gen').onclick=function(){
+  const b=build();
+  const out=document.getElementById('out');
+  document.getElementById('preview').textContent='文件名: '+b.fname+'\n内容:\n'+b.body;
+  out.classList.add('show');
+  document.getElementById('copy').dataset.fname=b.fname;
+  document.getElementById('copy').dataset.body=b.body;
+  document.getElementById('dl').dataset.fname=b.fname;
+  document.getElementById('dl').dataset.body=b.body;
+};
+document.getElementById('copy').onclick=function(){
+  const body=this.dataset.fname+'\n'+this.dataset.body;
+  navigator.clipboard.writeText(body).then(()=>{this.textContent='✅ 已复制';setTimeout(()=>this.textContent='📋 复制到剪贴板',1500);});
+};
+document.getElementById('dl').onclick=function(){
+  const blob=new Blob([this.dataset.fname+'\n'+this.dataset.body],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download=this.dataset.fname;a.click();
+};
+</script>
+</body></html>

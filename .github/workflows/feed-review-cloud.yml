@@ -1,0 +1,44 @@
+name: Feed Review Cloud Backup
+
+on:
+  schedule:
+    # 每交易日 08:15 北京时间 = 00:15 UTC（周一~五）云端补跑
+    # 数据窗口: T-1 A股收盘 + T-1 信号 + T-1 金钻（投喂内容仅本机有，云端输出盘面复盘兜底）
+    - cron: '15 0 * * 1-5'
+  workflow_dispatch:   # 手动触发
+
+jobs:
+  feed-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      TZ: Asia/Shanghai
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Run feed review (no feeds, market data only)
+        # 云端无投喂箱：--no-feed 模式生成盘面复盘，source=cloud
+        # 不吞错误码：失败必须标红
+        run: |
+          python3 daily_feed_review.py --no-feed
+          python3 push_to_site.py
+
+      - name: Commit & Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # 线上 fetch 路径为根目录 output/feed_review_latest.json（/output/ 与 /deploy/ 均被 gitignore，需 -f）
+          cp output/feed_review_latest.json deploy/output/feed_review_latest.json
+          git add -f output/feed_review_latest.json output/feed_review_*.json
+          git diff --cached --quiet || git commit -m "chore(feed): 云端投喂复盘补跑 $(date +%F)"
+          git push
