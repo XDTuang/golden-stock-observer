@@ -202,15 +202,42 @@ def fetch():
     except Exception as _e:
         print(f"[daily-review] comm 抓取失败（非致命）: {type(_e).__name__} {str(_e)[:80]}")
 
+    # ── 日韩指数（新浪 znb 接口：日经225 / 首尔综合KOSPI；韩股个股无免费实时源留待本机） ──
+    asia = {}
+    try:
+        r = _req.get("https://hq.sinajs.cn/list=znb_NKY,znb_KOSPI",
+                     headers={"Referer": "https://finance.sina.com.cn", "User-Agent": "Mozilla/5.0"}, timeout=12)
+        r.encoding = "gbk"
+        for line in r.text.strip().splitlines():
+            m = line.split("=", 1)
+            if len(m) < 2 or "znb_" not in m[0]:
+                continue
+            code = m[0].replace("var hq_str_", "").replace("=", "").strip()
+            f = m[1].strip().strip('"').split(",")
+            if len(f) < 7 or not f[1]:
+                continue
+            key = {"znb_NKY": "nikkei", "znb_KOSPI": "kospi"}.get(code)
+            if not key:
+                continue
+            try:
+                asia[key] = {"name": f[0], "close": round(float(f[1]), 2),
+                             "chg_pct": round(float(f[3]), 2), "date": f[6]}
+            except Exception:
+                pass
+        print(f"[daily-review] asia 日韩指数: {len(asia)} 项")
+    except Exception as _e:
+        print(f"[daily-review] asia 日韩抓取失败（非致命）: {type(_e).__name__} {str(_e)[:80]}")
+
     out = {
         "date": data_date,
         "run_date": now.strftime("%Y-%m-%d"),
         "updated_at": now.strftime("%Y-%m-%d %H:%M:%S %Z"),
-        "source": "tencent-gtimg(实时) + akshare stock_us_daily(双日历史) + 腾讯hf商品/中行中间价(免费无key)",
-        "coverage": "A股指数/持仓/美股实时(腾讯) + 美股双日(akshare) + 商品利率汇率(腾讯hf/中行/乐咕); 日韩·费半·星球·AI分析=本机agent",
+        "source": "tencent-gtimg(实时) + akshare stock_us_daily(双日历史) + 腾讯hf商品/中行中间价 + 新浪znb日韩(免费无key)",
+        "coverage": "A股指数/持仓/美股实时(腾讯) + 美股双日(akshare) + 商品利率汇率(腾讯hf/中行/乐咕) + 日韩指数(新浪znb); 韩股个股·星球·AI分析=本机agent",
         "quotes": quotes,
         "us_kline": us_kline,
         "comm": comm,
+        "asia": asia,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     text = json.dumps(out, ensure_ascii=False, indent=1)

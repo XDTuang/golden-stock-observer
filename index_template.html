@@ -1500,6 +1500,7 @@ html { scroll-behavior: smooth; }
 
 
 
+
 <!-- Tab: 每日复盘（盘前简报 + 完整复盘合一；行情=云端08:15自动，分析=本机agent） -->
 <div class="tab-content" id="tab-dailyreview">
 <style>
@@ -3167,6 +3168,7 @@ function renderFourVolumeChart(containerId, fv) {
 
 
 
+
 // ===== 每日复盘 Tab =====
 function renderDailyReview() {
   if (window._drInit) return; window._drInit = true;
@@ -3185,6 +3187,7 @@ function renderDailyReview() {
       drFillTables(q);
       drFixHeader(d);
       drAIndexSummary(d);
+      drAsiaTable(d);
       if (d && d.us_kline) drRefreshUsDualDayTables(d);
       if (d && d.comm) drRefreshCommRates(d);
       drDeriveSections(d);
@@ -3363,6 +3366,43 @@ function drFillTables(q) {
   const tH = document.getElementById('drTblH'); if (tH) tH.innerHTML = mk(g('持仓股'));
   const tU = document.getElementById('drTblUs');
   if (tU) tU.innerHTML = mk([...g('美股指数'), ...g('美股映射'), ...g('美股映射·参考')]);
+  const tHK = document.getElementById('drTblHK');
+  if (tHK) tHK.innerHTML = mk(g('港股指数'));
+}
+
+/* ═══════ 2·日韩股市：标题动态 + 日韩指数表数据驱动（港股 drTblHK 由 drFillTables 渲染） ═══════ */
+function drAsiaTable(d) {
+  const ana = document.getElementById('drAnalysis');
+  if (!ana) return;
+  const heads = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'));
+  const h2 = heads.find(h => /2\s*[·・.]?\s*日韩股市/.test(h.textContent || ''));
+  if (!h2) return;
+  if (d && d.date) {
+    h2.textContent = h2.textContent.replace(/（[\d/．. ]+[^）]*）/,
+      '（' + d.date.slice(5) + ' · 港股/日韩自动 / 韩股个股本机补）');
+  }
+  const card = h2.nextElementSibling;
+  if (!card || !card.querySelector) return;
+  const a = (d && d.asia) || {};
+  const tbl = Array.prototype.slice.call(card.querySelectorAll('table.dr-tbl')).find(t =>
+    (t.innerHTML || '').indexOf('日经') >= 0 || (t.innerHTML || '').indexOf('KOSPI') >= 0);
+  if (!tbl || !tbl.querySelector('tbody')) return;
+  const cls = (v) => v >= 0 ? 'dr-up' : 'dr-dn';
+  const sign = (v) => v >= 0 ? '+' : '';
+  const rows = [];
+  if (a.nikkei) rows.push('<tr><td>日本</td><td>日经 225</td><td>' + a.nikkei.close.toLocaleString() +
+    '</td><td class="' + cls(a.nikkei.chg_pct) + '">' + sign(a.nikkei.chg_pct) + a.nikkei.chg_pct.toFixed(2) + '%（' + a.nikkei.date.slice(5) + '）</td></tr>');
+  if (a.kospi) rows.push('<tr><td>韩国</td><td>KOSPI</td><td>' + a.kospi.close.toLocaleString() +
+    '</td><td class="' + cls(a.kospi.chg_pct) + '">' + sign(a.kospi.chg_pct) + a.kospi.chg_pct.toFixed(2) + '%（' + a.kospi.date.slice(5) + '）</td></tr>');
+  rows.push('<tr style="background:rgba(239,68,68,.06)"><td><b>韩国</b></td><td><b>三星电子</b> <span style="font-size:11px;color:var(--text-muted)">005930.KS</span></td><td colspan="2" style="color:var(--text-muted)">待本机补（韩股个股无免费实时源）</td></tr>');
+  rows.push('<tr style="background:rgba(239,68,68,.06)"><td><b>韩国</b></td><td><b>SK 海力士</b> <span style="font-size:11px;color:var(--text-muted)">000660.KS</span></td><td colspan="2" style="color:var(--text-muted)">待本机补（韩股个股无免费实时源）</td></tr>');
+  tbl.querySelector('tbody').innerHTML = rows.join('');
+  // 来源说明更新
+  Array.prototype.slice.call(card.querySelectorAll('.dr-note')).forEach(n => {
+    if ((n.textContent || '').indexOf('来源') >= 0 && (n.textContent || '').indexOf('znb') < 0) {
+      n.innerHTML = '<span style="color:var(--text-muted)">来源：港股 = 云端 market.json（腾讯）；日经/KOSPI = 新浪 znb 接口（自动）｜ 三星/SK 个股待本机 neodata 补。</span>';
+    }
+  });
 }
 
 /* ═══════ 1·昨日A股走势总结：标题日期动态 + 写死 note 换数据驱动摘要（指数表 drTblA 保留动态） ═══════ */
