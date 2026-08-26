@@ -1498,6 +1498,7 @@ html { scroll-behavior: smooth; }
 
 
 
+
 <!-- Tab: 每日复盘（盘前简报 + 完整复盘合一；行情=云端08:15自动，分析=本机agent） -->
 <div class="tab-content" id="tab-dailyreview">
 <style>
@@ -3163,6 +3164,7 @@ function renderFourVolumeChart(containerId, fv) {
 
 
 
+
 // ===== 每日复盘 Tab =====
 function renderDailyReview() {
   if (window._drInit) return; window._drInit = true;
@@ -3179,6 +3181,7 @@ function renderDailyReview() {
       // 仅用 market.json.us_kline 把双日表数据+说明日期刷新到最新（drRefreshUsDualDayTables）
       ana.innerHTML = t;
       drFillTables(q);
+      drFixHeader(d);
       if (d && d.us_kline) drRefreshUsDualDayTables(d);
       if (d && d.comm) drRefreshCommRates(d);
       drDeriveSections(d);
@@ -3357,6 +3360,31 @@ function drFillTables(q) {
   const tH = document.getElementById('drTblH'); if (tH) tH.innerHTML = mk(g('持仓股'));
   const tU = document.getElementById('drTblUs');
   if (tU) tU.innerHTML = mk([...g('美股指数'), ...g('美股映射'), ...g('美股映射·参考')]);
+}
+
+/* ═══════ 头部标注动态修正：复盘日保留（分析内容真实日期），指引日→下一交易日，追加行情日期 ═══════ */
+function drFixHeader(d) {
+  const ana = document.getElementById('drAnalysis');
+  if (!ana) return;
+  let hdr = null;
+  Array.prototype.slice.call(ana.querySelectorAll('.dr-tag')).forEach(s => {
+    if ((s.textContent || '').indexOf('复盘日') >= 0) hdr = s;
+  });
+  if (!hdr) return;
+  const m = (hdr.textContent || '').match(/复盘日\s*([^｜]+)/);
+  const reviewDay = m ? m[1].trim() : '';
+  hdr.innerHTML = '复盘日 ' + reviewDay +
+    ' ｜ 指引日（自动）' + drNextBizDay() +
+    ' ｜ 行情 ' + (d && d.date ? d.date : '—') + ' 自动刷新';
+}
+
+function drNextBizDay() {
+  const dt = new Date();
+  dt.setDate(dt.getDate() + 1);                       // 今日已收盘，自明日算起
+  while (dt.getDay() === 0 || dt.getDay() === 6) dt.setDate(dt.getDate() + 1);  // 跳过周末
+  const wd = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][dt.getDay()];
+  const pad = (n) => String(n).padStart(2, '0');
+  return dt.getFullYear() + '-' + pad(dt.getMonth() + 1) + '-' + pad(dt.getDate()) + '（' + wd + '）';
 }
 
 /* ═══════ 推导引擎：0·结论速览卡 + 7·次日开盘指引（数据驱动替代写死） ═══════ */
