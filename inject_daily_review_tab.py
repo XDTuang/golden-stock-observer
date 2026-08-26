@@ -63,6 +63,7 @@ function renderDailyReview() {
       if (d && d.us_kline) drRefreshUsDualDayTables(d);
       if (d && d.comm) drRefreshCommRates(d);
       drDeriveSections(d);
+      drLoadObserveStocks();
       drLoadTop10();
       drLoadDiamond();
     }).catch(err => {
@@ -237,6 +238,130 @@ function drFillTables(q) {
   const tH = document.getElementById('drTblH'); if (tH) tH.innerHTML = mk(g('持仓股'));
   const tU = document.getElementById('drTblUs');
   if (tU) tU.innerHTML = mk([...g('美股指数'), ...g('美股映射'), ...g('美股映射·参考')]);
+}
+
+/* ═══════ 推导引擎：0·结论速览卡 + 7·次日开盘指引（数据驱动替代写死） ═══════ */
+function drDeriveSections(d) {
+  const ana = document.getElementById('drAnalysis');
+  if (!ana) return;
+  const q = (d && d.quotes) || {};
+  const uk = (d && d.us_kline) || {};
+  const usDji = uk.us_dji;
+  const usChg = usDji ? usDji.prev.chg_pct : null;          // 隔夜道指涨跌（最新美股交易日）
+  const usDate = usDji ? usDji.latest.date : '';
+  const hstech = q.hk_hstech && q.hk_hstech.chg_pct !== undefined ? parseFloat(q.hk_hstech.chg_pct) : null;
+  const vix = (window.VIX_PANEL_DATA && VIX_PANEL_DATA.cboe_vix) ? VIX_PANEL_DATA.cboe_vix.value : null;
+  const thermo = (window.THERMO_DATA && THERMO_DATA.snapshot) ? THERMO_DATA.snapshot : null;
+  const pePct = thermo ? thermo.pe_pct_10y : null;
+  // 打分推导开盘预期（隔夜美股 ±2 / 恒生科技 ±1 / VIX ±1）
+  let score = 0;
+  const reasons = [];
+  if (usChg !== null) {
+    if (usChg > 0.5) score += 2; else if (usChg < -0.5) score -= 2;
+    reasons.push('隔夜道指 ' + (usChg > 0 ? '+' : '') + usChg.toFixed(2) + '%');
+  }
+  if (hstech !== null) {
+    if (hstech > 0.3) score += 1; else if (hstech < -0.3) score -= 1;
+    reasons.push('恒生科技 ' + (hstech > 0 ? '+' : '') + hstech.toFixed(2) + '%');
+  }
+  if (vix !== null) {
+    if (vix < 15) score += 1; else if (vix > 20) score -= 1;
+    reasons.push('VIX ' + vix);
+  }
+  const openExp = score >= 2 ? ['偏强 · 高开概率↑', 'var(--red)']
+    : score <= -2 ? ['偏弱 · 低开概率↑', 'var(--green)']
+    : ['中性 · 平开震荡', 'var(--orange)'];
+  // 风险等级（VIX>20 或 PE分位>80 → 防守；PE分位<30 → 进攻）
+  let risk;
+  if ((vix !== null && vix > 20) || (pePct !== null && pePct > 80)) risk = ['中高（防守优先）', 'var(--red)'];
+  else if (pePct !== null && pePct < 30) risk = ['低（进攻窗口）', 'var(--green)'];
+  else risk = ['中（均衡应对）', 'var(--gold)'];
+  // 风格倾向（隔夜道指>纳指 → 价值占优；反之成长）
+  const usIxic = uk.us_ixic ? uk.us_ixic.prev.chg_pct : null;
+  const style = (usChg !== null && usIxic !== null)
+    ? (usChg > usIxic ? '价值/资源占优（道指强于纳指）' : '成长/科技占优（纳指强于道指）')
+    : '均衡';
+  // 事件（明日 + 后日，来自 event_calendar）
+  const evUrl = './output/event_calendar_' + new Date().toISOString().slice(0, 7) + '.json';
+  const renderAll = (evMap) => {
+    const d1 = drNextTradeDate(1), d2 = drNextTradeDate(2);
+    const evs = [];
+    [d1, d2].forEach(dd => {
+      (evMap && evMap[dd] || []).slice(0, 4).forEach(e => {
+        if (e.importance !== 'low') evs.push('<span class="dr-tag">' + (e.time || '') + '</span> ' + e.name +
+          (e.country ? '（' + e.country + '）' : ''));
+      });
+    });
+    const evHtml = evs.length ? evs.join('<br>') : '明日无重大事件（待知识星球/研报投喂补充）';
+    // ── 渲染 0 · 结论速览卡 ──
+    const h0 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h')).find(h => /0\s*[·・.]?\s*结论先行/.test(h.textContent || ''));
+    if (h0 && h0.nextElementSibling && h0.nextElementSibling.querySelector) {
+      const card = h0.nextElementSibling;
+      card.innerHTML =
+        '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0">' +
+        '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">次日开盘预判</div><div style="font-weight:700;color:' + openExp[1] + '">' + openExp[0] + '</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px">' + reasons.join(' · ') + '</div></div>' +
+        '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">风格倾向</div><div style="font-weight:600">' + style + '</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px">PE分位10y ' + (pePct != null ? pePct + '%' : '—') + ' · 破净率 ' + (thermo && thermo.below_net_ratio != null ? thermo.below_net_ratio + '%' : '—') + '</div></div>' +
+        '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">风险等级</div><div style="font-weight:700;color:' + risk[1] + '">' + risk[0] + '</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px">' + (vix !== null ? 'VIX ' + vix + ' · ' : '') + '格雷厄姆 ' + (thermo && thermo.graham != null ? thermo.graham : '—') + '</div></div>' +
+        '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">关键事件</div><div style="font-weight:600;font-size:12px">' + evHtml.replace(/<br>/g, ' · ') + '</div></div>' +
+        '</div>' +
+        '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px;margin-top:6px"><b>数据驱动速览（自动）：</b>隔夜美股 ' + (usDate || '—') + ' 收盘 · ' + reasons.join(' · ') + '。深度节奏判读/板块推演请以本机 agent 分析为准。</div>';
+    }
+    // ── 渲染 7 · 次日开盘指引 ──
+    const h7 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h')).find(h => /7\s*[·・.]?\s*次日开盘指引/.test(h.textContent || ''));
+    if (h7 && h7.nextElementSibling && h7.nextElementSibling.querySelector) {
+      const card = h7.nextElementSibling;
+      card.innerHTML =
+        '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0">' +
+        '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">方向判断</div><div style="font-weight:700;color:' + openExp[1] + '">' + openExp[0] + '</div><div style="font-size:12px;color:var(--text-secondary);margin-top:4px">依据：' + reasons.join('；') + '。开盘预期由规则推导（隔夜美股/恒生科技/VIX），非写死。</div></div>' +
+        '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">风格与操作</div><div style="font-weight:600">' + style + '</div><div style="font-size:12px;color:var(--text-secondary);margin-top:4px">温度计 PE分位10y ' + (pePct != null ? pePct + '%' : '—') + '（' + (pePct != null && pePct > 80 ? '高位·防守' : pePct != null && pePct < 30 ? '低位·进攻' : '中性') + '）；具体持仓操作请以本机 agent 分析为准。</div></div>' +
+        '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">风险与事件雷达</div><div style="font-weight:600">' + d1.slice(5) + ' · ' + d2.slice(5) + '</div><div style="font-size:12px;color:var(--text-secondary);margin-top:4px">' + evHtml + '</div></div>' +
+        '</div>' +
+        '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--orange);padding:8px 12px;border-radius:6px"><b>预案开关（规则生成）：</b>① 若开盘与预期一致（' + openExp[0] + '）→ 按计划执行；② 若反向大幅背离（隔夜美股盘中反转）→ 观望至 10:00 承接确认；③ 风险等级 ' + risk[0] + ' → 对应 ' + (risk[1] === 'var(--red)' ? '减仓防守' : risk[1] === 'var(--green)' ? '进攻但不满仓' : '均衡仓位') + '。证伪线以上证收盘 3860 为基准（可随盘面调整）。</div>';
+    }
+  };
+  fetch(evUrl, { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : Promise.reject('HTTP ' + r.status))
+    .then(ec => renderAll(ec.events || {}))
+    .catch(() => renderAll(null));
+}
+
+function drNextTradeDate(n) {
+  const dt = new Date();
+  dt.setDate(dt.getDate() + n);
+  return dt.toISOString().slice(0, 10);
+}
+
+/* ═══════ 1.3 重点观测股（output/obs_deduce_latest.json，本机 agent 最新推演；无则提示待补） ═══════ */
+function drLoadObserveStocks() {
+  const box = document.getElementById('drTblObs');
+  if (!box) return;
+  fetch('./output/obs_deduce_latest.json', { cache: 'no-store' }).then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(d => {
+    const items = d.items || [];
+    if (!items.length) throw new Error('empty');
+    const date = d.date || '';
+    const cls = (v) => v >= 0 ? 'dr-up' : 'dr-dn';
+    const sign = (v) => v >= 0 ? '+' : '';
+    const trendCls = (t) => (t.indexOf('强') >= 0 || t.indexOf('上') >= 0) ? 'var(--red)' : (t.indexOf('弱') >= 0 || t.indexOf('跌') >= 0 ? 'var(--green)' : 'var(--text-secondary)');
+    const rows = items.map(it => {
+      const pct = it.chg_last != null ? parseFloat(it.chg_last) : null;
+      const dev = it.dev_ma5 != null ? parseFloat(it.dev_ma5) : null;
+      return '<tr><td><b>' + it.name + '</b> <span style="font-size:11px;color:var(--text-muted)">' + (it.code || '').toUpperCase() + '</span></td>' +
+        '<td>' + (it.close != null ? it.close : '—') + (pct !== null ? ' <span class="' + cls(pct) + '">' + sign(pct) + pct.toFixed(2) + '%</span>' : '') + '</td>' +
+        '<td style="font-size:12px">' + (it.sector || '') + '</td>' +
+        '<td style="font-size:12px"><span class="dr-tag">' + (it.pattern || '') + '</span> MA5 ' + (it.ma5 != null ? it.ma5 : '—') +
+          (dev !== null ? ' <span class="' + cls(dev) + '">' + sign(dev) + dev.toFixed(1) + '%</span>' : '') +
+          ' 5日' + (it.chg5 != null ? ' <span class="' + cls(parseFloat(it.chg5)) + '">' + sign(parseFloat(it.chg5)) + parseFloat(it.chg5).toFixed(1) + '%</span>' : '') +
+          ' 量比' + (it.vol_ratio != null ? it.vol_ratio : '—') + '</td>' +
+        '<td style="color:' + trendCls(it.trend || '') + ';font-weight:600;font-size:13px">' + (it.trend || '') + '</td>' +
+        '<td style="font-size:12px">' + (it.open_label || '') + '</td></tr>';
+    }).join('');
+    box.innerHTML = '<table class="dr-tbl"><thead><tr><th>股票</th><th>' + date + ' 收盘/涨跌</th><th>板块</th><th>技术形态（10日K线）</th><th>推演</th><th>开盘方式</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  }).catch(() => {
+    box.innerHTML = '<p class="dr-note">重点观测股推演：待本机 agent 补全（obs_deduce 尚未生成）。</p>';
+  });
 }
 
 // ===== 每日复盘：前一日 TOP10（output/top10_history.json 最新交易日）=====
