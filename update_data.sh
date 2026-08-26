@@ -145,6 +145,10 @@ echo "📊 Step 3.9: 观测股名单同步 + 每日滚动推演（名单沿用�
 "$PYTHON" derive_obs.py || echo "  ⚠️  观测股滚动推演失败（跳过，不影响主流程）"
 
 echo ""
+echo "📊 Step 3.10: 滚动推演回测（backtest --auto：昨日推演 vs 今日实际，best-effort）"
+"$PYTHON" backtest_daily_review.py --auto || echo "  ⚠️  滚动推演回测失败（跳过，不影响主流程）"
+
+echo ""
 echo "🧹 Step 4: 精简数据 + 生成 fetch 版页面（单一构建路径）"
 "$PYTHON" slim_signals.py
 
