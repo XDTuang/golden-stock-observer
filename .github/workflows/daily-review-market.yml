@@ -33,14 +33,16 @@ jobs:
         # 不用 || echo 吞错误码：fetch 失败必须让 workflow 标红，避免"假成功+静默跳过提交"
         run: |
           python3 fetch_daily_review_market.py
+          # 三星/海力士收盘价：stock.fengle.me NAVER 实时（无延迟），合并进 market.json asia.kr_stocks
+          python3 fengle_kr.py
 
       - name: Commit & Push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/daily_review/market.json
+          git add data/daily_review/market.json data/daily_review/analysis.html output/kr_stocks.json deploy/output/kr_stocks.json
           if ! git diff --cached --quiet; then
-            git commit -m "daily-review: update market quotes $(date +%F)"
+            git commit -m "daily-review: update market quotes + 三星/海力士收盘 $(date +%F)"
             git push
           else
             echo "no changes (market.json unchanged)"

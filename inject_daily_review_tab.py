@@ -269,13 +269,27 @@ function drAsiaTable(d) {
     '</td><td class="' + cls(a.nikkei.chg_pct) + '">' + sign(a.nikkei.chg_pct) + a.nikkei.chg_pct.toFixed(2) + '%（' + a.nikkei.date.slice(5) + '）</td></tr>');
   if (a.kospi) rows.push('<tr><td>韩国</td><td>KOSPI</td><td>' + a.kospi.close.toLocaleString() +
     '</td><td class="' + cls(a.kospi.chg_pct) + '">' + sign(a.kospi.chg_pct) + a.kospi.chg_pct.toFixed(2) + '%（' + a.kospi.date.slice(5) + '）</td></tr>');
-  rows.push('<tr style="background:rgba(239,68,68,.06)"><td><b>韩国</b></td><td><b>三星电子</b> <span style="font-size:11px;color:var(--text-muted)">005930.KS</span></td><td colspan="2" style="color:var(--text-muted)">待本机补（韩股个股无免费实时源）</td></tr>');
-  rows.push('<tr style="background:rgba(239,68,68,.06)"><td><b>韩国</b></td><td><b>SK 海力士</b> <span style="font-size:11px;color:var(--text-muted)">000660.KS</span></td><td colspan="2" style="color:var(--text-muted)">待本机补（韩股个股无免费实时源）</td></tr>');
+  // 韩股个股（三星/SK 海力士）：market.json asia.kr_stocks（stock.fengle.me NAVER 实时抓取）
+  const kr = (a.kr_stocks && a.kr_stocks.stocks) || [];
+  const krNames = {'005930': '三星电子', '000660': 'SK 海力士'};
+  if (kr.length) {
+    kr.forEach(s => {
+      if (!s || !s.code) return;
+      const pct = s.pct != null ? parseFloat(s.pct) : null;
+      rows.push('<tr style="background:rgba(239,68,68,.06)"><td><b>韩国</b></td><td><b>' +
+        (krNames[s.code] || s.name || s.code) + '</b> <span style="font-size:11px;color:var(--text-muted)">' + s.code + '.KS</span></td><td>' +
+        (s.close != null ? s.close.toLocaleString() : '—') +
+        (s.chg != null ? ' <span style="font-size:11px" class="' + cls(s.chg) + '">' + sign(s.chg) + (s.chg / 1000).toFixed(0) + '千</span>' : '') +
+        '</td><td class="' + (pct != null ? cls(pct) : '') + '">' + (pct != null ? sign(pct) + pct.toFixed(2) + '%' : '—') + '</td></tr>');
+    });
+  } else {
+    rows.push('<tr style="background:rgba(239,68,68,.06)"><td><b>韩国</b></td><td><b>三星电子/SK 海力士</b></td><td colspan="2" style="color:var(--text-muted)">待抓取（kr_stocks 未生成）</td></tr>');
+  }
   tbl.querySelector('tbody').innerHTML = rows.join('');
   // 来源说明更新
   Array.prototype.slice.call(card.querySelectorAll('.dr-note')).forEach(n => {
     if ((n.textContent || '').indexOf('来源') >= 0 && (n.textContent || '').indexOf('znb') < 0) {
-      n.innerHTML = '<span style="color:var(--text-muted)">来源：港股 = 云端 market.json（腾讯）；日经/KOSPI = 新浪 znb 接口（自动）｜ 三星/SK 个股待本机 neodata 补。</span>';
+      n.innerHTML = '<span style="color:var(--text-muted)">来源：港股 = 云端 market.json（腾讯）；日经/KOSPI = 新浪 znb 接口（自动）｜ 三星/SK = stock.fengle.me NAVER 实时（自动抓取，无 15 分钟延迟）。</span>';
     }
   });
 }
@@ -316,21 +330,23 @@ function drAIndexSummary(d) {
 function drFixHeader(d) {
   const ana = document.getElementById('drAnalysis');
   if (!ana) return;
+  // 复盘日 = 行情数据真实日期（数据驱动，禁止取静态写死文本）
+  const reviewDate = (d && d.date) ? d.date : '';
+  window._REVIEW_DATE = reviewDate;   // 供 drNextTradeDate 等基于复盘日推算
   let hdr = null;
   Array.prototype.slice.call(ana.querySelectorAll('.dr-tag')).forEach(s => {
     if ((s.textContent || '').indexOf('复盘日') >= 0) hdr = s;
   });
   if (!hdr) return;
-  const m = (hdr.textContent || '').match(/复盘日\s*([^｜]+)/);
-  const reviewDay = m ? m[1].trim() : '';
-  hdr.innerHTML = '复盘日 ' + reviewDay +
-    ' ｜ 指引日（自动）' + drNextBizDay() +
-    ' ｜ 行情 ' + (d && d.date ? d.date : '—') + ' 自动刷新';
+  hdr.innerHTML = '复盘日 ' + reviewDate +
+    ' ｜ 指引日（自动）' + drNextBizDay(reviewDate) +
+    ' ｜ 行情 ' + (reviewDate || '—') + ' 自动刷新';
 }
 
-function drNextBizDay() {
-  const dt = new Date();
-  dt.setDate(dt.getDate() + 1);                       // 今日已收盘，自明日算起
+function drNextBizDay(baseDate) {
+  // 指引日 = 基准复盘日的下一交易日（8/26 收盘 → 指引 8/27）；baseDate 缺省时退回系统时间
+  const dt = baseDate ? new Date(baseDate.replace(/-/g, '/')) : new Date();
+  dt.setDate(dt.getDate() + 1);
   while (dt.getDay() === 0 || dt.getDay() === 6) dt.setDate(dt.getDate() + 1);  // 跳过周末
   const wd = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][dt.getDay()];
   const pad = (n) => String(n).padStart(2, '0');
@@ -405,6 +421,12 @@ function drDeriveSections(d) {
     }
     // ── 渲染 7 · 次日开盘指引 ──
     const h7 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h')).find(h => /次日开盘指引/.test(h.textContent || ''));
+    if (h7) {
+      // 标题日期动态化：指引日 = 复盘日下一交易日（8/26 复盘 → 8/27 指引）
+      const gd = drNextBizDay(d && d.date ? d.date : '');
+      const gdShort = gd.slice(5).replace('-', '/');
+      if (h7.textContent.indexOf('（' + gdShort) < 0) h7.textContent = '7 · 次日开盘指引（' + gdShort + '）';
+    }
     if (h7 && h7.nextElementSibling && h7.nextElementSibling.querySelector) {
       const card = h7.nextElementSibling;
       card.innerHTML =
@@ -423,9 +445,12 @@ function drDeriveSections(d) {
 }
 
 function drNextTradeDate(n) {
-  const dt = new Date();
+  // 基于复盘日（window._REVIEW_DATE）推算，避免凌晨系统时间导致日期漂移；本地时区格式化
+  const base = window._REVIEW_DATE || '';
+  const dt = base ? new Date(base.replace(/-/g, '/')) : new Date();
   dt.setDate(dt.getDate() + n);
-  return dt.toISOString().slice(0, 10);
+  const pad = (x) => String(x).padStart(2, '0');
+  return dt.getFullYear() + '-' + pad(dt.getMonth() + 1) + '-' + pad(dt.getDate());
 }
 
 /* ═══════ 1.3 重点观测股（output/obs_deduce_latest.json，本机 agent 最新推演；无则提示待补） ═══════ */
@@ -439,6 +464,17 @@ function drLoadObserveStocks() {
     const items = d.items || [];
     if (!items.length) throw new Error('empty');
     const date = d.date || '';
+    // 标题日期动态化：obs_deduce 收盘日 + 下一交易日推演（8/26 收盘 → 8/27 推演）
+    const ana = document.getElementById('drAnalysis');
+    if (ana && date) {
+      const h13 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'))
+        .find(h => /重点观测股/.test(h.textContent || ''));
+      if (h13) {
+        const nd = drNextBizDay(date).slice(5).replace('-', '/');
+        h13.textContent = '1.3 · 重点观测股（' + items.length + ' 只 · ' +
+          date.slice(5).replace('-', '/') + ' 收盘 + ' + nd + ' 推演）';
+      }
+    }
     const cls = (v) => v >= 0 ? 'dr-up' : 'dr-dn';
     const sign = (v) => v >= 0 ? '+' : '';
     const trendCls = (t) => (t.indexOf('强') >= 0 || t.indexOf('上') >= 0) ? 'var(--red)' : (t.indexOf('弱') >= 0 || t.indexOf('跌') >= 0 ? 'var(--green)' : 'var(--text-secondary)');
