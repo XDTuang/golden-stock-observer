@@ -82,6 +82,10 @@ def archive(dry_run=False, extra_inboxes=None):
             fpath = os.path.join(src_dir, fname)
             if not os.path.isfile(fpath):
                 continue
+            if ".att." in fname:
+                # feed_submit 生成的附件副本（xxx.att.pdf 等），非投喂正文，跳过不入库
+                print(f"  ⏭️  跳过附件副本（非投喂）: {fname}")
+                continue
             info = parse_name(fname)
             if not info:
                 print(f"  ⚠️  命名不规范，跳过: {fname}（应为 YYYY-MM-DD_来源_标题.ext）")
