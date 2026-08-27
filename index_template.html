@@ -1505,6 +1505,7 @@ html { scroll-behavior: smooth; }
 
 
 
+
 <!-- Tab: 每日复盘（盘前简报 + 完整复盘合一；行情=云端08:15自动，分析=本机agent） -->
 <div class="tab-content" id="tab-dailyreview">
 <style>
@@ -1520,15 +1521,6 @@ html { scroll-behavior: smooth; }
 </style>
 <div class="dr-card" id="drMarket"><p class="dr-note">行情加载中…</p></div>
 <div class="dr-card" id="drAnalysis"><p class="dr-note">分析区加载中…</p></div>
-<!-- Tab: 投喂复盘 -->
-<div class="dr-card" id="drFeedReview">
-  <div class="dr-h" style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-    <span>📥 投喂复盘（当日投喂 × 盘面信号）</span>
-    <button id="drFeedBtn" style="font-size:12px;padding:4px 12px;border-radius:14px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);cursor:pointer;white-space:nowrap">📥 投喂</button>
-  </div>
-  <p class="dr-note" id="drFeedReviewBody">投喂复盘加载中…</p>
-</div>
-
 </div>
 
 <!-- Tab: 实时盯盘 -->
@@ -3351,6 +3343,7 @@ function drFeedModalInit() {
     a.href = URL.createObjectURL(blob); a.download = this.dataset.body.split('\n')[0]; a.click();
   };
 }
+
 
 
 

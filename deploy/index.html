@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>兜金观测 — 量化信号池 v2026-08-26</title>
+<title>兜金观测 — 量化信号池 v2026-08-27</title>
 <!-- 登录保护：内嵌覆盖层，不跳转 -->
 <script>
 (function(){
@@ -1505,6 +1505,7 @@ html { scroll-behavior: smooth; }
 
 
 
+
 <!-- Tab: 每日复盘（盘前简报 + 完整复盘合一；行情=云端08:15自动，分析=本机agent） -->
 <div class="tab-content" id="tab-dailyreview">
 <style>
@@ -1520,15 +1521,6 @@ html { scroll-behavior: smooth; }
 </style>
 <div class="dr-card" id="drMarket"><p class="dr-note">行情加载中…</p></div>
 <div class="dr-card" id="drAnalysis"><p class="dr-note">分析区加载中…</p></div>
-<!-- Tab: 投喂复盘 -->
-<div class="dr-card" id="drFeedReview">
-  <div class="dr-h" style="display:flex;justify-content:space-between;align-items:center;gap:8px">
-    <span>📥 投喂复盘（当日投喂 × 盘面信号）</span>
-    <button id="drFeedBtn" style="font-size:12px;padding:4px 12px;border-radius:14px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);cursor:pointer;white-space:nowrap">📥 投喂</button>
-  </div>
-  <p class="dr-note" id="drFeedReviewBody">投喂复盘加载中…</p>
-</div>
-
 </div>
 
 <!-- Tab: 实时盯盘 -->
@@ -3276,54 +3268,6 @@ function drLoadFeedReview() {
         risks.forEach(r => h += '<div class="dr-note">⚠️ <span class="dr-dn">' + r.desc + '</span></div>');
       }
       if (pred.pending_ai) h += '<div class="dr-note dr-tag">深度预测待本机 agent / 专家对话补全</div>';
-
-      // ===== AI 综合推演 (ai_synthesis) =====
-      const syn = d.ai_synthesis;
-      if (syn) {
-        const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        h += '<div style="margin:14px 0 4px;padding:10px 12px;border-left:3px solid #f0b429;background:rgba(240,180,41,.08);border-radius:8px;font-size:13.5px;line-height:1.7"><b style="color:#f0b429">⚑ AI 综合推演 · 核心结论</b><br>' + esc(syn.verdict_headline || '') + '</div>';
-        if (syn.conclusion_first && syn.conclusion_first.length) {
-          h += '<div class="dr-h">AI 综合推演 · 结论先行</div><ol style="margin:4px 0;padding-left:20px">';
-          syn.conclusion_first.forEach(c => h += '<li class="dr-note" style="list-style:inherit">' + esc(c) + '</li>');
-          h += '</ol>';
-        }
-        if (syn.theme_resonance && syn.theme_resonance.length) {
-          h += '<div class="dr-h">AI 综合推演 · 主题共振</div>';
-          syn.theme_resonance.forEach(t => {
-            const w = t.weight || '';
-            const wc = w === '最强' ? 'var(--red)' : (w === '强' ? '#f0b429' : 'var(--text-muted)');
-            const chips = (t.related_stocks || []).map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('');
-            h += '<div style="margin:6px 0;padding:8px 10px;border:1px solid var(--border);border-radius:8px"><b>' + esc(t.theme) + '</b> <span style="color:' + wc + '">[' + esc(w) + ']</span><div class="dr-tag" style="margin-top:4px">' + (t.evidence || []).map(esc).join('<br>') + '</div><div style="margin-top:4px">' + chips + '</div></div>';
-          });
-        }
-        const cm = syn.nvda_chain_map || {};
-        if (cm.summary || (cm.a_shares && cm.a_shares.length) || (cm.us_mapping && cm.us_mapping.length)) {
-          h += '<div class="dr-h">AI 综合推演 · NVDA 产业链映射</div>';
-          h += '<div class="dr-note">' + esc(cm.summary || '') + '</div>';
-          h += '<div style="display:flex;gap:10px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><b style="color:var(--red)">A股映射</b><div>' + ((cm.a_shares || []).map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('')) + '</div></div><div style="flex:1;min-width:200px"><b style="color:var(--green)">美股映射</b><div>' + ((cm.us_mapping || []).map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('')) + '</div></div></div>';
-        }
-        const hm = syn.holding_map || {};
-        if (hm.note || (hm.theme_aligned && hm.theme_aligned.length) || (hm.caution && hm.caution.length) || (hm.us && hm.us.length)) {
-          h += '<div class="dr-h">AI 综合推演 · 持仓映射</div>';
-          h += '<div class="dr-tag">' + esc(hm.note || '') + '</div>';
-          if (hm.theme_aligned && hm.theme_aligned.length) h += '<div style="margin-top:4px"><b style="color:var(--red)">主题契合</b> ' + hm.theme_aligned.map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('') + '</div>';
-          if (hm.caution && hm.caution.length) h += '<div style="margin-top:4px"><b style="color:#f0b429">需谨慎</b> ' + hm.caution.map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:#f0b429;font-size:11px">' + esc(s) + '</span>').join('') + '</div>';
-          if (hm.us && hm.us.length) h += '<div style="margin-top:4px"><b style="color:var(--green)">美股映射</b> ' + hm.us.map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('') + '</div>';
-        }
-        if (syn.t1_radar_0827 && syn.t1_radar_0827.length) {
-          h += '<div class="dr-h">AI 综合推演 · T+1 事件雷达</div>';
-          syn.t1_radar_0827.forEach(t => h += '<div class="dr-note">· ' + esc(t) + '</div>');
-        }
-        if (syn.risks && syn.risks.length) {
-          h += '<div class="dr-h">AI 综合推演 · 风险（概率 × 冲击）</div>';
-          syn.risks.forEach(r => {
-            const pc = r.prob === '高' ? 'var(--red)' : '#f0b429';
-            h += '<div class="dr-note">· <span style="color:' + pc + ';font-weight:600">[' + esc(r.prob) + '×' + esc(r.impact) + ']</span> ' + esc(r.desc) + '</div>';
-          });
-        }
-        if (syn.disclaimer) h += '<div class="dr-tag" style="margin-top:8px">' + esc(syn.disclaimer) + '</div>';
-      }
-
       el.innerHTML = h;
     })
     .catch(err => { el.innerHTML = '<p class="dr-note">投喂复盘加载失败：' + err + '</p>'; });
@@ -3402,6 +3346,7 @@ function drFeedModalInit() {
     a.href = URL.createObjectURL(blob); a.download = this.dataset.body.split('\n')[0]; a.click();
   };
 }
+
 
 
 
