@@ -52,6 +52,11 @@ jobs:
           python3 fetch_daily_news.py || echo "⚠️ 新闻池抓取失败（不影响主流程）"
           python3 fetch_daily_macro.py || echo "⚠️ 宏观抓取失败（不影响主流程）"
 
+      - name: Backtest 推演回测（昨日推演 vs 今日实际）
+        # 2026-08-28 新增：T 日收盘后自动比对 T-1 推演，结果落 output/backtest_daily.json
+        # 供每日复盘 1.3 板块回测卡片显示。失败不阻断。
+        run: python3 backtest_daily_review.py --auto || echo "⚠️ 回测失败（不影响主流程）"
+
       - name: Commit & Push
         run: |
           git config user.name "github-actions[bot]"
@@ -59,7 +64,8 @@ jobs:
           git add data/daily_review/market.json
           git add -f output/kr_stocks.json deploy/output/kr_stocks.json \
                     deploy/data/daily_review/market.json \
-                    output/daily_news_*.json output/daily_macro_*.json
+                    output/daily_news_*.json output/daily_macro_*.json \
+                    output/backtest_daily.json
           if ! git diff --cached --quiet; then
             # push 前先 rebase，避免与其他任务（daily-update 17:45）并发提交造成非快进拒绝
             git pull --rebase origin main || echo "⚠️ rebase 失败，尝试直接推送"

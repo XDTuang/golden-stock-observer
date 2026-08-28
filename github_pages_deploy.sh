@@ -135,6 +135,10 @@ cp -R output/gate_data.json "$DEPLOY/output/gate_data.json" 2>/dev/null || true
 cp output/feed_review_*.json "$DEPLOY/output/" 2>/dev/null || true
 # 保留日韩行情（fengle_kr.py 产出，slim_signals 不处理，同理会被 rm -rf 清掉）
 cp output/kr_stocks.json "$DEPLOY/output/" 2>/dev/null || true
+# 保留自动新闻池 + 宏观（fetch_daily_news.py / fetch_daily_macro.py 产出，每日复盘 4/5/6 段自动数据源）
+cp output/daily_news_*.json output/daily_macro_*.json "$DEPLOY/output/" 2>/dev/null || true
+# 保留推演回测结果（backtest_daily_review.py 产出，每日复盘 1.3 板块回测准确率显示）
+cp output/backtest_daily.json "$DEPLOY/output/" 2>/dev/null || true
 # 保留兜宝金钻分片（build_diamond_pool.py 产出，含 K线，供点开个股渲染；slim_signals 不处理）
 cp output/golden_pool_*.json "$DEPLOY/output/" 2>/dev/null || true
 cp output/golden_pool_meta.json "$DEPLOY/output/" 2>/dev/null || true
@@ -170,6 +174,9 @@ git add -f index.html signals.json lh_calendar.json \
   output/stocks.json \
   output/kr_stocks.json \
   output/feed_review_latest.json output/feed_review_*.json \
+  output/daily_news_*.json output/daily_macro_*.json \
+  deploy/output/daily_news_*.json deploy/output/daily_macro_*.json \
+  output/backtest_daily.json deploy/output/backtest_daily.json \
   output/sh_index_kline.json output/sz_index_kline.json output/cyb_index_kline.json output/kc50_index_kline.json output/hs300_index_kline.json \
   output/market_thermometer.json output/valuation_band.json output/vix_panel.json output/institutional_flow.json \
   deploy/output/market_thermometer.json deploy/output/valuation_band.json deploy/output/vix_panel.json deploy/output/institutional_flow.json \

@@ -52,6 +52,26 @@ def fetch_kline(code):
     return rows
 
 
+# 观测股 → 新浪行业板块 映射（v3 final，2026-08-28）
+# 背景：新浪行业板块(49)成分不含科创/创业/港股，code_sector_sina.json 仅覆盖 41%；
+#       为让「板块因子 20%」对全部观测股生效，手工映射 32 只到新浪行业板块名
+#       （板块涨跌由 stock_sector_spot 一次请求提供；港股无 A 股板块，因子=0 靠大盘）。
+OBS_SECTOR_MAP = {
+    "hk00189": "", "hk02655": "", "hk06651": "",          # 港股 → 无板块因子
+    "sh600105": "电子器件", "sh601869": "电子器件", "sh603019": "电子信息",
+    "sh603049": "化工行业", "sh605589": "化工行业",
+    "sh688048": "电子器件", "sh688234": "电子器件", "sh688261": "电子器件",
+    "sh688315": "生物制药", "sh688336": "生物制药", "sh688545": "化工行业",
+    "sh688655": "电子器件",
+    "sz000426": "有色金属", "sz000988": "电子信息", "sz001309": "电子器件",
+    "sz001399": "电子器件", "sz002052": "电子信息", "sz002281": "电子信息",
+    "sz002384": "电子器件", "sz002674": "服装鞋类", "sz002759": "化工行业",
+    "sz300077": "电子器件", "sz300316": "发电设备", "sz300345": "机械行业",
+    "sz300502": "电子信息", "sz300757": "发电设备", "sz301205": "电子信息",
+    "sz301591": "化工行业", "sz300896": "生物制药",
+}
+
+
 def _sector_chg(sec_name, smap, cache):
     """板块名 → 当日平均涨跌 %（腾讯批量拉成分股行情计算；缓存结果）。
 
@@ -250,9 +270,12 @@ def main():
             if not rows:
                 print(f"  ⚠️ {it.get('name')}: K线获取失败")
                 continue
-            # 板块因子：板块名（新浪映射优先 → gate 兜底）→ 板块涨跌（spot 优先 → 腾讯聚合兜底）
+            # 板块因子：板块名（手工映射表优先 → 新浪成分缓存 → gate 兜底）→ 板块涨跌
             code_key = code if code.startswith(("sh", "sz", "hk", "bj")) else ("sh" + code if code[0] == "6" else "sz" + code)
-            sec_name = sina_map.get(code_key) or sector_map.get(code_key) or code_rev.get(code_key, "")
+            sec_name = (OBS_SECTOR_MAP.get(code_key)
+                        or sina_map.get(code_key)
+                        or sector_map.get(code_key)
+                        or code_rev.get(code_key, ""))
             if sec_name in spot_chg:
                 sec_chg = spot_chg[sec_name]
             elif sec_name:

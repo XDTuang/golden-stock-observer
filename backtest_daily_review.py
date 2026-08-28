@@ -123,6 +123,7 @@ def main():
         sys.exit(0)
 
     total = {"n": 0, "dir_hit": 0, "open_hit": 0, "by_trend": {}, "by_sector": {}}
+    per_date = {}   # 2026-08-28: 按推演日累计，供复盘显示
     detail = []
     for f in files:
         date = f.parent.name
@@ -151,6 +152,10 @@ def main():
             total["n"] += 1
             total["dir_hit"] += 1 if sc["dir_hit"] else 0
             total["open_hit"] += 1 if sc["open_hit"] else 0
+            _pd = per_date.setdefault(date, {"n": 0, "dir_hit": 0, "open_hit": 0})
+            _pd["n"] += 1
+            _pd["dir_hit"] += 1 if sc["dir_hit"] else 0
+            _pd["open_hit"] += 1 if sc["open_hit"] else 0
             total["by_trend"].setdefault(item["trend"], {"n": 0, "dir_hit": 0, "open_hit": 0})
             total["by_trend"][item["trend"]]["n"] += 1
             total["by_trend"][item["trend"]]["dir_hit"] += 1 if sc["dir_hit"] else 0
@@ -185,6 +190,7 @@ def main():
             detail.append({
                 "code": code, "name": item["name"], "trend": item["trend"],
                 "open_label": item["open_label"],
+                "pred_date": date,   # 推演日（2026-08-28 新增，供按日过滤）
                 "t_close": item.get("tx_last") or item.get("screenshot_close") or item.get("close"),
                 **sc,
             })
@@ -216,6 +222,35 @@ def main():
     out = BASE / "data" / "daily_review_history" / "_backtest_report.json"
     out.write_text(json.dumps({"total": total, "detail": detail}, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"\n明细已存: {out}")
+
+    # ── 结构化落盘（2026-08-28 新增）：供每日复盘 1.3 板块显示回测准确率 ──
+    # output/backtest_daily.json: periods(按推演日累计, 保留最近14天) + latest + detail(最新推演日)
+    _dt = __import__("datetime")
+    bout = BASE / "output" / "backtest_daily.json"
+    periods = []
+    if bout.exists():
+        try:
+            _old = json.loads(bout.read_text(encoding="utf-8"))
+            periods = _old.get("periods", [])
+        except Exception:
+            pass
+    for _d, _v in sorted(per_date.items()):
+        _entry = {"date": _d, "n": _v["n"], "dir_hit": _v["dir_hit"],
+                  "dir_acc": round(_v["dir_hit"] / _v["n"] * 100, 1) if _v["n"] else 0.0,
+                  "open_acc": round(_v["open_hit"] / _v["n"] * 100, 1) if _v["n"] else 0.0}
+        periods = [p for p in periods if p.get("date") != _d] + [_entry]
+    periods = sorted(periods, key=lambda x: x["date"])[-14:]
+    _latest = periods[-1] if periods else None
+    _latest_detail = [x for x in detail if x.get("pred_date") == (_latest or {}).get("date")]
+    bout.write_text(json.dumps({
+        "updated_at": _dt.datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "note": "T 日推演 vs T+1 实际（方向+开盘双维度）；当日推演需次日收盘后才有结果",
+        "periods": periods,
+        "latest": _latest,
+        "by_trend": total.get("by_trend", {}),
+        "detail": _latest_detail,
+    }, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(f"📊 回测结果已落盘 → {bout}（最新推演日 {(_latest or {}).get('date')}）")
 
 
 if __name__ == "__main__":

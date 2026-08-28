@@ -1533,6 +1533,23 @@ html { scroll-behavior: smooth; }
   </div>
   <p class="dr-note" id="drFeedReviewBody">投喂复盘加载中…</p>
 </div>
+<!-- Tab: 自动宏观日历 + 自动新闻池 + 推演回测（2026-08-28 新增 · 只读 · 独立于 agent 手写区） -->
+<div class="dr-card" id="drAutoBacktest">
+  <div class="dr-h">🎯 推演回测（昨日推演 vs 实际）<span class="dr-tag" id="drBacktestDate"></span></div>
+  <p class="dr-note" id="drBacktestBody">回测加载中…</p>
+</div>
+<div class="dr-card" id="drAutoMacro">
+  <div class="dr-h">📊 自动宏观日历 <span class="dr-tag" id="drMacroDate"></span></div>
+  <p class="dr-note" id="drMacroBody">宏观数据加载中…</p>
+</div>
+<div class="dr-card" id="drAutoNews">
+  <div class="dr-h">📰 自动新闻池 <span class="dr-tag" id="drNewsDate"></span></div>
+  <p class="dr-note" id="drNewsBody">新闻池加载中…</p>
+</div>
+
+  <p class="dr-note" id="drNewsBody">新闻池加载中…</p>
+</div>
+
 
 </div>
 
@@ -3961,6 +3978,7 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
     if (btn.dataset.tab === 'signalstock') renderSignalPickCards();
     if (btn.dataset.tab === 'dailyreview') renderDailyReview();
     if (btn.dataset.tab === 'dailyreview') drLoadFeedReview();
+    if (btn.dataset.tab === 'dailyreview') drLoadAutoBlocks();
     if (btn.dataset.tab === 'diamond') loadDiamondTab();
     // 切换到含股票卡片的Tab时，限定在对应 grid 内渲染迷你图（避免 ID 重复冲突）
     const gridMap = { short:'shortGrid', long:'longGrid', emascan:'emaGrid', all:'allGrid' };
@@ -3970,6 +3988,86 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
 });
 
 // ═══════════════════════════════════════════════════════════════
+
+
+
+// ===== 自动宏观 + 新闻池渲染（2026-08-28 新增 · 只读 · 独立于 agent 手写区）=====
+function drLoadAutoBlocks() {
+  var esc2 = function(s){ return (s == null ? '' : String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+  // ① 宏观日历
+  fetch('output/daily_macro_latest.json').then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }).then(function(d){
+    var el = document.getElementById('drMacroBody'); if (!el) return;
+    document.getElementById('drMacroDate').textContent = '数据日期 ' + (d.date || '—') + ' · ' + (d.generated_at || '');
+    var c = d.china || {}; var h = '<div class="dr-note"><b>中国宏观（akshare 主源）</b></div>';
+    var row = function(k, o){
+      if (!o || !o.latest) return;
+      var v = o.latest, s = '—';
+      try { s = Object.keys(v).map(function(kk){ return kk + '=' + esc2(v[kk]); }).join(' · '); } catch(e) {}
+      h += '<div class="dr-note">' + k + '：' + s + '</div>';
+    };
+    row('PMI', c.pmi); row('GDP', c.gdp); row('CPI', c.cpi); row('LPR', c.lpr);
+    var us = (d.us || {}).indicators || {};
+    var usHits = Object.keys(us).filter(function(k){ return us[k] && us[k].length; });
+    if (usHits.length) {
+      h += '<div class="dr-h">美国宏观（新闻源抽取 · best-effort）</div>';
+      usHits.forEach(function(k){
+        var items = us[k] || [];
+        h += '<div class="dr-note"><b>' + esc2(k) + '</b>：' + items.slice(0,2).map(function(it){
+          return esc2(((it.evidence || [])[0] || '')) + ' <span class="dr-tag">[' + esc2(it.source) + ']</span>';
+        }).join('；') + '</div>';
+      });
+    }
+    el.innerHTML = h;
+  }).catch(function(e){
+    var el = document.getElementById('drMacroBody'); if (el) el.innerHTML = '<p class="dr-note">宏观数据加载失败：' + e + '</p>';
+  });
+  // ② 新闻池（按标签取前 6 条）
+  fetch('output/daily_news_latest.json').then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }).then(function(d){
+    var el = document.getElementById('drNewsBody'); if (!el) return;
+    document.getElementById('drNewsDate').textContent = '数据日期 ' + (d.date || '—') + ' · 共 ' + (d.total || 0) + ' 条 · ' + (d.generated_at || '');
+    var tags = ['宏观', '科技', '政策', '产业'];
+    var h = '';
+    tags.forEach(function(t){
+      var items = (d.news || []).filter(function(x){ return (x.tags || []).indexOf(t) >= 0; }).slice(0, 6);
+      if (!items.length) return;
+      h += '<div class="dr-h">' + esc2(t) + '（' + items.length + '）</div>';
+      items.forEach(function(it){
+        var src = it.source ? ' <span class="dr-tag">[' + esc2(it.source) + ' ' + esc2(String(it.time || '').slice(11, 16)) + ']</span>' : '';
+        if (it.url) h += '<div class="dr-note">· <a href="' + esc2(it.url) + '" target="_blank" rel="noopener" style="color:var(--blue)">' + esc2(it.title) + '</a>' + src + '</div>';
+        else h += '<div class="dr-note">· ' + esc2(it.title) + src + '</div>';
+      });
+    });
+    if (!h) h = '<p class="dr-note">暂无新闻数据</p>';
+    el.innerHTML = h;
+  }).catch(function(e){
+    var el = document.getElementById('drNewsBody'); if (el) el.innerHTML = '<p class="dr-note">新闻池加载失败：' + e + '</p>';
+  });
+  // ③ 推演回测摘要（2026-08-28 新增 · 数据源 output/backtest_daily.json）
+  fetch('output/backtest_daily.json').then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }).then(function(d){
+    var el = document.getElementById('drBacktestBody'); if (!el) return;
+    var lt = d.latest || {};
+    document.getElementById('drBacktestDate').textContent = lt.date ? '推演日 ' + lt.date + ' · ' + (d.updated_at || '') : '';
+    if (!lt.n) {
+      el.innerHTML = '<p class="dr-note">暂无回测结果（当日推演需次日收盘后自动比对）</p>';
+      return;
+    }
+    var h = '<div class="dr-note">样本 <b>' + lt.n + '</b> 只 · 方向准确率 <b>' + lt.dir_acc + '%</b> · 开盘准确率 <b>' + lt.open_acc + '%</b></div>';
+    var bt = d.by_trend || {};
+    var keys = Object.keys(bt);
+    if (keys.length) {
+      h += '<div class="dr-h">分推演类型（方向准确率）</div>';
+      keys.sort(function(a, b){ return (bt[b].n || 0) - (bt[a].n || 0); }).forEach(function(t){
+        var v = bt[t] || {};
+        var acc = v.n ? Math.round(v.dir_hit / v.n * 100) : 0;
+        h += '<div class="dr-note">· ' + esc2(t) + '（' + (v.n || 0) + ' 只）：' + acc + '%</div>';
+      });
+    }
+    el.innerHTML = h;
+  }).catch(function(e){
+    var el = document.getElementById('drBacktestBody'); if (el) el.innerHTML = '<p class="dr-note">回测数据加载失败：' + e + '</p>';
+  });
+}
+
 // JavaScript 七信号引擎（Python signals.py 移植）
 // ═══════════════════════════════════════════════════════════════
 function _ema(vals, period) {
