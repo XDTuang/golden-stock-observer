@@ -52,7 +52,43 @@ def fetch_kline(code):
     return rows
 
 
-def deduce(it, rows, sh_chg, us_chg):
+def _sector_chg(sec_name, smap, cache):
+    """板块名 → 当日平均涨跌 %（腾讯批量拉成分股行情计算；缓存结果）。
+
+    2026-08-28 v3 新增：东财板块接口被代理屏蔽、同花顺板块命名与
+    gate_sectors(东财)不一致，故用腾讯 qt.gtimg.cn 批量拉成分股算均值。
+    成分股取前 40 只（够代表板块方向），失败返回 0.0。
+    """
+    if not sec_name or sec_name in cache:
+        return cache.get(sec_name, 0.0)
+    info = smap.get(sec_name) or {}
+    cons = (info.get("cons") or [])[:40]
+    codes = [p for _, p in cons]
+    chgs = []
+    for i in range(0, len(codes), 50):
+        chunk = codes[i:i + 50]
+        try:
+            url = "http://qt.gtimg.cn/q=" + ",".join(chunk)
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+            raw = urllib.request.urlopen(req, timeout=12).read().decode("gbk", "ignore")
+            for line in raw.strip().split(";"):
+                if '="' not in line:
+                    continue
+                v = line.split('"')[1].split("~")
+                if len(v) > 32:
+                    try:
+                        chgs.append(float(v[32]))
+                    except ValueError:
+                        pass
+        except Exception:
+            continue
+        time.sleep(0.1)
+    c = round(sum(chgs) / len(chgs), 2) if chgs else 0.0
+    cache[sec_name] = c
+    return c
+
+
+def deduce(it, rows, sh_chg, us_chg, sector_chg=0.0):
     """技术面规则推演（v2 简化版：去过度中间态 + 大盘门槛）"""
     if len(rows) < 6:
         it["trend"] = "数据不足"; it["open_label"] = "数据不足"; return it
@@ -88,12 +124,37 @@ def deduce(it, rows, sh_chg, us_chg):
     else:
         trend = "震荡"
 
-    # 大盘环境修正（v2 规则）：上证上涨日，超跌/弱势推演加门槛 → 收敛
-    if sh_chg is not None:
-        if sh_chg > 0.3 and trend in ("弱势下跌", "震荡偏弱") and chg5 > -5:
-            trend = "震荡"          # 大盘回暖，弱势推演降级为中性
-        if sh_chg < -0.3 and trend in ("强势上涨", "震荡上行") and dev_ma5 < 2:
-            trend = "震荡"          # 大盘走弱，强势推演降级
+    # ── v3 环境加权修正（2026-08-28 用户调优指令）────────────────────
+    # 因子权重: 技术面 70% / 大盘(上证当日) 10% / 板块(东财/同花顺行业当日) 20%
+    # 背景: v2 只有"降级"修正(普涨日把弱势降为震荡)，普涨日 69% 股票被判"震荡"，
+    #       回测(8-26+8-27)方向准确率仅 23.4%（"震荡"类 11.4%）。
+    # 作用: 双向修正 —— 普涨/板块强 → 震荡/偏弱升级；普跌/板块弱 → 强势/上行降级
+    def _env_score(c):
+        if c is None:
+            return 0.0
+        if c > 1.0:
+            return 1.0
+        if c > 0.3:
+            return 0.5
+        if c < -1.0:
+            return -1.0
+        if c < -0.3:
+            return -0.5
+        return 0.0
+
+    _BASE = {"强势上涨": 2, "震荡上行": 1, "震荡": 0, "震荡偏弱": -1, "弱势下跌": -2}
+    base = _BASE.get(trend, 0)
+    score = 0.7 * base + 0.1 * _env_score(sh_chg) + 0.2 * _env_score(sector_chg)
+    if score >= 0.85:
+        trend = "强势上涨"
+    elif score >= 0.25:
+        trend = "震荡上行"
+    elif score >= -0.25:
+        trend = "震荡"
+    elif score >= -0.85:
+        trend = "震荡偏弱"
+    else:
+        trend = "弱势下跌"
 
     # 开盘方式（基于隔夜美股 + 昨日涨跌）
     if us_chg is not None and abs(us_chg) > 0.8:
@@ -146,6 +207,38 @@ def main():
     except Exception:
         pass
 
+    # ── 板块因子数据（v3 final，2026-08-28）────────────────────
+    # 涨跌: 新浪行业 spot（一次请求，49 板块）
+    # 映射: 新浪成分缓存 code_sector_sina.json（优先）→ gate_sectors 兜底
+    spot_chg = {}
+    try:
+        import akshare as ak
+        _df = ak.stock_sector_spot(indicator="新浪行业")
+        spot_chg = {str(r["板块"]): float(r["涨跌幅"]) for _, r in _df.iterrows()}
+    except Exception:
+        pass
+    sina_map = {}
+    _p = BASE / "output" / "code_sector_sina.json"
+    if _p.exists():
+        try:
+            sina_map = json.loads(_p.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    sector_map, smap = {}, {}
+    try:
+        gs = json.loads((BASE / "output" / "gate_sectors.json").read_text(encoding="utf-8"))
+        sector_map = gs.get("code_sector", {})
+        smap = gs.get("sector_map", {})
+    except Exception:
+        pass
+    # 反向索引：prefcode(如 sh600176) → 板块名，覆盖 code_sector 未收录的观测股
+    code_rev = {}
+    for _sec, _info in smap.items():
+        for _pair in (_info.get("cons") or []):
+            if len(_pair) > 1:
+                code_rev[_pair[1]] = _sec
+    _scc = {}
+
     today = __import__("datetime").date.today().isoformat()
     ok = 0
     for it in items:
@@ -157,15 +250,24 @@ def main():
             if not rows:
                 print(f"  ⚠️ {it.get('name')}: K线获取失败")
                 continue
-            deduce(it, rows, sh_chg, us_chg)
+            # 板块因子：板块名（新浪映射优先 → gate 兜底）→ 板块涨跌（spot 优先 → 腾讯聚合兜底）
+            code_key = code if code.startswith(("sh", "sz", "hk", "bj")) else ("sh" + code if code[0] == "6" else "sz" + code)
+            sec_name = sina_map.get(code_key) or sector_map.get(code_key) or code_rev.get(code_key, "")
+            if sec_name in spot_chg:
+                sec_chg = spot_chg[sec_name]
+            elif sec_name:
+                sec_chg = _sector_chg(sec_name, smap, _scc)
+            else:
+                sec_chg = 0.0
+            deduce(it, rows, sh_chg, us_chg, sec_chg)
             ok += 1
-            print(f"  ✓ {it['name']}: {it['trend']} ({it['pattern']} dev{it['dev_ma5']:+.1f}% chg5{it['chg5']:+.1f}% vr{it['vol_ratio']})")
+            print(f"  ✓ {it['name']}: {it['trend']} (板块 {sec_chg:+.2f}%)")
         except Exception as e:
             print(f"  ⚠️ {it.get('name')}: {type(e).__name__} {str(e)[:60]}")
         time.sleep(0.3)  # 低频
 
     data["date"] = today
-    data["derive_engine"] = "derive_obs.py 技术面规则 v1"
+    data["derive_engine"] = "derive_obs.py v3 (技术70% + 大盘10% + 板块20%)"
     data["env"] = {"sh_chg": sh_chg, "us_dji_chg": us_chg}
     SRC.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     (BASE / "deploy" / "output" / "obs_deduce_latest.json").write_text(
