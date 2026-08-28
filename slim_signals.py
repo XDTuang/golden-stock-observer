@@ -396,6 +396,17 @@ def main():
     else:
         print("  ⚠️ inject_daily_review_tab.py 执行异常（不影响主流程）")
 
+    # 4.3 注入投喂复盘卡片（幂等：已存在则跳过）。
+    #     顺序必须排在 4.2 之后 —— inject_daily_review_tab.py 会整段替换
+    #     "<!-- Tab: 每日复盘" ~ "<!-- Tab: 实时盯盘 -->" 区间，若本步先跑，
+    #     投喂卡片 id="drFeedReview" 会被连根抹掉。
+    #     2026-08-28 审计修复：此前全项目无任何调用方，rebuild 后卡片必丢。
+    ret = os.system(f'cd "{BASE}" && "{PYTHON_BIN}" inject_feed_review.py')
+    if ret == 0:
+        print("  ✅ 投喂复盘卡片已注入 index.html / index_template.html / deploy/index.html")
+    else:
+        print("  ⚠️ inject_feed_review.py 执行异常（不影响主流程）")
+
     # 5. 确保 .nojekyll + 构建清单
     print("\n[5/5] .nojekyll + 构建清单...")
     nojekyll = os.path.join(DEPLOY, ".nojekyll")

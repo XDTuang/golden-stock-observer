@@ -38,7 +38,7 @@ TAB_BLOCK = """
 # raw 字符串：保留 JS 内的 \n \s 等字面量，避免 Python 转义破坏 JS 语法
 JS_BLOCK = r"""
 // ===== 投喂复盘渲染 =====
-// === feed v3: raw-string 修复（整页 JS 语法校验通过）===
+// === feed v4: 内置 AI 综合推演(ai_synthesis) 渲染 —— 修复 rebuild 后本机产物丢失 ===
 function drLoadFeedReview() {
   drFeedModalInit();
   const el = document.getElementById('drFeedReviewBody');
@@ -83,6 +83,58 @@ function drLoadFeedReview() {
         risks.forEach(r => h += '<div class="dr-note">⚠️ <span class="dr-dn">' + r.desc + '</span></div>');
       }
       if (pred.pending_ai) h += '<div class="dr-note dr-tag">深度预测待本机 agent / 专家对话补全</div>';
+      // ===== AI 综合推演 (ai_synthesis) =====
+      // 本机 agent 产物：d.ai_synthesis 由 output/feed_review_latest.json 提供。
+      // 2026-08-28 审计修复：此块原先由 6f1d2f5 手工补进成品页，模板与注入脚本皆无，
+      // 导致每次 rebuild_html.py 重建后必然丢失（且前端 if(syn) 静默不显示）。
+      // 现并入注入脚本，随「投喂复盘」一并幂等注入，重建后自动恢复。
+      const syn = d.ai_synthesis;
+      if (syn) {
+        const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        h += '<div style="margin:14px 0 4px;padding:10px 12px;border-left:3px solid #f0b429;background:rgba(240,180,41,.08);border-radius:8px;font-size:13.5px;line-height:1.7"><b style="color:#f0b429">⚑ AI 综合推演 · 核心结论</b><br>' + esc(syn.verdict_headline || '') + '</div>';
+        if (syn.conclusion_first && syn.conclusion_first.length) {
+          h += '<div class="dr-h">AI 综合推演 · 结论先行</div><ol style="margin:4px 0;padding-left:20px">';
+          syn.conclusion_first.forEach(c => h += '<li class="dr-note" style="list-style:inherit">' + esc(c) + '</li>');
+          h += '</ol>';
+        }
+        if (syn.theme_resonance && syn.theme_resonance.length) {
+          h += '<div class="dr-h">AI 综合推演 · 主题共振</div>';
+          syn.theme_resonance.forEach(t => {
+            const w = t.weight || '';
+            const wc = w === '最强' ? 'var(--red)' : (w === '强' ? '#f0b429' : 'var(--text-muted)');
+            const chips = (t.related_stocks || []).map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('');
+            h += '<div style="margin:6px 0;padding:8px 10px;border:1px solid var(--border);border-radius:8px"><b>' + esc(t.theme) + '</b> <span style="color:' + wc + '">[' + esc(w) + ']</span><div class="dr-tag" style="margin-top:4px">' + (t.evidence || []).map(esc).join('<br>') + '</div><div style="margin-top:4px">' + chips + '</div></div>';
+          });
+        }
+        const cm = syn.nvda_chain_map || {};
+        if (cm.summary || (cm.a_shares && cm.a_shares.length) || (cm.us_mapping && cm.us_mapping.length)) {
+          h += '<div class="dr-h">AI 综合推演 · NVDA 产业链映射</div>';
+          h += '<div class="dr-note">' + esc(cm.summary || '') + '</div>';
+          h += '<div style="display:flex;gap:10px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><b style="color:var(--red)">A股映射</b><div>' + ((cm.a_shares || []).map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('')) + '</div></div><div style="flex:1;min-width:200px"><b style="color:var(--green)">美股映射</b><div>' + ((cm.us_mapping || []).map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('')) + '</div></div></div>';
+        }
+        const hm = syn.holding_map || {};
+        if (hm.note || (hm.theme_aligned && hm.theme_aligned.length) || (hm.caution && hm.caution.length) || (hm.us && hm.us.length)) {
+          h += '<div class="dr-h">AI 综合推演 · 持仓映射</div>';
+          h += '<div class="dr-tag">' + esc(hm.note || '') + '</div>';
+          if (hm.theme_aligned && hm.theme_aligned.length) h += '<div style="margin-top:4px"><b style="color:var(--red)">主题契合</b> ' + hm.theme_aligned.map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('') + '</div>';
+          if (hm.caution && hm.caution.length) h += '<div style="margin-top:4px"><b style="color:#f0b429">需谨慎</b> ' + hm.caution.map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:#f0b429;font-size:11px">' + esc(s) + '</span>').join('') + '</div>';
+          if (hm.us && hm.us.length) h += '<div style="margin-top:4px"><b style="color:var(--green)">美股映射</b> ' + hm.us.map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('') + '</div>';
+        }
+        // 兼容历史字段名 t1_radar_0827（8/27 产物）与通用名 t1_radar
+        const radar = syn.t1_radar_0827 || syn.t1_radar || [];
+        if (radar.length) {
+          h += '<div class="dr-h">AI 综合推演 · T+1 事件雷达</div>';
+          radar.forEach(t => h += '<div class="dr-note">· ' + esc(t) + '</div>');
+        }
+        if (syn.risks && syn.risks.length) {
+          h += '<div class="dr-h">AI 综合推演 · 风险（概率 × 冲击）</div>';
+          syn.risks.forEach(r => {
+            const pc = r.prob === '高' ? 'var(--red)' : '#f0b429';
+            h += '<div class="dr-note">· <span style="color:' + pc + ';font-weight:600">[' + esc(r.prob) + '×' + esc(r.impact) + ']</span> ' + esc(r.desc) + '</div>';
+          });
+        }
+        if (syn.disclaimer) h += '<div class="dr-tag" style="margin-top:8px">' + esc(syn.disclaimer) + '</div>';
+      }
       el.innerHTML = h;
     })
     .catch(err => { el.innerHTML = '<p class="dr-note">投喂复盘加载失败：' + err + '</p>'; });
@@ -198,12 +250,12 @@ def inject(path):
         print(f"⏭️ {path}: 投喂复盘卡片已存在")
 
     # ② JS：函数定义挂在每日复盘 JS 块前；v3 标记缺失时整体替换（修复历史坏版）
-    if JS_MARK in idx and "feed v3" not in idx:
+    if JS_MARK in idx and "feed v4" not in idx:
         s = idx.index(JS_MARK)
         e = idx.index("// ===== 每日复盘 Tab =====", s)
         idx = idx[:s] + JS_BLOCK + "\n" + idx[e:]
         changed = True
-        print(f"✅ {path}: 已升级投喂复盘 JS（v3 raw 修复）")
+        print(f"✅ {path}: 已升级投喂复盘 JS（v4：内置 ai_synthesis 渲染）")
     elif JS_MARK not in idx:
         js_anchor = "// ===== 每日复盘 Tab ====="
         if js_anchor in idx:

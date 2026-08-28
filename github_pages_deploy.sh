@@ -72,6 +72,50 @@ else
   echo "  闸门: force 模式，跳过新鲜度校验"
 fi
 
+# ── Step 2.5: 本机产物完整性闸门（2026-08-28 审计新增）──
+# 背景：rebuild_html.py 由 index_template.html 全量重建页面，若补注链未跑完，
+#       本机 agent 产物（投喂复盘卡片 + ai_synthesis 渲染块）会被静默抹掉后直接上线。
+# 说明：此闸门不受 --force 影响 —— --force 只放行"旧数据"，不放行"覆盖本机产物"。
+echo ""
+echo "🔒 Step 2.5: 本机产物完整性校验（投喂卡片 / ai_synthesis 渲染块）..."
+PROD_GATE=$("$PYTHON" - <<'PY'
+import os, json
+miss, warn = [], []
+p = os.path.join("deploy", "index.html")
+if os.path.exists(p):
+    s = open(p, encoding="utf-8").read()
+    if "drFeedReview" not in s:
+        miss.append("投喂复盘卡片(drFeedReview)")
+    if "ai_synthesis" not in s:
+        miss.append("AI综合推演渲染块(ai_synthesis)")
+else:
+    miss.append("deploy/index.html 不存在")
+fr = os.path.join("output", "feed_review_latest.json")
+if os.path.exists(fr):
+    try:
+        d = json.load(open(fr, encoding="utf-8"))
+        if not d.get("ai_synthesis"):
+            warn.append("feed_review_latest.json 无 ai_synthesis（当日若无本机推演则属正常）")
+    except Exception as e:
+        warn.append("feed_review_latest.json 解析失败: %s" % e)
+if miss:
+    print("FAIL:" + "、".join(miss))
+elif warn:
+    print("WARN:" + "；".join(warn))
+else:
+    print("OK")
+PY
+)
+echo "  闸门: $PROD_GATE"
+if [[ "$PROD_GATE" == FAIL* ]]; then
+  echo "  ❌ 校验未通过，已中止发布 —— 页面缺少本机产物，重建后未重注入。"
+  echo "     请先补跑注入链："
+  echo "       python inject_daily_review_tab.py && python inject_feed_review.py"
+  exit 1
+elif [[ "$PROD_GATE" == WARN* ]]; then
+  echo "  ⚠️  提示（不阻断发布）"
+fi
+
 # ── Step 3: 同步 deploy/ → 仓库根目录（分支模式站点源）──
 echo ""
 echo "📁 Step 3: 同步 deploy/ → 根目录 ..."
@@ -86,6 +130,11 @@ cp -R "$DEPLOY/lh_calendar.json" .
 # 清空根 output/ 后仅复制前端真正 fetch 的精简文件，避免把 kline_raw 等重型文件带上 Pages
 # 先保留门控数据（gate_scan.py 产出，slim_signals 不处理；否则会被下方 rm -rf 清掉）
 cp -R output/gate_data.json "$DEPLOY/output/gate_data.json" 2>/dev/null || true
+# 保留投喂复盘产物（本机 agent 的 feeds[] / ai_synthesis 唯一落点；slim_signals 不处理，
+# 否则会被下方 rm -rf output 清掉 → 前端 fetch output/feed_review_latest.json 直接 404）
+cp output/feed_review_*.json "$DEPLOY/output/" 2>/dev/null || true
+# 保留日韩行情（fengle_kr.py 产出，slim_signals 不处理，同理会被 rm -rf 清掉）
+cp output/kr_stocks.json "$DEPLOY/output/" 2>/dev/null || true
 # 保留兜宝金钻分片（build_diamond_pool.py 产出，含 K线，供点开个股渲染；slim_signals 不处理）
 cp output/golden_pool_*.json "$DEPLOY/output/" 2>/dev/null || true
 cp output/golden_pool_meta.json "$DEPLOY/output/" 2>/dev/null || true
@@ -115,6 +164,8 @@ git add -f index.html signals.json lh_calendar.json \
   output/event_calendar_*.json \
   output/golden_pool_*.json output/golden_pool_meta.json output/golden_pool_manifest.json \
   output/stocks.json \
+  output/kr_stocks.json \
+  output/feed_review_latest.json output/feed_review_*.json \
   output/sh_index_kline.json output/sz_index_kline.json output/cyb_index_kline.json output/kc50_index_kline.json output/hs300_index_kline.json \
   output/market_thermometer.json output/valuation_band.json output/vix_panel.json output/institutional_flow.json \
   deploy/output/market_thermometer.json deploy/output/valuation_band.json deploy/output/vix_panel.json deploy/output/institutional_flow.json \

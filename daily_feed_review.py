@@ -196,9 +196,39 @@ def main():
     os.makedirs(OUT_DIR, exist_ok=True)
     out_full = os.path.join(OUT_DIR, f"feed_review_{date}.json")
     out_latest = os.path.join(OUT_DIR, "feed_review_latest.json")
+    # ── 字段级合并（2026-08-28 审计修复）────────────────────────────
+    # 背景：此处原为整文件 json.dump，云端 cron 以 --no-feed 重跑时会全量覆写，
+    #       抹掉本机 agent 产出的 feeds[] / ai_synthesis / synthesis_sources。
+    # 规则：① 仅同日（data_date 一致）才合并，跨日视为全新一天不继承；
+    #       ② ai_synthesis / synthesis_sources 为本机独占，存在即保护；
+    #       ③ feeds 为空（--no-feed 模式）时保留本机已有投喂，不置空。
+    LOCAL_ONLY = ("ai_synthesis", "synthesis_sources")
     for p in (out_full, out_latest):
+        existing = {}
+        try:
+            if os.path.exists(p):
+                with open(p, encoding="utf-8") as f:
+                    existing = json.load(f) or {}
+        except Exception:
+            existing = {}
+        protected = []
+        if existing.get("data_date") == date:
+            payload = dict(existing)
+            payload.update(result)
+            for k in LOCAL_ONLY:
+                if existing.get(k):
+                    payload[k] = existing[k]
+                    protected.append(k)
+            if not result.get("feeds") and existing.get("feeds"):
+                payload["feeds"] = existing["feeds"]
+                payload["feed_count"] = len(existing["feeds"])
+                protected.append("feeds[]")
+        else:
+            payload = result
+        if protected:
+            print(f"   🔒 {os.path.basename(p)} 保留本机产物: {', '.join(protected)}")
         with open(p, "w", encoding="utf-8") as f:
-            json.dump(result, f, ensure_ascii=False, indent=2)
+            json.dump(payload, f, ensure_ascii=False, indent=2)
     print(f"✅ 复盘完成 {date} | 投喂 {len(feeds)} 条 | 预测: {pred['bias']} (score {pred['bias_score']})")
     print(f"   {out_full}")
     print(f"   {out_latest}")

@@ -40,6 +40,15 @@ for pat in "obs_tech_${DATE}.json" "obs_deduce_${DATE}.json" "tx_kline_${DATE}.j
   fi
 done
 
+# 2.5 投喂复盘产物（2026-08-28 审计新增）
+#     feed_review_latest.json 是本机 agent 产物（feeds[] / ai_synthesis / synthesis_sources）
+#     的唯一落点，此前未纳入备份 —— 一旦被云端 --no-feed 覆写即无常规回滚路径。
+for f in "feed_review_${DATE}.json" "feed_review_latest.json"; do
+  if [ -f "$MAIN_DIR/output/$f" ]; then
+    cp -f "$MAIN_DIR/output/$f" "$BK_DIR/$f" && COPIED=$((COPIED+1))
+  fi
+done
+
 # 3. 兜是宝每日复盘系统产物（若存在）
 DSB="/Users/samt/Desktop/兜是宝/AI 构架研究/每日复盘系统"
 if [ -d "$DSB/data" ]; then
