@@ -1,0 +1,62 @@
+name: Daily Review Close Refresh（收盘后补抓 T 日行情）
+
+# 2026-08-28 新建。
+# 背景：每日复盘此前的行情只有「盘前 08:15」一次抓取，抓到的是 T-1 收盘数据，
+#       导致复盘板块（1 A股 / 2 日韩 / 3 隔夜美股）的日期与当日错位约一天；
+#       且该任务在 GitHub Actions 上常延迟 9~11 小时，进一步放大错位。
+# 方案：T 日收盘后再补抓一次，使 market.json / kr_stocks.json 对齐当日（T）。
+# 实测（2026-08-28 21:26 本机）：收盘后跑 fetch_daily_review_market.py 成功 27/27，
+#       可直接取到当日收盘（A股 16:14 时间戳、日经当日、美股 13/13、商品 8 项）。
+# 时点：16:30 北京时间 —— 晚于 A股收盘数据落库（约 16:14），
+#       且与 daily-review-market(08:15)、daily-update(17:45) 错开，避免并发 push。
+
+on:
+  schedule:
+    - cron: '30 8 * * 1-5'   # 08:30 UTC = 16:30 北京时间（周一~五）
+  workflow_dispatch:         # 手动补刷
+
+jobs:
+  close-refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    env:
+      TZ: Asia/Shanghai
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install deps
+        run: pip install akshare pandas requests --quiet
+
+      - name: Refresh daily review market quotes (T 日收盘)
+        # 主行情：不吞错误码，失败必须标红（避免"假成功 + 静默跳过提交"）
+        run: python3 fetch_daily_review_market.py
+
+      - name: Refresh KR stocks (三星/海力士)
+        # 辅助源：容错不阻断（2026-08-28 曾因 chg=None 格式化崩溃拖垮整个任务）
+        run: python3 fengle_kr.py || echo "⚠️ 韩股抓取失败，已跳过（不影响主行情）"
+
+      - name: Commit & Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/daily_review/market.json
+          git add -f output/kr_stocks.json deploy/output/kr_stocks.json \
+                    deploy/data/daily_review/market.json
+          if ! git diff --cached --quiet; then
+            # push 前先 rebase，避免与其他任务（daily-update 17:45）并发提交造成非快进拒绝
+            git pull --rebase origin main || echo "⚠️ rebase 失败，尝试直接推送"
+            git commit -m "daily-review: 收盘后补抓 T 日行情 $(date +%F)"
+            git push
+          else
+            echo "no changes (market.json unchanged)"
+          fi
