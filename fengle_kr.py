@@ -108,9 +108,21 @@ def main():
         "source": "stock.fengle.me (NAVER 实时, 无延迟)",
         "stocks": [found.get("000660"), found.get("005930")],
     }
+    def _fmt(v, spec):
+        """None 安全格式化。
+
+        2026-08-28 修复：数据源的 compareToPreviousClosePrice 字段缺失时，
+        parse() 会把 chg 置为 None（见 take()），原写法 `{None:+,}` 直接抛
+        TypeError，导致本脚本崩溃 → 云端 daily-review-market.yml 连续两天 failure。
+        缺失一律显示「—」，不做推算，避免编造数值。
+        """
+        return format(v, spec) if isinstance(v, (int, float)) else "—"
+
     for s in result["stocks"]:
         if s:
-            print(f"  {s['code']} {s['name']} 收 {s['close']:,} 涨跌 {s['chg']:+,} ({s['pct']:+.2f}%) @ {s['traded_at']}")
+            print(f"  {s['code']} {s['name']} 收 {_fmt(s.get('close'), ',')} "
+                  f"涨跌 {_fmt(s.get('chg'), '+,')} ({_fmt(s.get('pct'), '+.2f')}%) "
+                  f"@ {s.get('traded_at') or '—'}")
 
     if dry:
         return result

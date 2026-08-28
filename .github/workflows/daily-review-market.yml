@@ -30,11 +30,16 @@ jobs:
         run: pip install akshare pandas requests --quiet   # us_kline(双日)/comm(商品利率) 依赖 akshare
 
       - name: Fetch daily review market quotes (Tencent public API, no key)
-        # 不用 || echo 吞错误码：fetch 失败必须让 workflow 标红，避免"假成功+静默跳过提交"
+        # 主行情脚本：不用 || echo 吞错误码 —— fetch 失败必须让 workflow 标红，
+        # 避免"假成功 + 静默跳过提交"。
         run: |
           python3 fetch_daily_review_market.py
-          # 三星/海力士收盘价：stock.fengle.me NAVER 实时（无延迟），合并进 market.json asia.kr_stocks
-          python3 fengle_kr.py
+          # 三星/海力士收盘价：辅助数据源，失败不阻断主流程。
+          # 2026-08-28 事故：fengle_kr.py 因数据源 compareToPreviousClosePrice 缺失
+          # 导致 chg=None，`{None:+,}` 抛 TypeError 崩溃 → 本步骤失败 →
+          # 整个 workflow 连续两天 failure，market.json 停更（脚本已修 None 安全）。
+          # 此处再加一层容错，确保辅助源异常不影响主行情提交。
+          python3 fengle_kr.py || echo "⚠️ 韩股(三星/海力士)抓取失败，已跳过（不影响主行情）"
 
       - name: Commit & Push
         run: |
