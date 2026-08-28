@@ -143,8 +143,12 @@ cp output/golden_pool_manifest.json "$DEPLOY/output/" 2>/dev/null || true
 cp output/kline_all.json "$DEPLOY/output/kline_all.json" 2>/dev/null || true
 # 保留 K线原始数据（周线金钻等复用），避免每次重新拉取 TOP800 K线
 cp output/kline_raw.json "$DEPLOY/output/kline_raw.json" 2>/dev/null || true
-rm -rf output
-cp -R "$DEPLOY/output" .
+# 2026-08-28 审计修复：原为 `rm -rf output` + `cp -R deploy/output .`，
+#   一次性删除 60+ 文件会触发批量删除安全护栏，导致发布流程中断（已实际发生）。
+#   根 output/ 已被 .gitignore 的 `/output/` 规则排除，重型文件（kline_raw/kline_all）
+#   本就不会误入提交，因此无需清空 —— 改为覆盖式同步即可，语义等价且更安全。
+mkdir -p output
+cp -R "$DEPLOY/output/." output/
 cp -R "$DEPLOY/build_manifest.json" .
 touch .nojekyll
 echo "  ✓ 已同步站点文件到根目录"
