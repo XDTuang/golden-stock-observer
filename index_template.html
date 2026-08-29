@@ -3806,7 +3806,19 @@ function drDeriveSections(d) {
           '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">关键事件</div><div style="font-weight:600;font-size:12px">' + (ag.event || '—') + '</div></div>' +
           '</div>' +
           '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px;margin-top:6px"><b>数据驱动速览（自动）：</b>隔夜美股 ' + (usDate || '—') + ' 收盘 · ' + reasons.join(' · ') + '。深度节奏判读/板块推演以 agent 分析为准。</div>' +
-          (ag.agentNote ? '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--red);padding:8px 12px;border-radius:6px;margin-top:6px"><b>agent 一句话结论（8/28 复盘）：</b>' + ag.agentNote + '</div>' : '');
+          (ag.agentDetail || ag.agentNote ?
+            (ag.agentDetail ? ag.agentDetail.split('\n').map((line, i) => {
+              if (!line.trim()) return '';  // 空行
+              const isFirst = i === 0;
+              const isLast = line.trim().startsWith('尾部风险');
+              const border = (isFirst || isLast) ? '3px solid var(--red)' : '3px solid var(--orange)';
+              const title = isFirst ? 'agent 一句话结论（8/28 复盘）'
+                            : isLast ? '尾部风险（最高优先级）'
+                            : '对 A 股 8/31 的映射';
+              return '<div class="dr-note" style="background:var(--bg-subtle);border-left:' + border + ';padding:8px 12px;border-radius:6px;margin-top:6px"><b>' + title + '：</b>' + line.trim() + '</div>';
+            }).join('') :
+            '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--red);padding:8px 12px;border-radius:6px;margin-top:6px"><b>agent 一句话结论（8/28 复盘）：</b>' + ag.agentNote + '</div>')
+          : '');
         return;
       }
       card.innerHTML =
