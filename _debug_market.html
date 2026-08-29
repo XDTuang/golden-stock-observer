@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>market.json 数据验证</title>
+<style>
+body{font-family:monospace;padding:20px;background:#1a1a1a;color:#0f0}
+.box{border:1px solid #0f0;padding:10px;margin:10px 0;border-radius:6px}
+.fail{color:#f55}
+.pass{color:#0f0}
+h2{color:#ff0}
+</style>
+</head>
+<body>
+<h2>market.json 数据验证（每日复盘 3 段用）</h2>
+<div id="r"></div>
+<script>
+const r = document.getElementById('r');
+const log = (cls, msg) => r.innerHTML += `<div class="box ${cls}">${msg}</div>`;
+(async () => {
+  const t0 = Date.now();
+  const resp = await fetch('./data/daily_review/market.json?ts=' + Date.now(), { cache: 'no-store' });
+  log('pass', `HTTP ${resp.status} | ${Date.now() - t0}ms | size=${resp.headers.get('content-length')}`);
+  const d = await resp.json();
+  const q = d.quotes || {};
+  const uk = d.us_kline || {};
+  log('', `=== quotes.us_mrvl ===`);
+  log('', JSON.stringify(q.us_mrvl || {}, null, 2));
+  log('', `=== us_kline.us_mrvl ===`);
+  log('', JSON.stringify(uk.us_mrvl || {}, null, 2));
+  // 关键验证
+  const usMrvl_q_close = q.us_mrvl && q.us_mrvl.close;
+  const usMrvl_uk_latest = uk.us_mrvl && uk.us_mrvl.latest && uk.us_mrvl.latest.close;
+  if (usMrvl_q_close == 216.62 || usMrvl_uk_latest == 216.62) {
+    log('pass', '✅ 你是新数据（us_mrvl 8/28 = 216.62）');
+    log('pass', '请返回每日复盘 tab 强刷 Cmd+Shift+R 应该能看到 13 标的 8/28 收盘');
+  } else {
+    log('fail', '❌ 你还是旧数据！');
+    log('fail', 'us_mrvl quotes=' + usMrvl_q_close + ' us_kline.latest=' + usMrvl_uk_latest);
+    log('fail', '解决方案：1. 浏览器设置 → 清除浏览数据（仅缓存图片和文件）');
+    log('fail', '         2. 或开无痕窗口访问');
+    log('fail', '         3. 或换一个浏览器（Edge/Safari）访问');
+  }
+})();
+</script>
+</body>
+</html>
