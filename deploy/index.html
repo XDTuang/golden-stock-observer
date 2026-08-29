@@ -1527,6 +1527,24 @@ html { scroll-behavior: smooth; }
 .dr-tag{font-size:11px;color:var(--text-muted)}
 .dr-note{font-size:12.5px;color:var(--text-secondary);margin:6px 0}
 .dr-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:12px 0}
+/* ── 6 段新闻池（公开源自动刷新 · 投喂精选可选） ── */
+.news-bar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.news-chip{font-size:11.5px;padding:3px 10px;border-radius:14px;border:1px solid var(--border);
+  background:var(--bg-subtle);color:var(--text-secondary);cursor:pointer;user-select:none}
+.news-chip:hover{border-color:var(--accent)}
+.news-chip.on{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+.t-macro{background:rgba(37,99,235,.13);color:#2563eb}
+.t-policy{background:rgba(124,58,237,.13);color:#7c3aed}
+.t-tech{background:rgba(219,39,119,.13);color:#db2777}
+.t-ind{background:rgba(217,119,6,.13);color:#d97706}
+.t-us{background:rgba(13,148,136,.13);color:#0d9488}
+.t-hold{background:rgba(5,150,105,.13);color:#059669}
+.news-tag{font-size:10.5px;padding:1.5px 7px;border-radius:4px;font-weight:600;white-space:nowrap}
+.news-src{font-size:11px;color:var(--text-muted);white-space:nowrap}
+.news-time{font-size:11px;color:var(--text-muted);white-space:nowrap}
+.news-title a{color:var(--text);text-decoration:none}
+.news-title a:hover{color:var(--accent);text-decoration:underline}
+.news-empty{padding:14px;text-align:center;color:var(--text-muted);font-size:12.5px}
 </style>
 <div class="dr-card" id="drMarket"><p class="dr-note">行情加载中…</p></div>
 <div class="dr-card" id="drAnalysis"><p class="dr-note">分析区加载中…</p></div>
@@ -3258,6 +3276,38 @@ function renderFourVolumeChart(containerId, fv) {
 
 
 
+/* ═══════ cross_analysis 自动版（公开新闻池 × 板块资金流 · 不依赖投喂） ═══════
+   数据源：output/cross_analysis.json（由 review/build_cross_analysis.py 自动生成）
+   四象限：真共振（语料热+资金进）/ 背离（语料热+资金撤）/ 暗线（语料冷+资金进）/ 双冷 */
+function drLoadCrossAnalysis() {
+  const slot = document.getElementById('drCrossSlot');
+  if (!slot) return;
+  fetch('output/cross_analysis.json?t=' + Date.now(), { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : Promise.reject('HTTP ' + r.status))
+    .then(d => {
+      const items = d.items || [];
+      if (!items.length) { slot.innerHTML = ''; return; }
+      const LVLC = { ok: 'dr-up', warn: 'dr-dn', info: 'dr-tag', mute: 'dr-tag' };
+      const sm = d.summary || {};
+      let s = '<div class="dr-h">机制 × 语料交叉验证（自动 · 公开新闻 × 板块资金流）</div>';
+      s += '<div class="dr-note">新闻池 <b>' + (d.news_date || '—') + '</b> · 资金流 <b>' + (d.flow_date || '—') + '</b>' +
+        (d.flow_is_weekend_copy ? '<span class="dr-tag">（周末副本已自动回退至最近交易日）</span>' : '') +
+        ' · 判定：共振 ' + (sm['共振'] || 0) + ' / 背离 ' + (sm['背离'] || 0) +
+        ' / 暗线 ' + (sm['暗线'] || 0) + ' / 双冷 ' + (sm['双冷'] || 0) + '</div>';
+      s += '<table class="dr-tbl"><thead><tr><th>板块</th><th style="width:80px">新闻热度</th>' +
+        '<th style="width:96px">主力净流(亿)</th><th style="width:70px">判定</th><th>含义</th></tr></thead><tbody>';
+      items.forEach(it => {
+        s += '<tr><td>' + it.sector + '</td><td>' + it.news_count + ' 条</td>' +
+          '<td class="' + (it.flow_yi >= 0 ? 'dr-up' : 'dr-dn') + '">' + (it.flow_yi >= 0 ? '+' : '') + it.flow_yi + '</td>' +
+          '<td class="' + (LVLC[it.level] || '') + '">' + it.verdict + '</td>' +
+          '<td class="dr-tag">' + it.desc + '</td></tr>';
+      });
+      s += '</tbody></table>';
+      slot.innerHTML = s;
+    })
+    .catch(() => { slot.innerHTML = ''; });
+}
+
 // ===== 投喂复盘渲染 =====
 // === feed v4: 内置 AI 综合推演(ai_synthesis) 渲染 —— 修复 rebuild 后本机产物丢失 ===
 function drLoadFeedReview() {
@@ -3292,6 +3342,10 @@ function drLoadFeedReview() {
                '</td><td class="' + cls + '">' + c.verdict + '</td></tr>';
         });
         h += '</tbody></table>';
+      } else {
+        // 自动版占位：由 drLoadCrossAnalysis() 从 output/cross_analysis.json 填充
+        // （公开新闻池 × 板块资金流自动交叉验证，不依赖投喂）
+        h += '<div id="drCrossSlot"></div>';
       }
       const t1 = pred.t1_focus || [];
       if (t1.length) {
@@ -3357,6 +3411,7 @@ function drLoadFeedReview() {
         if (syn.disclaimer) h += '<div class="dr-tag" style="margin-top:8px">' + esc(syn.disclaimer) + '</div>';
       }
       el.innerHTML = h;
+      if (!ca.length) drLoadCrossAnalysis();
     })
     .catch(err => { el.innerHTML = '<p class="dr-note">投喂复盘加载失败：' + err + '</p>'; });
 }
@@ -3459,6 +3514,7 @@ function renderDailyReview() {
       if (d && d.us_kline) drRefreshUsDualDayTables(d);
       if (d && d.comm) drRefreshCommRates(d);
       drDeriveSections(d);
+      drRenderNewsPool();
       drLoadObserveStocks();
       drLoadTop10();
       drLoadDiamond();
@@ -3744,6 +3800,68 @@ function drNextBizDay(baseDate) {
   const wd = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][dt.getDay()];
   const pad = (n) => String(n).padStart(2, '0');
   return dt.getFullYear() + '-' + pad(dt.getMonth() + 1) + '-' + pad(dt.getDate()) + '（' + wd + '）';
+}
+
+/* ═══════ 6 段 · 新闻池（公开源自动刷新 · 投喂精选可选） ═══════
+   数据源：output/daily_review_news.json（由 review/build_news_section.py 从公开新闻池构建）
+   公开源东财/财经早餐/新浪/同花顺/富途/央视联播为必选；agent 投喂精选为可选补充。 */
+function drRenderNewsPool() {
+  const box = document.getElementById('drNewsPool');
+  if (!box) return;
+  const TAGCLS = {'宏观':'t-macro','政策':'t-policy','科技':'t-tech','产业':'t-ind','美股映射':'t-us','持仓':'t-hold'};
+  fetch('./output/daily_review_news.json?t=' + Date.now(), { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : Promise.reject('HTTP ' + r.status))
+    .then(d => {
+      const groups = d.groups || {};
+      const tags = ['宏观','政策','科技','产业','美股映射','持仓'].filter(t => groups[t]);
+      const srcs = d.sources || {};
+      let html = '<div class="dr-note" style="margin:6px 0"><b>新闻池 ' + (d.date || '—') + '</b>' +
+        ' · 共 <b>' + (d.total || 0) + '</b> 条 · 构建于 ' + (d.generated_at || '—') +
+        ' · 来源：' + (Object.keys(srcs).map(k => k + ' ' + srcs[k]).join(' / ') || '—') + '</div>';
+      html += '<div class="news-bar"><span class="news-chip on" data-tag="__all">全部</span>';
+      tags.forEach(t => { html += '<span class="news-chip" data-tag="' + t + '">' + t + ' ' + (groups[t].count || 0) + '</span>'; });
+      html += '</div><div id="newsList"></div>';
+      const picks = d.feed_picks;
+      if (picks && picks.picks && picks.picks.length) {
+        html += '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--red);padding:8px 12px;border-radius:6px;margin-top:8px">' +
+          '<b>📥 投喂精选（agent ' + (picks.date || '') + '）：</b><br>' +
+          picks.picks.map(p => '· ' + p).join('<br>') + '</div>';
+      }
+      box.innerHTML = html;
+      const render = (tag) => {
+        const list = document.getElementById('newsList');
+        if (!list) return;
+        let rows = [];
+        if (tag === '__all') {
+          tags.forEach(t => (groups[t].items || []).forEach(it => rows.push({_tag: t, title: it.title, summary: it.summary, time: it.time, source: it.source, url: it.url})));
+        } else {
+          rows = ((groups[tag] && groups[tag].items) || []).map(it => ({_tag: tag, title: it.title, summary: it.summary, time: it.time, source: it.source, url: it.url}));
+        }
+        if (!rows.length) { list.innerHTML = '<div class="news-empty">该分类暂无新闻</div>'; return; }
+        let s = '<table class="dr-tbl"><thead><tr><th style="width:98px">时间</th><th style="width:78px">标签</th>' +
+          '<th>标题（点击看原文）</th><th style="width:90px">来源</th></tr></thead><tbody>';
+        rows.forEach(it => {
+          const t = it.url ? '<a href="' + it.url + '" target="_blank" rel="noopener">' + it.title + '</a>' : it.title;
+          s += '<tr><td class="news-time">' + (it.time || '—') + '</td>' +
+               '<td><span class="news-tag ' + (TAGCLS[it._tag] || '') + '">' + it._tag + '</span></td>' +
+               '<td class="news-title">' + t + (it.summary ? '<div style="font-size:11px;color:var(--text-muted);margin-top:2px">' + it.summary + '</div>' : '') + '</td>' +
+               '<td class="news-src">' + (it.source || '—') + '</td></tr>';
+        });
+        s += '</tbody></table>';
+        list.innerHTML = s;
+      };
+      Array.prototype.slice.call(box.querySelectorAll('.news-chip')).forEach(c => {
+        c.addEventListener('click', () => {
+          Array.prototype.slice.call(box.querySelectorAll('.news-chip')).forEach(x => x.classList.remove('on'));
+          c.classList.add('on');
+          render(c.getAttribute('data-tag'));
+        });
+      });
+      render('__all');
+    })
+    .catch(e => {
+      box.innerHTML = '<div class="dr-note">⚠️ 新闻池加载失败（' + e + '）。数据源 <code>output/daily_review_news.json</code> 未生成或不可达 —— 请确认云端每日新闻抓取任务已运行。</div>';
+    });
 }
 
 /* ═══════ 推导引擎：0·结论速览卡 + 7·次日开盘指引（数据驱动替代写死） ═══════ */

@@ -116,7 +116,7 @@
   <div class="dr-note" style="margin-top:6px">数据源：<code>output/gate_data.json</code> 最新交易日。三个门控分类：全A市场 / 当前门控（成交额TOP800）/ 板块前100·换手≥4%；每只标注 primary 分类（金钻起涨 / 买入 / 红区黄柱连续）及信号日期、涨跌幅、DY2 等明细。</div>
 </div>
 
-<!-- 1.3 重点观测股（30 只）-->
+<!-- 1.3 重点观测股（32 只）-->
 <div class="dr-h">1.3 · 重点观测股（32 只 · 8/28 收盘 + 8/31 推演 · v3 引擎）</div>
 <div class="dr-card" style="margin-top:4px">
 <div id="drTblObs">
@@ -369,43 +369,14 @@
   </div>
 
 <!-- 6 新闻整合 -->
-<div class="dr-h">6 · 新闻整合（多来源 · 逐条标注 · PCE/NVDA 已落地）</div>
+<div class="dr-h">6 · 新闻整合（公开源自动刷新 · 投喂精选可选）</div>
 <div class="dr-card" style="margin-top:4px">
-  <table class="dr-tbl">
-    <thead><tr><th>来源</th><th>状态</th><th>本次使用 / 说明</th></tr></thead>
-    <tbody>
-      <tr><td>BEA / 新华财经 / 证券时报</td><td style="color:var(--green)">✓ 已用</td><td>8/26 20:30 美 7月 PCE：核心 +3.3% 符合、整体 +3.7% 略超；10Y 4.649%、DXY 99.19、黄金 -0.99% 至 4647.80</td></tr>
-      <tr><td>新华社 / 每经 / 华尔街见闻</td><td style="color:var(--green)">✓ 已用</td><td>8/26 盘后 NVDA 2027FQ2：营收 962.21亿/+106%、数据中心 890亿、Q3 指引 1080亿、FY2028 +70%</td></tr>
-      <tr><td>证券时报 / 数据宝</td><td style="color:var(--green)">✓ 已用</td><td>8/26 A股涨停复盘：沪指 +0.59%、成交 1.81 万亿、涨停 56、连板深中华A 5板</td></tr>
-      <tr><td>财联社 / 东方财富</td><td style="color:var(--green)">✓ 已用</td><td>8/26 龙虎榜/主力流向：有色净流入 +68.55亿居首、洛阳钼业净买 +22.65亿、长鑫净流出 -7.74亿</td></tr>
-      <tr><td>新华财经 / 新浪财经</td><td style="color:var(--green)">✓ 已用</td><td>8/26 LME 铜 14324.5 创历史收盘新高；券商中报净利高增（21-22 家合计 +53%）</td></tr>
-      <tr><td>腾讯财经 / 腾讯新闻</td><td style="color:var(--green)">✓ 已用</td><td>8/26 A股收评（沪指+0.59%/有色券商领涨/缩量）</td></tr>
-      <tr><td>同花顺快讯</td><td style="color:var(--orange)">⚠ 每日抓取</td><td>本次未逐条；正式运行每日 17:00 后抓</td></tr>
-      <tr><td>知识星球（权限内）</td><td style="color:var(--orange)">🔒 权限低频</td><td>调研纪要/投资有道/哆唻咪；每星球每天 ≤1 次 + sleep</td></tr>
-      <tr><td>neodata 金融数据</td><td style="color:var(--green)">✓ 已用</td><td>8/26 市场广度/板块涨跌/资金流/日经</td></tr>
-      <tr><td><b style="color:var(--purple)">反指信源 F · X（K3 特色）</b></td><td style="color:var(--red)">⚡ 反指信号</td><td>F=公众反指（黄金 FOMO Peak 已过）/ X=最高置信度反指（8/26 分化非崩溃，控仓试仓）</td></tr>
-    </tbody>
-  </table>
-  <div class="dr-note" style="margin-top:8px">
-    <span style="background:rgba(34,168,97,.14);color:var(--green);padding:1px 8px;border-radius:5px;font-size:11px;font-weight:600">BEA/新华财经/证券时报</span><b>8/26 20:30 美 7月 PCE 落地：核心 PCE 同比 +3.3%（符合）、环比 +0.2%（前值0.1%）；整体 PCE 同比 +3.7%（略超预期）、环比 +0.2%；个人收入 +0.4%、实际 PCE 停滞、储蓄率 3.0%。10Y 收益率 4.649%（+2.37bp）、DXY 冲至 99.19、COMEX 黄金 -0.99% 报 4647.80；9月加息概率升至 42%。</b>
+  <div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px;margin-top:6px">
+    <b>自动化说明：</b>本段主体由<b>公开新闻源自动抓取刷新</b>（东财全球 / 财经早餐 / 新浪全球 / 同花顺全球 / 富途全球 / 央视联播），
+    按标签分类展示当日要闻，每条标注来源并附原文链接；<b>agent 投喂精选</b>为可选补充，附于末尾（当日无投喂时该区块自动省略）。
   </div>
-  <div class="dr-note">
-    <span style="background:rgba(128,90,213,.14);color:var(--purple);padding:1px 8px;border-radius:5px;font-size:11px;font-weight:600">新华社/每经/华尔街见闻</span><b>8/26 盘后 NVDA 2027FQ2 全面超预期：营收 962.21 亿（+106% YoY）、GAAP 净利 596.88 亿（+126%）、毛利率 75%；数据中心 890 亿（+117%，占比 92%）；Q3 指引中值 1080 亿（±2%）、FY2028 营收增长指引 ~70%。盘后先跌 ~4% 后转涨 +4~5%。云订单 backlog >2万亿、亚马逊 +200万 GPU、供应受限至 FY2028。</b>
-  </div>
-  <div class="dr-note">
-    <span style="background:rgba(79,110,247,.14);color:var(--blue);padding:1px 8px;border-radius:5px;font-size:11px;font-weight:600">证券时报/数据宝</span><b>8/26 A股涨停复盘：沪指 3912 +0.59%、深成 +0.69%、创指 +0.51%、科创50 +1.71%；成交 1.81 万亿（缩量 232亿），涨停 56、跌停 2，连板深中华A 5板、楚天龙 4板</b> —— 指数红但个股分化，白线&gt;黄线，存量博弈。
-  </div>
-  <div class="dr-note">
-    <span style="background:rgba(34,168,97,.14);color:var(--green);padding:1px 8px;border-radius:5px;font-size:11px;font-weight:600">财联社/东方财富</span><b>8/26 龙虎榜主力流向：有色 +68.55亿居首（洛阳钼业净买 +22.65亿），中报预增 +103.9亿；通信（CPO）净流出 16.45亿、长鑫科技 -7.74亿居首</b> —— 资金由高位科技切向低位权重/资源。
-  </div>
-  <div class="dr-note">
-    <span style="background:rgba(79,110,247,.14);color:var(--blue);padding:1px 8px;border-radius:5px;font-size:11px;font-weight:600">新华财经/新浪</span><b>LME 期铜 14324.5 美元/吨创历史收盘新高（瑞银看 15500）；券商 21-22 家中报合计净利 +53%、股票基金日均成交 3.24万亿（同比 +101%）</b> —— 铜+券商双主线。
-  </div>
-  <div class="dr-note">
-    <span style="background:rgba(128,90,213,.14);color:var(--purple);padding:1px 8px;border-radius:5px;font-size:11px;font-weight:600">K3 信源</span><b>8/26 壬申日（金）主升段开启 · 全周最强日</b>：中美 AI 合作 + 地缘缓和 + 利率回落 + 原油暴跌 + 韩股存储上涨 + NVDA 超预期 多源共振；但卦义「遁→否」收缩 × 五行吉 = 防守型回血，幅度有限。
-  </div>
-  <div class="dr-note">
-    <span style="background:rgba(34,168,97,.14);color:var(--green);padding:1px 8px;border-radius:5px;font-size:11px;font-weight:600">新华社/海外映射</span><b>中美确认 AI+贸易合作（1.5 轨对话）；莫德纳+默沙东 个性化 mRNA 癌症疫苗首个 III 期初步阳性 → 康希诺 20CM 涨停</b>；人民币在岸 6.7238（三年半高位）。
+  <div id="drNewsPool" style="margin-top:8px">
+    <div class="dr-note">新闻池自动加载中…（数据源：output/daily_review_news.json）</div>
   </div>
 </div>
 
@@ -468,13 +439,43 @@
 
   </div>
 
-<!-- 9 来源 -->
-<div class="dr-h">9 · 数据来源汇总（8/26 实跑）</div>
+<!-- 8 数据自检 -->
+<div class="dr-h">8 · 数据自检区（各源日期一致性 / 缺失告警）</div>
 <div class="dr-card" style="margin-top:4px">
   <div class="dr-note">
-    <b>行情与信号（腾讯公开接口，无 key）</b>：signals.json（795 只全量评分/TOP10/观测池 38 只）、golden_diamond.json（金钻三形态 20 只：起涨5/买入6/红区黄柱9）、market.json（大盘监控/双日/日韩/商品）、obs_deduce_latest.json（重点观测股 32 只技术位+推演）｜ event_calendar（东财财经日历）｜ report_analysis（研报四类命中加强）。
-    <br><b>投喂语料（8/26 专家资料 3 份）</b>：开盘前综合判断（K3 命理壬申日主升段/宏观 10Y 4.64%/存储涨价 62%/光模块 ITI 反 FCC/液冷抢筹/长存 IPO 77%）｜ 8/26 涨停复盘（证券时报/财联社/东财：沪指 3912.52 +0.59%/有色铜+券商双主线/情绪 63 复苏）｜ 超级游资联盟复盘（新浪/东财/财联社：20 游资共识低位权重+资源/量能需 >1.85 万亿/汉森 6 板炸板）。
-    <br><b>更新链路</b>：08:15 云端 Actions（行情表自动）＋ 19:30 本地投喂复盘（feed_archive→daily_feed_review→push_to_site）＋ 本机 agent 分析（投喂语料/深度板块）。
+    <b>自检时间</b>：2026-08-29 22:20（复盘日 <b>8/28</b> · 指引日 <b>8/31</b>）｜
+    <b>用途</b>：集中暴露"某数据源忘记更新 / 日期错位 / 缺项"的滞后问题，避免复盘口径串台。
+  </div>
+  <table class="dr-tbl">
+    <thead><tr><th>数据源</th><th>文件</th><th>数据日期</th><th>状态</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>行情</td><td class="dr-tag">market.json</td><td>2026-08-28</td><td style="color:var(--green)">✅ 正常</td><td>13 标的双日（腾讯 + akshare）＋ 商品/利率/汇率</td></tr>
+      <tr><td>板块资金流</td><td class="dr-tag">sector_flow.json</td><td>2026-08-28</td><td style="color:var(--green)">✅ 正常</td><td>31 个申万一级板块；<b>周末副本已自动回退至最近交易日</b>（8/29 键与 8/28 同值）</td></tr>
+      <tr><td>新闻池</td><td class="dr-tag">daily_news_latest.json</td><td>2026-08-29</td><td style="color:var(--green)">✅ 正常</td><td>664 条（财经早餐 400 / 东财 200 / 富途 50 / 新浪 20 / 同花顺 20）</td></tr>
+      <tr><td>6 段新闻整合</td><td class="dr-tag">daily_review_news.json</td><td>2026-08-29</td><td style="color:var(--green)">✅ 自动</td><td>云端每日 07:00 / 15:00 自动抓取构建（公开源必选）</td></tr>
+      <tr><td>交叉验证</td><td class="dr-tag">cross_analysis.json</td><td>资金流 08-28</td><td style="color:var(--green)">✅ 自动</td><td>共振 7 / 背离 11 / 暗线 7 / 双冷 6（电子 115 条新闻 + 资金 -186.85 亿 → 背离）</td></tr>
+      <tr><td>投喂复盘</td><td class="dr-tag">feed_review_latest.json</td><td>2026-08-28</td><td style="color:var(--orange)">⚠️ 部分</td><td>feeds 19 份已归档；<b>cross_analysis 原为空，已由自动脚本接管</b></td></tr>
+      <tr><td>观测股推演</td><td class="dr-tag">obs_deduce_latest.json</td><td>2026-08-28</td><td style="color:var(--green)">✅ 正常</td><td>32 只（v3 引擎，本机 agent 推演）</td></tr>
+      <tr><td>信号 / 金钻</td><td class="dr-tag">signals.json · golden_diamond.json</td><td>2026-08-28</td><td style="color:var(--green)">✅ 正常</td><td>17:45 云端 + 本地自动更新</td></tr>
+      <tr><td>费城半导体点位</td><td class="dr-tag">—</td><td>—</td><td style="color:var(--orange)">⚠️ 待补</td><td>SOX 指数无免费实时源；3 段双日表该行点位保留"—"，<b>涨跌幅 -2.69% 仍可用</b>（来自新闻口径）</td></tr>
+      <tr><td>韩股个股</td><td class="dr-tag">kr_stocks.json</td><td>2026-08-28</td><td style="color:var(--green)">✅ 正常</td><td>三星 / SK 海力士（fengle 源，云端 08:15 带容错）</td></tr>
+    </tbody>
+  </table>
+  <div class="dr-note" style="border-left:3px solid var(--orange);padding-left:10px">
+    <b>已知盲区</b>：① <b>周末云端不跑行情</b>（cron <code>BYDAY=1-5</code>）—— 周六日美股/收盘数据需手动补，本日 8/29（周六）即此情形；
+    ② 美股 13 标的中 MU / SNDK / MRVL 等依赖 akshare <code>stock_us_daily</code>（曾停更），现改用腾讯源补齐，若再失效需换源；
+    ③ 涨跌家数 / 涨停跌停 / 断板数<b>暂无稳定自动源</b>，当前依赖投喂或人工补。
+  </div>
+</div>
+
+<!-- 9 来源 -->
+<div class="dr-h">9 · 数据来源汇总（8/28 实跑 · 8/29 更新）</div>
+<div class="dr-card" style="margin-top:4px">
+  <div class="dr-note">
+    <b>行情与信号（腾讯公开接口，无 key）</b>：signals.json（795 只全量评分/TOP10/观测池 38 只）、golden_diamond.json（金钻三形态 20 只：起涨5/买入6/红区黄柱9）、market.json（大盘监控/双日/日韩/商品）、obs_deduce_latest.json（重点观测股 32 只技术位+推演）、sector_flow.json（31 个申万一级板块主力资金流）｜ event_calendar（东财财经日历）｜ report_analysis（研报四类命中加强）。
+    <br><b>公开新闻源（6 段「新闻整合」自动 · 每日两刷）</b>：东财全球资讯 / 财经早餐 / 新浪全球 / 同花顺全球 / 富途全球 / 央视新闻联播 —— <code>fetch_daily_news.py</code> 抓取 → <code>review/build_news_section.py</code> 构建 6 段 → <code>review/build_cross_analysis.py</code> 生成「机制 × 语料交叉验证」；由 <b>GitHub Actions（daily-review-news.yml）</b> 每日 07:00 / 15:00 自动触发并推送（公开源必选，agent 投喂为可选补充）。
+    <br><b>投喂语料（8/28 复盘 · 19 份：4 PDF + 14 图片 + 1 微信文章）</b>：沃什 Jackson Hole 首秀（鹰派转向）｜ 四部门房地产信贷新政（房贷期限延至 40 年）｜ PTFE 产业链图谱（Rubin Ultra 定案概率 80%）｜ AI 应用题材（Salesforce Agentforce）｜ 化工行业利润 +56.6%（国家统计局）｜ 农业再通胀/种业振兴（厄尔尼诺 + 全球粮食风险）｜ 具身智能机器人产业链（8/26 北京人形机器人大会）｜ 8/28 涨停复盘（涨停 82 / 情绪 98 分·复苏）｜ 8/31–9/4 命理推演（外资版）。
+    <br><b>更新链路</b>：08:15 / 16:30 云端 Actions（行情双日 + 收盘补抓）＋ <b>07:00 / 15:00 云端 Actions（6 段新闻 + cross_analysis，每日含周末）</b>＋ 17:45 本地 update_data.sh ＋ 19:30 本地 feed_review.sh（投喂复盘归档）＋ 本机 agent 推演（0.5 深度判读 / 4 / 5 / 5.5 / 7 段）。
   </div>
 </div>
 

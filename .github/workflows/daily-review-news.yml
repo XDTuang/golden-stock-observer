@@ -1,0 +1,78 @@
+name: Daily Review News（6段新闻整合 + cross_analysis 自动更新）
+
+on:
+  schedule:
+    # 北京时间 07:00（盘前）：财经早餐 + 隔夜要闻 —— UTC 前一天 23:00
+    - cron: '0 23 * * *'
+    # 北京时间 15:00（收盘后）：当日要闻汇总 —— UTC 07:00
+    - cron: '0 7 * * *'
+  workflow_dispatch:   # 手动触发
+
+# 说明（2026-08-29 建立）：
+#   将每日复盘 6 段「新闻整合」与投喂复盘「机制 × 语料交叉验证」改为
+#   **公开新闻源自动抓取为主（必选）+ agent 投喂为可选补充**，全流程无需人工。
+#
+#   数据源（全部免费公开、无需 key）：
+#     东财全球资讯 / 财经早餐 / 新浪全球 / 同花顺全球 / 富途全球 / 央视新闻联播
+#
+#   与其他 workflow 的差异：
+#     - 其余 workflow 为 BYDAY=1-5（仅交易日，因行情数据只有交易日有意义）；
+#       本任务**每天运行**（含周末），因为新闻是每天产生的。
+#     - 只提交"构建产物"（daily_review_news.json 33K + cross_analysis.json 12K），
+#       **不提交原始新闻池 daily_news_latest.json（约 400KB）**，避免仓库体积膨胀；
+#       云端每次运行现抓现用。
+#
+#   失败策略：新闻抓取失败必须让 workflow 标红（不用 || echo 吞错误码），
+#             避免"假成功 + 静默跳过提交"——与 daily-review-market.yml 保持一致。
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    env:
+      TZ: Asia/Shanghai
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install deps
+        run: pip install akshare pandas requests --quiet
+
+      - name: ① 抓取公开新闻源（东财/财经早餐/新浪/同花顺/富途/央视联播）
+        # 单源失败由脚本内部容错（_ak 返回 None + 告警）；整体失败则标红暴露问题
+        run: python3 fetch_daily_news.py
+
+      - name: ② 构建 6 段「新闻整合」数据（公开源必选 + 投喂可选）
+        run: python3 review/build_news_section.py --top 12
+
+      - name: ③ 构建 cross_analysis（公开新闻 × 板块资金流 四象限验证）
+        # 依赖 output/sector_flow.json（已入库）；该文件缺失时降级为空条目，不阻断
+        run: python3 review/build_cross_analysis.py
+
+      - name: ④ 同步 deploy/ 副本（本地预览与站点保持一致）
+        run: |
+          mkdir -p deploy/output
+          cp output/daily_review_news.json output/cross_analysis.json deploy/output/
+
+      - name: ⑤ Commit & Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # output/ 与 deploy/ 均在 .gitignore 中，必须用 -f 强制添加
+          git add -f output/daily_review_news.json output/cross_analysis.json
+          git add -f deploy/output/daily_review_news.json deploy/output/cross_analysis.json
+          if ! git diff --cached --quiet; then
+            git commit -m "daily-review: 6段新闻整合 + cross_analysis 自动更新 $(date +%F' '%H:%M)"
+            git push
+          else
+            echo "no changes（新闻数据无更新）"
+          fi
