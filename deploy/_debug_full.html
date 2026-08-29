@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>市场数据逐标验证</title>
+<style>
+body{font-family:monospace;padding:20px;background:#1a1a1a;color:#ddd}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #444;padding:4px 8px;text-align:right;font-size:12px}
+th{background:#222;color:#ff0}
+.pass{color:#0f0}
+.fail{color:#f55}
+.warn{color:#ff0}
+h2{color:#0f0}
+.q{color:#0af}
+</style>
+</head>
+<body>
+<h2>market.json us_kline 逐标验证（8/28 双日数据）</h2>
+<div id="r">加载中...</div>
+<script>
+const r = document.getElementById('r');
+const US = [
+  ['us_dji','道琼斯'],['us_inx','标普500'],['us_ixic','纳斯达克'],
+  ['us_mu','MU美光'],['us_sndk','SNDK闪迪'],['us_mrvl','MRVL迈威尔'],
+  ['us_lite','LITE朗美通'],['us_aaoi','AAOI'],['us_wdc','WDC西部数据'],
+  ['us_cohr','COHR'],['us_skhy','SKHY海力士'],['us_nvda','NVDA'],['us_tsla','TSLA'],
+];
+(async () => {
+  const t0 = Date.now();
+  const resp = await fetch('./data/daily_review/market.json?ts=' + Date.now(), { cache: 'no-store' });
+  r.innerHTML = `HTTP ${resp.status} | ${Date.now()-t0}ms | size=${resp.headers.get('content-length') || '?'}<br><br>`;
+  const d = await resp.json();
+  const uk = d.us_kline || {};
+  const q = d.quotes || {};
+  let html = '<table><tr><th>标的</th><th>us_kline.latest.date</th><th>us_kline.latest.close</th><th>us_kline.prev.date</th><th>us_kline.prev.close</th><th>quotes.close</th><th>quotes.chg_pct</th><th>状态</th></tr>';
+  let bad = 0;
+  for (const [k, name] of US) {
+    const e = uk[k] || {};
+    const qe = q[k] || {};
+    const lat = e.latest || {};
+    const p = e.prev || {};
+    const lat8_28 = lat.date === '2026-08-28' ? 'pass' : 'fail';
+    const prev8_27 = p.date === '2026-08-27' ? 'pass' : 'fail';
+    const chg = qe.chg_pct || '?';
+    let st = 'pass', msg = '✅ 正常';
+    if (lat.date !== '2026-08-28' || p.date !== '2026-08-27' || !qe.close) {
+      st = 'fail'; msg = '❌ 缺数据'; bad++;
+    }
+    html += `<tr>
+      <td style="text-align:left">${name} (${k})</td>
+      <td class="${lat8_28}">${lat.date || '—'}</td>
+      <td class="${lat8_28}">${lat.close || '—'}</td>
+      <td class="${prev8_27}">${p.date || '—'}</td>
+      <td>${p.close || '—'}</td>
+      <td>${qe.close || '—'}</td>
+      <td>${chg}</td>
+      <td class="${st}">${msg}</td>
+    </tr>`;
+  }
+  html += '</table>';
+  if (bad === 0) {
+    html += '<br><span class="pass">✅ 所有 13 标的 us_kline 8/28 + quotes 8/28 都在！</span>';
+    html += '<br><span class="q">→ 请返回每日复盘页 Cmd+Shift+R 强刷（多次），必出数据</span>';
+  } else {
+    html += `<br><span class="fail">❌ ${bad} 个标的缺数据，请按 1→2→3 方案清缓存</span>`;
+  }
+  r.innerHTML += html;
+})();
+</script>
+</body>
+</html>
