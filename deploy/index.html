@@ -1514,13 +1514,14 @@ html { scroll-behavior: smooth; }
 <div class="tab-content" id="tab-dailyreview">
 <style>
 .dr-h{font-size:14px;font-weight:600;color:var(--text);margin:12px 0 4px}
-/* 表格版式：fixed 强制列宽按比例分配，单元格允许换行，长字符串断行 */
-.dr-tbl{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12.5px}
-.dr-tbl th,.dr-tbl td{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:normal;word-break:break-word;overflow-wrap:anywhere}
-.dr-tbl th:first-child,.dr-tbl td:first-child{text-align:left;width:32%;max-width:240px}
-.dr-tbl th:nth-child(n+2),.dr-tbl td:nth-child(n+2){text-align:left;width:auto}
+/* 表格版式 v3：内容自适应列宽（table-layout:auto 浏览器按内容分配），
+   第一列（名称）紧凑不换行 max-width 防超长，内容列自动拿更多宽度、防撑爆换行 */
+.dr-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.dr-tbl th,.dr-tbl td{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:normal;overflow-wrap:anywhere;word-break:break-word}
+.dr-tbl th:first-child,.dr-tbl td:first-child{text-align:left;white-space:nowrap;max-width:150px;overflow:hidden;text-overflow:ellipsis}
+.dr-tbl th:nth-child(n+2),.dr-tbl td:nth-child(n+2){text-align:left}
 .dr-tbl th{color:var(--text-muted);font-weight:600}
-/* 卡片容器兜底：表格极端内容溢出时容器横向滚动，避免溢出页面 */
+/* 卡片容器兜底：极端内容溢出时容器横向滚动，避免溢出页面 */
 .dr-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:12px 0;overflow-x:auto}
 .dr-up{color:var(--red)}.dr-dn{color:var(--green)}
 .dr-tag{font-size:11px;color:var(--text-muted)}
