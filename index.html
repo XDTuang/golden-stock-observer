@@ -3805,26 +3805,34 @@ function drDeriveSections(d) {
       const card = h0.nextElementSibling;
       // ===== 方案B：agent 预设优先（0 段 dr-card data-* 属性，rewrite_review_sections.py 输出）=====
       const ag = card.dataset || {};
+      // 若 analysis.html 已生成完整 0 段版式（含卡片 + 结论段落），优先保留其版式，
+      // 仅做最小数据增强；避免 JS 把连续段落拆成带重复前缀的列表。
+      if (ag.preopen && ag.risk && card.querySelector('.dr-note')) {
+        // 保留现有版式，只追加数据驱动速览（如尚未存在）
+        let summary = card.querySelector('.dr-note[data-role="auto-summary"]');
+        if (!summary) {
+          summary = document.createElement('div');
+          summary.className = 'dr-note';
+          summary.setAttribute('data-role', 'auto-summary');
+          summary.style.cssText = 'background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px;margin-top:6px';
+          card.appendChild(summary);
+        }
+        summary.innerHTML = '<b>数据驱动速览（自动）：</b>隔夜美股 ' + (usDate || '—') + ' 收盘 · ' + reasons.join(' · ') + '。深度节奏判读/板块推演以 agent 分析为准。';
+        const firstNote = card.querySelector('.dr-note');
+        if (firstNote && summary !== firstNote) card.insertBefore(summary, firstNote);
+        return;
+      }
       if (ag.preopen && ag.risk) {
         card.innerHTML =
-          '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0">' +
-          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">8/31 开盘预判</div><div style="font-weight:700;color:var(--green)">' + ag.preopen + '</div></div>' +
-          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">关注板块</div><div style="font-weight:600">' + (ag.style || '—') + '</div></div>' +
-          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">风险等级</div><div style="font-weight:700;color:var(--red)">' + ag.risk + '</div></div>' +
-          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">关键事件</div><div style="font-weight:600;font-size:12px">' + (ag.event || '—') + '</div></div>' +
+          '<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:6px 0">' +
+          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:0"><div class="dr-tag">8/31 开盘预判</div><div style="font-weight:700;color:var(--green);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + ag.preopen + '</div></div>' +
+          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:0"><div class="dr-tag">关注板块</div><div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (ag.style || '—') + '</div></div>' +
+          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:0"><div class="dr-tag">风险等级</div><div style="font-weight:700;color:var(--red);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + ag.risk + '</div></div>' +
+          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:0"><div class="dr-tag">关键事件</div><div style="font-weight:600;font-size:12px;word-break:keep-all;overflow-wrap:anywhere">' + (ag.event || '—') + '</div></div>' +
           '</div>' +
           '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px;margin-top:6px"><b>数据驱动速览（自动）：</b>隔夜美股 ' + (usDate || '—') + ' 收盘 · ' + reasons.join(' · ') + '。深度节奏判读/板块推演以 agent 分析为准。</div>' +
           (ag.agentDetail || ag.agentNote ?
-            (ag.agentDetail ? ag.agentDetail.split('\n').map((line, i) => {
-              if (!line.trim()) return '';  // 空行
-              const isFirst = i === 0;
-              const isLast = line.trim().startsWith('尾部风险');
-              const border = (isFirst || isLast) ? '3px solid var(--red)' : '3px solid var(--orange)';
-              const title = isFirst ? 'agent 一句话结论（8/28 复盘）'
-                            : isLast ? '尾部风险（最高优先级）'
-                            : '对 A 股 8/31 的映射';
-              return '<div class="dr-note" style="background:var(--bg-subtle);border-left:' + border + ';padding:8px 12px;border-radius:6px;margin-top:6px"><b>' + title + '：</b>' + line.trim() + '</div>';
-            }).join('') :
+            (ag.agentDetail ? '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--red);padding:8px 12px;border-radius:6px;margin-top:8px">' + ag.agentDetail.replace(/\n/g, '<br>') + '</div>' :
             '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--red);padding:8px 12px;border-radius:6px;margin-top:6px"><b>agent 一句话结论（8/28 复盘）：</b>' + ag.agentNote + '</div>')
           : '');
         return;
