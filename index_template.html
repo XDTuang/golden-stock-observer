@@ -3795,6 +3795,20 @@ function drDeriveSections(d) {
     const h0 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h')).find(h => /结论先行/.test(h.textContent || ''));
     if (h0 && h0.nextElementSibling && h0.nextElementSibling.querySelector) {
       const card = h0.nextElementSibling;
+      // ===== 方案B：agent 预设优先（0 段 dr-card data-* 属性，rewrite_review_sections.py 输出）=====
+      const ag = card.dataset || {};
+      if (ag.preopen && ag.risk) {
+        card.innerHTML =
+          '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0">' +
+          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">8/31 开盘预判</div><div style="font-weight:700;color:var(--green)">' + ag.preopen + '</div></div>' +
+          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">关注板块</div><div style="font-weight:600">' + (ag.style || '—') + '</div></div>' +
+          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">风险等级</div><div style="font-weight:700;color:var(--red)">' + ag.risk + '</div></div>' +
+          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">关键事件</div><div style="font-weight:600;font-size:12px">' + (ag.event || '—') + '</div></div>' +
+          '</div>' +
+          '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px;margin-top:6px"><b>数据驱动速览（自动）：</b>隔夜美股 ' + (usDate || '—') + ' 收盘 · ' + reasons.join(' · ') + '。深度节奏判读/板块推演以 agent 分析为准。</div>' +
+          (ag.agentNote ? '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--red);padding:8px 12px;border-radius:6px;margin-top:6px"><b>agent 一句话结论（8/28 复盘）：</b>' + ag.agentNote + '</div>' : '');
+        return;
+      }
       card.innerHTML =
         '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0">' +
         '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">次日开盘预判</div><div style="font-weight:700;color:' + openExp[1] + '">' + openExp[0] + '</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px">' + reasons.join(' · ') + '</div></div>' +
@@ -3814,6 +3828,18 @@ function drDeriveSections(d) {
     }
     if (h7 && h7.nextElementSibling && h7.nextElementSibling.querySelector) {
       const card = h7.nextElementSibling;
+      // ===== 方案B：agent 预设优先（7 段 dr-card data-* 属性）=====
+      const ag7 = card.dataset || {};
+      if (ag7.dir) {
+        card.innerHTML =
+          '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0">' +
+          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">方向判断</div><div style="font-weight:700;color:var(--green)">' + ag7.dir + '</div></div>' +
+          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">风格与操作</div><div style="font-weight:600">' + (ag7.styleOp || '—') + '</div></div>' +
+          '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">风险与事件雷达</div><div style="font-size:12px;font-weight:600">' + (ag7.riskEvent || '—') + '</div></div>' +
+          '</div>' +
+          '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--orange);padding:8px 12px;border-radius:6px;margin-top:6px"><b>预案（agent 8/28 生成）：</b>' + (ag7.plan || '以 agent 分析为准') + '</div>';
+        return;
+      }
       card.innerHTML =
         '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0">' +
         '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">方向判断</div><div style="font-weight:700;color:' + openExp[1] + '">' + openExp[0] + '</div><div style="font-size:12px;color:var(--text-secondary);margin-top:4px">依据：' + reasons.join('；') + '。开盘预期由规则推导（隔夜美股/恒生科技/VIX），非写死。</div></div>' +

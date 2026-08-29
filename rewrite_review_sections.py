@@ -293,34 +293,48 @@ CARD7 = '''
 # 段落配置：(起始注释锚点, 结束注释锚点, 新标题, 内容, 名称)
 # 说明：本文件各段落结构为  注释 → <div class="dr-h">标题</div> → <div class="dr-card">内容</div>
 #       dr-h 在 dr-card **外部**，故必须用注释锚点定位，不能用 rfind('<div class="dr-card"')。
+ATTR_0 = (
+    'data-preopen="低开承压 · 结构分化" '
+    'data-style="房地产链 · 农业种业 · 化工PTFE" '
+    'data-risk="高（贵金属破位 + 关税尾部）" '
+    'data-event="9/1 官方PMI · 9/2 ADP · 9/4 非农 · 9/16 议息" '
+    'data-agent-note="沃什鹰派重定价：9月加息概率 35.4%→55.7%，黄金 -3.43% 破 200 日均线直指贵金属反杀；周一两空一多（贵金属/AI硬件承压，房地产四部门新政是唯一明确增量催化）"'
+)
+ATTR_7 = (
+    'data-dir="低开承压 · 结构分化（两空一多）" '
+    'data-style-op="空：贵金属/AI硬件；多：房地产链/农业/化工PTFE" '
+    'data-risk-event="9/1 PMI · 9/2 ADP · 9/4 非农 · 半导体关税尾部风险" '
+    'data-plan="①贵金属高标（深中华A 7板）分歧勿追 ②AI硬件退潮确认 ③地产放量观察 ④非农（9/4）前压低仓位"'
+)
 SECTIONS = [
     ("<!-- 0 结论先行", "<!-- 0.5 深度判读",
-     "0 · 结论先行（速览卡 · 8/31 指引）", CARD0, "0段"),
+     "0 · 结论先行（速览卡 · 8/31 指引）", CARD0, "0段", ATTR_0),
     ("<!-- 4 重点宏观", "<!-- 5 重点科技",
-     "4 · 重点宏观信息（沃什鹰派转向 · 8/28-29 落地）", CARD4, "4段"),
+     "4 · 重点宏观信息（沃什鹰派转向 · 8/28-29 落地）", CARD4, "4段", ""),
     ("<!-- 5 重点科技", "<!-- 5.5 K3",
-     "5 · 重点科技信息（产业链信号 · 8/28 兑现 + 外围杀跌）", CARD5, "5段"),
+     "5 · 重点科技信息（产业链信号 · 8/28 兑现 + 外围杀跌）", CARD5, "5段", ""),
     ("<!-- 5.5 K3", "<!-- 6 新闻整合",
-     "5.5 · K3 产业信号验证（6 重验证 · 真共振 vs 伪共振）", CARD55, "5.5段"),
+     "5.5 · K3 产业信号验证（6 重验证 · 真共振 vs 伪共振）", CARD55, "5.5段", ""),
     ("<!-- 7 开盘指引", "<!-- 9 来源",
-     "7 · 次日开盘指引（8/31 周一）", CARD7, "7段"),
+     "7 · 次日开盘指引（8/31 周一）", CARD7, "7段", ATTR_7),
 ]
 
 
 def main():
     h = open(SRC, encoding="utf-8").read()
 
-    def replace_section(h, anchor_s, anchor_e, title, body, name):
+    def replace_section(h, anchor_s, anchor_e, title, body, name, attrs=''):
         s = h.find(anchor_s)
         e = h.find(anchor_e)
         if s == -1 or e == -1 or e <= s:
             print(f"⚠️ {name}: 锚点未找到 (start={s}, end={e})")
             return h, False
         # 结束锚点处可能有前置空行，保留
+        attr_html = (' ' + attrs.strip()) if attrs and attrs.strip() else ''
         new_sec = (
             f'{anchor_s} · 8/28 复盘 -->\n'
             f'<div class="dr-h">{title}</div>\n'
-            f'<div class="dr-card" style="margin-top:4px">\n'
+            f'<div class="dr-card" style="margin-top:4px"{attr_html}>\n'
             f'{body}\n'
             f'  </div>\n\n'
         )
@@ -328,8 +342,8 @@ def main():
         return h, True
 
     changed = 0
-    for a_s, a_e, title, body, name in SECTIONS:
-        h, ok = replace_section(h, a_s, a_e, title, body, name)
+    for a_s, a_e, title, body, name, attrs in SECTIONS:
+        h, ok = replace_section(h, a_s, a_e, title, body, name, attrs)
         if ok:
             changed += 1
             print(f"✅ 已重写 {name}")
