@@ -155,14 +155,14 @@
       <tr><td>标普 500</td><td>7,730.99</td><td class="dr-up">+0.72%</td><td>7,711.76</td><td class="dr-dn">-0.25%</td></tr>
       <tr><td>纳斯达克</td><td>26,541.35</td><td class="dr-up">+1.57%</td><td>26,402.42</td><td class="dr-dn">-0.52%</td></tr>
       <tr><td>费城半导体</td><td>—</td><td class="dr-tag">点位待补（外部源）</td><td>—</td><td class="dr-dn">-2.69%（指数 SOX 整体）</td></tr>
-      <tr><td>MU 美光</td><td>—</td><td class="dr-tag">点位待补（外部源）</td><td>—</td><td class="dr-tag">—</td></tr>
-      <tr><td>SNDK 闪迪</td><td>—</td><td class="dr-tag">点位待补（外部源）</td><td>—</td><td class="dr-tag">—</td></tr>
-      <tr><td>MRVL 迈威尔</td><td>—</td><td class="dr-tag">点位待补（外部源）</td><td>—</td><td class="dr-tag">—</td></tr>
-      <tr><td>LITE 朗美通</td><td>—</td><td class="dr-tag">点位待补（外部源）</td><td>—</td><td class="dr-tag">—</td></tr>
-      <tr><td>AAOI</td><td>—</td><td class="dr-tag">点位待补（外部源）</td><td>—</td><td class="dr-tag">—</td></tr>
-      <tr><td>WDC 西部数据</td><td>—</td><td class="dr-tag">点位待补（外部源）</td><td>—</td><td class="dr-tag">—</td></tr>
-      <tr><td>COHR</td><td>—</td><td class="dr-tag">点位待补（外部源）</td><td>—</td><td class="dr-tag">—</td></tr>
-      <tr><td>SKHY 海力士</td><td>—</td><td class="dr-tag">点位待补（外部源）</td><td>—</td><td class="dr-tag">—</td></tr>
+      <tr><td>MU 美光</td><td>935.39</td><td class="dr-dn">-0.32%</td><td>932.86</td><td class="dr-dn">-0.27%</td></tr>
+      <tr><td>SNDK 闪迪</td><td>1,484.95</td><td class="dr-dn">-0.96%</td><td>1,484.98</td><td class="dr-up">+0.00%</td></tr>
+      <tr><td>MRVL 迈威尔</td><td>241.45</td><td class="dr-dn">-1.49%</td><td>216.62</td><td class="dr-dn">-10.28%</td></tr>
+      <tr><td>LITE 朗美通</td><td>956.14</td><td class="dr-up">+1.82%</td><td>895.00</td><td class="dr-dn">-6.39%</td></tr>
+      <tr><td>AAOI</td><td>113.28</td><td class="dr-dn">-0.42%</td><td>106.23</td><td class="dr-dn">-6.22%</td></tr>
+      <tr><td>WDC 西部数据</td><td>462.00</td><td class="dr-dn">-1.47%</td><td>459.45</td><td class="dr-dn">-0.55%</td></tr>
+      <tr><td>COHR</td><td>295.39</td><td class="dr-up">+0.35%</td><td>279.20</td><td class="dr-dn">-5.48%</td></tr>
+      <tr><td>SKHY 海力士</td><td>161.61</td><td class="dr-up">+2.27%</td><td>161.04</td><td class="dr-dn">-0.35%</td></tr>
     </tbody>
   </table>
   <div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--red);padding:8px 12px;border-radius:6px;margin-top:6px">
@@ -170,7 +170,7 @@
   </div>
   <div class="dr-tag" style="margin:10px 0 4px">行情接口实时表（云端自动）</div>
   <div id="drTblUs"></div>
-  <div class="dr-note" style="margin-top:6px"><b>⚠️ 个股点位待补：</b>13 标的双日 K 线（MU/SNDK/MRVL/LITE/AAOI/WDC/COHR/SKHY）依赖 akshare <code>stock_us_daily</code>（akshare 已停更至 2025-09，<b>当前无法稳定获取</b>）。短期方案：仅展示三大指数 + 费半（数据来自腾讯 hf_ 接口，可靠）；个股待 akshare 恢复或换源后再补。详见段 6 "数据自检区"。</div>
+  <div class="dr-note" style="margin-top:6px"><b>✅ 个股点位已补：</b>13 标的中除费城半导体指数（SOX）需外部源外，其余个股 8/27、8/28 收盘已由腾讯源补全并写入本文件；JS 仍会尝试从 market.json.us_kline 刷新为最新。</div>
   </div>
 
 <!-- 4 重点宏观 · 8/28 复盘 -->
