@@ -39,11 +39,11 @@ jobs:
 
       - name: Refresh daily review market quotes (T 日收盘)
         # 主行情：不吞错误码，失败必须标红（避免"假成功 + 静默跳过提交"）
-        run: python3 fetch_daily_review_market.py
+        run: python3 review/fetch_daily_review_market.py
 
       - name: Refresh KR stocks (三星/海力士)
         # 辅助源：容错不阻断（2026-08-28 曾因 chg=None 格式化崩溃拖垮整个任务）
-        run: python3 fengle_kr.py || echo "⚠️ 韩股抓取失败，已跳过（不影响主行情）"
+        run: python3 review/fengle_kr.py || echo "⚠️ 韩股抓取失败，已跳过（不影响主行情）"
 
       - name: Refresh news pool & macro (4/5/6 段自动数据源)
         # 2026-08-28 新增：新闻池(6源694条) + 宏观(中akshare/美新闻抽取)。
