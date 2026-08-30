@@ -3511,6 +3511,7 @@ function renderDailyReview() {
       drFixHeader(d);
       drAIndexSummary(d);
       drAsiaTable(d);
+      drLoadCommTable(d);
       if (d && d.us_kline) drRefreshUsDualDayTables(d);
       if (d && d.comm) drRefreshCommRates(d);
       drDeriveSections(d);
@@ -3518,6 +3519,7 @@ function renderDailyReview() {
       drLoadObserveStocks();
       drLoadTop10();
       drLoadDiamond();
+      drBuildSelfCheck();
     }).catch(err => {
       ana.innerHTML = `<p class="dr-note">分析区加载失败：${err}</p>`;
     });
@@ -3699,18 +3701,16 @@ function drAsiaTable(d) {
   const ana = document.getElementById('drAnalysis');
   if (!ana) return;
   const heads = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'));
-  const h2 = heads.find(h => /日韩股市/.test(h.textContent || ''));
+  // 兼容新旧标题：旧「日韩股市数据情况」/ 新「日韩与商品利率」
+  const h2 = heads.find(h => /日韩/.test(h.textContent || ''));
   if (!h2) return;
   if (d && d.date) {
-    h2.textContent = h2.textContent.replace(/（[\d/．. ]+[^）]*）/,
-      '（' + d.date.slice(5) + ' · 港股/日韩自动 / 韩股个股本机补）');
+    h2.textContent = h2.textContent.replace(/（[^）]*）/,
+      '（' + d.date.slice(5) + ' · 港股/日韩/商品 JS 自动 · market.json）');
   }
   const card = h2.nextElementSibling;
   if (!card || !card.querySelector) return;
   const a = (d && d.asia) || {};
-  const tbl = Array.prototype.slice.call(card.querySelectorAll('table.dr-tbl')).find(t =>
-    (t.innerHTML || '').indexOf('日经') >= 0 || (t.innerHTML || '').indexOf('KOSPI') >= 0);
-  if (!tbl || !tbl.querySelector('tbody')) return;
   const cls = (v) => v >= 0 ? 'dr-up' : 'dr-dn';
   const sign = (v) => v >= 0 ? '+' : '';
   const rows = [];
@@ -3718,7 +3718,6 @@ function drAsiaTable(d) {
     '</td><td class="' + cls(a.nikkei.chg_pct) + '">' + sign(a.nikkei.chg_pct) + a.nikkei.chg_pct.toFixed(2) + '%（' + a.nikkei.date.slice(5) + '）</td></tr>');
   if (a.kospi) rows.push('<tr><td>韩国</td><td>KOSPI</td><td>' + a.kospi.close.toLocaleString() +
     '</td><td class="' + cls(a.kospi.chg_pct) + '">' + sign(a.kospi.chg_pct) + a.kospi.chg_pct.toFixed(2) + '%（' + a.kospi.date.slice(5) + '）</td></tr>');
-  // 韩股个股（三星/SK 海力士）：market.json asia.kr_stocks（stock.fengle.me NAVER 实时抓取）
   const kr = (a.kr_stocks && a.kr_stocks.stocks) || [];
   const krNames = {'005930': '三星电子', '000660': 'SK 海力士'};
   if (kr.length) {
@@ -3728,18 +3727,118 @@ function drAsiaTable(d) {
       rows.push('<tr style="background:rgba(239,68,68,.06)"><td><b>韩国</b></td><td><b>' +
         (krNames[s.code] || s.name || s.code) + '</b> <span style="font-size:11px;color:var(--text-muted)">' + s.code + '.KS</span></td><td>' +
         (s.close != null ? s.close.toLocaleString() : '—') +
-        (s.chg != null ? ' <span style="font-size:11px" class="' + cls(s.chg) + '">' + sign(s.chg) + (s.chg / 1000).toFixed(0) + '千</span>' : '') +
         '</td><td class="' + (pct != null ? cls(pct) : '') + '">' + (pct != null ? sign(pct) + pct.toFixed(2) + '%' : '—') + '</td></tr>');
     });
   } else {
     rows.push('<tr style="background:rgba(239,68,68,.06)"><td><b>韩国</b></td><td><b>三星电子/SK 海力士</b></td><td colspan="2" style="color:var(--text-muted)">待抓取（kr_stocks 未生成）</td></tr>');
   }
-  tbl.querySelector('tbody').innerHTML = rows.join('');
-  // 来源说明更新
-  Array.prototype.slice.call(card.querySelectorAll('.dr-note')).forEach(n => {
-    if ((n.textContent || '').indexOf('来源') >= 0 && (n.textContent || '').indexOf('znb') < 0) {
-      n.innerHTML = '<span style="color:var(--text-muted)">来源：港股 = 云端 market.json（腾讯）；日经/KOSPI = 新浪 znb 接口（自动）｜ 三星/SK = stock.fengle.me NAVER 实时（自动抓取，无 15 分钟延迟）。</span>';
-    }
+  // 写入：优先 #drTblAsia 容器（新结构），回退到旧硬编码表格
+  const tblHtml = '<table class="dr-tbl"><thead><tr><th>市场</th><th>指数</th><th>收盘</th><th>涨跌幅</th></tr></thead><tbody>' + rows.join('') + '</tbody></table>';
+  const box = card.querySelector('#drTblAsia');
+  if (box) {
+    box.innerHTML = tblHtml;
+  } else {
+    const tbl = Array.prototype.slice.call(card.querySelectorAll('table.dr-tbl')).find(t =>
+      (t.innerHTML || '').indexOf('日经') >= 0 || (t.innerHTML || '').indexOf('KOSPI') >= 0);
+    if (tbl && tbl.querySelector('tbody')) tbl.querySelector('tbody').innerHTML = rows.join('');
+  }
+  const note = card.querySelector('#drAsiaNote');
+  if (note) {
+    const kd = (a.kr_stocks && a.kr_stocks.date) || '—';
+    note.innerHTML = '<span style="color:var(--text-muted)">来源：港股 = market.json（腾讯）；日经/KOSPI = 新浪 znb（自动）；' +
+      '三星/SK = ' + ((a.kr_stocks && a.kr_stocks.source) || 'stock.fengle.me NAVER 实时') + '（' + kd + '）。</span>' +
+      '<br><b>存储链先导信号：</b>韩国存储双雄当日涨跌领先 A 股存储链。本表数值由 JS 自动刷新，' +
+      '与 3 段「隔夜美股」的韩股描述同源于 market.json，<b>不会再出现两段方向相反</b>（历史曾因本段硬编码 8/27 而与 3 段 8/28 数值打架）。';
+  }
+}
+
+/* ═══════ 2 段 · 商品 / 利率 / 汇率（market.json.comm，JS 自动） ═══════ */
+function drLoadCommTable(d) {
+  const ana = document.getElementById('drAnalysis');
+  if (!ana || !d || !d.comm) return;
+  const heads = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'));
+  const h2 = heads.find(h => /日韩/.test(h.textContent || ''));
+  if (!h2) return;
+  const card = h2.nextElementSibling;
+  if (!card || !card.querySelector) return;
+  const box = card.querySelector('#drTblComm');
+  if (!box) return;
+  const c = d.comm;
+  const order = ['gold_spot', 'gold_comex', 'wti', 'brent', 'us10y', 'us30y', 'cny', 'lithium'];
+  const cls = (v) => (v == null ? '' : (v >= 0 ? 'dr-up' : 'dr-dn'));
+  const sign = (v) => (v == null ? '' : (v >= 0 ? '+' : ''));
+  const rows = order.filter(k => c[k]).map(k => {
+    const v = c[k];
+    const isRate = (k === 'us10y' || k === 'us30y');
+    const val = v.value == null ? '—' : (isRate ? v.value.toFixed(3) + '%' : v.value.toLocaleString());
+    const chg = (v.chg_pct != null)
+      ? '<span class="' + cls(v.chg_pct) + '">' + sign(v.chg_pct) + v.chg_pct.toFixed(2) + '%</span>'
+      : '<span style="color:var(--text-muted)">—</span>';
+    return '<tr><td>' + (v.name || k) + '</td><td>' + val + '</td><td>' + chg + '</td>' +
+      '<td style="font-size:12px;color:var(--text-muted)">' + (v.date || '—') + '</td></tr>';
+  });
+  box.innerHTML = '<table class="dr-tbl"><thead><tr><th>品种</th><th>数值</th><th>涨跌幅</th><th>数据日</th></tr></thead><tbody>' +
+    rows.join('') + '</tbody></table>' +
+    '<div class="dr-note" style="margin-top:6px;font-size:12px;color:var(--text-muted)">' +
+    '口径：market.json.comm <b>收盘快照</b>。当本表数值与 4 段宏观的<b>即时快讯口径</b>（如黄金 -3.43%，讲话后报价）不一致时，' +
+    '<b>以本表为收盘权威值</b>，4 段标注为即时口径 —— 两者需各标时点，勿交叉混用。</div>';
+}
+
+/* ═══════ 8 段 · 数据自检（JS 自动扫描各源 date，不再手工维护） ═══════ */
+function drBuildSelfCheck() {
+  const box = document.getElementById('drSelfCheck');
+  if (!box) return;
+  // [显示名, 路径, date 字段, 说明]
+  const SRC = [
+    ['行情（A股/港股/美股/商品）', './data/daily_review/market.json', 'date', '云端 08:15 ＋ 本机补'],
+    ['金钻三形态', './output/golden_diamond.json', 'data_date', '起涨／买入／红区黄柱'],
+    ['门控分类', './output/gate_data.json', 'data_date', '成交额 TOP800 池'],
+    ['观测股推演', './output/obs_deduce_latest.json', 'date', 'v3 引擎 32 只'],
+    ['投喂复盘', './output/feed_review_latest.json', 'data_date', 'feeds ＋ prediction ＋ ai_synthesis'],
+    ['交叉验证', './output/cross_analysis.json', 'date', '新闻热度 × 板块资金流'],
+    ['6 段新闻整合', './output/daily_review_news.json', 'date', '云端 07:00／15:00 自动'],
+    ['新闻池原始', './output/daily_news_latest.json', 'date', '6 源抓取'],
+  ];
+  const one = (s, keyMode) => fetch(s[1] + '?t=' + Date.now(), { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+    .then(j => {
+      if (!keyMode) return { s: s, j: j, ok: true };
+      let dv = '—';
+      try {
+        const ks = Object.keys(j || {}).filter(k => /^\d{4}-\d{2}-\d{2}$/.test(k));
+        if (ks.length) dv = ks.sort()[ks.length - 1];
+      } catch (e) {}
+      return { s: s, j: { date: dv }, ok: true };
+    })
+    .catch(e => ({ s: s, j: null, ok: false, err: e.message }));
+  const jobs = SRC.map(s => one(s, false)).concat([
+    one(['板块资金流', './output/sector_flow.json', 'date', '31 个申万一级板块（按最大日期键）'], true),
+    one(['TOP10 历史', './output/top10_history.json', 'date', '与总站首页 TOP 表一致（按最大日期键）'], true),
+  ]);
+  Promise.all(jobs).then(res => {
+    const ds = res.filter(r => r.ok && r.j && r.j[r.s[2]]).map(r => String(r.j[r.s[2]]).slice(0, 10));
+    const latest = ds.length ? ds.sort()[ds.length - 1] : '—';
+    const rows = res.map(r => {
+      const s = r.s;
+      if (!r.ok) {
+        return '<tr><td>' + s[0] + '</td><td class="dr-tag">' + s[1].replace('./', '') + '</td><td>—</td>' +
+          '<td style="color:var(--red)">❌ 读取失败</td><td>' + (r.err || '') + '</td></tr>';
+      }
+      const dv = String((r.j && r.j[s[2]]) || '—').slice(0, 10);
+      const badge = (dv === '—')
+        ? '<span style="color:var(--orange)">⚠️ 缺日期</span>'
+        : (dv < latest ? '<span style="color:var(--orange)">⚠️ 滞后（最新 ' + latest + '）</span>'
+                       : '<span style="color:var(--green)">✅ 正常</span>');
+      return '<tr><td>' + s[0] + '</td><td class="dr-tag">' + s[1].replace('./', '') + '</td><td>' + dv +
+        '</td><td>' + badge + '</td><td>' + s[3] + '</td></tr>';
+    });
+    box.innerHTML = '<table class="dr-tbl"><thead><tr><th>数据源</th><th>文件</th><th>数据日期</th><th>状态</th><th>说明</th></tr></thead><tbody>' +
+      rows.join('') + '</tbody></table>' +
+      '<div class="dr-note" style="margin-top:6px;font-size:12px;color:var(--text-muted)">' +
+      '基准（本页最新数据日）：<b>' + latest + '</b> ｜ 本表由 JS 逐源 fetch 后比对 date 字段生成。' +
+      '<b>新增数据源只需在 SRC 数组加一行，无需改 HTML</b> —— 日期与条数永不过期。' +
+      '<br><b>不在本表的源：</b><code>output/signals.json</code>（19MB 大文件，deploy 侧刻意不同步、未入库），' +
+      '信号侧以 <code>gate_data.json</code> 与 <code>golden_diamond.json</code> 为准。</div>';
   });
 }
 
@@ -4010,7 +4109,7 @@ function drNextTradeDate(n) {
   return dt.getFullYear() + '-' + pad(dt.getMonth() + 1) + '-' + pad(dt.getDate());
 }
 
-/* ═══════ 1.3 重点观测股（output/obs_deduce_latest.json，本机 agent 最新推演；无则提示待补） ═══════ */
+/* ═══════ 7.2 重点观测股推演（output/obs_deduce_latest.json，本机 agent 最新推演；无则提示待补） ═══════ */
 function drLoadObserveStocks() {
   const box = document.getElementById('drTblObs');
   if (!box) return;
@@ -4024,11 +4123,11 @@ function drLoadObserveStocks() {
     // 标题日期动态化：obs_deduce 收盘日 + 下一交易日推演（8/26 收盘 → 8/27 推演）
     const ana = document.getElementById('drAnalysis');
     if (ana && date) {
-      const h13 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'))
+      const h72 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'))
         .find(h => /重点观测股/.test(h.textContent || ''));
-      if (h13) {
+      if (h72) {
         const nd = drNextBizDay(date).slice(5).replace('-', '/');
-        h13.textContent = '1.3 · 重点观测股（' + items.length + ' 只 · ' +
+        h72.textContent = '7.2 · 重点观测股推演（' + items.length + ' 只 · ' +
           date.slice(5).replace('-', '/') + ' 收盘 + ' + nd + ' 推演）';
       }
     }
