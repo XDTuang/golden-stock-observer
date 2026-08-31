@@ -72,6 +72,8 @@ jobs:
           git add -f deploy/output/daily_review_news.json deploy/output/cross_analysis.json
           if ! git diff --cached --quiet; then
             git commit -m "daily-review: 6段新闻整合 + cross_analysis 自动更新 $(date +%F' '%H:%M)"
+            # 防冲突：本机兜底/其它 workflow 并发提交时避免 push 失败
+            git pull --rebase origin main || true
             git push
           else
             echo "no changes（新闻数据无更新）"

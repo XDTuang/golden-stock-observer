@@ -40,6 +40,8 @@ jobs:
           git add -f output/institutional_flow.json deploy/output/institutional_flow.json
           if ! git diff --cached --quiet; then
             git commit -m "touzid: 股东户数周更 $(date +%F)"
+            # 防冲突：本机兜底/其它 workflow 并发提交时避免 push 失败
+            git pull --rebase origin main || true
             git push
           else
             echo "no changes (institutional_flow.json unchanged)"

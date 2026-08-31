@@ -42,6 +42,8 @@ jobs:
             echo "无新数据，跳过提交"
           else
             git commit -m "chore: 回购隐含收益每日更新 $(date +%F)"
+            # 防冲突：本机兜底/其它 workflow 并发提交时避免 push 失败
+            git pull --rebase origin main || true
             git push
             echo "已推送更新"
           fi

@@ -48,6 +48,8 @@ jobs:
           git add data/daily_review/market.json data/daily_review/analysis.html output/kr_stocks.json deploy/output/kr_stocks.json
           if ! git diff --cached --quiet; then
             git commit -m "daily-review: update market quotes + 三星/海力士收盘 $(date +%F)"
+            # 2026-08-31 事故：本机兜底/其它 workflow 并发提交导致 push 冲突失败 → 加 rebase 防冲突
+            git pull --rebase origin main || true
             git push
           else
             echo "no changes (market.json unchanged)"
