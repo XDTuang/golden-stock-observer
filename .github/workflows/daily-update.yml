@@ -1,15 +1,29 @@
 name: Daily Golden Stock Update
 on:
   schedule:
-    # 每交易日 17:45 北京时间 = 09:45 UTC（周一~五）
-    # 注：16:35 龙虎榜数据尚未出炉 → 统一延迟到 17:45
+    # ── 主触发 + 冗余补触发（抗 GitHub schedule 丢事件）──
+    # 背景：2026-08-29~08-31 期间，本 workflow 的每日单次 schedule 被 GitHub 连续丢弃
+    # （8/26 延迟32分 → 8/27 延迟10h → 8/28 延迟11h → 8/29起零触发），
+    # 而同仓库每半小时的实时盯盘 workflow 同期仍正常触发。
+    # 对策：铺多个时间点，任一命中即可；重复命中由「幂等闸门」自动跳过，不浪费配额。
+    #   UTC 09:45 = 北京 17:45（主，收盘后龙虎榜已出）
+    #   UTC 10:45 = 北京 18:45（补）
+    #   UTC 12:45 = 北京 20:45（补）
+    #   UTC 14:45 = 北京 22:45（末次兜底，覆盖前三次全被丢弃的极端情况）
     - cron: '45 9 * * 1-5'
-  workflow_dispatch:  # 手动触发按钮（用于首次测试）
+    - cron: '45 10 * * 1-5'
+    - cron: '45 12 * * 1-5'
+    - cron: '45 14 * * 1-5'
+  workflow_dispatch:  # 手动触发按钮（用于首次测试 / 紧急补跑）
+
+concurrency:
+  group: daily-update
+  cancel-in-progress: false   # 不取消进行中的 run，避免跑到一半被中断推半成品
 
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 360  # 6小时（GitHub Actions 免费版上限）
+    timeout-minutes: 90   # 实测 15~47 分钟；原 360 过长会占用队列、降低本 workflow 调度优先级
     permissions:
       contents: write   # 允许 git push
 
@@ -39,7 +53,31 @@ jobs:
       - name: Install Dependencies
         run: pip install pandas numpy requests akshare
 
+      # 冗余 cron 会一日多次触发；若今日数据已落库则直接跳过，避免重复消耗配额/分钟数
+      - name: 幂等闸门（今日已完成则跳过）
+        id: gate
+        run: |
+          TODAY=$(date +%F)
+          LATEST=$(python3 - <<'PY' || true
+          import json
+          try:
+              d=json.load(open('signals.json',encoding='utf-8'))
+              print(d.get('freshness',{}).get('latest_data_date','') or '')
+          except Exception:
+              print('')
+          PY
+          )
+          echo "今日=$TODAY  仓库已落库最新数据日期=$LATEST"
+          if [ "$LATEST" = "$TODAY" ] && [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "ℹ️ 今日数据已更新 → 跳过本次运行（节省 Actions 配额）"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "▶️ 需要更新（或为手动强制触发）"
+          fi
+
       - name: Verify API Reachability
+        if: steps.gate.outputs.skip != 'true'
         run: |
           echo "K线接口:" && curl -sL -o /dev/null -w "%{http_code}" "https://proxy.finance.qq.com/ifzqgtimg/appstock/app/fqkline/get?p=1&param=sh600519,day,,,5,qfq"
           echo ""
@@ -49,6 +87,7 @@ jobs:
           date '+%Z %Y-%m-%d %H:%M:%S'
 
       - name: Restore Kline Cache
+        if: steps.gate.outputs.skip != 'true'
         uses: actions/cache@v4
         id: kline-cache
         with:
@@ -58,18 +97,25 @@ jobs:
             kline-raw-${{ runner.os }}-
 
       - name: Run Full Update Pipeline
+        if: steps.gate.outputs.skip != 'true'
         id: update
         run: |
           set -e
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-          # 用 --force 跳过闸门判断，让手动触发也能跑（GitHub UI 可能在白天手动测）。
-          # 定时触发 (cron) 自动在 16:35 BJT 触发时，update_data.sh 内部闸门会放行。
-          bash update_data.sh --force
+          # 定时触发 → 走脚本内部闸门（交易日 + 已收盘），避免盘中/非交易日推不完整数据；
+          # 手动触发 → 用 --force 由人为决定是否强制跑。
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "手动触发 → --force 跳过闸门"
+            bash update_data.sh --force
+          else
+            echo "定时触发 → 交由 update_data.sh 内部闸门校验（交易日 + 已收盘）"
+            bash update_data.sh
+          fi
 
       - name: Sync Deploy to Root and Push
         id: sync
-        if: success()
+        if: steps.gate.outputs.skip != 'true' && success()
         run: |
           set -e
           DEPLOY="deploy"
@@ -109,12 +155,14 @@ jobs:
             echo "无更改，跳过推送"
           else
             git commit -m "数据更新: $(date '+%Y-%m-%d %H:%M') (GitHub Actions)"
+            # 防冲突：本机 launchd 兜底 / 其它 workflow 可能在此期间推过提交
+            git pull --rebase origin main || true
             git push origin main
             echo "✅ 主站已推送"
           fi
 
       - name: Deploy CloudBase
-        if: success()
+        if: steps.gate.outputs.skip != 'true' && success()
         env:
           CLOUDBASE_ENV_ID: golden-diamond-observer-d805c7e7
           CLOUDBASE_API_KEY: ${{ secrets.CLOUDBASE_API_KEY }}
