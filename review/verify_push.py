@@ -23,12 +23,28 @@ verify_push.py —— GitHub Pages 推送后「线上一致性」权威校验脚
     python3 review/verify_push.py --commit HEAD~1     # 校验指定提交涉及的文件
     python3 review/verify_push.py -f a.html b.json    # 校验指定文件
     python3 review/verify_push.py -f index.html --ref main
-    python3 review/verify_push.py --all-tracked       # 校验全部被跟踪文件（慢，慎用）
+    python3 review/verify_push.py --all-tracked       # 校验全部被跟踪文件
+
+两种验证模式（2026-08-31 新增 --git，推荐）
+────────────────────────────────────────
+    --git   走 git 协议：git fetch + git ls-tree + git cat-file -s
+           ✅ 无 rate limit（不需要 GITHUB_TOKEN）
+           ✅ 秒级完成（本地 git 对象库，不走 HTTP API）
+           ✅ 与 API 完全等价——两者读的都是同一个 git blob
+           ⚠️ 需要能访问远端（git fetch），离线环境会失败并自动降级到 API
+
+    --api   走 GitHub REST API contents 接口（原行为）
+           ✅ 服务端权威（HTTP 可达即可，不依赖本地 git 对象）
+           ❌ 未认证限 60 次/小时，文件多时必触发（实测 34 文件全挂）
+
+    默认「自动」：先试 --git，fetch 失败再降级 --api。
 
 可选环境变量
 ────────────
-    GITHUB_TOKEN=ghp_xxx    认证后 rate limit 从 60/h 提到 5000/h，
-                            校验文件多时（尤其 --all-tracked）强烈建议设置。
+    GITHUB_TOKEN=ghp_xxx    仅 --api 模式需要：认证后 rate limit 从 60/h 提到 5000/h。
+                            用 --git 模式（默认）则完全不需要配 token。
+                            生成：https://github.com/settings/tokens
+                            公开仓库读取只需最小权限，可不勾选任何 scope。
 
 依赖：python3 标准库 + 系统 curl + git（无需安装第三方包）
 退出码：全部一致 = 0；存在不一致或异常 = 1
@@ -109,6 +125,47 @@ def local_blob_sha(path, ref="HEAD"):
     return out if rc == 0 else None
 
 
+# ── git 协议模式（2026-08-31 新增）：绕开 GitHub API rate limit ──────────────
+# 原理：GitHub Pages 服务的是仓库内容，API contents 读的也是仓库 blob，
+# git ls-tree 读的是同一个 blob → 两者完全等价，但 git 协议无限流、秒级完成。
+
+
+def git_fetch(remote="origin", ref="main", quiet=True):
+    """拉取远端最新引用。失败返回 False（调用方降级到 API 模式）"""
+    cmd = "git fetch %s %s -q %s" % ("-q" if quiet else "", remote, ref)
+    rc, _ = run(cmd)
+    return rc == 0
+
+
+def git_remote_blob(path, remote="origin", ref="main"):
+    """远端分支上该路径的 blob SHA（文件不存在返回 None）"""
+    rc, out = run("git ls-tree %s/%s -- %s" % (remote, ref, path))
+    if rc != 0 or not out:
+        return None
+    # 输出格式：<mode> <type> <sha>\t<path>
+    parts = out.split()
+    return parts[2] if len(parts) >= 3 else None
+
+
+def git_blob_size(blob_sha):
+    """blob 的字节数（git cat-file -s）"""
+    rc, out = run("git cat-file -s %s" % blob_sha)
+    if rc != 0:
+        return None
+    try:
+        return int(out)
+    except ValueError:
+        return None
+
+
+def git_verify(path, remote="origin", ref="main", local_ref="HEAD"):
+    """git 协议验证单个文件，返回 (size, sha) 或 None（该文件应走 API 降级）"""
+    rsha = git_remote_blob(path, remote, ref)
+    if rsha is None:
+        return None
+    return (git_blob_size(rsha), rsha)
+
+
 def head_commit_files(commit="HEAD"):
     """某提交涉及的文件列表（排除已删除的）"""
     rc, out = run("git show --name-only --pretty=format: %s" % commit)
@@ -149,6 +206,11 @@ def main():
     ap.add_argument("--ref", default="main", help="远程分支（默认 main）")
     ap.add_argument("--all-tracked", action="store_true", help="校验全部被跟踪文件（慎用 rate limit）")
     ap.add_argument("--no-sha", action="store_true", help="只校验字节数，不校验 SHA（更快）")
+    mode = ap.add_mutually_exclusive_group()
+    mode.add_argument("--git", action="store_true",
+                      help="只用 git 协议验证（无 rate limit，默认模式）")
+    mode.add_argument("--api", action="store_true",
+                      help="只用 GitHub API 验证（需 GITHUB_TOKEN，否则限 60 次/小时）")
     args = ap.parse_args()
 
     repo = git_repo()
@@ -170,24 +232,47 @@ def main():
         print(WARN + "! 没有可校验的文件（提交可能只删除了文件）" + RESET)
         return 1
 
+    # ── 确定验证模式 ────────────────────────────────────────────────────────
+    # auto（默认）：先试 git 协议；git fetch 失败才降级 API
+    use_git = True
+    if args.api:
+        use_git = False
+    elif args.git or not args.api:
+        # 先尝试 git fetch，失败则降级
+        if git_fetch("origin", args.ref):
+            use_git = True
+        else:
+            use_git = False
+            print(WARN + "! git fetch 失败，降级到 GitHub API 模式（未设 GITHUB_TOKEN 将限 60 次/小时）" + RESET)
+
     print(BOLD + "🔍 线上一致性校验" + RESET + "  %s  @  %s" % (repo, args.ref))
-    print(DIM + "   模式：GitHub API contents 的 size（字节数）+ sha（git blob SHA）双字段" + RESET)
+    print(DIM + "   模式：%s" % (
+        "git 协议（git ls-tree + cat-file -s，无 rate limit）" if use_git
+        else "GitHub API contents 的 size + sha 双字段") + RESET)
     print(DIM + "   待校验：%d 个文件%s\n" % (len(files), "（--all-tracked）" if args.all_tracked else
                                               "（%s 提交涉及）" % args.commit if not args.files else "") + RESET)
 
     rows, ok_cnt, bad_cnt = [], 0, 0
     for path in files:
         local_size = os.path.getsize(path)
-        remote = api_get(repo, path, args.ref)
 
-        if "_err" in remote:
-            rows.append((path, local_size, "—", "—", "—", "ERR: " + str(remote["_err"])[:40]))
-            bad_cnt += 1
-            continue
+        if use_git:
+            g = git_verify(path, "origin", args.ref, args.commit)
+            if g is None:
+                rows.append((path, local_size, "—", "—", "—", "ERR: 远端无此文件（是否已推送？）"))
+                bad_cnt += 1
+                continue
+            api_size, api_sha = g[0], g[1]
+        else:
+            remote = api_get(repo, path, args.ref)
+            if "_err" in remote:
+                rows.append((path, local_size, "—", "—", "—", "ERR: " + str(remote["_err"])[:40]))
+                bad_cnt += 1
+                continue
+            api_size = remote.get("size")
+            api_sha = remote.get("sha")
 
-        api_size = remote.get("size")
-        api_sha = remote.get("sha")
-        local_sha = None if args.no_sha else local_blob_sha(path, args.commit if args.commit != "HEAD" else "HEAD")
+        local_sha = None if args.no_sha else local_blob_sha(path, args.commit)
 
         size_ok = (api_size == local_size)
         if args.no_sha or local_sha is None:
@@ -220,8 +305,13 @@ def main():
         return 0
     else:
         print(BAD + "❌ %d 个文件不一致 / 校验失败（通过 %d/%d）" % (bad_cnt, ok_cnt, len(rows)) + RESET)
-        print(WARN + "  排查：① 是否忘记 git add -f（deploy/ 与 output/ 被 .gitignore 忽略）"
-                    "② 是否根目录与 deploy/ 只更新了一处 ③ 稍后重试（Pages 构建有延迟）" + RESET)
+        if use_git:
+            print(WARN + "  排查：① 是否忘记 git add -f（deploy/ 与 output/ 被 .gitignore 忽略）"
+                        "② 是否根目录与 deploy/ 只更新了一处 ③ 若刚 push，稍后重试（Pages 构建有延迟）" + RESET)
+        else:
+            print(WARN + "  排查：① 是否忘记 git add -f（deploy/ 与 output/ 被 .gitignore 忽略）"
+                        "② 是否根目录与 deploy/ 只更新了一处 ③ 稍后重试（Pages 构建有延迟）"
+                        "④ 若报 rate limit，改用默认 git 模式或设置 GITHUB_TOKEN" + RESET)
         return 1
 
 
