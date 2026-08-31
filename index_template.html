@@ -3310,54 +3310,87 @@ function drLoadCrossAnalysis() {
 
 // ===== 投喂复盘渲染 =====
 // === feed v4: 内置 AI 综合推演(ai_synthesis) 渲染 —— 修复 rebuild 后本机产物丢失 ===
+// 2026-08-31 加固（事故复盘）：ai_synthesis 各字段增加「类型防御」+「子块隔离」。
+//   事故：8/31 产物把 theme_resonance / nvda_chain_map / holding_map / risks 降级成纯字符串，
+//   本函数按对象数组解析 → theme_resonance.forEach 抛 TypeError → 整个 then() 回调中断
+//   → el.innerHTML 永不赋值 → 投喂复盘整块空白（连已拼好的内容一起丢）。
+//   现改为：字符串 / 对象 / 数组三种形态都能渲染；每个子块独立 try/catch，单块坏不影响全局。
 function drLoadFeedReview() {
   drFeedModalInit();
   const el = document.getElementById('drFeedReviewBody');
   if (!el) return;
+  const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  // 类型归一：数组→原样；对象→[对象]；字符串→[字符串]；空→[]
+  const asArr = v => Array.isArray(v) ? v : (v && typeof v === 'object' ? [v] : (v ? [String(v)] : []));
+  // 取文本：字符串→原样；对象→desc/text/summary/note 依次取值；其余→JSON
+  const asText = v => (typeof v === 'string' ? v
+    : (v && typeof v === 'object' ? (v.desc || v.text || v.summary || v.note || '') : ''));
+  // 子块隔离：单块出错只在控制台告警 + 占位，不影响其余块
+  const safe = (label, fn) => { try { return fn() || ''; }
+    catch (e) { console.warn('[投喂复盘] ' + label + ' 渲染失败：', e);
+      return '<div class="dr-note dr-tag">⚠️ ' + esc(label) + ' 数据格式异常，已跳过</div>'; } };
+  const chips = arr => asArr(arr).map(s =>
+    '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('');
+
   fetch('output/feed_review_latest.json')
     .then(r => r.ok ? r.json() : Promise.reject(r.status))
     .then(d => {
+      let h = '';
       const pred = d.prediction || {};
-      const biasCls = pred.bias === '偏多' ? 'dr-up' : (pred.bias === '偏空' ? 'dr-dn' : '');
-      let h = '<div class="dr-note">数据日期 <b>' + (d.data_date || '—') + '</b> · 投喂 ' +
-              (d.feed_count || 0) + ' 条 · 来源 ' + (d.source === 'cloud' ? '云端 08:15' : '本地 19:30') + '</div>';
-      h += '<div class="dr-note"><b>后市预判：<span class="' + biasCls + '">' + (pred.bias || '—') +
-           '</span></b>（score ' + (pred.bias_score ?? '—') + '）</div>';
-      (pred.reasons || []).forEach(r => h += '<div class="dr-note">· ' + r + '</div>');
-      const feeds = d.feeds || [];
-      if (feeds.length) {
-        h += '<div class="dr-h">当日投喂</div><table class="dr-tbl"><thead><tr><th>类别</th><th>来源</th><th>标题</th><th>关键词</th></tr></thead><tbody>';
+      const bias = pred.bias || '—';
+      const biasCls = /^偏多/.test(bias) ? 'dr-up' : (/^偏空/.test(bias) ? 'dr-dn' : '');
+      h += '<div class="dr-note">数据日期 <b>' + esc(d.data_date || '—') + '</b> · 投喂 ' +
+           (d.feed_count || (d.feeds || []).length || 0) + ' 条 · 来源 ' +
+           (d.source === 'cloud' ? '云端 08:15' : '本地 19:30') + '</div>';
+      h += '<div class="dr-note"><b>后市预判：<span class="' + biasCls + '">' + esc(bias) +
+           '</span></b>（score ' + (pred.bias_score == null ? '—' : pred.bias_score) + '）</div>';
+      asArr(pred.reasons).forEach(r => h += '<div class="dr-note">· ' + esc(asText(r) || r) + '</div>');
+
+      // ===== 当日投喂 =====
+      h += safe('当日投喂', () => {
+        const feeds = d.feeds || [];
+        if (!feeds.length) return '';
+        let s = '<div class="dr-h">当日投喂</div><table class="dr-tbl"><thead><tr><th>类别</th><th>来源</th><th>标题</th><th>关键词</th></tr></thead><tbody>';
         feeds.forEach(f => {
-          h += '<tr><td>' + f.category + '</td><td>' + f.source + '</td><td>' + f.title + '</td><td class="dr-tag">' +
-               (f.keywords || []).slice(0, 4).join(' / ') + '</td></tr>';
+          s += '<tr><td>' + esc(f.category) + '</td><td>' + esc(f.source) + '</td><td>' + esc(f.title) +
+               '</td><td class="dr-tag">' + asArr(f.keywords).slice(0, 4).map(esc).join(' / ') + '</td></tr>';
         });
-        h += '</tbody></table>';
-      }
-      const ca = d.cross_analysis || [];
-      if (ca.length) {
-        h += '<div class="dr-h">机制 × 语料交叉验证</div><table class="dr-tbl"><thead><tr><th>投喂</th><th>匹配信号标的</th><th>判定</th></tr></thead><tbody>';
+        return s + '</tbody></table>';
+      });
+
+      // ===== 机制 × 语料交叉验证 =====
+      let caEmpty = false;
+      h += safe('交叉验证', () => {
+        const ca = asArr(d.cross_analysis);
+        if (!ca.length) { caEmpty = true; return '<div id="drCrossSlot"></div>'; }
+        let s = '<div class="dr-h">机制 × 语料交叉验证</div><table class="dr-tbl"><thead><tr><th>投喂</th><th>匹配信号标的</th><th>判定</th></tr></thead><tbody>';
         ca.forEach(c => {
-          const cls = c.verdict === '共振' ? 'dr-up' : (c.verdict === '背离' ? 'dr-dn' : 'dr-tag');
-          h += '<tr><td>' + c.feed + '</td><td>' + ((c.related_stocks || []).join('、') || '—') +
-               '</td><td class="' + cls + '">' + c.verdict + '</td></tr>';
+          if (typeof c === 'string') { s += '<tr><td colspan="3" class="dr-note">' + esc(c) + '</td></tr>'; return; }
+          const v = c.verdict || '';
+          const cls = v === '共振' ? 'dr-up' : (v === '背离' ? 'dr-dn' : 'dr-tag');
+          s += '<tr><td>' + esc(c.feed || c.theme || '') + '</td><td>' + (asArr(c.related_stocks).join('、') || '—') +
+               '</td><td class="' + cls + '">' + esc(v) + '</td></tr>';
         });
-        h += '</tbody></table>';
-      } else {
-        // 自动版占位：由 drLoadCrossAnalysis() 从 output/cross_analysis.json 填充
-        // （公开新闻池 × 板块资金流自动交叉验证，不依赖投喂）
-        h += '<div id="drCrossSlot"></div>';
-      }
-      const t1 = pred.t1_focus || [];
-      if (t1.length) {
-        h += '<div class="dr-h">T+1 关注</div>';
-        t1.forEach(t => h += '<div class="dr-note">· ' + t + '</div>');
-      }
-      const risks = pred.risks || [];
-      if (risks.length) {
-        h += '<div class="dr-h">风险提示</div>';
-        risks.forEach(r => h += '<div class="dr-note">⚠️ <span class="dr-dn">' + r.desc + '</span></div>');
-      }
+        return s + '</tbody></table>';
+      });
+
+      // ===== T+1 关注 / 风险提示 =====
+      h += safe('T+1 关注', () => {
+        const t1 = asArr(pred.t1_focus);
+        if (!t1.length) return '';
+        let s = '<div class="dr-h">T+1 关注</div>';
+        t1.forEach(t => s += '<div class="dr-note">· ' + esc(asText(t) || t) + '</div>');
+        return s;
+      });
+      h += safe('风险提示', () => {
+        const risks = asArr(pred.risks);
+        if (!risks.length) return '';
+        let s = '<div class="dr-h">风险提示</div>';
+        risks.forEach(r => s += '<div class="dr-note">⚠️ <span class="dr-dn">' + esc(asText(r) || r) + '</span></div>');
+        return s;
+      });
       if (pred.pending_ai) h += '<div class="dr-note dr-tag">深度预测待本机 agent / 专家对话补全</div>';
+
       // ===== AI 综合推演 (ai_synthesis) =====
       // 本机 agent 产物：d.ai_synthesis 由 output/feed_review_latest.json 提供。
       // 2026-08-28 审计修复：此块原先由 6f1d2f5 手工补进成品页，模板与注入脚本皆无，
@@ -3365,53 +3398,81 @@ function drLoadFeedReview() {
       // 现并入注入脚本，随「投喂复盘」一并幂等注入，重建后自动恢复。
       const syn = d.ai_synthesis;
       if (syn) {
-        const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        h += '<div style="margin:14px 0 4px;padding:10px 12px;border-left:3px solid #f0b429;background:rgba(240,180,41,.08);border-radius:8px;font-size:13.5px;line-height:1.7"><b style="color:#f0b429">⚑ AI 综合推演 · 核心结论</b><br>' + esc(syn.verdict_headline || '') + '</div>';
-        if (syn.conclusion_first && syn.conclusion_first.length) {
-          h += '<div class="dr-h">AI 综合推演 · 结论先行</div><ol style="margin:4px 0;padding-left:20px">';
-          syn.conclusion_first.forEach(c => h += '<li class="dr-note" style="list-style:inherit">' + esc(c) + '</li>');
-          h += '</ol>';
-        }
-        if (syn.theme_resonance && syn.theme_resonance.length) {
-          h += '<div class="dr-h">AI 综合推演 · 主题共振</div>';
-          syn.theme_resonance.forEach(t => {
+        h += safe('AI 综合推演 · 核心结论', () => {
+          if (!syn.verdict_headline) return '';
+          return '<div style="margin:14px 0 4px;padding:10px 12px;border-left:3px solid #f0b429;background:rgba(240,180,41,.08);border-radius:8px;font-size:13.5px;line-height:1.7"><b style="color:#f0b429">⚑ AI 综合推演 · 核心结论</b><br>' + esc(syn.verdict_headline) + '</div>';
+        });
+        h += safe('AI 综合推演 · 结论先行', () => {
+          const arr = asArr(syn.conclusion_first);
+          if (!arr.length) return '';
+          let s = '<div class="dr-h">AI 综合推演 · 结论先行</div><ol style="margin:4px 0;padding-left:20px">';
+          arr.forEach(c => s += '<li class="dr-note" style="list-style:inherit">' + esc(asText(c) || c) + '</li>');
+          return s + '</ol>';
+        });
+        h += safe('AI 综合推演 · 主题共振', () => {
+          const arr = asArr(syn.theme_resonance);
+          if (!arr.length) return '';
+          let s = '<div class="dr-h">AI 综合推演 · 主题共振</div>';
+          arr.forEach(t => {
+            if (typeof t === 'string') { s += '<div class="dr-note" style="margin:4px 0">' + esc(t) + '</div>'; return; }
             const w = t.weight || '';
             const wc = w === '最强' ? 'var(--red)' : (w === '强' ? '#f0b429' : 'var(--text-muted)');
-            const chips = (t.related_stocks || []).map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('');
-            h += '<div style="margin:6px 0;padding:8px 10px;border:1px solid var(--border);border-radius:8px"><b>' + esc(t.theme) + '</b> <span style="color:' + wc + '">[' + esc(w) + ']</span><div class="dr-tag" style="margin-top:4px">' + (t.evidence || []).map(esc).join('<br>') + '</div><div style="margin-top:4px">' + chips + '</div></div>';
+            s += '<div style="margin:6px 0;padding:8px 10px;border:1px solid var(--border);border-radius:8px"><b>' + esc(t.theme || '') +
+                 '</b> <span style="color:' + wc + '">[' + esc(w) + ']</span><div class="dr-tag" style="margin-top:4px">' +
+                 asArr(t.evidence).map(esc).join('<br>') + '</div><div style="margin-top:4px">' + chips(t.related_stocks) + '</div></div>';
           });
-        }
-        const cm = syn.nvda_chain_map || {};
-        if (cm.summary || (cm.a_shares && cm.a_shares.length) || (cm.us_mapping && cm.us_mapping.length)) {
-          h += '<div class="dr-h">AI 综合推演 · NVDA 产业链映射</div>';
-          h += '<div class="dr-note">' + esc(cm.summary || '') + '</div>';
-          h += '<div style="display:flex;gap:10px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><b style="color:var(--red)">A股映射</b><div>' + ((cm.a_shares || []).map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('')) + '</div></div><div style="flex:1;min-width:200px"><b style="color:var(--green)">美股映射</b><div>' + ((cm.us_mapping || []).map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('')) + '</div></div></div>';
-        }
-        const hm = syn.holding_map || {};
-        if (hm.note || (hm.theme_aligned && hm.theme_aligned.length) || (hm.caution && hm.caution.length) || (hm.us && hm.us.length)) {
-          h += '<div class="dr-h">AI 综合推演 · 持仓映射</div>';
-          h += '<div class="dr-tag">' + esc(hm.note || '') + '</div>';
-          if (hm.theme_aligned && hm.theme_aligned.length) h += '<div style="margin-top:4px"><b style="color:var(--red)">主题契合</b> ' + hm.theme_aligned.map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('') + '</div>';
-          if (hm.caution && hm.caution.length) h += '<div style="margin-top:4px"><b style="color:#f0b429">需谨慎</b> ' + hm.caution.map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:#f0b429;font-size:11px">' + esc(s) + '</span>').join('') + '</div>';
-          if (hm.us && hm.us.length) h += '<div style="margin-top:4px"><b style="color:var(--green)">美股映射</b> ' + hm.us.map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('') + '</div>';
-        }
-        // 兼容历史字段名 t1_radar_0827（8/27 产物）与通用名 t1_radar
-        const radar = syn.t1_radar_0827 || syn.t1_radar || [];
-        if (radar.length) {
-          h += '<div class="dr-h">AI 综合推演 · T+1 事件雷达</div>';
-          radar.forEach(t => h += '<div class="dr-note">· ' + esc(t) + '</div>');
-        }
-        if (syn.risks && syn.risks.length) {
-          h += '<div class="dr-h">AI 综合推演 · 风险（概率 × 冲击）</div>';
-          syn.risks.forEach(r => {
+          return s;
+        });
+        h += safe('AI 综合推演 · NVDA 产业链映射', () => {
+          const cm = asArr(syn.nvda_chain_map)[0] || {};
+          const txt = (typeof cm === 'string') ? cm : (cm.summary || '');
+          const a = (typeof cm === 'object') ? asArr(cm.a_shares) : [];
+          const u = (typeof cm === 'object') ? asArr(cm.us_mapping) : [];
+          if (!txt && !a.length && !u.length) return '';
+          let s = '<div class="dr-h">AI 综合推演 · NVDA 产业链映射</div><div class="dr-note">' + esc(txt) + '</div>';
+          s += '<div style="display:flex;gap:10px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><b style="color:var(--red)">A股映射</b><div>' + chips(a) +
+               '</div></div><div style="flex:1;min-width:200px"><b style="color:var(--green)">美股映射</b><div>' + chips(u) + '</div></div></div>';
+          return s;
+        });
+        h += safe('AI 综合推演 · 持仓映射', () => {
+          const hm = asArr(syn.holding_map)[0] || {};
+          const note = (typeof hm === 'string') ? hm : (hm.note || '');
+          const ta = (typeof hm === 'object') ? asArr(hm.theme_aligned) : [];
+          const cau = (typeof hm === 'object') ? asArr(hm.caution) : [];
+          const us = (typeof hm === 'object') ? asArr(hm.us) : [];
+          if (!note && !ta.length && !cau.length && !us.length) return '';
+          let s = '<div class="dr-h">AI 综合推演 · 持仓映射</div><div class="dr-tag">' + esc(note) + '</div>';
+          if (ta.length) s += '<div style="margin-top:4px"><b style="color:var(--red)">主题契合</b> ' + chips(ta) + '</div>';
+          if (cau.length) s += '<div style="margin-top:4px"><b style="color:#f0b429">需谨慎</b> ' +
+            cau.map(x => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:#f0b429;font-size:11px">' + esc(x) + '</span>').join('') + '</div>';
+          if (us.length) s += '<div style="margin-top:4px"><b style="color:var(--green)">美股映射</b> ' + chips(us) + '</div>';
+          return s;
+        });
+        h += safe('AI 综合推演 · T+1 事件雷达', () => {
+          // 兼容任意日期后缀键名：t1_radar / t1_radar_0901 / t1_radar_0831 ...
+          let radar = [];
+          Object.keys(syn).forEach(k => { if (/^t1_radar/.test(k)) radar = radar.concat(asArr(syn[k])); });
+          if (!radar.length) return '';
+          let s = '<div class="dr-h">AI 综合推演 · T+1 事件雷达</div>';
+          radar.forEach(t => s += '<div class="dr-note">· ' + esc(asText(t) || t) + '</div>');
+          return s;
+        });
+        h += safe('AI 综合推演 · 风险', () => {
+          const arr = asArr(syn.risks);
+          if (!arr.length) return '';
+          let s = '<div class="dr-h">AI 综合推演 · 风险（概率 × 冲击）</div>';
+          arr.forEach(r => {
+            if (typeof r === 'string') { s += '<div class="dr-note">· ' + esc(r) + '</div>'; return; }
             const pc = r.prob === '高' ? 'var(--red)' : '#f0b429';
-            h += '<div class="dr-note">· <span style="color:' + pc + ';font-weight:600">[' + esc(r.prob) + '×' + esc(r.impact) + ']</span> ' + esc(r.desc) + '</div>';
+            s += '<div class="dr-note">· <span style="color:' + pc + ';font-weight:600">[' + esc(r.prob) + '×' + esc(r.impact) + ']</span> ' + esc(r.desc) + '</div>';
           });
-        }
+          return s;
+        });
         if (syn.disclaimer) h += '<div class="dr-tag" style="margin-top:8px">' + esc(syn.disclaimer) + '</div>';
       }
       el.innerHTML = h;
-      if (!ca.length) drLoadCrossAnalysis();
+      // cross_analysis 为空时，用公开新闻池 × 板块资金流自动版补位
+      if (caEmpty) drLoadCrossAnalysis();
     })
     .catch(err => { el.innerHTML = '<p class="dr-note">投喂复盘加载失败：' + err + '</p>'; });
 }
@@ -4069,7 +4130,7 @@ function drDeriveSections(d) {
       // 标题日期动态化：指引日 = 复盘日下一交易日（8/26 复盘 → 8/27 指引）
       const gd = drNextBizDay(d && d.date ? d.date : '');
       const gdShort = gd.slice(5).replace('-', '/');
-      if (h7.textContent.indexOf('（' + gdShort) < 0) h7.textContent = '7 · 次日开盘指引（' + gdShort + '）';
+      if (h7.textContent.indexOf('（' + gdShort) < 0) h7.textContent = '7.3 · 次日开盘指引（' + gdShort + '）';
     }
     if (h7 && h7.nextElementSibling && h7.nextElementSibling.querySelector) {
       const card = h7.nextElementSibling;
