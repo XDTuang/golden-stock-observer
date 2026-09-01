@@ -45,26 +45,31 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # 🔴 2026-09-01 修复：原 add 列表漏了 deploy/data/daily_review/market.json。
-          #   fetch_daily_review_market.py 实际写两个文件（OUT 与 deploy 副本，见脚本 244/250 行），
-          #   漏 add 的那个每次都留下 unstaged changes → rebase 必然失败 → 被 || true 吞掉
-          #   → push 被拒。副作用：deploy 副本长期不同步。
+          # 🔴 2026-09-01 二次修复：改为「先拉平远端，再 commit，后 push」的治本顺序。
+          #   旧顺序「先 commit 后 rebase」有两个致命点：
+          #   ① fetch 产物是未提交改动，`git pull --rebase` 遇到 unstaged changes 直接失败
+          #      （cannot pull with rebase: You have unstaged changes）——8/31 曾因此连挂 3 天；
+          #   ② for 循环 rebase 3 次后无成功判断直接 push，rebase 全败时 push 必被拒 → 步骤红
+          #      ——9/1 13:01 实测仍 failure（Commit & Push 步骤），连续 4 天失败根因即此。
+          #   新逻辑：stash 藏起 fetch 产物 → 循环拉平远端（重试 5 次）→ stash pop 恢复
+          #   → commit → push（此时基线=远端最新，push 必然 fast-forward）。
+          git stash push --include-untracked -m "market-update-$(date +%H%M)" 2>/dev/null || true
+          for i in 1 2 3 4 5; do
+            if git pull --rebase origin main; then break; fi
+            echo "⚠️ rebase 失败（第 $i 次），abort 后退避重试"
+            git rebase --abort 2>/dev/null || true
+            sleep 5
+          done
+          # 恢复 fetch 产物；若 pop 冲突（数据文件与远端并发修改），明确标红而非静默吞掉
+          git stash pop 2>/dev/null || { echo "❌ stash pop 冲突，请手动解决：git stash list"; exit 1; }
+          # 明确 add 列表 + 兜底 -A，确保不遗漏（fetch 脚本写根目录 + deploy 副本两份）
           git add data/daily_review/market.json deploy/data/daily_review/market.json \
                   data/daily_review/analysis.html output/kr_stocks.json deploy/output/kr_stocks.json
-          # 兜底：若脚本还写了别的文件，一并暂存，确保 rebase 时工作区干净
           git add -A
           if ! git diff --cached --quiet; then
             git commit -m "daily-review: update market quotes + 三星/海力士收盘 $(date +%F)"
-            # 防冲突：本机兜底/其它 workflow 并发提交。
-            # ⚠️ 原 `git pull --rebase origin main || true` 会静默吞掉 rebase 失败，
-            #    改为失败则 abort + 退避重试，最多 3 次。
-            for i in 1 2 3; do
-              if git pull --rebase origin main; then break; fi
-              echo "⚠️ rebase 失败（第 $i 次），abort 后退避重试"
-              git rebase --abort 2>/dev/null || true
-              sleep 15
-            done
-            git push
+            git push || { echo "❌ push 被拒，下次调度会自愈重试"; exit 1; }
+            echo "✅ push 成功"
           else
             echo "no changes (market.json unchanged)"
           fi
