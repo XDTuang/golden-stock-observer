@@ -387,6 +387,8 @@ def main():
     out_dir = DEFAULT_OUT
     if "--out" in sys.argv:
         out_dir = sys.argv[sys.argv.index("--out") + 1]
+    # 2026-09-01：`--no-note` 时不输出封面「隐私处理说明」（用户要求脱敏版不带备注）
+    no_note = "--no-note" in sys.argv
 
     ana = load(ANA)
     feed = load(FEED)
@@ -462,12 +464,13 @@ def main():
     复盘日 {review_date} ｜ 指引日 {guide_date}<br>
     生成时间 {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}
   </div>
+  {'' if no_note else '''
   <div class="warn">
     <b>隐私处理说明</b><br>
     本版本为对外分享版，已移除：数据自检区（内部运维信息）、投喂素材清单（信息渠道）、
     内部脚本名与仓库路径。<br>
     保留：全部行情研判、产业链分析、AI 综合推演内容。
-  </div>
+  </div>'''}
 </div>
 {body_html}
 </body></html>"""
