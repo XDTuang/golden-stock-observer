@@ -69,7 +69,10 @@ jobs:
           fi
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-          # 2026-09-01：同步 deploy 副本（本地预览根目录是 deploy/，不同步会导致本地看不到更新）
+          # 2026-09-01：同步 deploy 副本。
+          # 本地预览根目录是 deploy/（不是项目根），若只 add 不 cp → 本地预览永远看不到更新。
+          # 实测：13:15 触发成功后线上已 13:15:30，但 deploy/realtime.json 还是 10:05（陈旧 3 小时）。
+          cp -f realtime.json deploy/realtime.json 2>/dev/null || true
           git add -f realtime.json
           [ -f deploy/realtime.json ] && git add -f deploy/realtime.json || true
           if git diff --cached --quiet; then
