@@ -123,26 +123,23 @@ try:
 except Exception:
     print('0')
 ")
-  # 阈值：上午兜底要求云端 >= 今日 09:00；下午兜底要求 >= 今日 12:30
-  # ── 云端 vs 本地的职责边界（2026-09-01 用户明确）──────────────────
-  #   云端主力（.github/workflows/realtime-monitor.yml）每交易日 8 个时间点：
-  #       9:45  10:15  10:45  11:15   13:15  13:45  14:15  14:45
-  #   本地兜底（本脚本，plist 调度）严格一天 2 次：10:30 / 14:30
-  #   阈值推导：
-  #     10:30 兜底 → 云端 9:45 首档已跑 → 阈值 09:00 可正确判定云端是否成功
-  #     14:30 兜底 → 云端 13:15 已跑（11:30-13:00 午休不产数据）→ 阈值 12:30 同理
-  #   云端成功则本脚本直接 exit 0，不重复抓取、不重复推送。
-  HOUR_NUM=$(date '+%H')
-  THRESHOLD_EPOCH=$("$PYTHON" -c "
-import datetime
-h = '09:00:00' if int('$HOUR_NUM') < 12 else '12:30:00'
-print(int(datetime.datetime.strptime('$TODAY '+h,'%Y-%m-%d %H:%M:%S').timestamp()))
-")
-  if [ "$CLOUD_EPOCH" -ge "$THRESHOLD_EPOCH" ]; then
-    echo "ℹ️  云端已成功更新（data_date=$CLOUD_DATE, updated_at=$CLOUD_TS），本地兜底跳过"
+  # ── 阈值：新鲜度判据（2026-09-01 修复，替代 09:00/12:30 旧判据）────────────────
+  # 🔴 旧判据「云端 >= 今日09:00（上午）/ 12:30（下午）」有致命漏洞：
+  #    它把「今天写过数据」当成「最近档成功」。9/1 事故实证：
+  #    09:32 本地兜底自己提交了一条 → 10:30 兜底看到 09:32>=09:00
+  #    → 误判云端健康 → 跳过补抓 → 而云端 09:45/10:15/10:45/11:15 全静默
+  #    → 数据从 09:32 断档到 13:15 手动才恢复。
+  # 新判据：云端 updated_at 距 now ≤ 30 分钟才算健康（云端 8 档间隔 ≤30min，
+  #    兜底目的是「数据新鲜」，30 分钟新鲜度直接可判）。
+  #    10:30 兜底：云端最新在 10:00 之后 → 跳过；否则补抓。
+  #    14:30 兜底：云端最新在 14:00 之后 → 跳过；否则补抓。
+  NOW_EPOCH=$(date +%s)
+  FRESH_LIMIT=$((NOW_EPOCH - 1800))
+  if [ "$CLOUD_EPOCH" -ge "$FRESH_LIMIT" ]; then
+    echo "ℹ️  云端 realtime.json 最近 30 分钟内已更新（$CLOUD_TS），本地兜底跳过"
     exit 0
   fi
-  echo "ℹ️  云端当日更新已过期/缺失（updated_at=$CLOUD_TS），执行本地兜底..."
+  echo "⚠️  云端已 $(( (NOW_EPOCH - CLOUD_EPOCH) / 60 )) 分钟未更新（updated_at=$CLOUD_TS），执行本地兜底补抓..."
 else
   echo "ℹ️  云端 realtime.json 非当日数据（data_date=${CLOUD_DATE:-空}），执行本地兜底..."
 fi
