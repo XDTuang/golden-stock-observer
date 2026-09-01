@@ -3896,7 +3896,7 @@ function drDeriveSections(d) {
       // 标题日期动态化：指引日 = 复盘日下一交易日（8/26 复盘 → 8/27 指引）
       const gd = drNextBizDay(d && d.date ? d.date : '');
       const gdShort = gd.slice(5).replace('-', '/');
-      if (h7.textContent.indexOf('（' + gdShort) < 0) h7.textContent = '7 · 次日开盘指引（' + gdShort + '）';
+      if (h7.textContent.indexOf('（' + gdShort) < 0) h7.textContent = '7.3 · 次日开盘指引（' + gdShort + '）';
     }
     if (h7 && h7.nextElementSibling && h7.nextElementSibling.querySelector) {
       const card = h7.nextElementSibling;
@@ -3942,7 +3942,7 @@ function drLoadObserveStocks() {
         .find(h => /重点观测股/.test(h.textContent || ''));
       if (h13) {
         const nd = drNextBizDay(date).slice(5).replace('-', '/');
-        h13.textContent = '1.3 · 重点观测股（' + items.length + ' 只 · ' +
+        h13.textContent = '7.2 · 重点观测股（' + items.length + ' 只 · ' +
           date.slice(5).replace('-', '/') + ' 收盘 + ' + nd + ' 推演）';
       }
     }
