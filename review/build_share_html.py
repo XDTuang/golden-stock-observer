@@ -323,6 +323,21 @@ def build_feed_html(feed):
 
 
 CSS = """
+/* ── 主题变量桥接（2026-09-01 补）────────────────────────────────────
+   analysis.html 的各段内容大量使用 var(--bg-subtle) / var(--green) 等变量，
+   但分享版有自己的浅色打印样式，未定义这些变量 → 色块边框、背景、语义色全部失效，
+   退化成无色裸文本（实测 85 处 var() 引用、0 处 :root 定义）。
+   这里补一套「打印友好」取值：
+     · 底色/边框 取主站**亮色主题**（浅底才适合打印）
+     · 语义色   取主站**暗色主题**的高饱和值
+       （亮色主题的 #ff7b7b / #4ade80 / #63b3ed 太淡，打印几乎看不出）
+   ──────────────────────────────────────────────────────────────── */
+:root {
+  --bg-card: #ffffff;    --bg-subtle: #f0f2f5;   --border: #e8ecf1;
+  --text: #1a1d2e;       --text-muted: #64748b;  --text-secondary: #334155;
+  --red: #e53e3e;        --green: #22a861;       --blue: #3182ce;
+  --gold: #d69e2e;       --orange: #ed8936;      --accent: #b8860b;
+}
 @page { size: A4; margin: 16mm 14mm 18mm 14mm;
   @bottom-center { content: counter(page) " / " counter(pages);
     font-family: "PingFang SC", sans-serif; font-size: 9pt; color: #888; }
@@ -347,6 +362,10 @@ body { font-family: "PingFang SC", "Hiragino Sans GB", "Heiti SC", sans-serif;
 .dr-note { font-size: 10pt; color: #334155; margin: 2mm 0; }
 .dr-note b { color: #0f172a; }
 .dr-tag { font-size: 9pt; color: #64748b; }
+/* 语义色块统一字号：已改造段落（0/0.5/1/4/5）内联写了 12.5px 会优先；
+   未改造段（2/3/6/7.1/7.2/7.3）没写，会继承 body 10.5pt=14px，
+   与 12.5px 混用差 1.5px。此兜底规则特异性(0,1,1) > .dr-note(0,1,0)，两��都能覆盖。 */
+div[style*="border-left"] { font-size: 12.5px; line-height: 1.6; }
 .disclaimer { margin-top: 5mm; padding: 3mm; background: #f1f5f9;
   border-left: 3px solid #94a3b8; font-size: 9pt; color: #475569; }
 table.dr-tbl { width: 100%; border-collapse: collapse; font-size: 9pt; margin: 3mm 0; }
