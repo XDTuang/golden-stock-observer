@@ -30,6 +30,21 @@ echo "⏱ $(date '+%Y-%m-%d %H:%M:%S') 开始"
 # ── 补推函数：rebase + push（失败自动重试 1 轮；rebase 冲突则保留本地 commit 并明确告警）──
 try_push() {
   local i
+  # ── rebase 前必须工作区干净 ──────────────────────────────────────────
+  # 🔴 2026-09-01 修复：git rebase 要求无 unstaged changes。
+  #    此前只要本机有任何无关改动（如改了 review/build_share_html.py 未提交），
+  #    rebase 就报 "cannot rebase: You have unstaged changes" → 推送被拒
+  #    → 兜底数据抓到了却推不上去（stderr 里 19 条同样报错）。
+  #    现改为：rebase/push 前自动 stash 无关改动，事后 pop 恢复，
+  #    兜底不再被其他任务的残留产物阻塞。
+  local STASHED=0
+  if ! git diff --quiet 2>/dev/null || [ -n "$(git ls-files --others --exclude-standard 2>/dev/null)" ]; then
+    if git stash push --include-untracked -m "realtime-fallback-autostash" >/dev/null 2>&1; then
+      STASHED=1
+      echo "ℹ️  已临时 stash 无关改动（含 untracked），推送后自动恢复"
+    fi
+  fi
+
   for i in 1 2; do
     git fetch origin --quiet 2>/dev/null || true
     if ! git merge-base --is-ancestor HEAD origin/main 2>/dev/null; then
@@ -38,20 +53,23 @@ try_push() {
         local LOCAL_SHA
         LOCAL_SHA=$(git rev-parse --short HEAD 2>/dev/null || echo "?")
         git rebase --abort 2>/dev/null || true
-        echo "⚠️  rebase 失败：工作区可能存在其他任务未提交产物，本地提交（$LOCAL_SHA）未推送。"
+        echo "⚠️  rebase 失败：本地提交（$LOCAL_SHA）未推送。"
         echo "   ⚠️  请稍后手动处理：git fetch && git rebase origin/main && git push"
+        [ "$STASHED" = "1" ] && git stash pop 2>/dev/null || true
         return 1
       fi
     fi
     local PUSH_OUT=/tmp/lhb_push_$$.log
     if git push origin main >"$PUSH_OUT" 2>&1; then
       rm -f "$PUSH_OUT"
+      [ "$STASHED" = "1" ] && git stash pop 2>/dev/null && echo "ℹ️  已恢复 stash 的改动"
       return 0
     else
       echo "⚠️  推送被拒（第 $i 轮）："; tail -2 "$PUSH_OUT"; rm -f "$PUSH_OUT"
     fi
   done
   echo "⚠️  推送连续失败，本地提交（$(git rev-parse --short HEAD)）待人工处理"
+  [ "$STASHED" = "1" ] && git stash pop 2>/dev/null || true
   return 1
 }
 
@@ -64,6 +82,12 @@ fi
 
 # ── 1. 午休固化（保留：11:30-13:00 且本地 realtime.json 仍为昨日 → 强制固化上午快照）──
 HOUR_MIN=$(date '+%H%M')
+# 🔴 2026-09-01 修复：bash 的 [[ N -ge M ]] 会把 **以 0 开头的数字当八进制**。
+#    上午 09:02 时 $(date '+%H%M') 输出 "0902"，9 不是合法八进制数字 →
+#    报错 "[[: 0902: value too great for base"，整个判断失效
+#    （stderr 里 08:28/08:31/08:45/08:58/09:02/09:32 全部中招）。
+#    用 10# 前缀强制十进制解析。
+HOUR_MIN_DEC=$((10#$HOUR_MIN))
 CUR_DATE=$("$PYTHON" -c "
 import json
 try:
@@ -72,7 +96,7 @@ try:
 except Exception:
     print('')
 " 2>/dev/null)
-if [[ "$HOUR_MIN" -ge 1130 && "$HOUR_MIN" -lt 1300 && "$CUR_DATE" != "$TODAY" ]]; then
+if [[ "$HOUR_MIN_DEC" -ge 1130 && "$HOUR_MIN_DEC" -lt 1300 && "$CUR_DATE" != "$TODAY" ]]; then
   echo "ℹ️  午休时段且 realtime.json 仍为 $CUR_DATE（旧数据），强制固化上午收盘快照..."
   "$PYTHON" fetch_realtime.py --out realtime.json --force 2>&1 | tail -6
 fi
@@ -100,7 +124,14 @@ except Exception:
     print('0')
 ")
   # 阈值：上午兜底要求云端 >= 今日 09:00；下午兜底要求 >= 今日 12:30
-  # （云端 11:30 成功后午休不产数据，14:15 时已过 2h45m → 视为失效，触发本地兜底）
+  # ── 云端 vs 本地的职责边界（2026-09-01 用户明确）──────────────────
+  #   云端主力（.github/workflows/realtime-monitor.yml）每交易日 8 个时间点：
+  #       9:45  10:15  10:45  11:15   13:15  13:45  14:15  14:45
+  #   本地兜底（本脚本，plist 调度）严格一天 2 次：10:30 / 14:30
+  #   阈值推导：
+  #     10:30 兜底 → 云端 9:45 首档已跑 → 阈值 09:00 可正确判定云端是否成功
+  #     14:30 兜底 → 云端 13:15 已跑（11:30-13:00 午休不产数据）→ 阈值 12:30 同理
+  #   云端成功则本脚本直接 exit 0，不重复抓取、不重复推送。
   HOUR_NUM=$(date '+%H')
   THRESHOLD_EPOCH=$("$PYTHON" -c "
 import datetime
@@ -156,6 +187,11 @@ if git diff --quiet realtime.json; then
   exit 0
 fi
 git add -f realtime.json
+# 🔴 2026-09-01：同步 deploy 副本（本地预览根目录是 deploy/，不同步就看不到更新）。
+#    与 workflow 里 daily-review-market.yml 犯的是同一个错（脚本写了两份却只 add 一份）。
+#    注意：只 add 不 cp 是没用的——必须先真正把文件同步过去。
+cp -f realtime.json deploy/realtime.json 2>/dev/null || true
+if [ -f deploy/realtime.json ]; then git add -f deploy/realtime.json; fi
 git commit -m "实时盯盘数据(本地兜底): $(date '+%Y-%m-%d %H:%M')" -q
 echo "✅ 实时数据已提交到本地"
 
