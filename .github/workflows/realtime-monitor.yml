@@ -1,11 +1,14 @@
 name: 实时盯盘盘中更新
 on:
   schedule:
-    # ── A股交易日 9:30-15:00 每 30 分钟自动刷新（UTC = 北京 - 8h）──
-    # 半点：UTC 01:30-06:30 = 北京 09:30,10:30,11:30,12:30,13:30,14:30
-    - cron: '30 1-6 * * 1-5'
-    # 整点：UTC 02:00-07:00 = 北京 10:00,11:00,12:00,13:00,14:00,15:00
-    - cron: '0 2-7 * * 1-5'
+    # ── A股交易日盘中自动刷新（UTC = 北京 - 8h）──
+    # ⚠️ 2026-09-01 事故：原用整点/半点 '30 1-6' + '0 2-7'，
+    #   实测 9/1 开盘后一次都没触发（8/31 16:02 之后零运行）。
+    #   根因：GitHub Actions 在整点/半点是全球高峰，排队后被丢弃或延迟数小时；
+    #   延迟到收盘后才补跑时脚本已判定"非盘中" → 直接跳过 → 全天无数据。
+    # 对策：分钟位避开整点/半点（取 17/47），这是 GitHub 官方建议的做法。
+    - cron: '17,47 1-6 * * 1-5'   # 北京 09:17 ~ 14:47，每 30 分钟一次
+    - cron: '2 7 * * 1-5'         # 北京 15:02 收盘快照（同样避开整点）
     # 说明：工作日(1-5)触发；周末/法定节假日由 fetch_realtime.py 内部交易日历拦截；
     #       11:30-13:00 午休由脚本状态机拦截（不写文件、不重复推送）。
   workflow_dispatch:  # 手动触发按钮（用于首次测试 / 补刷）
@@ -51,13 +54,24 @@ jobs:
           fi
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
+          # 2026-09-01：同步 deploy 副本（本地预览根目录是 deploy/，不同步会导致本地看不到更新）
           git add -f realtime.json
+          [ -f deploy/realtime.json ] && git add -f deploy/realtime.json || true
           if git diff --cached --quiet; then
             echo "ℹ️ 数据无变化，跳过推送"
           else
             git commit -m "实时盯盘数据: $(date '+%Y-%m-%d %H:%M')"
-            # 防冲突：本机兜底/其它 workflow 并发提交时避免 push 失败
-            git pull --rebase origin main || true
+            # 防冲突：本机兜底/其它 workflow 并发提交。
+            # ⚠️ 原写法 `git pull --rebase origin main || true` 会把 rebase 失败静默吞掉，
+            #    带着未同步的工作区直接 push → non-fast-forward 被拒 → 静默失败零告警
+            #    （8/31 Daily Golden Stock Update 连续 3 次就是这样挂的）。
+            #    改为：失败则 abort + 退避重试，最多 3 次。
+            for i in 1 2 3; do
+              if git pull --rebase origin main; then break; fi
+              echo "⚠️ rebase 失败（第 $i 次），abort 后退避重试"
+              git rebase --abort 2>/dev/null || true
+              sleep 15
+            done
             git push origin main
             echo "✅ 已推送 realtime.json"
           fi

@@ -155,8 +155,16 @@ jobs:
             echo "无更改，跳过推送"
           else
             git commit -m "数据更新: $(date '+%Y-%m-%d %H:%M') (GitHub Actions)"
-            # 防冲突：本机 launchd 兜底 / 其它 workflow 可能在此期间推过提交
-            git pull --rebase origin main || true
+            # 防冲突：本机 launchd 兜底 / 其它 workflow 可能在此期间推过提交。
+            # ⚠️ 原 `git pull --rebase origin main || true` 会静默吞掉 rebase 失败
+            #    （8/31 17:14 / 19:14 / 20:24 连续 3 次就是这样挂的，无告警）。
+            #    改为失败则 abort + 退避重试，最多 3 次。
+            for i in 1 2 3; do
+              if git pull --rebase origin main; then break; fi
+              echo "⚠️ rebase 失败（第 $i 次），abort 后退避重试"
+              git rebase --abort 2>/dev/null || true
+              sleep 15
+            done
             git push origin main
             echo "✅ 主站已推送"
           fi

@@ -45,11 +45,25 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/daily_review/market.json data/daily_review/analysis.html output/kr_stocks.json deploy/output/kr_stocks.json
+          # 🔴 2026-09-01 修复：原 add 列表漏了 deploy/data/daily_review/market.json。
+          #   fetch_daily_review_market.py 实际写两个文件（OUT 与 deploy 副本，见脚本 244/250 行），
+          #   漏 add 的那个每次都留下 unstaged changes → rebase 必然失败 → 被 || true 吞掉
+          #   → push 被拒。副作用：deploy 副本长期不同步。
+          git add data/daily_review/market.json deploy/data/daily_review/market.json \
+                  data/daily_review/analysis.html output/kr_stocks.json deploy/output/kr_stocks.json
+          # 兜底：若脚本还写了别的文件，一并暂存，确保 rebase 时工作区干净
+          git add -A
           if ! git diff --cached --quiet; then
             git commit -m "daily-review: update market quotes + 三星/海力士收盘 $(date +%F)"
-            # 2026-08-31 事故：本机兜底/其它 workflow 并发提交导致 push 冲突失败 → 加 rebase 防冲突
-            git pull --rebase origin main || true
+            # 防冲突：本机兜底/其它 workflow 并发提交。
+            # ⚠️ 原 `git pull --rebase origin main || true` 会静默吞掉 rebase 失败，
+            #    改为失败则 abort + 退避重试，最多 3 次。
+            for i in 1 2 3; do
+              if git pull --rebase origin main; then break; fi
+              echo "⚠️ rebase 失败（第 $i 次），abort 后退避重试"
+              git rebase --abort 2>/dev/null || true
+              sleep 15
+            done
             git push
           else
             echo "no changes (market.json unchanged)"
