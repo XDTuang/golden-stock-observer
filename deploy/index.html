@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>兜金观测 — 量化信号池 v2026-09-012026-08-29</title>
+<title>兜金观测 — 量化信号池 v2026-09-022026-08-29</title>
 <!-- 登录保护：内嵌覆盖层，不跳转 -->
 <script>
 (function(){
@@ -1511,6 +1511,7 @@ html { scroll-behavior: smooth; }
 
 
 
+
 <!-- Tab: 每日复盘（盘前简报 + 完整复盘合一；行情=云端08:15自动，分析=本机agent） -->
 <div class="tab-content" id="tab-dailyreview">
 <style>
@@ -1519,7 +1520,6 @@ html { scroll-behavior: smooth; }
 .dr-tbl th,.dr-tbl td{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
 .dr-tbl th:first-child,.dr-tbl td:first-child{text-align:left}
 .dr-tbl th{color:var(--text-muted);font-weight:600}
-.dr-tbl td.dr-wrap{white-space:normal;word-break:break-word;overflow-wrap:anywhere;text-align:left}
 .dr-up{color:var(--red)}.dr-dn{color:var(--green)}
 .dr-tag{font-size:11px;color:var(--text-muted)}
 .dr-note{font-size:12.5px;color:var(--text-secondary);margin:6px 0}
@@ -3516,6 +3516,7 @@ function drFeedModalInit() {
 
 
 
+
 // ===== 每日复盘 Tab =====
 function renderDailyReview() {
   if (window._drInit) return; window._drInit = true;
@@ -3524,7 +3525,7 @@ function renderDailyReview() {
   const loadAna = (d) => {
     if (!ana) return;
     const q = (d && d.quotes) || {};
-    fetch('./data/daily_review/analysis.html?_=' + Date.now(), { cache: 'no-store' }).then(r => {
+    fetch('./data/daily_review/analysis.html', { cache: 'no-store' }).then(r => {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.text();
     }).then(t => {
@@ -3546,7 +3547,7 @@ function renderDailyReview() {
     });
   };
   if (mkt) {
-    fetch('./data/daily_review/market.json?_=' + Date.now(), { cache: 'no-store' }).then(r => {
+    fetch('./data/daily_review/market.json', { cache: 'no-store' }).then(r => {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.json();
     }).then(d => {
@@ -3897,7 +3898,7 @@ function drDeriveSections(d) {
       // 标题日期动态化：指引日 = 复盘日下一交易日（8/26 复盘 → 8/27 指引）
       const gd = drNextBizDay(d && d.date ? d.date : '');
       const gdShort = gd.slice(5).replace('-', '/');
-      if (h7.textContent.indexOf('（' + gdShort) < 0) h7.textContent = '7.3 · 次日开盘指引（' + gdShort + '）';
+      if (h7.textContent.indexOf('（' + gdShort) < 0) h7.textContent = '7 · 次日开盘指引（' + gdShort + '）';
     }
     if (h7 && h7.nextElementSibling && h7.nextElementSibling.querySelector) {
       const card = h7.nextElementSibling;
@@ -3943,7 +3944,7 @@ function drLoadObserveStocks() {
         .find(h => /重点观测股/.test(h.textContent || ''));
       if (h13) {
         const nd = drNextBizDay(date).slice(5).replace('-', '/');
-        h13.textContent = '7.2 · 重点观测股（' + items.length + ' 只 · ' +
+        h13.textContent = '1.3 · 重点观测股（' + items.length + ' 只 · ' +
           date.slice(5).replace('-', '/') + ' 收盘 + ' + nd + ' 推演）';
       }
     }
