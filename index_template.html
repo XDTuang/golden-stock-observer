@@ -1517,13 +1517,34 @@ html { scroll-behavior: smooth; }
 <style>
 .dr-h{font-size:14px;font-weight:600;color:var(--text);margin:12px 0 4px}
 .dr-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
-.dr-tbl th,.dr-tbl td{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
+/* 🔴 2026-09-02 治本（终局版）：td 默认自动换行——删 nowrap + 加 word-break/overflow-wrap/min-width:0。
+   原 `.dr-tbl td{...;white-space:nowrap}` 是 7.1/7.2 表格内容溢出屏幕的根因，
+   之前每段手写时给 td 加 `class="dr-wrap"` 但 CSS 里从未定义 .dr-wrap 类（= 装饰性标记，无效），
+   导致每次推演都重复犯"td 长内容撑破右侧"的坑。治本：所有 td 默认 wrap，
+   不再依赖手工 class。dr-wrap 仍作可选显式标记保留，保留向后兼容。 */
+.dr-tbl th,.dr-tbl td{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;word-break:break-word;overflow-wrap:anywhere;min-width:0}
 .dr-tbl th:first-child,.dr-tbl td:first-child{text-align:left}
 .dr-tbl th{color:var(--text-muted);font-weight:600}
+/* 显式 wrap 类（向后兼容旧 HTML；CSS 治本后等价于 td 默认行为，可保留也可逐步移除） */
+.dr-tbl td.dr-wrap{white-space:normal}
 .dr-up{color:var(--red)}.dr-dn{color:var(--green)}
-.dr-tag{font-size:11px;color:var(--text-muted)}
+.dr-tag{font-size:12.5px;font-weight:600;color:var(--text);margin:8px 0 4px}
 .dr-note{font-size:12.5px;color:var(--text-secondary);margin:6px 0}
+/* 🔴 2026-09-02 design token 化（用户反馈"字号随心所欲、颜色逻辑混乱"）：
+   原 .dr-tag=11px 灰色——视觉上比下面 12.5px 列表项还小、还暗，导致"标题比内容小"。
+   推演手写时颜色/字号每次都凭印象，0 token 约束 → 必然混乱。
+   治本：dr-tag 升级为 12.5px 加粗主文字色（与列表项同级），dr-note 保持 12.5px。
+   新增语义颜色 token class：dk-main（主线 红）/ dk-caution（谨慎 橙）/
+   dk-risk（风险 红）/ dk-neutral（中性 灰）/ dk-data（数据 蓝）。
+   所有推演统一用这些 class，禁止内联 color（自检脚本第 6 项会拦截）。
+   字色映射遵循 A 股惯例（涨红跌绿），符合用户认知。 */
+.dk-main{color:var(--red)}.dk-caution{color:#d69e2e}.dk-risk{color:var(--red);font-weight:700}.dk-neutral{color:var(--text-muted)}.dk-data{color:var(--blue)}
 .dr-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:12px 0}
+.dr-card ul{padding-left:20px;margin:4px 0}
+.dr-card ul li{font-size:12.5px;line-height:1.6;margin:4px 0;color:var(--text)}
+.dr-card ul li b{color:var(--text);font-weight:700}
+.dr-card p{font-size:12.5px;line-height:1.6;margin:4px 0;color:var(--text)}
+.dr-card p b{color:var(--text);font-weight:700}
 </style>
 <div class="dr-card" id="drMarket"><p class="dr-note">行情加载中…</p></div>
 <div class="dr-card" id="drAnalysis"><p class="dr-note">分析区加载中…</p></div>
