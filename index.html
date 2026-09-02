@@ -3524,7 +3524,14 @@ function renderDailyReview() {
   const loadAna = (d) => {
     if (!ana) return;
     const q = (d && d.quotes) || {};
-    fetch('./data/daily_review/analysis.html', { cache: 'no-store' }).then(r => {
+    // 🔴 2026-09-02 治本修复：加 ?_=${Date.now()} 强制绕 CDN 边缘缓存（Fastly）
+    //   `cache: 'no-store'` 只绕浏览器缓存，CDN 边缘节点仍命中旧 URL 资源。
+    //   加时间戳后每次请求 URL 不同 → CDN 视为新资源 → 强制回源 → 拿到最新。
+    //   8/30 防回退漏修了这两个核心数据文件，今天实测用户访问 github.io 时
+    //   CDN 返回旧 analysis.html（8/28/8/31 硬编码）+ 旧 index.html（JS 函数可能旧），
+    //   导致 3 段双日表不滚动。同项目其他 fetch（cross_analysis/report_analysis）
+    //   早已加时间戳，唯独这两个忘了。
+    fetch('./data/daily_review/analysis.html?_=' + Date.now(), { cache: 'no-store' }).then(r => {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.text();
     }).then(t => {
@@ -3546,7 +3553,7 @@ function renderDailyReview() {
     });
   };
   if (mkt) {
-    fetch('./data/daily_review/market.json', { cache: 'no-store' }).then(r => {
+    fetch('./data/daily_review/market.json?_=' + Date.now(), { cache: 'no-store' }).then(r => {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.json();
     }).then(d => {
