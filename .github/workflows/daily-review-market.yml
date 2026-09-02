@@ -45,37 +45,33 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # 🔴 2026-09-01 二次修复：改为「先拉平远端，再 commit，后 push」的治本顺序。
-          #   旧顺序「先 commit 后 rebase」有两个致命点：
-          #   ① fetch 产物是未提交改动，`git pull --rebase` 遇到 unstaged changes 直接失败
-          #      （cannot pull with rebase: You have unstaged changes）——8/31 曾因此连挂 3 天；
-          #   ② for 循环 rebase 3 次后无成功判断直接 push，rebase 全败时 push 必被拒 → 步骤红
-          #      ——9/1 13:01 实测仍 failure（Commit & Push 步骤），连续 4 天失败根因即此。
-          #   新逻辑：stash 藏起 fetch 产物 → 循环拉平远端（重试 5 次）→ stash pop 恢复
-          #   → commit → push（此时基线=远端最新，push 必然 fast-forward）。
-          git stash push --include-untracked -m "market-update-$(date +%H%M)" 2>/dev/null || true
+          # 🔴 2026-09-02 三次修复：去掉 stash 机制，改「先 add+commit → rebase → push」。
+          #   12:25 schedule run（已含 fbeb15a 的 git add -f -u 修复）仍失败在 Commit & Push，
+          #   stash 机制是最大疑点（无法取日志，逻辑审计）：
+          #   ① fetch 无新数据时 `git stash push` 只保存空 stash → 下方 `git stash pop`
+          #      报 "No stash entries found" → exit 1 → **数据无变化也标红**；
+          #   ② 远端并发提交数据文件时 stash pop 必冲突 → exit 1。
+          #   ③ stash pop 失败后产物仍藏在 stash 里，数据丢失且下次调度叠加。
+          #   新逻辑（无 stash，全流程幂等）：
+          #     先 git add 全量 fetch 产物（含 deploy 副本）→ commit（工作区自此干净）→
+          #     rebase 循环（无未提交改动可挡，不会重现 8/31 的 unstaged changes 挂点）→
+          #     push（基线=远端最新，fast-forward 必然成功）。
+          #   add 兜底用 `git add -f -u`：只处理已 tracked 文件，遇 .gitignore 的
+          #   untracked 新文件不报错（09:17 那次 git add -A 被 ignore 挡死 exit 1 的教训）。
+          #   「no changes」分支显式 exit 0 → 数据无变化时步骤绿（修掉 ①）。
+          git add data/daily_review/market.json deploy/data/daily_review/market.json \
+                  data/daily_review/analysis.html output/kr_stocks.json deploy/output/kr_stocks.json
+          git add -f -u
+          if git diff --cached --quiet; then
+            echo "no changes (market.json unchanged)"
+            exit 0
+          fi
+          git commit -m "daily-review: update market quotes + 三星/海力士收盘 $(date +%F)"
           for i in 1 2 3 4 5; do
             if git pull --rebase origin main; then break; fi
             echo "⚠️ rebase 失败（第 $i 次），abort 后退避重试"
             git rebase --abort 2>/dev/null || true
             sleep 5
           done
-          # 恢复 fetch 产物；若 pop 冲突（数据文件与远端并发修改），明确标红而非静默吞掉
-          git stash pop 2>/dev/null || { echo "❌ stash pop 冲突，请手动解决：git stash list"; exit 1; }
-          # 明确 add 列表 + 兜底强加：daily-review-market 维护 deploy/ + output/ 副本，
-          # 但 .gitignore 第 32 行写了 `deploy/`，普通 `git add -A` 对未被 -f 单独 track 过的
-          # deploy/output 下新文件会 ignore 跳过 + 返回非 0 exit code → 整个 step 红。
-          # 9/2 09:17/09:24 两次 workflow_dispatch run 死在这一步（截图错误：
-          # "The following paths are ignored by one of your .gitignore files: deploy, output"）。
-          # 修复：用 `git add -f -u` 兜底（-u 只更新已 tracked 文件，-f 强加 .gitignore 阻挡的 tracked 文件），
-          # 既不引入 untracked 临时文件，又保证 deploy/output 副本 100% push 上去。
-          git add data/daily_review/market.json deploy/data/daily_review/market.json \
-                  data/daily_review/analysis.html output/kr_stocks.json deploy/output/kr_stocks.json
-          git add -f -u  # 🔴 2026-09-02 修复：去掉 -A 改 -f -u（防 gitignore 阻挡 + 不引入临时文件）
-          if ! git diff --cached --quiet; then
-            git commit -m "daily-review: update market quotes + 三星/海力士收盘 $(date +%F)"
-            git push || { echo "❌ push 被拒，下次调度会自愈重试"; exit 1; }
-            echo "✅ push 成功"
-          else
-            echo "no changes (market.json unchanged)"
-          fi
+          git push || { echo "❌ push 被拒，下次调度会自愈重试"; exit 1; }
+          echo "✅ push 成功"
