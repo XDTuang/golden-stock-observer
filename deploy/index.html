@@ -3378,10 +3378,14 @@ function drLoadFeedReview() {
           arr.forEach(t => {
             if (typeof t === 'string') { s += '<div class="dr-note" style="margin:4px 0">' + esc(t) + '</div>'; return; }
             const w = t.weight || '';
-            const wc = w === '最强' ? 'var(--red)' : (w === '强' ? '#f0b429' : 'var(--text-muted)');
+            const wc = w === '最强' ? 'var(--red)' : (w === '强' ? '#f0b429' : (w === '弱' ? '#94a3b8' : 'var(--text-muted)'));
+            // 🔴 2026-09-02 治标：weight 为空时整段不渲染方括号（避免显示 `[]` 空牌）
+            const wtBadge = w ? (' <span style="color:' + wc + '">[' + esc(w) + ']</span>') : '';
+            // 🔴 2026-09-02 治标：related_stocks 空时不渲染空容器
+            const rsBadge = (asArr(t.related_stocks).length) ? ('<div style="margin-top:4px">' + chips(t.related_stocks) + '</div>') : '';
             s += '<div style="margin:6px 0;padding:8px 10px;border:1px solid var(--border);border-radius:8px"><b>' + esc(t.theme || '') +
-                 '</b> <span style="color:' + wc + '">[' + esc(w) + ']</span><div class="dr-tag" style="margin-top:4px">' +
-                 asArr(t.evidence).map(esc).join('<br>') + '</div><div style="margin-top:4px">' + chips(t.related_stocks) + '</div></div>';
+                 '</b>' + wtBadge + '<div class="dr-tag" style="margin-top:4px">' +
+                 asArr(t.evidence).map(esc).join('<br>') + '</div>' + rsBadge + '</div>';
           });
           return s;
         });
