@@ -110,11 +110,43 @@ NEWS_PLACEHOLDER = ('<div class="placeholder">6 段「新闻整合」为页面�
                     '（每日自动抓取东方财富 / 财经早餐 / 新浪 / 同花顺 / 富途 / 央视新闻联播等公开新闻源），'
                     '静态 PDF 导出时不含该动态内容，请在网页版查看。</div>')
 
+# ── 夜间版（--night）渠道/持仓清洗：去投喂渠道名与持仓措辞（2026-09-02 用户要求）──
+#   覆盖：投喂渠道名、参赛/围观昵称 → 通用词；正文"持仓"措辞 → 中性研判词。
+#   段级移除（7.2 K3 持仓映射、holding_map）在 main/build_feed_html 中处理，不在此正则。
+NIGHT_SCRUB_RULES = [
+    # 投喂渠道（顺序：先具体后通用）
+    (r'知识星球·投资有道', '第三方投喂渠道'),
+    (r'知识星球', '第三方投喂渠道'),
+    (r'叙事AKUN\s*2?5?个?股群围观记录?\s*\d{4}?[^\n。；<]*', '游资社群信息汇总'),
+    (r'叙事AKUN', '游资社群观察'),
+    (r'复利杯\s*S1[0-9]?', '模拟赛跟踪'),
+    (r'复利杯', '模拟赛跟踪'),
+    (r'25个炒股群围观记录', '游资社群信息汇总'),
+    (r'炒股群围观记录', '社群信息汇总'),
+    (r'兴证海外TMT', '券商 TMT 团队'),
+    (r'调研纪要', '机构调研'),
+    # 模拟赛选手昵称（第三方个人信息）→ 匿名：保留动作去昵称
+    (r'(模拟赛跟踪情绪：|情绪投喂：)([^\s，。；<>:：]{1,12}?)(?=(新开|低吸|止损|止盈|加仓|打板|减仓|被按跌停|割|浮盈|浮亏|清仓|补仓))', r'\1有选手'),
+    # 任意位置已知昵称 + 动作 → 有选手（无前缀场景兜底）
+    (r'(?:乌江望月|狂人|鄂华少|A拉神灯|205斤减肥哥|2025七倍|小古茗|我是会发光的男人|第四维度的保佑|谦受益)(?=(新开|低吸|止损|止盈|加仓|打板|减仓|被按跌停|割|浮盈|浮亏|清仓|补仓))', '有选手'),
+    # 持仓措辞 → 中性（不改变研判语义）
+    (r'（剑桥等持仓观察）', '（剑桥等观察）'),
+    (r'坑日持仓不割', '坑日不割'),
+    (r'持仓相关：', '盘面相关：'),
+    (r'已有 PTFE/化工/光纤\s*持仓可保持观察', 'PTFE/化工/光纤 线保持观察'),
+    (r'不持仓但需关注板块情绪', '需关注板块情绪'),
+    (r'当前未持仓', '未持仓状态'),
+    (r'9/2 重点观测股推演（K3 持仓 9/2 映射', '9/2 重点观测股推演（9/2 映射'),
+]
 
-def scrub(text):
-    """清洗内部技术标识。"""
+
+def scrub(text, night=False):
+    """清洗内部技术标识；night=True 时追加夜间版渠道/持仓清洗。"""
     for pat, rep in SCRUB_RULES:
         text = re.sub(pat, rep, text)
+    if night:
+        for pat, rep in NIGHT_SCRUB_RULES:
+            text = re.sub(pat, rep, text)
     # 6 段动态容器 → 静态占位说明
     text = re.sub(
         r'<div id="drNewsPool"[^>]*>.*?</div>\s*</div>',
@@ -237,8 +269,9 @@ def inject_before_last_div(seg_html, inject_html):
     return seg_html[:i] + inject_html + seg_html[i:]
 
 
-def build_feed_html(feed):
-    """投喂复盘脱敏渲染：保留研判内容，移除素材清单与内部来源。"""
+def build_feed_html(feed, night=False):
+    """投喂复盘脱敏渲染：保留研判内容，移除素材清单与内部来源。
+       night=True（夜间版）：额外跳过 holding_map（个人持仓名单）。"""
     if not feed:
         return ""
     pred = feed.get("prediction") or {}
@@ -248,6 +281,9 @@ def build_feed_html(feed):
     p.append('<div class="dr-card">')
     p.append(f'<div class="dr-note">数据日期 <b>{feed.get("data_date", "—")}</b>'
              f' · 指引日 <b>{feed.get("guide_date", "—")}</b></div>')
+    if night:
+        p.append('<div class="dr-note">注：本版已隐去持仓映射/投喂渠道等个人信息，'
+                 '仅保留公开行情研判与综合推演结论。</div>')
 
     bias = pred.get("bias", "—")
     score = pred.get("bias_score", "—")
@@ -276,8 +312,9 @@ def build_feed_html(feed):
         p.append('<div class="dr-h2">算力链映射</div>')
         p.append(f'<div class="dr-note">{nv["summary"]}</div>')
 
+    # holding_map：默认渲染脱敏版「主线映射」；夜间版（--night）整块跳过（=个人持仓名单）
     hm = syn.get("holding_map") or {}
-    if hm:
+    if hm and not night:
         p.append('<div class="dr-h2">主线映射（主题对齐 / 谨慎）</div>')
         if hm.get("note"):
             p.append(f'<div class="dr-note">{hm["note"]}</div>')
@@ -288,7 +325,9 @@ def build_feed_html(feed):
             p.append(f'<tr><td class="dr-dn">谨慎</td><td>{x}</td></tr>')
         p.append('</tbody></table>')
 
-    radar = syn.get("t1_radar_0831") or []
+    # T+1 事件雷达：key 形如 t1_radar_YYYYMMDD（8/31 时代硬编码 t1_radar_0831 曾漏渲染）
+    _radar_key = next((k for k in syn if k.startswith("t1_radar_")), None)
+    radar = syn.get(_radar_key) or [] if _radar_key else []
     if radar:
         p.append('<div class="dr-h2">T+1 事件雷达</div>')
         for x in radar:
@@ -389,6 +428,9 @@ def main():
         out_dir = sys.argv[sys.argv.index("--out") + 1]
     # 2026-09-01：`--no-note` 时不输出封面「隐私处理说明」（用户要求脱敏版不带备注）
     no_note = "--no-note" in sys.argv
+    # 2026-09-02：`--night` 夜间版——在默认脱敏之上，额外移除个人持仓映射（7.2 段 + holding_map）、
+    #   清洗投喂渠道名/持仓措辞；文件名追加「（夜间）」以区分次日 09:05 更新的完整版。
+    night = "--night" in sys.argv
 
     ana = load(ANA)
     feed = load(FEED)
@@ -414,6 +456,10 @@ def main():
             body.append(SEG9_CLEAN)
             cleaned.append("9 段 数据来源汇总（内部脚本/仓库/路径 → 仅公开数据源）")
             continue
+        # ②b 夜间版（--night）：移除 7.2 段（K3 持仓映射 + 持仓指令，个人组合敏感）
+        if night and key == "7.2":
+            removed.append("7.2 段 重点观测股推演（K3 持仓映射 / 持有 / 减仓线等个人组合指令）")
+            continue
         # ③ 1.1 / 1.2 为 JS 动态区块，静态 PDF 从 JSON 直接渲染补齐
         if key == "1.1":
             t = build_top10_html(review_date)
@@ -427,12 +473,14 @@ def main():
                 filled.append("1.2 当日金钻（三档门控统计 + 个股清单，从 gate_data.json 渲染）")
         body.append(seg_html)
 
-    # ③ 投喂复盘：渲染时已排除素材清单与内部来源
-    feed_html = build_feed_html(feed)
+    # ③ 投喂复盘：渲染时已排除素材清单与内部来源；夜间版再跳过 holding_map
+    feed_html = build_feed_html(feed, night=night)
     if feed_html:
         body.append(feed_html)
         removed.append("投喂素材清单 19 份（标题/来源/关键词，暴露信息渠道）")
         cleaned.append("ai_synthesis.disclaimer（投喂份数/新闻条数 → 纯免责声明）")
+        if night:
+            removed.append("AI 综合研判 · 主线映射（holding_map = 个人持仓/谨慎名单）")
 
     print(f"\n  【移除】")
     for r in removed:
@@ -444,22 +492,30 @@ def main():
         print(f"\n  【补齐】JS 动态区块 → 静态渲染")
         for c in filled:
             print(f"    ➕ {c}")
-    print(f"\n  【保留】1.3 重点观测股 32 只（用户确认含持仓股亦保留）"
-          f" · 0.5 深度判读 · 4/5/5.5 产业链 · AI 综合推演全文")
+    if night:
+        print(f"\n  【夜间版（--night）附加移除】7.2 K3 持仓映射 · holding_map 持仓名单 · 投喂渠道名 · 持仓措辞")
+        print(f"  【保留】0.5 深度判读 · 1 昨日盘面 · 3 隔夜美股 · 4/5/5.5 宏观科技产业链 · 7.1 K3 验证 ·"
+              f" 7.3 开盘指引 · AI 综合研判（研判内容，均不含个人持仓）")
+    else:
+        print(f"\n  【保留】1.3 重点观测股 32 只（用户确认含持仓股亦保留）"
+              f" · 0.5 深度判读 · 4/5/5.5 产业链 · AI 综合推演全文")
 
-    # 应用内部标识清洗（内部文件名 / 脚本名 / 路径 / 6 段动态区块）
-    body_html = scrub("\n".join(body))
+    # 应用内部标识清洗（内部文件名 / 脚本名 / 路径 / 6 段动态区块；night 追加渠道/持仓清洗）
+    body_html = scrub("\n".join(body), night=night)
 
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     review_date = (feed or {}).get("data_date", today)
     # 🔴 2026-09-02 修复：guide_date 兜底（feed.daily_feed_review.py 当前不写该字段，
     #   导致分享版封面显示「复盘=指引=同日」的歧义；按 K3 复盘规则：复盘 T-1 收盘、指引 T，
     #   自动推算 = review_date 的下一个工作日，跳过周六周日）。
+    # 🔴 2026-09-02 二次修复：_rd 提到 if 前统一计算——原实现只在 else 分支定义，
+    #   当 feed 已带合法 guide_date（9/2 起 build_feed 写入 guide_date=次日）走 if 分支时
+    #   _rd 未定义 → UnboundLocalError（22:41 跑 --night 实测 crash）。
+    _rd = datetime.datetime.strptime(review_date, "%Y-%m-%d")
     raw_guide = (feed or {}).get("guide_date")
     if raw_guide and raw_guide != "—" and raw_guide != review_date:
         guide_date = raw_guide
     else:
-        _rd = datetime.datetime.strptime(review_date, "%Y-%m-%d")
         _d = _rd + datetime.timedelta(days=1)
         # 跳过周末（5=周六、6=周日）
         while _d.weekday() >= 5:
@@ -468,9 +524,11 @@ def main():
     # 🔴 2026-09-02 修复：周X 动态化（原「周五收盘」硬编码，9/1（周二）显示周五是 bug）
     _wd = ["周一","周二","周三","周四","周五","周六","周日"][_rd.weekday()]
     weekday_str = _wd
+    # 夜间版文件名后缀（区分次日 09:05 完整版）
+    _suff = "（夜间）" if night else ""
 
     full = f"""<!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="UTF-8"><title>每日复盘 {review_date} 分享版</title>
+<html lang="zh-CN"><head><meta charset="UTF-8"><title>每日复盘 {review_date} 分享版{_suff}</title>
 <style>{CSS}</style></head><body>
 <div class="cover">
   <h1>每日复盘</h1>
@@ -491,7 +549,7 @@ def main():
 </body></html>"""
 
     os.makedirs(out_dir, exist_ok=True)
-    html_path = os.path.join(out_dir, f"每日复盘_{review_date}_分享版.html")
+    html_path = os.path.join(out_dir, f"每日复盘_{review_date}_分享版{_suff}.html")
     with open(html_path, "w", encoding="utf-8") as f:
         f.write(full)
     size_kb = os.path.getsize(html_path) / 1024
@@ -509,7 +567,7 @@ def main():
         return 0
 
     print(f"\n  【PDF】显式请求，尝试生成…")
-    pdf_path = os.path.join(out_dir, f"每日复盘_{review_date}_分享版.pdf")
+    pdf_path = os.path.join(out_dir, f"每日复盘_{review_date}_分享版{_suff}.pdf")
 
     engine = None
     try:
