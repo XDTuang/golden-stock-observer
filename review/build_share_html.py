@@ -452,14 +452,29 @@ def main():
 
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     review_date = (feed or {}).get("data_date", today)
-    guide_date = (feed or {}).get("guide_date", "—")
+    # 🔴 2026-09-02 修复：guide_date 兜底（feed.daily_feed_review.py 当前不写该字段，
+    #   导致分享版封面显示「复盘=指引=同日」的歧义；按 K3 复盘规则：复盘 T-1 收盘、指引 T，
+    #   自动推算 = review_date 的下一个工作日，跳过周六周日）。
+    raw_guide = (feed or {}).get("guide_date")
+    if raw_guide and raw_guide != "—" and raw_guide != review_date:
+        guide_date = raw_guide
+    else:
+        _rd = datetime.datetime.strptime(review_date, "%Y-%m-%d")
+        _d = _rd + datetime.timedelta(days=1)
+        # 跳过周末（5=周六、6=周日）
+        while _d.weekday() >= 5:
+            _d += datetime.timedelta(days=1)
+        guide_date = _d.strftime("%Y-%m-%d")
+    # 🔴 2026-09-02 修复：周X 动态化（原「周五收盘」硬编码，9/1（周二）显示周五是 bug）
+    _wd = ["周一","周二","周三","周四","周五","周六","周日"][_rd.weekday()]
+    weekday_str = _wd
 
     full = f"""<!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="UTF-8"><title>每日复盘 {review_date} 分享版</title>
 <style>{CSS}</style></head><body>
 <div class="cover">
   <h1>每日复盘</h1>
-  <div class="sub">{review_date}（周五收盘）复盘 · {guide_date} 指引</div>
+  <div class="sub">{review_date}（{weekday_str}收盘）复盘 · {guide_date} 指引</div>
   <div class="meta">
     复盘日 {review_date} ｜ 指引日 {guide_date}<br>
     生成时间 {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}
