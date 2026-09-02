@@ -62,10 +62,16 @@ jobs:
           done
           # 恢复 fetch 产物；若 pop 冲突（数据文件与远端并发修改），明确标红而非静默吞掉
           git stash pop 2>/dev/null || { echo "❌ stash pop 冲突，请手动解决：git stash list"; exit 1; }
-          # 明确 add 列表 + 兜底 -A，确保不遗漏（fetch 脚本写根目录 + deploy 副本两份）
+          # 明确 add 列表 + 兜底强加：daily-review-market 维护 deploy/ + output/ 副本，
+          # 但 .gitignore 第 32 行写了 `deploy/`，普通 `git add -A` 对未被 -f 单独 track 过的
+          # deploy/output 下新文件会 ignore 跳过 + 返回非 0 exit code → 整个 step 红。
+          # 9/2 09:17/09:24 两次 workflow_dispatch run 死在这一步（截图错误：
+          # "The following paths are ignored by one of your .gitignore files: deploy, output"）。
+          # 修复：用 `git add -f -u` 兜底（-u 只更新已 tracked 文件，-f 强加 .gitignore 阻挡的 tracked 文件），
+          # 既不引入 untracked 临时文件，又保证 deploy/output 副本 100% push 上去。
           git add data/daily_review/market.json deploy/data/daily_review/market.json \
                   data/daily_review/analysis.html output/kr_stocks.json deploy/output/kr_stocks.json
-          git add -A
+          git add -f -u  # 🔴 2026-09-02 修复：去掉 -A 改 -f -u（防 gitignore 阻挡 + 不引入临时文件）
           if ! git diff --cached --quiet; then
             git commit -m "daily-review: update market quotes + 三星/海力士收盘 $(date +%F)"
             git push || { echo "❌ push 被拒，下次调度会自愈重试"; exit 1; }
