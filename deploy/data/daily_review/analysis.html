@@ -1,127 +1,122 @@
 <!--
-  每日复盘 · 分析区（V2 完整结构 · 8/24 成品回填）
+  每日复盘 · 分析区（V2 完整结构）
   ── 行情表（drTblA/drTblH/drTblUs）= 主页面 renderDailyReview 注入 market.json 自动填充（云端自动 08:15）
-  ── 分析内容（结论/日韩/双日表/宏观/科技/新闻/指引/自检/来源）= 本机 agent 8/24 成品（数据可溯）
-  更新: 本机 WorkBuddy 会话 → 刷新 token → 抓星球摘要(低频) → AI 提炼 → 替换本文件分析区 → push
+  ── 分析内容（结论/日韩/双日表/宏观/科技/新闻/指引/自检/来源）= 本机 agent 成品（数据可溯）
+  更新: 本机 WorkBuddy 会话 → 抓数据 → 读投喂 → AI 提炼 → 替换本文件分析区 → push
+  本版: 2026-09-03 22:00 盘中版（A股 9/3 收盘 + 美股 9/3 盘中 10:00 ET）→ 指引 9/4 周五
 -->
 <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
   <b>🧠 每日复盘 · V2 完整结构</b>
   <span class="dr-tag">行情 = 云端 08:15 自动</span>
-  <span class="dr-tag">分析 = 8/24 成品（本机回填）</span>
-  <span class="dr-tag">复盘日 2026-08-28（周五）｜ 指引日 08-31（周一）</span>
+  <span class="dr-tag">分析 = 9/3 22:00 盘中版（本机）</span>
+  <span class="dr-tag">复盘日 2026-09-03（周四）｜ 指引日 09-04（周五）</span>
 </div>
 
 <!-- 0 结论先行 -->
-<div class="dr-h">0 · 结论先行（速览卡 · 9/3 周四盘前指引）</div>
-<div class="dr-card" style="margin-top:4px" data-preopen="结构性偏多 · 修复反弹窗口" data-style="AI Infra+军工订单+算力存储修复" data-risk="中高（9/4 非农前夜 + CPO 退潮未完 + 亚太分化）" data-event="今 20:30 美国 8 月 ADP（共识 14-16 万）/ 9/4 非农 / SNOW 9/3 美股开盘兑现 +20%" data-agent-note="9/2 美股连涨第 2 日（道指 +0.56%/纳指 +0.45%），AI 硬件全面反弹（NVDA +3.21% 两日累计 +4.5%、MU +2.43%、SKHY +2.61%），但光模块/CPO（COHR -1.25%/AAOI -0.25%/MRVL -1.86%）续弱 → 退潮是结构性非全面。亚太 9/3 开盘分化：首尔 +1.03%（暴跌后反弹）、日经 -0.22%（高开低走），韩存储双雄仅 +0.5~0.6%（力度递减）。Snowflake 9/2 收盘 -4.36% 但盘后财报超预期 +20%（未反映在收盘价）→ AI Infra/数据平台新增催化。9/3 周四 K3「复」窗口，主线去弱留强，AI Infra 与军工订单为新增方向，CPO 高位继续回避。">
+<div class="dr-h">0 · 结论先行（速览卡 · 9/4 周五指引 · 22:00 盘中版）</div>
+<div class="dr-card" style="margin-top:4px" data-preopen="缩量分化延续 · 结构重于指数" data-style="液冷→AI供电/散热材料扩散 + 航运BDI + 贵金属 + 红利托底" data-risk="中高（9/4 非农前夜 + 退潮第二日 + 美股半导体 AVGO -6.4% 拖累费半）" data-event="9/4 20:30 美国 8 月非农（私人部门共识 5.3 万）/ 9/4 美股财报季空档 / 9/3 22:00 ISM 服务业 PMI（前值 54.1）" data-agent-note="A股 9/3 指数微红个股普跌：沪指 3942.09(+0.02%)、成交 1.76 万亿缩量 323 亿，1846 涨 / 3570 跌、46 涨停 / 16 跌停，情绪分 41（冰点），3 板断层、总龙竞业达 -2.31% 断板 → 退潮第二日。结构：液冷 9 股涨停（集泰 4 板 / 思泉新材 20CM / 金帝 / 金富 / 新朋 / 大元泵业）、航运（海通发展涨停、中远海能、招商轮船）、培育钻石（黄河旋风 +7.93% / 博云新材涨停）、贵金属（白银有色涨停）。美股 9/3 盘中 10:00 ET 分化：SNOW +22.1%（财报兑现）、PLTR +8.2%、CRM +3.7%、META +3.5%、MSFT +2.9% 领涨，但 AVGO -6.4%（Q4 指引 348 亿低于预期 350.5 亿）拖累费半 SOX -1.93%，光模块链 LITE -3.97% / AAOI -4.46% / COHR -3.22%、存储 WDC -3.53% / MU -1.10% 续弱 → 软件强于硬件。">
   <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px">
     <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:10px">
-      <div class="dr-tag" style="margin-bottom:4px">9/3 开盘预判</div>
-      <div style="font-size:12.5px;font-weight:700" class="dk-caution">结构性偏多 · 修复反弹窗口</div>
+      <div class="dr-tag" style="margin-bottom:4px">9/4 开盘预判</div>
+      <div style="font-size:12.5px;font-weight:700" class="dk-caution">缩量分化延续 · 结构重于指数</div>
     </div>
     <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:10px">
       <div class="dr-tag" style="margin-bottom:4px">关注板块</div>
-      <div style="font-size:12.5px;font-weight:700" class="dk-main">AI Infra+军工订单+算力存储修复</div>
+      <div style="font-size:12.5px;font-weight:700" class="dk-main">液冷→AI供电/散热材料 + 航运BDI + 贵金属</div>
     </div>
     <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:10px">
       <div class="dr-tag" style="margin-bottom:4px">风险等级</div>
-      <div style="font-size:12.5px;font-weight:700" class="dk-risk">中高（9/4 非农前夜 + CPO 退潮未完 + 亚太分化）</div>
+      <div style="font-size:12.5px;font-weight:700" class="dk-risk">中高（9/4 非农前夜 + 退潮第二日 + AVGO 拖累半导体）</div>
     </div>
     <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:10px">
       <div class="dr-tag" style="margin-bottom:4px">关键事件</div>
-      <div style="font-size:12.5px;font-weight:700" class="dk-data">今 20:30 美国 8 月 ADP / 9/4 非农 / SNOW 今夜兑现 +20%</div>
+      <div style="font-size:12.5px;font-weight:700" class="dk-data">9/4 20:30 非农（私人部门共识 5.3 万）</div>
     </div>
   </div>
   <div class="dr-note" style="margin-top:10px;font-size:12.5px;line-height:1.6">
-一句话结论：<b>外围环境由「杀硬件」切换为「结构性修复」</b>——9/2 美股三大指数连续第 2 日收涨（道指 <span class="dk-main">+0.56%</span> / 标普 <span class="dk-main">+0.46%</span> / 纳指 <span class="dk-main">+0.45%</span>），AI 算力与存储龙头明确反弹（<span class="dk-main">NVDA +3.21%</span>、<span class="dk-main">SKHY +2.61%</span>、<span class="dk-main">MU +2.43%</span>），但 CPO/光模块与配套芯片续弱（COHR -1.25% / MRVL -1.86% / AAOI -0.25% / WDC -0.34%），<b>退潮是结构性而非全面性</b>；亚太 9/3 开盘分化（首尔 <span class="dk-main">+1.03%</span> 反弹、日经 <span class="dk-caution">-0.22%</span> 高开低走，韩存储双雄仅 +0.5~0.6%，<span class="dk-caution">反弹力度边际递减</span>）。<b>新增催化：Snowflake 盘后财报超预期 +20%</b>（9/2 收盘 -4.36% 未反映），AI Infra / 数据平台线获强验证。
-<br><br><b>9/3 四大主线：</b><br>
-<span class="dk-main">① AI Infra / 数据平台（新增·SNOW 催化）</span>——Snowflake 全年指引上调至 60.7 亿（+36%）、AI 产品贡献约一半收入增速、NRR 126%；A 股映射 深信服 / 星环科技 / 达梦数据 / 亚康股份（矩阵起源）/ 汉得信息 / 鼎捷数智；<br>
-<span class="dk-main">② 军工订单（兴证数据加持）</span>——航海装备 26Q2 订单 <span class="dk-main">+98.49%（加速斜率 +90.57pct，全表第一）</span>、航天装备 +33.59%（+17.17pct），叠加十五五落地 + 歼 10CE 出口（乌兹 6 架入列 / 孟加拉 20-24 架 / 阿尔及利亚 30-40 架）；<br>
-<span class="dk-main">③ 算力 / 存储修复（分歧修复线）</span>——NVDA 两日 +4.5% + MU +2.43% + SKHY +2.61% + 韩存储双雄温和跟涨；对应 A 股 CPC 铜互联（金信诺 300252）、液冷（英维克 / 飞龙 / 集泰）；<span class="dk-caution">但退潮四重确认未解除，仅作修复反弹不追高</span>；<br>
-<span class="dk-main">④ 订单高增外延（兴证策略）</span>——包装印刷 <span class="dk-main">+64.46pct</span>（裕同 / 金富）、其他电子 +80.58pct、非金属材料 +45.26pct（联瑞新材 / 石英股份）、煤炭 +16.03pct、乘用车 +32.28pct（比亚迪）。
-<br><br><span class="dk-risk">尾部风险（最高优先级）：</span><span class="dk-risk">① CPO / 光模块退潮未解除</span>——章建平退出中际旭创 + 美股 COHR/AAOI/LITE 续弱 + 韩股反弹未传导；<span class="dk-risk">② 亚太反弹力度递减</span>——韩存储双雄 +0.5~0.6% vs 美股 +2.4~2.6%，日经高开低走，映射衰减；<span class="dk-risk">③ 9/4 非农前夜控仓</span>；<span class="dk-risk">④ 长鑫 / 存储高位不追</span>——外围修复但内部退潮确认未解除。
+一句话结论：<b>「指数微红、个股普跌」的退潮第二日，外围则给出「软件强于硬件」的分化信号</b>——A股 9/3 沪指 <span class="dk-main">+0.02%</span> @3942.09（连续两日卡在 3950 下方）、成交 <span class="dk-caution">1.76 万亿（缩量 323 亿）</span>，1846 涨 / <span class="dk-caution">3570 跌</span>、46 涨停 / <span class="dk-risk">16 跌停</span>、<b>情绪分 41（冰点）</b>、3 板断层、总龙竞业达 <span class="dk-risk">-2.31% 断板（换手 47%）</span>；资金从高位题材撤向<b>低位有产业实需的方向</b>。美股 9/3 盘中（10:00 ET）：<span class="dk-main">SNOW +22.1%</span>（盘后 +20% 兑现）、<span class="dk-main">PLTR +8.2%</span>、CRM +3.7%、META +3.5%、MSFT +2.9%，但 <span class="dk-risk">AVGO -6.4%</span>（Q3 超预期、Q4 指引 348 亿低于预期 350.5 亿）拖累费半 <span class="dk-risk">SOX -1.93%</span>，光模块链 LITE -3.97% / AAOI -4.46% / COHR -3.22%、存储 WDC -3.53% / MU -1.10% 续弱。
+<br><br><b>9/4 四大主线：</b><br>
+<span class="dk-main">① 液冷 → AI 供电 + 散热材料扩散（最强主线）</span>——CDU 订单排至 26 年底、AI 芯片液冷渗透率 33%→53%（TrendForce），午后<b>高功率电源加入形成"供电+散热"共振</b>：飞龙股份 <span class="dk-main">+8.54%</span>（电子泵）/ 英维克 <span class="dk-main">+3.41%</span> / 思泉新材 <span class="dk-main">+20%</span> / 集泰股份 <span class="dk-main">4 板</span>；电源二供 泰嘉股份 / 麦格米特 / 奥海科技；<br>
+<span class="dk-main">② 航运 BDI + 油运地缘</span>——BDI 单日 <span class="dk-main">+5.5% 至 3331</span>（2023/12 以来新高）、霍尔木兹过峡商船降至 4 艘（10 日均值 13 艘）、VLCC 沙特—中国 65.6 万美元/天；海通发展 <span class="dk-main">涨停</span>；<br>
+<span class="dk-main">③ 贵金属 / 降息交易</span>——8 月 ADP 仅 <span class="dk-caution">3.7 万（爆冷）</span> + 沃勒暗示通胀放缓 → 交易员减少加息预期，现货金 4470→COMEX <span class="dk-main">4514（+2.26%）</span>、白银 +2.17%；白银有色 <span class="dk-main">涨停</span>；<br>
+<span class="dk-main">④ 供给约束材料</span>——电子布（中国巨石 9 月提价公开报道）/ H 酸单日 <span class="dk-main">+30%</span> / 银河 20 万吨铬盐项目叫停（振华股份）/ 高纯红磷海外扰动。
+<br><br><span class="dk-risk">尾部风险（最高优先级）：</span><span class="dk-risk">① 9/4 非农前夜</span>——私人部门共识仅 5.3 万，数据落地前不加杠杆；<span class="dk-risk">② 退潮第二日</span>——3 板断层 + 高位妖股批量一字跌停（传智教育 / 深中华A / 爱丽家居 / 一鸣食品 / 新赛股份），属无序兑现阶段；<span class="dk-risk">③ AVGO 指引拖累半导体映射</span>——费半 -1.93%，A股算力硬件 9/4 早盘防跟跌；<span class="dk-risk">④ 缩量下金融虹吸</span>——银行保险托指数但成交不增，成长端流动性压力反复。
   </div>
 </div>
 <!-- 0.5 深度判读 -->
-<div class="dr-h">0.5 · 深度判读（9/3 盘前 · 结构性修复 · 21 份投喂综合判读）</div>
+<div class="dr-h">0.5 · 深度判读（9/3 22:00 盘中版 · 缩量分化 · 41 份投喂综合判读）</div>
 <div class="dr-card" style="margin-top:4px">
   <div class="dr-tag">核心结论</div>
   <div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--green);padding:8px 12px;border-radius:6px">
-9/3 盘前的性质是<b>「外围结构性修复 + 内部主线切换」</b>。9/2 美股用一根实体阳线<b>部分推翻</b>了昨日「半导体退潮 = 机构换仓 + 美股映射转弱双重确认」中的后半句——存储双雄（MU +2.43% / SKHY +2.61%）与 AI 算力龙头（NVDA +3.21%）明确反弹，说明<b>退潮集中在 CPO / 光模块与配套芯片，而非整个半导体</b>。但亚太 9/3 开盘给出了<span class="dk-caution">力度递减的警示</span>：韩存储双雄仅 +0.5~0.6%（不足美股 1/4）、日经高开 +0.62% 后转跌 -0.22%——<b>修复是真的，但弹性在衰减</b>。真正的增量来自<b>Snowflake 盘后 +20%</b>：它把市场注意力从「算力硬件」拉向「数据平台 / AI Infra 软件层」，为 9/3 提供了一条<b>与 CPO 退潮低相关的新主线</b>。
+9/3 的本质是<b>「量能收缩下的两端强化」</b>：一端是规模资金停在银行 / 保险等红利资产托住指数，另一端是活跃资金<b>绕开高位科技权重、集中寻找液冷—金刚石散热—OCS—电子布等有产品位置与盘面承接的窄链条</b>。科技并未整体熄火，但定价从「板块普涨」收缩到「有订单、有认证、有交付」的窄链条。<b>外围给出的是同一方向的证据</b>：SNOW +22% / PLTR +8% 说明企业软件与 AI 应用侧付费意愿真实，而 AVGO -6.4% / LITE -4% / WDC -3.5% 说明<b>算力硬件的估值弹性正被"指引不够完美"惩罚</b>——9/4 A 股大概率延续「硬件承压 + 有订单的细分活跃」的结构分化，而非方向性选择。
   </div>
-  <div class="dr-tag" style="margin-top:12px">四象限交叉验证（9/3 盘前）</div>
+  <div class="dr-tag" style="margin-top:12px">四象限交叉验证（9/3 收盘 + 美股盘中）</div>
   <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:4px">
     <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:10px">
       <div style="font-size:12.5px;font-weight:700" class="dk-main">真共振</div>
-      <div class="dr-tag" style="margin:4px 0">AI Infra · 军工订单 · 算力存储修复</div>
-      <div class="dr-note" style="font-size:12.5px">AI Infra（SNOW 全年指引 +36%、AI 贡献一半增速、NRR 126% + A 股 6 只映射）、军工订单（航海装备 +98.49%/+90.57pct 加速第一 + 十五五落地 + 歼 10CE 多国订单）、算力存储修复（NVDA 两日 +4.5% + MU/SKHY +2.4~2.6% + 韩双雄跟涨）</div>
+      <div class="dr-tag" style="margin:4px 0">液冷 / AI 供电 · 航运 BDI · 贵金属</div>
+      <div class="dr-note" style="font-size:12.5px">液冷：CDU 订单排至 26 年底（央视财经 8/31）+ 青岛莱西产线满产 + 渗透率 33%→53% + 午后电源加入共振，集泰 4 板 / 思泉 20CM / 飞龙 +8.54% / 英维克 +3.41%；航运：BDI 3331 创新高 + 霍尔木兹扰动 + 海通发展涨停 + 中远海能 VLCC 65.6 万美元/天；贵金属：ADP 3.7 万爆冷 + 沃勒转鸽 + 金 4470→4514、白银有色涨停</div>
     </div>
     <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:10px">
-      <div style="font-size:12.5px;font-weight:700" class="dk-caution">伪共振 / 退潮</div>
-      <div class="dr-tag" style="margin:4px 0">CPO 光模块 · 配套芯片</div>
-      <div class="dr-note" style="font-size:12.5px">CPO / 光模块（章建平退出中际旭创 + 美股 COHR -1.25% / AAOI -0.25% / LITE 仅 +0.19% 止跌无力 + 韩股反弹未传导）、配套芯片（MRVL -1.86% / WDC -0.34% 续弱）——<b>退潮四重确认中「机构 + 游资 + 外资周期」三条仍成立，仅「美股映射」一条被部分推翻</b></div>
+      <div style="font-size:12.5px;font-weight:700" class="dk-risk">伪共振 / 退潮</div>
+      <div class="dr-tag" style="margin:4px 0">高位妖股 · CPO 光模块 · PTFE 覆铜板</div>
+      <div class="dr-note" style="font-size:12.5px">高位妖股：传智教育 / 深中华A / 爱丽家居 / 一鸣食品一字跌停，3 板断层、总龙竞业达 -2.31% 断板；CPO：中际旭创 -1.14% / 新易盛 -0.50% / 中天科技 -2.17%，美股 LITE -3.97% / AAOI -4.46% / COHR -3.22% 同向；PTFE：热度榜第二（9 次）但生益科技 -1.23%，JPM 明确"PTFE 用于 NVL576 仍在探索"→ 情绪与股价背离</div>
     </div>
     <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:10px">
       <div style="font-size:12.5px;font-weight:700" class="dk-data">待确认 / 事件驱动</div>
-      <div class="dr-tag" style="margin:4px 0">订单高增外延 · 煤炭 · 医药 CXO</div>
-      <div class="dr-note" style="font-size:12.5px">包装印刷 +64.46pct / 非金属材料 +45.26pct（联瑞新材、石英股份）/ 煤炭 +16.03pct（动煤 900 元新高）/ 乘用车 +32.28pct（比亚迪）；医药 CXO 反转（药明康德指引 585-605 亿超最乐观卖方）——均需 9/3 盘中资金确认</div>
+      <div class="dr-tag" style="margin:4px 0">金刚石散热 · OCS · AI 编程 · GLP-1</div>
+      <div class="dr-note" style="font-size:12.5px">金刚石散热（9/3-4 郑州大会 + 华为 Mate90 传闻 + 诺格 700 万美元合同，87 亿→592 亿 CAGR&gt;50%，黄河旋风 +7.93% / 博云新材涨停，但仍处送样验证期）；OCS（光博会临近，腾景科技 / 罗博特科 / 长盈通，海外台数多为转述）；AI 编程（SNOW + 智谱 GLM Coding Plan 售罄，金现代 / 新炬网络）；GLP-1（司美格鲁肽动物研究，奥锐特 / 美诺华，需区分动物实验与人体抗衰）</div>
     </div>
     <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:10px">
       <div style="font-size:12.5px;font-weight:700" class="dk-neutral">结构性机会</div>
-      <div class="dr-tag" style="margin:4px 0">消费家电 · 海运 · 人服 AI</div>
-      <div class="dr-note" style="font-size:12.5px">小家电 +30.95%/+12.22pct（石头科技 / 科沃斯）、黑色家电 +22.14%、航海装备订单爆发（中国船舶 / 中船防务）、科锐国际 AI 岗位贡献猎头营收 50%+——依「涨一天跌一天」规律 9/3 警惕高位接力风险</div>
+      <div class="dr-tag" style="margin:4px 0">中报 K 型上端 · 红利 · 造船</div>
+      <div class="dr-note" style="font-size:12.5px">中报盈利修复集中在上游与 AI 链（平安：有色 +88.4% / 石油石化 +33.5% / 基础化工 +36.0%，全A非金融单季 +20.9%），下游消费多数负增 → K 型分化延续；红利（建行 / 中行 / 中国平安中报高增，缩量下的容量承接）；造船（在手订单与交付能见度，中国船舶 / 中船防务 / 亚星锚链）</div>
     </div>
   </div>
-  <div class="dr-tag" style="margin-top:12px">9/2 22:00 盘中版推演验证（vs 美股收盘 + 亚太开盘）</div>
+  <div class="dr-tag" style="margin-top:12px">9/3 盘前推演验证（22:00 复盘对照）</div>
   <div class="dr-note" style="font-size:12.5px;line-height:1.6">
-<span class="dk-main">✅ 命中</span> · 「AI 基建线 9/3 有共振基础」——NVDA 盘中 +2.39% → 收盘 <b>+3.21%</b>（走强兑现）；<br>
-<span class="dk-main">✅ 命中</span> · 「PLTR -3.53% 警示 AI 应用/数据底座情绪风险」——但 <b>SNOW 盘后 +20% 给出反向证据</b>：同为数据/AI 平台，SNOW 财报超预期说明「B 端 AI 落地」基本面无恙，PLTR 是个股情绪非行业问题；<br>
-<span class="dk-caution">⚠️ 半对</span> · 「存储链内部分化，单纯 AI 基建拉动叙事不成立」——9/2 收盘 MU +2.43% / SKHY +2.61% 明确反弹，<b>但 WDC -0.34% / MRVL -1.86% 续弱，分化依然成立</b>；<br>
-<span class="dk-risk">❌ 偏差</span> · 「指数反弹 + 个股分化」——方向对，但<b>亚太开盘分化更明显</b>（首尔 +1.03% vs 日经 -0.22%），A 股 9/3 早盘需防「高开低走」。
-  </div>
-  <div class="dr-tag" style="margin-top:12px">今早关键新信号（09:05 盘前版新增）</div>
-  <div class="dr-note" style="font-size:12.5px;line-height:1.6">
-<span class="dk-main">① 美股 9/2 收盘（北京时间 9/3 04:00）</span>：道指 53061.95 <span class="dk-main">+0.56%</span> / 标普 7666.60 <span class="dk-main">+0.46%</span> / 纳指 26217.83 <span class="dk-main">+0.45%</span>，<b>连续第 2 日收涨</b>；NVDA 224.41 <span class="dk-main">+3.21%</span>（两日累计 +4.5%）/ MU 956.08 <span class="dk-main">+2.43%</span> / SKHY 164.98 <span class="dk-main">+2.61%</span> / SNDK 1553.40 +1.08% / LITE 870.58 +0.19%（止跌）；弱侧 MRVL 206.48 <span class="dk-risk">-1.86%</span> / COHR 268.64 <span class="dk-risk">-1.25%</span> / AAOI 103.13 -0.25% / WDC 448.90 -0.34%。<br>
-<span class="dk-main">② Snowflake 盘后 +20%（F20260903-001）</span>：25Q2 收入 15.5 亿（+35%，超预期 14.9 亿）、非 GAAP 利润 2.37 亿（超预期 1.87 亿）、全年指引上调至 <b>60.7 亿（+36%）</b>、非 GAAP 利润率 13.5%→14.5%、RPO 90 亿（+30%）、<b>老客户 NRR 126%</b>、Coco 9100 账户 / CoWork 5800 账户；<b>注意 9/2 收盘 305.84 仍为 -4.36%（财报前避险放量），+20% 待 9/3 美股开盘兑现</b>。<br>
-<span class="dk-main">③ 亚太 9/3 开盘（8:48 北京）</span>：首尔综合 6630.31 <span class="dk-main">+1.03%</span>（9/2 暴跌 -3.99% 后反弹，高点 6650.33）、日经 64181.58 <span class="dk-risk">-0.22%</span>（高开 +0.62% 后转跌，低点 64140.04）；SK하이닉스 1,621,000 +0.50% / 삼성전자 252,000 +0.60%——<span class="dk-caution">韩存储双雄反弹幅度仅为美股的 1/4，映射力度递减</span>。<br>
-<span class="dk-main">④ 兴证策略 26Q2 订单图谱（F20260902-020）</span>：航海装备 +98.49%（加速 <b>+90.57pct 全表第一</b>）/ 其他电子 +98.57%（+80.58pct）/ 包装印刷 +27.60%（<b>+64.46pct</b>）/ 非金属材料 +38.22%（+45.26pct）/ 贵金属 +44.14% / 元件 +43.71%（+38.53pct）/ 通信设备 +31.83% / 航天装备 +33.59% / 医疗服务 +33.27%（药明康德）/ 小家电 +30.95%——<b>「AI 之外」的订单高增面显著拓宽</b>。
+<span class="dk-main">✅ 命中</span> · 「AI Infra / 数据平台新线是否被认可」——<b>深信服 +3.68%</b>（SNOW 催化跨市场传导成功）；<br>
+<span class="dk-main">✅ 命中</span> · 「CPO / 光模块退潮未解除」——中际旭创 <b>-1.14%</b> / 新易盛 -0.50% / 中天科技 -2.17%，美股 LITE / AAOI / COHR 同步 -3~4%；<br>
+<span class="dk-main">✅ 命中</span> · 「AI 算力 / 液冷修复确认」——思泉新材 <b>20CM 涨停</b>、集泰股份 4 板、英维克 +3.41%，为当日涨停最多的板块；<br>
+<span class="dk-caution">⚠️ 半对</span> · 「存储链修复但分化」——<b>A 股长鑫科技 +2.26% 反弹，但美股 WDC -3.53% / MU -1.10% 续弱</b>，分化依然成立；<br>
+<span class="dk-risk">❌ 偏差</span> · 「军工是否续板」——<b>后排退潮</b>：内蒙一机断板回落、地面兵装派发，军工线未获延续（仅剩博云新材等个别票）。
   </div>
 </div>
-<!-- 1 昨日 -->
-<div class="dr-h">1 · 昨日 A 股走势总结（9/2 周三收盘 · 结构性分化）</div>
+<!-- 1 今日 -->
+<div class="dr-h">1 · 今日 A 股走势总结（9/3 周四收盘 · 指数微红 / 个股普跌）</div>
 <div class="dr-card">
   <div class="dr-tag">指数</div>
   <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:6px 0">
-    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:0"><div class="dr-tag">沪指</div><div style="font-size:13.5px;font-weight:700;color:var(--red);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">-0.97% @ 3941.39</div></div>
-    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:0"><div class="dr-tag">深成指</div><div style="font-size:13.5px;font-weight:700;color:var(--red);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">-1.88%</div></div>
-    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:0"><div class="dr-tag">创业板指</div><div style="font-size:13.5px;font-weight:700;color:var(--red);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">-2.39%</div></div>
-    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:0"><div class="dr-tag">科创50</div><div style="font-size:13.5px;font-weight:700;color:var(--red);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">-2.19%</div></div>
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:0"><div class="dr-tag">沪指</div><div style="font-size:13.5px;font-weight:700;color:var(--red);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">+0.02% @ 3942.09</div></div>
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:0"><div class="dr-tag">深成指</div><div style="font-size:13.5px;font-weight:700;color:var(--red);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">+0.10%</div></div>
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:0"><div class="dr-tag">创业板指</div><div style="font-size:13.5px;font-weight:700;color:var(--red);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">+0.01%</div></div>
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-width:0"><div class="dr-tag">科创50 / 北证50</div><div style="font-size:13.5px;font-weight:700;color:var(--green);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">-0.40% / -1.61%</div></div>
   </div>
-  <div class="dr-tag" style="margin-top:12px">板块结构（权重杀+题材活）</div>
+  <div class="dr-tag" style="margin-top:12px">情绪与量能（退潮第二日）</div>
+  <div style="background:var(--bg-subtle);border-left:3px solid var(--red);padding:8px 12px;border-radius:6px;margin-top:6px;font-size:12.5px;line-height:1.6">
+    成交 <b>17589 亿</b>（缩量 <b>322.6 亿</b>，<b>连续第三日缩量</b>）；<b>1846 涨 / 3570 跌</b>（涨占比仅 <b>33%</b>）；<b>涨停 46（前 52）/ 跌停 16（前 8，翻倍）</b>、炸板 18、封板率 71.8%；<b>情绪分 41（冰点，前日 59 复苏）</b>；连板梯队 <b>5 板 1 只（国芳集团）/ 4 板 2 只（集泰股份、龙版传媒）/ 3 板断层 / 2 板 6 只</b>，连板总数由 13 压缩至 9。
+  </div>
+  <div class="dr-tag" style="margin-top:12px">板块结构（权重护盘 + 题材退潮）</div>
   <div style="background:var(--bg-subtle);border-left:3px solid var(--green);padding:8px 12px;border-radius:6px;margin-top:6px;font-size:12.5px;line-height:1.6">
-    <b>新主线</b> = <b>军工 +7.53%</b>（H1 业绩双驱动，长城+10% / 内蒙一机+10.01% / 北方长龙+13.90%）+ <b>液冷/数据中心回流</b>（集泰3/远东） + <b>AI 应用</b>（竞业达 4 板）+ <b>消费/影视短剧</b>（国芳 4/大晟 3/欢瑞 3/龙版 3）；<br>
-    <b>支线</b> = PCB 上游 PTFE（沃特分歧回流）/ 消费电子（道明光学）/ 军工中军（内蒙一机 2）；<br>
-    <b style="color:var(--red)">退潮</b> = 半导体（长鑫-3.86% 跌幅加深 / 长川-7.87% / 宇树-W -4.39% / 长电-2.70% / 中际旭创-章建平退出前十）；<br>
-    <b>弱势</b> = CXO 医药外包-0.54% / 农业（昨日强今日亏）。
-  </div>
-  <div class="dr-tag" style="margin-top:12px">创新高梯队（9/2 盘中）</div>
-  <div style="background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px;margin-top:6px;font-size:12.5px;line-height:1.6">
-    爱丽家居 / 海鸥股份 / 磁谷科技 / 工商银行 / 建设银行 / 星网锐捷 / <b>中国银行</b> / 成都银行 / 江苏银行 / 南京银行（<b>银行股 6 家集体新高</b>，传统金融与新金融双重催化：21 家大行稳定币）
+    <b>新主线</b> = <b>液冷 / 算力散热（9 股涨停，最多）</b>（集泰 4 板 / 思泉 20CM / 金帝 2 板 / 金富 / 新朋 / 大元泵业 / 宏盛 / 艾华）+ <b>航运港口</b>（海通发展涨停 / 中远海能 / 招商轮船 +8%）+ <b>培育钻石 / 金刚石</b>（黄河旋风 +7.93% / 博云新材涨停 / 惠丰钻石 +12.95%）+ <b>贵金属</b>（白银有色涨停 / 湖南黄金 +5.88%）；<br>
+    <b>支线</b> = 机器人（鸣志电器 / 巨轮智能涨停 / 光洋 2 板）/ 大消费（国芳 5 板 / 东百 / 珠免）/ 医药（千金药业 7 天 5 板 / 美诺华）；<br>
+    <b style="color:var(--green)">退潮</b> = 粮食种业（新赛股份 / 福建金森跌停）、短剧传媒（欢瑞世纪 / 大晟文化断板）、军工后排（内蒙一机 / 地面兵装派发）、光伏 / 教育（传智教育跌停）；<br>
+    <b>高位人气股集体屠杀</b> = 传智教育 / 深中华A / 爱丽家居 / 一鸣食品 / 哈药股份一字跌停。
   </div>
   <div class="dr-tag" style="margin-top:12px">复盘结论</div>
   <div style="background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px;margin-top:6px;font-size:12.5px;line-height:1.6">
-    <b>权重杀+题材活的典型结构性分化。</b>9/2 兑现昨日「己卯全周低点」推演（上证 -0.97% 跌破 3950 支撑），但军工/液冷/AI 应用/银行/新金融 5 线齐发，<b>资金没有离场，而是做结构性切换</b>（从高位科技权重→业绩驱动+产业链低位+新金融）。廖峥复盘笔记的"涨一天跌一天"在 9/2 农业（昨日强今日亏）+ 液冷/PTFE（昨日分歧今日回流）双向印证；<b>章建平退出中际旭创前十大股东</b>（顶级游资撤离 CPO 龙头）需 9/3 早盘验证是否引发连锁反应。持仓相关：<b>长鑫 -3.86% 跌幅加深</b>（半导体退潮四重确认）→ 继续回避不抄底。
+    <b>典型"指数稳、情绪退潮"的分化日。</b>指数靠非银金融（保险 / 券商）、有色、交运护盘勉强收红，但个股层面 3570 只下跌、赚钱效应几近消失。三条硬指标同步恶化：① 跌停数由 8 翻倍至 16，且前期翻倍妖股批量一字跌停 → 高位筹码进入无序兑现；② 连板高度虽名义 5 板，但连板总数 13→9、<b>3 板档彻底断层</b>，晋升级链条被切断，总龙竞业达以 47% 换手巨震断板；③ 成交连续三日缩量至 1.76 万亿，资金明确控仓等 9/4 非农。这类「高位杀跌 + 低位补涨」的切换<b>属退潮期避险，不构成新一轮主升起点</b>。持仓相关：<b>长鑫科技 +2.26%</b>（存储反弹）、<b>剑桥科技 +3.51%</b>、<b>华工科技 -0.32%</b>（光模块分化）。
   </div>
 </div>
 <!-- 1.1 前一日 TOP10 -->
-<div class="dr-h">1.1 · 当日 TOP10（9/1 收盘 · 总站首页综合评分，动态）</div>
+<div class="dr-h">1.1 · 当日 TOP10（9/3 收盘 · 总站首页综合评分，动态）</div>
 <div class="dr-card" style="margin-top:4px">
   <div id="drTblTop10"></div>
   <div class="dr-note" style="margin-top:6px">数据源：<code>output/top10_history.json</code> 最新交易日（自动更新，与总站首页 TOP 表一致）。字段：市场/行业/信号等级/EMA/评分/涨跌/收盘。</div>
 </div>
 
 <!-- 1.2 前一日金钻 -->
-<div class="dr-h">1.2 · 当日金钻（9/1 收盘 · 三个门控分类，动态）</div>
+<div class="dr-h">1.2 · 当日金钻（9/3 收盘 · 三个门控分类，动态）</div>
 <div class="dr-card" style="margin-top:4px">
   <div id="drTblDiamond"></div>
   <div class="dr-note" style="margin-top:6px">数据源：<code>output/gate_data.json</code> 最新交易日。三个门控分类：全A市场 / 当前门控（成交额TOP800）/ 板块前100·换手≥4%；每只标注 primary 分类（金钻起涨 / 买入 / 红区黄柱连续）及信号日期、涨跌幅、DY2 等明细。</div>
@@ -148,80 +143,94 @@
 </div>
 
 <!-- 3 隔夜美股复盘 -->
-<div class="dr-h">3 · 隔夜美股复盘（双日表 · V2 核心升级）</div>
+<div class="dr-h">3 · 美股复盘（双日表 · 9/2 收盘 vs 9/3 盘中 10:00 ET）</div>
 <div class="dr-card" style="margin-top:4px">
-  <div class="dr-note"><b>为什么双日？</b>V1 教训：华尔街见闻凌晨快讯的"隔夜"易与 T-1 映射日错位（如 8/21 凌晨快讯实为 8/20 收盘）。A 股与美股存在 T-1 滞后映射。双日表强制呈现映射源（前一收盘日）与隔夜（最新收盘日）两日。<b>说明：</b>9/2 美股收盘（北京时间 9/3 凌晨）——三大指数<b>连续第二日反弹</b>，AI 硬件链领涨；隔夜最新 = <b>2026-09-02</b>；前一交易日 = <b>2026-09-01</b>。</div>
+  <div class="dr-note"><b>⚠️ 口径声明：</b>本版为 <b>22:00 盘中版</b>，右列 <b>9/3 为美股盘中价（北京时间 22:01 / 美东 10:01，开盘约 30 分钟）</b>，<b>非收盘价</b>，尾盘可能显著变化，仅作方向参考。左列 9/2 为已收盘价（映射源）。</div>
   <table class="dr-tbl">
-    <thead><tr><th>标的</th><th>9/1 收盘</th><th>9/1 涨跌幅（映射源）</th><th>9/2 收盘</th><th>9/2 涨跌幅（隔夜）</th></tr></thead>
+    <thead><tr><th>标的</th><th>9/2 收盘</th><th>9/2 涨跌幅（映射源）</th><th>9/3 盘中（10:01 ET）</th><th>9/3 盘中涨跌幅</th></tr></thead>
     <tbody>
-      <tr><td>道琼斯</td><td>52,766.88</td><td class="dr-dn">-0.79%</td><td>53,061.95</td><td class="dr-up">+0.56%</td></tr>
-      <tr><td>标普 500</td><td>7,631.47</td><td class="dr-dn">-0.71%</td><td>7,666.60</td><td class="dr-up">+0.46%</td></tr>
-      <tr><td>纳斯达克</td><td>26,099.77</td><td class="dr-dn">-1.03%</td><td>26,217.83</td><td class="dr-up">+0.45%</td></tr>
-      <tr><td>费城半导体</td><td>—</td><td class="dr-tag">点位待补（外部源）</td><td>—</td><td class="dr-tag">待补（无免费实时源）</td></tr>
-      <tr><td>NVDA 英伟达</td><td>217.44</td><td class="dr-dn">-1.20%</td><td>224.41</td><td class="dr-up">+3.21%</td></tr>
-      <tr><td>MU 美光</td><td>933.44</td><td class="dr-dn">-2.64%</td><td>956.08</td><td class="dr-up">+2.43%</td></tr>
-      <tr><td>SNDK 闪迪</td><td>1,536.87</td><td class="dr-dn">-1.90%</td><td>1,553.40</td><td class="dr-up">+1.08%</td></tr>
-      <tr><td>MRVL 迈威尔</td><td>210.39</td><td class="dr-dn">-0.60%</td><td>206.48</td><td class="dr-dn">-1.86%</td></tr>
-      <tr><td>LITE 朗美通</td><td>868.95</td><td class="dr-dn">-5.01%</td><td>870.58</td><td class="dr-up">+0.19%</td></tr>
-      <tr><td>AAOI</td><td>103.39</td><td class="dr-dn">-3.99%</td><td>103.13</td><td class="dr-dn">-0.25%</td></tr>
-      <tr><td>WDC 西部数据</td><td>450.44</td><td class="dr-dn">-0.02%</td><td>448.90</td><td class="dr-dn">-0.34%</td></tr>
-      <tr><td>COHR</td><td>272.03</td><td class="dr-dn">-2.09%</td><td>268.64</td><td class="dr-dn">-1.25%</td></tr>
-      <tr><td>SKHY 海力士</td><td>160.78</td><td class="dr-dn">-2.31%</td><td>164.98</td><td class="dr-up">+2.61%</td></tr>
+      <tr><td>道琼斯</td><td>53,061.95</td><td class="dr-up">+0.56%</td><td>53,441.29</td><td class="dr-up">+0.71%</td></tr>
+      <tr><td>标普 500</td><td>7,666.60</td><td class="dr-up">+0.46%</td><td>7,708.52</td><td class="dr-up">+0.55%</td></tr>
+      <tr><td>纳斯达克</td><td>26,217.83</td><td class="dr-up">+0.45%</td><td>26,419.93</td><td class="dr-up">+0.77%</td></tr>
+      <tr><td>费城半导体 SOX</td><td>—</td><td class="dr-tag">点位待补（外部源）</td><td>11,119.88</td><td class="dr-dn">-1.93%</td></tr>
+      <tr><td>SNOW Snowflake</td><td>305.84</td><td class="dr-dn">-4.36%</td><td>373.53</td><td class="dr-up">+22.13%</td></tr>
+      <tr><td>PLTR Palantir</td><td>169.46</td><td class="dr-dn">-3.53%</td><td>183.31</td><td class="dr-up">+8.17%</td></tr>
+      <tr><td>CRM 赛富时</td><td>256.93</td><td class="dr-up">+0.88%</td><td>266.49</td><td class="dr-up">+3.72%</td></tr>
+      <tr><td>META</td><td>592.85</td><td class="dr-up">+0.61%</td><td>613.82</td><td class="dr-up">+3.54%</td></tr>
+      <tr><td>MSFT 微软</td><td>496.82</td><td class="dr-up">+0.17%</td><td>511.43</td><td class="dr-up">+2.94%</td></tr>
+      <tr><td>TSLA 特斯拉</td><td>357.01</td><td class="dr-up">+0.26%</td><td>370.65</td><td class="dr-up">+3.82%</td></tr>
+      <tr><td>DELL 戴尔</td><td>492.20</td><td class="dr-up">+15.75%</td><td>504.96</td><td class="dr-up">+2.59%</td></tr>
+      <tr><td>NVDA 英伟达</td><td>224.41</td><td class="dr-up">+3.21%</td><td>228.34</td><td class="dr-up">+1.75%</td></tr>
+      <tr><td>AVGO 博通</td><td>367.24</td><td class="dr-dn">-0.66%</td><td>343.84</td><td class="dr-dn">-6.37%</td></tr>
+      <tr><td>TSM 台积电</td><td>415.50</td><td class="dr-up">+1.72%</td><td>409.28</td><td class="dr-dn">-1.50%</td></tr>
+      <tr><td>AMD</td><td>457.06</td><td class="dr-up">+2.31%</td><td>446.90</td><td class="dr-dn">-2.22%</td></tr>
+      <tr><td>MU 美光</td><td>956.08</td><td class="dr-up">+2.43%</td><td>945.52</td><td class="dr-dn">-1.10%</td></tr>
+      <tr><td>WDC 西部数据</td><td>448.90</td><td class="dr-dn">-0.34%</td><td>433.06</td><td class="dr-dn">-3.53%</td></tr>
+      <tr><td>SNDK 闪迪</td><td>1,553.40</td><td class="dr-up">+1.08%</td><td>1,541.56</td><td class="dr-dn">-0.76%</td></tr>
+      <tr><td>LITE 朗美通</td><td>870.58</td><td class="dr-up">+0.19%</td><td>836.01</td><td class="dr-dn">-3.97%</td></tr>
+      <tr><td>AAOI</td><td>103.13</td><td class="dr-dn">-0.25%</td><td>98.53</td><td class="dr-dn">-4.46%</td></tr>
+      <tr><td>COHR</td><td>268.64</td><td class="dr-dn">-1.25%</td><td>259.99</td><td class="dr-dn">-3.22%</td></tr>
+      <tr><td>MRVL 迈威尔</td><td>206.48</td><td class="dr-dn">-1.86%</td><td>206.00</td><td class="dr-dn">-0.23%</td></tr>
+      <tr><td>PANW 派拓网络</td><td>328.48</td><td class="dr-up">+0.31%</td><td>329.57</td><td class="dr-up">+0.33%</td></tr>
     </tbody>
   </table>
   <div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--red);padding:8px 12px;border-radius:6px;margin-top:6px">
-        <b>双日结论：</b>9/2 美股三大指数<b>连续第二日收涨</b>——道指 <b>+0.56%</b> / 标普 <b>+0.46%</b> / 纳指 <b>+0.45%</b>，<b>内部结构再次反转</b>：9/1 杀跌的 AI 硬件链 9/2 全面反弹——<b>NVDA +3.21%</b>（217.44→224.41，两日累计 +4.5%）、<b>SKHY +2.61%</b>、<b>MU +2.43%</b>、SNDK +1.08%、LITE +0.19%（止跌）；但硬件内部分化仍在——<b>MRVL -1.86%</b> / COHR -1.25% / AAOI -0.25% / WDC -0.34% 续弱。<br><br><b>核心映射：</b>9/2 美股「AI 硬件反弹 + 存储链分化」<b>部分推翻</b>昨日「半导体退潮四重确认」中的「美股映射转弱」一条——<b>存储双雄（MU/SKHY）与 AI 算力龙头（NVDA）明确反弹，但光模块/CPO（COHR/AAOI/LITE）与配套芯片（MRVL/WDC）续弱</b>，说明退潮是<b>结构性而非全面性</b>：存储/算力修复、CPO 光模块仍在退潮通道。<br><br><b>⚠️ SNOW 关键时序</b>：Snowflake <b>9/2 收盘 305.84（-4.36%，放量 1145 万股避险）</b>，<b>财报为盘后发布 → 盘后 +20% 尚未反映在收盘价</b>，将在 9/3 美股开盘兑现（详见 5 段）。<br><br><b>亚太 9/3 开盘（8:48 北京）</b>：首尔综合 <b>+1.03%</b>（6630.31，9/2 暴跌 -3.99% 后反弹，高点 6650.33）、日经 <b>-0.22%</b>（64181.58，高开 +0.62% 后转跌）；<b>韩国存储双雄温和跟随</b>——SK하이닉스 <b>+0.50%</b>、삼성전자 <b>+0.60%</b>（<span class="dk-caution">幅度显著小于美股 +2.4~2.6%，反弹力度边际递减</span>）。</div>
+    <b>盘中结论（10:01 ET，非收盘）：</b>三大指数<b>集体高开走高</b>（道指 +0.71% / 标普 +0.55% / 纳指 +0.77%），但<b>内部结构严重分化</b>——<span class="dk-main">软件与 AI 应用领涨</span>：SNOW <b>+22.13%</b>（Q2 营收 15.5 亿 +35%、全年指引上调至 60.7 亿，盘后 +20% 在开盘兑现）、PLTR +8.17%、CRM +3.72%、META +3.54%、MSFT +2.94%、TSLA +3.82%（Cybercab 发布会）；<span class="dk-risk">半导体与光模块承压</span>：AVGO <b>-6.37%</b>（Q3 营收 295.9 亿 +86%、EPS 3.32 均超预期，AI 半导体 167 亿 +221%，但 <b>Q4 指引 348 亿低于预期 350.5 亿</b>，创 4/8 以来新低）→ 拖累 <b>SOX -1.93%</b>、TSM -1.50%、AMD -2.22%；光模块链 LITE -3.97% / AAOI -4.46% / COHR -3.22%、存储 WDC -3.53% / MU -1.10% 续弱。<br><br><b>对 A 股 9/4 的映射含义：</b>① <b>AI 应用 / 数据平台线获得最强外部验证</b>（SNOW + PLTR + CRM 三线同涨），A 股映射深信服（9/3 已 +3.68%）、星环科技、达梦数据、金现代、新炬网络有延续基础；② <b>算力硬件面临"指引惩罚"</b>——AVGO 的超预期业绩仍因指引略逊而大跌，说明市场对 AI 硬件的定价已含极高预期，A 股算力 / 存储 / 光模块 9/4 早盘需防情绪传导；③ <b>光模块（CPO）退潮在美股端再次确认</b>，中际旭创 / 新易盛 9/4 继续承压概率大。
+  </div>
   <div class="dr-tag" style="margin:10px 0 4px">行情接口实时表（云端自动）</div>
   <div id="drTblUs"></div>
-  <div class="dr-note" style="margin-top:6px"><b>⚠️ 待办：</b>本段当前为 analysis.html 硬编码（每日手动滚动）；已记入待办列表——实现 <code>drRefreshUsDualDayTables()</code> JS 函数从 <code>market.json.us_kline</code> 动态渲染后即可自动滚动（与 9/2 修正同步标记）。</div>
+  <div class="dr-note" style="margin-top:6px"><b>⚠️ 待办：</b>本段当前为 analysis.html 硬编码（每日手动滚动）；已记入待办列表——实现 <code>drRefreshUsDualDayTables()</code> JS 函数从 <code>market.json.us_kline</code> 动态渲染后即可自动滚动。</div>
   </div>
 <!-- 4 重点宏观 -->
-<div class="dr-h">4 · 重点宏观（9/2 晚间 + 印尼镍 + 稳定币新金融）</div>
+<div class="dr-h">4 · 重点宏观（9/3 晚间 · 就业偏弱 + 通胀预期降温 + 国内服务业超预期）</div>
 <div class="dr-card">
-  <div class="dr-tag">海外/汇率</div>
-  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① 印尼最大镍工业园或减产多达四成（<b>厄尔尼诺诱发供水紧张</b>）——潜在减产有助于遏制全球镍价跌势，A股镍/有色映射（钼/红磷/磷化钼多晶已因高纯红磷供应中断停产）。② 高盛/美银等 <b>21 家国际大行宣布明年抱团发行稳定币</b>。③ 美国 SEC 首次明确将区块链技术纳入证券发行、股份转让及登记体系现代化框架（<b>稳定币+区块链双规</b>）。④ 9/1 美股道指 -0.79% / 标普 -0.71% / 纳指 -1.03%；存储映射（MU -2.64% / SNDK -1.90% / SKHY -2.31%）+ 光模块（LITE -5.01% / AAOI -3.99%）。</p>
-  <div class="dr-tag">国内宏观</div>
-  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① 9/2 沪指 -0.97% @3941.39 破 3950 支撑，<b>兑现昨日'己卯全周低点'推演</b>。② <b>军工十五五规划落地</b>+ 国防动员法通过 + 歼10CE 出口乌兹别克 + 黄岩岛警巡 + 12 月航展 + 明年各种100年（建军/丰收/广州）——订单峰值在十五五落地后第 1-2 年。③ 银行股集体新高（工商/建行/中行/成都/江苏/南京 6 家）：传统金融+新金融双重催化。④ 章建平（顶级游资）<b>退出中际旭创前十大股东</b>：高位筹码松动信号。⑤ 9/3 关注 9 月 PMI 数据发布（盘前 9 点）→ 若延续 8 月 49.4 收缩区间，宏观需求侧可能再加负。</p>
-  <div class="dr-tag">政策催化</div>
-  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① 美国 SEC 区块链+稳定币新规（数字资产合规化）。② 国内十五五规划落地节奏（年底明年初密集出台）。③ <b>9/4 非农数据</b>前夜的市场情绪与仓位控制。④ 工信部 2026 底 2000 家 AI 服务商目标推进（历史延续，AI 应用商业化兑现期）。</p>
+  <div class="dr-tag">美国数据（9/3 北京时间 20:30-22:00）</div>
+  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① <b>8 月 ADP 小非农仅 3.7 万人（爆冷）</b>——远低于市场预期，是本周就业转弱的第一个硬证据，直接推动降息预期升温、美债与美元回落、金价反弹。② <b>8/29 当周初请失业金 20.3 万人</b>（预期 20.5 万、前值修正 20.4 万），<b>8/22 续请 177.8 万人</b>（低于预期 181.6 万）——<span class="dk-caution">与 ADP 爆冷矛盾：续请下降说明存量就业不弱，就业是"增量转弱、存量仍稳"</span>。③ <b>Q2 单位劳动力成本终值 1.3%</b>（预期 1.3%）、每小时产量同比 3.0% → 工资通胀压力可控。④ <b>8 月挑战者企业裁员环比 -27.09%</b>。⑤ <b>7 月贸易差额 -732.6 亿美元</b>。⑥ <b>22:00 ISM 服务业 PMI（前值 54.1、共识 54.1）</b>——公布时点为本文成稿后，需自行核对；<span class="dk-caution">若 &lt;54 则强化"经济降温 + 降息"叙事，若 &gt;55 则反弹为"不着急降息"</span>。⑦ <b>美联储沃勒（Waller）讲话暗示通胀放缓</b>，交易员<b>减少对美联储加息的预期</b>——与前期"沃什鹰派"叙事方向相反，是今晚风险偏好修复的关键。</p>
+  <div class="dr-tag">利率与汇率</div>
+  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① <b>10Y 美债约 4.78%</b>（盘中一度 4.816% 创 2023 年末以来新高后回落、-2bp）；30Y 5.27%。② <b>美元指数约 99.55</b>；在岸人民币约 6.72（偏强）。③ <b>纽约黄金（COMEX）4514.36 美元，+2.26%</b>；白银 66.88 美元 +2.17%；美铜 664.0 +0.71%；WTI 原油 91.96 +1.05%（美伊地缘 + 霍尔木兹扰动）。④ 国内：<b>10Y 国债约 1.6865%</b>（+0.2bp）、30Y 2.1765%；央行当日 <b>净回笼 1030 亿</b>但资金宽松（DR007 约 1.37%）。</p>
+  <div class="dr-tag">国内宏观与政策</div>
+  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① <b>8 月财新 / RatingDog 服务业 PMI 51.4</b>（预期 50.6、前值 50.4，<span class="dk-caution">另有一源报 51.3 / 前值 50.2，两源存在小幅分歧，取 51.3-51.4 区间</span>）——连续扩张且斜率改善，与官方制造业 PMI 49.7 的收缩形成"制造弱、服务强"的对照。② <b>7 部门《推动商品消费扩容升级实施意见》</b>：2030 年社零 60 万亿左右（8/31 发布，9/3 持续发酵，国芳集团 5 板）。③ <b>体育总局</b>：力争 2030 年体育产业总规模超 7 万亿。④ <b>广电总局网络故事片座谈会</b>：合理运用 AI 等新技术，使其成为"创作工具和创作伙伴"。⑤ <b>G20 财长会</b>：央行行长潘功胜倡导推进货币政策转型；农业部推进粮食单产提升行动。⑥ <b>厄尔尼诺</b>：世界气象组织确认已形成并将持续增强，预计发展为超强级别（农业种植 / 化工 / 农药 / 养殖受影响）。</p>
+  <div class="dr-tag">明日焦点</div>
+  <p style="font-size:12.5px;line-height:1.6;margin:4px 0"><b>9/4（周五）20:30 美国 8 月非农</b>：私人部门共识约 <b>5.3 万</b>（前值 5.8 万）、制造业约 0.7 万、U-6 失业率预期 7.9%。<span class="dk-risk">这是本周最大变量</span>——若延续 ADP 的弱势（&lt;5 万），降息交易 + 贵金属 + 成长风格共振；若显著超预期（&gt;10 万），则加息预期回摆、美债上冲、A 股成长端承压。另有 Fed Hammack 讲话（9/4 02:00）与美联储资产负债表数据。</p>
 </div>
 <!-- 5 重点科技 -->
-<div class="dr-h">5 · 重点科技（NV CPC 量产 + 液冷增量 + AI 应用商业化）</div>
+<div class="dr-h">5 · 重点科技（SNOW 兑现 +22% / 英伟达收购 HF / AVGO 指引惩罚 / 散热材料扩散）</div>
 <div class="dr-card">
-  <div class="dr-tag">AI 算力/光模块/液冷（核心主线）</div>
-  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① <b>NV 新架构 CPX + 铜共封装 CPC 正式量产（21:01 深度图）</b>——CPC 是延长光模块生命周期的最佳方案（单通道速率提至 448G 以后 CPC 交换机几乎是唯一选择）；XPO（单通道 224G）标配 CPC 交换机；全球铜互联龙头（TE/Amphenol/Molex）受益。② <b>金信诺（300252）国内唯一 CPC 能力</b>：深度绑定中际旭创+合作基础研究扎实+AEC 产品已通过旭创进入 XAI 供应链+已多次送样 Meta 和英伟达+预计成为旭创 CPC 方案主力供应商+预计 2027 年大规模量产。③ 液冷泵阀设备增量市场（泵阀是液冷系统'心脏'与'关节'）：飞龙股份/强瑞技术/金富科技 9/2 强势（集泰 3/远东）。④ 高盛立讯（外资）：25-28E CAGR 24%；光模块产线加速 5-6 个月（26Q3 越南 3 条/27 年中 10 条）。⑤ <b>章建平退出中际旭创前十大股东</b>（21:21 晚间信息汇总）：国内顶级游资撤离 CPO 龙头，9/3 早盘股价反应是关键（不持仓但需关注 CPO 板块情绪）。</p>
-  <div class="dr-tag">AI 应用商业化（5 重验证）</div>
-  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① <b>腾讯 WorkBuddy 生态发布会（兴证海外TMT 9/2 纪要）</b>：定位 AI Agent 操作系统；联合硬件伙伴 9 款联名产品；接入白皮书+开放平台；开放专家/技能/连接器等能力——腾讯从「应用层 AI」向「AI Agent OS 平台」跃迁。② 工信部 2026 底 2000 家服务商+ChatGPT 广告 10 亿美元+CRM AI 收入 +210%（历史延续）。③ 高盛立讯：边缘 AI 设备（AI PC/智能穿戴/AI 手机）= 27-28E CAGR 24%。④ 高盛小米：AI 投入从今年 160 亿元增至 2027 年 200 亿元+；MiMo-V3 模型即将推出。⑤ 9/2 盘面：竞业达 4 板（高位续命）。</p>
-  <div class="dr-tag">AI 基建资本开支（外资视角）</div>
-  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">BNP 百利：每 100 美元 AI 基建支出中，<b>50 美元流向半导体（加速器 25 + 存储 IC 15 + CPU/其他 10）</b>。外资视角下 AI 基建核心是半导体（加速器+存储），与高盛小米 NAND 1Q27 见顶（存储周期外资判断）形成产业判断同向。</p>
-  <div class="dr-tag">军工/智驾（十五五落地）</div>
-  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① 9/2 军工板块 +7.53%（H1 80 家公司营收+18.89%/净利+32.92%）。② 长城军工 +10% / 内蒙一机 +10.01% / 北方长龙 +13.90% / 中兵红箭 +6.69%。③ 高盛比亚迪：智驾=物理 AI 核心（天神之眼累计 2.2 亿公里）；高盛小米：D100 中国首批 3nm ADAS 芯片。④ 9/2 创新高含中国银行/建设银行/工商银行（传统金融）。</p>
-  <div class="dr-tag">叙事 AKUN 9/2 午间版 5 条线（25 群）</div>
-  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① 算力硬件重构（互联/散热/光纤接棒）② 北交所+低位军工承接 ③ 原油与化工涨价（华昌/龙盛/锦鸡）④ 地热新叙事（开山/雪人/汉钟精机/冰轮环境）⑤ 折叠屏+AI 手机（宜安/精研/天工股份/钛合金）。<b>收束</b>：「弱指数没消灭交易，缩短因果链——科技看互联散热光纤交付，周期看价格向签单，地热看项目，北交所军工看成交订单，消费电子看备货销量。越靠近真实经营反馈，越能穿过题材轮动。」</p>
+  <div class="dr-tag">AI 应用 / 数据平台（今晚最强线）</div>
+  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① <b>Snowflake FQ2'27</b>：营收 15.5 亿美元（+35%）超预期 14.9 亿；非 GAAP 利润 2.37 亿（利润率 15.3%）；<b>全年指引上调至 60.7 亿（+36%）</b>、非 GAAP 利润率 13.5%→14.5%；RPO 90 亿（+30%）、老客户 NRR 126%、净新增用户 +32%；盘后 +20% → <b>9/3 开盘 +22.13% 兑现</b>。② <b>Palantir +8.17%</b>（Q2 收入 +102%、指引上修，FDE 交付模式获验证）。③ <b>中信证券 9 月思路</b>：美股财报开启「AI 应用」价值重估——<b>模型放大软件而非替代</b>；IGV 自 7/23 低点反弹 20%，YTD 仍落后算力硬件，折价修复进行中；国内四主线（AI Infra / FDE 模式 / 高景气新场景 / 大模型），9 月金股 深信服、金蝶国际、金山办公。④ <b>英伟达 129.3 亿美元收购 Hugging Face</b>（9/3 官宣）：HF 保持开放平台、不强绑英伟达算力 → 开源模型生态 + 具身智能（HF 旗下 Pollen Robotics 开源双足机器人 399 美元）双受益。</p>
+  <div class="dr-tag">算力硬件（超预期也要被"指引"惩罚）</div>
+  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① <b>博通 AVGO -6.37%</b>：Q3 营收 295.91 亿（+86%，单季新高）、EPS 3.32（预期 3.24）、<b>AI 半导体 167 亿（+221%）</b>、净利润 130.9 亿（+216%）；但 <b>Q4 指引 348 亿低于预期 350.5 亿</b>（AI 半导体指引 217 亿 +236%，仅略高于预期 213.3 亿）→ 盘后 -5%、盘中创 4/8 以来新低。<b>管理层给出 FY27 AI 收入 1150 亿、FY28 再翻番至 2300 亿的长期目标，但市场只交易当季指引。</b>② <b>戴尔 DELL +2.59%</b>（前日 +15.75%）：F2Q27 再爆表，Morgan Stanley 上调 PT 434→499 美元，视 FY27 AI 服务器指引 740 亿为下限、模型 960 亿，FY28 看至约 1500 亿（高出 Street 75%）、EPS 约 35 美元（高出 46%），但维持 Equal-weight（担心 ISG 利润率持续性）。③ <b>ASML High-NA EUV（Bernstein 重申 Outperform）</b>：分辨率 13nm→8nm；<b>DRAM 率先导入（三星 / 海力士约 2027 D1d）</b>，逻辑 2028-2030（Intel 18A 已验证、台积电 / 三星 A10 级约 2030）；litho intensity 提升。</p>
+  <div class="dr-tag">散热升级（当日 A 股最强主线）</div>
+  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① <b>需求刚性</b>：AI 芯片功耗破 1000W、Rubin 单芯片 TDP 2300W（远期 3500W）；TrendForce 预计 AI 芯片液冷渗透率 2025 年 33%→2026 年 53%，Vera Rubin 采用无风扇全液冷。② <b>订单验证</b>：青岛莱西 CDU 产线订单排至 2026 年 12 月底；佛山液冷部件企业订单 / 产值 / 交付接近同比翻倍、约 70% 产线满产（央视财经 8/31）。③ <b>午后扩散至供电</b>：机柜功率密度上升 → 冷量分配 / 电子泵 / 快速接头 / 配电模块（飞龙股份 +8.54%、泰嘉股份 / 麦格米特 / 奥海科技、溯联股份 / 华菱线缆、集智股份 Manifold 设备）。④ <b>微通道散热</b>：台积电先进封装研发处长陈燕铭 9/2 表示已开始导入并与封装架构共同开发；英伟达要求供应商开发 MLCP（单价 3-5 倍）。⑤ <b>金刚石散热</b>：9/3-4 郑州半导体用金刚石材料技术大会；单晶金刚石热导率 2000-2200 W/m·K（铜 5 倍）；2025 年渗透率 0.1% / 0.2 亿美元 → 2030 年 12% / 48 亿美元（约 240 倍）；诺格获 700 万美元钻石冷却芯片合同；华为 Mate90 / 联想 AI PC 传闻搭载。</p>
+  <div class="dr-tag">涨价与供给约束（材料线）</div>
+  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① <b>PTFE / 覆铜板</b>：松下 9/1 起涨最高 30%、建滔第八轮 FR-4 涨 10%、南亚涨 20-25%；生益科技 PTFE 混压已交付打样（Df 稳定 0.0004）；<span class="dk-caution">但 JPM 9/1 明确"PTFE 用于 NVL576 switch tray 仍在探索、技术不确定性仍多"，且生益科技 9/3 -1.23% → 情绪与股价背离，需区分送样与定标</span>。② <b>H 酸单日 +30%</b>（吉华集团 / 锦鸡股份）、<b>浙江龙盛活性染料调价函 9/3 生效</b>（原件已读：33-80 元/KG 全系上调）。③ <b>银河 20 万吨铬盐项目被叫停</b>：未来 2 年国内新增产能仅剩振华重庆基地 10 万吨 → 振华股份供给格局实质改善。④ <b>高纯红磷</b>海外供应扰动（至纯科技 / 光智科技 / 澄星股份，需分层验证）。⑤ 德州仪器模拟芯片新一轮调价函；6 吋碳化硅基板供货吃紧、拒绝追加订单；ABF 载板欣兴产能告急。</p>
+  <div class="dr-tag">叙事 AKUN 9/3 全天版 5 条线（25 群）与反证雷达</div>
+  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">① AI 供电与液冷从早盘试探走到午后共振（飞龙股份电子泵 + 电源加入）② OCS / 光器件 / 金刚石散热承接算力物理层第二层扩散 ③ 红磷 / 电子布 / H 酸 / 铬盐用供给约束争夺缩量资金 ④ SNOW / WorkBuddy / Cybercab 把 AI 应用推向数据、终端与运营闭环 ⑤ 银行保险 / GLP-1 / 造船提供红利、低位与订单锚。<br><b>当天反证雷达（必读）：</b>液冷若只剩介质和小票轮涨 → 主线削弱；OCS 与金刚石若迟迟没有测试和订单进展 → 远期测算继续折价；涨价品若现货成交和下游接受度不跟 → 供给交易快速退潮；金融继续拉升但全市场成交不增 → 成长端流动性压力反复。</p>
 </div>
 <!-- 5.5 产业链/景气度 -->
-<div class="dr-h">5.5 · 产业链/景气度评估（军工/AI 算力-CPC/液冷/PTFE/银行 4 线 9/3 重点跟踪）</div>
+<div class="dr-h">5.5 · 产业链/景气度评估（散热 / 航运 / 供给材料 / AI 应用 4 线 9/4 重点跟踪）</div>
 <div class="dr-card">
-  <div class="dr-tag">军工产业链（H1 业绩+十五五双驱动）</div>
-  <p style="font-size:12.5px;line-height:1.6;margin:4px 0"><b>上游材料</b>：钛合金（宝钛/西部超导/天工股份）、特种钢（抚顺特钢）、碳纤维（中复神鹰/光威复材）；<br>
-    <b>主机厂</b>：中航沈飞（歼击机）/中航西飞（运输机）/内蒙一机（陆军主战坦克第一）/航发动力（航空发动机）；<br>
-    <b>智能弹药</b>：长城军工（陆军弹药供应商第一）/中兵红箭（陆军智能弹药第一）；<br>
-    <b>无人装备</b>：中无人机/航天彩虹/通易航天（北交所弹性）；<br>
-    <b>智驾</b>：高盛比亚迪天神之眼 2.2 亿公里+高盛小米 XRING D100 3nm ADAS → A股智驾链（德赛西威/经纬恒润/伯特利/华阳集团/浙江世宝）。</p>
-  <div class="dr-tag">AI 算力/光模块/CPC 产业链</div>
-  <p style="font-size:12.5px;line-height:1.6;margin:4px 0"><b>NV 链上游材料</b>：昊华科技（PTFE 树脂国内唯二）/联瑞新材（硅微粉已过生益认证）；<br>
-    <b>CCL</b>：生益科技（已过 NV 认证）= PTFE CCL 核心供应商；<br>
-    <b>PCB</b>：深南电路（30+ 高温压机）/沪电股份（送样领先）/景旺/胜宏；<br>
-    <b>CPC 铜共封装（新增主线）</b>：<b>金信诺 300252</b>（国内唯一 CPC 能力+绑定旭创+送样 Meta/NV+预计 27 年量产）/立讯精密（高速铜互联）；<br>
-    <b>光模块</b>：高盛立讯产能加速 5-6 个月（间接映射剑桥/中际旭创，但章建平退出=短期承压）；<br>
-    <b>整机/服务器</b>：浪潮信息（K3 观察）/兆易创新（观察）；<br>
-    <b>液冷泵阀</b>：飞龙股份/强瑞技术/金富科技/英维克（液冷热管理）。</p>
-  <div class="dr-tag">PTFE 涨价链 + 印尼镍减产</div>
-  <p style="font-size:12.5px;line-height:1.6;margin:4px 0"><b>PTFE 树脂</b>：昊华科技/东岳集团；<b>CCL</b>：生益科技；<b>硅微粉</b>：联瑞新材/肯特股份；<b>PTFE 混压 PCB</b>：深南电路/沪电股份/景旺/胜宏；<br>
-    <b>染料</b>：龙盛 9/1 调价函生效+闰土股份+吉华集团+锦鸡股份+亚邦股份（25 群 5 条线同向）；<br>
-    <b>镍/钼/红磷</b>：印尼镍减产四成（21:21 晚间）→ A股镍/有色+磷化钼多晶（陕西供应商因高纯红磷供应中断已停产）。</p>
-  <div class="dr-tag">银行/稳定币新金融</div>
-  <p style="font-size:12.5px;line-height:1.6;margin:4px 0">工商银行/建设银行/中国银行/成都银行/江苏银行/南京银行（9/2 集体新高）+星网锐捷/爱丽家居/海鸥股份/磁谷科技（同步新高）。催化：<b>高盛/美银等 21 家国际大行稳定币</b>+美国 SEC 区块链新规——传统金融+新金融双重博弈。</p>
+  <div class="dr-tag">散热 / AI 供电产业链（主线）</div>
+  <p style="font-size:12.5px;line-height:1.6;margin:4px 0"><b>系统温控与 CDU</b>：英维克（Coolinside 全链条）/ 申菱环境 / 同飞股份；<br>
+    <b>电子泵与冷板</b>：飞龙股份（非车端电子泵落地锚）/ 思泉新材（20CM，导热膜 + 液冷系统，6 月中标 CSP 订单按月滚动交付，注意 H1 归母仅 +10.1%）/ 金富科技（CDU 冷板，H1 营收 +82.38%、归母 +93.87%）；<br>
+    <b>机柜与结构件</b>：新朋股份（泰国基地机柜）/ 金帝股份（2 连板）/ 集泰股份（4 板，浸没式液冷硅油验证中）；<br>
+    <b>高功率电源（午后新增）</b>：泰嘉股份 / 麦格米特 / 奥海科技（送样认证与二供机会）；<br>
+    <b>管路与连接</b>：溯联股份 / 华菱线缆（UQD 快速接头）/ 大元泵业（屏蔽泵）；设备：集智股份（Manifold 校直校扭）；<br>
+    <b>金刚石 / 超硬散热</b>：黄河旋风（8 英寸热沉片）/ 力量钻石（一期投产、台厂包销）/ 四方达（12 英寸样品）/ 恒盛能源 / 博云新材 / 岱勒新材 / 沃尔德 / 惠丰钻石。</p>
+  <div class="dr-tag">航运 / 油运产业链（BDI + 地缘双催化）</div>
+  <p style="font-size:12.5px;line-height:1.6;margin:4px 0"><b>干散货</b>：海通发展（涨停、境内沿海 + 国际远洋）/ 凤凰航运（H1 营收 +95.70%、归母 +2329.69%）/ 国航远洋（北交所）；<br>
+    <b>油运</b>：中远海能（VLCC 沙特—中国 65.6 万美元/天）/ 招商轮船（VLCC + 干散双线）/ 招商南油（成品油 MR）；<br>
+    <b>特种与集运</b>：中远海特 / 锦江航运 / 中远海控；<b>港口</b>（南京港 / 上港集团 / 宁波港）弹性相对有限。</p>
+  <div class="dr-tag">供给约束材料链（分层验证）</div>
+  <p style="font-size:12.5px;line-height:1.6;margin:4px 0"><b>铬盐</b>：振华股份（新增产能唯一变量 + 金属铬 + SOFC）；<br>
+    <b>电子布 / 玻纤</b>：中国巨石（9 月提价公开报道）/ 山东玻纤 / 长海股份；设备：日发精机 / 泰坦股份（喷气织机，验收周期确认收入）；<br>
+    <b>H 酸 / 染料中间体</b>：吉华集团 / 锦鸡股份 / 浙江龙盛（调价函原件已读）/ 闰土股份；<br>
+    <b>高纯红磷 / 磷化工</b>：至纯科技 / 光智科技 / 澄星股份 / 兴发集团（半导体材料收入占比尚小）；<br>
+    <b>球形硅微粉</b>：联瑞新材（市占 28-31%、HBM 低 α 球硅）/ 雅克科技 / 凌玮科技 / 国瓷材料 / 凯盛科技 / 元力股份；上游石英股份 / 菲利华 / 欧晶科技。</p>
+  <div class="dr-tag">AI 应用 / 数据平台链（外部验证最强）</div>
+  <p style="font-size:12.5px;line-height:1.6;margin:4px 0"><b>数据底座</b>：深信服（9/3 +3.68%，SNOW 映射首选）/ 星环科技 / 达梦数据 / 海量数据 / 神州数码（Snowflake 中国区运营）；<br>
+    <b>AI 编程与低代码</b>：金现代 / 新炬网络 / 普元信息 / 中科创达 / 科大国创；<br>
+    <b>端侧入口（WorkBuddy）</b>：科大讯飞 / 安克创新 / 萤石网络；<b>线控与运营（Cybercab）</b>：浙江世宝 / 大众交通 / 小马智行（注意：无线充电映射被群友主动剔除，因缺少供应关系依据）。</p>
 </div>
 <!-- 6 新闻整合 -->
 <div class="dr-h">6 · 新闻整合（公开源自动刷新 · 投喂精选可选）</div>
@@ -236,87 +245,87 @@
 </div>
 
 <!-- 7.1 K3 产业信号验证 -->
-<div class="dr-h">7.1 · K3 产业信号验证（9/3 盘前 · 8 重验证 · 真共振 vs 伪共振）</div>
+<div class="dr-h">7.1 · K3 产业信号验证（9/3 收盘 + 美股盘中 · 真共振 vs 伪共振）</div>
 <div class="dr-card" style="margin-top:4px">
   <table class="dr-tbl">
     <thead><tr><th>主题</th><th>验证</th><th>内容</th></tr></thead>
     <tbody>
-      <tr><td><b>AI Infra / 数据平台</b></td><td style="color:var(--red);font-weight:700">❤️ 真共振（新主线·SNOW 催化）</td><td class="dr-wrap">① Snowflake 盘后 +20%：全年指引上调 60.7 亿（+36%）、非 GAAP 利润率 13.5→14.5%、RPO 90 亿（+30%）、<b>老客户 NRR 126%</b>、AI 产品贡献约一半收入增速 ② Coco 9100 账户 / CoWork 5800 账户（环比 +11%）飞轮 ③ 东方证券映射 A 股 6 只：深信服 / 星环科技 / 达梦数据 / 亚康股份 / 汉得信息 / 鼎捷数智 ④ <b>注意时序：9/2 收盘 305.84 仍 -4.36%，+20% 待今夜美股兑现</b></td></tr>
-      <tr><td><b>军工 / 军贸</b></td><td style="color:var(--red);font-weight:700">❤️ 真共振（订单数据加持）</td><td class="dr-wrap">① 兴证策略：航海装备 II 26Q2 订单 <b>+98.49%（加速 +90.57pct，全表第一）</b>、航天装备 +33.59%（+17.17pct）② 9/2 军工 +7.53%（H1 80 家营收 +18.89%/净利 +32.92%）③ 十五五落地 + 歼 10CE 出口（乌兹 6 架入列、孟加拉 20-24 架、阿尔及利亚 30-40 架、合计意向超 100 架）④ 长江军工核心推荐：成飞 / 沈飞 / 西飞 / 洪都 / 中无人机 / 航天彩虹 / 国睿科技 / 内蒙一机</td></tr>
-      <tr><td><b>AI 算力 / CPC / 液冷</b></td><td style="color:var(--red);font-weight:700">❤️ 真共振（修复确认）</td><td class="dr-wrap">① 美股 NVDA <b>+3.21%</b>（217.44→224.41，两日累计 +4.5%）、SNDK +1.08% ② 兴证元件订单 +43.71%（+38.53pct）、通信设备 +31.83%（+21.98pct）——生益科技 / 东山精密 / 深南电路 / 中际旭创 / 新易盛 / 长飞光纤 ③ 英维克 Q2 环比 +1934%、存货 15.9 亿（+56%）、CDU 获谷歌/NV MGX/Intel 认证 ④ 金信诺（300252）国内唯一 CPC 能力 + 绑定旭创 + 送样 Meta/NV</td></tr>
-      <tr><td><b>订单高增外延</b></td><td style="color:var(--red);font-weight:700">❤️ 真共振（新增·AI 之外）</td><td class="dr-wrap">兴证「AI 之外」订单图谱：包装印刷 +27.60%（<b>加速 +64.46pct</b>，裕同 / 金富 / 嘉美）/ 其他电子 II +98.57%（+80.58pct，香农芯创）/ 非金属材料 +38.22%（+45.26pct，联瑞新材 / 石英股份）/ 小家电 +30.95%（+12.22pct，石头科技 / 科沃斯）/ 贵金属 +44.14%（+14.26pct）/ 煤炭 +20.29%（+16.03pct）/ 乘用车 +26.10%（+32.28pct，比亚迪）/ 造纸 +26.32%（+33.42pct）</td></tr>
-      <tr><td><b>半导体 / 存储</b></td><td style="color:var(--gold);font-weight:700">🟡 退潮后修复（内部分化）</td><td class="dr-wrap">① <b>反弹侧</b>：MU +2.43%、SKHY +2.61%、韩 SK하이닉스 +0.50% / 삼성전자 +0.60% ② <b>续弱侧</b>：MRVL -1.86%、WDC -0.34% ③ 长鑫 9/2 -3.86%（跌幅加深）+ BNP 存储 IC 数据 + 高盛小米 NAND 1Q27 见顶 ④ <span class="dk-caution">结论：退潮是结构性（配套芯片 + CPO），存储/算力龙头已修复；A 股映射力度递减（韩股仅 +0.5~0.6% vs 美股 +2.4~2.6%）</span></td></tr>
-      <tr><td><b>CPO / 光模块</b></td><td style="color:var(--green);font-weight:700">🟡 退潮（未解除）</td><td class="dr-wrap">① 章建平退出中际旭创前十大股东（顶级游资撤离）② 美股 COHR -1.25% / AAOI -0.25% / LITE 仅 +0.19%（止跌无力）③ 高盛立讯产能扩张未传导二级 ④ 9/3 早盘反应是关键验证点——<b>不持仓但作为板块情绪指标</b></td></tr>
-      <tr><td><b>医药 / CXO</b></td><td style="color:var(--gold);font-weight:700">🟡 基本面强 / 板块弱（背离）</td><td class="dr-wrap">① 药明康德中报营收 288.97 亿（+38.93%）、扣非 +89.39%、指引上调 585-605 亿（超最乐观卖方）、经调 PE 约 20 倍 ② 兴证医疗服务订单 +33.27%（+26.99pct）③ 但 9/2 CXO -0.54%（AI 药物发现 -1.21% / CRO -1.28%）、狂人低吸神奇制药被按跌停 ④ 风险：1260H 诉讼 / BINSA 法案 / TIDES 增速 141.6%→44.3%</td></tr>
-      <tr><td><b>消费 / 影视短剧</b></td><td style="color:var(--gold);font-weight:700">⚠️ 高位接力风险</td><td class="dr-wrap">① 9/2 国芳 4 板 / 大晟 3 / 欢瑞 3 / 龙版 3（多板梯队）② 依「涨一天跌一天」规律 9/3 接力难度高 ③ 兴证小家电/黑色家电订单高增（+30.95%/+22.14%）提供基本面支撑但需资金确认</td></tr>
+      <tr><td><b>液冷 / AI 散热</b></td><td style="color:var(--red);font-weight:700">🔴 真共振（主线）</td><td class="dr-wrap">① 9 股涨停为当日最多，集泰股份 4 板、思泉新材 20CM、金帝 2 板 ② 订单硬证据：青岛莱西 CDU 产线排至 2026/12 底、佛山企业约 70% 产线满产 ③ 渗透率 33%→53%（TrendForce）+ Vera Rubin 无风扇全液冷 ④ 午后高功率电源加入形成"供电+散热"共振（飞龙 +8.54%）⑤ <b>反证：思泉 H1 归母仅 +10.1%、Q2 净利 -44.6%——是订单突破而非业绩高增</b></td></tr>
+      <tr><td><b>航运 / 油运</b></td><td style="color:var(--red);font-weight:700">🔴 真共振（低位新方向）</td><td class="dr-wrap">① BDI 单日 +5.5% 至 3331（2023/12 以来新高）② 霍尔木兹过峡商船降至 4 艘（10 日均值 13 艘）、两艘沙特原油超大型油轮遭袭 ③ 海通发展涨停、中远海能 / 招商轮船 +7~8% ④ VLCC 沙特—中国日收益 65.6 万美元（同比 +10 倍）⑤ 凤凰航运 H1 归母 +2329.69% 提供业绩佐证</td></tr>
+      <tr><td><b>贵金属</b></td><td style="color:var(--red);font-weight:700">🔴 真共振（宏观驱动）</td><td class="dr-wrap">① 8 月 ADP 仅 3.7 万爆冷 + 沃勒暗示通胀放缓 → 交易员减少加息预期 ② 现货金 4470→COMEX 4514（+2.26%）、白银 +2.17% ③ 白银有色涨停（成交 41.62 亿）、湖南黄金 +5.88%、山东黄金 / 紫金矿业跟涨 ④ <b>跟踪 9/4 非农：非农弱则强化，非农强则回吐</b></td></tr>
+      <tr><td><b>金刚石 / 超硬散热</b></td><td style="color:var(--gold);font-weight:700">🟡 事件驱动（待验证）</td><td class="dr-wrap">① 9/3-4 郑州技术大会 + 诺格 700 万美元合同 + 华为 Mate90 / 联想 AI PC 传闻 ② 中泰测算 26 年 87 亿→30 年 592 亿（CAGR&gt;50%）③ 黄河旋风 +7.93%（成交 60.92 亿）、博云新材涨停、惠丰钻石 +12.95% ④ <b>约束：多数公司仍处送样 / 试装 / 小批验证，半导体级收入占比极低，量产良率与客户导入是三道关</b></td></tr>
+      <tr><td><b>OCS / 光互联</b></td><td style="color:var(--gold);font-weight:700">🟡 待确认</td><td class="dr-wrap">① 光博会临近，OCS 与 CPO 工程化材料反复出现 ② 大票承压：中际旭创 -1.14% / 新易盛 -0.50% / 中天科技 -2.17% ③ 细分受关注：腾景科技 / 炬光科技 / 光库科技 / 长盈通 / 罗博特科 / 优利德 ④ <b>海外台数与单机价值量多为产业转述，需以送样、认证、订单交付验证</b></td></tr>
+      <tr><td><b>CPO / 光模块</b></td><td style="color:var(--green);font-weight:700">🟢 退潮（未解除）</td><td class="dr-wrap">① 美股 LITE -3.97% / AAOI -4.46% / COHR -3.22% 同步走弱 ② A 股中际旭创 -1.14% / 新易盛 -0.50% ③ 高位筹码与缩量压制，细分强于中军说明是"预期扩散"而非"业绩扩散" ④ <b>结论：继续回避，板块仅作情绪指标</b></td></tr>
+      <tr><td><b>PTFE / 覆铜板</b></td><td style="color:var(--gold);font-weight:700">🟡 情绪与股价背离</td><td class="dr-wrap">① 热度榜第二（9 次）：松下 +30% / 建滔 +10% / 南亚 +20-25%，生益已交付打样 Df 0.0004 ② <b>但生益科技 9/3 -1.23%</b> ③ JPM 9/1：PTFE 用于 NVL576 仍在探索、技术不确定性仍多 ④ <b>结论：涨价是真、路线未定，只做"已签单"验证，不做"送样"想象</b></td></tr>
+      <tr><td><b>高位题材 / 短剧 / 农业</b></td><td style="color:var(--green);font-weight:700">🟢 退潮（风险最高）</td><td class="dr-wrap">① 传智教育 / 深中华A / 爱丽家居 / 一鸣食品 / 新赛股份 / 哈药股份批量一字跌停 ② 3 板档彻底断层（大晟文化、欢瑞世纪断板），总龙竞业达 -2.31% 断板 ③ 粮食种业（新赛、福建金森跌停）、短剧传媒、军工后排同步派发 ④ <b>结论：退潮第二日，坚决回避高位接力</b></td></tr>
+      <tr><td><b>AI 应用 / 数据平台</b></td><td style="color:var(--red);font-weight:700">🔴 外围强验证</td><td class="dr-wrap">① SNOW +22.13% 兑现盘后 +20%（营收 +35%、全年指引上调至 60.7 亿、NRR 126%）② PLTR +8.17% / CRM +3.72% 同向 ③ A 股映射深信服 +3.68% 已先行反应 ④ <b>约束：海外业绩不能直接换算国内订单，需看付费客户、续费率与项目验收</b></td></tr>
     </tbody>
   </table>
 </div>
 <!-- 7.2 重点观测股推演 -->
-<div class="dr-h">7.2 · 重点观测股推演（K3 持仓 9/3 盘前映射 + 新发现关注）</div>
+<div class="dr-h">7.2 · 重点观测股推演（K3 持仓 9/3 收盘映射 + 新发现关注）</div>
 <div class="dr-card" style="margin-top:4px">
   <table class="dr-tbl">
-    <thead><tr><th>标的</th><th>主题</th><th>9/2 表现</th><th>9/3 策略</th></tr></thead>
+    <thead><tr><th>标的</th><th>主线</th><th>9/3 表现</th><th>推演</th></tr></thead>
     <tbody>
-      <tr><td><span class="dk-main">沃特股份</span></td><td>PTFE（PCB 上游 / 涨价链）</td><td>9/2 梯队分歧回流</td><td class="dr-wrap">9/3 PTFE 涨价 + 印尼镍减产四成持续兑现；<b>持有</b>，防高位分歧</td></tr>
-      <tr><td><span class="dk-main">昊华科技</span></td><td>PTFE 树脂 / 氟化工</td><td>支撑 51.2/50 守住</td><td class="dr-wrap">兴证非金属材料订单 +45.26pct 加持；<b>持有</b>，51.2/50 为防守线</td></tr>
-      <tr><td><span class="dk-main">永鼎股份</span></td><td>光纤（AI 硬件最便宜分支）</td><td>9/2 横盘</td><td class="dr-wrap">兴证通信设备订单 +31.83%（+21.98pct）；<b>持有</b>，9/3 修复反弹候选</td></tr>
-      <tr><td><span class="dk-main">金牛化工</span></td><td>化工 / 涨价链</td><td>9/2 稳健</td><td>涨价链延续；<b>持有</b></td></tr>
-      <tr><td><span class="dk-caution">华工科技 / 剑桥科技 ⚠</span></td><td>光模块 / CPO（激光 + 光器件）</td><td>9/2 随 CPO 承压</td><td><span class="dk-caution">⚠ 章建平退出中际旭创 + 美股 COHR/AAOI 续弱 → CPO 退潮未解除</span>；<b>持有观望</b>，9/3 早盘 30 分钟看承接，破位减仓</td></tr>
-      <tr><td><span class="dk-risk">长鑫科技 688825 ⚠</span></td><td>半导体 / 存储（退潮四重确认）</td><td>9/2 -3.86%（跌幅加深）</td><td><span class="dk-risk">⚠ 继续回避不抄底</span>：虽外围 MU +2.43%/SKHY +2.61% 反弹，但韩双雄仅 +0.5~0.6%（力度递减）+ 内部退潮确认未解除；等 9/3 早盘映射验证</td></tr>
-      <tr><td><span class="dk-caution">永杉锂业 ⚠</span></td><td>锂 / 新能源</td><td>9/2 弱势</td><td>板块无新增催化；<b>持有观望</b></td></tr>
-      <tr><td><span class="dk-risk">ST万邦</span></td><td>ST 风险标的</td><td>9/2 弱势</td><td><span class="dk-risk">严格控仓</span>，无催化不补仓</td></tr>
-      <tr><td><span class="dk-main">金信诺 300252</span>（新发现）</td><td>CPC 铜共封装（NV 链国内唯一）</td><td>9/2 强势</td><td class="dr-wrap">NV CPX+CPC 量产 + 2027 规模量产 + 绑定旭创 + 送样 Meta/NV；<b>新发现</b>，9/3 重点跟踪是否获市场认可</td></tr>
-      <tr><td><span class="dk-main">深信服 300454</span>（新发现）</td><td>AI Infra / 数据平台（SNOW 映射）</td><td>—</td><td class="dr-wrap">Snowflake 盘后 +20% 映射首选；<b>新发现</b>，9/3 盘前观察高开幅度与承接</td></tr>
-      <tr><td><span class="dk-main">星环科技 688031</span>（新发现）</td><td>企业级大数据基础平台</td><td>—</td><td>SNOW 直接对标（数据平台）；<b>新发现</b></td></tr>
-      <tr><td><span class="dk-main">亚康股份 301085</span>（新发现）</td><td>AI 数据平台（投资矩阵起源 + 合资）</td><td>—</td><td>东方证券点名映射；<b>新发现</b></td></tr>
-      <tr><td><span class="dk-main">英维克 002837</span>（新发现）</td><td>AIDC 液冷（主题转业绩）</td><td>—</td><td class="dr-wrap">Q2 环比 +1934%、存货 +56%、CDU 获 NV/Google/Intel 认证；<b>新发现</b></td></tr>
-      <tr><td><span class="dk-main">中国船舶 / 中船防务</span>（新发现）</td><td>航海装备（订单加速第一）</td><td>—</td><td class="dr-wrap">兴证航海装备订单 +98.49%（加速 <b>+90.57pct 全表第一</b>）；<b>新发现</b></td></tr>
-      <tr><td class="dk-data">美股映射</td><td>SNOW / NVDA / MU / SNDK</td><td class="dr-wrap">SNOW 收盘 -4.36%（盘后 +20%）<br>NVDA +3.21% / MU +2.43%</td><td class="dr-wrap">SNOW 今夜兑现 +20% 是 AI Infra 线的最强催化；NVDA 两日 +4.5% 支撑算力修复</td></tr>
+      <tr><td><span class="dk-main">长鑫科技 688825</span>（持仓）</td><td>存储</td><td class="dr-wrap"><span class="dk-main">+2.26% @55.55</span>（换手 4.49%）</td><td class="dr-wrap">A 股端止跌反弹，但美股 WDC -3.53% / MU -1.10% 续弱、AVGO 拖累费半 → <b>9/4 反弹延续性存疑</b>；<b>持有不加仓</b>，跌破 53 减半</td></tr>
+      <tr><td><span class="dk-main">剑桥科技 603083</span>（持仓）</td><td>光模块</td><td class="dr-wrap"><span class="dk-main">+3.51% @186.31</span>（换手 9.15%）</td><td class="dr-wrap">逆势强于光模块板块（旭创 -1.14%），但 CPO 退潮未解除 + 美股 LITE/AAOI 续跌 → <b>冲高减半、不留隔夜大仓</b></td></tr>
+      <tr><td><span class="dk-caution">华工科技 000988</span>（持仓）</td><td>光模块 / 激光</td><td class="dr-wrap"><span class="dk-caution">-0.32% @98.98</span></td><td class="dr-wrap">跟随板块走弱但幅度可控；<b>持有观察</b>，9/4 若板块继续杀跌则减仓，跌破 95 离场</td></tr>
+      <tr><td><span class="dk-main">飞龙股份 002536</span>（新发现·主线锚）</td><td>电子泵 / 液冷</td><td class="dr-wrap"><span class="dk-main">+8.54% @63.03</span>（换手 16.79%）</td><td class="dr-wrap">全天版新增"供电+散热"共振的核心锚，非车端电子泵业务进展与走强呼应；<b>新发现</b>，9/4 看能否放量续强，回踩不破 60 可跟</td></tr>
+      <tr><td><span class="dk-main">英维克 002837</span></td><td>液冷系统 / CDU</td><td class="dr-wrap"><span class="dk-main">+3.41% @68.49</span></td><td class="dr-wrap">Coolinside 全链条方案 + 项目验收节奏；系统端比材料端更稳，<b>回踩关注</b></td></tr>
+      <tr><td><span class="dk-main">思泉新材 301489</span>（高位警示）</td><td>导热材料 / 液冷</td><td class="dr-wrap"><span class="dk-main">20CM 涨停 @140.40</span>（换手 22.45%）</td><td class="dr-wrap">订单突破（CSP 液冷订单按月滚动交付）但 <b>H1 归母仅 +10.1%、Q2 净利 -44.6%</b>；换手 22% 属高位博弈，<b>不追高</b>，仅作主线温度指标</td></tr>
+      <tr><td><span class="dk-main">深信服 300454</span></td><td>AI Infra（SNOW 映射）</td><td class="dr-wrap"><span class="dk-main">+3.68% @135.15</span></td><td class="dr-wrap">SNOW +22% 兑现后 A 股映射最干净的一只；<b>继续持有</b>，9/4 看能否放量突破前高</td></tr>
+      <tr><td><span class="dk-main">海通发展 603162</span></td><td>干散货 / BDI</td><td class="dr-wrap"><span class="dk-main">涨停 @13.31</span>（换手 18.36%）</td><td class="dr-wrap">BDI 3331 新高 + 境内沿海 / 国际远洋双线；<b>低位新方向首推</b>，9/4 看连板与量能</td></tr>
+      <tr><td><span class="dk-main">黄河旋风 600172</span></td><td>金刚石散热</td><td class="dr-wrap"><span class="dk-main">+7.93% @15.92</span>（换手 30.15%）</td><td class="dr-wrap">8 英寸热沉片可量产 + 成交 60.92 亿居板块首位；<b>换手 30% 过热</b>，事件驱动只做短线，不追涨停</td></tr>
+      <tr><td><span class="dk-main">振华股份</span></td><td>铬盐供给</td><td class="dr-wrap">银河 20 万吨项目被叫停</td><td class="dr-wrap">未来 2 年国内新增产能仅剩其重庆基地 10 万吨（27 年底试产 / 28 年达产）+ 金属铬 + SOFC；<b>供给逻辑最硬</b>，9/4 关注是否放量</td></tr>
+      <tr><td class="dk-data">美股映射（盘中）</td><td class="dr-wrap">SNOW / PLTR / AVGO / NVDA</td><td class="dr-wrap">SNOW <span class="dk-main">+22.13%</span> / PLTR <span class="dk-main">+8.17%</span> / NVDA <span class="dk-main">+1.75%</span> / AVGO <span class="dk-risk">-6.37%</span></td><td class="dr-wrap">软件强于硬件格局确立；AVGO 的"指引惩罚"提示 A 股算力硬件 9/4 早盘防情绪传导</td></tr>
     </tbody>
   </table>
 </div>
 <!-- 7.3 开盘指引 -->
-<div class="dr-h">7.3 · 次日开盘指引（9/3 周四 · K3 '复'窗口 · 盘前版 09:05）</div>
+<div class="dr-h">7.3 · 次日开盘指引（09/04 周五 · K3 '收'窗口 · 盘中版 22:00）</div>
 <div class="dr-card" style="margin-top:4px">
   <div class="dr-tag" style="margin-bottom:4px"><span class="dk-main">大势预判</span></div>
   <ul style="font-size:12.5px;line-height:1.6;margin:4px 0">
-    <li><span class="dk-data">9/3 周四 K3「复」窗口</span>：外围「结构性修复」+ 内部「主线切换」，<b>倾向高开但需防高开低走</b>（日经已示范：高开 +0.62% → 转跌 -0.22%）</li>
-    <li><span class="dk-data">关键点位</span>：上证 9/2 收 3941.39（破 3950 支撑）；<b>回 3950-3980 = 修复确认加仓窗口</b>，<span class="dk-risk">破 3900 = 减仓线</span>，<span class="dk-risk">等 3900/3880 投筹线</span></li>
-    <li><span class="dk-data">量能与情绪</span>：9/3 早盘 30 分钟观察 CPO / 光模块承接（章建平退出的连锁反应是否扩散）+ AI Infra 新线资金是否接力</li>
+    <li><span class="dk-data">9/4 周五</span>：退潮第二日 + 非农前夜，<b>倾向低开震荡 / 缩量整理</b>；外围"软件强、硬件弱"会压制算力与光模块开盘，但<b>液冷 / 航运 / 贵金属有隔夜正反馈</b>，指数大概率仍是"结构分化"而非单边</li>
+    <li><span class="dk-data">关键点位</span>：上证 9/3 收 3942.09（连续两日卡 3950 下方、盘中 3930.45-3968.11）；<b>站回 3950-3980 = 修复确认</b>，<span class="dk-risk">破 3930 = 情绪再下台阶</span>，<span class="dk-risk">3900/3880 为分批承接线</span></li>
+    <li><span class="dk-data">量能与情绪</span>：情绪分 41（冰点），需重回 <b>50 以上</b> 才确认修复；成交若继续缩至 1.7 万亿下方，视为退潮延续而非新周期启动</li>
   </ul>
 
   <div class="dr-tag" style="margin:10px 0 4px"><span class="dk-main">主线策略（5 选 2-3）</span></div>
   <ul style="font-size:12.5px;line-height:1.6;margin:4px 0">
-    <li><span class="dk-main">AI Infra / 数据平台（首选·新增催化）</span>：SNOW 盘后 +20% + 全年指引 +36% + NRR 126%；深信服 / 星环科技 / 达梦数据 / 亚康股份 / 汉得信息 / 鼎捷数智——<b>与 CPO 退潮低相关，是 9/3 最干净的新方向</b></li>
-    <li><span class="dk-main">军工 / 军贸（订单加持·权重↑）</span>：兴证航海装备 +98.49%（加速斜率第一）/ 航天装备 +33.59% + 十五五落地 + 歼 10CE 多国订单；成飞 / 沈飞 / 洪都 / 国睿科技 / 内蒙一机 / 中国船舶</li>
-    <li><span class="dk-main">AI 算力 / CPC / 液冷（修复确认）</span>：NVDA 两日 +4.5% + 兴证元件订单 +38.53pct；金信诺 300252（CPC 唯一）/ 英维克（液冷业绩）/ 生益科技 / 深南电路</li>
-    <li><span class="dk-main">订单高增外延（兴证「AI 之外」）</span>：包装印刷 +64.46pct（裕同 / 金富）/ 非金属材料 +45.26pct（联瑞新材 / 石英股份）/ 煤炭 +16.03pct / 小家电 +12.22pct</li>
-    <li><span class="dk-neutral">医药 CXO（观察不追）</span>：药明康德基本面强（指引 585-605 亿超最乐观卖方）但板块弱（CXO -0.54%），等板块企稳信号</li>
+    <li><span class="dk-main">液冷 → AI 供电 + 散热材料（首选·有订单有交付）</span>：CDU 排产至 26 年底 + 渗透率 33%→53% + 午后电源共振；英维克 / 申菱环境 / 同飞股份（系统端更稳）+ 飞龙股份（电子泵）+ 金富科技；<b>只做已披露订单与系统端，不追纯介质小票</b></li>
+    <li><span class="dk-main">航运 / 油运（低位新方向·有价格有业绩）</span>：BDI 3331 新高 + 霍尔木兹扰动；海通发展 / 中远海能 / 招商轮船 / 凤凰航运（H1 归母 +2329%）</li>
+    <li><span class="dk-main">贵金属（非农交易）</span>：ADP 3.7 万爆冷 + 沃勒转鸽 + 金 4470→4514；白银有色 / 湖南黄金 / 山东黄金；<b>非农落地前不追高，等回踩</b></li>
+    <li><span class="dk-main">AI 应用 / 数据平台（外围最强验证）</span>：SNOW +22% / PLTR +8% / CRM +3.7%；深信服 / 星环科技 / 达梦数据 / 金现代 / 新炬网络</li>
+    <li><span class="dk-neutral">供给约束材料（分层做）</span>：铬盐（振华股份，项目叫停逻辑最硬）&gt; 电子布（中国巨石，提价有公开报道）&gt; H 酸 / 染料（吉华 / 锦鸡 / 龙盛，需看下游接受度）&gt; 高纯红磷（信息最弱，只做观察）</li>
   </ul>
 
   <div class="dr-tag" style="margin:10px 0 4px"><span class="dk-risk">回避清单（重要）</span></div>
   <ul style="font-size:12.5px;line-height:1.6;margin:4px 0">
-    <li><span class="dk-risk">CPO / 光模块高位</span>：章建平退出中际旭创 + 美股 COHR -1.25% / AAOI -0.25% / LITE +0.19% 无力 + 韩股反弹未传导——<b>退潮四重确认中「机构 + 游资 + 外资周期」三条仍成立</b></li>
-    <li><span class="dk-risk">长鑫科技 688825 / 存储高位</span>：外围修复但内部确认未解除；韩存储双雄仅 +0.5~0.6%（美股 1/4 力度）——<b>不追高，等 9/3 早盘映射验证</b></li>
-    <li><span class="dk-caution">高位连板接力（消费 / 影视短剧）</span>：国芳 4 板 / 大晟 3 / 欢瑞 3，依「涨一天跌一天」规律 9/3 接力难度高</li>
-    <li><span class="dk-caution">农业 / 监管立案票</span>：新赛股份立案 / 北大荒 / 爱丽家居，监管信号集中 → 流动性折价</li>
+    <li><span class="dk-risk">高位连板与妖股接力</span>：3 板断层 + 一字跌停批量出现（传智教育 / 深中华A / 爱丽家居），<b>任何 4 板以上接力都需回避</b></li>
+    <li><span class="dk-risk">CPO / 光模块中军</span>：中际旭创 -1.14% / 新易盛 -0.50% + 美股 LITE -3.97% / AAOI -4.46%；退潮未解除，<b>只在超跌反弹做短，不做中线</b></li>
+    <li><span class="dk-caution">算力硬件开盘情绪传导</span>：AVGO -6.37% + 费半 -1.93%，A 股算力 / 存储 9/4 早盘承压概率大，<b>不抢反弹开盘</b></li>
+    <li><span class="dk-caution">PTFE 覆铜板</span>：提价是真但 JPM 提示路线未定，生益科技 -1.23% 已示警，<b>只做已签单环节</b></li>
+    <li><span class="dk-caution">金刚石散热高位换手票</span>：黄河旋风换手 30.15%、思泉新材 22.45%，<b>过热，不追涨停</b></li>
   </ul>
 
   <div class="dr-tag" style="margin:10px 0 4px"><span class="dk-main">仓位与风控</span></div>
   <ul style="font-size:12.5px;line-height:1.6;margin:4px 0">
-    <li><span class="dk-risk">9/4 非农前夜控仓</span>：今 20:30 美国 8 月 ADP（共识 14-16 万，前值 10.4 万）——<b>收盘后才公布，不构成本交易日压制，但 9/4 非农前不宜加杠杆</b></li>
-    <li><span class="dk-caution">亚太映射递减警示</span>：韩存储双雄 +0.5~0.6% vs 美股 +2.4~2.6%，日经高开低走——<b>A 股修复弹性可能同样衰减，勿按美股幅度线性外推</b></li>
-    <li><span class="dk-data">操作节奏</span>：高开不追（防日经式回落），等 9:30-10:00 回踩确认再介入；破 3900 减仓，回 3950-3980 加仓</li>
+    <li><span class="dk-risk">非农前夜控仓</span>：9/4 20:30 美国 8 月非农（私人部门共识 5.3 万），<b>数据落地前不加杠杆、不做方向性重仓</b></li>
+    <li><span class="dk-caution">冰点区间原则</span>：控仓 + 缩短持股周期为第一原则；情绪分未回 50 以上前，反弹一律视为<b>反抽而非反转</b></li>
+    <li><span class="dk-data">操作节奏</span>：不抢反弹开盘（防 AVGO 情绪传导），等 9:30-10:00 回踩确认；破 3930 减仓，回 3950-3980 再加</li>
+    <li><span class="dk-data">低吸观察池</span>：有产业实需支撑的液冷 / AI 供电、航运、贵金属，等待情绪分修复后分批</li>
   </ul>
 
-  <div class="dr-tag" style="margin:10px 0 4px"><span class="dk-main">9/3 盘中待验证预案</span></div>
+  <div class="dr-tag" style="margin:10px 0 4px"><span class="dk-main">9/4 盘中待验证预案</span></div>
   <ul style="font-size:12.5px;line-height:1.6;margin:4px 0">
-    <li><span class="dk-main">① AI Infra 新线是否被市场认可</span>：深信服 / 星环 / 亚康 9:30-10:00 资金是否流入（SNOW 催化能否跨市场传导）</li>
-    <li><span class="dk-main">② CPO 退潮是否扩散</span>：中际旭创 / 剑桥科技 / 华工科技 早盘承接，若破位则确认扩散至整个光模块链</li>
-    <li><span class="dk-main">③ 军工是否续板</span>：内蒙一机 / 长城军工 / 北方长龙 9/2 涨停后 9/3 能否续板（十五五 + 兴证订单数据双加持）</li>
-    <li><span class="dk-main">④ 存储链修复力度</span>：长鑫是否止跌（外围 MU +2.43% / SKHY +2.61% vs 韩股 +0.5~0.6% 的衰减幅度）</li>
-    <li><span class="dk-caution">⑤ 量能验证</span>：9/3 修复反弹需成交量配合，缩量反弹视为反抽而非反转</li>
+    <li><span class="dk-main">① 液冷主线是否延续</span>：集泰股份 5 板能否成功（4 板是高度担当）、飞龙股份 / 电源链（泰嘉 / 麦格米特 / 奥海）是否出现第二波</li>
+    <li><span class="dk-main">② 航运是否扩散</span>：海通发展能否连板、中远海能 / 招商轮船是否放量，判断是"一日游"还是"低位新周期"</li>
+    <li><span class="dk-main">③ 算力硬件是否被 AVGO 拖累</span>：9:30-10:00 中际旭创 / 长鑫科技 / 存储链的承接力度</li>
+    <li><span class="dk-main">④ 金刚石 / OCS 是否出现订单验证</span>：只有郑州大会传出可追溯的测试或订单进展，才从"事件驱动"升级为"真共振"</li>
+    <li><span class="dk-caution">⑤ 量能与情绪分</span>：成交能否回到 1.8 万亿上方、情绪分能否重回 50 —— 决定退潮是否结束</li>
+    <li><span class="dk-data">⑥ 22:00 后核对</span>：ISM 服务业 PMI（前值 54.1）实际值、美股尾盘是否守住涨幅（本文用 10:01 ET 盘中价）</li>
   </ul>
 </div>
 <!-- 8 数据自检 -->
@@ -340,12 +349,13 @@
 </div>
 
 <!-- 9 来源 -->
-<div class="dr-h">9 · 来源（9/3 盘前推演 · 21 份素材 = 9/2 全天 20 份 + 9/3 早间 1 份）</div>
+<div class="dr-h">9 · 来源（9/3 22:00 盘中版 · 41 份素材 + 实时行情 + 宏观日历）</div>
 <div class="dr-card" style="margin-top:4px">
   <div class="dr-note">
-    <b>素材构成</b>：9/2 全天投喂 20 份（F20260902-001 ~ 020：交易复盘 / 外资研报 / 盘面数据 / NV CPC 量产 / 晚间版 / 盘中版推演 / 每日投资线索精炼 / 兴证策略订单图谱）+ 9/3 早间 1 份（F20260903-001 Snowflake 盘后 +20%）。<br>
-    <b>行情数据</b>：美股 9/2 收盘（akshare stock_us_daily，13 标的双日快照）、亚太 9/3 开盘（新浪 znb 日韩指数 + stock.fengle.me 韩存储双雄，8:48 北京 / 09:48 首尔）。<br>
-    <b>推演口径</b>：以「外围结构性修复 + 内部主线切换」为主轴，退潮判断按<b>结构性（CPO 光模块）而非全面性（半导体）</b>修正。<br>
-    <b>免责声明</b>：本材料仅供学习交流，<b>不构成任何投资建议</b>。所载信息来源于公开渠道，不保证其准确性与完整性，据此操作风险自担。
+    <b>素材构成</b>：9/3 当日投喂 <b>41 份</b>（F20260903-001 ~ 041）= 图片 23 张（财通捞精智达 / 晚间信息汇总 / 龙盛调价函原件 / 中信 9 月 AI 应用一张图 / 财联社舆情 / 同花顺涨停复盘 / 金刚石散热 / 微通道散热 / AI 编程 / 球形硅微粉 / 碳纤维全景 / BDI 航运 / 煤炭库存 / 机器人 / 英伟达收购 HF / 黄金 / 广电 / 美联储快讯）+ PDF 14 份（涨停复盘 / 超级游资联盟 20 游资矩阵 / 每日投资线索精炼 / 平安中报综述 / 兴证四大维度 / 东方战术配置月报 / Bernstein PANW·ASML / MS Dell·Internet / JPM Flows·PCB·Retail / SemiAnalysis 韩国主权 AI）+ 微信文章 1 篇（叙事 AKUN 全天版）。<br>
+    <b>行情数据</b>：A 股 9/3 收盘（market.json，20:55 版，含三大指数 / 科创北证 / 持仓股）；美股 9/3 <b>盘中</b>（腾讯 gtimg，22:01 北京 / 10:01 ET，<b>非收盘价</b>）；大宗与利率（新浪 hf_：COMEX 金 4514.36 / 银 66.88 / 美铜 664.0 / WTI 91.96；10Y 美债 4.78%、美元 99.55 为 20:30 前后媒体口径）；日韩（新浪 znb，日经 -0.17% / 首尔 +0.26%）。<br>
+    <b>宏观数据来源与口径</b>：经济日历（Trading Economics，非官方）、工银亚洲 / 金融界 A股日历（二级源核对）、FXStreet / marketrecap（财新服务业 PMI 51.4，另源 51.3，<b>两源分歧已标注</b>）、ISM 服务业 PMI 为 22:00 公布（成稿时未出，需自行核对）。<b>ADP 3.7 万、美债 4.78%、美元 99.55、10Y 国债 1.6865% 均引自二级源，未逐条回到官方发布页核对</b>。<br>
+    <b>推演口径</b>：以「缩量分化延续、结构重于指数」为主轴；算力硬件按 AVGO 的"指引惩罚"作风险修正，AI 应用按 SNOW/PLTR 作正向验证。<br>
+    <b>免责声明</b>：本材料仅供学习交流，<b>不构成任何投资建议</b>。所载信息来源于公开渠道，不保证其准确性与完整性；美股为盘中价、宏观数据存在来源分歧，据此操作风险自担。
   </div>
 </div>
