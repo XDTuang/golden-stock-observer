@@ -1553,6 +1553,7 @@ html { scroll-behavior: smooth; }
   <div class="dr-h" style="display:flex;justify-content:space-between;align-items:center;gap:8px">
     <span>📥 投喂复盘（当日投喂 × 盘面信号）</span>
     <button id="drFeedBtn" style="font-size:12px;padding:4px 12px;border-radius:14px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);cursor:pointer;white-space:nowrap">📥 投喂</button>
+    <button id="drCmdBtn" style="font-size:12px;padding:4px 12px;border-radius:14px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);cursor:pointer;white-space:nowrap">📋 请求推演</button>
   </div>
   <p class="dr-note" id="drFeedReviewBody">投喂复盘加载中…</p>
 </div>
@@ -3300,6 +3301,7 @@ function drLoadCrossAnalysis() {
 //   现改为：字符串 / 对象 / 数组三种形态都能渲染；每个子块独立 try/catch，单块坏不影响全局。
 function drLoadFeedReview() {
   drFeedModalInit();
+  drCmdModalInit();
   const el = document.getElementById('drFeedReviewBody');
   if (!el) return;
   const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -3655,6 +3657,72 @@ function drFeedModalInit() {
     const blob = new Blob([this.dataset.body], { type: 'text/plain;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob); a.download = this.dataset.body.split('\n')[0]; a.click();
+  };
+}
+
+/* ═══════ 请求推演 · 命令中转（2026-09-03 C 方案） ═══════
+   手机/任意端点「📋 请求推演」→ 命令文件写入仓库 commands/pending/
+   → 本机 launchd 每 5 分钟轮询 → 弹系统通知 + 记录归档（commands/done/）
+   说明：AI 推演本身仍需在本机由 agent 执行（脚本无法替代研判），
+        本按钮的价值是「请求不丢失 + 全程留痕 + 到点提醒」。 */
+function drCmdModalInit() {
+  if (document.getElementById('drCmdModal') || !document.getElementById('drCmdBtn')) return;
+  const m = document.createElement('div');
+  m.id = 'drCmdModal';
+  m.style.cssText = 'position:fixed;inset:0;background:rgba(6,10,18,.78);z-index:9999;display:none;align-items:center;justify-content:center;padding:16px';
+  m.innerHTML =
+    '<div style="background:#161d2c;border:1px solid #2b3a5c;border-radius:14px;max-width:480px;width:100%;padding:20px 22px;box-shadow:0 12px 48px rgba(0,0,0,.5)">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
+    '<b style="font-size:16px;color:#e8edf7">📋 请求推演</b>' +
+    '<button id="drCmdClose" style="background:none;border:none;color:#9aa7bd;font-size:20px;cursor:pointer;line-height:1">×</button></div>' +
+    '<div style="font-size:12px;color:#9aa7bd;margin-bottom:12px;line-height:1.6">请求会写入仓库 <b>commands/pending/</b> 并留痕；本机每 5 分钟检查，' +
+    '发现请求即弹系统通知。之后回到本机说一句「推演」即可执行（研判由 agent 完成）。</div>' +
+    '<div style="font-size:12px;color:#9aa7bd;margin:6px 0 4px">推演类型</div>' +
+    '<select id="dcType" style="width:100%;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px;font-size:13px">' +
+    '<option value="盘前">盘前推演（09:05）</option>' +
+    '<option value="盘中">盘中推演（22:00）</option>' +
+    '<option value="收盘">收盘复盘（15:00 后）</option>' +
+    '<option value="临时">临时推演</option></select>' +
+    '<div style="font-size:12px;color:#9aa7bd;margin:10px 0 4px">备注（可选 · 想重点看什么）</div>' +
+    '<textarea id="dcNote" style="width:100%;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px;font-size:13px;min-height:64px;resize:vertical" placeholder="示例：重点看半导体关税影响 / 军工是否续板"></textarea>' +
+    '<div style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">' +
+    '<button id="dcSend" style="padding:8px 18px;border-radius:8px;border:1px solid #8a6d3b;background:#4a3a1a;color:#e8edf7;font-size:13px;cursor:pointer">📤 提交请求</button>' +
+    '<span id="dcOut" style="font-size:12px;color:#9aa7bd"></span></div></div>';
+  document.body.appendChild(m);
+
+  const open = () => { m.style.display = 'flex'; document.getElementById('dcNote').focus(); };
+  const close = () => { m.style.display = 'none'; };
+  document.getElementById('drCmdBtn').onclick = open;
+  document.getElementById('drCmdClose').onclick = close;
+  m.addEventListener('click', e => { if (e.target === m) close(); });
+
+  document.getElementById('dcSend').onclick = async function () {
+    const out = document.getElementById('dcOut');
+    const type = document.getElementById('dcType').value;
+    const note = document.getElementById('dcNote').value.trim();
+    if (!drFeedToken()) { out.textContent = '⚠️ 请先在「📥 投喂」里设置 Token'; return; }
+    const btn = this;
+    btn.disabled = true;
+    out.style.color = '#9aa7bd';
+    out.textContent = '⏳ 提交中…';
+    try {
+      const d = new Date();
+      const ts = d.toISOString().replace(/[-:]/g, '').replace(/\..+/, '').replace('T', '_');
+      const fname = ts + '_' + type + '.md';
+      const body = '# 推演请求\\n\\n'
+        + '- 类型：' + type + '\\n'
+        + '- 提交时间：' + d.toLocaleString('zh-CN') + '\\n'
+        + '- 备注：' + (note || '（无）') + '\\n';
+      await drFeedPushFile('commands/pending/' + fname, drFeedB64Text(body), 'cmd: 请求' + type + '推演');
+      out.style.color = '#4ade80';
+      out.innerHTML = '✅ 请求已提交 → <b>commands/pending/' + fname + '</b><br>' +
+        '<span style="color:#9aa7bd">本机 5 分钟内弹通知，回来说「推演」即可</span>';
+      document.getElementById('dcNote').value = '';
+    } catch (e) {
+      out.style.color = '#f87171';
+      out.textContent = '❌ 失败：' + e.message;
+    }
+    btn.disabled = false;
   };
 }
 

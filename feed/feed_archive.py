@@ -53,7 +53,10 @@ def parse_name(fname: str):
 def keywords(text: str) -> list:
     # 简单关键词提取：中文 2-6 字词 + 字母数字混合标识（如 800G、300xxx）；
     # 排除纯数字/纯字母单字、来源词等停用词，避免误匹配股票代码
-    STOP = {"对话", "研报", "观点", "文档", "新闻", "其他", "专家", "投喂", "关注", "建议", "内容", "今天", "昨日", "当日"}
+    STOP = {"对话", "研报", "观点", "文档", "新闻", "其他", "专家", "投喂", "关注", "建议", "内容", "今天", "昨日", "当日",
+            "跟大家", "汇报", "的情况", "出现", "释放", "拟推出", "的信号", "我们", "你们", "他们", "这个", "那个",
+            "可以", "已经", "没有", "就是", "不是", "可能", "如果", "因此", "所以", "而且", "但是", "目前", "后续",
+            "整体来看", "受量化", "影响", "属于", "完全", "明显", "进一步", "直接", "反向", "方面", "进行", "通过"}
     toks = re.findall(r"[A-Za-z0-9]{2,}|[一-龥]{2,6}", text or "")
     seen, out = set(), []
     for t in toks:
@@ -92,7 +95,7 @@ def archive(dry_run=False, extra_inboxes=None):
                 continue
             key = (info["date"], info["src"], info["title"])
             dest_dir = os.path.join(ARCHIVE, info["date"])
-            dest = os.path.join(dest_dir, fname)
+            dest = None  # 在生成 new_id / arc_name 后确定
 
             content = ""
             try:
@@ -101,16 +104,30 @@ def archive(dry_run=False, extra_inboxes=None):
             except Exception:
                 pass
 
+            # ── 归档 ID：F{YYYYMMDD}-{当日序号:03d}（2026-09-03 修复：原用全局总数导致编号错乱）──
+            ymd = info["date"].replace("-", "")
+            max_seq = 0
+            for _e in idx["entries"]:
+                if str(_e.get("date", ""))[:10] != info["date"]:
+                    continue
+                _m = re.match(r"F\d{8}-(\d{3})$", str(_e.get("id", "")))
+                if _m:
+                    max_seq = max(max_seq, int(_m.group(1)))
+            new_id = f"F{ymd}-{max_seq + 1:03d}"
+            # 归档文件名统一为 <ID>.<原扩展名>，与 agent 手工归档的 F 编号体系一致
+            arc_name = new_id + "." + info["ext"]
+            dest = os.path.join(dest_dir, arc_name)
+
             def make_entry():
                 # 二进制附件（PDF/xlsx/图片等）不提取内容关键词，避免乱码词
                 kw = keywords(content) if info["ext"] in ("txt", "md") else []
                 return {
-                    "id": f"F{info['date'].replace('-', '')}-{len(idx['entries']) + 1:03d}",
+                    "id": new_id,
                     "date": info["date"],
                     "category": cat,
                     "source": info["src"],
                     "title": info["title"],
-                    "file": os.path.join("feed", "archive", info["date"], fname),
+                    "file": os.path.join("feed", "archive", info["date"], arc_name),
                     "keywords": kw,
                     "status": "已归档",
                     "archived_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
