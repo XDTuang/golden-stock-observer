@@ -3465,6 +3465,43 @@ function drLoadFeedReview() {
 }
 
 // ===== 投喂弹框（modal）=====
+/* ═══════ 投喂直投中转 · GitHub contents API（2026-09-03 新增） ═══════
+   背景：页面是静态站（GitHub Pages）无后端，原「生成投喂文件」只下载到本地，
+   需人工搬进 feed/inbox/ 才归档，且附件仅记录文件名（真实内容丢失）。
+   现改为经 GitHub API 直接提交到 feed/inbox/{类别}/，附件原样上传（base64），
+   本机 git pull + feed/feed_archive.py 即可自动归档。
+   安全：Token 仅存本机 localStorage，绝不写入任何随仓库公开的文件。 */
+var _FEED_REPO = 'XDTuang/golden-stock-observer';
+var _FEED_BRANCH = 'main';
+var _FEED_TK = 'drFeedGhToken';
+function drFeedToken() { try { return localStorage.getItem(_FEED_TK) || ''; } catch (e) { return ''; } }
+function drFeedB64Blob(file) {
+  return new Promise(function (res, rej) {
+    var r = new FileReader();
+    r.onload = function () { res(String(r.result).split(',').pop()); };
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+function drFeedB64Text(s) { return btoa(unescape(encodeURIComponent(s))); }
+function drFeedPushFile(path, b64, msg) {
+  var url = 'https://api.github.com/repos/' + _FEED_REPO + '/contents/' +
+    path.split('/').map(encodeURIComponent).join('/');
+  return fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'Bearer ' + drFeedToken(),
+      'Accept': 'application/vnd.github+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ message: msg, content: b64, branch: _FEED_BRANCH })
+  }).then(function (r) {
+    return r.json().catch(function () { return {}; }).then(function (j) {
+      if (!r.ok) throw new Error((j && j.message) ? j.message : ('HTTP ' + r.status));
+      return j;
+    });
+  });
+}
 function drFeedModalInit() {
   if (document.getElementById('drFeedModal') || !document.getElementById('drFeedBtn')) return;
   const m = document.createElement('div');
@@ -3475,7 +3512,7 @@ function drFeedModalInit() {
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
     '<b style="font-size:16px;color:#e8edf7">📥 投喂</b>' +
     '<button id="drFeedModalClose" style="background:none;border:none;color:#9aa7bd;font-size:20px;cursor:pointer;line-height:1">×</button></div>' +
-    '<div style="font-size:12px;color:#9aa7bd;margin-bottom:12px">生成规范投喂文件 → 复制/下载 → 拖入 feed_inbox 自动归档（也可在专家对话直接说「投喂：…」）</div>' +
+    '<div style="font-size:12px;color:#9aa7bd;margin-bottom:12px"><b style="color:#d4af37">🚀 直投到中转</b>：提交到 feed/inbox/{类别}/（附件原样上传）→ 本机 git pull + feed_archive.py 自动归档。也可「生成投喂文件」下载后手动放入。</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
     '<div><div style="font-size:12px;color:#9aa7bd;margin:6px 0 4px">类别</div>' +
     '<select id="dfCat" style="width:100%;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px;font-size:13px">' +
@@ -3487,11 +3524,21 @@ function drFeedModalInit() {
     '<input id="dfTitle" style="width:100%;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px;font-size:13px" placeholder="示例：光模块景气 / 大盘异动">' +
     '<div style="font-size:12px;color:#9aa7bd;margin:10px 0 4px">内容</div>' +
     '<textarea id="dfText" style="width:100%;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px;font-size:13px;min-height:72px;resize:vertical" placeholder="示例：8/26 盘中放量，疑似订单传闻…"></textarea>' +
-    '<div style="font-size:12px;color:#9aa7bd;margin:10px 0 4px">附件（可选）</div>' +
+    '<div style="font-size:12px;color:#9aa7bd;margin:10px 0 4px">附件（可选 · 直投时原样上传，不再只记文件名）</div>' +
     '<input id="dfFile" type="file" style="width:100%;color:#9aa7bd;font-size:12px">' +
     '<div style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">' +
+    '<button id="dfPush" style="padding:8px 18px;border-radius:8px;border:1px solid #3b7f5a;background:#234f36;color:#e8edf7;font-size:13px;cursor:pointer">🚀 直投到中转</button>' +
     '<button id="dfGen" style="padding:8px 18px;border-radius:8px;border:1px solid #3b5a8f;background:#23324f;color:#e8edf7;font-size:13px;cursor:pointer">📤 生成投喂文件</button>' +
     '<span id="dfOut" style="font-size:12px;color:#9aa7bd"></span></div>' +
+    '<div style="margin-top:10px"><a href="javascript:void(0)" id="dfTkToggle" style="font-size:12px;color:#9aa7bd;text-decoration:none">⚙️ GitHub Token 设置（直投必需）</a>' +
+    '<div id="dfTkBox" style="display:none;margin-top:6px">' +
+    '<input id="dfTk" type="password" placeholder="github_pat_…（仅存本机浏览器，不写入仓库）" style="width:100%;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px;font-size:12px">' +
+    '<div style="font-size:11px;color:#9aa7bd;margin-top:4px;line-height:1.6">需 fine-grained token：仓库选 <b>golden-stock-observer</b>，权限 <b>Contents: Read and write</b>。' +
+    '<a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener" style="color:#d4af37">去生成</a></div>' +
+    '<div style="margin-top:6px;display:flex;gap:8px;align-items:center">' +
+    '<button id="dfTkSave" style="padding:4px 12px;border-radius:6px;border:1px solid #2b3a5c;background:#0f1626;color:#e8edf7;font-size:12px;cursor:pointer">保存</button>' +
+    '<button id="dfTkClear" style="padding:4px 12px;border-radius:6px;border:1px solid #2b3a5c;background:#0f1626;color:#e8edf7;font-size:12px;cursor:pointer">清除</button>' +
+    '<span id="dfTkState" style="font-size:12px;color:#9aa7bd"></span></div></div></div>' +
     '<div id="dfPreview" style="margin-top:10px;display:none;background:#0f1626;border:1px dashed #2b3a5c;border-radius:8px;padding:10px;font-size:12px">' +
     '<div id="dfPvName" style="font-family:Menlo,monospace;color:#d4af37;word-break:break-all;margin-bottom:6px"></div>' +
     '<pre id="dfPvBody" style="font-family:Menlo,monospace;color:#9aa7bd;white-space:pre-wrap;word-break:break-all;margin:0 0 8px;font-size:11px"></pre>' +
@@ -3506,23 +3553,96 @@ function drFeedModalInit() {
   document.getElementById('drFeedModalClose').onclick = close;
   m.addEventListener('click', e => { if (e.target === m) close(); });
 
-  document.getElementById('dfGen').onclick = function () {
+  // ── Token 设置 ──
+  const tkBox = document.getElementById('dfTkBox');
+  const tkState = document.getElementById('dfTkState');
+  const refreshTk = () => {
+    const has = !!drFeedToken();
+    tkState.textContent = has ? '✅ 已设置（存本机）' : '⚠️ 未设置';
+    if (has) tkBox.style.display = 'block';
+  };
+  document.getElementById('dfTkToggle').onclick = () => {
+    tkBox.style.display = (tkBox.style.display === 'none') ? 'block' : 'none';
+  };
+  document.getElementById('dfTkSave').onclick = () => {
+    const v = (document.getElementById('dfTk').value || '').trim();
+    if (!v) { tkState.textContent = '⚠️ 请输入 Token'; return; }
+    localStorage.setItem(_FEED_TK, v);
+    document.getElementById('dfTk').value = '';
+    refreshTk();
+  };
+  document.getElementById('dfTkClear').onclick = () => {
+    try { localStorage.removeItem(_FEED_TK); } catch (e) {}
+    refreshTk();
+  };
+  refreshTk();
+
+  const readForm = () => {
     const cat = document.getElementById('dfCat').value;
     const src = document.getElementById('dfSrc').value;
     const title = (document.getElementById('dfTitle').value || '未命名').replace(/[\\/:*?"<>|\s]+/g, '_').slice(0, 40).replace(/^_+|_+$/g, '');
     const text = document.getElementById('dfText').value.trim();
     const file = document.getElementById('dfFile').files[0];
     const today = new Date().toISOString().slice(0, 10);
-    const ext = file ? ('.' + ((file.name.split('.').pop() || 'txt').toLowerCase())) : '.txt';
-    const fname = today + '_' + src + '_' + title + ext;
+    return { cat, src, title, text, file, today };
+  };
+
+  // ── 直投到中转（feed/inbox/{类别}/） ──
+  document.getElementById('dfPush').onclick = async function () {
+    const out = document.getElementById('dfOut');
+    const f = readForm();
+    if (!drFeedToken()) {
+      out.textContent = '⚠️ 请先设置 Token';
+      tkBox.style.display = 'block';
+      document.getElementById('dfTk').focus();
+      return;
+    }
+    if (!f.text && !f.file) { out.textContent = '⚠️ 内容或附件至少填一项'; return; }
+    const btn = this;
+    btn.disabled = true;
+    out.style.color = '#9aa7bd';
+    out.textContent = '⏳ 提交中…';
+    try {
+      const tasks = [];
+      if (f.file) {
+        const ext = '.' + ((f.file.name.split('.').pop() || 'bin').toLowerCase());
+        tasks.push({ name: f.today + '_' + f.src + '_' + f.title + ext, b64: await drFeedB64Blob(f.file), size: f.file.size });
+      }
+      if (f.text) {
+        const tname = f.file
+          ? (f.today + '_' + f.src + '_' + f.title + '_正文.txt')
+          : (f.today + '_' + f.src + '_' + f.title + '.txt');
+        tasks.push({ name: tname, b64: drFeedB64Text(f.text), size: f.text.length });
+      }
+      const done = [];
+      for (let i = 0; i < tasks.length; i++) {
+        const t = tasks[i];
+        await drFeedPushFile('feed/inbox/' + f.cat + '/' + t.name, t.b64, 'feed: ' + t.name);
+        done.push(t.name);
+      }
+      out.style.color = '#4ade80';
+      out.innerHTML = '✅ 已投喂 ' + done.length + ' 个文件 → <b>feed/inbox/' + f.cat + '/</b><br>' +
+        done.join('<br>') + '<br><span style="color:#9aa7bd">本机执行 git pull + feed_archive.py 即自动归档</span>';
+    } catch (e) {
+      out.style.color = '#f87171';
+      out.textContent = '❌ 失败：' + e.message;
+    }
+    btn.disabled = false;
+  };
+
+  document.getElementById('dfGen').onclick = function () {
+    const f = readForm();
+    const ext = f.file ? ('.' + ((f.file.name.split('.').pop() || 'txt').toLowerCase())) : '.txt';
+    const fname = f.today + '_' + f.src + '_' + f.title + ext;
     let body = '';
-    if (text) body += text + '\n';
-    if (file) body += '\n[附件] ' + file.name + '（' + Math.round(file.size / 1024) + ' KB）\n';
-    if (!text && !file) body = '（空投喂）\n';
+    if (f.text) body += f.text + '\n';
+    if (f.file) body += '\n[附件] ' + f.file.name + '（' + Math.round(f.file.size / 1024) + ' KB）\n';
+    if (!f.text && !f.file) body = '（空投喂）\n';
     document.getElementById('dfPvName').textContent = fname;
     document.getElementById('dfPvBody').textContent = body;
     document.getElementById('dfPreview').style.display = 'block';
-    document.getElementById('dfOut').textContent = '✅ 已生成（' + cat + '）';
+    document.getElementById('dfOut').style.color = '#9aa7bd';
+    document.getElementById('dfOut').textContent = '✅ 已生成（' + f.cat + '）';
     document.getElementById('dfCopy').dataset.body = fname + '\n' + body;
     document.getElementById('dfDl').dataset.body = fname + '\n' + body;
   };
