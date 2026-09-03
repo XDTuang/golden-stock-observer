@@ -224,7 +224,14 @@ def main():
                 payload["feed_count"] = len(existing["feeds"])
                 protected.append("feeds[]")
         else:
-            payload = result
+            payload = dict(result)
+            # 2026-09-03 防呆补充：盘前推演产物 data_date=T-1 / guide_date=T，
+            # 次日晚间以 T 重跑属跨日，但 guide_date 匹配即为本日推演结论，仍须保留
+            if existing.get("guide_date") == date:
+                for k in LOCAL_ONLY:
+                    if existing.get(k):
+                        payload[k] = existing[k]
+                        protected.append(f"{k}(跨日·guide_date匹配)")
         if protected:
             print(f"   🔒 {os.path.basename(p)} 保留本机产物: {', '.join(protected)}")
         with open(p, "w", encoding="utf-8") as f:

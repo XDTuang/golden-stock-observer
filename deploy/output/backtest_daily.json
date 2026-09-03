@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-08-31 21:03",
+ "updated_at": "2026-09-03 20:32",
  "note": "T 日推演 vs T+1 实际（方向+开盘双维度）；当日推演需次日收盘后才有结果",
  "periods": [
   {
@@ -22,20 +22,41 @@
    "dir_hit": 0,
    "dir_acc": 0.0,
    "open_acc": 33.3
+  },
+  {
+   "date": "2026-08-31",
+   "n": 3,
+   "dir_hit": 1,
+   "dir_acc": 33.3,
+   "open_acc": 33.3
+  },
+  {
+   "date": "2026-09-01",
+   "n": 3,
+   "dir_hit": 0,
+   "dir_acc": 0.0,
+   "open_acc": 66.7
+  },
+  {
+   "date": "2026-09-02",
+   "n": 3,
+   "dir_hit": 0,
+   "dir_acc": 0.0,
+   "open_acc": 0.0
   }
  ],
  "latest": {
-  "date": "2026-08-28",
+  "date": "2026-09-02",
   "n": 3,
   "dir_hit": 0,
   "dir_acc": 0.0,
-  "open_acc": 33.3
+  "open_acc": 0.0
  },
  "by_trend": {
   "震荡": {
-   "n": 6,
+   "n": 10,
    "dir_hit": 1,
-   "open_hit": 3
+   "open_hit": 5
   },
   "强势上涨": {
    "n": 2,
@@ -43,7 +64,12 @@
    "open_hit": 2
   },
   "震荡偏弱": {
-   "n": 1,
+   "n": 4,
+   "dir_hit": 1,
+   "open_hit": 1
+  },
+  "震荡上行": {
+   "n": 2,
    "dir_hit": 0,
    "open_hit": 0
   }
@@ -52,50 +78,50 @@
   {
    "code": "hk00189",
    "name": "东岳集团",
-   "trend": "强势上涨",
-   "open_label": "平开震荡",
-   "pred_date": "2026-08-28",
-   "t_close": 13.89,
-   "date": "2026-08-31",
-   "chg_pct": 0.14,
+   "trend": "震荡",
+   "open_label": "低开破位风险",
+   "pred_date": "2026-09-02",
+   "t_close": 13.45,
+   "date": "2026-09-03",
+   "chg_pct": -2.08,
    "dir_hit": false,
-   "open_hit": true,
-   "actual_dir": "flat",
-   "actual_open": "flat",
-   "nxt_open": 13.88,
-   "nxt_close": 13.91
+   "open_hit": false,
+   "actual_dir": "down",
+   "actual_open": "up",
+   "nxt_open": 13.59,
+   "nxt_close": 13.17
   },
   {
    "code": "hk02655",
    "name": "果下科技",
    "trend": "震荡偏弱",
    "open_label": "低开偏弱",
-   "pred_date": "2026-08-28",
-   "t_close": 16.03,
-   "date": "2026-08-31",
-   "chg_pct": 1.31,
+   "pred_date": "2026-09-02",
+   "t_close": 15.89,
+   "date": "2026-09-03",
+   "chg_pct": 1.2,
    "dir_hit": false,
    "open_hit": false,
    "actual_dir": "up",
-   "actual_open": "flat",
-   "nxt_open": 16.0,
-   "nxt_close": 16.24
+   "actual_open": "up",
+   "nxt_open": 16.5,
+   "nxt_close": 16.08
   },
   {
    "code": "hk06651",
    "name": "五一视界",
    "trend": "震荡",
-   "open_label": "高开偏强",
-   "pred_date": "2026-08-28",
-   "t_close": 64.8,
-   "date": "2026-08-31",
-   "chg_pct": 1.7,
+   "open_label": "低开破位风险",
+   "pred_date": "2026-09-02",
+   "t_close": 61.7,
+   "date": "2026-09-03",
+   "chg_pct": -1.94,
    "dir_hit": false,
    "open_hit": false,
-   "actual_dir": "up",
-   "actual_open": "down",
-   "nxt_open": 64.0,
-   "nxt_close": 65.9
+   "actual_dir": "down",
+   "actual_open": "up",
+   "nxt_open": 61.85,
+   "nxt_close": 60.5
   }
  ]
 }
