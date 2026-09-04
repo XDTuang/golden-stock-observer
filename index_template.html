@@ -4098,7 +4098,10 @@ function drDeriveSections(d) {
       // 标题日期动态化：指引日 = 复盘日下一交易日（8/26 复盘 → 8/27 指引）
       const gd = drNextBizDay(d && d.date ? d.date : '');
       const gdShort = gd.slice(5).replace('-', '/');
-      if (h7.textContent.indexOf('（' + gdShort) < 0) h7.textContent = '7 · 次日开盘指引（' + gdShort + '）';
+      // 2026-09-04 放宽匹配：gdShort 形如「09/04（周五）」，只取日期 5 位比对，
+      //   否则 agent 手写标题（含 K3/周几/版本）会被误判改写、丢失 7.3 编号与上下文
+      const gdDateOnly = gdShort.slice(0, 5);
+      if (h7.textContent.indexOf('（' + gdDateOnly) < 0) h7.textContent = '7 · 次日开盘指引（' + gdShort + '）';
     }
     if (h7 && h7.nextElementSibling && h7.nextElementSibling.querySelector) {
       const card = h7.nextElementSibling;
@@ -4106,8 +4109,8 @@ function drDeriveSections(d) {
       //   时跳过规则版自动改写——否则 agent 写好的次日指引会被整块 innerHTML 覆盖（8/27 事故路径）
       const drAgentAuthored = /大势预判|主线策略|回避清单/.test(card.textContent || '');
       if (drAgentAuthored) {
-        const gdTag = '（' + gdShort;
-        if (h7.textContent.indexOf(gdTag) < 0) h7.textContent = h7.textContent.replace(/（[^）]*）/, gdTag + '）');
+        const gdTag = '（' + gdShort.slice(0, 5);
+        if (h7.textContent.indexOf(gdTag) < 0) h7.textContent = h7.textContent.replace(/（[^）]*）/, '（' + gdShort + '）');
       } else {
       card.innerHTML =
         '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0">' +
