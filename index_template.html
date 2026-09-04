@@ -1514,13 +1514,13 @@ html { scroll-behavior: smooth; }
 
 
 
+
 <!-- Tab: 每日复盘（盘前简报 + 完整复盘合一；行情=云端08:15自动，分析=本机agent） -->
 <div class="tab-content" id="tab-dailyreview">
 <style>
 .dr-h{font-size:14px;font-weight:600;color:var(--text);margin:12px 0 4px}
 .dr-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
-.dr-tbl th{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
-.dr-tbl td{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:normal;word-break:break-word;overflow-wrap:anywhere;min-width:0}
+.dr-tbl th,.dr-tbl td{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
 .dr-tbl th:first-child,.dr-tbl td:first-child{text-align:left}
 .dr-tbl th{color:var(--text-muted);font-weight:600}
 .dr-up{color:var(--red)}.dr-dn{color:var(--green)}
@@ -3713,6 +3713,7 @@ function drCmdModalInit() {
 
 
 
+
 // ===== 每日复盘 Tab =====
 function renderDailyReview() {
   if (window._drInit) return; window._drInit = true;
@@ -4079,9 +4080,6 @@ function drDeriveSections(d) {
     const h0 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h')).find(h => /结论先行/.test(h.textContent || ''));
     if (h0 && h0.nextElementSibling && h0.nextElementSibling.querySelector) {
       const card = h0.nextElementSibling;
-      // agent 成品保护（2026-09-03 治本）：卡片带 data-preopen（本机 agent 手写速览卡）时跳过规则版覆盖
-      const drAgentPreopen = card.hasAttribute && card.hasAttribute('data-preopen');
-      if (!drAgentPreopen) {
       card.innerHTML =
         '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0">' +
         '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">次日开盘预判</div><div style="font-weight:700;color:' + openExp[1] + '">' + openExp[0] + '</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px">' + reasons.join(' · ') + '</div></div>' +
@@ -4090,7 +4088,6 @@ function drDeriveSections(d) {
         '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">关键事件</div><div style="font-weight:600;font-size:12px">' + evHtml.replace(/<br>/g, ' · ') + '</div></div>' +
         '</div>' +
         '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px;margin-top:6px"><b>数据驱动速览（自动）：</b>隔夜美股 ' + (usDate || '—') + ' 收盘 · ' + reasons.join(' · ') + '。深度节奏判读/板块推演请以本机 agent 分析为准。</div>';
-      }
     }
     // ── 渲染 7 · 次日开盘指引 ──
     const h7 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h')).find(h => /次日开盘指引/.test(h.textContent || ''));
@@ -4098,20 +4095,10 @@ function drDeriveSections(d) {
       // 标题日期动态化：指引日 = 复盘日下一交易日（8/26 复盘 → 8/27 指引）
       const gd = drNextBizDay(d && d.date ? d.date : '');
       const gdShort = gd.slice(5).replace('-', '/');
-      // 2026-09-04 放宽匹配：gdShort 形如「09/04（周五）」，只取日期 5 位比对，
-      //   否则 agent 手写标题（含 K3/周几/版本）会被误判改写、丢失 7.3 编号与上下文
-      const gdDateOnly = gdShort.slice(0, 5);
-      if (h7.textContent.indexOf('（' + gdDateOnly) < 0) h7.textContent = '7 · 次日开盘指引（' + gdShort + '）';
+      if (h7.textContent.indexOf('（' + gdShort) < 0) h7.textContent = '7 · 次日开盘指引（' + gdShort + '）';
     }
     if (h7 && h7.nextElementSibling && h7.nextElementSibling.querySelector) {
       const card = h7.nextElementSibling;
-      // agent 成品保护（2026-09-03 治本）：卡片已含本机 agent 人工推演（大势预判/主线策略/回避清单）
-      //   时跳过规则版自动改写——否则 agent 写好的次日指引会被整块 innerHTML 覆盖（8/27 事故路径）
-      const drAgentAuthored = /大势预判|主线策略|回避清单/.test(card.textContent || '');
-      if (drAgentAuthored) {
-        const gdTag = '（' + gdShort.slice(0, 5);
-        if (h7.textContent.indexOf(gdTag) < 0) h7.textContent = h7.textContent.replace(/（[^）]*）/, '（' + gdShort + '）');
-      } else {
       card.innerHTML =
         '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0">' +
         '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">方向判断</div><div style="font-weight:700;color:' + openExp[1] + '">' + openExp[0] + '</div><div style="font-size:12px;color:var(--text-secondary);margin-top:4px">依据：' + reasons.join('；') + '。开盘预期由规则推导（隔夜美股/恒生科技/VIX），非写死。</div></div>' +
@@ -4119,7 +4106,6 @@ function drDeriveSections(d) {
         '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">风险与事件雷达</div><div style="font-weight:600">' + d1.slice(5) + ' · ' + d2.slice(5) + '</div><div style="font-size:12px;color:var(--text-secondary);margin-top:4px">' + evHtml + '</div></div>' +
         '</div>' +
         '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--orange);padding:8px 12px;border-radius:6px"><b>预案开关（规则生成）：</b>① 若开盘与预期一致（' + openExp[0] + '）→ 按计划执行；② 若反向大幅背离（隔夜美股盘中反转）→ 观望至 10:00 承接确认；③ 风险等级 ' + risk[0] + ' → 对应 ' + (risk[1] === 'var(--red)' ? '减仓防守' : risk[1] === 'var(--green)' ? '进攻但不满仓' : '均衡仓位') + '。证伪线以上证收盘 3860 为基准（可随盘面调整）。</div>';
-      }
     }
   };
   fetch(evUrl, { cache: 'no-store' })
