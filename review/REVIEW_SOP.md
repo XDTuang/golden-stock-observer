@@ -90,9 +90,16 @@ python3 review/check_analysis_style.py   # 必须 6/6 全过
 沙箱环境下 git 写操作会被 `index.lock`（带 `com.apple.provenance`）阻塞，**需交用户终端执行**：
 
 ```zsh
-cd /Users/samt/golden_stock_observer && rm -f .git/index.lock && git add -A data/ feed/ output/ review/ commands/ index.html index_template.html && git add -f deploy/data/daily_review/analysis.html deploy/data/daily_review/market.json deploy/output/feed_review_latest.json deploy/index.html && git commit -m "..." && git pull --rebase origin main && git push origin main
+cd /Users/samt/golden_stock_observer && rm -f .git/index.lock && git add -A data/ feed/ review/ commands/ index.html index_template.html && git add -f deploy/data/daily_review/analysis.html deploy/data/daily_review/market.json deploy/output/feed_review_latest.json deploy/output/feed_review_YYYY-MM-DD.json deploy/index.html && git commit -m "..." && git pull --rebase origin main && git push origin main
 ```
 
+> 🔴 **`output/` 绝不能放进 `git add -A`**（2026-09-03/09-04 连续两次踩坑）：
+> `output/` 在 `.gitignore` 里，显式 `git add -A output/` 会打印
+> "The following paths are ignored by one of your .gitignore files: output" 并**以非 0 退出**，
+> 导致 `&&` 链中断、commit 根本没执行（表现：看似跑过命令但线上没更新）。
+> 正确做法：`-A` 只带未被忽略的目录（data/ feed/ review/ commands/），
+> `output` 与 `deploy` 下的文件**逐个点名 + `-f`**（它们虽被 ignore 但已跟踪，点名即可加）。
+>
 > `deploy/` 与 `output/` 都被 `.gitignore` 忽略，`git add` 必须加 `-f`。
 
 推送后校验：

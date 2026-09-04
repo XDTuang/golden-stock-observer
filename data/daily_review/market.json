@@ -1,9 +1,9 @@
 {
   "date": "2026-09-03",
   "run_date": "2026-09-03",
-  "updated_at": "2026-09-03 22:20 CST",
+  "updated_at": "2026-09-04 08:40 CST",
   "source": "tencent-gtimg(实时) + akshare stock_us_daily(双日历史) + 腾讯hf商品/中行中间价 + 新浪znb日韩(免费无key)",
-  "coverage": "A股指数/持仓/美股实时(腾讯) + 美股盘中(腾讯 gtimg 10:01 ET) + 美股双日(akshare) + 商品利率汇率(腾讯hf/中行/乐咕) + 日韩指数(新浪znb) + 宏观(经济日历/财经媒体二级源); 韩股个股·星球·AI分析=本机agent",
+  "coverage": "A股指数/持仓(9/3收盘) + 美股9/3收盘(腾讯/新浪) + 美股盘后(新浪) + 商品利率(腾讯hf/中行/乐咕) + 日韩(新浪znb) + 宏观(经济日历/财经媒体); 亚太9/4开盘待 08:00 后补",
   "quotes": {
     "a_sh": {
       "code": "sh000001",
@@ -468,158 +468,344 @@
   "us_kline": {
     "us_dji": {
       "latest": {
-        "date": "2026-09-02",
-        "close": 53061.95
+        "date": "2026-09-03",
+        "close": 53686.11
       },
       "prev": {
-        "date": "2026-09-01",
-        "close": 52766.88,
-        "chg_pct": 0.56,
-        "chg_amt": 295.07
+        "date": "2026-09-02",
+        "close": 53061.95,
+        "chg_pct": 1.18
       }
     },
     "us_inx": {
       "latest": {
-        "date": "2026-09-02",
-        "close": 7666.6
+        "date": "2026-09-03",
+        "close": 7747.71
       },
       "prev": {
-        "date": "2026-09-01",
-        "close": 7631.47,
-        "chg_pct": 0.46,
-        "chg_amt": 35.13
+        "date": "2026-09-02",
+        "close": 7666.6,
+        "chg_pct": 1.06
       }
     },
     "us_ixic": {
       "latest": {
-        "date": "2026-09-02",
-        "close": 26217.83
+        "date": "2026-09-03",
+        "close": 26584.06
       },
       "prev": {
-        "date": "2026-09-01",
-        "close": 26099.77,
-        "chg_pct": 0.45,
-        "chg_amt": 118.05
+        "date": "2026-09-02",
+        "close": 26217.83,
+        "chg_pct": 1.4
       }
     },
     "us_mu": {
       "latest": {
-        "date": "2026-09-02",
-        "close": 956.08
+        "date": "2026-09-03",
+        "close": 958.16
       },
       "prev": {
-        "date": "2026-09-01",
-        "close": 933.44,
-        "chg_pct": 2.43,
-        "chg_amt": 22.64
+        "date": "2026-09-02",
+        "close": 956.08,
+        "chg_pct": 0.22
       }
     },
     "us_sndk": {
       "latest": {
-        "date": "2026-09-02",
-        "close": 1553.4
+        "date": "2026-09-03",
+        "close": 1554.99
       },
       "prev": {
-        "date": "2026-09-01",
-        "close": 1536.87,
-        "chg_pct": 1.08,
-        "chg_amt": 16.53
+        "date": "2026-09-02",
+        "close": 1553.4,
+        "chg_pct": 0.1
       }
     },
     "us_lite": {
       "latest": {
-        "date": "2026-09-02",
-        "close": 870.58
+        "date": "2026-09-03",
+        "close": 847.37
       },
       "prev": {
-        "date": "2026-09-01",
-        "close": 868.95,
-        "chg_pct": 0.19,
-        "chg_amt": 1.63
+        "date": "2026-09-02",
+        "close": 870.58,
+        "chg_pct": -2.67
       }
     },
     "us_aaoi": {
       "latest": {
-        "date": "2026-09-02",
-        "close": 103.13
+        "date": "2026-09-03",
+        "close": 100.38
       },
       "prev": {
-        "date": "2026-09-01",
-        "close": 103.39,
-        "chg_pct": -0.25,
-        "chg_amt": -0.26
+        "date": "2026-09-02",
+        "close": 103.13,
+        "chg_pct": -2.67
       }
     },
     "us_cohr": {
       "latest": {
-        "date": "2026-09-02",
-        "close": 268.64
+        "date": "2026-09-03",
+        "close": 264.41
       },
       "prev": {
-        "date": "2026-09-01",
-        "close": 272.03,
-        "chg_pct": -1.25,
-        "chg_amt": -3.39
+        "date": "2026-09-02",
+        "close": 268.64,
+        "chg_pct": -1.57
       }
     },
     "us_wdc": {
       "latest": {
-        "date": "2026-09-02",
-        "close": 448.9
+        "date": "2026-09-03",
+        "close": 441.57
       },
       "prev": {
-        "date": "2026-09-01",
-        "close": 450.44,
-        "chg_pct": -0.34,
-        "chg_amt": -1.54
+        "date": "2026-09-02",
+        "close": 448.9,
+        "chg_pct": -1.63
       }
     },
     "us_skhy": {
       "latest": {
-        "date": "2026-09-02",
-        "close": 164.98
+        "date": "2026-09-03",
+        "close": null,
+        "note": "收盘价待补，涨跌幅为新闻口径"
       },
       "prev": {
-        "date": "2026-09-01",
-        "close": 160.78,
-        "chg_pct": 2.61,
-        "chg_amt": 4.2
+        "date": "2026-09-02",
+        "close": 164.98,
+        "chg_pct": -0.79
       }
     },
     "us_mrvl": {
       "latest": {
-        "date": "2026-09-02",
-        "close": 206.48
+        "date": "2026-09-03",
+        "close": 208.83
       },
       "prev": {
-        "date": "2026-09-01",
-        "close": 210.39,
-        "chg_pct": -1.86,
-        "chg_amt": -3.91
+        "date": "2026-09-02",
+        "close": 206.48,
+        "chg_pct": 1.14
       }
     },
     "us_nvda": {
       "latest": {
-        "date": "2026-09-02",
-        "close": 224.41
+        "date": "2026-09-03",
+        "close": 228.45
       },
       "prev": {
-        "date": "2026-09-01",
-        "close": 217.44,
-        "chg_pct": 3.21,
-        "chg_amt": 6.97
+        "date": "2026-09-02",
+        "close": 224.41,
+        "chg_pct": 1.8
       }
     },
     "us_tsla": {
       "latest": {
-        "date": "2026-09-02",
-        "close": 357.01
+        "date": "2026-09-03",
+        "close": 376.37
       },
       "prev": {
-        "date": "2026-09-01",
-        "close": 356.09,
-        "chg_pct": 0.26,
-        "chg_amt": 0.92
+        "date": "2026-09-02",
+        "close": 357.01,
+        "chg_pct": 5.42
+      }
+    },
+    "us_sox": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 11339.25,
+        "chg_pct": 0.11
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 11352.13
+      }
+    },
+    "us_avgo": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 367.24,
+        "chg_pct": -2.74
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 357.16
+      }
+    },
+    "us_snow": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 305.84,
+        "chg_pct": 16.55
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 356.47
+      }
+    },
+    "us_pltr": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 169.46,
+        "chg_pct": 7.71
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 182.53
+      }
+    },
+    "us_dell": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 492.2,
+        "chg_pct": 4.91
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 516.39
+      }
+    },
+    "us_tsm": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 415.5,
+        "chg_pct": 0.36
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 417.01
+      }
+    },
+    "us_amd": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 457.06,
+        "chg_pct": -0.2
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 456.16
+      }
+    },
+    "us_crm": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 256.93,
+        "chg_pct": 2.92
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 264.43
+      }
+    },
+    "us_meta": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 592.85,
+        "chg_pct": 3.01
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 610.68
+      }
+    },
+    "us_msft": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 496.82,
+        "chg_pct": 2.68
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 510.12
+      }
+    },
+    "us_googl": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 337.12,
+        "chg_pct": 1.59
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 342.48
+      }
+    },
+    "us_amzn": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 254.98,
+        "chg_pct": 1.54
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 258.9
+      }
+    },
+    "us_crwd": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 203.42,
+        "chg_pct": 5.68
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 214.97
+      }
+    },
+    "us_okta": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 163.15,
+        "chg_pct": 4.46
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 170.42
+      }
+    },
+    "us_arm": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 234.86,
+        "chg_pct": 3.29
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 242.59
+      }
+    },
+    "us_intc": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 90.05,
+        "chg_pct": 1.8
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 91.67
+      }
+    },
+    "us_panw": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 328.48,
+        "chg_pct": 1.05
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 331.94
+      }
+    },
+    "us_smci": {
+      "prev": {
+        "date": "2026-09-02",
+        "close": 37.0,
+        "chg_pct": 2.35
+      },
+      "latest": {
+        "date": "2026-09-03",
+        "close": 37.87
       }
     }
   },
@@ -632,15 +818,17 @@
     },
     "gold_comex": {
       "name": "COMEX 黄金",
-      "value": 4514.36,
-      "chg_pct": 2.26,
-      "date": "2026-09-03"
+      "value": 4523.93,
+      "chg_pct": -0.35,
+      "date": "2026-09-04",
+      "note": "9/3 收涨 2.39% 报 4520.30，今早小幅回落"
     },
     "wti": {
       "name": "WTI 原油",
-      "value": 91.961,
-      "chg_pct": 1.05,
-      "date": "2026-09-03"
+      "value": 91.8,
+      "chg_pct": 0.55,
+      "date": "2026-09-04",
+      "note": "9/3 收 91.30（+0.32%，六周新高）"
     },
     "brent": {
       "name": "布伦特",
@@ -674,34 +862,36 @@
     },
     "silver": {
       "name": "纽约白银",
-      "value": 66.884,
-      "chg_pct": 2.17,
-      "date": "2026-09-03"
+      "value": 67.556,
+      "chg_pct": -0.22,
+      "date": "2026-09-04"
     },
     "copper": {
       "name": "美铜",
-      "value": 664.006,
-      "chg_pct": 0.71,
-      "date": "2026-09-03"
+      "value": 667.609,
+      "chg_pct": 0.17,
+      "date": "2026-09-04"
     }
   },
   "asia": {
     "nikkei": {
       "name": "日经225",
-      "close": 64214.26,
-      "chg_pct": -0.17,
-      "date": "2026-09-03"
+      "close": 64798.33,
+      "chg_pct": 0.91,
+      "date": "2026-09-04",
+      "note": "08:30 北京 / 09:30 东京，高开高走"
     },
     "kospi": {
       "name": "首尔综合指数",
-      "close": 6579.48,
-      "chg_pct": 0.26,
-      "date": "2026-09-03"
+      "close": 6674.1,
+      "chg_pct": 1.44,
+      "date": "2026-09-04",
+      "note": "08:30 北京 / 09:30 首尔，大幅高开"
     }
   },
   "us_intraday": {
-    "note": "美股 9/3 盘中（非收盘）：腾讯 gtimg 实时，抓取时间 2026-09-03 22:01 CST / 10:01 ET",
-    "intraday": true,
+    "note": "（已作废）9/3 美股已收盘，请用 us_kline / us_afterhours",
+    "intraday": false,
     "as_of": "2026-09-03 10:01 ET",
     "source": "tencent-gtimg",
     "quotes": {
@@ -860,10 +1050,10 @@
       },
       "ism_services_aug": {
         "name": "8 月 ISM 服务业 PMI",
-        "value": null,
+        "value": "55.4",
         "consensus": "54.1",
         "prev": "54.1",
-        "note": "22:00 公布，成稿时未出"
+        "note": "超预期，消费支出增加 + 通胀压力上升"
       },
       "nfp_next": {
         "name": "9/4 20:30 美国 8 月非农",
@@ -883,6 +1073,23 @@
       "dxy": {
         "name": "美元指数",
         "value": 99.55
+      },
+      "waller": {
+        "name": "美联储沃勒表态",
+        "value": "倾向维持利率 3.50-3.75% 不变（若通胀续降）",
+        "note": "Timiraos 解读为从偏鹰转向按兵不动；若 8 月数据逆转不排除加息"
+      },
+      "tsy": {
+        "name": "美债收益率",
+        "us2y": 4.332,
+        "us10y": 4.761,
+        "us30y": 5.243,
+        "note": "全线下行 -5.1/-3.2/-2.3bp"
+      },
+      "mortgage30y": {
+        "name": "30年期房贷利率",
+        "value": 6.71,
+        "note": "一年多最高"
       }
     },
     "cn": {
@@ -912,6 +1119,55 @@
       "广电总局网络故事片座谈会：合理运用 AI 等新技术作为创作工具和伙伴",
       "G20 财长会：潘功胜倡导推进货币政策转型；农业部推进粮食单产提升行动",
       "WMO：厄尔尼诺已形成并将持续增强，预计发展为超强级别"
+    ],
+    "overseas_news": [
+      "英伟达约 129.3 亿美元收购 Hugging Face（约 119 亿支付给现有股东 + 最高 10 亿留任），预计 2027 上半年完成",
+      "特斯拉 9/3 盘后举行 Cybercab 发布活动（市场解读为 Robotaxi 商业化）",
+      "Meta 发布迄今最强 AI 模型 MuseSpark 1.3",
+      "SpaceX 涨超 6%，市值逼近 2 万亿美元",
+      "加密货币大涨：比特币 +5.47% 破 81000 美元（近一月 +28%）；Strategy +17%、Circle +16%、Coinbase +10%",
+      "私募信贷风险信号：Blackstone 与 Cliffwater 将大额私募信贷基金赎回上限设为 5%（赎回请求达两倍以上）",
+      "Tyson Foods -7.3%（下调营收指引）、Campbell's -7%（转亏）",
+      "中概股走弱：纳斯达克中国金龙 -0.81%，携程 -5.11%；禾赛科技 +11%",
+      "欧洲股市上涨：FTSE +0.70%、DAX +0.63%、CAC40 +0.07%"
     ]
+  },
+  "us_afterhours": {
+    "note": "9/3 收盘后盘后价（新浪 gb_，07:49 北京）",
+    "as_of": "2026-09-03 收盘后",
+    "quotes": {
+      "us_nvda": {
+        "price": 229.95,
+        "chg_pct": 0.66
+      },
+      "us_snow": {
+        "price": 355.77,
+        "chg_pct": -0.2
+      },
+      "us_avgo": {
+        "price": 356.55,
+        "chg_pct": -0.17
+      },
+      "us_mu": {
+        "price": 954.1,
+        "chg_pct": -0.42
+      },
+      "us_wdc": {
+        "price": 440.84,
+        "chg_pct": -0.17
+      },
+      "us_lite": {
+        "price": 847.85,
+        "chg_pct": 0.06
+      },
+      "us_pltr": {
+        "price": 182.28,
+        "chg_pct": -0.14
+      },
+      "us_dell": {
+        "price": 514.8,
+        "chg_pct": -0.31
+      }
+    }
   }
 }
