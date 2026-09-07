@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-09-03 20:32",
+ "updated_at": "2026-09-07 18:12",
  "note": "T 日推演 vs T+1 实际（方向+开盘双维度）；当日推演需次日收盘后才有结果",
  "periods": [
   {
@@ -43,18 +43,32 @@
    "dir_hit": 0,
    "dir_acc": 0.0,
    "open_acc": 0.0
+  },
+  {
+   "date": "2026-09-03",
+   "n": 3,
+   "dir_hit": 0,
+   "dir_acc": 0.0,
+   "open_acc": 0.0
+  },
+  {
+   "date": "2026-09-04",
+   "n": 3,
+   "dir_hit": 1,
+   "dir_acc": 33.3,
+   "open_acc": 0.0
   }
  ],
  "latest": {
-  "date": "2026-09-02",
+  "date": "2026-09-04",
   "n": 3,
-  "dir_hit": 0,
-  "dir_acc": 0.0,
+  "dir_hit": 1,
+  "dir_acc": 33.3,
   "open_acc": 0.0
  },
  "by_trend": {
   "震荡": {
-   "n": 10,
+   "n": 14,
    "dir_hit": 1,
    "open_hit": 5
   },
@@ -64,8 +78,8 @@
    "open_hit": 2
   },
   "震荡偏弱": {
-   "n": 4,
-   "dir_hit": 1,
+   "n": 6,
+   "dir_hit": 2,
    "open_hit": 1
   },
   "震荡上行": {
@@ -79,49 +93,49 @@
    "code": "hk00189",
    "name": "东岳集团",
    "trend": "震荡",
-   "open_label": "低开破位风险",
-   "pred_date": "2026-09-02",
-   "t_close": 13.45,
-   "date": "2026-09-03",
-   "chg_pct": -2.08,
+   "open_label": "平开偏弱",
+   "pred_date": "2026-09-04",
+   "t_close": 13.17,
+   "date": "2026-09-07",
+   "chg_pct": -0.46,
    "dir_hit": false,
    "open_hit": false,
    "actual_dir": "down",
-   "actual_open": "up",
-   "nxt_open": 13.59,
-   "nxt_close": 13.17
+   "actual_open": "down",
+   "nxt_open": 13.1,
+   "nxt_close": 13.11
   },
   {
    "code": "hk02655",
    "name": "果下科技",
    "trend": "震荡偏弱",
-   "open_label": "低开偏弱",
-   "pred_date": "2026-09-02",
-   "t_close": 15.89,
-   "date": "2026-09-03",
-   "chg_pct": 1.2,
-   "dir_hit": false,
+   "open_label": "平开偏弱",
+   "pred_date": "2026-09-04",
+   "t_close": 16.08,
+   "date": "2026-09-07",
+   "chg_pct": -0.75,
+   "dir_hit": true,
    "open_hit": false,
-   "actual_dir": "up",
+   "actual_dir": "down",
    "actual_open": "up",
-   "nxt_open": 16.5,
-   "nxt_close": 16.08
+   "nxt_open": 16.3,
+   "nxt_close": 15.96
   },
   {
    "code": "hk06651",
    "name": "五一视界",
-   "trend": "震荡",
-   "open_label": "低开破位风险",
-   "pred_date": "2026-09-02",
-   "t_close": 61.7,
-   "date": "2026-09-03",
-   "chg_pct": -1.94,
+   "trend": "震荡偏弱",
+   "open_label": "平开震荡",
+   "pred_date": "2026-09-04",
+   "t_close": 60.5,
+   "date": "2026-09-07",
+   "chg_pct": 4.63,
    "dir_hit": false,
    "open_hit": false,
-   "actual_dir": "down",
+   "actual_dir": "up",
    "actual_open": "up",
-   "nxt_open": 61.85,
-   "nxt_close": 60.5
+   "nxt_open": 63.0,
+   "nxt_close": 63.3
   }
  ]
 }
