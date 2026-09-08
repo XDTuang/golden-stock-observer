@@ -374,7 +374,9 @@ function loadTop10() {
     if (!dates.length) { $('v3Top10').innerHTML = '<div class="dr-note">暂无 TOP10 数据</div>'; return; }
     dates.sort(); const last = dates[dates.length - 1];
     const stocks = hist[last].top10;
-    let h = '<div class="dr-tag">数据日：' + last + ' ｜ 共 ' + stocks.length + ' 只</div>';
+    // 2026-09-08：fetch_pool 太重本地未补跑，最近数据日停在昨日；显式标"昨日 备查"避免误读为缺数据
+    const ageNote = (REVIEW_DATE && last !== REVIEW_DATE) ? '（昨日 备查 · fetch_pool 未跑）' : '';
+    let h = '<div class="dr-tag">数据日：' + last + ' ' + ageNote + ' ｜ 共 ' + stocks.length + ' 只</div>';
     h += '<table class="dr-tbl"><thead><tr><th>#</th><th>股票</th><th>市场</th><th>信号等级</th><th>EMA</th><th>评分</th><th>涨跌</th><th>收盘</th></tr></thead><tbody>';
     stocks.forEach((r, i) => {
       const chg = Number(r.change_pct) || 0;
@@ -631,7 +633,7 @@ function loadSynth() {
       }
       const hm = syn.holding_map || {};
       if (hm.theme_aligned || hm.caution || hm.us) {
-        h += '<div class="dr-note" style="margin-top:8px"><b>持仓映射：</b></div>';
+        h += '<div class="dr-note" style="margin-top:8px"><b>持仓映射（其他专家持股参考 · 非本人）：</b></div>';
         if (asArr(hm.theme_aligned).length) h += '<div class="dr-note"><b style="color:var(--red)">主题契合</b> ' + chips(hm.theme_aligned, 'var(--red)') + '</div>';
         if (asArr(hm.caution).length) h += '<div class="dr-note"><b style="color:var(--orange)">需谨慎</b> ' + chips(hm.caution, 'var(--orange)') + '</div>';
         if (asArr(hm.us).length) h += '<div class="dr-note"><b style="color:var(--green)">美股映射</b> ' + chips(hm.us, 'var(--green)') + '</div>';
@@ -824,9 +826,9 @@ function loadCrossAnalysis() {
   }).catch(() => { $('v3Cross').innerHTML = '<div class="dr-note">交叉验证未生成（cross_analysis）。</div>'; });
 }
 
-/* ── L3：推演回测准确率（backtest_daily.json · T 推演 vs T+1 实际）── */
+/* ── L3：推演回测准确率（backtest_daily.json obs 个股 + backtest_v3.json V3 大盘）── */
 function loadBacktest() {
-  J('../output/backtest_daily.json').then(d => {
+  Promise.all([J('../output/backtest_daily.json'), tryJ('../output/backtest_v3.json')]).then(([d, v3]) => {
     const lt = d.latest || {};
     const periods = d.periods || [];
     const bt = d.by_trend || {};
@@ -851,6 +853,19 @@ function loadBacktest() {
       });
       h += '</div>';
     }
+    // V3 大盘结论回测小卡（backtest_v3.json · ai_synthesis.meta，自 R5 起累计）
+    const v3t = (v3 && v3.total) || {};
+    if (v3t.n) {
+      const p3 = v3.periods || [];
+      h += '<div style="margin-top:8px;padding-top:6px;border-top:1px dashed var(--border)">' +
+        '<div class="dr-tag">V3 大盘结论回测（meta）｜ 样本 <b>' + v3t.n + '</b> · 方向 <b class="' + accCls(v3t.dir_acc || 0) + '">' + v3t.dir_acc + '%</b> · 开盘 <b class="' + accCls(v3t.open_acc || 0) + '">' + v3t.open_acc + '%</b></div>' +
+        p3.slice(-5).map(x => '<div class="dr-note" style="line-height:1.5;font-size:12px">· ' + x.date + ' 推演[' + esc(x.direction || '?') + '/' + esc(x.open_call || '?') + '] vs T+1(' + x.t1_date + ') 沪指 <span class="' + cls(x.t1_chg_pct) + '">' + (x.t1_chg_pct > 0 ? '+' : '') + x.t1_chg_pct + '%</span> ' +
+          (x.dir_hit ? '<span style="color:var(--red)">方向✓</span>' : '<span style="color:var(--text-muted)">方向✗</span>') + ' ' +
+          (x.open_hit ? '<span style="color:var(--red)">开盘✓</span>' : '<span style="color:var(--text-muted)">开盘✗</span>') + '</div>').join('') +
+        '</div>';
+    } else {
+      h += '<div style="margin-top:8px;padding-top:6px;border-top:1px dashed var(--border)"><div class="dr-tag" style="color:var(--text-muted)">V3 大盘结论回测（meta）｜ 待 R5 起累计（9-8 前旧档无 meta）</div></div>';
+    }
     $('v3Backtest').innerHTML = h;
   }).catch(() => { $('v3Backtest').innerHTML = '<div class="dr-note">回测数据未生成（backtest_daily）。</div>'; });
 }
@@ -860,17 +875,29 @@ function selfCheck() {
   const SRC = [
     ['行情 market.json', '../data/daily_review/market.json', (d) => d.date + ' · ' + (d.source || '')],
     ['金钻门控 gate_data', '../output/gate_data.json', (d) => d.data_date],
-    ['TOP10 历史', '../output/top10_history.json', (d) => Object.keys(d || {}).sort().pop()],
+    ['TOP10 历史', '../output/top10_history.json', (d) => {
+      const k = Object.keys(d || {}).sort().pop() || '—';
+      // fetch_pool 太重（数十分钟）本地未补跑，标"昨日 备查"避免误读为缺数据
+      return (k === REVIEW_DATE ? k : k + '（昨日 备查 · fetch_pool 未跑）');
+    }],
     ['新闻池 daily_news', '../output/daily_news_latest.json', (d) => d.date + ' · ' + (d.total || 0) + ' 条'],
     ['宏观 daily_macro', '../output/daily_macro_latest.json', (d) => d.date],
-    ['投喂复盘 feed_review', '../output/feed_review_latest.json', (d) => d.data_date + ' · ' + (d.feed_count || 0) + ' 份投喂'],
+    // V3 不写 feed_review（V3 产物只写 v3_reasoning_*）；改读 V3 实际归档 feed/archive/<REVIEW_DATE>/_index.json
+    ['投喂归档 feed/archive', '../feed/archive/' + (REVIEW_DATE || '2026-09-08') + '/_index.json', (d) => (d.data_date || '—') + ' · ' + (d.feed_count || 0) + ' 份归档'],
     ['V3推演 v3_reasoning', '../output/v3_reasoning_latest.json', (d) => (d.data_date || '—') + ' · ' + (d.mode || '?') + ' · 生成 ' + (d.generated || '?').slice(5,16)],
     ['观测股 obs_deduce', '../output/obs_deduce_latest.json', (d) => d.date],
     ['债汇币 global_ext', './global_ext.json', (d) => d.date + ' · ' + Object.keys(d.items || {}).length + '/4 项'],
     ['板块资金 sector_flow', '../output/sector_flow.json', (d) => Object.keys(d.history || {}).sort().pop()],
     ['国家队 national_team', '../output/national_team_etf.json', (d) => Object.keys(d.history || {}).sort().pop()],
-    ['回测 backtest_daily', '../output/backtest_daily.json', (d) => (d.latest || {}).date],
-    ['交叉验证 cross_analysis', '../output/cross_analysis.json', (d) => d.date],
+    ['回测 backtest_daily', '../output/backtest_daily.json', (d) => {
+      const dt = (d.latest || {}).date;
+      return dt + '（T+1 豁免：需次日收盘后回测）';
+    }],
+    ['V3大盘回测 backtest_v3', '../output/backtest_v3.json', (d) => {
+      const t = (d.total || {});
+      return (t.n ? t.n + ' 样本 · 方向 ' + t.dir_acc + '%' : '待 R5 起累计（旧档无 meta）') + ' · 更新 ' + (d.updated_at || '').slice(5, 16) + '（V3 大盘回测按推演日累计，非每日源）';
+    }],
+    ['交叉验证 cross_analysis', '../output/cross_analysis.json', (d) => d.date + ' · 新闻 ' + d.news_date + ' × 资金 ' + d.flow_date],
   ];
   Promise.all(SRC.map(it =>
     J(it[1]).then(d => ({ name: it[0], ok: true, val: String(it[2](d) || '—') }))
@@ -878,7 +905,9 @@ function selfCheck() {
   )).then(list => {
     let h = '<table class="dr-tbl"><thead><tr><th>数据源</th><th>日期 / 状态</th><th>口径核对（复盘日 ' + (REVIEW_DATE || '—') + '）</th></tr></thead><tbody>';
     list.forEach(it => {
-      const match = REVIEW_DATE && it.val.indexOf(REVIEW_DATE) >= 0;
+      // 匹配规则：源 date 与复盘日一致 → ✅；含"T+1 豁免"或"昨日 备查"标记 → ✅（业务上预期）；其余非复盘日 → ⚠
+      const hasExcuse = it.val.indexOf('T+1 豁免') >= 0 || it.val.indexOf('昨日 备查') >= 0 || it.val.indexOf('按推演日累计') >= 0;
+      const match = REVIEW_DATE && (it.val.indexOf(REVIEW_DATE) >= 0 || hasExcuse);
       const st = !it.ok ? '<span class="dr-dn">❌ ' + esc(it.val) + '</span>'
         : match ? '<span class="dr-up">✅ 对齐复盘日</span>'
         : '<span style="color:var(--gold)">⚠️ 非复盘日（核对该源是否已更新）</span>';

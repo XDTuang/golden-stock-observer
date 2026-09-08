@@ -1,66 +1,118 @@
 {
   "date": "2026-09-08",
-  "generated_at": "2026-09-08 19:57",
+  "generated_at": "2026-09-08 22:17",
   "news_date": "2026-09-08",
-  "flow_date": "2026-09-07",
-  "flow_raw_latest": "2026-09-07",
+  "flow_date": "2026-09-08",
+  "flow_raw_latest": "2026-09-08",
   "flow_is_weekend_copy": false,
   "hot_threshold": 8,
   "index_context": {
     "上证指数": {
-      "close": "3932.70",
-      "chg_pct": "0.07"
+      "close": "3940.55",
+      "chg_pct": "0.20"
     },
     "深证成指": {
-      "close": "13774.91",
-      "chg_pct": "1.91"
+      "close": "13703.21",
+      "chg_pct": "-0.52"
     },
     "创业板指": {
-      "close": "3398.68",
-      "chg_pct": "3.41"
+      "close": "3359.72",
+      "chg_pct": "-1.15"
     },
     "科创50": {
-      "close": "1615.53",
-      "chg_pct": "2.42"
+      "close": "1591.00",
+      "chg_pct": "-1.52"
     }
   },
   "summary": {
     "共振": 7,
     "背离": 10,
-    "暗线": 7,
-    "双冷": 7
+    "暗线": 8,
+    "双冷": 6
   },
   "items": [
     {
       "sector": "电子",
       "news_count": 99,
-      "flow_yi": 306.95,
+      "flow_yi": -91.58,
+      "verdict": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sample_titles": [
+        "万润科技：拟对控股子公司万润半导体增资1.3亿元",
+        "格芯获得美商务部至多3.75亿美元芯片研发资助",
+        "深南电路：下调募资总额为不超过43.67亿元"
+      ]
+    },
+    {
+      "sector": "计算机",
+      "news_count": 55,
+      "flow_yi": -63.17,
+      "verdict": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sample_titles": [
+        "深南电路：下调募资总额为不超过43.67亿元",
+        "Anthropic与OpenAI谋求上市即获投资级评级",
+        "赛迪顾问：太空算力迈向“天地同算” 2030年市场有望达160亿美元"
+      ]
+    },
+    {
+      "sector": "基础化工",
+      "news_count": 4,
+      "flow_yi": 38.64,
+      "verdict": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": [
+        "万华化学今日大宗交易折价成交95.83万股 成交额7353.99万元",
+        "9月8日港股收盘：恒指跌0.38% 恒生科技指数跌1.61%",
+        "东方财富财经早餐 5月28日周三"
+      ]
+    },
+    {
+      "sector": "有色金属",
+      "news_count": 48,
+      "flow_yi": 32.25,
       "verdict": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
         "赛迪顾问：第四代半导体未来五年迎规模商用关键跨越",
-        "赛迪顾问：太空算力迈向“天地同算” 2030年市场有望达160亿美元",
-        "本川智能：拟投资20亿元建设年产150万平方米AI算力高多层、高阶HDI电路"
+        "LME伦铜涨幅扩大至1.3% 续刷记录新高",
+        "汇丰控股在天齐锂业H股的持股比例于9月2日从24.49%降至23.79%"
       ]
     },
     {
-      "sector": "通信",
-      "news_count": 23,
-      "flow_yi": 200.35,
+      "sector": "电力设备",
+      "news_count": 29,
+      "flow_yi": -27.03,
+      "verdict": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sample_titles": [
+        "新国标倒逼光伏行业洗牌 业内人士：五成低效产能或面临出清",
+        "长高电气：全资子公司合计中标2.99亿元国家电网项目",
+        "比亚迪：AI能源解决方案将成为下一阶段重点方向之一"
+      ]
+    },
+    {
+      "sector": "医药生物",
+      "news_count": 15,
+      "flow_yi": 26.24,
       "verdict": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "赛迪顾问：太空算力迈向“天地同算” 2030年市场有望达160亿美元",
-        "Coherent将参展光博会 展示12.8T XPO等方案",
-        "南向资金净买逾61亿港元 净买入长飞光纤光缆近7亿港元"
+        "白云山：子公司冻干人用狂犬病疫苗获澳门成药登记证书",
+        "贝莱德在恒瑞医药H股的持股比例于9月3日从7.55%降至6.27%",
+        "复星医药：FXS5626片临床试验获批"
       ]
     },
     {
       "sector": "非银金融",
       "news_count": 32,
-      "flow_yi": -39.84,
+      "flow_yi": -16.49,
       "verdict": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
@@ -71,25 +123,38 @@
       ]
     },
     {
-      "sector": "计算机",
-      "news_count": 60,
-      "flow_yi": -35.22,
-      "verdict": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sector": "石油石化",
+      "news_count": 20,
+      "flow_yi": 13.66,
+      "verdict": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "Anthropic与OpenAI谋求上市即获投资级评级",
-        "赛迪顾问：太空算力迈向“天地同算” 2030年市场有望达160亿美元",
-        "港股新股优地机器人暗盘涨超106%"
+        "也门胡塞武装称大规模袭击沙特军事和石油设施",
+        "汇丰上调今明两年布油价格预测",
+        "伊拉克石油部长：伊拉克致力于遵守欧佩克产量配额"
+      ]
+    },
+    {
+      "sector": "房地产",
+      "news_count": 20,
+      "flow_yi": 10.7,
+      "verdict": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
+      "sample_titles": [
+        "东方财富财经早餐 8月31日周一",
+        "东方财富财经早餐 8月25日周二",
+        "东方财富财经早餐 8月21日周五"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 15,
-      "flow_yi": 28.71,
-      "verdict": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
+      "news_count": 16,
+      "flow_yi": -10.09,
+      "verdict": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
         "港股新股优地机器人暗盘涨超106%",
         "金力永磁：已获世界知名科技公司具身机器人电机转子项目定点",
@@ -97,96 +162,9 @@
       ]
     },
     {
-      "sector": "国防军工",
-      "news_count": 21,
-      "flow_yi": -23.68,
-      "verdict": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "南方航空：向特定对象发行A股股票申请获证监会同意注册批复",
-        "乌克兰总统泽连斯基：与特朗普和有关公司讨论爱国者导弹授权问题",
-        "空客预测：未来20年 中国将需要超8800架新客机"
-      ]
-    },
-    {
-      "sector": "银行",
-      "news_count": 28,
-      "flow_yi": -16.95,
-      "verdict": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "渣打香港推出跨境人民币网络支付清算服务",
-        "富国银行下调SpaceX目标价",
-        "汇丰的Sels认为美股被低估 但债券收益率飙升是股市面临的最大风险"
-      ]
-    },
-    {
-      "sector": "有色金属",
-      "news_count": 48,
-      "flow_yi": -16.64,
-      "verdict": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "赛迪顾问：第四代半导体未来五年迎规模商用关键跨越",
-        "LME伦铜涨幅扩大至1.3% 续刷记录新高",
-        "汇丰控股在天齐锂业H股的持股比例于9月2日从24.49%降至23.79%"
-      ]
-    },
-    {
-      "sector": "公用事业",
-      "news_count": 7,
-      "flow_yi": -14.38,
-      "verdict": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "美国要求韩国提交一批投资项目 总额超过贸易协议约定数额",
-        "长高电气：全资子公司合计中标2.99亿元国家电网项目",
-        "东方财富财经早餐 8月4日周二"
-      ]
-    },
-    {
-      "sector": "汽车",
-      "news_count": 47,
-      "flow_yi": 10.83,
-      "verdict": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
-      "sample_titles": [
-        "2027上海车展将于明年4月23日开幕",
-        "工信部公布《享受车船税减免优惠的节约能源使用新能源汽车车型目录》（第九十批）",
-        "比亚迪回应“网传闪充车型订单积压25万辆”：消息不实"
-      ]
-    },
-    {
-      "sector": "商贸零售",
-      "news_count": 0,
-      "flow_yi": 9.02,
-      "verdict": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": []
-    },
-    {
-      "sector": "基础化工",
-      "news_count": 4,
-      "flow_yi": -8.3,
-      "verdict": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "万华化学今日大宗交易折价成交95.83万股 成交额7353.99万元",
-        "9月8日港股收盘：恒指跌0.38% 恒生科技指数跌1.61%",
-        "东方财富财经早餐 5月28日周三"
-      ]
-    },
-    {
       "sector": "传媒",
-      "news_count": 31,
-      "flow_yi": -8.25,
+      "news_count": 32,
+      "flow_yi": -9.79,
       "verdict": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
@@ -197,109 +175,47 @@
       ]
     },
     {
-      "sector": "轻工制造",
-      "news_count": 0,
-      "flow_yi": 6.68,
-      "verdict": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": []
-    },
-    {
-      "sector": "石油石化",
-      "news_count": 19,
-      "flow_yi": -6.04,
-      "verdict": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "汇丰上调今明两年布油价格预测",
-        "伊拉克石油部长：伊拉克致力于遵守欧佩克产量配额",
-        "高盛高管：经霍尔木兹海峡运出的成品油流量为战前水平的35%"
-      ]
-    },
-    {
-      "sector": "房地产",
-      "news_count": 18,
-      "flow_yi": -4.87,
-      "verdict": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "东方财富财经早餐 8月31日周一",
-        "东方财富财经早餐 8月25日周二",
-        "东方财富财经早餐 8月21日周五"
-      ]
-    },
-    {
-      "sector": "医药生物",
-      "news_count": 14,
-      "flow_yi": -4.16,
-      "verdict": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "白云山：子公司冻干人用狂犬病疫苗获澳门成药登记证书",
-        "贝莱德在恒瑞医药H股的持股比例于9月3日从7.55%降至6.27%",
-        "复星医药：FXS5626片临床试验获批"
-      ]
-    },
-    {
-      "sector": "环保",
-      "news_count": 1,
-      "flow_yi": -3.29,
-      "verdict": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "武汉天源：武汉天源优势创业投资合伙企业（有限合伙）、中环环保工程技术（武汉）"
-      ]
-    },
-    {
-      "sector": "煤炭",
-      "news_count": 1,
-      "flow_yi": -3.13,
-      "verdict": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "东方财富财经早餐 8月11日周二"
-      ]
-    },
-    {
-      "sector": "纺织服饰",
-      "news_count": 0,
-      "flow_yi": -3.06,
-      "verdict": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": []
-    },
-    {
-      "sector": "社会服务",
-      "news_count": 0,
-      "flow_yi": 2.94,
-      "verdict": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": []
-    },
-    {
-      "sector": "建筑材料",
-      "news_count": 0,
-      "flow_yi": 2.94,
-      "verdict": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": []
-    },
-    {
-      "sector": "食品饮料",
-      "news_count": 39,
-      "flow_yi": 2.78,
+      "sector": "国防军工",
+      "news_count": 22,
+      "flow_yi": 9.56,
       "verdict": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
+      "sample_titles": [
+        "韩国国防部：将派遣调查小组评估霍尔木兹海峡的情况",
+        "也门胡塞武装称大规模袭击沙特军事和石油设施",
+        "南方航空：向特定对象发行A股股票申请获证监会同意注册批复"
+      ]
+    },
+    {
+      "sector": "建筑装饰",
+      "news_count": 0,
+      "flow_yi": 8.52,
+      "verdict": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": []
+    },
+    {
+      "sector": "公用事业",
+      "news_count": 7,
+      "flow_yi": 7.6,
+      "verdict": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": [
+        "美国要求韩国提交一批投资项目 总额超过贸易协议约定数额",
+        "长高电气：全资子公司合计中标2.99亿元国家电网项目",
+        "东方财富财经早餐 8月4日周二"
+      ]
+    },
+    {
+      "sector": "食品饮料",
+      "news_count": 37,
+      "flow_yi": -5.9,
+      "verdict": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
         "研究：伊朗战事让美国人为燃油多付千亿美元",
         "中秋备货周期到来 飞天茅台各渠道再涨价",
@@ -307,22 +223,18 @@
       ]
     },
     {
-      "sector": "电力设备",
-      "news_count": 27,
-      "flow_yi": -2.58,
-      "verdict": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "长高电气：全资子公司合计中标2.99亿元国家电网项目",
-        "比亚迪：AI能源解决方案将成为下一阶段重点方向之一",
-        "东方财富财经早餐 9月7日周一"
-      ]
+      "sector": "商贸零售",
+      "news_count": 0,
+      "flow_yi": -4.83,
+      "verdict": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
     },
     {
       "sector": "综合",
-      "news_count": 15,
-      "flow_yi": 2.54,
+      "news_count": 16,
+      "flow_yi": 4.7,
       "verdict": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
@@ -333,32 +245,50 @@
       ]
     },
     {
-      "sector": "家用电器",
+      "sector": "轻工制造",
       "news_count": 0,
-      "flow_yi": 2.39,
-      "verdict": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "flow_yi": -4.24,
+      "verdict": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": []
     },
     {
-      "sector": "交通运输",
+      "sector": "煤炭",
       "news_count": 1,
-      "flow_yi": -1.97,
-      "verdict": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "flow_yi": 4.13,
+      "verdict": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "东方财富财经早餐 10月14日周二"
+        "东方财富财经早餐 8月11日周二"
       ]
     },
     {
-      "sector": "钢铁",
-      "news_count": 5,
-      "flow_yi": -1.28,
+      "sector": "家用电器",
+      "news_count": 0,
+      "flow_yi": -3.4,
       "verdict": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
+      "sample_titles": []
+    },
+    {
+      "sector": "建筑材料",
+      "news_count": 0,
+      "flow_yi": -2.43,
+      "verdict": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
+    },
+    {
+      "sector": "钢铁",
+      "news_count": 4,
+      "flow_yi": 1.9,
+      "verdict": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
         "无惧特朗普威胁！加拿大准备加征反制关税 美加贸易战要升级？",
         "东方财富财经早餐 8月25日周二",
@@ -366,18 +296,9 @@
       ]
     },
     {
-      "sector": "建筑装饰",
-      "news_count": 0,
-      "flow_yi": 0.77,
-      "verdict": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": []
-    },
-    {
       "sector": "农林牧渔",
-      "news_count": 15,
-      "flow_yi": 0.64,
+      "news_count": 16,
+      "flow_yi": 1.88,
       "verdict": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
@@ -388,9 +309,86 @@
       ]
     },
     {
+      "sector": "通信",
+      "news_count": 21,
+      "flow_yi": -1.82,
+      "verdict": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sample_titles": [
+        "赛迪顾问：太空算力迈向“天地同算” 2030年市场有望达160亿美元",
+        "Coherent将参展光博会 展示12.8T XPO等方案",
+        "南向资金净买逾61亿港元 净买入长飞光纤光缆近7亿港元"
+      ]
+    },
+    {
+      "sector": "汽车",
+      "news_count": 48,
+      "flow_yi": -1.75,
+      "verdict": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sample_titles": [
+        "2027上海车展将于明年4月23日开幕",
+        "工信部公布《享受车船税减免优惠的节约能源使用新能源汽车车型目录》（第九十批）",
+        "比亚迪回应“网传闪充车型订单积压25万辆”：消息不实"
+      ]
+    },
+    {
+      "sector": "环保",
+      "news_count": 0,
+      "flow_yi": 1.72,
+      "verdict": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": []
+    },
+    {
+      "sector": "银行",
+      "news_count": 28,
+      "flow_yi": -1.62,
+      "verdict": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sample_titles": [
+        "渣打香港推出跨境人民币网络支付清算服务",
+        "富国银行下调SpaceX目标价",
+        "汇丰的Sels认为美股被低估 但债券收益率飙升是股市面临的最大风险"
+      ]
+    },
+    {
+      "sector": "纺织服饰",
+      "news_count": 0,
+      "flow_yi": -1.03,
+      "verdict": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
+    },
+    {
+      "sector": "交通运输",
+      "news_count": 1,
+      "flow_yi": 0.73,
+      "verdict": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": [
+        "东方财富财经早餐 10月14日周二"
+      ]
+    },
+    {
       "sector": "美容护理",
       "news_count": 0,
-      "flow_yi": 0.41,
+      "flow_yi": -0.27,
+      "verdict": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
+    },
+    {
+      "sector": "社会服务",
+      "news_count": 0,
+      "flow_yi": 0.05,
       "verdict": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
