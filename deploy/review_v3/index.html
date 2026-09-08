@@ -167,19 +167,25 @@ const esc = (s) => (s == null ? '' : String(s)).replace(/&/g,'&amp;').replace(/<
 const cls = (v) => v >= 0 ? 'dr-up' : 'dr-dn';
 const sign = (v) => v >= 0 ? '+' : '';
 /* ═══ 段显隐开关 ═══
-   用法：URL 加 ?hide=8,9（或 ?hide=89 / ?hide=all）隐藏指定段。
-   DEFAULT_HIDE 供生成"默认隐藏"副本时改写，主文件默认不隐藏任何段。 */
-const DEFAULT_HIDE = [];
+   默认隐藏审计段 8（回测）/9（投喂记录）；
+   ?hide=8,9 / ?hide=89 / ?hide=all 追加隐藏；?show=89 / ?show=all 恢复显示（覆盖默认）。 */
+const DEFAULT_HIDE = [8, 9];
 (function applyHide() {
   const q = new URLSearchParams(location.search);
+  // 1) show 参数优先：从默认隐藏集中移除指定段（show=89 恢复 8/9；show=all 全恢复）
+  const hideSet = new Set(DEFAULT_HIDE.map(String));
+  let showRaw = (q.get('show') || '').trim();
+  if (showRaw === '89' || showRaw === '8,9' || showRaw === '8、9') showRaw = '8,9';
+  if (showRaw === 'all' || showRaw === 'none') { hideSet.clear(); }
+  else if (showRaw) { String(showRaw).split(/[,\s]+/).filter(Boolean).forEach(n => hideSet.delete(n.replace(/段$/, ''))); }
+  // 2) hide 参数追加隐藏
   let raw = (q.get('hide') || '').trim();
   if (raw === '89' || raw === '8,9' || raw === '8、9') raw = '8,9';
-  const list = raw === 'all' ? ['8', '9']
-    : raw ? raw.split(/[,\s]+/).filter(Boolean)
-    : DEFAULT_HIDE.map(String);
+  if (raw === 'all') { hideSet.add('8'); hideSet.add('9'); }
+  else if (raw) { raw.split(/[,\s]+/).filter(Boolean).forEach(n => hideSet.add(n.replace(/段$/, ''))); }
   const MAP = { '8': 'v3Sec8', '9': 'v3Sec9' };
-  const run = () => list.forEach(n => {
-    const id = MAP[String(n).replace(/段$/, '')];
+  const run = () => Array.from(hideSet).forEach(n => {
+    const id = MAP[String(n)];
     if (!id) return;
     const e = document.getElementById(id);
     if (e) e.style.display = 'none';
