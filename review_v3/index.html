@@ -83,8 +83,6 @@ tr.hl3 td{background:rgba(212,175,55,.08)}
 <div class="dr-card" data-page-node-id="G61zVZYm8I8poVBxk7AtyR">
   <div class="dr-tag" data-page-node-id="yDYfEu3MFfCmqJ3EikpQBc">A 股指数</div>
   <div id="v3TblA" data-page-node-id="KuKOzVgGPVHuMgQXyUTbI1"></div>
-  <div class="dr-tag" style="margin-top:8px" data-page-node-id="rjumlLo8DcGmxh3Ty2U8ZV">专家持仓（其他专家持股参考·非本人，已去 ST）</div>
-  <div id="v3TblH" data-page-node-id="TGKsrV1VRjgiET8SaRDAE9"></div>
   <div class="dr-tag" style="margin-top:10px">板块资金流向（自动 · sector_flow.json · 申万一级）</div>
   <div id="v3SectorFlow"><div class="dr-note">加载中…</div></div>
   <div class="dr-tag" style="margin-top:10px">国家队 ETF 动向（自动 · national_team_etf.json）</div>
@@ -226,9 +224,7 @@ async function main() {
   const q = mkt.quotes || {};
   const grp = (g) => Object.values(q).filter(v => v.group === g && !v.error);
   $('v3TblA').innerHTML = mkQuoteTable(grp('A股指数'));
-  // 2026-09-08 改：标题"专家持仓"+ 排除 ST/退市风险标的（ST万邦 002082）
-  const hList = grp('持仓股').filter(q => !(q.name || '').includes('ST') && !(q.name || '').includes('退'));
-  $('v3TblH').innerHTML = mkQuoteTable(hList);
+  // 2026-09-08 移除：1.1 段"专家持仓"整块删除，分析功能迁至 L2 5 段"重点观测股映射分析"
   $('v3TblHK').innerHTML = mkQuoteTable(grp('港股指数'));
   $('v3TblUsQ').innerHTML = mkQuoteTable([...grp('美股指数'), ...grp('美股映射'), ...grp('美股映射·参考')]);
 
@@ -662,12 +658,29 @@ function loadSynth() {
             (t.related_stocks && t.related_stocks.length ? '<br><span style="color:var(--text-muted)">映射：</span>' + chips(t.related_stocks, 'var(--blue)') : '') + '</div>';
         });
       }
+      // 2026-09-08 改：持仓映射 → 重点观测股的映射分析（数据源 obs_deduce 32 只池 9-8；美股映射保留 v3_reasoning.holding_map.us）
+      const od = await tryJ('../output/obs_deduce_latest.json');
+      const odItems = (od && od.items) || [];
+      // 主线契合 = dev_ma5>0 & chg_last>0；按 dev_ma5 降序取前 8
+      const aligned = [...odItems]
+        .filter(x => (x.dev_ma5 != null ? x.dev_ma5 : -1e9) > 0 && (x.chg_last != null ? x.chg_last : -1e9) > 0)
+        .sort((a, b) => (b.dev_ma5 || 0) - (a.dev_ma5 || 0))
+        .slice(0, 8)
+        .map(x => x.name + '(9-8 ' + (x.chg_last >= 0 ? '+' : '') + (x.chg_last || 0).toFixed(2) + '%,' + (x.pattern || x.trend || '—') + ')');
+      // 需谨慎 = chg_last<0；按 chg_last 升序取前 6
+      const caution = [...odItems]
+        .filter(x => (x.chg_last != null ? x.chg_last : 1e9) < 0)
+        .sort((a, b) => (a.chg_last || 0) - (b.chg_last || 0))
+        .slice(0, 6)
+        .map(x => x.name + '(9-8 ' + (x.chg_last || 0).toFixed(2) + '%,' + (x.pattern || x.trend || '—') + ')');
+      // 美股映射：保留 v3_reasoning.holding_map.us（不变）
       const hm = syn.holding_map || {};
-      if (hm.theme_aligned || hm.caution || hm.us) {
-        h += '<div class="dr-note" style="margin-top:8px"><b>持仓映射（其他专家持股参考 · 非本人）：</b></div>';
-        if (asArr(hm.theme_aligned).length) h += '<div class="dr-note"><b style="color:var(--red)">主题契合</b> ' + chips(hm.theme_aligned, 'var(--red)') + '</div>';
-        if (asArr(hm.caution).length) h += '<div class="dr-note"><b style="color:var(--orange)">需谨慎</b> ' + chips(hm.caution, 'var(--orange)') + '</div>';
-        if (asArr(hm.us).length) h += '<div class="dr-note"><b style="color:var(--green)">美股映射</b> ' + chips(hm.us, 'var(--green)') + '</div>';
+      const usMap = asArr(hm.us);
+      if (aligned.length || caution.length || usMap.length) {
+        h += '<div class="dr-note" style="margin-top:8px"><b>重点观测股的映射分析（obs_deduce 32 只池 · 9-8 数据 · 美股映射以 v3_reasoning.holding_map.us 为准）：</b></div>';
+        if (aligned.length) h += '<div class="dr-note"><b style="color:var(--red)">主线契合</b> ' + chips(aligned, 'var(--red)') + '</div>';
+        if (caution.length) h += '<div class="dr-note"><b style="color:var(--orange)">需谨慎</b> ' + chips(caution, 'var(--orange)') + '</div>';
+        if (usMap.length) h += '<div class="dr-note"><b style="color:var(--green)">美股映射</b> ' + chips(usMap, 'var(--green)') + '</div>';
       }
       let radar = [];
       Object.keys(syn).forEach(k => { if (/^t1_radar/.test(k)) radar = radar.concat(asArr(syn[k])); });
