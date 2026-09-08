@@ -293,17 +293,33 @@ async function renderL0(mkt) {
   tryJ(evUrl).then(ec => {
     const box = $('v3Ev'); if (!box) return;
     if (!ec || !ec.events) { box.textContent = '—'; return; }
+    // 2026-09-09 修复：base 必须 = 今天本地时区（实际打开页面时刻）
+    //   旧版用 DEDUCE_DATE/REVIEW_DATE 当 base，会把"复盘日已发生事件"也算进窗口（用户截图 bug）
+    //   治本：用 todayNow 作为唯一锚，过滤今日及未来 4 个交易日（不依赖 v3_reasoning.data_date 的语义不一致）
     const allDates = Object.keys(ec.events).sort();
-    // 优先从 DEDUCE_DATE（推演日=9-7 night）起的未来 3 天；否则从今天起 3 天；再回退到最近 3 个有事件的日期
-    const base = DEDUCE_DATE || REVIEW_DATE || new Date().toISOString().slice(0, 10);
-    const futureDates = allDates.filter(d => d >= base).slice(0, 3);
-    const useDates = futureDates.length ? futureDates : allDates.slice(-3);
+    const today = new Date();
+    const todayNow = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+    // 跳过周末：取 base 之后（含）最近 1 个交易日作 base，避免周末显示空
+    const base = allDates.find(d => d >= todayNow) || todayNow;
+    // 窗口：base + 后 2 个交易日（含 base 共 3 天），即今日/明日/后日
+    const baseIdx = allDates.indexOf(base);
+    const useDates = baseIdx >= 0 ? allDates.slice(baseIdx, baseIdx + 3) : allDates.slice(-3);
+    // base 是交易日 → 标签用"今日/明日/后日"
+    const dayTag = baseIdx === 0 ? '今日' : (baseIdx === 1 ? '明日' : '后日');
     const evs = [];
-    useDates.forEach(d => {
-      (ec.events[d] || []).slice(0, 3).forEach(e => { if (e.importance !== 'low') evs.push(d.slice(5) + ' ' + (e.name || '')); });
+    useDates.forEach((d, i) => {
+      // 重要：含"重要性"图标（高 ▲ / 中 ◆ / 低 ▽），便于快速判读
+      (ec.events[d] || []).slice(0, 4).forEach(e => {
+        if (e.importance === 'low') return;
+        const prefix = i === 0 && d === todayNow ? '【今日】' : (i === 1 && d > todayNow ? '【明日】' : (i === 2 ? '【后日】' : ''));
+        const tag = e.importance === 'high' ? '▲ ' : '◆ ';
+        evs.push(prefix + tag + d.slice(5) + ' ' + (e.name || ''));
+      });
     });
-    box.innerHTML = (evs.length ? evs.slice(0, 6).map(esc).join('<br>') : '近期无重大事件') +
-      '<div style="font-size:10.5px;color:var(--text-muted);margin-top:4px">窗口：' + useDates.map(d => d.slice(5)).join('·') + '（含 T+1/+2）</div>';
+    const windowStr = useDates.map((d, i) => (i === 0 && d === todayNow ? '今日' + d.slice(5) : d.slice(5))).join(' · ');
+    box.innerHTML = (evs.length ? evs.slice(0, 12).map(esc).join('<br>') : '近期无重大事件（已达当日窗口上限）') +
+      '<div style="font-size:10.5px;color:var(--text-muted);margin-top:4px">窗口：' + windowStr + '（含今日 / 明日 / 后日 · ▲=高重要 · 已自动按本地时区裁剪已发生事件）</div>' +
+      '<div style="font-size:10px;color:var(--text-muted);margin-top:2px">数据源：event_calendar_' + REVIEW_DATE.slice(0, 7) + '.json（与老站共享同一份）</div>';
   });
 }
 
