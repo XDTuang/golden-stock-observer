@@ -3,6 +3,7 @@
 <head data-page-node-id="CX4KiEZ8Q8bfJpG5hbcVtv">
 <meta charset="UTF-8" data-page-node-id="UjGLAmKAXRVQw5RqpcRrfU">
 <meta name="viewport" content="width=device-width,initial-scale=1" data-page-node-id="f7w9966uUyFJMTgfMHW8a1">
+<!-- 副本：默认隐藏 8/9 段；URL 加 ?hide= 可覆盖 -->
 <title>每日复盘 V3 · 独立版（兜金观测）</title>
 <!--
   每日复盘 V3 · 独立实现（2026-09-04）
@@ -171,7 +172,7 @@ const sign = (v) => v >= 0 ? '+' : '';
 /* ═══ 段显隐开关 ═══
    用法：URL 加 ?hide=8,9（或 ?hide=89 / ?hide=all）隐藏指定段。
    DEFAULT_HIDE 供生成"默认隐藏"副本时改写，主文件默认不隐藏任何段。 */
-const DEFAULT_HIDE = [];
+const DEFAULT_HIDE = [8, 9]; /* 本副本默认隐藏 8 段（回测准确率）与 9 段（投喂记录） */
 (function applyHide() {
   const q = new URLSearchParams(location.search);
   let raw = (q.get('hide') || '').trim();
