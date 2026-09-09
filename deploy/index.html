@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>兜金观测 — 量化信号池 v2026-09-082026-08-29</title>
+<title>兜金观测 — 量化信号池 v2026-09-092026-08-29</title>
 <!-- 登录保护：内嵌覆盖层，不跳转 -->
 <script>
 (function(){
@@ -1454,6 +1454,8 @@ html { scroll-behavior: smooth; }
     <div class="val-radar-grid" id="valRadarGrid"><p class="dr-note">估值数据加载中…</p></div>
   </div>
 </div>
+
+
 
 
 
@@ -3720,6 +3722,8 @@ function drCmdModalInit() {
 
 
 
+
+
 // ===== 每日复盘 Tab =====
 function renderDailyReview() {
   if (window._drInit) return; window._drInit = true;
@@ -4083,8 +4087,6 @@ function drDeriveSections(d) {
     });
     const evHtml = evs.length ? evs.join('<br>') : '明日无重大事件（待知识星球/研报投喂补充）';
     // ── 渲染 0 · 结论速览卡 ──
-    // 2026-09-09 修复：analysis.html 的 0 段结论卡带 data-preopen（agent 手写推演结论）
-    //  → 不整卡覆盖（避免"结论一闪而过被规则版替换"），改为：保留 agent 卡 + 尾部追加数据速览
     const h0 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h')).find(h => /结论先行/.test(h.textContent || ''));
     if (h0 && h0.nextElementSibling && h0.nextElementSibling.querySelector) {
       const card = h0.nextElementSibling;

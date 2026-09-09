@@ -1518,6 +1518,8 @@ html { scroll-behavior: smooth; }
 
 
 
+
+
 <!-- Tab: 每日复盘（盘前简报 + 完整复盘合一；行情=云端08:15自动，分析=本机agent） -->
 <div class="tab-content" id="tab-dailyreview">
 <style>
@@ -3720,6 +3722,8 @@ function drCmdModalInit() {
 
 
 
+
+
 // ===== 每日复盘 Tab =====
 function renderDailyReview() {
   if (window._drInit) return; window._drInit = true;
@@ -4083,8 +4087,6 @@ function drDeriveSections(d) {
     });
     const evHtml = evs.length ? evs.join('<br>') : '明日无重大事件（待知识星球/研报投喂补充）';
     // ── 渲染 0 · 结论速览卡 ──
-    // 2026-09-09 修复：analysis.html 的 0 段结论卡带 data-preopen（agent 手写推演结论）
-    //  → 不整卡覆盖（避免"结论一闪而过被规则版替换"），改为：保留 agent 卡 + 尾部追加数据速览
     const h0 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h')).find(h => /结论先行/.test(h.textContent || ''));
     if (h0 && h0.nextElementSibling && h0.nextElementSibling.querySelector) {
       const card = h0.nextElementSibling;
