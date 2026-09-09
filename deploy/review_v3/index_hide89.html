@@ -971,9 +971,15 @@ function selfCheck() {
   )).then(list => {
     let h = '<table class="dr-tbl"><thead><tr><th>数据源</th><th>日期 / 状态</th><th>口径核对（复盘日 ' + (REVIEW_DATE || '—') + '）</th></tr></thead><tbody>';
     list.forEach(it => {
-      // 匹配规则：源 date 与复盘日一致 → ✅；含"T+1 豁免"或"昨日 备查"标记 → ✅（业务上预期）；其余非复盘日 → ⚠
+      // 2026-09-09 修复：判定改为"对齐 ≥ REVIEW_DATE"——news/macro/global_ext 是每日动态抓的，date=今天 > REVIEW_DATE 是预期状态，不属滞后
+      // 仅当源 date < REVIEW_DATE 才警告"已滞后"
       const hasExcuse = it.val.indexOf('T+1 豁免') >= 0 || it.val.indexOf('昨日 备查') >= 0 || it.val.indexOf('按推演日累计') >= 0;
-      const match = REVIEW_DATE && (it.val.indexOf(REVIEW_DATE) >= 0 || hasExcuse);
+      const dateRe = /(\d{4}-\d{2}-\d{2})/g;
+      const matches = it.val.match(dateRe) || [];
+      const minDate = matches.filter(d => d <= '2099-12-31').sort()[0];
+      // 提取所有日期，找最小且非 REVIEW_DATE 之前的值，若均 ≥ REVIEW_DATE 视为"已对齐或更新"
+      const futureAligned = REVIEW_DATE && matches.some(d => d >= REVIEW_DATE) && (!minDate || minDate >= REVIEW_DATE);
+      const match = hasExcuse || futureAligned;
       const st = !it.ok ? '<span class="dr-dn">❌ ' + esc(it.val) + '</span>'
         : match ? '<span class="dr-up">✅ 对齐复盘日</span>'
         : '<span style="color:var(--gold)">⚠️ 非复盘日（核对该源是否已更新）</span>';
