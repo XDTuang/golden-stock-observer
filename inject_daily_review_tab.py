@@ -410,6 +410,16 @@ function drDeriveSections(d) {
     const h0 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h')).find(h => /结论先行/.test(h.textContent || ''));
     if (h0 && h0.nextElementSibling && h0.nextElementSibling.querySelector) {
       const card = h0.nextElementSibling;
+      const isAgent = card.getAttribute && (card.getAttribute('data-preopen') !== null || card.getAttribute('data-agent') !== null);
+      if (isAgent) {
+        const dn = document.createElement('div');
+        dn.className = 'dr-note';
+        dn.style.cssText = 'background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px;margin-top:10px';
+        dn.innerHTML = '<b>规则速览（自动，agent 结论上方卡片为准）：</b>次日开盘 ' + openExp[0] + ' ｜ 风格 ' + style +
+          ' ｜ 风险 ' + risk[0] + ' ｜ 关键事件 ' + evHtml.replace(/<br>/g, ' · ') +
+          '。<br>隔夜美股 ' + (usDate || '—') + ' 收盘 · ' + reasons.join(' · ') + '。';
+        card.appendChild(dn);
+      } else {
       card.innerHTML =
         '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0">' +
         '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">次日开盘预判</div><div style="font-weight:700;color:' + openExp[1] + '">' + openExp[0] + '</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px">' + reasons.join(' · ') + '</div></div>' +
@@ -418,6 +428,7 @@ function drDeriveSections(d) {
         '<div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:8px;padding:8px 10px"><div class="dr-tag">关键事件</div><div style="font-weight:600;font-size:12px">' + evHtml.replace(/<br>/g, ' · ') + '</div></div>' +
         '</div>' +
         '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--blue);padding:8px 12px;border-radius:6px;margin-top:6px"><b>数据驱动速览（自动）：</b>隔夜美股 ' + (usDate || '—') + ' 收盘 · ' + reasons.join(' · ') + '。深度节奏判读/板块推演请以本机 agent 分析为准。</div>';
+      }
     }
     // ── 渲染 7 · 次日开盘指引 ──
     const h7 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h')).find(h => /次日开盘指引/.test(h.textContent || ''));
