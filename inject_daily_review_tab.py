@@ -482,7 +482,11 @@ function drLoadObserveStocks() {
         .find(h => /重点观测股/.test(h.textContent || ''));
       if (h13) {
         const nd = drNextBizDay(date).slice(5).replace('-', '/');
-        h13.textContent = '1.3 · 重点观测股（' + items.length + ' 只 · ' +
+        // 2026-09-09 修复：保留 analysis.html 里已有的段号（如 "7.2"），不再硬覆盖为 "1.3"；
+        // 找不到段号才兜底 "1.3"，保证新旧版 analysis.html 都能渲染
+        const m = (h13.textContent || '').match(/^(\d+(?:\.\d+)?)/);
+        const prefix = m ? m[1] + ' · ' : '1.3 · ';
+        h13.textContent = prefix + '重点观测股（' + items.length + ' 只 · ' +
           date.slice(5).replace('-', '/') + ' 收盘 + ' + nd + ' 推演）';
       }
     }
