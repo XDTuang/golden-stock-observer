@@ -1,0 +1,8 @@
+【新闻解读 20260909 音频（12.5MB / 约 8.7 分钟）——本会话四条转写路径均失败，已按指示放弃转写，归档元数据】
+日期: 2026-09-09 | 类别: 日常投喂 | 来源: 外部投喂·新闻解读音频（未转写）
+关键词: 新闻解读 / 音频 / 未转写 / 待办
+==============================================
+
+投喂·新闻解读音频（2026-09-09 20:18）：文件名 新闻解读20260909(1).MP3，12.5MB，经 afconvert 探测时长约 523 秒（8.7 分钟）。
+【转写状态】尝试四条路径均失败（环境限制）：①faster-whisper 安装成功但模型下载被代理拦截（files.pythonhosted SSL 握手超时 / hf-mirror.com CAS 401）；②macOS SFSpeechRecognizer 云端识别在沙箱无法弹授权、on-device 无中文模型 → 均超时。用户已指示放弃本音频转写。
+【待办】如需转写建议终端执行：pip install faster-whisper && faster-whisper 新闻解读20260909.MP3 --model small --language zh（需可连 huggingface 或配置 HF_ENDPOINT=https://hf-mirror.com），或用通义听悟/飞书妙记。归档正文不含该音频内容。

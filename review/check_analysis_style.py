@@ -12,6 +12,12 @@ try:
 except FileNotFoundError:
     print(f'❌ {path} 不存在'); sys.exit(1)
 
+# 0) UTF-8 BOM 守卫（2026-09-09 治本：fragment 无 <head>/<meta charset>，file:// 直开必须靠 BOM 声明编码，
+#    否则浏览器按系统 locale（中文=GBK/GB18030）探测 → 全中文乱码。任何重写丢 BOM 必须在此红灯）
+raw = io.open(path, 'rb').read()
+ok0 = raw.startswith(b'\xef\xbb\xbf')
+print(f"{chr(10004) if ok0 else chr(10060)} [0] UTF-8 BOM 守卫(file://直开编码自声明): {'通过' if ok0 else 'FAIL: analysis.html 必须以 UTF-8 BOM(efbbbf)开头，重写时勿丢'}")
+
 # 1) 锚点唯一
 c = re.findall(r'<!-- [0-9][^>]*-->', s)
 dup = {k:v for k,v in Counter(c).items() if v>1}
@@ -82,24 +88,25 @@ for f, ok, nb, wb in css_results:
 #    但 ≥20 处时警告——后续可逐步重构到 dk-*）。
 ok6 = True
 note6 = []
-sec73_start = s.find('<!-- 7.3 开盘指引 -->')
+sec73_m = re.search(r'<!-- 7\.[34] ', s)   # 兼容老版 7.3 agent 卡 与 新版 7.4 agent 预案（7.3 让位 JS 规则版）
+sec73_start = sec73_m.start() if sec73_m else -1
 sec73_end = s.find('<!-- 8 数据自检 -->') if sec73_start > 0 else -1
 sec73 = s[sec73_start:sec73_end] if sec73_end > 0 else ''
 sec73_main = len(re.findall(r'\bdk-main\b', sec73))
 sec73_caution = len(re.findall(r'\bdk-caution\b', sec73))
 sec73_risk = len(re.findall(r'\bdk-risk\b', sec73))
 if sec73_main < 1 or sec73_caution < 1 or sec73_risk < 1:
-    note6.append(f'⚠️ 7.3 段语义色不全：dk-main={sec73_main} dk-caution={sec73_caution} dk-risk={sec73_risk}（应各 ≥1）')
+    note6.append(f'⚠️ 7.3/7.4 操作预案段语义色不全：dk-main={sec73_main} dk-caution={sec73_caution} dk-risk={sec73_risk}（应各 ≥1）')
     ok6 = False
 # 7.3 段外的 dk-* 总数（证明 design token 体系已落地）
 total_dk = len(re.findall(r'\bdk-(?:main|caution|risk|data|neutral)\b', s))
-print(f"{'✅' if ok6 else '❌'} [6/6] Design token 防御（7.3 段 dk-main/caution/risk ≥1）：{'通过' if ok6 else '未通过'}")
+print(f"{'✅' if ok6 else '❌'} [6/6] Design token 防御（7.3/7.4 操作预案段 dk-main/caution/risk ≥1）：{'通过' if ok6 else '未通过'}")
 for n in note6: print(f"      {n}")
-print(f"      统计：7.3 段 dk-main={sec73_main} dk-caution={sec73_caution} dk-risk={sec73_risk} / 全局 dk-*={total_dk}（应 ≥5）")
+print(f"      统计：7.3/7.4 段 dk-main={sec73_main} dk-caution={sec73_caution} dk-risk={sec73_risk} / 全局 dk-*={total_dk}（应 ≥5）")
 if total_dk < 5:
     note6.append(f'⚠️ 全局 dk-* 仅 {total_dk} 处（应 ≥5）')
     ok6 = ok6 and False
 # 总结
-all_ok = ok1 and ok2 and ok3 and ok4 and ok5 and ok6
+all_ok = ok0 and ok1 and ok2 and ok3 and ok4 and ok5 and ok6
 print(f"\n{'✅ 全部通过' if all_ok else '❌ 存在版式问题，请修复'}")
 sys.exit(0 if all_ok else 1)

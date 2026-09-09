@@ -239,6 +239,8 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="只打印将落盘的文件名")
     ap.add_argument("--emit-inbox", action="store_true",
                     help="额外写入仓库内 feed/inbox/日常投喂/（⚠️ 原文将进入 public 仓库，须自担版权）")
+    ap.add_argument("--recheck-days", type=int, default=0,
+                    help="补扫近 N 天：先 meta 扫 id、再对未见 id 取全文（应对上游延迟补录历史条目）")
     ap.add_argument("--backfill", action="store_true", help="回填模式：忽略水位线，从 --since 拉起")
     ap.add_argument("--reset-state", action="store_true", help="清空水位线与 seen_ids")
     ap.add_argument("--status", action="store_true", help="查看状态、配额与源清单后退出")
@@ -311,12 +313,36 @@ def main():
     # ── 抓正文 ──
     print(f"⬇️  拉取中… since={since or '(全量)'} until={until or '(最新)'}"
           f"{' source=' + args.source if args.source else ''}{' q=' + args.q if args.q else ''}")
-    items, pages, calls = fetch_all(tok, since, until, args.source, args.q,
-                                   args.limit, "full", args.max_pages)
-    print(f"   取回 {len(items)} 条（{pages} 页 / {calls} 次请求）")
+
+    if args.recheck_days:
+        # 补扫模式：上游会延迟补录历史条目（实测 2026-09-09 同一区间两次请求 409 → 851 条），
+        # 单靠水位线会永久漏掉补录内容。先 meta 扫 id（便宜），只对未见过的 id 取全文。
+        since_n = (datetime.datetime.now() -
+                   datetime.timedelta(days=args.recheck_days)).strftime("%Y-%m-%dT%H:%M")
+        meta_items, mpages, mcalls = fetch_all(tok, since_n, until, args.source, None,
+                                               args.limit, "meta", args.max_pages)
+        known_ids = set(st.get("seen_ids", []))
+        new_ids = [it for it in meta_items if it.get("id") and it["id"] not in known_ids]
+        print(f"🔍 补扫近 {args.recheck_days} 天：{len(meta_items)} 条在库，未见 {len(new_ids)} 条 → 逐条取全文")
+        items, pages, calls = [], mpages, mcalls
+        for n, mit in enumerate(new_ids, 1):
+            s2, d2, _ = api_get("/api/v1/feed/" + urllib.parse.quote(mit["id"], safe=""), tok=tok)
+            if s2 == 200 and isinstance(d2, dict):
+                one = d2.get("item") if isinstance(d2.get("item"), dict) else d2
+                if isinstance(one, dict) and one.get("id"):
+                    items.append(one)
+            elif s2 == 429:
+                print("  ⏳ 补扫遇限频，退避 30s"); time.sleep(30)
+            if n % 25 == 0:
+                print(f"   …{n}/{len(new_ids)}")
+            time.sleep(0.2)
+        print(f"   取回 {len(items)} 条全文（{calls + len(new_ids)} 次请求）")
+    else:
+        items, pages, calls = fetch_all(tok, since, until, args.source, args.q,
+                                       args.limit, "full", args.max_pages)
+        print(f"   取回 {len(items)} 条（{pages} 页 / {calls} 次请求）")
 
     seen = set(st.get("seen_ids", []))
-    known = {(e["date"], e.get("src_name", ""), e["title"]) for e in idx["entries"]}
     written, skipped_dup, skipped_short = 0, 0, 0
 
     for it in items:
@@ -327,12 +353,11 @@ def main():
         title = it.get("title") or ""
         text = it.get("text") or ""
 
+        # 去重唯一键 = 条目 id。⚠️ 绝不可用 (日期+源+标题)：
+        # 实测 zsxq_logic 存在「#📚行业研报✅」这类合集标题，同一标题下挂着 25 篇完全不同的研报，
+        # 按标题去重会静默误杀最值钱的内容（2026-09-09 首次回填即踩此坑，误杀 36 组）。
         if iid and iid in seen:
             skipped_dup += 1
-            continue
-        if (date, src, title) in known:
-            skipped_dup += 1
-            seen.add(iid)
             continue
         if args.min_chars and len(text) < args.min_chars:
             skipped_short += 1
@@ -343,7 +368,9 @@ def main():
         clean = safe_title(title)
         fid = next_fid(idx, date)
         day_dir = os.path.join(DATA_ROOT, date)
-        fname = f"{date}_{label}_{clean}.txt"
+        # 文件名附 id 短码：同标题不同内容（合集类帖子）不会互相覆盖
+        short = re.sub(r"\W", "", iid)[-8:] or ("%08d" % (written + 1))
+        fname = f"{date}_{label}_{clean}_{short}.txt"
         fpath = os.path.join(day_dir, fname)
 
         body = (
@@ -366,7 +393,7 @@ def main():
                 f.write(body)
             if args.emit_inbox:
                 os.makedirs(INBOX_DIR, exist_ok=True)
-                inbox_name = f"{date}_{SRC_MAP.get(src, '其他')}_{clean}.txt"
+                inbox_name = f"{date}_{SRC_MAP.get(src, '其他')}_{clean}_{short}.txt"
                 with open(os.path.join(INBOX_DIR, inbox_name), "w", encoding="utf-8") as f:
                     f.write(body)
 
@@ -381,7 +408,6 @@ def main():
             "published_at": pub,
             "fetched_at": datetime.datetime.now().strftime(FMT),
         })
-        known.add((date, src, title))
         seen.add(iid)
         written += 1
 
