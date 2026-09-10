@@ -70,6 +70,11 @@ bash review/sync_feed_before_review.sh
 - 7.3 段：标题含「K3」/ 周几 + 正文含「大势预判 / 主线策略 / 回避清单」→ 跳过改写
 - 1.2 段：容器 `id="drTblDiamond"` 存在 + 标题含「三重门控合并去重」→ 内容由 `drLoadDiamond()` 渲染，HTML 内**不得**出现金钻股票行（防写死数据与分表版式回退）
 
+**注入样式作用域化（2026-09-10 治本）**
+- `analysis.html` 自包含 `<style>` 里的 `body{padding:20px;max-width:980px}` / `:root{...}` / `h2,h3,h4` / `code` / `b,strong` 等**越界规则**，经 `renderDailyReview()` 的 `ana.innerHTML = t` 注入后会**全局生效** → 曾把整站限宽 980px（`.main` 的 1480px 沦为死代码）并覆盖主站配色变量与字体。
+- 现状：`index.html` 的 `drScopeInjectedStyles(ana)` 在注入后自动把这些规则作用域化到 `#drAnalysis`（body/html 丢弃、`:root`→`#drAnalysis`、裸标签加前缀、`.dr-*` 类规则保留）。**analysis.html 无需修改**——其中的 `body{max-width:980px}` 是为 file:// 独立打开的限宽阅读体验而保留。
+- 自检 `[7/7]` 守卫三份 index 是否保留该调用；重构 `renderDailyReview()` 时若丢失调用，整站会再次变窄。
+
 **双写同步（防回退）**
 ```bash
 cp data/daily_review/analysis.html deploy/data/daily_review/analysis.html

@@ -210,11 +210,17 @@ body {
 }
 
 /* ── Navigation ── */
-.nav { display: flex; gap: 2px; background: var(--bg-subtle); border-radius: 10px; padding: 3px; }
+.nav {
+  display: flex; gap: 2px; background: var(--bg-subtle); border-radius: 10px; padding: 3px;
+  max-width: 1480px; margin: 10px auto 0;
+  overflow-x: auto; scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
 .nav-btn {
-  padding: 7px 16px; border: none; border-radius: 8px;
+  padding: 7px 14px; border: none; border-radius: 8px;
   background: transparent; color: var(--text-secondary);
-  cursor: pointer; font-size: 13px; font-weight: 500;
+  cursor: pointer; font-size: 12.5px; font-weight: 500;
+  white-space: nowrap; flex: 0 0 auto;
   transition: all var(--transition-fast);
 }
 .nav-btn:hover { color: var(--text); background: var(--bg-card); }
@@ -241,7 +247,8 @@ body {
 .update-time {
   font-size: 11px; color: var(--text-muted);
   background: var(--bg-subtle); padding: 5px 12px;
-  border-radius: 20px; letter-spacing: 0.3px;
+  border-radius: 10px; letter-spacing: 0.2px;
+  white-space: normal; max-width: 360px; text-align: right; line-height: 1.45;
 }
 
 /* ── Main ── */
@@ -1265,6 +1272,14 @@ html { scroll-behavior: smooth; }
 <div class="header-inner">
 <div class="header-left">
 <div class="logo"><span class="logo-icon">D</span>兜金观测</div>
+</div>
+<div class="header-right">
+<div class="update-time" id="updateTime">数据加载中...</div>
+<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="切换主题">
+  <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+</div>
+</div>
 <nav class="nav" id="navBar">
 <button class="nav-btn active" data-tab="overview">总览</button>
 <button class="nav-btn" data-tab="dailyreview">每日复盘</button>
@@ -1279,14 +1294,6 @@ html { scroll-behavior: smooth; }
   <button class="nav-btn" data-tab="eventcal">重要事件日历</button>
   <button class="nav-btn" data-tab="repurchase">回购隐含收益（暂停更新）</button>
 </nav>
-</div>
-<div class="header-right">
-<div class="update-time" id="updateTime">数据加载中...</div>
-<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="切换主题">
-  <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-</button>
-</div>
-</div>
 </header>
 
 <!-- ═══════════ 主内容 ═══════════ -->
@@ -3746,6 +3753,42 @@ function drCmdModalInit() {
 
 
 
+// 2026-09-10：analysis.html 自带 <style> 里的 body / :root / 裸标签规则，经 innerHTML 注入后会【全局生效】
+//（曾把整站限宽 980px、并覆盖主站配色变量与字体）。此处把"越界规则"作用域化到 #drAnalysis：
+//   body / html / *  → 丢弃；:root → #drAnalysis（变量局部化）；h2 / code / b,strong / br+br → 加 #drAnalysis 前缀；.dr-* 等类规则原样保留
+function drScopeInjectedStyles(scopeEl) {
+  if (!scopeEl) return;
+  const S = '#drAnalysis';
+  const fix = (rule) => {
+    const sel = rule.selectorText; if (!sel) return false;
+    const out = [];
+    sel.split(',').map(s => s.trim()).forEach(p => {
+      if (!p) return;
+      if (p === 'body' || p === 'html' || p === '*') return;
+      if (p === ':root') { out.push(S); return; }
+      if (/^[a-z][a-z0-9]*(\+[a-z][a-z0-9]*)?$/i.test(p)) { out.push(S + ' ' + p); return; }
+      out.push(p);
+    });
+    if (!out.length) return null;
+    try { rule.selectorText = out.join(','); return true; } catch (e) { return false; }
+  };
+  Array.prototype.slice.call(scopeEl.querySelectorAll('style')).forEach(st => {
+    const sheet = st.sheet; if (!sheet || !sheet.cssRules) return;
+    try {
+      for (let i = sheet.cssRules.length - 1; i >= 0; i--) {
+        const r = sheet.cssRules[i];
+        if (r.type === 1 && r.selectorText) { if (fix(r) === null) sheet.deleteRule(i); }
+        else if (r.type === 4 && r.cssRules) {
+          for (let j = r.cssRules.length - 1; j >= 0; j--) {
+            const r2 = r.cssRules[j];
+            if (r2.type === 1 && r2.selectorText && fix(r2) === null) r.deleteRule(j);
+          }
+        }
+      }
+    } catch (e) { /* 只读/跨域等场景忽略，退化为原有行为 */ }
+  });
+}
+
 // ===== 每日复盘 Tab =====
 function renderDailyReview() {
   if (window._drInit) return; window._drInit = true;
@@ -3761,6 +3804,7 @@ function renderDailyReview() {
       // 保留 analysis.html 的"3·隔夜美股复盘"模块（含 agent 推演结论），
       // 仅用 market.json.us_kline 把双日表数据+说明日期刷新到最新（drRefreshUsDualDayTables）
       ana.innerHTML = t;
+      drScopeInjectedStyles(ana);
       drFillTables(q);
       drFixHeader(d);
       drAIndexSummary(d);
@@ -6207,7 +6251,7 @@ async function initPage() {
   if (!SIGNALS_DATA) {
     // 兜底：signals.json 加载失败（CDN 偶发截断）时给出明确提示，避免页面永久停在"数据加载中"
     const _ut = document.getElementById('updateTime');
-    if (_ut) _ut.innerHTML = '<span style="color:#ef4444">⚠️ 数据加载失败</span> — signals.json 下载异常（网络/CDN 偶发截断），请稍后刷新页面重试';
+    if (_ut) _ut.innerHTML = '<span style="color:#ef4444">⚠️ 数据加载失败</span> · 请刷新页面重试';
     const _gd = document.getElementById('gdStatus');
     if (_gd) _gd.textContent = '⚠️ signals.json 加载失败，数据未就绪。请刷新页面重试（或稍后再试）。';
     console.warn('[兜金] signals.json 加载失败，页面数据未就绪，已提示用户刷新');
@@ -6218,9 +6262,9 @@ async function initPage() {
     const dataDate = SIGNALS_DATA.data_date || '';
     const today = new Date().toISOString().substring(0,10);
     if (dataDate && dataDate < today) {
-      document.getElementById('updateTime').innerHTML = '<span style="color:#ef4444">数据更新中...</span> 最新数据日期: ' + dataDate + ' (预计19:00前完成今日更新)';
+      document.getElementById('updateTime').innerHTML = '<span style="color:#ef4444">数据更新中</span> · 最新数据日期 ' + dataDate + '<br>预计 19:00 前完成今日更新';
     } else {
-      document.getElementById('updateTime').textContent = `更新: ${sigTime}`;
+      document.getElementById('updateTime').textContent = `数据日期 ${dataDate} · ${sigTime.length >= 16 ? sigTime.slice(11, 16) : sigTime} 更新 · 下次 19:00`;
     }
     renderStats();
 
@@ -6256,8 +6300,7 @@ async function initPage() {
     await loadLhbData();
     renderCalendar();
     renderCumulativeTop();
-    const ut = document.getElementById('updateTime');
-    if (ut && LHB_CALENDAR_DATA) ut.textContent += ` | 龙虎榜: ${Object.keys(LHB_CALENDAR_DATA).length}天`;
+    // 2026-09-10：信息条精简，不再追加「龙虎榜 N 天」（且原先 textContent += 会抹掉滞后态的红字 span）
     LHB_DATA_LOADED = true;
   } catch(e) { console.warn('[兜金] 机游共振渲染失败(不影响主数据):', e); }
 

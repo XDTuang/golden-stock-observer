@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""投喂推演 → analysis.html 回填内容版式自检（2026-09-02 立 · 5 项）
+"""投喂推演 → analysis.html 回填内容版式自检（2026-09-02 立 · 8 项）
    跑法：python3 review/check_analysis_style.py
-   期望：5 项全过；任何失败=推演版式污染，必须修
-   第 5 项专门防御"td 长内容撑破右侧屏幕"重复 bug（9/1 / 9/2 多次踩坑，9/2 治本）"""
+   期望：全部通过；任何失败=推演版式污染，必须修
+   第 5 项专门防御"td 长内容撑破右侧屏幕"重复 bug（9/1 / 9/2 多次踩坑，9/2 治本）
+   第 7 项（2026-09-10 增）防御"analysis.html 自包含 style 越界规则经注入污染整站"（整站曾被限宽 980px）"""
 import re, io, sys, subprocess
 from collections import Counter
 
@@ -106,7 +107,29 @@ print(f"      统计：7.3/7.4 段 dk-main={sec73_main} dk-caution={sec73_cautio
 if total_dk < 5:
     note6.append(f'⚠️ 全局 dk-* 仅 {total_dk} 处（应 ≥5）')
     ok6 = ok6 and False
+# 7) [7/7] 🔴 注入样式作用域化守卫（2026-09-10）
+#    analysis.html 自带 <style> 里有 body{padding:20px;max-width:980px;margin:0 auto} 与 :root{...} 等
+#    "越界规则"（为 file:// 独立阅读而写），经 index.html 的 ana.innerHTML 注入后会【全局生效】：
+#    曾把整站限宽 980px（.main 的 max-width:1480px 沦为死代码）、并覆盖主站配色变量与字体。
+#    治本：index.html 的 drScopeInjectedStyles(ana) 在注入后把越界规则作用域化到 #drAnalysis
+#    （body/html 丢弃、:root→#drAnalysis、裸标签加前缀、.dr-* 类规则保留）。
+#    此检查确保三份 index 均保留该调用——缺失即整站会再次变窄。
+ok7 = True
+note7 = []
+for f in ['index.html', 'index_template.html', 'deploy/index.html']:
+    try:
+        t = io.open(f, encoding='utf-8').read()
+    except FileNotFoundError:
+        note7.append(f'⚠️ 缺少 {f}'); ok7 = False; continue
+    has_fn = 'function drScopeInjectedStyles' in t
+    has_call = 'drScopeInjectedStyles(ana);' in t
+    if not (has_fn and has_call):
+        note7.append(f'⚠️ {f}: 定义={has_fn} 调用={has_call}（应均 True；缺失会导致 analysis.html 注入样式污染整站宽度/配色）')
+        ok7 = False
+print(f"{'✅' if ok7 else '❌'} [7/7] 注入样式作用域化守卫（analysis.html 越界规则不污染整站）：{'通过' if ok7 else '未通过'}")
+for n in note7: print(f"      {n}")
+
 # 总结
-all_ok = ok0 and ok1 and ok2 and ok3 and ok4 and ok5 and ok6
+all_ok = ok0 and ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7
 print(f"\n{'✅ 全部通过' if all_ok else '❌ 存在版式问题，请修复'}")
 sys.exit(0 if all_ok else 1)
