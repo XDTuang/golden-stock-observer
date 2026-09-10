@@ -78,12 +78,25 @@ cp data/daily_review/market.json  deploy/data/daily_review/market.json
 
 **自检**
 ```bash
-python3 review/check_analysis_style.py   # 必须 6/6 全过
+python3 review/check_analysis_style.py   # 老站排版：必须全过（含 [0] BOM 守卫）
+python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 null close（必须 ✅）
 ```
+
+> 🔴 **2026-09-10 事故**：`us_kline.us_sox.latest.close = null` → V3 页 `renderUsDual`
+> 直接 `.toLocaleString()` 抛 TypeError → `main()` reject → **全页永久卡「加载中…」**（老站不受影响）。
+> 双治本：① V3 页新增 `num()` 空值兜底 + `main()` 逐段 try/catch 隔离（单段失败不再拖垮全页）；
+> ② 新增 `review/check_market_json.py` 门禁，market.json 每次更新后必跑。
+> 新增 `us_kline` 标的时必须同时给 `prev.close` 与 `latest.close`；
+> 若只有 `latest.close` 与 `prev.chg_pct`，可用 `prev.close = latest.close / (1 + chg_pct/100)` 反推。
 
 **浏览器实测**：本地 `http://127.0.0.1:8080/`（deploy 为根）→ 登录 → 每日复盘 → 检查：
 - 0 段速览卡 / 7.3 标题未被覆盖
 - 表格 0 溢出、`[object Object]` = 0、`undefined` = 0
+
+**V3 页实测**：`http://127.0.0.1:8080/review_v3/` → 检查：
+- **无任何「加载中…」残留**（全站渲染完成的唯一判据）
+- 0 段「推演开盘」显示 agent 结论（非规则打分回退）
+- 控制台无 `[V3] 段渲染失败` 报错
 
 ## 步骤 6 · 提交推送
 
@@ -92,6 +105,9 @@ python3 review/check_analysis_style.py   # 必须 6/6 全过
 ```zsh
 cd /Users/samt/golden_stock_observer && rm -f .git/index.lock && git add -A data/ feed/ review/ commands/ index.html index_template.html && git add -f deploy/data/daily_review/analysis.html deploy/data/daily_review/market.json deploy/output/feed_review_latest.json deploy/output/feed_review_YYYY-MM-DD.json deploy/index.html && git commit -m "..." && git pull --rebase origin main && git push origin main
 ```
+
+> V3 相关改动（`review_v3/index.html` 及同源 `deploy/review_v3/index.html`、`review_v3/index_hide89.html`）
+> 若不在 `review/` 下，需显式补：`git add review_v3/index.html review_v3/index_hide89.html && git add -f deploy/review_v3/index.html`。
 
 > 🔴 **`output/` 绝不能放进 `git add -A`**（2026-09-03/09-04 连续两次踩坑）：
 > `output/` 在 `.gitignore` 里，显式 `git add -A output/` 会打印

@@ -166,6 +166,9 @@ const $ = (id) => document.getElementById(id);
 const esc = (s) => (s == null ? '' : String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const cls = (v) => v >= 0 ? 'dr-up' : 'dr-dn';
 const sign = (v) => v >= 0 ? '+' : '';
+// 2026-09-10 治本：数值格式化统一兜底——null/undefined/非数字一律显示「—」，禁止直接 .toLocaleString()
+//   （此前 us_sox.close=null → renderUsDual 抛 TypeError → main() reject → 全页永久「加载中…」）
+const num = (v) => (v == null || v === '' || isNaN(Number(v))) ? '—' : Number(v).toLocaleString();
 /* ═══ 段显隐开关 ═══
    默认隐藏审计段 8（回测）/9（投喂记录）；
    ?hide=8,9 / ?hide=89 / ?hide=all 追加隐藏；?show=89 / ?show=all 恢复显示（覆盖默认）。 */
@@ -234,11 +237,19 @@ async function main() {
   $('v3TblHK').innerHTML = mkQuoteTable(grp('港股指数'));
   $('v3TblUsQ').innerHTML = mkQuoteTable([...grp('美股指数'), ...grp('美股映射'), ...grp('美股映射·参考')]);
 
-  renderAsia(mkt); renderComm(mkt); renderUsDual(mkt);
-  await renderL0(mkt);
-  loadGlobalExt();
-  loadTop10(); loadDiamond(); loadMacro(); loadNews(); loadSynth(); selfCheck();
-  loadSectorFlow(); loadNationalTeam(); loadObsDeduce(); loadCrossAnalysis(); loadBacktest();
+  // 2026-09-10 治本：单段渲染失败不得拖垮整页
+  //   （此前 renderUsDual 因 us_sox.close=null 抛 TypeError → main() reject → 后续所有段永久停在「加载中…」）
+  const safe = (name, fn) => { try { return fn(); } catch (e) { console.error('[V3] 段渲染失败:', name, e); } };
+  const safeAsync = async (name, fn) => { try { return await fn(); } catch (e) { console.error('[V3] 段渲染失败:', name, e); } };
+  safe('renderAsia', () => renderAsia(mkt));
+  safe('renderComm', () => renderComm(mkt));
+  safe('renderUsDual', () => renderUsDual(mkt));
+  await safeAsync('renderL0', () => renderL0(mkt));
+  [['loadGlobalExt', loadGlobalExt], ['loadTop10', loadTop10], ['loadDiamond', loadDiamond], ['loadMacro', loadMacro],
+   ['loadNews', loadNews], ['loadSynth', loadSynth], ['selfCheck', selfCheck], ['loadSectorFlow', loadSectorFlow],
+   ['loadNationalTeam', loadNationalTeam], ['loadObsDeduce', loadObsDeduce], ['loadCrossAnalysis', loadCrossAnalysis],
+   ['loadBacktest', loadBacktest]].forEach(([n, f]) => safe(n, f));
+  window.addEventListener('unhandledrejection', (ev) => console.error('[V3] 未捕获 promise:', ev.reason));
 }
 
 /* ── L0 速览（老站 drDeriveSections 完整版：三维打分 + PE分位风险 + 推演开盘）──
@@ -327,8 +338,8 @@ async function renderL0(mkt) {
 function renderAsia(mkt) {
   const a = mkt.asia || {};
   const rows = [];
-  if (a.nikkei) rows.push('<tr><td>日本</td><td>日经 225</td><td>' + a.nikkei.close.toLocaleString() + '</td><td class="' + cls(a.nikkei.chg_pct) + '">' + sign(a.nikkei.chg_pct) + a.nikkei.chg_pct.toFixed(2) + '%</td><td class="dr-wrap" style="font-size:11px;color:var(--text-muted)">' + esc(a.nikkei.date || '') + (a.nikkei.note ? ' · ' + esc(a.nikkei.note) : '') + '</td></tr>');
-  if (a.kospi) rows.push('<tr><td>韩国</td><td>KOSPI</td><td>' + a.kospi.close.toLocaleString() + '</td><td class="' + cls(a.kospi.chg_pct) + '">' + sign(a.kospi.chg_pct) + a.kospi.chg_pct.toFixed(2) + '%</td><td class="dr-wrap" style="font-size:11px;color:var(--text-muted)">' + esc(a.kospi.date || '') + (a.kospi.note ? ' · ' + esc(a.kospi.note) : '') + '</td></tr>');
+  if (a.nikkei) rows.push('<tr><td>日本</td><td>日经 225</td><td>' + num(a.nikkei.close) + '</td><td class="' + cls(a.nikkei.chg_pct) + '">' + sign(a.nikkei.chg_pct) + a.nikkei.chg_pct.toFixed(2) + '%</td><td class="dr-wrap" style="font-size:11px;color:var(--text-muted)">' + esc(a.nikkei.date || '') + (a.nikkei.note ? ' · ' + esc(a.nikkei.note) : '') + '</td></tr>');
+  if (a.kospi) rows.push('<tr><td>韩国</td><td>KOSPI</td><td>' + num(a.kospi.close) + '</td><td class="' + cls(a.kospi.chg_pct) + '">' + sign(a.kospi.chg_pct) + a.kospi.chg_pct.toFixed(2) + '%</td><td class="dr-wrap" style="font-size:11px;color:var(--text-muted)">' + esc(a.kospi.date || '') + (a.kospi.note ? ' · ' + esc(a.kospi.note) : '') + '</td></tr>');
   const kr = (a.kr_stocks && a.kr_stocks.stocks) || [];
   const krNames = { '005930': '三星电子', '000660': 'SK 海力士' };
   kr.forEach(s => {
@@ -352,7 +363,7 @@ function renderComm(mkt) {
     if (!e || e.value == null) return;
     const isRate = (k === 'us10y' || k === 'us30y');
     const chg = (e.chg_pct != null) ? '<span class="' + cls(e.chg_pct) + '">' + sign(e.chg_pct) + e.chg_pct.toFixed(2) + '%</span>' : '<span style="color:var(--text-muted)">—</span>';
-    rows.push('<tr><td>' + esc(e.name || k) + '</td><td>' + e.value.toLocaleString() + (isRate ? '%' : '') + '</td><td>' + chg + '</td><td style="font-size:11px;color:var(--text-muted)">' + esc(e.date || '') + '</td></tr>');
+    rows.push('<tr><td>' + esc(e.name || k) + '</td><td>' + num(e.value) + (isRate ? '%' : '') + '</td><td>' + chg + '</td><td style="font-size:11px;color:var(--text-muted)">' + esc(e.date || '') + '</td></tr>');
   });
   $('v3TblComm').innerHTML = rows.length
     ? '<table class="dr-tbl"><thead><tr><th>品种</th><th>最新</th><th>涨跌</th><th>数据日</th></tr></thead><tbody>' + rows.join('') + '</tbody></table>' +
@@ -382,11 +393,13 @@ function renderUsDual(mkt) {
   US_ROWS.forEach(([nm, key]) => {
     const e = k[key]; if (!e || !e.latest || !e.prev) return; n++;
     const pc = (e.prev.prev_chg_pct != null) ? e.prev.prev_chg_pct : null;
-    const ov = (e.latest.close / e.prev.close - 1) * 100;
-    h += '<tr><td>' + nm + '</td><td>' + e.prev.close.toLocaleString() + '</td>' +
+    // 2026-09-10 治本：收盘价缺失时不得抛错（us_sox 曾为 null → 全页卡「加载中…」）
+    const hasC = (e.prev.close != null && e.latest.close != null);
+    const ov = hasC ? (e.latest.close / e.prev.close - 1) * 100 : null;
+    h += '<tr><td>' + nm + '</td><td>' + num(e.prev.close) + '</td>' +
       '<td class="' + (pc != null ? cls(pc) : '') + '">' + (pc != null ? sign(pc) + pc.toFixed(2) + '%' : '—') + '</td>' +
-      '<td>' + e.latest.close.toLocaleString() + '</td>' +
-      '<td class="' + cls(ov) + '">' + sign(ov) + ov.toFixed(2) + '%</td></tr>';
+      '<td>' + num(e.latest.close) + '</td>' +
+      '<td class="' + (ov != null ? cls(ov) : '') + '">' + (ov != null ? sign(ov) + ov.toFixed(2) + '%' : '—') + '</td></tr>';
   });
   h += '</tbody></table>';
   $('v3TblUs').innerHTML = h + '<div class="dr-note" style="color:var(--text-muted)">共 ' + n + ' 行 · 数据源 akshare stock_us_daily（腾讯源补齐），全自动生成无需手写。</div>';
