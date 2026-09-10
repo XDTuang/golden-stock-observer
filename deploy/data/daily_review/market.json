@@ -1,9 +1,9 @@
 {
   "date": "2026-09-09",
   "run_date": "2026-09-09",
-  "updated_at": "2026-09-09 22:10 CST",
+  "updated_at": "2026-09-10 08:45 CST",
   "source": "tencent-gtimg(实时) + akshare stock_us_daily(双日历史) + 腾讯hf商品/中行中间价 + 新浪znb日韩(免费无key)",
-  "coverage": "A股9/9收盘(腾讯gtimg) + 美股盘中22:05(腾讯gtimg us_intraday) + 日韩9/9收盘 + 商品利率 + 宏观(投喂/日历); 韩股个股/星球/AI分析=本机agent",
+  "coverage": "A股9/9收盘 + 美股9/9收盘(腾讯gtimg,双日9/8→9/9) + 盘后(新浪) + 日韩9/10开盘(新浪znb) + 商品利率汇率(新浪hf/在岸人民币) + 宏观(统计局CPI/PPI+隔夜要闻)",
   "quotes": {
     "a_sh": {
       "code": "sh000001",
@@ -467,229 +467,414 @@
   },
   "us_kline": {
     "us_dji": {
-      "latest": {
-        "date": "2026-09-08",
-        "close": 52786.07
-      },
       "prev": {
-        "date": "2026-09-04",
-        "close": 53414.25,
-        "chg_pct": -1.18,
-        "chg_amt": -628.18
+        "date": "2026-09-08",
+        "close": 52786.07,
+        "chg_pct": -0.77
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 52380.66
       }
     },
     "us_inx": {
-      "latest": {
-        "date": "2026-09-08",
-        "close": 7673.52
-      },
       "prev": {
-        "date": "2026-09-04",
-        "close": 7718.6,
-        "chg_pct": -0.58,
-        "chg_amt": -45.08
+        "date": "2026-09-08",
+        "close": 7673.52,
+        "chg_pct": -0.48
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 7636.36
       }
     },
     "us_ixic": {
-      "latest": {
-        "date": "2026-09-08",
-        "close": 26421.41
-      },
       "prev": {
-        "date": "2026-09-04",
-        "close": 26506.99,
-        "chg_pct": -0.32,
-        "chg_amt": -85.58
+        "date": "2026-09-08",
+        "close": 26421.41,
+        "chg_pct": -0.64
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 26253.34
       }
     },
     "us_mu": {
-      "latest": {
-        "date": "2026-09-08",
-        "close": 1000.26
-      },
       "prev": {
-        "date": "2026-09-04",
-        "close": 1016.59,
-        "chg_pct": -1.61,
-        "chg_amt": -16.33
+        "date": "2026-09-08",
+        "close": 1000.26,
+        "chg_pct": 2.75
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 1027.77
       }
     },
     "us_sndk": {
-      "latest": {
-        "date": "2026-09-08",
-        "close": 1737.99
-      },
       "prev": {
-        "date": "2026-09-04",
-        "close": 1740.0,
-        "chg_pct": -0.12,
-        "chg_amt": -2.01
+        "date": "2026-09-08",
+        "close": 1737.99,
+        "chg_pct": 1.51
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 1764.17
       }
     },
     "us_lite": {
-      "latest": {
-        "date": "2026-09-08",
-        "close": 978.53
-      },
       "prev": {
-        "date": "2026-09-04",
-        "close": 881.25,
-        "chg_pct": 11.04,
-        "chg_amt": 97.28
+        "date": "2026-09-08",
+        "close": 978.53,
+        "chg_pct": 1.07
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 988.98
       }
     },
     "us_aaoi": {
-      "latest": {
-        "date": "2026-09-08",
-        "close": 111.55
-      },
       "prev": {
-        "date": "2026-09-04",
-        "close": 105.53,
-        "chg_pct": 5.7,
-        "chg_amt": 6.02
+        "date": "2026-09-08",
+        "close": 111.55,
+        "chg_pct": -3.25
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 107.93
       }
     },
     "us_cohr": {
-      "latest": {
-        "date": "2026-09-08",
-        "close": 301.88
-      },
       "prev": {
-        "date": "2026-09-04",
-        "close": 281.86,
-        "chg_pct": 7.1,
-        "chg_amt": 20.02
+        "date": "2026-09-08",
+        "close": 301.88,
+        "chg_pct": 0.53
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 303.48
       }
     },
     "us_wdc": {
-      "latest": {
-        "date": "2026-09-08",
-        "close": 477.3
-      },
       "prev": {
-        "date": "2026-09-04",
-        "close": 467.46,
-        "chg_pct": 2.1,
-        "chg_amt": 9.84
+        "date": "2026-09-08",
+        "close": 477.3,
+        "chg_pct": 1.04
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 482.28
       }
     },
     "us_skhy": {
-      "latest": {
-        "date": "2026-09-08",
-        "close": 185.55
-      },
       "prev": {
-        "date": "2026-09-04",
-        "close": 177.0,
-        "chg_pct": 4.83,
-        "chg_amt": 8.55
+        "date": "2026-09-08",
+        "close": 185.55,
+        "chg_pct": 7.05
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 198.63
       }
     },
     "us_mrvl": {
-      "latest": {
-        "date": "2026-09-08",
-        "close": 225.41
-      },
       "prev": {
-        "date": "2026-09-04",
-        "close": 223.55,
-        "chg_pct": 0.83,
-        "chg_amt": 1.86
+        "date": "2026-09-08",
+        "close": 225.41,
+        "chg_pct": 4.26
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 235.01
       }
     },
     "us_nvda": {
-      "latest": {
-        "date": "2026-09-08",
-        "close": 225.73
-      },
       "prev": {
-        "date": "2026-09-04",
-        "close": 230.36,
-        "chg_pct": -2.01,
-        "chg_amt": -4.63
+        "date": "2026-09-08",
+        "close": 225.73,
+        "chg_pct": -0.91
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 223.67
       }
     },
     "us_tsla": {
-      "latest": {
-        "date": "2026-09-08",
-        "close": 368.16
-      },
       "prev": {
-        "date": "2026-09-04",
-        "close": 354.08,
-        "chg_pct": 3.98,
-        "chg_amt": 14.08
+        "date": "2026-09-08",
+        "close": 368.16,
+        "chg_pct": -0.1
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 367.81
+      }
+    },
+    "us_sox": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": 0.37
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": null,
+        "note": "SOX 为费半指数涨幅（+0.37%），ETF 值未取"
+      }
+    },
+    "us_meta": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": 6.55
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 653.69
+      }
+    },
+    "us_googl": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": -2.28
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 330.65
+      }
+    },
+    "us_amzn": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": -1.78
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 252.4
+      }
+    },
+    "us_msft": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": -0.47
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 491.65
+      }
+    },
+    "us_aapl": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": -0.28
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 315.34
+      }
+    },
+    "us_avgo": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": -1.13
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 364.38
+      }
+    },
+    "us_tsm": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": -0.83
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 435.36
+      }
+    },
+    "us_amd": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": 3.04
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 521.1
+      }
+    },
+    "us_intc": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": 1.69
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 106.24
+      }
+    },
+    "us_arm": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": 1.03
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 264.23
+      }
+    },
+    "us_dell": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": 0.26
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 535.25
+      }
+    },
+    "us_snow": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": -1.2
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 331.48
+      }
+    },
+    "us_pltr": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": -0.45
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 169.53
+      }
+    },
+    "us_crm": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": -1.99
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 244.16
+      }
+    },
+    "us_okta": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": 3.07
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 172.74
+      }
+    },
+    "us_crwd": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": -1.06
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 207.8
+      }
+    },
+    "us_smci": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": -3.3
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 38.93
+      }
+    },
+    "us_panw": {
+      "prev": {
+        "date": "2026-09-08",
+        "close": null,
+        "chg_pct": -0.56
+      },
+      "latest": {
+        "date": "2026-09-09",
+        "close": 335.1
       }
     }
   },
   "comm": {
-    "gold_spot": {
-      "name": "现货黄金",
-      "value": 4406.2,
-      "chg_pct": 1.17,
-      "date": "2026-09-09"
-    },
     "gold_comex": {
       "name": "COMEX 黄金",
-      "value": 4452.98,
-      "chg_pct": 0.32,
-      "date": "2026-09-09"
+      "value": 4447.2,
+      "chg_pct": 0.18,
+      "date": "2026-09-09",
+      "note": "9/9 收盘 +0.18%；现货金 4402.0（+1.07%）；今早 08:38 报 4440.32"
+    },
+    "silver": {
+      "name": "COMEX 白银",
+      "value": 67.925,
+      "chg_pct": 1.38,
+      "date": "2026-09-09",
+      "note": "今早 08:38 报 67.89"
+    },
+    "copper": {
+      "name": "美铜",
+      "value": 685.57,
+      "chg_pct": null,
+      "date": "2026-09-10",
+      "note": "9/10 早盘 685.57"
     },
     "wti": {
       "name": "WTI 原油",
-      "value": 95.64,
-      "chg_pct": 2.8,
-      "date": "2026-09-09"
+      "value": 96.05,
+      "chg_pct": 3.25,
+      "date": "2026-09-09",
+      "note": "9/9 收盘 +3.25%；布伦特 101.21（+3.36%）破百；今早 96.68"
     },
-    "brent": {
-      "name": "布伦特",
-      "value": 100.59,
-      "chg_pct": 2.73,
-      "date": "2026-09-09"
-    },
-    "us10y": {
-      "name": "10Y 美债",
-      "value": 4.8,
+    "natgas": {
+      "name": "美国天然气",
+      "value": 2.939,
       "chg_pct": null,
-      "date": "2026-09-08"
-    },
-    "us30y": {
-      "name": "30Y 美债",
-      "value": 5.25,
-      "chg_pct": null,
-      "date": "2026-09-08"
-    },
-    "cny": {
-      "name": "人民币中间价",
-      "value": 6.7828,
-      "chg_pct": null,
-      "date": "2026-08-31"
-    },
-    "lithium": {
-      "name": "碳酸锂（广期所主连）",
-      "value": 161000.0,
-      "chg_pct": null,
-      "date": "2026-08-31"
+      "date": "2026-09-10"
     }
   },
   "asia": {
     "nikkei": {
       "name": "日经225",
-      "close": 65142.71,
-      "chg_pct": -0.19,
-      "date": "2026-09-09"
+      "close": 64414.36,
+      "chg_pct": -1.12,
+      "date": "2026-09-10",
+      "note": "08:38 北京 / 09:38 东京，低开走弱"
     },
     "kospi": {
       "name": "首尔综合指数",
-      "close": 7051.64,
-      "chg_pct": 1.4,
-      "date": "2026-09-09"
+      "close": 6988.96,
+      "chg_pct": -0.89,
+      "date": "2026-09-10",
+      "note": "08:38 北京，低开"
     }
   },
   "us_intraday": {
-    "note": "美股 9/9 盘中实时（非收盘价）：腾讯 gtimg，抓取 22:05 CST / 10:05 ET",
-    "intraday": true,
+    "note": "（已作废）9/9 美股已收盘，见 us_kline(9/9 收盘) / us_afterhours",
+    "intraday": false,
     "as_of": "2026-09-09 10:05 ET",
     "source": "tencent-gtimg",
     "quotes": {
@@ -854,5 +1039,96 @@
         "chg_pct": -0.3
       }
     }
+  },
+  "us_afterhours": {
+    "note": "9/9 收盘后盘后价（新浪 gb_，9/10 08:36 北京）",
+    "as_of": "2026-09-09 收盘后",
+    "quotes": {
+      "us_nvda": {
+        "price": 223.67,
+        "chg_pct": 0.0
+      },
+      "us_mu": {
+        "price": 1026.15,
+        "chg_pct": -0.16
+      },
+      "us_meta": {
+        "price": 650.02,
+        "chg_pct": -0.56
+      },
+      "us_mrvl": {
+        "price": 235.22,
+        "chg_pct": 0.09
+      },
+      "us_skhy": {
+        "price": 196.68,
+        "chg_pct": -0.98
+      },
+      "us_dell": {
+        "price": 534.2,
+        "chg_pct": -0.2
+      },
+      "us_avgo": {
+        "price": 364.0,
+        "chg_pct": -0.1
+      },
+      "us_lite": {
+        "price": 984.0,
+        "chg_pct": -0.5
+      }
+    }
+  },
+  "macro": {
+    "note": "9/10 盘前版：含中国 8 月 CPI/PPI 实际值（9/9 公布）+ 隔夜美股/美债/地缘",
+    "cn": {
+      "cpi_aug": {
+        "name": "8 月 CPI 同比",
+        "value": "+0.8%",
+        "prev": "+0.5%",
+        "note": "环比 +0.4%（由 -0.1% 转正）；核心 CPI +1.0%；能源 +4.1%（汽油 +9.3%）"
+      },
+      "ppi_aug": {
+        "name": "8 月 PPI 同比",
+        "value": "+3.8%",
+        "prev": "+3.5%",
+        "note": "环比 +0.4%（由 -0.7% 转正）；电子电路制造环比 +3.5%、平板/计算机/手机价格 +21.5%/+19.6%/+11.0%（算力需求）"
+      },
+      "cgb10y": {
+        "name": "10Y 国债",
+        "value": 1.6865
+      }
+    },
+    "us": {
+      "treasury_buyback": {
+        "name": "财政部回购",
+        "value": "至多 60 亿美元（10-20Y）",
+        "note": "低于预期 70-80 亿 → 10Y 收益率一度涨至 2023 年 11 月来最高"
+      },
+      "rate_hike_odds": {
+        "name": "美联储加息概率",
+        "value": "逼近 60%",
+        "note": "通胀反复担忧；9/11 CPI 为关键"
+      },
+      "us10y": {
+        "name": "10Y 美债",
+        "value": "2023 年 11 月来最高（盘中）"
+      }
+    },
+    "policy": [
+      "9/10 15:00 国新办金融发布会（央行陆磊/金监丛林/证监李超/外汇局李斌）——「十五五」金融强国",
+      "苹果秋季发布会：iPhone 18 Pro + 首款折叠屏 iPhone Duo（15999 元起）",
+      "英伟达 9/10 除息日；此前宣布约 119 亿美元收购 Hugging Face",
+      "美伊霍尔木兹报复性打击升级；特朗普称战事预计 11 月中期选举后结束",
+      "Meta 发布个人 AI 智能体 Muse（瑞穗目标价 750 / KeyBanc 780）"
+    ],
+    "overseas_news": [
+      "美股三大指数连跌三日（道 -0.77/标普 -0.48/纳 -0.64）；费半 +0.37%",
+      "存储链强：SKHY +7.05%（创在美上市新高）/ MU +2.75%（HBM 月产能 2026 底提至约 10 万片）/ SNDK +1.51%/ WDC +1.04%",
+      "光通信：MaxLinear +7.53% / MRVL +4.26% / 康宁 +1.51% / LITE +1.07%；AAOI -3.25%",
+      "META +6.55% 一枝独秀；其余六巨头收跌（GOOGL -2.28/AMZN -1.78/NVDA -0.91/MSFT -0.47/AAPL -0.28/TSLA -0.10）",
+      "中概走弱：金龙指数 -2.09%（理想 -4.41/小鹏 -3.29/携程 -3.23/阿里 -2.89）",
+      "欧股全线下跌：DAX -1.66% / CAC40 -1.94% / FTSE100 -1.31%",
+      "布伦特破 101.21（+3.36%）、WTI 96.05（+3.25%）；现货金 4402（+1.07%）"
+    ]
   }
 }
