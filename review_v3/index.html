@@ -430,12 +430,17 @@ function loadTop10() {
 /* ── 1.2 金钻：三重门控合并去重 ── */
 function loadDiamond() {
   // 2026-09-04 增强：估值带 + 股东户数 + 历史趋势 JOIN
-  Promise.all([J('../output/gate_data.json'), tryJ('../output/valuation_band.json'), tryJ('../output/institutional_flow.json'), tryJ('../output/golden_diamond_history.json'), tryJ('../output/obs_deduce_latest.json')]).then(([g, vb, ifl, gdh, od]) => {
+  Promise.all([J('../output/gate_data.json'), tryJ('../output/valuation_band.json'), tryJ('../output/institutional_flow.json'), tryJ('../output/golden_diamond_history.json')]).then(([g, vb, ifl, gdh]) => {
     const gates = g.gates || {};
     const vbMap = {}; ((vb && vb.items) || []).forEach(x => { if (x.code) vbMap[x.code] = x; });
     const ifMap = {}; ((ifl && ifl.items) || []).forEach(x => { if (x.code) ifMap[x.code] = x; });
-    // 2026-09-08：obs_deduce 建 map 供缠论/资金列读取
-    const odMap = {}; ((od && od.items) || []).forEach(x => { if (x.code) odMap[x.code] = x; });
+    // 2026-09-10：缠论买点改从 gate_data.chan 读取（obs_deduce 无 chan 字段，曾致该列全为「—待补」）
+    const chanMap = {};
+    Object.keys(gates).forEach(k => {
+      const ch = gates[k].chan || {};
+      (ch.stocks || []).forEach(hh => { if (hh.code && !chanMap[hh.code]) chanMap[hh.code] = hh; });
+      (ch.codes || []).forEach(c => { if (c && !chanMap[c]) chanMap[c] = {}; });
+    });
     const GATE_ORDER = ['all_a', 'pool', 'sector_top100_to4'];
     const SHORT = { all_a: '全A', pool: 'TOP800', sector_top100_to4: '板块100' };
     const keys = GATE_ORDER.filter(k => gates[k]);
@@ -476,14 +481,12 @@ function loadDiamond() {
         const bc = r.gates.length >= 3 ? 'badge b3' : (r.gates.length === 2 ? 'badge b2' : 'badge b1');
         badge = GATE_ORDER.filter(k => r.gates.indexOf(k) >= 0).map(k => '<span class="' + bc + '">' + SHORT[k] + '</span>').join(' ');
       }
-      // 缠论买点（2026-09-08 加列）：从 obs_deduce 读 chan_buy（如有字段），无则"—"提示待接入
+      // 缠论列（2026-09-10 改）：取 gate_data.chan（近 2 交易日窗口，与门控扫描 signals.check_chan_buy_signal 同源）；T-N = 买点枢轴距最新交易日天数
       const chanCell = (() => {
-        const oi = odMap[r.code];
-        if (!oi) return '<span class="dr-tag" style="color:var(--text-muted);font-size:11px">—待补</span>';
-        if (oi.chan_buy === true) return '<span style="color:var(--red);font-weight:700">✓买点</span>';
-        if (oi.chan_buy === '潜在') return '<span style="color:var(--gold);font-weight:600">潜在</span>';
-        if (oi.chan_status) return esc(oi.chan_status);
-        return '<span class="dr-tag" style="color:var(--text-muted);font-size:11px">—待补</span>';
+        const c = chanMap[r.code];
+        if (!c) return '<span class="dr-tag" style="color:var(--text-muted);font-size:11px">—</span>';
+        const da = (c.days_ago != null) ? c.days_ago : null;
+        return '<span style="color:var(--red);font-weight:700">✓买点</span>' + (da != null ? ' <span style="font-size:11px;color:var(--text-muted)">T-' + da + '</span>' : '');
       })();
       // 资金结构（机构/游资/散户）：由 institutional_flow.holders_chg_pct 推导（<0 筹码集中=机构主导；>0 散户进=游资活跃）
       const fundCell = (() => {
@@ -521,7 +524,7 @@ function loadDiamond() {
     }
     if (multi && n3 > 0) h += '<div class="dr-note">⭐ 金边行 = 三重门控全中（放量 + 板块强势双确认，共识最强）；蓝 = 双门控；紫 = 单门控。</div>';
     // 2026-09-08：缠论/资金列数据源状态提示
-    h += '<div class="dr-note" style="color:var(--text-muted)">缠论买点：obs_deduce 待补 <code>chan_buy</code>/<code>chan_status</code> 字段；资金结构：由 institutional_flow <code>holders_chg_pct</code> 推导（&lt;-3% 机构主导 / &lt;0 偏多 / &gt;+3% 游资散户）。数据源完善后自动显示。</div>';
+    h += '<div class="dr-note" style="color:var(--text-muted)">缠论买点：取 gate_data <code>chan</code> 明细（近 2 交易日窗口，与门控扫描 <code>signals.check_chan_buy_signal</code> 同源）；<b>T-N</b> = 买点枢轴距最新交易日天数（分型枢轴需后续 K 线确认，信号天然滞后，T-1 为常态）。资金结构：由 institutional_flow <code>holders_chg_pct</code> 推导（&lt;-3% 机构主导 / &lt;0 偏多 / &gt;+3% 游资散户）。</div>';
     $('v3Diamond').innerHTML = h;
   }).catch(e => { $('v3Diamond').innerHTML = '<div class="dr-note">金钻数据加载失败：' + e + '</div>'; });
 }

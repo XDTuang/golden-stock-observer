@@ -42,6 +42,7 @@ bash review/sync_feed_before_review.sh
 |---|---|---|
 | 0 | 结论先行速览卡 | 🚨 必须带 `data-preopen` 等属性（防 JS 覆盖） |
 | 0.5 | 深度判读 + 四象限 | 需含 2×2 grid（自检第 3 项） |
+| 1.2 | 当日金钻（三重门控合并去重） | 🚨 **纯动态渲染**：HTML 只留容器 `<div id="drTblDiamond"></div>`，标题固定「1.2 · 当日金钻 · 三重门控合并去重（动态）」；数据全部由 `drLoadDiamond()` 从 `gate_data.json`（门控 + `chan` 缠论明细）JOIN `valuation_band` / `institutional_flow` / `golden_diamond_history` 渲染。**禁止在 HTML 内写死金钻数据，禁止回退为「三个门控分类」分表版式**（与 V3 独立版 1.2 段同构；改动日期 2026-09-10）。⚠️ 自包含 `<style>` **必须保留** `.dr-scroll{overflow-x:auto}` + `.dr-scroll td,.dr-scroll th{white-space:nowrap}`（该 style 注入晚于 index.html，缺失会导致 12 列表格被 `.dr-tbl td` 的 `white-space:normal` 覆盖而严重折行） |
 | 3 | 隔夜美股双日表 | 🚨 **硬编码**，必须手动滚动到最新双日 |
 | 7.1 | K3 产业信号验证 | 主题 / 验证 / 内容 三列表 |
 | 7.2 | 重点观测股推演 | 长文本 `<td>` 必须加 `class="dr-wrap"` |
@@ -67,6 +68,7 @@ bash review/sync_feed_before_review.sh
 **防 JS 覆盖**
 - 0 段：`data-preopen` 属性存在 → `drDeriveSections` 会跳过
 - 7.3 段：标题含「K3」/ 周几 + 正文含「大势预判 / 主线策略 / 回避清单」→ 跳过改写
+- 1.2 段：容器 `id="drTblDiamond"` 存在 + 标题含「三重门控合并去重」→ 内容由 `drLoadDiamond()` 渲染，HTML 内**不得**出现金钻股票行（防写死数据与分表版式回退）
 
 **双写同步（防回退）**
 ```bash

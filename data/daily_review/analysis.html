@@ -31,6 +31,10 @@ h2,h3,h4{color:var(--text)}
 code{background:var(--bg-subtle);padding:1px 4px;border-radius:3px;font-size:12px}
 b,strong{font-weight:700;color:var(--text)}
 br+br{margin-top:4px}
+/* 2026-09-10：1.2 当日金钻 12 列表格需横向滚动 + 禁止折行（本 style 注入晚于 index.html，故必须在此重申，否则被 .dr-tbl td 的 white-space:normal 覆盖） */
+.dr-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:6px 0}
+.dr-scroll table.dr-tbl{min-width:880px}
+.dr-scroll td,.dr-scroll th{white-space:nowrap}
 </style>
 <!--
   每日复盘 · 分析区（V2 完整结构）
@@ -122,11 +126,11 @@ br+br{margin-top:4px}
   <div class="dr-note" style="margin-top:6px">数据源：<code>output/top10_history.json</code> 最新交易日（自动更新，与总站首页 TOP 表一致）。字段：市场/行业/信号等级/EMA/评分/涨跌/收盘。</div>
 </div>
 
-<!-- 1.2 当日金钻 -->
-<div class="dr-h">1.2 · 当日金钻（9/9 收盘 · 三个门控分类，动态）</div>
+<!-- 1.2 当日金钻（2026-09-10 起：三重门控合并去重，与 V3 独立版 1.2 段同构） -->
+<div class="dr-h">1.2 · 当日金钻 · 三重门控合并去重（动态）</div>
 <div class="dr-card" style="margin-top:4px">
   <div id="drTblDiamond"></div>
-  <div class="dr-note" style="margin-top:6px">数据源：<code>output/gate_data.json</code> 最新交易日。三个门控分类：全A市场 / 当前门控（成交额TOP800）/ 板块前100·换手≥4%；每只标注 primary 分类（金钻起涨 / 买入 / 红区黄柱连续）及信号日期、涨跌幅、DY2 等明细。</div>
+  <div class="dr-note" style="margin-top:6px">数据源：<code>output/gate_data.json</code>（三重门控 + chan 缠论明细）JOIN <code>valuation_band.json</code> / <code>institutional_flow.json</code> / <code>golden_diamond_history.json</code>。三档门控：全A市场 / 当前门控（成交额TOP800）/ 板块前100·换手≥4%；按代码合并去重，门控徽章标识交叉命中（金=三重全中 / 蓝=双门控 / 紫=单门控）。排序：门控数↓ → 信号强度（金钻起涨 &gt; 买入 &gt; 红区黄柱连续）↓ → DY2↓。缠论买点取门控扫描 <code>chan</code> 明细（近 2 交易日窗口，与 <code>signals.check_chan_buy_signal</code> 同源），<b>T-N</b> = 买点枢轴距最新交易日天数（分型枢轴需后续 K 线确认，天然滞后 T-1）。</div>
 </div>
 
 <!-- 2 日韩股市与商品 -->
