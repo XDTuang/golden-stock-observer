@@ -3296,7 +3296,11 @@ function drLoadFeedReview() {
   const asArr = v => Array.isArray(v) ? v : (v && typeof v === 'object' ? [v] : (v ? [String(v)] : []));
   // 取文本：字符串→原样；对象→desc/text/summary/note 依次取值；其余→JSON
   const asText = v => (typeof v === 'string' ? v
-    : (v && typeof v === 'object' ? (v.desc || v.text || v.summary || v.note || '') : ''));
+    : (v && typeof v === 'object' ? (v.desc || v.text || v.summary || v.note || v.event || '') : ''));  // 2026-09-10：补 event 字段（V3 t1_radar 产物为 {time,event,impact} 对象，白名单缺 event 曾致 [object Object]）
+  // 2026-09-10：任意值→可读文本。对象白名单取不到时拼接其字符串字段值，绝不让对象落入 String() 产生 [object Object]
+  const asTxt = v => (typeof v === 'string' ? v
+    : (v && typeof v === 'object' ? (asText(v) || Object.values(v).filter(x => typeof x === 'string').join(' '))
+    : String(v == null ? '' : v)));
   // 子块隔离：单块出错只在控制台告警 + 占位，不影响其余块
   const safe = (label, fn) => { try { return fn() || ''; }
     catch (e) { console.warn('[投喂复盘] ' + label + ' 渲染失败：', e);
@@ -3316,7 +3320,7 @@ function drLoadFeedReview() {
            (d.source === 'cloud' ? '云端 08:15' : '本地 19:30') + '</div>';
       h += '<div class="dr-note"><b>后市预判：<span class="' + biasCls + '">' + esc(bias) +
            '</span></b>（score ' + (pred.bias_score == null ? '—' : pred.bias_score) + '）</div>';
-      asArr(pred.reasons).forEach(r => h += '<div class="dr-note">· ' + esc(asText(r) || r) + '</div>');
+      asArr(pred.reasons).forEach(r => h += '<div class="dr-note">· ' + esc(asTxt(r)) + '</div>');  // 2026-09-10：asTxt 防对象→[object Object]
 
       // ===== 当日投喂 =====
       h += safe('当日投喂', () => {
@@ -3351,14 +3355,14 @@ function drLoadFeedReview() {
         const t1 = asArr(pred.t1_focus);
         if (!t1.length) return '';
         let s = '<div class="dr-h">T+1 关注</div>';
-        t1.forEach(t => s += '<div class="dr-note">· ' + esc(asText(t) || t) + '</div>');
+        t1.forEach(t => s += '<div class="dr-note">· ' + esc(asTxt(t)) + '</div>');  // 2026-09-10：asTxt 防对象→[object Object]
         return s;
       });
       h += safe('风险提示', () => {
         const risks = asArr(pred.risks);
         if (!risks.length) return '';
         let s = '<div class="dr-h">风险提示</div>';
-        risks.forEach(r => s += '<div class="dr-note">⚠️ <span class="dr-dn">' + esc(asText(r) || r) + '</span></div>');
+        risks.forEach(r => s += '<div class="dr-note">⚠️ <span class="dr-dn">' + esc(asTxt(r)) + '</span></div>');  // 2026-09-10：asTxt 防对象→[object Object]
         return s;
       });
       if (pred.pending_ai) h += '<div class="dr-note dr-tag">深度预测待本机 agent / 专家对话补全</div>';
@@ -3378,7 +3382,7 @@ function drLoadFeedReview() {
           const arr = asArr(syn.conclusion_first);
           if (!arr.length) return '';
           let s = '<div class="dr-h">AI 综合推演 · 结论先行</div><ol style="margin:4px 0;padding-left:20px">';
-          arr.forEach(c => s += '<li class="dr-note" style="list-style:inherit">' + esc(asText(c) || c) + '</li>');
+          arr.forEach(c => s += '<li class="dr-note" style="list-style:inherit">' + esc(asTxt(c)) + '</li>');  // 2026-09-10：asTxt 防对象→[object Object]
           return s + '</ol>';
         });
         h += safe('AI 综合推演 · 主题共振', () => {
@@ -3430,7 +3434,15 @@ function drLoadFeedReview() {
           Object.keys(syn).forEach(k => { if (/^t1_radar/.test(k)) radar = radar.concat(asArr(syn[k])); });
           if (!radar.length) return '';
           let s = '<div class="dr-h">AI 综合推演 · T+1 事件雷达</div>';
-          radar.forEach(t => s += '<div class="dr-note">· ' + esc(asText(t) || t) + '</div>');
+          radar.forEach(t => {
+            if (typeof t === 'string') { s += '<div class="dr-note">· ' + esc(t) + '</div>'; return; }
+            const o = (t && typeof t === 'object') ? t : {};
+            // 2026-09-10：V3 产物元素为 {time,event,impact} 对象，结构化渲染（时间加粗 + 影响上色）；asTxt 兜底杜绝 [object Object]
+            const txt = asTxt(o);
+            const ic = String(o.impact || '').indexOf('高') >= 0 ? 'var(--red)' : '#f0b429';  // 高/中高 上色，与风险段口径一致
+            s += '<div class="dr-note">· ' + (o.time ? '<b>' + esc(String(o.time)) + '</b> ' : '') + esc(txt)
+              + (o.impact ? ' <span style="color:' + ic + ';font-weight:600">[' + esc(String(o.impact)) + ']</span>' : '') + '</div>';
+          });
           return s;
         });
         h += safe('AI 综合推演 · 风险', () => {
