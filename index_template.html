@@ -1527,27 +1527,18 @@ html { scroll-behavior: smooth; }
 
 
 
+
 <!-- Tab: 每日复盘（盘前简报 + 完整复盘合一；行情=云端08:15自动，分析=本机agent） -->
 <div class="tab-content" id="tab-dailyreview">
 <style>
 .dr-h{font-size:14px;font-weight:600;color:var(--text);margin:12px 0 4px}
 .dr-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
-.dr-tbl th{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
-.dr-tbl td{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:normal;word-break:break-word;overflow-wrap:anywhere;min-width:0}
+.dr-tbl th,.dr-tbl td{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
 .dr-tbl th:first-child,.dr-tbl td:first-child{text-align:left}
 .dr-tbl th{color:var(--text-muted);font-weight:600}
 .dr-up{color:var(--red)}.dr-dn{color:var(--green)}
 .dr-tag{font-size:11px;color:var(--text-muted)}
 .dr-note{font-size:12.5px;color:var(--text-secondary);margin:6px 0}
-/* 2026-09-10 当日金钻段专用（对齐 V3 胶囊 chip / 门控徽章 / 三重全中金边行；不改动既有 .dr-tag 全局样式） */
-.dr-chip{display:inline-block;padding:1px 9px;border:1px solid var(--border);border-radius:11px;font-size:11.5px;color:var(--text-secondary);margin:2px 3px 2px 0}
-.dr-badge{font-size:10.5px;padding:0 6px;border:1px solid;border-radius:9px;display:inline-block;margin:1px 2px}
-.dr-b3{color:var(--gold);border-color:var(--gold)}.dr-b2{color:var(--blue);border-color:var(--blue)}.dr-b1{color:var(--purple);border-color:var(--purple)}
-tr.dr-hl3 td{background:rgba(212,175,55,.08)}
-/* 12 列表格在带侧边栏的主站宽度下会被挤压 → 横向滚动 + 禁止折行（2026-09-10） */
-.dr-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:6px 0}
-.dr-scroll table.dr-tbl{min-width:880px}
-.dr-scroll td,.dr-scroll th{white-space:nowrap}
 .dr-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:12px 0}
 </style>
 <div class="dr-card" id="drMarket"><p class="dr-note">行情加载中…</p></div>
@@ -3789,6 +3780,7 @@ function drScopeInjectedStyles(scopeEl) {
   });
 }
 
+
 // ===== 每日复盘 Tab =====
 function renderDailyReview() {
   if (window._drInit) return; window._drInit = true;
@@ -3804,7 +3796,6 @@ function renderDailyReview() {
       // 保留 analysis.html 的"3·隔夜美股复盘"模块（含 agent 推演结论），
       // 仅用 market.json.us_kline 把双日表数据+说明日期刷新到最新（drRefreshUsDualDayTables）
       ana.innerHTML = t;
-      drScopeInjectedStyles(ana);
       drFillTables(q);
       drFixHeader(d);
       drAIndexSummary(d);
@@ -4289,118 +4280,52 @@ function drLoadTop10() {
   });
 }
 
-// ===== 每日复盘：当日金钻（三重门控合并去重 · 2026-09-10 对齐 V3 独立版 1.2 段）=====
-// 数据源：gate_data.json（门控命中 + chan 缠论明细） JOIN valuation_band / institutional_flow / golden_diamond_history
-// 缠论口径：gate_data.chan = signals.check_chan_buy_signal「近 2 交易日」窗口（与门控扫描同源、经实盘校验）
-//   注：分型枢轴需后续 K 线确认 → 信号天然滞后；实测 T 日扫描命中的买点 days_ago=1（枢轴落在 T-1），窗口收紧至 1 日会全空
+// ===== 每日复盘：前一日金钻（output/gate_data.json 三个门控分类）=====
 function drLoadDiamond() {
   const el = document.getElementById('drTblDiamond');
   if (!el) return;
-  // 本函数自带转义：index.html 的 esc 是 drLoadFeedReview 内的局部 helper，函数外不可见（否则 ReferenceError）
-  const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  const j = (u) => fetch(u, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null);
-  Promise.all([j('./output/gate_data.json'), j('./output/valuation_band.json'), j('./output/institutional_flow.json'), j('./output/golden_diamond_history.json')])
-    .then(([g, vb, ifl, gdh]) => {
-      if (!g) { el.innerHTML = '<div class="dr-note">金钻数据加载失败：gate_data.json 不可用</div>'; return; }
-      const gates = g.gates || {};
-      const vbMap = {}; ((vb && vb.items) || []).forEach(x => { if (x.code) vbMap[x.code] = x; });
-      const ifMap = {}; ((ifl && ifl.items) || []).forEach(x => { if (x.code) ifMap[x.code] = x; });
-      // 缠论买点 map（各门控 chan 明细并集；先到先得，含 buy_date / days_ago / price）
-      const chanMap = {};
-      Object.keys(gates).forEach(k => {
-        const ch = gates[k].chan || {};
-        (ch.stocks || []).forEach(hh => { if (hh.code && !chanMap[hh.code]) chanMap[hh.code] = hh; });
-        (ch.codes || []).forEach(c => { if (c && !chanMap[c]) chanMap[c] = {}; });
-      });
-      const GATE_ORDER = ['all_a', 'pool', 'sector_top100_to4'];
-      const SHORT = { all_a: '全A', pool: 'TOP800', sector_top100_to4: '板块100' };
-      const keys = GATE_ORDER.filter(k => gates[k]);
-      if (!keys.length) { el.innerHTML = '<div class="dr-note">暂无金钻门控数据</div>'; return; }
-      // 合并去重：同 code 跨门控合并，gates[] 累计；TOP800 档为主口径（与 gate_scan 一致）
-      const merged = {};
-      keys.forEach(k => {
-        (gates[k].stocks || []).forEach(s => {
-          const sig = (s.signals && s.signals[0]) || {};
-          const det = sig.detail || {};
-          const code = s.code || s.symbol; if (!code) return;
-          if (!merged[code]) merged[code] = { code, name: s.name, primary: s.primary || sig.type || '—', sig, det, gates: [], dy2: det.dy2 != null ? Number(det.dy2) : null };
-          if (merged[code].gates.indexOf(k) < 0) merged[code].gates.push(k);
-          if (k === 'pool') { merged[code].primary = s.primary || sig.type || merged[code].primary; merged[code].sig = sig; merged[code].det = det; merged[code].dy2 = det.dy2 != null ? Number(det.dy2) : merged[code].dy2; }
-        });
-      });
-      // 排序：门控数↓ → 信号强度(起涨3/买入2/其他1)↓ → DY2↓
-      const SIG_RANK = p => (p || '').indexOf('起涨') >= 0 ? 3 : ((p || '').indexOf('买入') >= 0 ? 2 : 1);
-      const rows = Object.values(merged).sort((a, b) =>
-        (b.gates.length - a.gates.length) || (SIG_RANK(b.primary) - SIG_RANK(a.primary)) ||
-        ((b.dy2 != null ? b.dy2 : -1e9) - (a.dy2 != null ? a.dy2 : -1e9)));
-      const n3 = rows.filter(r => r.gates.length >= 3).length;
-      const n2 = rows.filter(r => r.gates.length === 2).length;
-      const n1 = rows.filter(r => r.gates.length === 1).length;
-      const multi = keys.length > 1;
-      let h = `<div class="dr-chip">数据日：${g.data_date || '—'} ｜ 合并去重 <b>${rows.length}</b> 只${multi ? '（' + keys.length + ' 门控并集）' : ''}</div>`;
-      h += '<div style="margin:4px 0 8px">' + keys.map(k => `<span class="dr-chip">${SHORT[k] || gates[k].label}：扫描 ${gates[k].scope_size} / 命中 ${(gates[k].overview || {}).total || (gates[k].stocks || []).length}</span>`).join('') +
-        (multi ? `<span class="dr-chip" style="color:var(--gold);border-color:var(--gold)">⭐ 三重全中 ${n3}</span><span class="dr-chip" style="color:var(--blue);border-color:var(--blue)">双门控 ${n2}</span><span class="dr-chip" style="color:var(--purple);border-color:var(--purple)">单门控 ${n1}</span>` : '') + '</div>';
-      const anaTxt = (gates.pool && gates.pool.overview && gates.pool.overview.analysis) || (gates[keys[0]].overview && gates[keys[0]].overview.analysis) || '';
-      if (anaTxt) h += '<div class="dr-note" style="font-size:12px;color:var(--text-secondary)">' + esc(anaTxt) + '</div>';
-      h += '<div class="dr-scroll"><table class="dr-tbl"><thead><tr><th>股票</th><th>分类</th>' + (multi ? '<th>门控</th>' : '') + '<th>缠论</th><th>资金</th><th>信号日期</th><th>涨跌幅</th><th>阳线</th><th>DY2</th><th>MA5&gt;MA60</th><th>估值 PE/PB（5y分位）</th><th>股东户数Δ</th></tr></thead><tbody>';
-      rows.forEach(r => {
-        const det = r.det || {}, sig = r.sig || {};
+  fetch('./output/gate_data.json', { cache: 'no-store' }).then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(g => {
+    const gates = g.gates || {};
+    const GATE_ORDER = ['all_a', 'pool', 'sector_top100_to4'];
+    const keys = GATE_ORDER.filter(k => gates[k]);
+    if (!keys.length) { el.innerHTML = '<div class="dr-note">暂无金钻门控数据</div>'; return; }
+    const date = g.data_date || '';
+    let h = `<div class="dr-tag" style="margin-bottom:4px">数据日：${date} ｜ 门控：${keys.map(k => gates[k].label).join(' / ')}</div>`;
+    keys.forEach(k => {
+      const gk = gates[k];
+      const ov = gk.overview || {};
+      const stocks = gk.stocks || [];
+      h += `<div style="margin:10px 0 4px;font-weight:600">${gk.label}（扫描 ${gk.scope_size} 只）— 命中 ${ov.total || stocks.length} 只</div>`;
+      if (ov.analysis) h += `<div class="dr-note" style="font-size:12px;color:var(--text-secondary)">${ov.analysis}</div>`;
+      if (!stocks.length) { h += '<div class="dr-note">无命中</div>'; return; }
+      h += '<table class="dr-tbl"><thead><tr><th>股票</th><th>分类</th><th>信号日期</th><th>涨跌幅</th><th>阳线</th><th>DY2</th><th>MA5&gt;MA60</th></tr></thead><tbody>';
+      stocks.forEach(s => {
+        const sig = (s.signals && s.signals[0]) || {};
+        const det = sig.detail || {};
         const pct = det.pct != null ? Number(det.pct) : null;
-        const prim = r.primary || '—';
-        const primStyle = prim.indexOf('起涨') >= 0 ? 'color:var(--red);font-weight:700' : (prim.indexOf('买入') >= 0 ? 'color:var(--blue);font-weight:600' : 'color:var(--gold);font-weight:600');
-        let badge = '';
-        if (multi) {
-          const bc = r.gates.length >= 3 ? 'dr-badge dr-b3' : (r.gates.length === 2 ? 'dr-badge dr-b2' : 'dr-badge dr-b1');
-          badge = GATE_ORDER.filter(k => r.gates.indexOf(k) >= 0).map(k => `<span class="${bc}">${SHORT[k]}</span>`).join(' ');
-        }
-        // 缠论列：✓买点 + 枢轴距今天数 T-N（T-1 = 前一交易日出现买点枢轴）
-        const chanCell = (() => {
-          const c = chanMap[r.code];
-          if (!c) return '<span class="dr-chip" style="color:var(--text-muted);font-size:11px">—</span>';
-          const da = (c.days_ago != null) ? c.days_ago : null;
-          return '<span style="color:var(--red);font-weight:700">✓买点</span>' + (da != null ? ` <span style="font-size:11px;color:var(--text-muted)">T-${da}</span>` : '');
-        })();
-        // 资金结构：institutional_flow.holders_chg_pct（<0 筹码集中=机构；>0 散户/游资进）
-        const fundCell = (() => {
-          const f = ifMap[r.code];
-          if (!f || f.holders_chg_pct == null) return '<span class="dr-chip" style="color:var(--text-muted);font-size:11px">—</span>';
-          const v = Number(f.holders_chg_pct);
-          if (v < -3) return '<span style="color:var(--red);font-weight:700">机构主导</span>';
-          if (v < 0) return '<span style="color:var(--blue)">机构偏多</span>';
-          if (v > 3) return '<span style="color:var(--gold);font-weight:700">游资/散户</span>';
-          return '<span style="color:var(--text-muted)">散户进</span>';
-        })();
-        const hl = (multi && r.gates.length >= 3) ? ' class="dr-hl3"' : '';
-        h += `<tr${hl}><td><b>${esc(r.name)}</b> <span style="font-size:11px;color:var(--text-muted)">${esc(r.code)}</span></td>` +
-          `<td style="${primStyle}">${esc(prim)}</td>` + (multi ? `<td>${badge}</td>` : '') +
-          `<td>${chanCell}</td><td>${fundCell}</td>` +
-          `<td>${esc(sig.date || '—')}</td>` +
-          `<td class="${pct > 0 ? 'dr-up' : (pct < 0 ? 'dr-dn' : '')}">${pct != null ? (pct > 0 ? '+' : '') + pct.toFixed(2) + '%' : '—'}</td>` +
-          `<td>${det.yang ? '✓' : (det.yang === false ? '✗' : '—')}</td>` +
-          `<td>${r.dy2 != null ? r.dy2.toFixed(3) : '—'}</td>` +
-          `<td>${det['ma5>ma60'] ? '✓' : (det['ma5>ma60'] === false ? '✗' : '—')}</td>` +
-          (() => { const v = vbMap[r.code]; return `<td style="font-size:11.5px">${v ? 'PE ' + v.pe + ' / PB ' + v.pb + ` <span style="color:var(--text-muted)">(${v.pe_pct_5y != null ? v.pe_pct_5y + '%' : '—'})</span>` : '—'}</td>`; })() +
-          (() => { const f = ifMap[r.code]; const hv = f && f.holders_chg_pct != null ? f.holders_chg_pct : null; return `<td style="font-size:11.5px" title="股东户数变化：负=筹码集中">${hv != null ? `<span class="${hv < 0 ? 'dr-up' : 'dr-dn'}">${hv >= 0 ? '+' : ''}${Number(hv).toFixed(1)}%</span>` : '—'}</td>`; })() + '</tr>';
+        const pctCls = pct > 0 ? 'dr-up' : (pct < 0 ? 'dr-dn' : '');
+        const prim = s.primary || sig.type || '—';
+        const primCls = prim.includes('起涨') ? 'color:var(--red);font-weight:700'
+          : (prim.includes('买入') ? 'color:var(--blue);font-weight:600'
+          : 'color:var(--gold);font-weight:600');
+        const dy2 = det.dy2 != null ? Number(det.dy2) : null;
+        h += `<tr><td><b>${s.name}</b> <span style="font-size:11px;color:var(--text-muted)">${s.code}</span></td>
+          <td style="${primCls}">${prim}</td>
+          <td>${sig.date || '—'}</td>
+          <td class="${pctCls}">${pct != null ? (pct > 0 ? '+' : '') + pct.toFixed(2) + '%' : '—'}</td>
+          <td>${det.yang ? '✓' : (det.yang === false ? '✗' : '—')}</td>
+          <td>${dy2 != null ? dy2.toFixed(3) : '—'}</td>
+          <td>${det['ma5>ma60'] ? '✓' : (det['ma5>ma60'] === false ? '✗' : '—')}</td></tr>`;
       });
-      h += '</tbody></table></div>';
-      // 近 10 日门控命中数柱状图（golden_diamond_history）
-      if (gdh && gdh.snapshots) {
-        const days = Object.keys(gdh.snapshots).sort().slice(-10);
-        if (days.length) {
-          const cnt = days.map(dd => Object.keys(gdh.snapshots[dd] || {}).length);
-          const maxN = Math.max.apply(null, cnt.concat([1]));
-          h += '<div class="dr-chip" style="margin-top:10px">近 ' + days.length + ' 日门控命中数（golden_diamond_history）</div>' +
-            '<div style="display:flex;gap:3px;align-items:flex-end;height:38px;margin:4px 0">' +
-            days.map((dd, i) => `<div title="${dd.slice(5)}：${cnt[i]} 只" style="width:24px;height:${Math.max(3, Math.round(cnt[i] / maxN * 34))}px;background:${i === days.length - 1 ? 'var(--gold)' : 'var(--blue)'};border-radius:2px;opacity:.85"></div>`).join('') + '</div>' +
-            '<div style="display:flex;gap:3px">' + days.map(dd => `<div style="width:24px;font-size:9px;color:var(--text-muted);text-align:center">${dd.slice(8)}</div>`).join('') + '</div>';
-        }
-      }
-      if (multi && n3 > 0) h += '<div class="dr-note">⭐ 金边行 = 三重门控全中（放量 + 板块强势双确认，共识最强）；蓝 = 双门控；紫 = 单门控。</div>';
-      h += '<div class="dr-note" style="color:var(--text-muted)">缠论买点：取 gate_data <code>chan</code> 明细（近 2 交易日窗口，与门控扫描 <code>signals.check_chan_buy_signal</code> 同源）；<b>T-N</b> = 买点枢轴距最新交易日的天数（分型枢轴需后续 K 线确认，信号天然滞后，T-1 为常态）。资金结构：由 institutional_flow <code>holders_chg_pct</code> 推导（&lt;-3% 机构主导 / &lt;0 偏多 / &gt;+3% 游资散户）。</div>';
-      el.innerHTML = h;
-    }).catch(err => {
-      el.innerHTML = `<div class="dr-note">金钻数据加载失败：${err}</div>`;
+      h += '</tbody></table>';
     });
+    el.innerHTML = h;
+  }).catch(err => {
+    el.innerHTML = `<div class="dr-note">金钻数据加载失败：${err}</div>`;
+  });
 }
 
 
