@@ -48,12 +48,12 @@ try_push() {
   for i in 1 2; do
     git fetch origin --quiet 2>/dev/null || true
     if ! git merge-base --is-ancestor HEAD origin/main 2>/dev/null; then
-      echo "ℹ️  本地落后于远程，rebase 到 origin/main（第 $i 轮）"
+      echo "ℹ️  本地落后于远程，rebase 到 origin/main（第 ${i} 轮）"
       if ! git rebase origin/main --quiet 2>/dev/null; then
         local LOCAL_SHA
         LOCAL_SHA=$(git rev-parse --short HEAD 2>/dev/null || echo "?")
         git rebase --abort 2>/dev/null || true
-        echo "⚠️  rebase 失败：本地提交（$LOCAL_SHA）未推送。"
+        echo "⚠️  rebase 失败：本地提交（${LOCAL_SHA}）未推送。"
         echo "   ⚠️  请稍后手动处理：git fetch && git rebase origin/main && git push"
         [ "$STASHED" = "1" ] && git stash pop 2>/dev/null || true
         return 1
@@ -65,7 +65,7 @@ try_push() {
       [ "$STASHED" = "1" ] && git stash pop 2>/dev/null && echo "ℹ️  已恢复 stash 的改动"
       return 0
     else
-      echo "⚠️  推送被拒（第 $i 轮）："; tail -2 "$PUSH_OUT"; rm -f "$PUSH_OUT"
+      echo "⚠️  推送被拒（第 ${i} 轮）："; tail -2 "$PUSH_OUT"; rm -f "$PUSH_OUT"
     fi
   done
   echo "⚠️  推送连续失败，本地提交（$(git rev-parse --short HEAD)）待人工处理"
@@ -97,7 +97,7 @@ except Exception:
     print('')
 " 2>/dev/null)
 if [[ "$HOUR_MIN_DEC" -ge 1130 && "$HOUR_MIN_DEC" -lt 1300 && "$CUR_DATE" != "$TODAY" ]]; then
-  echo "ℹ️  午休时段且 realtime.json 仍为 $CUR_DATE（旧数据），强制固化上午收盘快照..."
+  echo "ℹ️  午休时段且 realtime.json 仍为 ${CUR_DATE}（旧数据），强制固化上午收盘快照..."
   "$PYTHON" fetch_realtime.py --out realtime.json --force 2>&1 | tail -6
 fi
 
@@ -136,10 +136,10 @@ except Exception:
   NOW_EPOCH=$(date +%s)
   FRESH_LIMIT=$((NOW_EPOCH - 1800))
   if [ "$CLOUD_EPOCH" -ge "$FRESH_LIMIT" ]; then
-    echo "ℹ️  云端 realtime.json 最近 30 分钟内已更新（$CLOUD_TS），本地兜底跳过"
+    echo "ℹ️  云端 realtime.json 最近 30 分钟内已更新（${CLOUD_TS}），本地兜底跳过"
     exit 0
   fi
-  echo "⚠️  云端已 $(( (NOW_EPOCH - CLOUD_EPOCH) / 60 )) 分钟未更新（updated_at=$CLOUD_TS），执行本地兜底补抓..."
+  echo "⚠️  云端已 $(( (NOW_EPOCH - CLOUD_EPOCH) / 60 )) 分钟未更新（updated_at=${CLOUD_TS}），执行本地兜底补抓..."
 else
   echo "ℹ️  云端 realtime.json 非当日数据（data_date=${CLOUD_DATE:-空}），执行本地兜底..."
 fi
