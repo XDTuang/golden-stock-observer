@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""投喂推演 → analysis.html 回填内容版式自检（2026-09-02 立 · 10 项）
+"""投喂推演 → analysis.html 回填内容版式自检（2026-09-02 立 · 11 项）
    跑法：python3 review/check_analysis_style.py
    期望：全部通过；任何失败=推演版式污染，必须修
    第 5 项专门防御"td 长内容撑破右侧屏幕"重复 bug（9/1 / 9/2 多次踩坑，9/2 治本）
@@ -7,7 +7,9 @@
    第 8 项（2026-09-11 增）防御 7.1 结论句退回"只有加粗无色"
    第 9 项（2026-09-11 增）防御"class 有标记无定义"静默失效（曾实测 dk-dn/dr-caution/dr-wrap 三例）
    第 10 项（2026-09-11 增）防御"JS 引用无容器"空转静默失效（曾实测 drTblA/drTblH/drTblUs/drTblObs/drCmdBtn/allGrid
-       六例；见 Obsidian 30-PRINCIPLES/改版自检与静默失效防御）"""
+       六例；见 Obsidian 30-PRINCIPLES/改版自检与静默失效防御）
+   第 11 项（2026-09-11 增）防御"7.x 段落顺序错 + 裸段号硬编码"复发 bug（用户报「7 段排在 7.4 后、7.3 未见」；
+       顺序自 e545530 起 7 个版本一直是 7.2→7.4→7.3；段号硬编码曾在 229a20a 修过又被 0070ddd 静默回退）"""
 import re, io, sys, subprocess, glob
 from collections import Counter
 
@@ -278,7 +280,57 @@ print(f"{'✅' if ok10 else '❌'} [10/10] 空转引用守卫（JS 引用的 id 
       f"{'通过' if ok10 else '未通过'}")
 for n in note10: print(f"      {n}")
 
+# 11) [11/11] 🔴 段落顺序 + 段号硬编码守卫（2026-09-11 新增 · 用户报「7 段排在 7.4 后、7.3 未见」）
+#     两个**复发**bug（都有前科，必须机器化）：
+#     a. analysis.html 的 7.x **段落顺序错**：历史一直是 7.1→7.2→7.4→7.3（从 e545530 起 7 个版本全部如此），
+#        而 build_obs_section.py 的 END_ANCHOR 还写着 "<!-- 7.4 操作预案" —— **迁就了错误顺序**，把它固化。
+#     b. index.html 的 h7 段**硬编码裸段号 '7 · '** 覆盖标题 → 页面上 7.3 显示成「7 ·」。
+#        该行曾在 229a20a 修为 '7.3 · '，但 0070ddd 重构 drDeriveSections 时基于旧副本编辑 → **静默回退**
+#        （与铁律 9 注入器快照回退同源）。治本 = 改为从原标题提取 7.x 前缀，不再写死。
+ok11 = True
+note11 = []
+try:
+    # a) 7.x 段落顺序
+    _order11 = []
+    for _m11 in re.finditer(r'<div class="dr-h"[^>]*>(.*?)</div>', s, re.S):
+        _t11 = re.sub(r'<[^>]+>', '', _m11.group(1)).strip()
+        _k11 = re.match(r'^(7\.\d)', _t11)
+        if _k11:
+            _order11.append(_k11.group(1))
+    if _order11 != sorted(_order11):
+        note11.append(f'⚠️ 7.x 段落顺序错：{" → ".join(_order11)}（应为 7.1 → 7.2 → 7.3 → 7.4）')
+        note11.append('   → 修法：把 7.4 块整体移到 7.3 块之后；'
+                      '同步把 build_obs_section.py 的 END_ANCHOR 改为 "<!-- 7.3 次日开盘指引"（两者必须同时改）')
+        ok11 = False
+    elif _order11 != ['7.1', '7.2', '7.3', '7.4']:
+        note11.append(f'⚠️ 7.x 段落不齐：{" → ".join(_order11)}（应 7.1/7.2/7.3/7.4 各一段）')
+        ok11 = False
+
+    # b) 裸段号硬编码（须为 'x.y · ' 形式，纯数字 = 会吃掉小数段号）
+    _BAD11 = re.compile(r"textContent\s*=\s*'(\d+)\s·\s")
+    for _f11 in ['index.html', 'index_template.html', 'deploy/index.html',
+                 'daily_review_tab_snippet.js', 'inject_daily_review_tab.py']:
+        try:
+            _x11 = io.open(_f11, encoding='utf-8').read()
+        except FileNotFoundError:
+            continue
+        for _ln11 in _x11.split('\n'):
+            _st11 = _ln11.strip()
+            if _st11.startswith('//') or _st11.startswith('#') or _st11.startswith('*'):
+                continue
+            if _BAD11.search(_ln11):
+                note11.append(f'⚠️ {_f11} 存在**裸段号硬编码**（会覆盖小数段号）：{_st11[:88]}')
+                ok11 = False
+
+    if ok11:
+        print(f"      7.x 段落顺序 = {' → '.join(_order11)} ✓；5 个文件无裸段号硬编码 ✓")
+except Exception as _e:
+    note11.append(f'⚠️ 检查异常：{_e}')
+    ok11 = False
+print(f"{'✅' if ok11 else '❌'} [11/11] 段落顺序 + 段号守卫：{'通过' if ok11 else '未通过'}")
+for n in note11: print(f"      {n}")
+
 # 总结
-all_ok = (ok0 and ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10)
+all_ok = (ok0 and ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11)
 print(f"\n{'✅ 全部通过' if all_ok else '❌ 存在版式问题，请修复'}")
 sys.exit(0 if all_ok else 1)

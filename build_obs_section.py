@@ -46,7 +46,10 @@ DEPLOY_HTML = BASE / "deploy" / "data" / "daily_review" / "analysis.html"
 FRAG_OUT = BASE / "output" / "obs_section.html"
 
 START_ANCHOR = "<!-- 7.2 重点观测股"
-END_ANCHOR = "<!-- 7.4 操作预案"
+# 2026-09-11 修正：原为 "<!-- 7.4 操作预案" —— 那是**迁就错误顺序**（7.2→7.4→7.3）。
+#   已把 analysis.html 重排为 7.1→7.2→7.3→7.4（用户报「7 段排在 7.4 后、7.3 未见」），
+#   故结束锚点随之改为 7.2 的**下一段** = 7.3。两者必须同时改，否则切片会吃掉错内容。
+END_ANCHOR = "<!-- 7.3 次日开盘指引"
 CSS_MARK = "/* OBS-FOLD-CSS v1"
 
 # ---------------------------------------------------------------- CSS

@@ -455,7 +455,14 @@ function drDeriveSections(d) {
       // 标题日期动态化：指引日 = 复盘日下一交易日（8/26 复盘 → 8/27 指引）
       const gd = drNextBizDay(d && d.date ? d.date : '');
       const gdShort = gd.slice(5).replace('-', '/');
-      if (h7.textContent.indexOf('（' + gdShort) < 0) h7.textContent = '7 · 次日开盘指引（' + gdShort + '）';
+      // 2026-09-11 修复（复发 bug · 用户报「7.3 未见」）：原实现硬编码**裸段号** '7 · ' → 丢掉 "7.3"，
+      //   页面上只显示「7 · 次日开盘指引」，与 7.1/7.2/7.4 命名体系不一致。
+      //   该行曾在 229a20a 修为 '7.3 · '，但 0070ddd 重构 drDeriveSections 时基于旧副本编辑 → 静默回退（同类：铁律 9 快照回退）。
+      //   治本 = **不再写死段号**，改为从原标题提取 7.x 前缀（兜底 7.3）→ 抗 analysis.html 内容变化与重构覆盖。
+      if (h7.textContent.indexOf('（' + gdShort) < 0) {
+        const m7 = (h7.textContent || '').match(/^(7\.\d+)/);
+        h7.textContent = (m7 ? m7[1] : '7.3') + ' · 次日开盘指引（' + gdShort + '）';
+      }
     }
     if (h7 && h7.nextElementSibling && h7.nextElementSibling.querySelector) {
       const card = h7.nextElementSibling;
