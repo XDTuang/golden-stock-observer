@@ -161,7 +161,7 @@ cp data/daily_review/market.json  deploy/data/daily_review/market.json
 
 **自检**
 ```bash
-python3 review/check_analysis_style.py   # 老站排版：必须全过（含 [0] BOM 守卫 + [9/9] 未定义类守卫）
+python3 review/check_analysis_style.py   # 老站排版：必须全过（[0] BOM 守卫 + [9/9] 未定义类 + [10/10] 空转引用守卫）
 python3 review/check_v3_style.py         # V3 独立版：四副本一致性 + 语义色 + 兜底（必须全过）
 python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 null close（必须 ✅）
 ```
@@ -176,6 +176,27 @@ python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 
 > （86801 vs 88533 字节，停在 2026-09-08 的旧实现：`num()` 无兜底 → 全页卡「加载中…」；缠论列读 obs_deduce → 全空）。
 > SOP 推送清单里仍列着它 → **一旦推送即把线上正确版回退成旧 bug 版**。
 > 治本：V3 视为**四副本同内容结构**，`check_v3_style.py [1/7]` 强制四份逐字节一致；改动后必须 `cp` 到其余三份。
+
+> 🔴 **2026-09-11 下午 · 空转容器清理（用户授权「空转容器可清理」）**
+> 主题 = 静默失效第 2 类「**JS 引用无容器**」：页面不报错、不崩溃，只是功能永不生效。
+> **清理清单（共 10 个容器 + 2 个函数）**：
+> | 对象 | 位置 | 证据 | 处置 |
+> |---|---|---|---|
+> | `drTblA` / `drTblH` / `drTblUs` | `drFillTables()` 内 3 行 | 容器只在 `data/daily_review_history/` 历史归档，当前 analysis.html 已无 | 删 3 行；**保留 `drTblHK`**（容器仍在，函数整体保留） |
+> | `drTblObs` | `drLoadObserveStocks()` | 函数首行 `if (!box) return` 即退出 → 整函数（含标题日期动态化）死代码 | 删函数 + 调用（`drNextBizDay` 另有 2 处使用，保留） |
+> | `drCmdBtn` | `drCmdModalInit()` | 依赖的按钮不存在；其写入目标 `commands/pending/` 目录已废弃 | 删注释块 + 61 行函数 + 调用 |
+> | `allGrid` | 全局 `renderAll()` | 无 `data-tab="all"` 按钮触发，且**无 null 守卫**（定时炸弹型） | **加守卫**，保留函数（「全部」tab 是否永久废弃交用户决定） |
+> | `drTblAsia` / `drTblComm` / `drAsiaNote` | `analysis.html` 静态 HTML | 零 JS 引用 → 内含的「日韩数据加载中…」「商品利率数据加载中…」**永久残留** | 删容器（`drAsiaTable` 要找的含 KOSPI 的 `table.dr-tbl` 在 analysis.html 中本就不存在，该函数早已静默 return） |
+> **未动（有引用方，非遗留）**：`drNewsPool`（`review/build_share_html.py` 引用）、`drBacktestBody`/`drMacroBody`/`drNewsBody` 等 6 个（`inject_daily_auto_blocks.py` 注入）、`drCmdModal`（JS 动态创建）。
+> **防呆**：新增 `check_analysis_style.py [10/10]` 空转引用守卫 —— 孤儿 id 允许存在，但**每个引用点必须有空值守卫**，无守卫即红灯退出码 1（已反向测试）。
+> ⚠️ **analysis.html 是 agent 每日手写的**：生成时**不要再写**上述已删除的占位容器（尤其 `<div id="drTblAsia">日韩数据加载中…</div>` 这类，写了就是永久残留）。
+
+> 🔴 **全站语义色板（2026-09-11 统一 · 用户授权自行裁决）**
+> `dk-risk` 由**红**改**绿**：其标注内容全是跌向/利空（低开偏弱、杀跌、补跌、杀估值、外盘收跌），
+> 按 A 股「涨红跌绿」惯例应为绿；此前与 7.1 段 `k3c-risk`(绿)、第二列 `dr-dn`(绿) **同名不同色**，同一语义两种颜色。
+> **统一后色板**（老站 `analysis.html` 与 V3 `review_v3/index.html` 一致）：
+> 红 `--red` = 看多/主线/可执行（`dk-main`/`k3c-go`）｜ 橙 `--orange` = 观察/有条件（`dk-caution`/`k3c-cond`）
+> ｜ 绿 `--green` = 利空/回避/风险/跌（`dk-risk`/`k3c-risk`/`dk-dn`/`dr-dn`）｜ 蓝 `--blue` = 数据/方法论（`dk-data`/`k3c-verify`）｜ 灰 `--text-muted` = 中性。
 
 > 🔴 **2026-09-10 事故**：`us_kline.us_sox.latest.close = null` → V3 页 `renderUsDual`
 > 直接 `.toLocaleString()` 抛 TypeError → `main()` reject → **全页永久卡「加载中…」**（老站不受影响）。
@@ -193,7 +214,8 @@ python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 
 - 0 段「推演开盘」显示 agent 结论（非规则打分回退）
 - 控制台无 `[V3] 段渲染失败` 报错
 - 🆕 **结论卡按性质着色**（2026-09-11 改造）：`ai_synthesis.conclusion_first` 的每个 `【标题】正文` 块由 `renderConclusion()`
-  按标题关键词分类 → 左侧色条 + 标题色 + 首句加粗（`rc-risk` 红 / `rc-main` 红 / `rc-caution` 橙 / `rc-data` 蓝 / 无匹配则金）。
+  按标题关键词分类 → 左侧色条 + 标题色 + 首句加粗（`rc-risk` **绿** / `rc-main` 红 / `rc-caution` 橙 / `rc-data` 蓝 / 无匹配则金）。
+  > 🔴 2026-09-11 色板统一：`dk-risk` 由红改绿（= 利空/回避/风险），与老站 7.1 的 `k3c-risk`(绿) 一致；详见上方「全站语义色板」。
   分类规则在 `renderConclusion` 内的 `RC` 数组（顺序敏感：risk → caution → data → main 兜底）。
 
 **V3 副本与代码规则（2026-09-11 立）**

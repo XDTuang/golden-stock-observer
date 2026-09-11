@@ -60,7 +60,9 @@ tr.hl3 td{background:rgba(212,175,55,.08)}
 /* DK-SEMANTIC-CSS v1 · 2026-09-11 自检修订：补齐 dk-* 语义色（对齐老站），供结论块分类着色使用 */
 .dk-main{color:var(--red);font-weight:600}
 .dk-caution{color:var(--orange);font-weight:600}
-.dk-risk{color:var(--red);font-weight:700}
+/* 2026-09-11 色板统一：dk-risk 由 --red 改 --green（与老站 analysis.html 一致）。
+   全站色板：红=看多/主线 · 橙=观察/条件 · 绿=利空/回避/风险 · 蓝=数据/方法论 · 灰=中性 */
+.dk-risk{color:var(--green);font-weight:700}
 .dk-data{color:var(--blue);font-weight:600}
 .dk-neutral{color:var(--text-muted)}
 .dk-dn{color:var(--green)}
@@ -616,8 +618,12 @@ function renderConclusion(cf, dateStr, genStr) {
     ['dk-main',    /主线|方向|机会|占优|低吸|共振|超配|首选|进攻|预判|倾向|锚|逻辑|看多|偏多|机会/],
   ];
   const rcOf  = (t) => { const hit = RC.find(r => r[1].test(t)); return hit ? hit[0] : null; };
+  // 2026-09-11 色板统一：dk-risk 由 var(--red) 改 var(--green) —— 与老站 analysis.html 同步。
+  //   risk 规则匹配的标题全是跌向/利空（风险/回避/利空/杀跌/退潮/走弱/失守…），按 A 股涨红跌绿惯例应为绿；
+  //   此前与老站 7.1 的 k3c-risk(绿) 同名不同色 → 同一语义两种颜色。全站统一：
+  //   红=看多/主线 · 橙=观察/条件 · 绿=利空/回避/风险 · 蓝=数据 · 金=兜底
   const colOf = (c) => c === 'dk-caution' ? 'var(--orange)' : c === 'dk-data' ? 'var(--blue)'
-                     : c === 'dk-main' ? 'var(--red)' : c === 'dk-risk' ? 'var(--red)' : 'var(--gold)';
+                     : c === 'dk-main' ? 'var(--red)' : c === 'dk-risk' ? 'var(--green)' : 'var(--gold)';
   const wtOf  = (c) => c === 'dk-risk' ? 700 : (c ? 600 : 700);
   let h = '<div class="dr-tag" style="color:var(--gold);border-color:var(--gold)">agent 结论先行（盘前推演 · 数据日 ' + esc(dateStr || '') + (genStr ? ' · 生成 ' + esc(genStr) : '') + '）</div>';
   arr.forEach(t => {

@@ -21,7 +21,6 @@ function renderDailyReview() {
       if (d && d.us_kline) drRefreshUsDualDayTables(d);
       if (d && d.comm) drRefreshCommRates(d);
       drDeriveSections(d);
-      drLoadObserveStocks();
       drLoadTop10();
       drLoadDiamond();
     }).catch(err => {
@@ -192,10 +191,10 @@ function drFillTables(q) {
     return h + '</tbody></table>';
   };
   const g = (group) => Object.values(q).filter(v => v.group === group && !v.error);
-  const tA = document.getElementById('drTblA'); if (tA) tA.innerHTML = mk(g('A股指数'));
-  const tH = document.getElementById('drTblH'); if (tH) tH.innerHTML = mk(g('持仓股'));
-  const tU = document.getElementById('drTblUs');
-  if (tU) tU.innerHTML = mk([...g('美股指数'), ...g('美股映射'), ...g('美股映射·参考')]);
+  // 2026-09-11 清理空转（用户授权）：drTblA / drTblH / drTblUs 三个容器在当前
+  //   analysis.html 中已不存在（仅存于 data/daily_review_history/ 历史归档），
+  //   原先的 `if (el)` 守卫使这三行长期静默空转、永不生效。
+  //   港股 drTblHK 容器仍在，故本函数整体保留。
   const tHK = document.getElementById('drTblHK');
   if (tHK) tHK.innerHTML = mk(g('港股指数'));
 }
@@ -249,7 +248,7 @@ function drAsiaTable(d) {
   });
 }
 
-/* ═══════ 1·昨日A股走势总结：标题日期动态 + 写死 note 换数据驱动摘要（指数表 drTblA 保留动态） ═══════ */
+/* ═══════ 1·昨日A股走势总结：标题日期动态 + 写死 note 换数据驱动摘要（数据源 market.json.quotes，与已清理的 drTblA 无关） ═══════ */
 function drAIndexSummary(d) {
   const ana = document.getElementById('drAnalysis');
   if (!ana) return;
@@ -417,54 +416,6 @@ function drNextTradeDate(n) {
   dt.setDate(dt.getDate() + n);
   const pad = (x) => String(x).padStart(2, '0');
   return dt.getFullYear() + '-' + pad(dt.getMonth() + 1) + '-' + pad(dt.getDate());
-}
-
-/* ═══════ 1.3 重点观测股（output/obs_deduce_latest.json，本机 agent 最新推演；无则提示待补） ═══════ */
-function drLoadObserveStocks() {
-  const box = document.getElementById('drTblObs');
-  if (!box) return;
-  fetch('./output/obs_deduce_latest.json', { cache: 'no-store' }).then(r => {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
-  }).then(d => {
-    const items = d.items || [];
-    if (!items.length) throw new Error('empty');
-    const date = d.date || '';
-    // 标题日期动态化：obs_deduce 收盘日 + 下一交易日推演（8/26 收盘 → 8/27 推演）
-    const ana = document.getElementById('drAnalysis');
-    if (ana && date) {
-      const h13 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'))
-        .find(h => /重点观测股/.test(h.textContent || ''));
-      if (h13) {
-        const nd = drNextBizDay(date).slice(5).replace('-', '/');
-        // 2026-09-09 修复：保留 analysis.html 里已有的段号（如 "7.2"），不再硬覆盖为 "1.3"；
-        // 找不到段号才兜底 "1.3"，保证新旧版 analysis.html 都能渲染
-        const m = (h13.textContent || '').match(/^(\d+(?:\.\d+)?)/);
-        const prefix = m ? m[1] + ' · ' : '1.3 · ';
-        h13.textContent = prefix + '重点观测股（' + items.length + ' 只 · ' +
-          date.slice(5).replace('-', '/') + ' 收盘 + ' + nd + ' 推演）';
-      }
-    }
-    const cls = (v) => v >= 0 ? 'dr-up' : 'dr-dn';
-    const sign = (v) => v >= 0 ? '+' : '';
-    const trendCls = (t) => (t.indexOf('强') >= 0 || t.indexOf('上') >= 0) ? 'var(--red)' : (t.indexOf('弱') >= 0 || t.indexOf('跌') >= 0 ? 'var(--green)' : 'var(--text-secondary)');
-    const rows = items.map(it => {
-      const pct = it.chg_last != null ? parseFloat(it.chg_last) : null;
-      const dev = it.dev_ma5 != null ? parseFloat(it.dev_ma5) : null;
-      return '<tr><td><b>' + it.name + '</b> <span style="font-size:11px;color:var(--text-muted)">' + (it.code || '').toUpperCase() + '</span></td>' +
-        '<td>' + (it.close != null ? it.close : '—') + (pct !== null ? ' <span class="' + cls(pct) + '">' + sign(pct) + pct.toFixed(2) + '%</span>' : '') + '</td>' +
-        '<td style="font-size:12px">' + (it.sector || '') + '</td>' +
-        '<td style="font-size:12px"><span class="dr-tag">' + (it.pattern || '') + '</span> MA5 ' + (it.ma5 != null ? it.ma5 : '—') +
-          (dev !== null ? ' <span class="' + cls(dev) + '">' + sign(dev) + dev.toFixed(1) + '%</span>' : '') +
-          ' 5日' + (it.chg5 != null ? ' <span class="' + cls(parseFloat(it.chg5)) + '">' + sign(parseFloat(it.chg5)) + parseFloat(it.chg5).toFixed(1) + '%</span>' : '') +
-          ' 量比' + (it.vol_ratio != null ? it.vol_ratio : '—') + '</td>' +
-        '<td style="color:' + trendCls(it.trend || '') + ';font-weight:600;font-size:13px">' + (it.trend || '') + '</td>' +
-        '<td style="font-size:12px">' + (it.open_label || '') + '</td></tr>';
-    }).join('');
-    box.innerHTML = '<table class="dr-tbl"><thead><tr><th>股票</th><th>' + date + ' 收盘/涨跌</th><th>板块</th><th>技术形态（10日K线）</th><th>推演</th><th>开盘方式</th></tr></thead><tbody>' + rows + '</tbody></table>';
-  }).catch(() => {
-    box.innerHTML = '<p class="dr-note">重点观测股推演：待本机 agent 补全（obs_deduce 尚未生成）。</p>';
-  });
 }
 
 // ===== 每日复盘：前一日 TOP10（output/top10_history.json 最新交易日）=====

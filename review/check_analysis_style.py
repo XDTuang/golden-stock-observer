@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""投喂推演 → analysis.html 回填内容版式自检（2026-09-02 立 · 9 项）
+"""投喂推演 → analysis.html 回填内容版式自检（2026-09-02 立 · 10 项）
    跑法：python3 review/check_analysis_style.py
    期望：全部通过；任何失败=推演版式污染，必须修
    第 5 项专门防御"td 长内容撑破右侧屏幕"重复 bug（9/1 / 9/2 多次踩坑，9/2 治本）
    第 7 项（2026-09-10 增）防御"analysis.html 自包含 style 越界规则经注入污染整站"（整站曾被限宽 980px）
    第 8 项（2026-09-11 增）防御 7.1 结论句退回"只有加粗无色"
-   第 9 项（2026-09-11 增）防御"class 有标记无定义"静默失效（曾实测 dk-dn/dr-caution/dr-wrap 三例）"""
-import re, io, sys, subprocess
+   第 9 项（2026-09-11 增）防御"class 有标记无定义"静默失效（曾实测 dk-dn/dr-caution/dr-wrap 三例）
+   第 10 项（2026-09-11 增）防御"JS 引用无容器"空转静默失效（曾实测 drTblA/drTblH/drTblUs/drTblObs/drCmdBtn/allGrid
+       六例；见 Obsidian 30-PRINCIPLES/改版自检与静默失效防御）"""
+import re, io, sys, subprocess, glob
 from collections import Counter
 
 path = 'data/daily_review/analysis.html'
@@ -218,7 +220,65 @@ except Exception as _e:
 print(f"{'✅' if ok9 else '❌'} [9/9] 未定义类守卫（在用 class 必须有 CSS 定义）：{'通过' if ok9 else '未通过'}")
 for n in note9: print(f"      {n}")
 
+# 10) [10/10] 🔴 空转引用守卫（2026-09-11 新增 · 铁律 15 五维自检法第 2 维「容器·引用反查」）
+#     实测：drTblA / drTblH / drTblUs / drTblObs / drCmdBtn / allGrid 六处 getElementById
+#     的目标在全部活文件中都不存在 → 原代码靠 `if (el)` 或无守卫静默空转、永不生效。
+#     判据：孤儿 id **允许存在**（可能由注入器 HTML 片段或 JS 动态创建提供），
+#           但每个引用点必须有**空值守卫** —— 无守卫 = 一旦容器出现/消失即 TypeError。
+ok10 = True
+note10 = []
+try:
+    # ① 收集所有合法 id 来源
+    _src = set()
+    for _f10 in ['index.html', 'index_template.html', 'deploy/index.html']:
+        try:
+            _src |= set(re.findall(r'id="([^"]+)"', io.open(_f10, encoding='utf-8').read()))
+        except FileNotFoundError:
+            note10.append(f'⚠️ 缺少 {_f10}（id 来源集合可能不全）')
+    _src |= set(re.findall(r'id="([^"]+)"', s))                     # analysis.html 注入内容
+    for _f10 in glob.glob('inject_*.py') + glob.glob('*_snippet*.js'):   # 注入器 HTML 片段
+        try:
+            _t = io.open(_f10, encoding='utf-8').read()
+            _src |= set(re.findall(r'id=\\?"([^"\\]+)\\?"', _t))
+        except Exception:
+            pass
+    _idx = io.open('index.html', encoding='utf-8').read()
+    _src |= set(re.findall(r"\.id\s*=\s*['\"]([^'\"\s]+)['\"]", _idx))          # JS 动态创建
+    _src |= set(re.findall(r"setAttribute\(\s*['\"]id['\"]\s*,\s*['\"]([^'\"\s]+)['\"]", _idx))
+
+    # ② 找孤儿引用，并检查引用点 ±2 行内是否有守卫
+    _G = (r'if\s*\(\s*!\s*\w+\s*\)\s*return', r'if\s*\(\s*\w+\s*\)', r'\?\.', r'\|\|\s*\{\}')
+    _lines = _idx.split('\n')
+    _refs10 = list(re.finditer(r"getElementById\(\s*'([^']+)'\s*\)", _idx))
+    _orph10 = {}
+    for _m10 in _refs10:
+        _id10 = _m10.group(1)
+        if _id10 in _src:
+            continue
+        _orph10.setdefault(_id10, []).append(_idx[:_m10.start()].count('\n'))
+    _bad10 = []
+    for _id10, _lns10 in _orph10.items():
+        _ung = [L for L in _lns10
+                if not any(re.search(g, '\n'.join(_lines[max(0, L - 1):L + 3])) for g in _G)]
+        if _ung:
+            _bad10.append((_id10, _ung))
+    if _bad10:
+        note10.append('⚠️ 孤儿 id 且**无空值守卫**（一旦走到即 TypeError）：' +
+                      '、'.join(f'{k}(行 {",".join(map(str, v))})' for k, v in _bad10))
+        note10.append('   → 修法：删除该引用，或改为 '
+                      '`const el = document.getElementById(..); if (!el) return;`')
+        ok10 = False
+    else:
+        print(f"      扫描 {len(_refs10)} 个 getElementById 引用；"
+              f"孤儿 {len(_orph10)} 个（均有空值守卫）✓")
+except Exception as _e:
+    note10.append(f'⚠️ 检查异常：{_e}')
+    ok10 = False
+print(f"{'✅' if ok10 else '❌'} [10/10] 空转引用守卫（JS 引用的 id 须有来源或空值守卫）："
+      f"{'通过' if ok10 else '未通过'}")
+for n in note10: print(f"      {n}")
+
 # 总结
-all_ok = (ok0 and ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9)
+all_ok = (ok0 and ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10)
 print(f"\n{'✅ 全部通过' if all_ok else '❌ 存在版式问题，请修复'}")
 sys.exit(0 if all_ok else 1)

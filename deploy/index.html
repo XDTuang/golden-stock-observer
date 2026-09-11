@@ -2849,7 +2849,11 @@ function renderEmaScan() {
 // ===== 渲染全部 =====
 function renderAll() {
   const stocks = (window.SIGNALS_DATA.stocks||[]).filter(r => r.has_data);
-  document.getElementById('allGrid').innerHTML = stocks.length ? stocks.map(s => renderStockCard(s, 'all')).join('') : '<div class="empty-state"><div class="icon">📋</div>暂无数据</div>';
+  // 2026-09-11 防呆（空转容器清理同批）：allGrid 容器当前不存在于任何活文件
+  //   （无 data-tab="all" 按钮触发），原实现无 null 守卫 → 若将来加回该 tab 会立即 TypeError。
+  const el = document.getElementById('allGrid');
+  if (!el) return;
+  el.innerHTML = stocks.length ? stocks.map(s => renderStockCard(s, 'all')).join('') : '<div class="empty-state"><div class="icon">📋</div>暂无数据</div>';
 }
 
 // ===== 渲染观测池 =====
@@ -3241,7 +3245,6 @@ function drLoadCrossAnalysis() {
 //   现改为：字符串 / 对象 / 数组三种形态都能渲染；每个子块独立 try/catch，单块坏不影响全局。
 function drLoadFeedReview() {
   drFeedModalInit();
-  drCmdModalInit();
   const el = document.getElementById('drFeedReviewBody');
   if (!el) return;
   const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -3612,71 +3615,6 @@ function drFeedModalInit() {
   };
 }
 
-/* ═══════ 请求推演 · 命令中转（2026-09-03 C 方案） ═══════
-   手机/任意端点「📋 请求推演」→ 命令文件写入仓库 commands/pending/
-   → 本机 launchd 每 5 分钟轮询 → 弹系统通知 + 记录归档（commands/done/）
-   说明：AI 推演本身仍需在本机由 agent 执行（脚本无法替代研判），
-        本按钮的价值是「请求不丢失 + 全程留痕 + 到点提醒」。 */
-function drCmdModalInit() {
-  if (document.getElementById('drCmdModal') || !document.getElementById('drCmdBtn')) return;
-  const m = document.createElement('div');
-  m.id = 'drCmdModal';
-  m.style.cssText = 'position:fixed;inset:0;background:rgba(6,10,18,.78);z-index:9999;display:none;align-items:center;justify-content:center;padding:16px';
-  m.innerHTML =
-    '<div style="background:#161d2c;border:1px solid #2b3a5c;border-radius:14px;max-width:480px;width:100%;padding:20px 22px;box-shadow:0 12px 48px rgba(0,0,0,.5)">' +
-    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
-    '<b style="font-size:16px;color:#e8edf7">📋 请求推演</b>' +
-    '<button id="drCmdClose" style="background:none;border:none;color:#9aa7bd;font-size:20px;cursor:pointer;line-height:1">×</button></div>' +
-    '<div style="font-size:12px;color:#9aa7bd;margin-bottom:12px;line-height:1.6">请求会写入仓库 <b>commands/pending/</b> 并留痕；本机每 5 分钟检查，' +
-    '发现请求即弹系统通知。之后回到本机说一句「推演」即可执行（研判由 agent 完成）。</div>' +
-    '<div style="font-size:12px;color:#9aa7bd;margin:6px 0 4px">推演类型</div>' +
-    '<select id="dcType" style="width:100%;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px;font-size:13px">' +
-    '<option value="盘前">盘前推演（09:05）</option>' +
-    '<option value="盘中">盘中推演（22:00）</option>' +
-    '<option value="收盘">收盘复盘（15:00 后）</option>' +
-    '<option value="临时">临时推演</option></select>' +
-    '<div style="font-size:12px;color:#9aa7bd;margin:10px 0 4px">备注（可选 · 想重点看什么）</div>' +
-    '<textarea id="dcNote" style="width:100%;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px;font-size:13px;min-height:64px;resize:vertical" placeholder="示例：重点看半导体关税影响 / 军工是否续板"></textarea>' +
-    '<div style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">' +
-    '<button id="dcSend" style="padding:8px 18px;border-radius:8px;border:1px solid #8a6d3b;background:#4a3a1a;color:#e8edf7;font-size:13px;cursor:pointer">📤 提交请求</button>' +
-    '<span id="dcOut" style="font-size:12px;color:#9aa7bd"></span></div></div>';
-  document.body.appendChild(m);
-
-  const open = () => { m.style.display = 'flex'; document.getElementById('dcNote').focus(); };
-  const close = () => { m.style.display = 'none'; };
-  document.getElementById('drCmdBtn').onclick = open;
-  document.getElementById('drCmdClose').onclick = close;
-  m.addEventListener('click', e => { if (e.target === m) close(); });
-
-  document.getElementById('dcSend').onclick = async function () {
-    const out = document.getElementById('dcOut');
-    const type = document.getElementById('dcType').value;
-    const note = document.getElementById('dcNote').value.trim();
-    if (!drFeedToken()) { out.textContent = '⚠️ 请先在「📥 投喂」里设置 Token'; return; }
-    const btn = this;
-    btn.disabled = true;
-    out.style.color = '#9aa7bd';
-    out.textContent = '⏳ 提交中…';
-    try {
-      const d = new Date();
-      const ts = d.toISOString().replace(/[-:]/g, '').replace(/\..+/, '').replace('T', '_');
-      const fname = ts + '_' + type + '.md';
-      const body = '# 推演请求\\n\\n'
-        + '- 类型：' + type + '\\n'
-        + '- 提交时间：' + d.toLocaleString('zh-CN') + '\\n'
-        + '- 备注：' + (note || '（无）') + '\\n';
-      await drFeedPushFile('commands/pending/' + fname, drFeedB64Text(body), 'cmd: 请求' + type + '推演');
-      out.style.color = '#4ade80';
-      out.innerHTML = '✅ 请求已提交 → <b>commands/pending/' + fname + '</b><br>' +
-        '<span style="color:#9aa7bd">本机 5 分钟内弹通知，回来说「推演」即可</span>';
-      document.getElementById('dcNote').value = '';
-    } catch (e) {
-      out.style.color = '#f87171';
-      out.textContent = '❌ 失败：' + e.message;
-    }
-    btn.disabled = false;
-  };
-}
 
 
 
@@ -3749,7 +3687,6 @@ function renderDailyReview() {
       if (d && d.us_kline) drRefreshUsDualDayTables(d);
       if (d && d.comm) drRefreshCommRates(d);
       drDeriveSections(d);
-      drLoadObserveStocks();
       drLoadTop10();
       drLoadDiamond();
     }).catch(err => {
@@ -3920,10 +3857,10 @@ function drFillTables(q) {
     return h + '</tbody></table>';
   };
   const g = (group) => Object.values(q).filter(v => v.group === group && !v.error);
-  const tA = document.getElementById('drTblA'); if (tA) tA.innerHTML = mk(g('A股指数'));
-  const tH = document.getElementById('drTblH'); if (tH) tH.innerHTML = mk(g('持仓股'));
-  const tU = document.getElementById('drTblUs');
-  if (tU) tU.innerHTML = mk([...g('美股指数'), ...g('美股映射'), ...g('美股映射·参考')]);
+  // 2026-09-11 清理空转（用户授权）：drTblA / drTblH / drTblUs 三个容器在当前
+  //   analysis.html 中已不存在（仅存于 data/daily_review_history/ 历史归档），
+  //   原先的 `if (el)` 守卫使这三行长期静默空转、永不生效。
+  //   港股 drTblHK 容器仍在，故本函数整体保留。
   const tHK = document.getElementById('drTblHK');
   if (tHK) tHK.innerHTML = mk(g('港股指数'));
 }
@@ -3977,7 +3914,7 @@ function drAsiaTable(d) {
   });
 }
 
-/* ═══════ 1·昨日A股走势总结：标题日期动态 + 写死 note 换数据驱动摘要（指数表 drTblA 保留动态） ═══════ */
+/* ═══════ 1·昨日A股走势总结：标题日期动态 + 写死 note 换数据驱动摘要（数据源 market.json.quotes，与已清理的 drTblA 无关） ═══════ */
 function drAIndexSummary(d) {
   const ana = document.getElementById('drAnalysis');
   if (!ana) return;
@@ -4145,54 +4082,6 @@ function drNextTradeDate(n) {
   dt.setDate(dt.getDate() + n);
   const pad = (x) => String(x).padStart(2, '0');
   return dt.getFullYear() + '-' + pad(dt.getMonth() + 1) + '-' + pad(dt.getDate());
-}
-
-/* ═══════ 1.3 重点观测股（output/obs_deduce_latest.json，本机 agent 最新推演；无则提示待补） ═══════ */
-function drLoadObserveStocks() {
-  const box = document.getElementById('drTblObs');
-  if (!box) return;
-  fetch('./output/obs_deduce_latest.json', { cache: 'no-store' }).then(r => {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
-  }).then(d => {
-    const items = d.items || [];
-    if (!items.length) throw new Error('empty');
-    const date = d.date || '';
-    // 标题日期动态化：obs_deduce 收盘日 + 下一交易日推演（8/26 收盘 → 8/27 推演）
-    const ana = document.getElementById('drAnalysis');
-    if (ana && date) {
-      const h13 = Array.prototype.slice.call(ana.querySelectorAll('.dr-h'))
-        .find(h => /重点观测股/.test(h.textContent || ''));
-      if (h13) {
-        const nd = drNextBizDay(date).slice(5).replace('-', '/');
-        // 2026-09-09 修复：保留 analysis.html 里已有的段号（如 "7.2"），不再硬覆盖为 "1.3"；
-        // 找不到段号才兜底 "1.3"，保证新旧版 analysis.html 都能渲染
-        const m = (h13.textContent || '').match(/^(\d+(?:\.\d+)?)/);
-        const prefix = m ? m[1] + ' · ' : '1.3 · ';
-        h13.textContent = prefix + '重点观测股（' + items.length + ' 只 · ' +
-          date.slice(5).replace('-', '/') + ' 收盘 + ' + nd + ' 推演）';
-      }
-    }
-    const cls = (v) => v >= 0 ? 'dr-up' : 'dr-dn';
-    const sign = (v) => v >= 0 ? '+' : '';
-    const trendCls = (t) => (t.indexOf('强') >= 0 || t.indexOf('上') >= 0) ? 'var(--red)' : (t.indexOf('弱') >= 0 || t.indexOf('跌') >= 0 ? 'var(--green)' : 'var(--text-secondary)');
-    const rows = items.map(it => {
-      const pct = it.chg_last != null ? parseFloat(it.chg_last) : null;
-      const dev = it.dev_ma5 != null ? parseFloat(it.dev_ma5) : null;
-      return '<tr><td><b>' + it.name + '</b> <span style="font-size:11px;color:var(--text-muted)">' + (it.code || '').toUpperCase() + '</span></td>' +
-        '<td>' + (it.close != null ? it.close : '—') + (pct !== null ? ' <span class="' + cls(pct) + '">' + sign(pct) + pct.toFixed(2) + '%</span>' : '') + '</td>' +
-        '<td style="font-size:12px">' + (it.sector || '') + '</td>' +
-        '<td style="font-size:12px"><span class="dr-tag">' + (it.pattern || '') + '</span> MA5 ' + (it.ma5 != null ? it.ma5 : '—') +
-          (dev !== null ? ' <span class="' + cls(dev) + '">' + sign(dev) + dev.toFixed(1) + '%</span>' : '') +
-          ' 5日' + (it.chg5 != null ? ' <span class="' + cls(parseFloat(it.chg5)) + '">' + sign(parseFloat(it.chg5)) + parseFloat(it.chg5).toFixed(1) + '%</span>' : '') +
-          ' 量比' + (it.vol_ratio != null ? it.vol_ratio : '—') + '</td>' +
-        '<td style="color:' + trendCls(it.trend || '') + ';font-weight:600;font-size:13px">' + (it.trend || '') + '</td>' +
-        '<td style="font-size:12px">' + (it.open_label || '') + '</td></tr>';
-    }).join('');
-    box.innerHTML = '<table class="dr-tbl"><thead><tr><th>股票</th><th>' + date + ' 收盘/涨跌</th><th>板块</th><th>技术形态（10日K线）</th><th>推演</th><th>开盘方式</th></tr></thead><tbody>' + rows + '</tbody></table>';
-  }).catch(() => {
-    box.innerHTML = '<p class="dr-note">重点观测股推演：待本机 agent 补全（obs_deduce 尚未生成）。</p>';
-  });
 }
 
 // ===== 每日复盘：前一日 TOP10（output/top10_history.json 最新交易日）=====

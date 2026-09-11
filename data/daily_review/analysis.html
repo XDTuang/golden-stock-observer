@@ -23,7 +23,12 @@
 .dr-dn{color:var(--green)}
 .dk-main{color:var(--red);font-weight:600}
 .dk-caution{color:var(--orange);font-weight:600}
-.dk-risk{color:var(--red);font-weight:700}
+/* 2026-09-11 色板统一（用户授权自行裁决）：dk-risk 由「红」改「绿」。
+   理由：dk-risk 实际标注的内容全是跌向/利空（低开偏弱、杀跌、补跌、杀估值、外盘收跌），
+   按 A 股「涨红跌绿」惯例应为绿；且此前与 7.1 段 k3c-risk(绿)、第二列 dr-dn(绿) 同名不同色，
+   同一语义两种颜色 → 读者需二次判断。治本 = 全站色板统一为：
+     红=看多/主线/可执行 · 橙=观察/条件 · 绿=利空/回避/风险 · 蓝=数据/方法论 · 灰=中性 */
+.dk-risk{color:var(--green);font-weight:700}
 .dk-data{color:var(--blue);font-weight:600}
 .dk-neutral{color:var(--text-muted)}
 /* SEMANTIC-CSS v1 · 2026-09-11 补齐使用中但未定义的类（自检发现） */
@@ -235,10 +240,10 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
   <div class="dr-tag" style="margin-bottom:4px" data-page-node-id="BoLkKN8fbZ03ubGEGvu7x6">港股指数（云端自动 · market.json）</div>
   <div id="drTblHK" data-page-node-id="O70H8QIvaPjNXpSPPkD8Fi"></div>
   <div class="dr-tag" style="margin:12px 0 4px" data-page-node-id="2BYiCU2bd7mDWDeJkhNcYR">日韩股指与存储双雄（JS 自动 · market.json.asia）</div>
-  <div id="drTblAsia" data-page-node-id="OHprzgXcF69HQRQvxZJHye"><div class="dr-note" data-page-node-id="28zTMQaxyC92R7BHXV6wqk">日韩数据加载中…</div></div>
-  <div class="dr-note" id="drAsiaNote" data-page-node-id="BhnKwlEeIbDvn4FpfWUcBi"></div>
+  
+  
   <div class="dr-tag" style="margin:12px 0 4px" data-page-node-id="idwuSyTeMd4NAIj2x5GA5m">商品 / 利率 / 汇率（JS 自动 · market.json.comm）</div>
-  <div id="drTblComm" data-page-node-id="cJpv2PkqwgFl8pYbjrhw6D"><div class="dr-note" data-page-node-id="HCqT2ZW2p0WnJj3YF8XQXM">商品利率数据加载中…</div></div>
+  
   <div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--orange);padding:8px 12px;border-radius:6px;margin-top:8px" data-page-node-id="gKrCulMaqot2SLGBEF0yvG">
     <b data-page-node-id="YVgDG3wUt78MQf2UxnaMXk">9/10 日韩开盘（新浪 znb · 08:38 北京）</b>：日经 225 <b data-page-node-id="UDpoU0jVXN7BtmBFM43AXe">64414.36（-1.12%）</b>、KOSPI <b data-page-node-id="EddDq0Qn4hRTO1cbTdW4w7">6988.96（-0.89%）</b>——<b data-page-node-id="XIohF6WveCuCVgGhkF8rWA">双双低开</b>（受美股连跌三日 + 隔夜普跌拖累）；<b data-page-node-id="D7AQXwCckrSzQZPl6QHGkB">9/9 收盘参考：日经 65142.71（-0.19%）、KOSPI 7051.64（+1.40%）</b>。<br data-page-node-id="9dd1onnUEoW3gYqmsEaAD3">
     <b data-page-node-id="NrlTUyCbJICpMKg8pKz3aF">商品/汇率</b>：COMEX 金 4447.20（9/9 收盘 +0.18%，现货金 4402 +1.07%，今早 4440.32）、COMEX 银 67.925（+1.38%）、<b data-page-node-id="gwFSSoVJUl2XJ3eL9c0Gnm">布伦特 101.21（+3.36%）破百</b> / WTI 96.05（+3.25%，今早 96.68）、美铜 685.57；在岸人民币 6.6977（人民币升值）。<br data-page-node-id="y8hlAq82fuljyD3BD8AAoa">
