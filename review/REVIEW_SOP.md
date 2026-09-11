@@ -49,10 +49,67 @@ bash review/sync_feed_before_review.sh
 | 4 | 重点宏观 | 🚨 **硬编码，必须每日滚动**（2026-09-11 补入清单）：① 中国段（最新国内数据，无新数据须显式标注）② 海外段（美债收益率 / 加息概率 / 油价 / 贵金属）③ **今日事件日历**（必须是**当天**日期，禁留前一日事件） |
 | 5 | 重点科技 | 🚨 **硬编码，必须每日滚动**（2026-09-11 补入清单）：存储 / 半导体、光通信 / CPO、AI 应用 / 海外巨头、能源资源 **4 线**，每线数据须取**最近一个美股收盘日**，禁留前一日预判 |
 | 5.5 | 产业链/景气度评估 | 🚨 **硬编码，必须每日滚动**（2026-09-11 补入清单）：存储 / 光通信 / 油运 / 金刚石 / 消费 **5 线**，每线须含「**今日观察要点**」（当日口径的观察/风控语，禁留前一日「9/xx 竞价看…」式预判） |
-| 7.1 | K3 产业信号验证 | 主题 / 验证 / 内容 三列表 |
-| 7.2 | 重点观测股推演 | 长文本 `<td>` 必须加 `class="dr-wrap"` |
+| 7.1 | K3 产业信号验证 | 主题 / 验证 / 内容 三列表。🔴 **每行「内容」格的最后一句结论句必须带 `class="k3c k3c-{go\|cond\|risk\|verify}"` 语义色**（2026-09-11 起）：手写裸文本后跑 `python3 build_k3_conclusions.py` 自动上色。详见「步骤 3.6」 |
+| 7.2 | 重点观测股推演 | 🔴 **禁止手写，改由脚本生成**（2026-09-11 改造）：`python3 build_obs_section.py` → 分层 L1/L2 + 原生 `<details>` 纯 CSS 折叠卡。L1 全池关键位从 `obs_deduce_latest.json` **机械计算**（零人工估计、日期自动滚动）；L2 重点票三情景由 agent 写 `output/obs_scenarios.json`。**红线**：L1 触发线=纯客观表述（无动作词）；L2 动作列固定「推测专家操作」口径 + 段首红线声明。详见「步骤 3.5」 |
 | 7.3 | 次日开盘指引 | 🚨 标题必须含「K3」+ 周几特征（防覆盖成「7 ·」） |
 | 9 | 来源 | 更新素材份数 |
+
+## 步骤 3.5 · 生成 7.2 段（脚本，非手写）
+
+```bash
+cd /Users/samt/golden_stock_observer
+python3 build_obs_section.py --data-date 2026-09-10   # 🔴 建议显式指定数据日（见下）
+python3 build_obs_section.py --dry-run                # 只出片段 output/obs_section.html，不改页面
+```
+
+🔴 **数据日锚定（2026-09-11 补 · 实测踩到）**：脚本默认读 `output/obs_deduce_latest.json`，但该文件**永远是最新交易日**——而盘前推演页面用的是**上一交易日**数据。例：9/11 盘前页面口径为 9/10 收盘，但 16:40 的 `com.goldenstock.backtest` 调度已把 `obs_deduce_latest` 刷成 **9/11**，此时不带参数运行会让 L1 关键位与页面其他段落**数据日错位**。故：
+- 盘前推演 → **必须** `--data-date <上一交易日>`（从 `data/daily_review_history/<T>/obs_deduce_auto_<T>.json` 读）
+- 脚本会校验 `obs_scenarios.json` 的 `data_date` 与观测池 `date`：**不一致直接报错退出**（防用错数据日），可用 `--allow-mismatch` 强制但会导致 L1/L2 口径不一致
+- 7.2 段标题内的「数据日 YYYY-MM-DD 收盘」由脚本按实际数据源自动写入，**不要手改**
+
+**分层结构（用户 2026-09-11 拍板）**
+
+| 层 | 覆盖 | 内容 | 产出方式 |
+|---|---|---|---|
+| **L2** | 重点 5–8 只 | 三情景（A/B/C）+ 概率 + 机制路径 + 推测专家操作 | agent 写 `output/obs_scenarios.json` |
+| **L1** | 全池（当前 32 只） | 支撑 MA5/MA10、压力 high10、结构位 low10、MA5 偏离、5 日、量比 + 客观触发线 | **脚本机械计算**，零人工估计 |
+
+**L2 选票四象限**（沿用现有样本，可调）：① A股持仓 ∩ 观测池 ② 强势核心（MA5 偏离最低的多头）③ 超买风险（MA5 偏离最大）④ 事件负向最明确 ⑤ 弱势代表（空头 + 跌幅最大）。
+
+**关键实现约束**
+- 交互 = 原生 `<details>` + 纯 CSS：`analysis.html` 经 `ana.innerHTML = t` 注入后 `<script>` **不执行**，但 `<style>` 会被 `drScopeInjectedStyles` 作用域化后生效 → 纯 CSS 是唯一零 JS 依赖的可行路径。
+- 样式块以 `/* OBS-FOLD-CSS v1` 为标记**整块替换**（可安全迭代脚本）；`.obs-*` 类名全局作用域，改名前先 grep 主站是否已占用 `obs-` 前缀。
+- 7.2 段边界锚点：`<!-- 7.2 重点观测股` → `<!-- 7.4 操作预案`。⚠️ **实际段落顺序是 7.2 → 7.4 → 7.3**，不要按序号去找 `7.3` 当终点。
+- ⚠️ **跳过此步 → 7.2 段回退为手写静态大表**（脚本产出不参与其他 rebuild 流程，必须显式调用）。
+
+## 步骤 3.6 · 7.1 段结论句语义色（脚本上色，非手写）
+
+```bash
+cd /Users/samt/golden_stock_observer
+python3 build_k3_conclusions.py            # 生成 + 替换 root 与 deploy 副本（幂等，可反复跑）
+python3 build_k3_conclusions.py --dry-run  # 只报告分类结果，不写文件
+```
+
+**背景（2026-09-11 用户反馈）**：7.1 每行「内容」格最后一句是结论句，原先只用 `<b>` 加粗 → 不够醒目，且无法区分四种不同性质的结论。
+
+**四类语义色（与第二列 `dr-up`/`dr-caution`/`dr-dn` 色系呼应）**
+
+| 类名 | 语义 | 颜色 | 呼应第二列 | 典型句式 |
+|---|---|---|---|---|
+| `k3c-go` | 可执行·相对占优 | 红 | ✅ 真共振 | 「…可作为…」「…可低吸…」 |
+| `k3c-cond` | 有条件·待确认 | 橙 | ⚠️ | 「但…」「…尚需…」「…未确认」 |
+| `k3c-risk` | 风险·回避 | 绿 | ❌ 伪共振 | 「不追高/不补仓/不接刀」「…承压」「…不成立」 |
+| `k3c-verify` | 待验证变量·方法论 | 蓝 | （跨行） | 「验证变量：…」「需以…验证」 |
+
+**分类为关键词规则**（`RULES` 顺序敏感：verify → risk → go → cond 兜底），脚本会打印**每一行的判定依据**；有新语气未覆盖时打印 ⚠️「未匹配」清单，此时需人工在 `analysis.html` 里直接指定 class 后重跑。
+
+**关键实现约束**
+- 结论句定位 = 每行第 3 个 `<td>` 内**最后一个 `<b>…</b>`**（统计已验证 11/11 成立）。脚本保留 `<b>` 只加外层 `<span>` → 即使 CSS 失效也仍是加粗，不会退化。
+- 样式块以 `/* K3C-CONCLUSION-CSS v1` 为标记**整块替换**（可安全迭代脚本）；`.k3c*` 为类选择器，**不受** `drScopeInjectedStyles` 裸标签改写影响。
+- 图例 `.k3c-legend` 必须插在 `<table>` **之前**（放 `<table>` 内会被浏览器 foster-parent 移出）。
+- 两主题自适应：底色 in default（浅色）`.13~.15` / `@media (prefers-color-scheme:dark)` `.16~.17`；字色与色条用 `var(--red/orange/green/blue)`（这 4 个变量在暗色分支未重定义，两主题同值）。
+- `review/check_analysis_style.py` 已加 **[8/8] 守卫**：7.1 段每一数据行都带 `k3c-*` + CSS 块=1 + 图例=1，任一不满足即 ❌ 并提示跑本脚本。
+- ⚠️ **跳过此步 → 7.1 段结论句退回「只有加粗」的旧观感**（用户明确反馈过的问题）。
 
 ## 步骤 4 · 更新 feed_review
 
@@ -66,7 +123,9 @@ bash review/sync_feed_before_review.sh
 ## 步骤 5 · 防坑检查（逐项确认）
 
 **排版（design token 体系）**
-- 语义色 class：`dk-main`（红）/ `dk-caution`（橙）/ `dk-risk`（红加粗）/ `dk-data`（蓝）/ `dk-neutral`（灰）
+- 语义色 class：`dk-main`（红）/ `dk-caution`（橙）/ `dk-risk`（红加粗）/ `dk-data`（蓝）/ `dk-neutral`（灰）/ `dk-dn`（绿·跌）
+- 🆕 **7.1 段结论句语义色**（2026-09-11）：`k3c-go`（红·可执行）/ `k3c-cond`（橙·有条件）/ `k3c-risk`（绿·回避）/ `k3c-verify`（蓝·待验证）— 见「步骤 3.6」
+- 🆕 **未定义类 = 静默无色**（2026-09-11 自检教训）：实测 `dk-dn`(13 处)、`dr-caution`(4 处)、`dr-wrap`(54 处) 在 HTML 中被使用但**全站无 CSS 定义** → 这些标记完全不起作用，用户看到的只是普通文字。**新增 class 时必须在 `analysis.html` 自包含 `<style>` 内同步补定义**，`[9/9]` 守卫会红灯提示。
 - 字号统一 12.5px（占比需 >80%）
 - 表格：`.dr-tbl td` 默认换行（三处 index CSS 已治本），长文本 td 加 `dr-wrap`
 
@@ -74,6 +133,18 @@ bash review/sync_feed_before_review.sh
 - 0 段：`data-preopen` 属性存在 → `drDeriveSections` 会跳过
 - 7.3 段：标题含「K3」/ 周几 + 正文含「大势预判 / 主线策略 / 回避清单」→ 跳过改写
 - 1.2 段：容器 `id="drTblDiamond"` 存在 + 标题含「三重门控合并去重」→ 内容由 `drLoadDiamond()` 渲染，HTML 内**不得**出现金钻股票行（防写死数据与分表版式回退）
+
+**7.2 段（分层折叠卡 · 2026-09-11 改造）**
+- 跑完 `build_obs_section.py` 后，自检行须显示 `折叠卡 = L1 全池 32 只 + L2 重点 N 只`（当前 39），数量不符会打 ✗
+- `analysis.html` 内 `/* OBS-FOLD-CSS v1` 出现次数须 **= 1**（>1 = 样式块重复插入，说明标记查找失效）
+- root 与 deploy 副本须逐字节一致（脚本已自动同步，异常时手动 `cp`）
+- 红线：L2 动作列表头固定「推测专家操作」，段首红线声明（不构成对读者的建议）须在
+- 场景数据滞后检查：`obs_scenarios.json` 的 `data_date` 须与 `obs_deduce_latest.json` 的 `date` 一致，脚本会在不一致时打 ⚠
+
+**7.1 段（结论句语义色 · 2026-09-11 改造）**
+- 跑完 `build_k3_conclusions.py` 后，自检行须显示 `数据行 = 已上色`（当前 11/11），不等会打 ⚠️ 未匹配清单
+- `analysis.html` 内 `/* K3C-CONCLUSION-CSS v1` 出现次数须 **= 1**，`class="k3c-legend"` 须 **= 1**
+- 自带 `[8/8]` 守卫已覆盖以上三项，直接跑 `python3 review/check_analysis_style.py` 即可
 
 **注入样式作用域化（2026-09-10 治本）**
 - `analysis.html` 自包含 `<style>` 里的 `body{padding:20px;max-width:980px}` / `:root{...}` / `h2,h3,h4` / `code` / `b,strong` 等**越界规则**，经 `renderDailyReview()` 的 `ana.innerHTML = t` 注入后会**全局生效** → 曾把整站限宽 980px（`.main` 的 1480px 沦为死代码）并覆盖主站配色变量与字体。
@@ -90,9 +161,21 @@ cp data/daily_review/market.json  deploy/data/daily_review/market.json
 
 **自检**
 ```bash
-python3 review/check_analysis_style.py   # 老站排版：必须全过（含 [0] BOM 守卫）
+python3 review/check_analysis_style.py   # 老站排版：必须全过（含 [0] BOM 守卫 + [9/9] 未定义类守卫）
+python3 review/check_v3_style.py         # V3 独立版：四副本一致性 + 语义色 + 兜底（必须全过）
 python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 null close（必须 ✅）
 ```
+
+> 🔴 **2026-09-11 自检发现（已治本，留档防复发）**
+> ① **`rebuild_html.py` title 版本号拼接 bug**：原实现 `html.replace('兜金观测 — 量化信号池 v', '…v' + today)`
+> 用**不含版本号的旧串**做替换，模板里已有 `v2026-08-29` → 生成 `v2026-09-092026-08-29`（线上实测污染）。
+> 已改为正则 `re.sub(r'(…信号池 v)[\d\-]*', …)` 整体吃掉旧版本号 + 命中数必须 =1 否则中止。
+> **新增 title 后需检查版本号只有一处、格式为 `vYYYY-MM-DD`。**
+> ② **`index_hide89.html` 双份漂移**：`review_v3/index_hide89.html` 与 `deploy/review_v3/index_hide89.html`
+> 语义相同（均 = index.html 的同内容副本，不含隐藏 8/9 段逻辑），但本地 deploy 侧曾落后线上 1 个版本
+> （86801 vs 88533 字节，停在 2026-09-08 的旧实现：`num()` 无兜底 → 全页卡「加载中…」；缠论列读 obs_deduce → 全空）。
+> SOP 推送清单里仍列着它 → **一旦推送即把线上正确版回退成旧 bug 版**。
+> 治本：V3 视为**四副本同内容结构**，`check_v3_style.py [1/7]` 强制四份逐字节一致；改动后必须 `cp` 到其余三份。
 
 > 🔴 **2026-09-10 事故**：`us_kline.us_sox.latest.close = null` → V3 页 `renderUsDual`
 > 直接 `.toLocaleString()` 抛 TypeError → `main()` reject → **全页永久卡「加载中…」**（老站不受影响）。
@@ -109,6 +192,17 @@ python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 
 - **无任何「加载中…」残留**（全站渲染完成的唯一判据）
 - 0 段「推演开盘」显示 agent 结论（非规则打分回退）
 - 控制台无 `[V3] 段渲染失败` 报错
+- 🆕 **结论卡按性质着色**（2026-09-11 改造）：`ai_synthesis.conclusion_first` 的每个 `【标题】正文` 块由 `renderConclusion()`
+  按标题关键词分类 → 左侧色条 + 标题色 + 首句加粗（`rc-risk` 红 / `rc-main` 红 / `rc-caution` 橙 / `rc-data` 蓝 / 无匹配则金）。
+  分类规则在 `renderConclusion` 内的 `RC` 数组（顺序敏感：risk → caution → data → main 兜底）。
+
+**V3 副本与代码规则（2026-09-11 立）**
+- V3 是**四副本同内容**结构：`review_v3/index.html` / `review_v3/index_hide89.html` /
+  `deploy/review_v3/index.html` / `deploy/review_v3/index_hide89.html`。
+  改任一份后**必须 `cp review_v3/index.html` 到其余三份**，否则 `[1/7]` 红灯（且推送旧副本 = 线上回退）。
+- V3 固定暗色主题（无 `prefers-color-scheme` 分支），语义色变量与老站同名（`--red/--orange/--blue/--green`）。
+- 文本归一化必须用 `asArr` / `asText`（白名单含 `event`）/ `asTxt` 三件套，渲染一律 `esc(asTxt(x))`；
+  **禁用** `esc(asText(x) || x)`（对象会变 `[object Object]`）——`[4/7]` 守卫会红灯。
 
 ## 步骤 6 · 提交推送
 
@@ -118,8 +212,11 @@ python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 
 cd /Users/samt/golden_stock_observer && rm -f .git/index.lock && git add -A data/ feed/ review/ commands/ index.html index_template.html && git add -f deploy/data/daily_review/analysis.html deploy/data/daily_review/market.json deploy/output/feed_review_latest.json deploy/output/feed_review_YYYY-MM-DD.json deploy/index.html && git commit -m "..." && git pull --rebase origin main && git push origin main
 ```
 
-> V3 相关改动（`review_v3/index.html` 及同源 `deploy/review_v3/index.html`、`review_v3/index_hide89.html`）
-> 若不在 `review/` 下，需显式补：`git add review_v3/index.html review_v3/index_hide89.html && git add -f deploy/review_v3/index.html`。
+> V3 相关改动（**四副本同内容**：`review_v3/index.html` + `review_v3/index_hide89.html` + `deploy/review_v3/` 同名两份）
+> 若不在 `review/` 下，需显式逐个点名（新增文件每个都要带 `-f`）：
+> `git add review_v3/index.html review_v3/index_hide89.html && git add -f deploy/review_v3/index.html deploy/review_v3/index_hide89.html`
+> ⚠️ 2026-09-11 教训：**漏掉 `deploy/review_v3/index_hide89.html` 会留下旧版**，下次推送即回退线上正确版。
+> 推送前先跑 `python3 review/check_v3_style.py`（`[1/7]` 四副本一致性必须通过）。
 
 > 🔴 **`output/` 绝不能放进 `git add -A`**（2026-09-03/09-04 连续两次踩坑）：
 > `output/` 在 `.gitignore` 里，显式 `git add -A output/` 会打印

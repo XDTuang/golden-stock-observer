@@ -16,6 +16,7 @@
 仍由 fetch_pool.py / golden_diamond_scan.py / slim_signals.py 等固化机制产出。
 """
 import os
+import re
 from datetime import datetime
 
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -36,11 +37,13 @@ data_loader_comment = (
 html = html.replace('// DATA_PLACEHOLDER', data_loader_comment)
 
 # 更新标题日期
+# 2026-09-11 治本：原实现用「不含版本号的旧串」做 str.replace（old='…信号池 v'），
+#   模板里已有 v2026-08-29 → 替换后拼成 v2026-09-092026-08-29（线上实测污染）。
+#   改用正则整体吃掉旧版本号，保证幂等（重复运行结果恒定）。
 today = datetime.now().strftime('%Y-%m-%d')
-html = html.replace(
-    '兜金观测 — 量化信号池 v',
-    f'兜金观测 — 量化信号池 v{today}'
-)
+html, _n = re.subn(r'(兜金观测 — 量化信号池 v)[\d\-]*', rf'\g<1>{today}', html)
+if _n != 1:
+    raise SystemExit(f'❌ title 版本号替换命中 {_n} 处（期望 1 处），已中止以免写坏 index.html')
 
 with open(output_html, 'w', encoding='utf-8') as f:
     f.write(html)

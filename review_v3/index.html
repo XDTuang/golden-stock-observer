@@ -56,6 +56,14 @@ a{color:var(--blue)}
 tr.hl3 td{background:rgba(212,175,55,.08)}
 .chip{display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text-secondary)}
 @media(max-width:860px){.grid4{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+
+/* DK-SEMANTIC-CSS v1 · 2026-09-11 自检修订：补齐 dk-* 语义色（对齐老站），供结论块分类着色使用 */
+.dk-main{color:var(--red);font-weight:600}
+.dk-caution{color:var(--orange);font-weight:600}
+.dk-risk{color:var(--red);font-weight:700}
+.dk-data{color:var(--blue);font-weight:600}
+.dk-neutral{color:var(--text-muted)}
+.dk-dn{color:var(--green)}
 </style>
 </head>
 <body data-page-node-id="diswtc00oVu1rWGdYaUaAo">
@@ -598,16 +606,43 @@ function loadNews() {
 /* ── 结论先行渲染（conclusion_first 支持 list：每条论断独立分段，【标题】金色加粗）── */
 function renderConclusion(cf, dateStr, genStr) {
   const arr = Array.isArray(cf) ? cf : [cf];
+  // 2026-09-11 自检修订：结论块按性质着色（对齐老站 7.4 的 dk-main/caution/risk/data 体系）。
+  //   此前仅「金色标题 + 无色正文」，多段结论性质无法区分、可读性差。
+  //   分类顺序：risk → caution → data → main（main 作兜底捕获，避免「主线」等词误入 risk）
+  const RC = [
+    ['dk-risk',    /风险|回避|利空|恶化|不成立|降级|警戒|规避|杀跌|承压|退潮|偏弱|收跌|普跌|走弱|失守|下杀|压力/],
+    ['dk-caution', /预案|触发|纪律|条件|若|观察|窗口|等待|临界|分界|存疑|待验证|不确定|推翻|修正|对冲|分化|博弈|跷跷板|变数/],
+    ['dk-data',    /数据|口径|来源|统计|自检|指标|结构|事件|清单|复盘|收盘|矩阵|对照/],
+    ['dk-main',    /主线|方向|机会|占优|低吸|共振|超配|首选|进攻|预判|倾向|锚|逻辑|看多|偏多|机会/],
+  ];
+  const rcOf  = (t) => { const hit = RC.find(r => r[1].test(t)); return hit ? hit[0] : null; };
+  const colOf = (c) => c === 'dk-caution' ? 'var(--orange)' : c === 'dk-data' ? 'var(--blue)'
+                     : c === 'dk-main' ? 'var(--red)' : c === 'dk-risk' ? 'var(--red)' : 'var(--gold)';
+  const wtOf  = (c) => c === 'dk-risk' ? 700 : (c ? 600 : 700);
   let h = '<div class="dr-tag" style="color:var(--gold);border-color:var(--gold)">agent 结论先行（盘前推演 · 数据日 ' + esc(dateStr || '') + (genStr ? ' · 生成 ' + esc(genStr) : '') + '）</div>';
   arr.forEach(t => {
     if (t == null || t === '') return;
     const txt = String(t);
     const m = txt.match(/^【([^】]+)】([\s\S]*)$/);
-    if (m) {
-      h += '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--gold);padding:8px 12px;border-radius:6px;margin-top:6px"><b style="color:var(--gold)">【' + esc(m[1]) + '】</b>' + esc(m[2]).trim() + '</div>';
-    } else {
-      h += '<div class="dr-note" style="background:var(--bg-subtle);border-left:3px solid var(--gold);padding:8px 12px;border-radius:6px;margin-top:6px">' + esc(txt) + '</div>';
-    }
+    const title = m ? m[1] : '';
+    const body  = m ? m[2].trim() : txt;
+    const cls = title ? rcOf(title) : null;
+    const col = colOf(cls);
+    // 标题着色（保留【】视觉）
+    const ttl = title
+      ? '<b class="' + (cls || '') + '" style="color:' + col + ';font-weight:' + wtOf(cls) + '">【' + esc(title) + '】</b>'
+      : '';
+    // 首句（≤100 字的结论句）加粗着色，其余正文保持常色 —— 防整块变粗而失去层次
+    //   阈值 100 经真实数据校准：6 块中 5 块首句落在 41~99 字，1 块（关键事件）无句读分隔故跳过
+    let lead = '', rest = body;
+    const cut = body.search(/[。；]/);
+    if (cut > 0 && cut <= 100) { lead = body.slice(0, cut + 1); rest = body.slice(cut + 1); }
+    const leadHtml = lead
+      ? '<b class="' + (cls || '') + '" style="color:' + col + ';font-weight:' + wtOf(cls) + '">' + esc(lead) + '</b>'
+      : '';
+    h += '<div class="dr-note rc-block' + (cls ? ' rc-' + cls.slice(3) : '')
+       + '" style="background:var(--bg-subtle);border-left:3px solid ' + col
+       + ';padding:8px 12px;border-radius:6px;margin-top:6px">' + ttl + leadHtml + esc(rest) + '</div>';
   });
   return h;
 }
@@ -629,9 +664,16 @@ function loadSynth() {
     let d = await tryJ('../output/v3_reasoning_latest.json');
     if (!d || !d.ai_synthesis) d = await J('../output/feed_review_latest.json');
     const syn = d.ai_synthesis || {};
-    const asArr = (v) => Array.isArray(v) ? v : (v ? [v] : []);
-    const asText = (v) => (typeof v === 'string') ? v : (v && (v.text || v.desc || v.name)) || '';
-    const chips = (arr, color) => asArr(arr).map(x => '<span class="chip" style="color:' + color + '">' + esc(asText(x) || x) + '</span>').join('');
+    // 2026-09-11 自检修订：对齐老站 index.html 的 asArr/asText/asTxt 三件套
+    //   旧实现 chips 用 esc(asText(x) || x)：asText 白名单缺 event，x 为 {time,event,impact} 对象时
+    //   会落到 `|| x` → esc(对象) → 渲染出 [object Object]。改为 asTxt（对象兜底拼接字符串字段值）。
+    const asArr = (v) => Array.isArray(v) ? v : (v && typeof v === 'object' ? [v] : (v ? [String(v)] : []));
+    const asText = (v) => (typeof v === 'string') ? v
+      : (v && typeof v === 'object' ? (v.desc || v.text || v.summary || v.note || v.event || '') : '');
+    const asTxt = (v) => (typeof v === 'string') ? v
+      : (v && typeof v === 'object' ? (asText(v) || Object.values(v).filter(x => typeof x === 'string').join(' '))
+      : String(v == null ? '' : v));
+    const chips = (arr, color) => asArr(arr).map(x => '<span class="chip" style="color:' + color + '">' + esc(asTxt(x)) + '</span>').join('');
     let h = '';
     if (!Object.keys(syn).length) {
       h = '<div class="dr-note">ai_synthesis 尚未生成（待本机 agent 跑「推演」）。</div>';

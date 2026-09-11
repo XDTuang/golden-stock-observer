@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""投喂推演 → analysis.html 回填内容版式自检（2026-09-02 立 · 8 项）
+"""投喂推演 → analysis.html 回填内容版式自检（2026-09-02 立 · 9 项）
    跑法：python3 review/check_analysis_style.py
    期望：全部通过；任何失败=推演版式污染，必须修
    第 5 项专门防御"td 长内容撑破右侧屏幕"重复 bug（9/1 / 9/2 多次踩坑，9/2 治本）
-   第 7 项（2026-09-10 增）防御"analysis.html 自包含 style 越界规则经注入污染整站"（整站曾被限宽 980px）"""
+   第 7 项（2026-09-10 增）防御"analysis.html 自包含 style 越界规则经注入污染整站"（整站曾被限宽 980px）
+   第 8 项（2026-09-11 增）防御 7.1 结论句退回"只有加粗无色"
+   第 9 项（2026-09-11 增）防御"class 有标记无定义"静默失效（曾实测 dk-dn/dr-caution/dr-wrap 三例）"""
 import re, io, sys, subprocess
 from collections import Counter
 
@@ -129,7 +131,94 @@ for f in ['index.html', 'index_template.html', 'deploy/index.html']:
 print(f"{'✅' if ok7 else '❌'} [7/7] 注入样式作用域化守卫（analysis.html 越界规则不污染整站）：{'通过' if ok7 else '未通过'}")
 for n in note7: print(f"      {n}")
 
+# 8) [8/8] 🔴 7.1 段结论句语义色守卫（2026-09-11）
+#    用户反馈：7.1「内容」格每段最后一句是结论句，原先只用 <b> 加粗 → 不够醒目，
+#    且无法区分「可执行 / 有条件 / 风险回避 / 待验证」四种性质。
+#    治本：build_k3_conclusions.py 生成四类语义色（与第二列 dr-up/up-caution/dn 色系呼应）
+#      k3c-go(红) / k3c-cond(橙) / k3c-risk(绿) / k3c-verify(蓝) + .k3c-legend 图例。
+#    此检查确保 7.1 段【每一数据行】的结论句都带 k3c-* 类，且 CSS 与图例各仅 1 份
+#    —— 漏标会让该行结论退回「只有加粗」的旧观感（用户明确反馈过的问题）。
+ok8 = True
+note8 = []
+try:
+    _i71 = s.find('7.1 · K3')
+    _j71 = s.find('<!-- 7.2 重点观测股')
+    _s71 = s[_i71:_j71] if (_i71 >= 0 and _j71 > _i71) else ''
+    if not _s71:
+        note8.append('⚠️ 未定位到 7.1 段（锚点 `7.1 · K3` / `<!-- 7.2 重点观测股` 缺失）')
+        ok8 = False
+    else:
+        _rows = [r for r in re.findall(r'<tr>(.*?)</tr>', _s71, re.S)
+                 if len(re.findall(r'<td', r)) >= 3]
+        _miss = []
+        for _r in _rows:
+            _tds = re.findall(r'<td[^>]*>(.*?)</td>', _r, re.S)
+            if len(_tds) < 3:
+                continue
+            if 'class="k3c k3c-' not in _tds[2]:
+                _theme = re.sub(r'<[^>]+>', '', _tds[0]).strip()
+                _miss.append(_theme)
+        _n_cls = s.count('class="k3c k3c-')
+        _n_css = s.count('/* K3C-CONCLUSION-CSS v1')
+        _n_lgd = s.count('class="k3c-legend"')
+        print(f"      7.1 数据行={len(_rows)} 已上色={len(_rows) - len(_miss)}"
+              f" | K3C CSS 块={_n_css}(须=1) 图例={_n_lgd}(须=1) 结论条={_n_cls}")
+        if _miss:
+            note8.append(f'⚠️ 未上色 {len(_miss)} 行：{_miss}（跑 python3 build_k3_conclusions.py）')
+            ok8 = False
+        if _n_css != 1:
+            note8.append(f'⚠️ K3C CSS 块数={_n_css}（须=1；重复插入会导致样式叠加）')
+            ok8 = False
+        if _n_lgd != 1:
+            note8.append(f'⚠️ k3c 图例数={_n_lgd}（须=1）')
+            ok8 = False
+except Exception as _e:
+    note8.append(f'⚠️ 检查异常：{_e}')
+    ok8 = False
+print(f"{'✅' if ok8 else '❌'} [8/8] 7.1 结论句语义色（k3c-* 全行覆盖 + CSS/图例唯一）：{'通过' if ok8 else '未通过'}")
+for n in note8: print(f"      {n}")
+
+# 9) [9/9] 🔴 未定义类守卫（2026-09-11 自检新增）
+#    实测：dk-dn(13 处) / dr-caution(4 处) / dr-wrap(54 处) 在 analysis.html 中使用，
+#    但全站 CSS（analysis.html 自包含 style + 三处 index）均无定义
+#    → 这些类静默退化为「无色 / 无效果」，用户看到的只是普通文字。
+#    这与用户反馈的「结论句不够醒目」是同一类问题（有标记、无样式），故立守卫永久防御。
+ok9 = True
+note9 = []
+try:
+    _defined = set(re.findall(r'\.([A-Za-z][\w-]*)',
+                              "\n".join(re.findall(r'<style[^>]*>(.*?)</style>', s, re.S))))
+    for _f9 in ['index.html', 'index_template.html', 'deploy/index.html']:
+        try:
+            _defined |= set(re.findall(r'\.([A-Za-z][\w-]*)', io.open(_f9, encoding='utf-8').read()))
+        except FileNotFoundError:
+            note9.append(f'⚠️ 缺少 {_f9}（定义集合可能不全）')
+    _used = Counter()
+    for _m9 in re.finditer(r'class="([^"]+)"', s):
+        for _cl in _m9.group(1).split():
+            _used[_cl] += 1
+    _miss = [(k, v) for k, v in _used.most_common() if k not in _defined]
+    if _miss:
+        note9.append('⚠️ 使用但无 CSS 定义（会静默无色/无样式）：' +
+                     '、'.join(f'{k}×{v}' for k, v in _miss))
+        note9.append('   → 修法：在 analysis.html 自包含 <style> 内补类定义，或改用已定义的语义色类')
+        ok9 = False
+    # 关键语义类必须存在（即使在当前版本暂时未被使用）——防被误删后同类问题复发
+    _KEY9 = ['dk-dn', 'dr-caution', 'dr-wrap', 'dk-main', 'dk-caution', 'dk-risk',
+             'dk-data', 'dk-neutral', 'dr-up', 'dr-dn']
+    _lack9 = [k for k in _KEY9 if k not in _defined]
+    if _lack9:
+        note9.append(f'⚠️ 关键语义类定义缺失：{_lack9}')
+        ok9 = False
+    if ok9:
+        print(f"      扫描 {len(_used)} 个在用 class，全部有定义 ✓；10 个关键语义类齐备 ✓")
+except Exception as _e:
+    note9.append(f'⚠️ 检查异常：{_e}')
+    ok9 = False
+print(f"{'✅' if ok9 else '❌'} [9/9] 未定义类守卫（在用 class 必须有 CSS 定义）：{'通过' if ok9 else '未通过'}")
+for n in note9: print(f"      {n}")
+
 # 总结
-all_ok = ok0 and ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7
+all_ok = (ok0 and ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9)
 print(f"\n{'✅ 全部通过' if all_ok else '❌ 存在版式问题，请修复'}")
 sys.exit(0 if all_ok else 1)
