@@ -60,7 +60,13 @@ bash review/sync_feed_before_review.sh
 cd /Users/samt/golden_stock_observer
 python3 build_obs_section.py --data-date 2026-09-10   # 🔴 建议显式指定数据日（见下）
 python3 build_obs_section.py --dry-run                # 只出片段 output/obs_section.html，不改页面
+python3 build_obs_section.py --data-date <T> --panel-only  # 只产 V3 配对载荷 obs_panel.json（不动页面）
 ```
+
+🔴 **本脚本同时产出 V3 第 6 段的配对载荷 `output/obs_panel.json`（+ deploy 副本）**（2026-09-11 方案 A）：
+`{data_date, for_date, scen_data_date, obs_source, items, picks}` —— items 取自「本次运行**实际用的那份**观测池快照」（可能是 `--data-date` 指定的历史文件），picks 取自 `obs_scenarios.picks`，**由同一次运行配对**。
+V3 只读这一个文件 → L1 与 L2 的数据日**必然一致**，不会再出现「卡片上是 9/11 的收盘价、情景里是 9/10 的价位」。
+`obs_source` 字段记录实际用的快照路径，可溯源。产出后必须让 V3 重新生成（步骤 3.7）。
 
 🔴 **数据日锚定（2026-09-11 补 · 实测踩到）**：脚本默认读 `output/obs_deduce_latest.json`，但该文件**永远是最新交易日**——而盘前推演页面用的是**上一交易日**数据。例：9/11 盘前页面口径为 9/10 收盘，但 16:40 的 `com.goldenstock.backtest` 调度已把 `obs_deduce_latest` 刷成 **9/11**，此时不带参数运行会让 L1 关键位与页面其他段落**数据日错位**。故：
 - 盘前推演 → **必须** `--data-date <上一交易日>`（从 `data/daily_review_history/<T>/obs_deduce_auto_<T>.json` 读）
@@ -79,7 +85,9 @@ python3 build_obs_section.py --dry-run                # 只出片段 output/obs_
 **关键实现约束**
 - 交互 = 原生 `<details>` + 纯 CSS：`analysis.html` 经 `ana.innerHTML = t` 注入后 `<script>` **不执行**，但 `<style>` 会被 `drScopeInjectedStyles` 作用域化后生效 → 纯 CSS 是唯一零 JS 依赖的可行路径。
 - 样式块以 `/* OBS-FOLD-CSS v1` 为标记**整块替换**（可安全迭代脚本）；`.obs-*` 类名全局作用域，改名前先 grep 主站是否已占用 `obs-` 前缀。
-- 7.2 段边界锚点：`<!-- 7.2 重点观测股` → `<!-- 7.4 操作预案`。⚠️ **实际段落顺序是 7.2 → 7.4 → 7.3**，不要按序号去找 `7.3` 当终点。
+- 7.2 段边界锚点：`<!-- 7.2 重点观测股` → `<!-- 7.3 次日开盘指引`（= 7.2 的**下一段**）。
+  🔴 **2026-09-11 修正**：段落顺序已重排为 **7.1 → 7.2 → 7.3 → 7.4**（原错排为 `7.2 → 7.4 → 7.3`，而 `END_ANCHOR` 迁就了错误顺序、把它固化）。
+  **顺序与锚点必须同时改**，否则切片会吃掉错内容；守卫 `check_analysis_style.py [11/11]` 校验。
 - ⚠️ **跳过此步 → 7.2 段回退为手写静态大表**（脚本产出不参与其他 rebuild 流程，必须显式调用）。
 
 ## 步骤 3.6 · 7.1 段结论句语义色（脚本上色，非手写）
@@ -108,8 +116,36 @@ python3 build_k3_conclusions.py --dry-run  # 只报告分类结果，不写文�
 - 样式块以 `/* K3C-CONCLUSION-CSS v1` 为标记**整块替换**（可安全迭代脚本）；`.k3c*` 为类选择器，**不受** `drScopeInjectedStyles` 裸标签改写影响。
 - 图例 `.k3c-legend` 必须插在 `<table>` **之前**（放 `<table>` 内会被浏览器 foster-parent 移出）。
 - 两主题自适应：底色 in default（浅色）`.13~.15` / `@media (prefers-color-scheme:dark)` `.16~.17`；字色与色条用 `var(--red/orange/green/blue)`（这 4 个变量在暗色分支未重定义，两主题同值）。
-- `review/check_analysis_style.py` 已加 **[8/8] 守卫**：7.1 段每一数据行都带 `k3c-*` + CSS 块=1 + 图例=1，任一不满足即 ❌ 并提示跑本脚本。
+- `review/check_analysis_style.py` 已加 **[8/11] 守卫**：7.1 段每一数据行都带 `k3c-*` + CSS 块=1 + 图例=1，任一不满足即 ❌ 并提示跑本脚本。
 - ⚠️ **跳过此步 → 7.1 段结论句退回「只有加粗」的旧观感**（用户明确反馈过的问题）。
+
+## 步骤 3.7 · 生成 V3 第 6 段观测股（脚本，非手写）
+
+```bash
+cd /Users/samt/golden_stock_observer
+python3 build_v3_obs_section.py           # 生成 + 写 review_v3/index.html + 同步其余三副本
+python3 build_v3_obs_section.py --check   # 只校验漂移（不一致退 1），不写盘
+python3 build_v3_obs_section.py --no-sync # 只改根 index，不同步副本
+```
+
+🔴 **本脚本是 V3 第 6 段那段 JS 的唯一权威来源** —— 手工编辑该段会被整块覆盖
+（2026-09-11 实测踩到：先手工加日期标注、再跑脚本 → 被回退）。
+要改展示逻辑 → 改脚本内的 `NEW_JS`，然后重跑本脚本。
+`check_v3_style.py [8/8]` 内置了「生成链反查」（调用 `--check`），手工改过段内容会立刻红灯。
+
+**数据源（2026-09-11 方案 A · 用户拍板）**
+- **主源 = 步骤 3.5 产出的配对载荷 `../output/obs_panel.json`**（第 5 段映射分析 + 第 6 段观测股共 2 处引用）
+  → L1 与 L2 的数据日**必然一致**，数据条右侧显示「配对载荷 ✓」。
+- 回退 = 分别读 `obs_deduce_latest.json` + `obs_scenarios.json`（旧行为），页面会显式告警「回退源（未配对）」。
+  🔴 出现回退 = 载荷没产出或没推送 → 先跑 `python3 build_obs_section.py --data-date <T> --panel-only`，再重跑本脚本。
+
+**关键实现约束**
+- 样式块用**显式起止标记** `/* OBS-FOLD-CSS v3-1 ·` … `/* /OBS-FOLD-CSS v3-1 */` 整块替换。
+  🔴 **禁用 `find('}\n')` 这类模糊收尾锚点** —— 块尾之后是 `</style>` 再是 JS，会越过 `</style>` 一直吃到 JS 的大括号、删掉大段代码。
+- 段标题 layer 文案用**正则整体替换**（`HDR_RE`），禁用整串硬编码 —— 同 `rebuild_html.py` 的 title 教训。
+- 情景文本含 `<b>` 富文本 → 必须走 `obsRich()`（**先整体转义再放行白名单标签**），不得原样注入。
+- 验收判据：`#v3Obs` 内 `details.obs-fold` 数 = **L2 只数 + 池内只数**（如 7 + 32 = 39）。
+- ⚠️ **跳过此步 + 改了分析 → 线上 V3 仍是旧版**；本脚本不参与 `update_data.sh`，必须显式调用。
 
 ## 步骤 4 · 更新 feed_review
 
@@ -149,7 +185,7 @@ python3 build_k3_conclusions.py --dry-run  # 只报告分类结果，不写文�
 **注入样式作用域化（2026-09-10 治本）**
 - `analysis.html` 自包含 `<style>` 里的 `body{padding:20px;max-width:980px}` / `:root{...}` / `h2,h3,h4` / `code` / `b,strong` 等**越界规则**，经 `renderDailyReview()` 的 `ana.innerHTML = t` 注入后会**全局生效** → 曾把整站限宽 980px（`.main` 的 1480px 沦为死代码）并覆盖主站配色变量与字体。
 - 现状：`index.html` 的 `drScopeInjectedStyles(ana)` 在注入后自动把这些规则作用域化到 `#drAnalysis`（body/html 丢弃、`:root`→`#drAnalysis`、裸标签加前缀、`.dr-*` 类规则保留）。**analysis.html 无需修改**——其中的 `body{max-width:980px}` 是为 file:// 独立打开的限宽阅读体验而保留。
-- 自检 `[7/7]` 守卫三份 index 是否保留该调用；重构 `renderDailyReview()` 时若丢失调用，整站会再次变窄。
+- 自检 `[7/11]` 守卫三份 index 是否保留该调用；重构 `renderDailyReview()` 时若丢失调用，整站会再次变窄。
 
 **双写同步（防回退）**
 ```bash
@@ -189,7 +225,7 @@ python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 
 > 语义相同（均 = index.html 的同内容副本，不含隐藏 8/9 段逻辑），但本地 deploy 侧曾落后线上 1 个版本
 > （86801 vs 88533 字节，停在 2026-09-08 的旧实现：`num()` 无兜底 → 全页卡「加载中…」；缠论列读 obs_deduce → 全空）。
 > SOP 推送清单里仍列着它 → **一旦推送即把线上正确版回退成旧 bug 版**。
-> 治本：V3 视为**四副本同内容结构**，`check_v3_style.py [1/7]` 强制四份逐字节一致；改动后必须 `cp` 到其余三份。
+> 治本：V3 视为**四副本同内容结构**，`check_v3_style.py [1/8]` 强制四份逐字节一致；改动后必须 `cp` 到其余三份。
 
 > 🔴 **2026-09-11 下午 · 空转容器清理（用户授权「空转容器可清理」）**
 > 主题 = 静默失效第 2 类「**JS 引用无容器**」：页面不报错、不崩溃，只是功能永不生效。
@@ -231,14 +267,30 @@ python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 
   按标题关键词分类 → 左侧色条 + 标题色 + 首句加粗（`rc-risk` **绿** / `rc-main` 红 / `rc-caution` 橙 / `rc-data` 蓝 / 无匹配则金）。
   > 🔴 2026-09-11 色板统一：`dk-risk` 由红改绿（= 利空/回避/风险），与老站 7.1 的 `k3c-risk`(绿) 一致；详见上方「全站语义色板」。
   分类规则在 `renderConclusion` 内的 `RC` 数组（顺序敏感：risk → caution → data → main 兜底）。
+- 🆕 **6 段「重点观测股推演」为分层折叠卡**（2026-09-11 改造，展示方式对齐老站 7.2 段）：
+  `#v3Obs` 下应有 **L2 · 重点票完整情景推演**（源 `obs_scenarios.json`，展开 = 入选理由 + 关键位条 + 四列情景表）
+  与 **L1 · 全池关键位总览**（源 `obs_deduce_latest.json`，32 只网格）。
+  验收判据：`#v3Obs` 内 `details.obs-fold` 数 = **L2 只数 + 池内只数**（如 7 + 32 = 39）；
+  `.obs-list` 内 = L2 数、`.obs-grid` 内 = 池内只数；`table.obs-stbl` 数 = L2 数、每表 3 行；
+  🔴 **两个段标题的数据日必须一致**（都来自配对载荷 `obs_panel.json`），数据条右侧显示「**配对载荷 ✓**」；
+  若显示「回退源（未配对）」或出现橙色告警 → 说明 `obs_panel.json` 未产出/未推送，跑
+  `python3 build_obs_section.py --data-date <上一交易日> --panel-only` 后重跑 `build_v3_obs_section.py`。
+  同时**第 5 段「重点观测股的映射分析」也已改读配对载荷**：其标题与 chips 里的日期应是**实际数据日**（如 `09-10`），
+  🔴 **不得出现硬编码的 `9-8`**（该串曾写死 3 天，数据滚到 9/10 后仍显示 9-8）。
 
 **V3 副本与代码规则（2026-09-11 立）**
 - V3 是**四副本同内容**结构：`review_v3/index.html` / `review_v3/index_hide89.html` /
   `deploy/review_v3/index.html` / `deploy/review_v3/index_hide89.html`。
-  改任一份后**必须 `cp review_v3/index.html` 到其余三份**，否则 `[1/7]` 红灯（且推送旧副本 = 线上回退）。
+  改任一份后**必须 `cp review_v3/index.html` 到其余三份**，否则 `[1/8]` 红灯（且推送旧副本 = 线上回退）。
 - V3 固定暗色主题（无 `prefers-color-scheme` 分支），语义色变量与老站同名（`--red/--orange/--blue/--green`）。
 - 文本归一化必须用 `asArr` / `asText`（白名单含 `event`）/ `asTxt` 三件套，渲染一律 `esc(asTxt(x))`；
-  **禁用** `esc(asText(x) || x)`（对象会变 `[object Object]`）——`[4/7]` 守卫会红灯。
+  **禁用** `esc(asText(x) || x)`（对象会变 `[object Object]`）——`[4/8]` 守卫会红灯。
+- 🔴 **6 段观测股的 JS 由 `build_v3_obs_section.py` 拥有**（唯一权威来源，2026-09-11 立）。
+  手工编辑该段会被脚本整块覆盖（实测踩过：先手工加日期标注、再跑脚本 → 被回退）。
+  要改展示逻辑 → 改脚本内的 `NEW_JS` 然后 `python3 build_v3_obs_section.py`。
+  脚本幂等（CSS 用显式起止标记 `/* OBS-FOLD-CSS v3-1 ·` … `/* /OBS-FOLD-CSS v3-1 */` 整块替换，
+  **禁用 `find('}\n')` 这类模糊收尾锚点** —— 会误抓后方 JS 的括号吃掉整段代码）。
+  漂移自检：`python3 build_v3_obs_section.py --check`（不一致则退出码 1）；`[8/8]` 守卫已内置该反查。
 
 ## 步骤 6 · 提交推送
 
@@ -252,7 +304,15 @@ cd /Users/samt/golden_stock_observer && rm -f .git/index.lock && git add -A data
 > 若不在 `review/` 下，需显式逐个点名（新增文件每个都要带 `-f`）：
 > `git add review_v3/index.html review_v3/index_hide89.html && git add -f deploy/review_v3/index.html deploy/review_v3/index_hide89.html`
 > ⚠️ 2026-09-11 教训：**漏掉 `deploy/review_v3/index_hide89.html` 会留下旧版**，下次推送即回退线上正确版。
-> 推送前先跑 `python3 review/check_v3_style.py`（`[1/7]` 四副本一致性必须通过）。
+> 推送前先跑 `python3 review/check_v3_style.py`（`[1/8]` 四副本一致性必须通过）。
+>
+> 🔴 **V3 线上读 `deploy/output/`**（Pages 从 `deploy/` 发布）：6 段依赖
+> `deploy/output/obs_deduce_latest.json`（L1）与 **`deploy/output/obs_scenarios.json`（L2，2026-09-11 起）**。
+> `deploy/output/obs_scenarios.json` 此前**从未入库** → 线上 V3 只能出 L1（已降级不报错）。
+> 推送时两者都要点名（`output/` 被 ignore 但已跟踪，`-f` 显式加）：
+> `git add -f output/obs_deduce_latest.json output/obs_scenarios.json output/obs_panel.json \`
+> `  deploy/output/obs_deduce_latest.json deploy/output/obs_scenarios.json deploy/output/obs_panel.json`
+> （`obs_panel.json` = 配对载荷，第 5/6 段的主源；**三个 json 缺任一都会让线上 V3 回退或降级**）
 
 > 🔴 **`output/` 绝不能放进 `git add -A`**（2026-09-03/09-04 连续两次踩坑）：
 > `output/` 在 `.gitignore` 里，显式 `git add -A output/` 会打印

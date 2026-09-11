@@ -19,16 +19,27 @@
   L2 的动作列标题为「推测专家操作」，主语明确为专家，段首声明不构成对读者的建议。
 
 输入：
-  output/obs_deduce_latest.json    观测池客观读数
+  output/obs_deduce_latest.json    观测池客观读数（或 --data-date 指定的历史快照）
   output/obs_scenarios.json        L2 情景（可选；缺失则只出 L1）
 输出：
   data/daily_review/analysis.html  7.2 段替换（+ deploy 副本同步）
   output/obs_section.html          生成片段（调试/预览用）
+  output/obs_panel.json            🔴 V3 第 6 段专用**配对载荷**（+ deploy 副本）
+                                   = {data_date, for_date, scen_data_date, items, picks}
+                                   由「本次运行实际用的那份 obs_deduce 快照」+「obs_scenarios.picks」
+                                   **同一次运行配对**产出 → V3 只读这一个文件，L1/L2 数据日必然一致。
+                                   起因（2026-09-11）：V3 原本自己在运行时分别读 latest 与 scenarios，
+                                   而 obs_deduce_latest 会被盘后任务刷成当日、情景却是上一交易日口径
+                                   → 卡片上「9/11 的收盘价」配「9/10 的情景价位」。配对责任交给生成端。
 
 用法：
   python3 build_obs_section.py               # 生成并替换（root + deploy）
   python3 build_obs_section.py --dry-run     # 只写 output/obs_section.html，不动 analysis.html
+  python3 build_obs_section.py --panel-only  # 只产出 obs_panel.json，不动 analysis.html
   python3 build_obs_section.py --no-deploy   # 只改 root，不同步 deploy
+
+🔴 盘前推演必须带 --data-date <上一交易日>：obs_deduce_latest.json 永远是最新交易日，
+   而盘前页面用上一交易日口径；不带参数会数据日错位（脚本已内置「scen.data_date ≠ obs.date 即报错退出」防呆）。
 """
 import argparse
 import json
@@ -44,6 +55,13 @@ SCEN_JSON = BASE / "output" / "obs_scenarios.json"
 ROOT_HTML = BASE / "data" / "daily_review" / "analysis.html"
 DEPLOY_HTML = BASE / "deploy" / "data" / "daily_review" / "analysis.html"
 FRAG_OUT = BASE / "output" / "obs_section.html"
+PANEL_OUT = BASE / "output" / "obs_panel.json"
+PANEL_DEPLOY = BASE / "deploy" / "output" / "obs_panel.json"
+
+# V3 第 6 段渲染实际用到的字段（超集即冗余 → 载荷只带这些，明确契约、顺带瘦身）
+PANEL_FIELDS = ("code", "name", "sector", "close", "chg_last", "ma5", "ma10",
+                "high10", "low10", "pattern", "dev_ma5", "chg5", "vol_ratio",
+                "trend", "open_label")
 
 START_ANCHOR = "<!-- 7.2 重点观测股"
 # 2026-09-11 修正：原为 "<!-- 7.4 操作预案" —— 那是**迁就错误顺序**（7.2→7.4→7.3）。
@@ -326,6 +344,51 @@ def build_section(obs, scen):
     return head + '<div class="dr-card" style="margin-top:4px">' + note + l2 + l1 + tail + '</div>\n\n'
 
 
+# ---------------------------------------------------------------- 配对载荷（V3 专用）
+
+def build_panel(obs, scen, data_date, obs_src):
+    """产出 V3 第 6 段用的配对载荷。
+
+    关键：items 来自**本次运行实际用的那份快照**（可能是 --data-date 指定的历史文件），
+    picks 来自 obs_scenarios —— 两者由同一次运行配对，V3 那边就不必再猜该用哪一天的数据。
+    """
+    items = obs.get("items", [])
+    codes = {x.get("code") for x in items}
+    picks_in = (scen or {}).get("picks", [])
+    picks = [p for p in picks_in if p.get("code") in codes]
+    dropped = [p.get("code") for p in picks_in if p.get("code") not in codes]
+
+    slim = [{k: x.get(k) for k in PANEL_FIELDS} for x in items]
+    return {
+        "_schema": "obs_panel v1 · V3 第 6 段专用配对载荷（由 build_obs_section.py 产出）",
+        "_howto": ("V3 读 ../output/obs_panel.json 即可，不要再分别读 obs_deduce_latest 与 obs_scenarios；"
+                   "items 与 picks 已由同一次运行配对，data_date 即两者共同的数据日。"
+                   "picks[].scenarios[].path/action 含 <b> 富文本，前端须「先整体转义再放行白名单标签」。"),
+        "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "data_date": data_date,
+        "for_date": (scen or {}).get("for_date", ""),
+        "scen_data_date": (scen or {}).get("data_date", ""),
+        "obs_source": str(obs_src.relative_to(BASE)) if str(obs_src).startswith(str(BASE)) else str(obs_src),
+        "derive_engine": obs.get("derive_engine") or obs.get("source") or "",
+        "count": len(items),
+        "picks_count": len(picks),
+        "dropped_picks": dropped,
+        "items": slim,
+        "picks": picks,
+    }
+
+
+def write_panel(panel, no_deploy=False):
+    """写 obs_panel.json（root + deploy），返回 (root 路径, deploy 路径或 None)"""
+    PANEL_OUT.parent.mkdir(parents=True, exist_ok=True)
+    PANEL_OUT.write_text(json.dumps(panel, ensure_ascii=False, indent=1), encoding="utf-8")
+    dep = None
+    if not no_deploy and PANEL_DEPLOY.parent.exists():
+        PANEL_DEPLOY.write_text(PANEL_OUT.read_text(encoding="utf-8"), encoding="utf-8")
+        dep = PANEL_DEPLOY
+    return PANEL_OUT, dep
+
+
 # ---------------------------------------------------------------- 注入
 
 def ensure_css(html):
@@ -373,6 +436,8 @@ def main():
     ap.add_argument("--allow-mismatch", action="store_true",
                     help="允许 L2 情景数据日与观测池不一致（默认报错退出，防用错数据日）")
     ap.add_argument("--dry-run", action="store_true", help="只写片段，不改 analysis.html")
+    ap.add_argument("--panel-only", action="store_true",
+                    help="只产出 obs_panel.json（V3 配对载荷），不动 analysis.html")
     ap.add_argument("--no-deploy", action="store_true", help="不同步 deploy 副本")
     args = ap.parse_args()
 
@@ -414,8 +479,29 @@ def main():
     if bad:
         print(f"⚠ 以下标的缺 ma5/low10，关键位将显示 —：{bad}")
 
+    # ---- 配对载荷（V3 第 6 段用）----
+    if not args.dry_run:
+        panel = build_panel(obs, scen, od, obs_src)
+        p_root, p_dep = write_panel(panel, no_deploy=args.no_deploy)
+        where = p_root.relative_to(BASE)
+        if p_dep:
+            where = f"{where} + {p_dep.relative_to(BASE)}"
+        print(f"✓ 配对载荷已写出：{where}（{p_root.stat().st_size} B）")
+        _sd = panel["scen_data_date"]
+        _paired = (not _sd) or (_sd == panel["data_date"])
+        print(f"· 载荷自检：items {panel['count']} 只 / picks {panel['picks_count']} 只 ｜ "
+              f"数据日 {panel['data_date']}"
+              + (f"（L2 情景日 {_sd} {'✓ 一致' if _paired else '⚠️ 不一致，V3 会显式告警'}）" if _sd else "（无 L2）"))
+        if panel["picks_count"] != n_l2:
+            print(f"✗ 载荷 picks 数（{panel['picks_count']}）与片段 L2 数（{n_l2}）不一致")
+        if panel["dropped_picks"]:
+            print(f"⚠ 载荷已剔除 code 不在观测池的 picks：{panel['dropped_picks']}")
+
     if args.dry_run:
-        print("· --dry-run：未改动 analysis.html")
+        print("· --dry-run：未改动 analysis.html、未写 obs_panel.json")
+        return
+    if args.panel_only:
+        print("· --panel-only：未改动 analysis.html")
         return
 
     html = ROOT_HTML.read_text(encoding="utf-8")

@@ -29,19 +29,19 @@ print(f"{chr(10004) if ok0 else chr(10060)} [0] UTF-8 BOM 守卫(file://直开�
 c = re.findall(r'<!-- [0-9][^>]*-->', s)
 dup = {k:v for k,v in Counter(c).items() if v>1}
 ok1 = not dup
-print(f"{'✅' if ok1 else '❌'} [1/4] 锚点注释唯一性: {'通过' if ok1 else '重复: '+str(dup)}")
+print(f"{'✅' if ok1 else '❌'} [1/11] 锚点注释唯一性: {'通过' if ok1 else '重复: '+str(dup)}")
 
 # 2) 裸 <p> = 0
 naked_p = re.findall(r'<p(?![^>]*style)[^>]*>', s)
 ok2 = len(naked_p) == 0
-print(f"{'✅' if ok2 else '❌'} [2/4] 裸 <p> 标签（无字号）: {len(naked_p)} 个（必须 0）")
+print(f"{'✅' if ok2 else '❌'} [2/11] 裸 <p> 标签（无字号）: {len(naked_p)} 个（必须 0）")
 
 # 3) 0.5 段含 2x2 grid
 i5 = s.find('<!-- 0.5 深度判读 -->')
 j5 = s.find('<!-- 1 ', i5) if i5>0 else -1
 g5 = s[i5:j5].count('grid-template-columns:repeat(2,minmax(0,1fr))') if i5>0 and j5>0 else 0
 ok3 = g5 >= 1
-print(f"{'✅' if ok3 else '❌'} [3/4] 0.5 段含 2x2 grid 四象限: {g5} 处（必须 ≥1）")
+print(f"{'✅' if ok3 else '❌'} [3/11] 0.5 段含 2x2 grid 四象限: {g5} 处（必须 ≥1）")
 
 # 4) 长文本 td 全覆盖 dr-wrap
 bad = []
@@ -50,7 +50,7 @@ for m in re.finditer(r'<table.*?</table>', s, re.S):
         if 'dr-wrap' not in t[0] and 'style' not in t[0]:
             bad.append(t[1][:50])
 ok4 = len(bad) == 0
-print(f"{'✅' if ok4 else '❌'} [4/4] 长文本 td 全覆盖 dr-wrap: {len(bad)} 个未覆盖")
+print(f"{'✅' if ok4 else '❌'} [4/11] 长文本 td 全覆盖 dr-wrap: {len(bad)} 个未覆盖")
 if bad:
     for b in bad[:3]: print(f"      → {b}")
 
@@ -63,7 +63,7 @@ fs_total = sum(fs_dist.values())
 fs_pct = fs_125/fs_total*100 if fs_total else 0
 print(f"12.5px 占比: {fs_pct:.1f}%（应 >80%；0 段卡片值 13.5px 允许少量）")
 
-# 5) [5/5] 🔴 CSS 治本防御：三处 index 的 .dr-tbl td 已默认自动换行
+# 5) [5/11] 🔴 CSS 治本防御：三处 index 的 .dr-tbl td 已默认自动换行
 #    原 root cause：.dr-tbl td 默认 white-space:nowrap → 长内容撑破右侧屏幕
 #    治本（9/2 23:30）：删 nowrap + 加 word-break:break-word + overflow-wrap:anywhere + min-width:0
 #    此检查确保三处 index CSS 都已治本；如未改、有回归 → ❌
@@ -80,12 +80,12 @@ for f in ['index.html', 'index_template.html', 'deploy/index.html']:
     except FileNotFoundError:
         css_results.append((f, False, 'NO FILE', False))
         ok5 = False
-print(f"{'✅' if ok5 else '❌'} [5/5] .dr-tbl td 默认换行（三处 index CSS 治本防御）：{'通过' if ok5 else '未通过'}")
+print(f"{'✅' if ok5 else '❌'} [5/11] .dr-tbl td 默认换行（三处 index CSS 治本防御）：{'通过' if ok5 else '未通过'}")
 for f, ok, nb, wb in css_results:
     flag = '✅' if ok else '❌'
     print(f"      {flag} {f}: nowrap_in_drtbl={nb} wordbreak+overflow={wb}")
 
-# 6) [6/6] 🔴 Design token 防御：7.3 段必须用 dk-main/dk-caution/dk-risk 语义色 class
+# 6) [6/11] 🔴 Design token 防御：7.3 段必须用 dk-main/dk-caution/dk-risk 语义色 class
 #    用户反馈（9/2 23:38）："7.3 段字号随心所欲、颜色逻辑混乱"——根因是每次推演手写凭印象
 #    选颜色字号，无设计 token 约束。治本：定义 dk-main/dk-caution/dk-risk/dk-data/dk-neutral
 #    语义颜色 + dr-tag 12.5px 加粗 + dr-card ul/li 12.5px var(--text) 主色统一。
@@ -107,13 +107,13 @@ if sec73_main < 1 or sec73_caution < 1 or sec73_risk < 1:
     ok6 = False
 # 7.3 段外的 dk-* 总数（证明 design token 体系已落地）
 total_dk = len(re.findall(r'\bdk-(?:main|caution|risk|data|neutral)\b', s))
-print(f"{'✅' if ok6 else '❌'} [6/6] Design token 防御（7.3/7.4 操作预案段 dk-main/caution/risk ≥1）：{'通过' if ok6 else '未通过'}")
+print(f"{'✅' if ok6 else '❌'} [6/11] Design token 防御（7.3/7.4 操作预案段 dk-main/caution/risk ≥1）：{'通过' if ok6 else '未通过'}")
 for n in note6: print(f"      {n}")
 print(f"      统计：7.3/7.4 段 dk-main={sec73_main} dk-caution={sec73_caution} dk-risk={sec73_risk} / 全局 dk-*={total_dk}（应 ≥5）")
 if total_dk < 5:
     note6.append(f'⚠️ 全局 dk-* 仅 {total_dk} 处（应 ≥5）')
     ok6 = ok6 and False
-# 7) [7/7] 🔴 注入样式作用域化守卫（2026-09-10）
+# 7) [7/11] 🔴 注入样式作用域化守卫（2026-09-10）
 #    analysis.html 自带 <style> 里有 body{padding:20px;max-width:980px;margin:0 auto} 与 :root{...} 等
 #    "越界规则"（为 file:// 独立阅读而写），经 index.html 的 ana.innerHTML 注入后会【全局生效】：
 #    曾把整站限宽 980px（.main 的 max-width:1480px 沦为死代码）、并覆盖主站配色变量与字体。
@@ -132,10 +132,10 @@ for f in ['index.html', 'index_template.html', 'deploy/index.html']:
     if not (has_fn and has_call):
         note7.append(f'⚠️ {f}: 定义={has_fn} 调用={has_call}（应均 True；缺失会导致 analysis.html 注入样式污染整站宽度/配色）')
         ok7 = False
-print(f"{'✅' if ok7 else '❌'} [7/7] 注入样式作用域化守卫（analysis.html 越界规则不污染整站）：{'通过' if ok7 else '未通过'}")
+print(f"{'✅' if ok7 else '❌'} [7/11] 注入样式作用域化守卫（analysis.html 越界规则不污染整站）：{'通过' if ok7 else '未通过'}")
 for n in note7: print(f"      {n}")
 
-# 8) [8/8] 🔴 7.1 段结论句语义色守卫（2026-09-11）
+# 8) [8/11] 🔴 7.1 段结论句语义色守卫（2026-09-11）
 #    用户反馈：7.1「内容」格每段最后一句是结论句，原先只用 <b> 加粗 → 不够醒目，
 #    且无法区分「可执行 / 有条件 / 风险回避 / 待验证」四种性质。
 #    治本：build_k3_conclusions.py 生成四类语义色（与第二列 dr-up/up-caution/dn 色系呼应）
@@ -179,10 +179,10 @@ try:
 except Exception as _e:
     note8.append(f'⚠️ 检查异常：{_e}')
     ok8 = False
-print(f"{'✅' if ok8 else '❌'} [8/8] 7.1 结论句语义色（k3c-* 全行覆盖 + CSS/图例唯一）：{'通过' if ok8 else '未通过'}")
+print(f"{'✅' if ok8 else '❌'} [8/11] 7.1 结论句语义色（k3c-* 全行覆盖 + CSS/图例唯一）：{'通过' if ok8 else '未通过'}")
 for n in note8: print(f"      {n}")
 
-# 9) [9/9] 🔴 未定义类守卫（2026-09-11 自检新增）
+# 9) [9/11] 🔴 未定义类守卫（2026-09-11 自检新增）
 #    实测：dk-dn(13 处) / dr-caution(4 处) / dr-wrap(54 处) 在 analysis.html 中使用，
 #    但全站 CSS（analysis.html 自包含 style + 三处 index）均无定义
 #    → 这些类静默退化为「无色 / 无效果」，用户看到的只是普通文字。
@@ -219,10 +219,10 @@ try:
 except Exception as _e:
     note9.append(f'⚠️ 检查异常：{_e}')
     ok9 = False
-print(f"{'✅' if ok9 else '❌'} [9/9] 未定义类守卫（在用 class 必须有 CSS 定义）：{'通过' if ok9 else '未通过'}")
+print(f"{'✅' if ok9 else '❌'} [9/11] 未定义类守卫（在用 class 必须有 CSS 定义）：{'通过' if ok9 else '未通过'}")
 for n in note9: print(f"      {n}")
 
-# 10) [10/10] 🔴 空转引用守卫（2026-09-11 新增 · 铁律 15 五维自检法第 2 维「容器·引用反查」）
+# 10) [10/11] 🔴 空转引用守卫（2026-09-11 新增 · 铁律 15 五维自检法第 2 维「容器·引用反查」）
 #     实测：drTblA / drTblH / drTblUs / drTblObs / drCmdBtn / allGrid 六处 getElementById
 #     的目标在全部活文件中都不存在 → 原代码靠 `if (el)` 或无守卫静默空转、永不生效。
 #     判据：孤儿 id **允许存在**（可能由注入器 HTML 片段或 JS 动态创建提供），
@@ -276,7 +276,7 @@ try:
 except Exception as _e:
     note10.append(f'⚠️ 检查异常：{_e}')
     ok10 = False
-print(f"{'✅' if ok10 else '❌'} [10/10] 空转引用守卫（JS 引用的 id 须有来源或空值守卫）："
+print(f"{'✅' if ok10 else '❌'} [10/11] 空转引用守卫（JS 引用的 id 须有来源或空值守卫）："
       f"{'通过' if ok10 else '未通过'}")
 for n in note10: print(f"      {n}")
 
