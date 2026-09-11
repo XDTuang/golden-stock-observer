@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-09-09 21:37",
+ "updated_at": "2026-09-10 22:43",
  "note": "T 日推演 vs T+1 实际（方向+开盘双维度）；当日推演需次日收盘后才有结果",
  "periods": [
   {
@@ -85,20 +85,27 @@
    "dir_hit": 1,
    "dir_acc": 33.3,
    "open_acc": 0.0
+  },
+  {
+   "date": "2026-09-09",
+   "n": 3,
+   "dir_hit": 1,
+   "dir_acc": 33.3,
+   "open_acc": 33.3
   }
  ],
  "latest": {
-  "date": "2026-09-08",
+  "date": "2026-09-09",
   "n": 3,
   "dir_hit": 1,
   "dir_acc": 33.3,
-  "open_acc": 0.0
+  "open_acc": 33.3
  },
  "by_trend": {
   "震荡": {
-   "n": 17,
+   "n": 18,
    "dir_hit": 1,
-   "open_hit": 5
+   "open_hit": 6
   },
   "强势上涨": {
    "n": 2,
@@ -106,8 +113,8 @@
    "open_hit": 2
   },
   "震荡偏弱": {
-   "n": 9,
-   "dir_hit": 4,
+   "n": 11,
+   "dir_hit": 5,
    "open_hit": 2
   },
   "震荡上行": {
@@ -120,50 +127,50 @@
   {
    "code": "hk00189",
    "name": "东岳集团",
-   "trend": "震荡",
+   "trend": "震荡偏弱",
    "open_label": "平开震荡",
-   "pred_date": "2026-09-08",
-   "t_close": 13.21,
-   "date": "2026-09-09",
-   "chg_pct": -0.76,
-   "dir_hit": false,
+   "pred_date": "2026-09-09",
+   "t_close": 13.11,
+   "date": "2026-09-10",
+   "chg_pct": -2.75,
+   "dir_hit": true,
    "open_hit": false,
    "actual_dir": "down",
    "actual_open": "down",
-   "nxt_open": 13.15,
-   "nxt_close": 13.11
+   "nxt_open": 12.91,
+   "nxt_close": 12.75
   },
   {
    "code": "hk02655",
    "name": "果下科技",
    "trend": "震荡偏弱",
-   "open_label": "低开偏弱",
-   "pred_date": "2026-09-08",
-   "t_close": 15.71,
-   "date": "2026-09-09",
-   "chg_pct": -0.38,
-   "dir_hit": true,
+   "open_label": "平开震荡",
+   "pred_date": "2026-09-09",
+   "t_close": 15.65,
+   "date": "2026-09-10",
+   "chg_pct": 0.7,
+   "dir_hit": false,
    "open_hit": false,
-   "actual_dir": "down",
-   "actual_open": "up",
-   "nxt_open": 15.88,
-   "nxt_close": 15.65
+   "actual_dir": "up",
+   "actual_open": "down",
+   "nxt_open": 15.57,
+   "nxt_close": 15.76
   },
   {
    "code": "hk06651",
    "name": "五一视界",
    "trend": "震荡",
    "open_label": "低开偏弱",
-   "pred_date": "2026-09-08",
+   "pred_date": "2026-09-09",
    "t_close": 62.2,
-   "date": "2026-09-09",
-   "chg_pct": -1.05,
+   "date": "2026-09-10",
+   "chg_pct": -6.43,
    "dir_hit": false,
-   "open_hit": false,
+   "open_hit": true,
    "actual_dir": "down",
-   "actual_open": "up",
-   "nxt_open": 62.9,
-   "nxt_close": 61.55
+   "actual_open": "down",
+   "nxt_open": 61.8,
+   "nxt_close": 58.2
   }
  ]
 }

@@ -216,6 +216,10 @@ def slim_signals():
     _atomic_write(dst, data)  # 精简版 signals.json（~10KB，不含 stocks）
     stocks_dst = os.path.join(DEPLOY, "output", "stocks.json")
     _atomic_write(stocks_dst, stocks)  # 独立 stocks.json（~4.4MB）
+    # 2026-09-10 修复：本地主站（仓库根 index.html）读的是 ./output/stocks.json，
+    # 而此前只写 deploy 侧 → 本地根侧 stocks.json 长期陈旧（实测落后 25h）。
+    # 云端 workflow 有「同步 deploy/ → 仓库根」步骤故无此问题；本地补上同等的根侧写入。
+    _atomic_write(os.path.join(BASE, "output", "stocks.json"), stocks)
 
     src_size = os.path.getsize(src) / 1024 / 1024
     dst_size = os.path.getsize(dst) / 1024 / 1024
