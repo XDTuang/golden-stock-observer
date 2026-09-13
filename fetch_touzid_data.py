@@ -430,6 +430,23 @@ def build_vix():
     _write_both("vix_panel.json", obj)
     print(f"  ✅ vix_panel.json")
 
+    # 2026-09-13 修复：原 date 直接取「生成日」（today）→ 非交易日重跑会把页面「数据日期」
+    # 写成生成日（实测周日重跑写入 2026-09-13，而 VIX/美股实际是 09-11 收盘）。
+    # 治本 = 取实际数据日：A股 最新交易日 与 CBOE VIX 数据日（最新已收盘美股交易日）取较晚者。
+    try:
+        try:
+            from market_calendar import last_trading_day
+            _a_anchor = str(last_trading_day())
+        except Exception:
+            _a_anchor = obj["date"]
+        _us_anchor = (obj.get("cboe_vix") or {}).get("date") or obj["date"]
+        obj["date"] = max(_a_anchor, _us_anchor)
+        obj["generated_at"] = _dt.datetime.now().strftime("%Y-%m-%d %H:%M")
+        print(f"  数据日期 {obj['date']}（A股锚 {_a_anchor} / 美股锚 {_us_anchor}）")
+        _write_both("vix_panel.json", obj)
+    except Exception as e:
+        print(f"  ⚠️  数据日锚定失败（保留生成日 {obj['date']}）: {e}")
+
 
 def build_institutional_flow():
     print("\n📊 块③ 股东户数趋势（全市场报告期对比）")

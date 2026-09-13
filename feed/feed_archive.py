@@ -20,7 +20,7 @@ INBOX = os.path.join(BASE, "feed", "inbox")
 ARCHIVE = os.path.join(BASE, "feed", "archive")
 INDEX = os.path.join(ARCHIVE, "feed_index.json")
 CATS = {"日常投喂": "日常投喂", "专家投喂": "专家投喂"}
-SRC_MAP = {"对话": "对话", "研报": "研报", "观点": "观点", "专家": "观点", "文档": "文档", "新闻": "新闻", "其他": "其他"}
+SRC_MAP = {"对话": "对话", "研报": "研报", "观点": "观点", "专家": "观点", "文档": "文档", "新闻": "新闻", "图片": "图片", "其他": "其他"}
 
 NAME_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})_([^_]+)_(.+?)\.([^.]+)$")
 
