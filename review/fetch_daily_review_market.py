@@ -178,10 +178,14 @@ def fetch():
                                  "chg_pct": None, "date": d10}
         except Exception:
             pass
+        # 2026-09-13 修复：原 cny / lithium 的 end_date 硬编码 "20260831" → 两字段自 8/31 起静默冻结。
+        # 日期一律动态取（近 90 天窗口），禁写死。
+        _d_end = datetime.date.today().strftime("%Y%m%d")
+        _d_start = (datetime.date.today() - datetime.timedelta(days=90)).strftime("%Y%m%d")
         # 人民币中间价（中行当日）
         try:
             import akshare as _ak
-            cny = _ak.currency_boc_sina(symbol="美元", start_date="20260801", end_date="20260831")
+            cny = _ak.currency_boc_sina(symbol="美元", start_date=_d_start, end_date=_d_end)
             if cny is not None and len(cny):
                 cr = cny.dropna(subset=["央行中间价"]).iloc[-1]
                 comm["cny"] = {"name": "人民币中间价", "value": round(float(cr["央行中间价"]) / 100, 4),
@@ -191,7 +195,7 @@ def fetch():
         # 碳酸锂（广期所主连 LC0）
         try:
             import akshare as _ak
-            lc = _ak.futures_main_sina(symbol="LC0", start_date="20260801", end_date="20260831")
+            lc = _ak.futures_main_sina(symbol="LC0", start_date=_d_start, end_date=_d_end)
             if lc is not None and len(lc):
                 lr = lc.iloc[-1]
                 comm["lithium"] = {"name": "碳酸锂（广期所主连）", "value": round(float(lr["收盘价"]), 0),
