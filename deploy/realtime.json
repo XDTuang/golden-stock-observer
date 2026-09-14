@@ -1,6 +1,6 @@
 {
  "meta": {
-  "updated_at": "2026-09-14 09:15:13",
+  "updated_at": "2026-09-14 09:45:15",
   "data_date": "2026-09-14",
   "market_status": "trading",
   "algorithm": "1.0.0",
@@ -11,97 +11,97 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3888.09,
-    "chg_pct": -0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3878.26,
+    "chg_pct": -0.25,
+    "turnover_yi": 1925.0,
+    "high": 3883.9,
+    "low": 3867.02
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 13471.26,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 13331.86,
+    "chg_pct": -1.03,
+    "turnover_yi": 2120.7,
+    "high": 13379.75,
+    "low": 13288.83
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 3322.04,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3268.73,
+    "chg_pct": -1.6,
+    "turnover_yi": 935.8,
+    "high": 3291.75,
+    "low": 3262.49
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1553.39,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 1518.58,
+    "chg_pct": -2.24,
+    "turnover_yi": 146.4,
+    "high": 1530.26,
+    "low": 1516.52
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4510.16,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 4481.34,
+    "chg_pct": -0.64,
+    "turnover_yi": 982.6,
+    "high": 4489.81,
+    "low": 4473.27
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 7580.54,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 7506.94,
+    "chg_pct": -0.97,
+    "turnover_yi": 656.1,
+    "high": 7529.28,
+    "low": 7487.46
    }
   ],
   "breadth": {
-   "up": 1260,
-   "down": 1995,
-   "flat": 1347,
-   "ratio": 0.63,
-   "limit_up": 57,
-   "limit_down": 78,
-   "main_net_yi": 0.0,
-   "turnover_yi": 0.0,
+   "up": 1400,
+   "down": 3008,
+   "flat": 194,
+   "ratio": 0.47,
+   "limit_up": 28,
+   "limit_down": 16,
+   "main_net_yi": -82.64,
+   "turnover_yi": 3579.8,
    "total": 4602
   }
  },
  "L1": {
   "sentiment": {
-   "score": 37,
-   "S1": 16,
-   "S2": 48,
-   "S3": 40,
-   "S4": 50,
+   "score": 22,
+   "S1": 12,
+   "S2": 23,
+   "S3": 18,
+   "S4": 36,
    "inputs": {
-    "ratio": 0.63,
-    "limit_up": 57,
-    "avg_idx_pct": 0.0,
-    "main_net_yi": 0
+    "ratio": 0.47,
+    "limit_up": 28,
+    "avg_idx_pct": -1.12,
+    "main_net_yi": -82.64
    }
   },
   "state": {
-   "state": "weak",
-   "label": "弱势回调",
-   "note": "防守为主，仅小仓低吸，严格止损",
-   "score": 37
+   "state": "panic",
+   "label": "恐慌下跌",
+   "note": "空仓或极轻仓观望，不抄底，等企稳信号",
+   "score": 22
   }
  },
  "L2": {
   "range": [
-   25,
-   40
+   0,
+   20
   ],
-  "note": "弱势回调，防守为主，严格止损",
+  "note": "恐慌下跌，空仓或极轻仓等待企稳",
   "rules": [
    "单票仓位 ≤ 10%",
    "单一板块集中度 ≤ 30%",
@@ -115,7 +115,104 @@
   "resonance": []
  },
  "L4": {
-  "candidates": [],
+  "candidates": [
+   {
+    "code": "sz300750",
+    "name": "宁德时代",
+    "zdf": 2.47,
+    "zljlr": 3.28,
+    "lb": 3.58,
+    "hsl": 0.19,
+    "turnover_yi": 27.84,
+    "price": 338.68,
+    "stype": "GP-A-CYB",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz300408",
+    "name": "三环集团",
+    "zdf": 3.43,
+    "zljlr": 2.17,
+    "lb": 7.49,
+    "hsl": 1.37,
+    "turnover_yi": 32.05,
+    "price": 128.62,
+    "stype": "GP-A-CYB",
+    "type": "中继观察"
+   },
+   {
+    "code": "sh603186",
+    "name": "华正新材",
+    "zdf": 0.86,
+    "zljlr": 2.16,
+    "lb": 4.21,
+    "hsl": 4.35,
+    "turnover_yi": 15.45,
+    "price": 229.7,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz000759",
+    "name": "中百集团",
+    "zdf": -6.03,
+    "zljlr": 1.68,
+    "lb": 9.13,
+    "hsl": 16.12,
+    "turnover_yi": 8.43,
+    "price": 7.64,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz300285",
+    "name": "国瓷材料",
+    "zdf": 3.5,
+    "zljlr": 1.54,
+    "lb": 8.16,
+    "hsl": 4.1,
+    "turnover_yi": 22.1,
+    "price": 64.97,
+    "stype": "GP-A-CYB",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz002636",
+    "name": "金安国纪",
+    "zdf": -0.35,
+    "zljlr": 1.25,
+    "lb": 6.13,
+    "hsl": 3.8,
+    "turnover_yi": 22.08,
+    "price": 82.17,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sh603920",
+    "name": "世运电路",
+    "zdf": 2.27,
+    "zljlr": 1.12,
+    "lb": 6.86,
+    "hsl": 2.07,
+    "turnover_yi": 6.17,
+    "price": 42.39,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sh603002",
+    "name": "宏昌电子",
+    "zdf": 2.98,
+    "zljlr": 1.03,
+    "lb": 7.18,
+    "hsl": 3.65,
+    "turnover_yi": 7.24,
+    "price": 17.98,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   }
+  ],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
