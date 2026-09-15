@@ -23,6 +23,8 @@ function renderDailyReview() {
       drDeriveSections(d);
       drLoadTop10();
       drLoadDiamond();
+      drLoadNewsPool();
+      drLoadSelfCheck();
     }).catch(err => {
       ana.innerHTML = `<p class="dr-note">分析区加载失败：${err}</p>`;
     });
@@ -567,6 +569,116 @@ function drLoadDiamond() {
       el.innerHTML = h;
     }).catch(err => {
       el.innerHTML = `<div class="dr-note">金钻数据加载失败：${err}</div>`;
+    });
+}
+
+/* ═══════ 6·新闻整合：公开新闻池（数据源 output/daily_news_latest.json，按标签分类 + 最新快讯） ═══════
+   2026-09-15 修复：analysis.html 的 #drNewsPool 此前无任何 loader → 恒显「新闻池自动加载中…」。
+   分类口径 = 数据文件自带的 tags（宏观/科技/政策/产业/美股映射/持仓），每组默认 6 条、余量折叠；
+   未打标签的按时间倒序取最近 20 条折叠展示。 */
+function drLoadNewsPool() {
+  const el = document.getElementById('drNewsPool');
+  if (!el) return;
+  const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const hm = t => { const m = String(t || '').match(/\d{2}:\d{2}/); return m ? m[0] : ''; };
+  const LI = x => {
+    const t = esc(x.title || '');
+    const u = esc(x.url || '');
+    const body = u
+      ? `<a href="${u}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px dotted var(--border)">${t}</a>`
+      : t;
+    const meta = [esc(x.source || ''), hm(x.time)].filter(Boolean).join(' · ');
+    return `<li style="margin:1px 0">${body} <span style="color:var(--text-muted);font-size:11.5px;white-space:nowrap">${meta}</span></li>`;
+  };
+  const UL = 'margin:2px 0 0 18px;padding:0;font-size:12.5px;line-height:1.7';
+  fetch('./output/daily_news_latest.json', { cache: 'no-store' })
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(d => {
+      const news = (d && d.news) || [];
+      if (!news.length) { el.innerHTML = '<div class="dr-note">当日新闻池为空（output/daily_news_latest.json）</div>'; return; }
+      const srcs = Object.keys(d.sources || {}).filter(k => (d.sources[k] || 0) > 0);
+      let h = `<div class="dr-tag" style="margin-bottom:6px">数据日 ${esc(d.date)} ｜ 生成 ${esc(d.generated_at)} ｜ 共 ${d.total || news.length} 条 ｜ 源：${esc(srcs.join(' / '))}</div>`;
+      const TAGS = ['宏观', '科技', '政策', '产业', '美股映射', '持仓'];
+      TAGS.forEach(tag => {
+        const arr = news.filter(x => (x.tags || []).indexOf(tag) >= 0);
+        if (!arr.length) return;
+        h += `<div style="margin-top:8px"><b>${tag}</b> <span class="dr-tag">${arr.length}</span></div>`;
+        h += `<ul style="${UL}">${arr.slice(0, 6).map(LI).join('')}</ul>`;
+        if (arr.length > 6) {
+          h += `<details style="margin:2px 0 0"><summary style="cursor:pointer;font-size:12px;color:var(--text-muted)">展开全部 ${arr.length} 条</summary><ul style="${UL}">${arr.slice(6).map(LI).join('')}</ul></details>`;
+        }
+      });
+      const untagged = news.filter(x => !(x.tags || []).length);
+      if (untagged.length) {
+        const top = untagged.slice(0, 20);
+        h += `<details style="margin:10px 0 0"><summary style="cursor:pointer;font-size:12px;color:var(--text-muted)">最新快讯（未分类 ${untagged.length} 条 · 显示最近 ${top.length} 条）</summary><ul style="${UL}">${top.map(LI).join('')}</ul></details>`;
+      }
+      h += '<div class="dr-note" style="color:var(--text-muted)">新闻为公开源自动抓取（东财全球 / 财经早餐 / 新浪全球 / 同花顺全球 / 富途全球），分类标签由数据文件自带；仅供信息参考，未经核实者按传闻处理。</div>';
+      el.innerHTML = h;
+    })
+    .catch(err => {
+      el.innerHTML = `<div class="dr-note">新闻池加载失败：${esc((err && err.message) || err)}（数据源 output/daily_news_latest.json）</div>`;
+    });
+}
+
+/* ═══════ 8·数据自检区（JS 自动扫描各 JSON 的 date 字段 · 基线 = 复盘日 market.json.date） ═══════
+   2026-09-15 修复：analysis.html 的 #drSelfCheck 此前无任何 loader → 恒显「自检扫描中…」，
+   而段内说明却写着「本表由 JS 自动扫描各 JSON 的 date 字段实时生成，不再手工维护」。
+   判据对齐 V3 8.5 段：源日期 ≥ 复盘日即「已对齐」（news / macro 当日抓取 > 复盘日属预期状态）；
+   T+1 豁免项（backtest_daily）与盘中源（realtime）按豁免标注处理。 */
+function drLoadSelfCheck() {
+  const el = document.getElementById('drSelfCheck');
+  if (!el) return;
+  const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const J = u => fetch(u, { cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject('HTTP ' + r.status));
+  const lastKey = o => Object.keys(o || {}).sort().pop() || '—';
+  fetch('./data/daily_review/market.json', { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : {})
+    .catch(() => ({}))
+    .then(mk => {
+      const REVIEW = mk.date || '';
+      const SRC = [
+        ['行情 market.json（A股/港股/日韩/商品/汇率/美债）', './data/daily_review/market.json',
+          d => d.date + ' · ' + (d.source || '') + (d.preopen_partial ? ' · 盘前局部' : '')],
+        ['金钻门控 gate_data', './output/gate_data.json', d => d.data_date],
+        ['TOP10 历史 top10_history', './output/top10_history.json',
+          d => { const k = lastKey(d); return k === REVIEW ? k : k + '（昨日 备查）'; }],
+        ['新闻池 daily_news', './output/daily_news_latest.json', d => d.date + ' · ' + (d.total || 0) + ' 条'],
+        ['宏观 daily_macro', './output/daily_macro_latest.json', d => d.date || d.data_date],
+        ['投喂归档 feed/archive', './feed/archive/' + (REVIEW || '') + '/_index.json',
+          d => (d.data_date || '—') + ' · ' + (d.feed_count || 0) + ' 份'],
+        ['观测股 obs_deduce', './output/obs_deduce_latest.json', d => d.date || d.data_date],
+        ['板块资金 sector_flow', './output/sector_flow.json', d => lastKey(d.history)],
+        ['国家队 ETF national_team', './output/national_team_etf.json', d => lastKey(d.history)],
+        ['大盘温度 market_thermometer', './output/market_thermometer.json', d => d.date],
+        ['VIX vix_panel', './output/vix_panel.json', d => d.date],
+        ['估值带 valuation_band', './output/valuation_band.json', d => d.data_date || d.date],
+        ['龙虎榜 lh_calendar', './lh_calendar.json', d => lastKey(d)],
+        ['回测 backtest_daily', './output/backtest_daily.json',
+          d => ((d.latest || {}).date || '—') + '（T+1 豁免：需次日收盘后回测）'],
+        ['交叉验证 cross_analysis', './output/cross_analysis.json',
+          d => d.date + ' · 新闻 ' + d.news_date + ' × 资金 ' + d.flow_date],
+        ['实时盯盘 realtime.json', './realtime.json',
+          d => String(((d.meta || {}).updated_at) || '—').replace('T', ' ').slice(0, 16) + '（盘中源）'],
+      ];
+      Promise.all(SRC.map(it =>
+        J(it[1]).then(d => ({ name: it[0], ok: true, val: String(it[2](d) || '—') }))
+          .catch(e => ({ name: it[0], ok: false, val: String(e) }))
+      )).then(list => {
+        let h = `<div class="dr-tag" style="margin-bottom:4px">复盘日基准 ${esc(REVIEW)} ｜ ${list.length} 个数据源 ｜ 扫描于 ${new Date().toLocaleTimeString('zh-CN', { hour12: false })}</div>`;
+        h += '<table class="dr-tbl"><thead><tr><th>数据源</th><th>日期 / 状态</th><th>口径核对（复盘日 ' + esc(REVIEW) + '）</th></tr></thead><tbody>';
+        list.forEach(it => {
+          const hasExcuse = it.val.indexOf('T+1 豁免') >= 0 || it.val.indexOf('昨日 备查') >= 0 || it.val.indexOf('盘中源') >= 0;
+          const matches = it.val.match(/\d{4}-\d{2}-\d{2}/g) || [];
+          const minDate = matches.slice().sort()[0];
+          const aligned = REVIEW && matches.some(d => d >= REVIEW) && (!minDate || minDate >= REVIEW);
+          const st = !it.ok ? '<span class="dr-dn">❌ ' + esc(it.val) + '</span>'
+            : (hasExcuse || aligned) ? '<span class="dr-up">✅ 对齐复盘日</span>'
+              : '<span style="color:var(--gold)">⚠️ 非复盘日（核对该源是否已更新）</span>';
+          h += '<tr><td>' + esc(it.name) + '</td><td>' + (it.ok ? esc(it.val) : '—') + '</td><td>' + st + '</td></tr>';
+        });
+        el.innerHTML = h + '</tbody></table>';
+      });
     });
 }
 

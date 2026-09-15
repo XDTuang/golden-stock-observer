@@ -31,6 +31,12 @@ import time
 import tempfile
 import warnings
 import datetime as _dt
+import socket
+
+# 全局 socket 超时（2026-09-15 增 · 防 hang）：akshare 底层走 urllib3，未显式传 timeout 时
+# 使用 socket 全局默认值，而默认是 None（永不超时）—— 实测 build_valuation_band() 的百度估值接口
+# （ak.stock_zh_valuation_baidu）会在中途某只股票上永久阻塞（363 只跑到 15 只后停滞 2 分钟无任何输出）。
+socket.setdefaulttimeout(15)
 
 warnings.filterwarnings("ignore")
 
@@ -45,6 +51,26 @@ THERMO_ONLY = "--thermo-only" in sys.argv
 VIX_ONLY = "--vix-only" in sys.argv
 INST_ONLY = "--inst-only" in sys.argv
 NO_INST = "--no-inst" in sys.argv
+
+
+def _data_date_str():
+    """数据日 = 按「当日 A 股收盘是否已过」判定所属交易日。
+
+    2026-09-15 修（铁律 9/23 家族 · 生成日 ≠ 数据日）：
+      ① 原为 datetime.date.today()（= 生成日）→ 盘前/盘中跑会把「上一交易日收盘口径」的
+         dataset 标成当日（实测 valuation_band 停在 9/11 却始终自述最新）；
+      ② 00:0x 的跨零点调度会把 T 日数据写成 T+1（与 fetch_sector_flow / national_team_etf 同族 bug）。
+    判据与 fetch_sector_flow.py::_data_date / fetch_national_team_etf.py 保持一致。
+    """
+    try:
+        from market_calendar import is_trading_day, last_trading_day
+        _now = _dt.datetime.now()
+        _d = _now.date()
+        if is_trading_day(_d) and _now.hour >= 15:
+            return str(_d)
+        return str(last_trading_day(_d - _dt.timedelta(days=1)))
+    except Exception:
+        return _dt.date.today().isoformat()
 
 def _atomic(path, obj):
     d = os.path.dirname(os.path.abspath(path))
@@ -349,7 +375,8 @@ def build_valuation_band():
             print(f"    ...{i+1}/{len(targets)}")
         time.sleep(0.4)
 
-    obj = {"date": _dt.date.today().isoformat(), "count": len(items), "items": items}
+    obj = {"date": _data_date_str(), "generated_at": _dt.datetime.now().strftime("%Y-%m-%d %H:%M"),
+           "count": len(items), "items": items}
     _write_both("valuation_band.json", obj)
     print(f"  完成，{len([i for i in items if i['pe_pct_5y'] is not None])} 只有 PE 分位")
 

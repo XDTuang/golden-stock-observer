@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""投喂推演 → analysis.html 回填内容版式自检（2026-09-02 立 · 11 项）
+"""投喂推演 → analysis.html 回填内容版式自检（2026-09-02 立 · 12 项）
    跑法：python3 review/check_analysis_style.py
    期望：全部通过；任何失败=推演版式污染，必须修
    第 5 项专门防御"td 长内容撑破右侧屏幕"重复 bug（9/1 / 9/2 多次踩坑，9/2 治本）
@@ -9,7 +9,9 @@
    第 10 项（2026-09-11 增）防御"JS 引用无容器"空转静默失效（曾实测 drTblA/drTblH/drTblUs/drTblObs/drCmdBtn/allGrid
        六例；见 Obsidian 30-PRINCIPLES/改版自检与静默失效防御）
    第 11 项（2026-09-11 增）防御"7.x 段落顺序错 + 裸段号硬编码"复发 bug（用户报「7 段排在 7.4 后、7.3 未见」；
-       顺序自 e545530 起 7 个版本一直是 7.2→7.4→7.3；段号硬编码曾在 229a20a 修过又被 0070ddd 静默回退）"""
+       顺序自 e545530 起 7 个版本一直是 7.2→7.4→7.3；段号硬编码曾在 229a20a 修过又被 0070ddd 静默回退）
+   第 12 项（2026-09-15 增）防御"静态容器无 loader"空转静默失效（实测段 6 #drNewsPool「新闻池自动加载中…」、
+       段 8 #drSelfCheck「自检扫描中…」两例恒显占位，而段内说明自称由 JS 自动生成）——与第 10 项互为反向"""
 import re, io, sys, subprocess, glob
 from collections import Counter
 
@@ -29,19 +31,19 @@ print(f"{chr(10004) if ok0 else chr(10060)} [0] UTF-8 BOM 守卫(file://直开�
 c = re.findall(r'<!-- [0-9][^>]*-->', s)
 dup = {k:v for k,v in Counter(c).items() if v>1}
 ok1 = not dup
-print(f"{'✅' if ok1 else '❌'} [1/11] 锚点注释唯一性: {'通过' if ok1 else '重复: '+str(dup)}")
+print(f"{'✅' if ok1 else '❌'} [1/12] 锚点注释唯一性: {'通过' if ok1 else '重复: '+str(dup)}")
 
 # 2) 裸 <p> = 0
 naked_p = re.findall(r'<p(?![^>]*style)[^>]*>', s)
 ok2 = len(naked_p) == 0
-print(f"{'✅' if ok2 else '❌'} [2/11] 裸 <p> 标签（无字号）: {len(naked_p)} 个（必须 0）")
+print(f"{'✅' if ok2 else '❌'} [2/12] 裸 <p> 标签（无字号）: {len(naked_p)} 个（必须 0）")
 
 # 3) 0.5 段含 2x2 grid
 i5 = s.find('<!-- 0.5 深度判读 -->')
 j5 = s.find('<!-- 1 ', i5) if i5>0 else -1
 g5 = s[i5:j5].count('grid-template-columns:repeat(2,minmax(0,1fr))') if i5>0 and j5>0 else 0
 ok3 = g5 >= 1
-print(f"{'✅' if ok3 else '❌'} [3/11] 0.5 段含 2x2 grid 四象限: {g5} 处（必须 ≥1）")
+print(f"{'✅' if ok3 else '❌'} [3/12] 0.5 段含 2x2 grid 四象限: {g5} 处（必须 ≥1）")
 
 # 4) 长文本 td 全覆盖 dr-wrap
 bad = []
@@ -50,7 +52,7 @@ for m in re.finditer(r'<table.*?</table>', s, re.S):
         if 'dr-wrap' not in t[0] and 'style' not in t[0]:
             bad.append(t[1][:50])
 ok4 = len(bad) == 0
-print(f"{'✅' if ok4 else '❌'} [4/11] 长文本 td 全覆盖 dr-wrap: {len(bad)} 个未覆盖")
+print(f"{'✅' if ok4 else '❌'} [4/12] 长文本 td 全覆盖 dr-wrap: {len(bad)} 个未覆盖")
 if bad:
     for b in bad[:3]: print(f"      → {b}")
 
@@ -63,7 +65,7 @@ fs_total = sum(fs_dist.values())
 fs_pct = fs_125/fs_total*100 if fs_total else 0
 print(f"12.5px 占比: {fs_pct:.1f}%（应 >80%；0 段卡片值 13.5px 允许少量）")
 
-# 5) [5/11] 🔴 CSS 治本防御：三处 index 的 .dr-tbl td 已默认自动换行
+# 5) [5/12] 🔴 CSS 治本防御：三处 index 的 .dr-tbl td 已默认自动换行
 #    原 root cause：.dr-tbl td 默认 white-space:nowrap → 长内容撑破右侧屏幕
 #    治本（9/2 23:30）：删 nowrap + 加 word-break:break-word + overflow-wrap:anywhere + min-width:0
 #    此检查确保三处 index CSS 都已治本；如未改、有回归 → ❌
@@ -80,12 +82,12 @@ for f in ['index.html', 'index_template.html', 'deploy/index.html']:
     except FileNotFoundError:
         css_results.append((f, False, 'NO FILE', False))
         ok5 = False
-print(f"{'✅' if ok5 else '❌'} [5/11] .dr-tbl td 默认换行（三处 index CSS 治本防御）：{'通过' if ok5 else '未通过'}")
+print(f"{'✅' if ok5 else '❌'} [5/12] .dr-tbl td 默认换行（三处 index CSS 治本防御）：{'通过' if ok5 else '未通过'}")
 for f, ok, nb, wb in css_results:
     flag = '✅' if ok else '❌'
     print(f"      {flag} {f}: nowrap_in_drtbl={nb} wordbreak+overflow={wb}")
 
-# 6) [6/11] 🔴 Design token 防御：7.3 段必须用 dk-main/dk-caution/dk-risk 语义色 class
+# 6) [6/12] 🔴 Design token 防御：7.3 段必须用 dk-main/dk-caution/dk-risk 语义色 class
 #    用户反馈（9/2 23:38）："7.3 段字号随心所欲、颜色逻辑混乱"——根因是每次推演手写凭印象
 #    选颜色字号，无设计 token 约束。治本：定义 dk-main/dk-caution/dk-risk/dk-data/dk-neutral
 #    语义颜色 + dr-tag 12.5px 加粗 + dr-card ul/li 12.5px var(--text) 主色统一。
@@ -107,13 +109,13 @@ if sec73_main < 1 or sec73_caution < 1 or sec73_risk < 1:
     ok6 = False
 # 7.3 段外的 dk-* 总数（证明 design token 体系已落地）
 total_dk = len(re.findall(r'\bdk-(?:main|caution|risk|data|neutral)\b', s))
-print(f"{'✅' if ok6 else '❌'} [6/11] Design token 防御（7.3/7.4 操作预案段 dk-main/caution/risk ≥1）：{'通过' if ok6 else '未通过'}")
+print(f"{'✅' if ok6 else '❌'} [6/12] Design token 防御（7.3/7.4 操作预案段 dk-main/caution/risk ≥1）：{'通过' if ok6 else '未通过'}")
 for n in note6: print(f"      {n}")
 print(f"      统计：7.3/7.4 段 dk-main={sec73_main} dk-caution={sec73_caution} dk-risk={sec73_risk} / 全局 dk-*={total_dk}（应 ≥5）")
 if total_dk < 5:
     note6.append(f'⚠️ 全局 dk-* 仅 {total_dk} 处（应 ≥5）')
     ok6 = ok6 and False
-# 7) [7/11] 🔴 注入样式作用域化守卫（2026-09-10）
+# 7) [7/12] 🔴 注入样式作用域化守卫（2026-09-10）
 #    analysis.html 自带 <style> 里有 body{padding:20px;max-width:980px;margin:0 auto} 与 :root{...} 等
 #    "越界规则"（为 file:// 独立阅读而写），经 index.html 的 ana.innerHTML 注入后会【全局生效】：
 #    曾把整站限宽 980px（.main 的 max-width:1480px 沦为死代码）、并覆盖主站配色变量与字体。
@@ -132,10 +134,10 @@ for f in ['index.html', 'index_template.html', 'deploy/index.html']:
     if not (has_fn and has_call):
         note7.append(f'⚠️ {f}: 定义={has_fn} 调用={has_call}（应均 True；缺失会导致 analysis.html 注入样式污染整站宽度/配色）')
         ok7 = False
-print(f"{'✅' if ok7 else '❌'} [7/11] 注入样式作用域化守卫（analysis.html 越界规则不污染整站）：{'通过' if ok7 else '未通过'}")
+print(f"{'✅' if ok7 else '❌'} [7/12] 注入样式作用域化守卫（analysis.html 越界规则不污染整站）：{'通过' if ok7 else '未通过'}")
 for n in note7: print(f"      {n}")
 
-# 8) [8/11] 🔴 7.1 段结论句语义色守卫（2026-09-11）
+# 8) [8/12] 🔴 7.1 段结论句语义色守卫（2026-09-11）
 #    用户反馈：7.1「内容」格每段最后一句是结论句，原先只用 <b> 加粗 → 不够醒目，
 #    且无法区分「可执行 / 有条件 / 风险回避 / 待验证」四种性质。
 #    治本：build_k3_conclusions.py 生成四类语义色（与第二列 dr-up/up-caution/dn 色系呼应）
@@ -179,10 +181,10 @@ try:
 except Exception as _e:
     note8.append(f'⚠️ 检查异常：{_e}')
     ok8 = False
-print(f"{'✅' if ok8 else '❌'} [8/11] 7.1 结论句语义色（k3c-* 全行覆盖 + CSS/图例唯一）：{'通过' if ok8 else '未通过'}")
+print(f"{'✅' if ok8 else '❌'} [8/12] 7.1 结论句语义色（k3c-* 全行覆盖 + CSS/图例唯一）：{'通过' if ok8 else '未通过'}")
 for n in note8: print(f"      {n}")
 
-# 9) [9/11] 🔴 未定义类守卫（2026-09-11 自检新增）
+# 9) [9/12] 🔴 未定义类守卫（2026-09-11 自检新增）
 #    实测：dk-dn(13 处) / dr-caution(4 处) / dr-wrap(54 处) 在 analysis.html 中使用，
 #    但全站 CSS（analysis.html 自包含 style + 三处 index）均无定义
 #    → 这些类静默退化为「无色 / 无效果」，用户看到的只是普通文字。
@@ -219,10 +221,10 @@ try:
 except Exception as _e:
     note9.append(f'⚠️ 检查异常：{_e}')
     ok9 = False
-print(f"{'✅' if ok9 else '❌'} [9/11] 未定义类守卫（在用 class 必须有 CSS 定义）：{'通过' if ok9 else '未通过'}")
+print(f"{'✅' if ok9 else '❌'} [9/12] 未定义类守卫（在用 class 必须有 CSS 定义）：{'通过' if ok9 else '未通过'}")
 for n in note9: print(f"      {n}")
 
-# 10) [10/11] 🔴 空转引用守卫（2026-09-11 新增 · 铁律 15 五维自检法第 2 维「容器·引用反查」）
+# 10) [10/12] 🔴 空转引用守卫（2026-09-11 新增 · 铁律 15 五维自检法第 2 维「容器·引用反查」）
 #     实测：drTblA / drTblH / drTblUs / drTblObs / drCmdBtn / allGrid 六处 getElementById
 #     的目标在全部活文件中都不存在 → 原代码靠 `if (el)` 或无守卫静默空转、永不生效。
 #     判据：孤儿 id **允许存在**（可能由注入器 HTML 片段或 JS 动态创建提供），
@@ -276,11 +278,11 @@ try:
 except Exception as _e:
     note10.append(f'⚠️ 检查异常：{_e}')
     ok10 = False
-print(f"{'✅' if ok10 else '❌'} [10/11] 空转引用守卫（JS 引用的 id 须有来源或空值守卫）："
+print(f"{'✅' if ok10 else '❌'} [10/12] 空转引用守卫（JS 引用的 id 须有来源或空值守卫）："
       f"{'通过' if ok10 else '未通过'}")
 for n in note10: print(f"      {n}")
 
-# 11) [11/11] 🔴 段落顺序 + 段号硬编码守卫（2026-09-11 新增 · 用户报「7 段排在 7.4 后、7.3 未见」）
+# 11) [11/12] 🔴 段落顺序 + 段号硬编码守卫（2026-09-11 新增 · 用户报「7 段排在 7.4 后、7.3 未见」）
 #     两个**复发**bug（都有前科，必须机器化）：
 #     a. analysis.html 的 7.x **段落顺序错**：历史一直是 7.1→7.2→7.4→7.3（从 e545530 起 7 个版本全部如此），
 #        而 build_obs_section.py 的 END_ANCHOR 还写着 "<!-- 7.4 操作预案" —— **迁就了错误顺序**，把它固化。
@@ -327,10 +329,54 @@ try:
 except Exception as _e:
     note11.append(f'⚠️ 检查异常：{_e}')
     ok11 = False
-print(f"{'✅' if ok11 else '❌'} [11/11] 段落顺序 + 段号守卫：{'通过' if ok11 else '未通过'}")
+print(f"{'✅' if ok11 else '❌'} [11/12] 段落顺序 + 段号守卫：{'通过' if ok11 else '未通过'}")
 for n in note11: print(f"      {n}")
 
+# 12) [12/12] 🔴 静态容器 loader 守卫（2026-09-15 新增 · 实测双例：段 6 #drNewsPool / 段 8 #drSelfCheck）
+#     analysis.html 里的 dr* 静态容器 = 需 JS 填充的动态区。**有容器无引用 = 静默空转**：
+#     页面永远停在占位文案（「新闻池自动加载中…」「自检扫描中…」），不报错、不空白，且段内说明
+#     还自称「由 JS 自动扫描实时生成」—— 极易被当成正常状态放过。
+#     [10/12] 只防反向（JS 引用无容器）；本条补正向（容器无 JS 引用）+ 渲染链挂载校验。
+ok12 = True
+note12 = []
+try:
+    _cont12 = sorted(set(re.findall(r'id="(dr[A-Za-z0-9_]+)"', s)))
+    _js12 = ''
+    for _f12 in ['index.html', 'index_template.html', 'deploy/index.html',
+                 'daily_review_tab_snippet.js', 'inject_daily_review_tab.py']:
+        try:
+            _js12 += io.open(_f12, encoding='utf-8').read()
+        except FileNotFoundError:
+            note12.append(f'⚠️ 缺少 {_f12}（引用来源集合可能不全）')
+    _noload12, _uncalled12 = [], []
+    for _c12 in _cont12:
+        _m12 = re.search(r"getElementById\(\s*['\"]" + re.escape(_c12) + r"['\"]\s*\)", _js12)
+        if not _m12:
+            _noload12.append(_c12)
+            continue
+        _fn12 = None
+        for _fm12 in re.finditer(r'function\s+(\w+)\s*\(', _js12[:_m12.start()]):
+            _fn12 = _fm12.group(1)
+        # 定义 1 次 + 渲染链调用 ≥1 次 = ≥2；只有定义 = 永不执行
+        if _fn12 and len(re.findall(r'\b' + re.escape(_fn12) + r'\s*\(', _js12)) < 2:
+            _uncalled12.append(f'{_c12} → {_fn12}()')
+    if _noload12:
+        note12.append(f'⚠️ 静态容器**无任何 JS 填充**（恒显占位 = 空转）：{_noload12}')
+        note12.append('   → 修法：加 loader 函数 + 在 renderDailyReview 渲染链里调用；'
+                      '并同步 daily_review_tab_snippet.js 与 inject_daily_review_tab.py 两处快照')
+        ok12 = False
+    if _uncalled12:
+        note12.append(f'⚠️ loader 已定义但**渲染链未调用**（永不执行）：{_uncalled12}')
+        ok12 = False
+    if ok12:
+        print(f"      analysis.html dr* 容器 {len(_cont12)} 个：均有 loader 且已挂载渲染链 ✓ {_cont12}")
+except Exception as _e:
+    note12.append(f'⚠️ 检查异常：{_e}')
+    ok12 = False
+print(f"{'✅' if ok12 else '❌'} [12/12] 静态容器 loader 守卫（容器有引用 + 已挂载渲染链）：{'通过' if ok12 else '未通过'}")
+for n in note12: print(f"      {n}")
+
 # 总结
-all_ok = (ok0 and ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11)
+all_ok = (ok0 and ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12)
 print(f"\n{'✅ 全部通过' if all_ok else '❌ 存在版式问题，请修复'}")
 sys.exit(0 if all_ok else 1)

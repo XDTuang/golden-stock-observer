@@ -87,7 +87,7 @@ V3 只读这一个文件 → L1 与 L2 的数据日**必然一致**，不会再�
 - 样式块以 `/* OBS-FOLD-CSS v1` 为标记**整块替换**（可安全迭代脚本）；`.obs-*` 类名全局作用域，改名前先 grep 主站是否已占用 `obs-` 前缀。
 - 7.2 段边界锚点：`<!-- 7.2 重点观测股` → `<!-- 7.3 次日开盘指引`（= 7.2 的**下一段**）。
   🔴 **2026-09-11 修正**：段落顺序已重排为 **7.1 → 7.2 → 7.3 → 7.4**（原错排为 `7.2 → 7.4 → 7.3`，而 `END_ANCHOR` 迁就了错误顺序、把它固化）。
-  **顺序与锚点必须同时改**，否则切片会吃掉错内容；守卫 `check_analysis_style.py [11/11]` 校验。
+  **顺序与锚点必须同时改**，否则切片会吃掉错内容；守卫 `check_analysis_style.py [11/12]` 校验。
 - ⚠️ **跳过此步 → 7.2 段回退为手写静态大表**（脚本产出不参与其他 rebuild 流程，必须显式调用）。
 
 ## 步骤 3.6 · 7.1 段结论句语义色（脚本上色，非手写）
@@ -116,7 +116,7 @@ python3 build_k3_conclusions.py --dry-run  # 只报告分类结果，不写文�
 - 样式块以 `/* K3C-CONCLUSION-CSS v1` 为标记**整块替换**（可安全迭代脚本）；`.k3c*` 为类选择器，**不受** `drScopeInjectedStyles` 裸标签改写影响。
 - 图例 `.k3c-legend` 必须插在 `<table>` **之前**（放 `<table>` 内会被浏览器 foster-parent 移出）。
 - 两主题自适应：底色 in default（浅色）`.13~.15` / `@media (prefers-color-scheme:dark)` `.16~.17`；字色与色条用 `var(--red/orange/green/blue)`（这 4 个变量在暗色分支未重定义，两主题同值）。
-- `review/check_analysis_style.py` 已加 **[8/11] 守卫**：7.1 段每一数据行都带 `k3c-*` + CSS 块=1 + 图例=1，任一不满足即 ❌ 并提示跑本脚本。
+- `review/check_analysis_style.py` 已加 **[8/12] 守卫**：7.1 段每一数据行都带 `k3c-*` + CSS 块=1 + 图例=1，任一不满足即 ❌ 并提示跑本脚本。
 - ⚠️ **跳过此步 → 7.1 段结论句退回「只有加粗」的旧观感**（用户明确反馈过的问题）。
 
 ## 步骤 3.7 · 生成 V3 第 6 段观测股（脚本，非手写）
@@ -197,7 +197,7 @@ cp data/daily_review/market.json  deploy/data/daily_review/market.json
 
 **自检**
 ```bash
-python3 review/check_analysis_style.py   # 老站排版：必须全过（[0] BOM + [9/9] 未定义类 + [10/10] 空转引用 + [11/11] 段落顺序/段号）
+python3 review/check_analysis_style.py   # 老站排版：必须全过（[0] BOM + [9/12] 未定义类 + [10/12] 空转引用 + [11/12] 段落顺序/段号 + [12/12] 静态容器 loader）
 python3 review/check_v3_style.py         # V3 独立版：四副本一致性 + 语义色 + 兜底（必须全过）
 python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 null close（必须 ✅）
 ```
@@ -238,8 +238,31 @@ python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 
 > | `allGrid` | 全局 `renderAll()` | 无 `data-tab="all"` 按钮触发，且**无 null 守卫**（定时炸弹型） | **加守卫**，保留函数（「全部」tab 是否永久废弃交用户决定） |
 > | `drTblAsia` / `drTblComm` / `drAsiaNote` | `analysis.html` 静态 HTML | 零 JS 引用 → 内含的「日韩数据加载中…」「商品利率数据加载中…」**永久残留** | 删容器（`drAsiaTable` 要找的含 KOSPI 的 `table.dr-tbl` 在 analysis.html 中本就不存在，该函数早已静默 return） |
 > **未动（有引用方，非遗留）**：`drNewsPool`（`review/build_share_html.py` 引用）、`drBacktestBody`/`drMacroBody`/`drNewsBody` 等 6 个（`inject_daily_auto_blocks.py` 注入）、`drCmdModal`（JS 动态创建）。
-> **防呆**：新增 `check_analysis_style.py [10/10]` 空转引用守卫 —— 孤儿 id 允许存在，但**每个引用点必须有空值守卫**，无守卫即红灯退出码 1（已反向测试）。
+> **防呆**：新增 `check_analysis_style.py [10/12]` 空转引用守卫 —— 孤儿 id 允许存在，但**每个引用点必须有空值守卫**，无守卫即红灯退出码 1（已反向测试）。
 > ⚠️ **analysis.html 是 agent 每日手写的**：生成时**不要再写**上述已删除的占位容器（尤其 `<div id="drTblAsia">日韩数据加载中…</div>` 这类，写了就是永久残留）。
+
+> 🔴 **2026-09-15 修正：上表把 `drNewsPool` 列为「未动（有引用方）」是误判**
+> `review/build_share_html.py` 对它的引用是**清洗正则**（生成静态 PDF 版时把该区块替换为占位说明），
+> **不是渲染方** —— 判「是否有主」必须看**是否有 loader 往容器里写内容**，不能只看字符串是否被引用。
+> 实测后果：① 段 6 `#drNewsPool` 在 `daily_review_tab_snippet.js` 中零引用 → 恒显「新闻池自动加载中…」；
+> ② 同族第二例 段 8 `#drSelfCheck` 零引用 → 恒显「自检扫描中…」，而段内说明却自述
+> 「本表由 JS 自动扫描各 JSON 的 date 字段实时生成，不再手工维护」。
+> **已修**：新增 `drLoadNewsPool()`（读 `output/daily_news_latest.json`，按自带 tags 分组 ——
+> 宏观/科技/政策/产业/美股映射/持仓，每组默认 6 条、余量 `<details>` 折叠，未打标签的走「最新快讯」，
+> 每条带来源 + 时间 + 原文链接）与 `drLoadSelfCheck()`（对齐 V3 8.5 段口径：16 个数据源 × 复盘日比对，
+> 源日期 ≥ 复盘日即 ✅；`backtest_daily` T+1 豁免、`realtime` 盘中源豁免）。
+> 两函数均挂入 `renderDailyReview()` 渲染链；**改 JS 必须同步两处快照**：
+> `daily_review_tab_snippet.js`（权威源）与 `inject_daily_review_tab.py` 内置兜底，再跑 `inject_daily_review_tab.py` 重注入三处 index。
+
+> **防呆（2026-09-15 增）**：`check_analysis_style.py [12/12]` 静态容器 loader 守卫 ——
+> `analysis.html` 里的 `dr*` 静态容器必须 ① 有 `getElementById` 引用 ② 其所在函数在渲染链里被调用
+> （函数名出现 ≥2 次 = 定义 + 调用）。与 `[10/12]` **互为反向**：`[10/12]` 防「JS 引用无容器」，
+> `[12/12]` 防「容器无 JS 引用（空转恒显占位）」。已做三场景反向测试（无引用 / 有定义无调用 → FAIL；
+> 定义 + 挂载 → PASS）。
+> 🔴 **数据日纪律（同日同族第 6 例）**：`fetch_touzid_data.py` 的 `build_valuation_band()` 与
+> `build_institutional_flow()` 原用 `datetime.date.today()`（生成日）作 `date` → 估值带停在 9/11
+> 却始终自述最新。已改用 `_data_date_str()`（判据与 `fetch_sector_flow.py` / `fetch_national_team_etf.py` 一致：
+> 交易日且已过 15:00 → 当日；否则 → 上一交易日）。
 
 > 🔴 **全站语义色板（2026-09-11 统一 · 用户授权自行裁决）**
 > `dk-risk` 由**红**改**绿**：其标注内容全是跌向/利空（低开偏弱、杀跌、补跌、杀估值、外盘收跌），
