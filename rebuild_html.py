@@ -15,6 +15,7 @@
 注意：本脚本只负责“生成外壳”，不内联任何业务数据；业务数据的抓取/精简/扫描
 仍由 fetch_pool.py / golden_diamond_scan.py / slim_signals.py 等固化机制产出。
 """
+import json
 import os
 import re
 from datetime import datetime
@@ -41,6 +42,18 @@ html = html.replace('// DATA_PLACEHOLDER', data_loader_comment)
 #   模板里已有 v2026-08-29 → 替换后拼成 v2026-09-092026-08-29（线上实测污染）。
 #   改用正则整体吃掉旧版本号，保证幂等（重复运行结果恒定）。
 today = datetime.now().strftime('%Y-%m-%d')
+# 🔴 2026-09-15 治本（铁律 9 同族）：原取「生成日」→ 盘前/非交易日/补跑重跑会把标题
+#    写成未来日或非交易日（实测 2026-09-15 09:xx 时标题仍停在 v2026-09-11）。
+#    改为锚定「信号池数据日」= output/signals.json 的 data_date，取不到才回退生成日。
+try:
+    _sg = json.load(open(os.path.join(BASE, "output", "signals.json"), encoding="utf-8"))
+    _dd = str(_sg.get("data_date") or "")[:10]
+    if len(_dd) == 10 and _dd[4] == "-":
+        if _dd != today:
+            print(f"  ℹ️  标题版本号锚定数据日 {_dd}（生成日 {today}）")
+        today = _dd
+except Exception as _e:
+    print(f"  ⚠️  signals.json 数据日读取失败，标题回退生成日 {today}: {_e}")
 html, _n = re.subn(r'(兜金观测 — 量化信号池 v)[\d\-]*', rf'\g<1>{today}', html)
 if _n != 1:
     raise SystemExit(f'❌ title 版本号替换命中 {_n} 处（期望 1 处），已中止以免写坏 index.html')

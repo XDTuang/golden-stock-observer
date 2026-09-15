@@ -14,12 +14,17 @@ import json
 import os
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 try:
     import requests
 except ImportError:
     requests = None
+
+try:
+    from market_calendar import is_trading_day, last_trading_day
+except Exception:  # 交易日历不可用时不阻断采集
+    is_trading_day = last_trading_day = None
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_FILE = os.path.join(SCRIPT_DIR, "output", "sector_flow.json")
@@ -142,6 +147,11 @@ def fetch_sector_flows() -> list:
             continue
 
         main_net = flow["main_net"]
+        try:
+            main_net = float(main_net)
+        except (TypeError, ValueError):
+            # 东财接口偶发返回字符串/空值（2026-09-15 实测盘前返回 str 导致打印崩溃）
+            main_net = None
         sectors.append({
             "code": code,
             "name": name,
@@ -157,7 +167,10 @@ def fetch_sector_flows() -> list:
             "main_inflow_ind_rank": 0,
             "has_data": True,
         })
-        print(f"  {name} ({code}) ... ✅ 主力净流入 {main_net/1e8:+.2f}亿")
+        if main_net is None:
+            print(f"  {name} ({code}) ... ⚠️ 主力净额缺失（接口返回非数值，已置空）")
+        else:
+            print(f"  {name} ({code}) ... ✅ 主力净流入 {main_net/1e8:+.2f}亿")
 
     return sectors
 
@@ -206,12 +219,34 @@ def save_history(data: dict):
         json.dump(data, f, ensure_ascii=False, indent=2, default=str)
 
 
+def resolve_data_date(now: datetime) -> str:
+    """返回本次采集所属的『最近一个已收盘交易日』。
+
+    🔴 2026-09-15 修复：原实现直接取 `datetime.now().strftime('%Y-%m-%d')`，
+    任务若跨零点运行（实测 2026-09-15 00:13 调度）会把 **9/14 收盘**的资金流
+    写成 `history["2026-09-15"]` —— 既是未来日期、又让 9/14 键永久缺失，
+    属静默失效（有值但日期错位）。改为按『收盘是否已过』判定。
+    """
+    d = now.date()
+    if is_trading_day is not None:
+        if is_trading_day(d) and now.hour >= 15:
+            return str(d)
+        return str(last_trading_day(d - timedelta(days=1)))
+    # 兜底：无交易日历时按工作日近似
+    if d.weekday() < 5 and now.hour >= 15:
+        return str(d)
+    prev = d - timedelta(days=1)
+    while prev.weekday() >= 5:
+        prev -= timedelta(days=1)
+    return str(prev)
+
+
 def main():
     date_str = None
     if len(sys.argv) > 2 and sys.argv[1] == "--date":
         date_str = sys.argv[2]
     else:
-        date_str = datetime.now().strftime("%Y-%m-%d")
+        date_str = resolve_data_date(datetime.now())
 
     print(f"[{datetime.now().strftime('%H:%M:%S')}] 开始获取板块资金流向 ({date_str})...（东财申万一级）")
 

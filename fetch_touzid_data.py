@@ -266,7 +266,19 @@ def build_thermometer():
         except Exception:
             pass
 
-    therm = {"date": today, "snapshot": snap, "history": hist,
+    # 🔴 2026-09-15 修复：原 `date` 直接取生成日（today）→ 跨零点调度（实测 2026-09-15 00:13）
+    #    会把「9/14 收盘的估值快照」标成 9/15，且与 history 最新键（9/14）自相矛盾，
+    #    属静默失效（有值但日期错位）。改为锚定数据日 = PE/PB 序列最后一行日期。
+    data_day = today
+    if hist:
+        _ld = str(hist[-1].get("date") or "")[:10]
+        if _ld:
+            data_day = _ld
+    snap["date"] = data_day
+    if data_day != today:
+        print(f"  ℹ️  温度计日期锚定数据日 {data_day}（生成日 {today}，跨零点调度）")
+
+    therm = {"date": data_day, "snapshot": snap, "history": hist,
              "sources": {"pe_pb": "乐咕乐股", "spot": "腾讯gtimg", "bond": "中美国债",
                           "gdp": "国家统计局", "below_net": "乐咕乐股"}}
     _write_both("market_thermometer.json", therm)
@@ -435,8 +447,15 @@ def build_vix():
     # 治本 = 取实际数据日：A股 最新交易日 与 CBOE VIX 数据日（最新已收盘美股交易日）取较晚者。
     try:
         try:
-            from market_calendar import last_trading_day
-            _a_anchor = str(last_trading_day())
+            from market_calendar import is_trading_day, last_trading_day
+            # 🔴 2026-09-15 补全 9/13 的修复：原 `last_trading_day()` 无参 = 今天，
+            #    在交易日盘前重跑会把「9/14 收盘数据」锚成 9/15（实测 A股锚 2026-09-15）。
+            #    正确口径 = 最近一个『已收盘』交易日：当日收盘前 → 上一交易日。
+            _d = _dt.date.today()
+            if is_trading_day(_d) and _dt.datetime.now().hour >= 15:
+                _a_anchor = str(_d)
+            else:
+                _a_anchor = str(last_trading_day(_d - _dt.timedelta(days=1)))
         except Exception:
             _a_anchor = obj["date"]
         _us_anchor = (obj.get("cboe_vix") or {}).get("date") or obj["date"]

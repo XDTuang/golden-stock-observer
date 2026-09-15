@@ -217,7 +217,8 @@ def main():
                 quotes[k].update({kk: v[kk] for kk in
                                   ("close", "prev", "chg_pct", "high", "low", "time") if v.get(kk) is not None})
                 n_us += 1
-        print("[preopen] quotes 美股行滚动 %d/%d 项（→ 9/10 收盘口径）" % (n_us, len(US_GT_CODES)))
+        _qd = ",".join(latest_dates) if latest_dates else "?"
+        print("[preopen] quotes 美股行滚动 %d/%d 项（→ %s 收盘口径）" % (n_us, len(US_GT_CODES), _qd))
     except Exception as e:
         print("[preopen] quotes 美股行滚动失败（保留原值）: %s %s" % (type(e).__name__, str(e)[:100]))
 

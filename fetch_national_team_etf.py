@@ -18,7 +18,12 @@ import json
 import os
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
+
+try:
+    from market_calendar import is_trading_day, last_trading_day
+except Exception:  # 交易日历不可用时不阻断采集
+    is_trading_day = last_trading_day = None
 
 try:
     import requests
@@ -186,7 +191,25 @@ def main():
             i += 1
 
     if not date_str:
-        date_str = datetime.now().strftime("%Y-%m-%d")
+        # 🔴 2026-09-15 修复：原取 datetime.now() 作日期键 → 跨零点调度（实测 2026-09-15 00:13）
+        #    把「9/14 收盘」的资金流写成 history["2026-09-15"]，既是未来日期、
+        #    又让 9/14 键永久缺失（与 fetch_sector_flow.py 同一静默失效家族）。
+        #    改为按「当日收盘是否已过」判定所属交易日。
+        _now = datetime.now()
+        _d = _now.date()
+        if is_trading_day is not None:
+            if is_trading_day(_d) and _now.hour >= 15:
+                date_str = str(_d)
+            else:
+                date_str = str(last_trading_day(_d - timedelta(days=1)))
+        else:
+            if _d.weekday() < 5 and _now.hour >= 15:
+                date_str = str(_d)
+            else:
+                _p = _d - timedelta(days=1)
+                while _p.weekday() >= 5:
+                    _p -= timedelta(days=1)
+                date_str = str(_p)
 
     print(f"[{datetime.now().strftime('%H:%M:%S')}] 开始获取国家队ETF资金流向 ({date_str})...（新浪财经源）")
 

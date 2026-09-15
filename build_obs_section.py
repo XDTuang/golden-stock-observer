@@ -69,6 +69,9 @@ START_ANCHOR = "<!-- 7.2 重点观测股"
 #   故结束锚点随之改为 7.2 的**下一段** = 7.3。两者必须同时改，否则切片会吃掉错内容。
 END_ANCHOR = "<!-- 7.3 次日开盘指引"
 CSS_MARK = "/* OBS-FOLD-CSS v1"
+# 🔴 2026-09-14：收尾边界守卫用。历史上 ensure_css 只找 </style>，会把它之后、</style> 之前的
+#   K3C-CONCLUSION-CSS 块一并吃掉 → 7.1 语义色 CSS 块数=0，check_analysis_style [8/11] 红灯。
+K3C_CSS_MARK = "/* K3C-CONCLUSION-CSS v1"
 
 # ---------------------------------------------------------------- CSS
 
@@ -396,9 +399,12 @@ def ensure_css(html):
     start = html.find(CSS_MARK)
     if start >= 0:
         # 已有 → 整块替换（保证脚本迭代后样式同步更新）
-        end = html.find("</style>", start)
-        if end < 0:
+        # 收尾边界 = 「</style>」与「下一个样式块标记」中较早者（2026-09-14 治本）
+        cands = [p for p in (html.find("</style>", start),
+                             html.find(K3C_CSS_MARK, start)) if p >= 0]
+        if not cands:
             raise RuntimeError("OBS 样式块未找到收尾 </style>")
+        end = min(cands)
         return html[:start] + OBS_CSS.lstrip("\n") + html[end:], "updated"
     i = html.find("</style>")
     if i < 0:
