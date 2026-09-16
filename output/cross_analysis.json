@@ -1,11 +1,84 @@
 {
   "date": "2026-09-16",
-  "generated_at": "2026-09-16 20:24",
-  "news_date": "2026-09-16",
+  "data_date": "2026-09-15",
+  "generated_at": "2026-09-16 16:47",
+  "news_date": "",
+  "news_window": [
+    "2026-09-15",
+    "2026-09-16"
+  ],
+  "news_window_days": 2,
   "flow_date": "2026-09-15",
   "flow_raw_latest": "2026-09-15",
   "flow_is_weekend_copy": false,
-  "hot_threshold": 8,
+  "hot_per_day": 8,
+  "hot_threshold": 16,
+  "hot_mode": "per_day",
+  "window": {
+    "generated_at": "2026-09-16 16:42",
+    "session": "close",
+    "data_date": "2026-09-15",
+    "for_date": "2026-09-16",
+    "data_date_note": "基准层行情仅到 2026-09-15（收盘补抓未完成）→ 基准日由 2026-09-16 回退为 2026-09-15",
+    "warnings": [
+      "基准层行情仅到 2026-09-15（收盘补抓未完成）→ 基准日由 2026-09-16 回退为 2026-09-15"
+    ],
+    "span": [
+      "2026-09-16"
+    ],
+    "span_days": 1,
+    "display_days": [
+      "2026-09-15",
+      "2026-09-16"
+    ],
+    "display_text": "09/15 + 09/16",
+    "span_is_weekend_cross": false,
+    "span_text": "09/16",
+    "carry": {
+      "from_data_date": "2026-09-15",
+      "ref": "output/feed_review_2026-09-15.json",
+      "exists": true,
+      "gap_days": 1,
+      "stale": false,
+      "bias": "偏多",
+      "bias_score": 3,
+      "t1_focus": [
+        "跟踪金钻起涨 3 只回踩确认"
+      ],
+      "risks": [],
+      "headline": ""
+    },
+    "layers": {
+      "base": "2026-09-15 A股收盘（基准层）",
+      "overnight": "美东 2026-09-15 收盘（北京 2026-09-16 早间到达）",
+      "premarket": "2026-09-16 今早日韩实时 + 盘前新闻/投喂增量"
+    },
+    "market_state": {
+      "date": "2026-09-15",
+      "run_date": "2026-09-16",
+      "preopen_partial": true,
+      "us_kline": true,
+      "asia": true
+    },
+    "covered": [
+      {
+        "date": "2026-09-16",
+        "weekday": "周三",
+        "is_trading_day": true,
+        "news": 676,
+        "feeds": 0,
+        "reports": 67,
+        "macro": true
+      }
+    ],
+    "totals": {
+      "news": 676,
+      "feeds": 0,
+      "reports": 67,
+      "covered_days": 1
+    },
+    "missing": []
+  },
   "index_context": {
     "上证指数": {
       "close": "3864.28",
@@ -26,292 +99,341 @@
   },
   "summary": {
     "共振": 0,
-    "背离": 18,
+    "背离": 16,
     "暗线": 4,
-    "双冷": 9
+    "双冷": 11
   },
   "items": [
     {
       "sector": "电力设备",
-      "news_count": 40,
+      "news_count": 33,
+      "news_per_day": 16.5,
       "flow_yi": -31.55,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "国家电网：加强芯片制造、精密加工、生物医药等新质生产力重点企业周边变电站及线",
-        "国家电网：为新能源、新型储能、源网荷储等新主体新业态提供公平高效的并网服务",
-        "国家电网：2030年全年农网户均停电时间较2025年下降30%以上"
+        "旺季碳酸锂价短期回调 供需紧平衡未变",
+        "东方财富财经早餐 9月7日周一",
+        "东方财富财经早餐 8月6日周四"
       ]
     },
     {
       "sector": "医药生物",
-      "news_count": 17,
+      "news_count": 22,
+      "news_per_day": 11.0,
       "flow_yi": -28.18,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "上海莱士：SR604注射液进入Ⅲ期临床试验",
-        "国家电网：加强芯片制造、精密加工、生物医药等新质生产力重点企业周边变电站及线",
-        "苑东生物：EP-0226片完成I期临床试验"
+        "让AI为创新药研发深度赋能",
+        "中国生物制药：TQH2722注射液新药上市申请获得受理",
+        "创新药出海步伐再提速 产业链企业同步“走出去”"
       ]
     },
     {
       "sector": "国防军工",
-      "news_count": 20,
+      "news_count": 44,
+      "news_per_day": 22.0,
       "flow_yi": -22.83,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "消息人士：俄罗斯锡兹兰和萨拉托夫炼油厂已停止运营",
-        "俄乌继续互相发动无人机袭击 乌一巴士遭袭5人死亡",
-        "俄外交部：日本“再军事化”威胁东北亚和平稳定"
+        "沙特主导联军称摧毁一架飞往麦加的胡塞武装无人机",
+        " 沙特阿拉伯主导的多国联军发言人图尔基·马利基16日说，沙特防空部队15日晚",
+        "波音：大韩航空宣布该航司已最终确认订购103架波音宽体和单通道飞机"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 22,
+      "news_count": 43,
+      "news_per_day": 21.5,
       "flow_yi": -18.66,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "南向资金净买近21亿港元 净买入智谱逾31亿港元",
-        "2连板通鼎互联：公司当前业务不涉及光模块、光芯片产品",
-        "调查显示约五分之一英国成年人使用AI获取新闻"
+        "江苏省政府召开第六代移动通信产业高质量发展专题推进会",
+        "【江苏省政府召开第六代移动通信产业高质量发展专题推进会】据新华日报，9月14",
+        "堆叠9星入轨 全球最大固体火箭引力一号远海再发"
       ]
     },
     {
       "sector": "银行",
-      "news_count": 21,
+      "news_count": 38,
+      "news_per_day": 19.0,
       "flow_yi": -17.07,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "美国房贷利率突破7%",
-        "土耳其主要BIST-100指数下跌4.7%",
-        "瑞穗银行上调Salesforce目标价"
+        "9月16日投资避雷针：4连板人气股提示风险 AI安全产品营收占比不超2%",
+        "系统升级致无法正常还款？富民银行称系统维护 等待修复",
+        "银行个人贵金属代理业务密集“退场”"
       ]
     },
     {
       "sector": "计算机",
-      "news_count": 66,
+      "news_count": 126,
+      "news_per_day": 63.0,
       "flow_yi": -15.7,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "英特尔CEO陈立武：内存短缺明年或进一步恶化 CPU也缺货",
-        "赛富时宣布就Missionforce与OpenAI建立新的合作关系",
-        "AI算力租赁商CoreWeave推出多机架英伟达Vera Rubin NVL"
+        "光谷将培育超千名AI前沿部署工程师",
+        "事关AI安全与监管！两大阵营争论不休 特朗普下周拟在白宫召集行业高管",
+        "让AI为创新药研发深度赋能"
       ]
     },
     {
       "sector": "非银金融",
-      "news_count": 32,
+      "news_count": 44,
+      "news_per_day": 22.0,
       "flow_yi": -15.69,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "财政部有关负责人就《关于加快农业保险高质量发展的实施方案》答记者问",
-        "超1300亿！IPO单季募资创三年新高 两股占比近七成",
-        "九目化学北交所IPO过会"
+        "国家医保局出台方案 启动首批全国统一医保医疗服务项目目录编制",
+        "【国家医保局出台方案 启动首批全国统一医保医疗服务项目目录编制】今天（16日",
+        "四天14只“加时”募集 新基金为何卖不动了？"
       ]
     },
     {
       "sector": "建筑材料",
       "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": 14.19,
       "verdict": "暗线",
+      "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": []
     },
     {
       "sector": "公用事业",
-      "news_count": 9,
+      "news_count": 10,
+      "news_per_day": 5.0,
       "flow_yi": -13.32,
-      "verdict": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "内存价格飙涨五到七倍 英特尔CEO预警内存短缺还会继续恶化",
-        "力源科技：签订6815.60万元供货合同",
-        "2连板通鼎互联：公司当前业务不涉及光模块、光芯片产品"
+        "算力降本还需迈过三道坎",
+        "18家中央企业援青签约总额达3069.84亿元",
+        "东方财富财经早餐 8月4日周二"
       ]
     },
     {
       "sector": "商贸零售",
       "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -12.59,
       "verdict": "双冷",
+      "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": []
     },
     {
       "sector": "有色金属",
-      "news_count": 51,
+      "news_count": 63,
+      "news_per_day": 31.5,
       "flow_yi": -12.33,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "国际贵金属期货持续上涨 现货黄金价格涨1.35%",
-        "钛能化学：拟对全资子公司增资30亿元",
-        "巴林铝业：铝产量恢复至战前水平的80%"
+        "中信证券：维持黄金珠宝行业“强于大市”评级",
+        "9月16日投资避雷针：4连板人气股提示风险 AI安全产品营收占比不超2%",
+        "全球最大的黄金ETF SPDR Gold Trust持仓较前日增加2.86吨"
       ]
     },
     {
       "sector": "农林牧渔",
-      "news_count": 14,
+      "news_count": 15,
+      "news_per_day": 7.5,
       "flow_yi": -11.84,
-      "verdict": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "财政部有关负责人就《关于加快农业保险高质量发展的实施方案》答记者问",
-        "水利部联合中国农业银行出台支持节水产业高质量发展金融服务措施",
-        "夏粮收购接近尾声 收购总量超1亿吨"
+        "巴西ANEC：预计巴西9月大豆出口量将达到832万吨",
+        "东方财富财经早餐 6月3日周三",
+        "东方财富财经早餐 2月4日周三"
       ]
     },
     {
       "sector": "建筑装饰",
       "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -11.5,
       "verdict": "双冷",
+      "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": []
     },
     {
       "sector": "汽车",
-      "news_count": 36,
+      "news_count": 49,
+      "news_per_day": 24.5,
       "flow_yi": -11.48,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "零跑汽车定增获证监会正式批复",
-        "迈凯伦将投资近5亿英镑扩大英国业务 包括新建汽车生产设施",
-        "马斯克质疑AI巨头自相矛盾：一边警告AI毁灭人类 一边冲刺IPO"
+        "日本8月出口增长保持强劲 芯片出货量激增",
+        "日产拟投资1.7亿英镑 在英国生产新款混合动力SUV",
+        "新一代通信网带来哪些智能时代新体验？"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 19,
+      "news_count": 28,
+      "news_per_day": 14.0,
       "flow_yi": -11.37,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "恒工精密：拟发行不超8.1亿元可转债用于具身智能机器人等项目",
-        "京东发布全新业务“七鲜大厨”",
-        "东方财富财经早餐 8月19日周三"
+        "雷军到访宇树科技 猛踹人形机器人 大赞真的可以",
+        "Meta据报将推出无摄像头AI眼镜，代号“Luna”",
+        "Meta据报将推出无摄像头AI眼镜 代号“Luna”"
       ]
     },
     {
       "sector": "食品饮料",
-      "news_count": 36,
+      "news_count": 52,
+      "news_per_day": 26.0,
       "flow_yi": -8.3,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "报道：利洁时集团将在4年内向美国供应链投资4亿美元",
-        "“豆包手机助手二代”落地：微信、美团、淘宝等App应用内自动化操作暂受限",
-        "6.9元起！百万粉丝博主掌舵 钟薛高重启"
+        "青岛出台实施方案增强消费品供需适配性",
+        "【青岛出台实施方案增强消费品供需适配性】近日，青岛市印发《青岛市增强消费品供",
+        "系统升级致无法正常还款？富民银行称系统维护 等待修复"
       ]
     },
     {
       "sector": "传媒",
-      "news_count": 29,
+      "news_count": 38,
+      "news_per_day": 19.0,
       "flow_yi": -7.23,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "光线传媒：公司主投、发行的真人电影《活色生香》已定档10月1日上映",
-        "超1300亿！IPO单季募资创三年新高 两股占比近七成",
-        "九目化学北交所IPO过会"
+        "国金证券：DeepSeek V4.1 Flash发布 关注国产大模型与AI应",
+        "Anthropic、Salesforce CEO：企业AI应用仍处早期 充分",
+        "楚天龙：上半年数字人民币相关业务收入占公司营收比重较小"
       ]
     },
     {
       "sector": "社会服务",
       "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -5.88,
       "verdict": "双冷",
+      "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": []
     },
     {
       "sector": "电子",
-      "news_count": 111,
+      "news_count": 134,
+      "news_per_day": 67.0,
       "flow_yi": -4.41,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "雷柏科技：控股股东拟协议转让5%股份",
-        "AI算力租赁商CoreWeave推出多机架英伟达Vera Rubin NVL",
-        "国家电网：加强芯片制造、精密加工、生物医药等新质生产力重点企业周边变电站及线"
+        "日本8月出口增长保持强劲 芯片出货量激增",
+        "“交管12123”App竟能被山寨 起底模拟软件乱象",
+        "AI安全之争愈演愈烈！黄仁勋：无需任何新法律 安全与速度可兼得"
       ]
     },
     {
       "sector": "石油石化",
-      "news_count": 15,
+      "news_count": 35,
+      "news_per_day": 17.5,
       "flow_yi": -4.33,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "胡塞武装称对沙特发起两次军事行动",
-        "伊朗石油部长：受损石油工业设施的重建进展良好",
-        "也门胡塞武装称袭击了沙特阿美位于延布的石油设施"
+        "日本8月出口增长保持强劲 芯片出货量激增",
+        "WTI原油跌超1%",
+        "日本财务省：8月原油初步进口量同比增长3.6%；动力煤进口同比下降13.6%"
       ]
     },
     {
       "sector": "家用电器",
       "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -3.53,
       "verdict": "双冷",
+      "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": []
     },
     {
       "sector": "基础化工",
-      "news_count": 1,
+      "news_count": 7,
+      "news_per_day": 3.5,
       "flow_yi": 3.45,
       "verdict": "暗线",
+      "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
+        "中信证券：看好PCB/CCL景气周期的持续性及增长性",
+        "中东局势波及化工产业链 丙烷价格高位震荡",
         "东方财富财经早餐 5月28日周三"
       ]
     },
     {
       "sector": "交通运输",
-      "news_count": 2,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": -3.0,
       "verdict": "双冷",
+      "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "东方财富财经早餐 10月14日周二",
-        "丁薛祥出席平陆运河通航仪式"
+        "东方财富财经早餐 10月14日周二"
       ]
     },
     {
       "sector": "纺织服饰",
       "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -2.16,
       "verdict": "双冷",
+      "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": []
@@ -319,8 +441,10 @@
     {
       "sector": "美容护理",
       "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": 1.65,
       "verdict": "暗线",
+      "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": []
@@ -328,68 +452,84 @@
     {
       "sector": "轻工制造",
       "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -1.48,
       "verdict": "双冷",
+      "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": []
     },
     {
       "sector": "钢铁",
-      "news_count": 3,
+      "news_count": 8,
+      "news_per_day": 4.0,
       "flow_yi": -1.47,
       "verdict": "双冷",
+      "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "东方财富财经早餐 8月25日周二",
-        "东方财富财经早餐 8月18日周一",
-        "东方财富财经早餐 6月3日周二"
+        "日本制铁将向其位于欧洲的科希策钢铁厂投资约9亿欧元。",
+        "坚决抵制亏本抢市场！宝武、鞍钢等44家钢企发布“控产降库存”倡议书",
+        "规模空前！45家钢企联署“控产降库存”"
       ]
     },
     {
       "sector": "煤炭",
-      "news_count": 1,
+      "news_count": 5,
+      "news_per_day": 2.5,
       "flow_yi": 1.3,
       "verdict": "暗线",
+      "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
+        "炭黑市场刷新历史新高 炭黑龙头有望迎来盈利修复",
+        "日本财务省：8月原油初步进口量同比增长3.6%；动力煤进口同比下降13.6%",
         "东方财富财经早餐 8月11日周二"
       ]
     },
     {
       "sector": "环保",
-      "news_count": 0,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": -1.28,
       "verdict": "双冷",
+      "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": []
+      "sample_titles": [
+        "森合高科：公司产品已进入中国黄金、招金集团、紫金矿业、山东黄金等国内龙头矿企"
+      ]
     },
     {
       "sector": "综合",
-      "news_count": 15,
+      "news_count": 25,
+      "news_per_day": 12.5,
       "flow_yi": -1.18,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "东方财富财经早餐 7月24日周五",
-        "东方财富财经早餐 4月24日周五",
-        "东方财富财经早餐 3月17日周二"
+        "天风证券：债市短期扰动因素增加 中期看多逻辑未变",
+        "【天风证券：债市短期扰动因素增加 中期看多逻辑未变】天风证券研报认为，综合基",
+        "【国家医保局出台方案 启动首批全国统一医保医疗服务项目目录编制】今天（16日"
       ]
     },
     {
       "sector": "房地产",
-      "news_count": 20,
+      "news_count": 24,
+      "news_per_day": 12.0,
       "flow_yi": -1.08,
       "verdict": "背离",
+      "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "ST华谊：确定华人文化为产业投资人并签署重整投资协议",
-        "美国房贷利率突破7%",
+        "预售房“封顶才能卖” 商品房销售制度开启新变革",
+        "控增量、去库存、优供给 地产新政重塑房企现金流节奏",
         "东方财富财经早餐 8月31日周一"
       ]
     }

@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-09-16 16:42",
+  "session": "close",
+  "data_date": "2026-09-15",
+  "for_date": "2026-09-16",
+  "data_date_note": "基准层行情仅到 2026-09-15（收盘补抓未完成）→ 基准日由 2026-09-16 回退为 2026-09-15",
+  "warnings": [
+    "基准层行情仅到 2026-09-15（收盘补抓未完成）→ 基准日由 2026-09-16 回退为 2026-09-15"
+  ],
+  "span": [
+    "2026-09-16"
+  ],
+  "span_days": 1,
+  "display_days": [
+    "2026-09-15",
+    "2026-09-16"
+  ],
+  "display_text": "09/15 + 09/16",
+  "span_is_weekend_cross": false,
+  "span_text": "09/16",
+  "carry": {
+    "from_data_date": "2026-09-15",
+    "ref": "output/feed_review_2026-09-15.json",
+    "exists": true,
+    "gap_days": 1,
+    "stale": false,
+    "bias": "偏多",
+    "bias_score": 3,
+    "t1_focus": [
+      "跟踪金钻起涨 3 只回踩确认"
+    ],
+    "risks": [],
+    "headline": ""
+  },
+  "layers": {
+    "base": "2026-09-15 A股收盘（基准层）",
+    "overnight": "美东 2026-09-15 收盘（北京 2026-09-16 早间到达）",
+    "premarket": "2026-09-16 今早日韩实时 + 盘前新闻/投喂增量"
+  },
+  "market_state": {
+    "date": "2026-09-15",
+    "run_date": "2026-09-16",
+    "preopen_partial": true,
+    "us_kline": true,
+    "asia": true
+  },
+  "covered": [
+    {
+      "date": "2026-09-16",
+      "weekday": "周三",
+      "is_trading_day": true,
+      "news": 676,
+      "feeds": 0,
+      "reports": 67,
+      "macro": true
+    }
+  ],
+  "totals": {
+    "news": 676,
+    "feeds": 0,
+    "reports": 67,
+    "covered_days": 1
+  },
+  "missing": []
+}

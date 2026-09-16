@@ -5,8 +5,15 @@
 =========================================================================
 抓取多源实时新闻，按关键词打标（宏观/科技/政策/产业/持仓/美股映射），
 标题归一化去重后落：
-  output/daily_news_<T>.json      当日全量
-  output/daily_news_latest.json   当日副本（前端 fetch 用）
+  output/daily_news_<T>.json       当日全量（T = 北京采集日）
+  output/daily_news_latest.json    当日副本（当日口径）
+  output/daily_news_window.json    ★ 近 N 日（默认 14）**滚动池**（2026-09-16 新增）
+
+🔴 滚动池（2026-09-16 用户拍板 · 方案 A）：
+  · **累积不替换** —— 原实现只写 latest，跨周末时周六周日的新闻在周一盘前被**整池覆盖**；
+    现由 `rebuild_window_pool()` 汇总近 keep_days 个日历日的归档件 → 跨周末/长假信息不再丢。
+  · 每条新闻打 `collected_date`（**北京时间归属日**），供 build_window.py 按 span 统计与前端分组。
+  · 池只保留近 keep_days 天；磁盘上的历史归档件**不删**（可回溯）。
 
 数据源（2026-08-28 实测全部可用、实时）：
   主源: 东财全球资讯 stock_info_global_em（200 条/实时）
@@ -22,14 +29,18 @@
   - 来源可溯：每条新闻带 source + url。
 
 用法:
-  python fetch_daily_news.py               # 抓全部源
+  python fetch_daily_news.py                     # 抓全部源（默认 14 天滚动池）
   python fetch_daily_news.py --sources em,breakfast,sina
+  python fetch_daily_news.py --keep-days 21      # 滚动池保留天数
+  python fetch_daily_news.py --pool-only         # 不抓取，仅重建滚动池（补历史）
 """
 import os, re, sys, json, hashlib, datetime
 
 BASE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, BASE)
 OUT_DIR = os.path.join(BASE, "output")
 DATE = datetime.datetime.now().strftime("%Y-%m-%d")
+KEEP_DAYS = 14
 
 # ── 标签关键词（按优先级匹配）─────────────────────────────
 TAG_RULES = {
@@ -209,8 +220,124 @@ GRABBERS = {
     "cctv": ("央视联播", grab_cctv),
 }
 
+
+# ── 滚动池重建（2026-09-16 新增 · 方案 A）────────────────────
+def _pool_window():
+    """嵌入当前信息窗口契约（供前端/守卫读）；缺失时返回 None，不阻断抓取。"""
+    p = os.path.join(OUT_DIR, "window_latest.json")
+    if not os.path.exists(p):
+        return None
+    try:
+        with open(p, encoding="utf-8") as f:
+            w = json.load(f)
+        return w if isinstance(w, dict) and w.get("for_date") else None
+    except Exception:
+        return None
+
+
+def _resolve_span():
+    """尽力求出 (data_date, for_date)；market_calendar 不可用时返回 (None, None)。"""
+    try:
+        from market_calendar import is_trading_day, last_trading_day, next_trading_day
+        today = datetime.date.today()
+        for_date = today if is_trading_day(today) else next_trading_day(today)
+        data_date = last_trading_day(for_date - datetime.timedelta(days=1))
+        return data_date.isoformat(), for_date.isoformat()
+    except Exception as e:
+        print(f"  ⚠️ market_calendar 不可用，窗口日期留空：{e}")
+        return None, None
+
+
+def rebuild_window_pool(keep_days=None):
+    """汇总近 keep_days 个日历日的每日归档 → output/daily_news_window.json。
+
+    · **累积不替换**：跨周末/长假时周六周日新闻不再被周一盘前整池覆盖
+    · 每条打 `collected_date`（北京归属日）→ 供 build_window.py 按 span 统计、前端按日分组
+    · 磁盘历史归档件不删（仅池的纳入范围滚动）
+    """
+    keep_days = keep_days or KEEP_DAYS
+    import glob as _glob
+    cands = []
+    for p in _glob.glob(os.path.join(OUT_DIR, "daily_news_2*.json")):
+        m = re.search(r"daily_news_(\d{4}-\d{2}-\d{2})\.json$", os.path.basename(p))
+        if m:
+            cands.append((m.group(1), p))
+    if not cands:
+        print("  ⚠️ 未找到任何 daily_news_<date>.json 归档，跳过滚动池构建")
+        return None
+    cands.sort(key=lambda x: x[0], reverse=True)
+    kept = sorted(cands[:keep_days])          # 升序
+    dropped = [d for d, _ in cands[keep_days:]]
+
+    by_day, day_stats, merged = {}, {}, []
+    bad = []
+    for ds, p in kept:
+        try:
+            with open(p, encoding="utf-8") as f:
+                doc = json.load(f)
+        except Exception as e:
+            bad.append(f"{ds}({e})")
+            continue
+        arr = doc.get("news") or []
+        for it in arr:
+            it["collected_date"] = ds
+        # 累积顺序：新的一天在前 → 去重保留「最新一次出现」的副本
+        by_day[ds] = arr
+        day_stats[ds] = {"total": len(arr), "tags": doc.get("tag_stats") or {}}
+        merged = arr + merged
+    merged = dedup(merged)
+    merged.sort(key=lambda x: (str(x.get("collected_date") or ""), str(x.get("time") or "")), reverse=True)
+
+    data_date, for_date = _resolve_span()
+    win = _pool_window()
+    if win and win.get("for_date"):
+        data_date = data_date or win.get("data_date")
+        for_date = win.get("for_date")
+    covered_days = sorted(by_day.keys(), reverse=True)
+    pool = {
+        "generated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "generated_date": DATE,
+        "keep_days": keep_days,
+        "data_date": data_date,
+        "for_date": for_date,
+        "covered_days": covered_days,
+        "dropped_days": sorted(dropped, reverse=True)[:10],
+        "pool_note": (f"近 {keep_days} 个日历日滚动池（跨周末/长假信息累积，不整池覆盖）；"
+                      f"磁盘历史归档件保留不删"),
+        "day_stats": day_stats,
+        "by_day": by_day,
+        "total": len(merged),
+        "news": merged,
+        "window": win,
+    }
+    p = os.path.join(OUT_DIR, "daily_news_window.json")
+    with open(p, "w", encoding="utf-8") as f:
+        json.dump(pool, f, ensure_ascii=False, indent=2)
+    print(f"💾 {p}")
+    print(f"   滚动池 {keep_days} 天 · 覆盖 {len(covered_days)} 日（{covered_days[-1] if covered_days else '—'}"
+          f" → {covered_days[0] if covered_days else '—'}）· 去重后 {len(merged)} 条"
+          + (f" · 已滚动出 {len(dropped)} 日" if dropped else ""))
+    for ds in covered_days:
+        print(f"     {ds}  {day_stats[ds]['total']:>4} 条")
+    if bad:
+        print(f"   ⚠️ 读取失败跳过：{', '.join(bad)}")
+    return pool
+
 def main():
-    want = sys.argv[sys.argv.index("--sources") + 1].split(",") if "--sources" in sys.argv else list(GRABBERS)
+    argv = sys.argv
+    want = argv[argv.index("--sources") + 1].split(",") if "--sources" in argv else list(GRABBERS)
+    keep_days = KEEP_DAYS
+    if "--keep-days" in argv:
+        try:
+            keep_days = int(argv[argv.index("--keep-days") + 1])
+        except Exception:
+            pass
+
+    if "--pool-only" in argv:
+        print(f"═══ 新闻滚动池重建（不抓取）{DATE} ═══")
+        rebuild_window_pool(keep_days)
+        return
+
     print(f"═══ 每日新闻池抓取 {DATE} ═══")
     all_items, src_stat = [], {}
     for key in want:
@@ -222,13 +349,16 @@ def main():
         all_items.extend(items)
 
     all_items = dedup(all_items)
-    # 打标
+    # 打标 + 归属日（北京时间采集日）
     for it in all_items:
         it["tags"] = tag_text(it["title"] + " " + it.get("summary", ""))
+        it["collected_date"] = DATE
     tag_stats = {t: sum(1 for x in all_items if t in x["tags"]) for t in ALL_TAGS}
 
     payload = {
-        "date": DATE,
+        "date": DATE,                    # 数据日 = 北京采集日
+        "collected_date": DATE,          # 每条新闻的归属日（与 news[].collected_date 同源）
+        "covered_days": [DATE],
         "generated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
         "sources": src_stat,
         "total": len(all_items),
@@ -242,6 +372,9 @@ def main():
             json.dump(payload, f, ensure_ascii=False, indent=2)
         print(f"💾 {p}（{len(all_items)} 条）")
     print(f"标签统计: {tag_stats}")
+
+    # ★ 重建 N 日滚动池（累积不替换 · 跨周末信息不丢）
+    rebuild_window_pool(keep_days)
 
 if __name__ == "__main__":
     main()

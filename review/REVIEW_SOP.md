@@ -18,6 +18,25 @@ bash review/sync_feed_before_review.sh
 > 说明：投喂以**本机 agent 处理为主**，浏览器投喂是突发补充；手机端推演命令一天 ≤5 次。
 > 因此**不做常驻轮询**，只在推演时按需跑一次即可。
 
+## 步骤 0.6 · 构建信息窗口（**2026-09-16 新增 · 窗口契约唯一权威**）
+
+```bash
+python3 review/build_window.py --session preopen   # 盘前（span = [T+1 … 今天]）
+python3 review/build_window.py --session close     # 收盘（基准日 = 今天；行情未到位会自动回退）
+python3 review/build_window.py --at "2026-09-21 08:50" --dry-run   # 模拟跨周末/长假剧本
+```
+
+用户口径（本轮拍板）：
+- **次日推演 = 前一收盘日（T）的全部信息 + 当天盘前增量** → 投喂 / 新闻按 **`display_days`**（`[T] ∪ span`）累积；
+- **跨周末 = 周五收盘 + 周六 + 周日 + 周一盘前** → `span = [T+1 … for_date]` 逐日历日、**连续无洞**；
+- **span 用北京口径**：「美东 T 日收盘」归入北京 **T+1 到达日**。
+
+三层结构：`carry`（承接层 = T 那份收盘复盘结论）∪ `base`（基准层 = T 收盘全套）∪ `delta`（增量层 = span 内全部产出）。
+
+产物（**双写** root + `deploy/output/`，V3 线上读 deploy）：`window_latest.json` / `window_<for_date>.json` / `window_summary.md`。
+
+> 🔴 `for_date` / `span` **一律由脚本产出，禁手写**；缺口（`missing`）非空时必须可见（页面「信息窗口」卡片），禁静默。
+
 ## 步骤 1 · 抓数据
 
 | 推演类型 | 抓什么 | 注意 |
@@ -371,3 +390,16 @@ python3 review/verify_push.py --git    # git 协议，无 rate limit
 - 09:05 与 22:00 框架相同，抓取数据不同
 - 19:00–21:30 推演窗口已作废（捕获不到美股盘中数据）
 - 22:00 版美股是盘中数据，须标注「盘中 1h」+ 风险声明
+
+### 工程防线（2026-09-16 新增，血泪）
+
+- **同一文件禁止并行多处 Edit**：两次 Edit 同时基于同一快照 → **后写覆盖前写，且两次都返回 success**
+  （本轮 `build_news_section.py` 的 `days = …` 被静默吞掉，直到跑崩才暴露）。
+  改法：串行 Edit，或直接写一次性脚本整体改。
+- **禁止用 `.*?\n\}\n` 之类的宽正则定位代码块**：新代码内部一旦出现 `\n}\n`（如新增的
+  `drMoreNews` 函数）就会**提前截断**，替换只覆盖前半段且不再幂等。
+  改法：**显式块标记** `/* ═══ NEWS-POOL-BEGIN ═══ */ … /* ═══ NEWS-POOL-END ═══ */` +
+  幂等补丁脚本。范本：`review/patch_news_pool.py`（源 `review/news_pool_block.js`，覆盖 5 处副本），
+  校验 `python3 review/patch_news_pool.py --check`。
+- **`output/` 下的产物改了必须 `cp` 到 `deploy/output/`**（V3 线上以 deploy 为根）；本轮新增产物
+  `daily_news_window.json` / `window_latest.json` / `window_<for_date>.json` 尤须同步。

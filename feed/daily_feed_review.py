@@ -55,6 +55,27 @@ def feeds_of_day(date):
     return [e for e in idx["entries"] if e.get("date") == date]
 
 
+def feeds_in_window(days):
+    """★ 窗口内累积投喂（2026-09-16 方案 A · 用户拍板）。
+
+    口径 = window.display_days = [复盘基准日] ∪ span：
+      · 普通日：基准日 + 当天盘前增量（2 天）
+      · **跨周末：基准日(周五) + 周六 + 周日 + 周一（如 9/18→9/19,9/20,9/21）**
+        —— 原先 `feeds_of_day(date)` 只取基准日，周末投喂在周一盘前会整段丢失。
+    """
+    idx = load_json(INDEX, {"entries": []})
+    s = set(days or [])
+    return [e for e in idx["entries"] if e.get("date") in s]
+
+
+def feeds_recent(n=30):
+    """近期滚动（按素材日倒序取 n 条）—— 供「投喂记录」滚动视图参考，不参与窗口判定。"""
+    idx = load_json(INDEX, {"entries": []})
+    return sorted(idx["entries"],
+                  key=lambda e: (str(e.get("date") or ""), str(e.get("archived_at") or "")),
+                  reverse=True)[:n]
+
+
 def read_feed_content(e):
     p = os.path.join(BASE, e.get("file", ""))
     if os.path.exists(p):
@@ -201,7 +222,27 @@ def main():
         except Exception as e:
             print(f"  ⚠️ 指引日计算失败：{e}")
 
-    feeds = [] if args.no_feed else feeds_of_day(date)
+    # ── 信息窗口（2026-09-16 方案 A）────────────────────────────────
+    # 投喂纳入范围 = window.display_days = [复盘基准日] ∪ span（跨周末自动含周六周日）。
+    # 窗口与本次 for_date 不一致（窗口过期/未生成）时降级为「仅复盘日」，并明确告警。
+    win = load_json(os.path.join(OUT_DIR, "window_latest.json"))
+    feeds_days = [date]
+    if win and win.get("for_date") == for_date and win.get("display_days"):
+        feeds_days = list(win["display_days"])
+        print(f"  🪟 窗口 {win.get('data_date')} → {for_date} ｜ 投喂纳入 {len(feeds_days)} 个日历日："
+              f"{feeds_days[0]} … {feeds_days[-1]}")
+        if win.get("span_is_weekend_cross"):
+            print(f"     ⚠️ 跨非交易日窗口（span {win.get('span_text')}）→ 已纳入周末投喂")
+    elif win:
+        print(f"  ⚠️ 窗口 for_date={win.get('for_date')} ≠ 本次 {for_date} → 降级为仅复盘日 {date}")
+    else:
+        print(f"  ⚠️ 未找到 output/window_latest.json → 降级为仅复盘日 {date}"
+              f"（建议先跑 review/build_window.py）")
+    if win and win.get("missing"):
+        print(f"  ⚠️ 窗口缺口 {len(win['missing'])} 项（页面须红字提示）：{win['missing'][0]}"
+              + (" …" if len(win["missing"]) > 1 else ""))
+
+    feeds = [] if args.no_feed else feeds_in_window(feeds_days)
     crosses = cross_analyze(feeds, mkt)
     pred = predict(date, mkt, crosses)
 
@@ -210,8 +251,12 @@ def main():
         "for_date": for_date,       # 指引日（= 复盘日的下一交易日）
         "generated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
         "source": "local" if os.environ.get("GITHUB_ACTIONS") != "true" else "cloud",
-        "feeds": feeds,
+        # ★ 信息窗口（2026-09-16 方案 A）：承接层 carry + 增量 span，供页面/守卫读
+        "window": win,
+        "feeds_days": feeds_days,          # 投喂纳入的日历日（= window.display_days）
+        "feeds": feeds,                    # ★ 口径改为「窗口内累积」
         "feed_count": len(feeds),
+        "feeds_recent": [] if args.no_feed else feeds_recent(30),  # 近期滚动（参考）
         "market": mkt,
         "cross_analysis": crosses,
         "prediction": pred,
@@ -264,7 +309,8 @@ def main():
             print(f"   🔒 {os.path.basename(p)} 保留本机产物: {', '.join(protected)}")
         with open(p, "w", encoding="utf-8") as f:
             json.dump(payload, f, ensure_ascii=False, indent=2)
-    print(f"✅ 复盘完成 {date} | 投喂 {len(feeds)} 条 | 预测: {pred['bias']} (score {pred['bias_score']})")
+    print(f"✅ 复盘完成 {date} | 投喂 {len(feeds)} 条（窗口 {len(feeds_days)} 日累积） "
+          f"| 预测: {pred['bias']} (score {pred['bias_score']})")
     print(f"   {out_full}")
     print(f"   {out_latest}")
     for r in pred["reasons"]:

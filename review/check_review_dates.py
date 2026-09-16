@@ -118,6 +118,106 @@ def check_latest(recs):
     return out
 
 
+# ── 信息窗口契约守卫（2026-09-16 · 方案 A ⑤）─────────────────────────
+WINDOW_LATEST = os.path.join(BASE, "output", "window_latest.json")
+WINDOW_ARCH_RE = re.compile(r"^window_(\d{4}-\d{2}-\d{2})\.json$")
+# missing 非空时必须能渲染出来的三个页面副本（防「缺口被静默」）
+PAGE_FILES = ["index.html", "index_template.html", "deploy/index.html"]
+
+
+def check_window():
+    """校验 output/window_latest.json 的窗口契约是否自洽。
+
+    判据（设计稿 7.4）：
+      ① span 连续无洞、端点 = for_date、首日 = data_date + 1 天
+      ② display_days == [data_date] + span（展示口径含基准日）
+      ③ 含非交易日时 span_is_weekend_cross 必须为真，反之亦然
+      ④ data_date / for_date 必须都是交易日（补班周六不得入选）
+      ⑤ carry.ref 实际存在
+      ⑥ 归档件 window_<for_date>.json 的 for_date == 文件名日期
+      ⑦ missing 非空 → 页面副本必须存在缺口渲染（禁静默）
+    """
+    problems, info = [], []
+    if not os.path.exists(WINDOW_LATEST):
+        return ["output/window_latest.json 不存在（先跑 python3 review/build_window.py）"], info
+    w = load(WINDOW_LATEST)
+    if "__err__" in w:
+        return [f"window_latest.json JSON 非法：{w['__err__']}"], info
+
+    dd, fd = w.get("data_date"), w.get("for_date")
+    span = list(w.get("span") or [])
+    disp = list(w.get("display_days") or [])
+    info.append(f"session={w.get('session')}｜data_date={dd}→for_date={fd}｜"
+                f"span={len(span)}天 display={len(disp)}天｜缺口={len(w.get('missing') or [])}项")
+
+    if not dd or not fd:
+        return ["window 缺 data_date / for_date"], info
+
+    # ① span 骨架
+    if not span:
+        problems.append("window.span 为空（增量层缺失）")
+    else:
+        want_first = (_date.fromisoformat(dd) + timedelta(days=1)).isoformat()
+        if span[0] != want_first:
+            problems.append(f"span 首日 {span[0]} ≠ data_date+1（{want_first}）")
+        if span[-1] != fd:
+            problems.append(f"span 端点 {span[-1]} ≠ for_date（{fd}）")
+        for a, b in zip(span, span[1:]):
+            gap = (_date.fromisoformat(b) - _date.fromisoformat(a)).days
+            if gap != 1:
+                problems.append(f"span 有洞：{a} → {b}（相差 {gap} 天）")
+
+    # ② display_days
+    if disp != [dd] + span:
+        problems.append(f"display_days 与 [data_date]+span 不一致：{disp}")
+
+    # ③ 跨非交易日标记
+    has_off = any(not is_trading_day(x) for x in span)
+    cross = bool(w.get("span_is_weekend_cross"))
+    if has_off and not cross:
+        problems.append("span 含非交易日，但 span_is_weekend_cross=false")
+    if cross and not has_off:
+        problems.append("span_is_weekend_cross=true，但 span 全为交易日")
+
+    # ④ 端点必须是交易日（防「补班周六」再次混入）
+    for label, v in (("data_date", dd), ("for_date", fd)):
+        try:
+            if not is_trading_day(v):
+                problems.append(f"{label} {v} 不是交易日（补班周六/周末/节假日不得入选）")
+        except Exception as e:
+            problems.append(f"{label} {v} 解析失败：{e}")
+
+    # ⑤ 承接层
+    ref = (w.get("carry") or {}).get("ref") or ""
+    if ref and not os.path.exists(os.path.join(BASE, ref)):
+        problems.append(f"carry.ref 不存在：{ref}")
+
+    # ⑥ 归档件命名（window_<for_date>.json）
+    for d in DIRS:
+        full = os.path.join(BASE, d)
+        if not os.path.isdir(full):
+            continue
+        for fn in sorted(os.listdir(full)):
+            m = WINDOW_ARCH_RE.match(fn)
+            if not m:
+                continue
+            doc = load(os.path.join(full, fn))
+            got = doc.get("for_date")
+            if got != m.group(1):
+                problems.append(f"{os.path.join(d, fn)} for_date={got} ≠ 文件名 {m.group(1)}")
+
+    # ⑦ missing 非空 → 页面须渲染（防静默漏读）
+    if w.get("missing"):
+        for f in PAGE_FILES:
+            p = os.path.join(BASE, f)
+            if not os.path.exists(p):
+                continue
+            t = open(p, encoding="utf-8").read()
+            if "missing" not in t:
+                problems.append(f"{f} 无 window.missing 渲染 → 缺口会被静默（禁）")
+    return problems, info
+
+
 def do_fix(recs, dry=False):
     """① 回填/纠正 for_date（定点文本改写，不重排其余格式）② 按复盘日（data_date）重命名。
 
@@ -245,8 +345,22 @@ def main():
             print(f"   {x}")
         print()
 
-    ok = not problems and not lat
-    print(f"{'✅' if ok else '❌'} 命名守卫：{'通过' if ok else f'未通过（{len(problems)} 项命名/字段问题，{len(lat)} 项 latest 不一致）'}")
+    # ── 信息窗口契约（2026-09-16 · 方案 A）──
+    wprobs, winfo = check_window()
+    print("  【信息窗口契约 output/window_latest.json】")
+    for x in winfo:
+        print(f"   {x}")
+    if wprobs:
+        for x in wprobs:
+            print(f"   ❌ {x}")
+    else:
+        print("   ✅ span/display/交易日/承接/归档/missing 渲染 全部自洽")
+    print()
+
+    ok = not problems and not lat and not wprobs
+    print(f"{'✅' if ok else '❌'} 命名 + 窗口契约守卫："
+          + ("通过" if ok else f"未通过（{len(problems)} 项命名/字段，{len(lat)} 项 latest，"
+                               f"{len(wprobs)} 项窗口契约）"))
     if not ok and not args.fix:
         print("   → 修法：python3 review/check_review_dates.py --fix  （先看 --dry-run 清单）")
     sys.exit(0 if ok else 1)
