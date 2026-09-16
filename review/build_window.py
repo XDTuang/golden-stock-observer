@@ -40,6 +40,7 @@ import argparse
 import datetime as _dt
 import json
 import os
+import re
 import sys
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -182,7 +183,8 @@ def collect_covered(days, data_date: _dt.date):
     if isinstance(mah, dict):
         for k, v in (mah.get("items") or {}).items() if isinstance(mah.get("items"), dict) else []:
             pass
-    # mahoro 索引结构随版本变化：只做「按 collected_date / date 字段」的宽松统计
+    # mahoro 索引结构随版本变化：**只认显式 `date` 日字段**（2026-09-16 收紧 ——
+    # 回退到 published_at/collected_date 会把历史条目也计入，实测虚高到 918 条/日）
     if isinstance(mah, dict):
         for k in ("items", "reports", "entries"):
             arr = mah.get(k)
@@ -190,8 +192,8 @@ def collect_covered(days, data_date: _dt.date):
                 for it in arr:
                     if not isinstance(it, dict):
                         continue
-                    d = str(it.get("date") or it.get("collected_date") or it.get("published_at") or "")[:10]
-                    if d:
+                    d = str(it.get("date") or "")[:10]
+                    if re.match(r"^\d{4}-\d{2}-\d{2}$", d):
                         maha_by_day.setdefault(d, []).append(it)
 
     covered = []
@@ -272,7 +274,9 @@ def build(session: str = "", at: str = ""):
     span_is_cross = any(not is_trading_day(d) for d in span)
 
     carry = build_carry(data_date, for_date)
-    covered, _ = collect_covered(span, data_date)
+    # 🔴 covered 必须覆盖**展示窗口**（含基准日）—— 漏了基准日会让「窗口合计」少算
+    #    前收盘日的新闻/投喂，与 display_days 口径自相矛盾（2026-09-16 实测：曾只传 span）。
+    covered, _ = collect_covered([data_date] + span, data_date)
     missing = detect_missing(span, covered, data_date, for_date, carry, today=now.date())
 
     mkt = load(MARKET) or {}

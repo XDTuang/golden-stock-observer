@@ -171,6 +171,12 @@ def check_window():
     if disp != [dd] + span:
         problems.append(f"display_days 与 [data_date]+span 不一致：{disp}")
 
+    # ②b covered 的日期集合必须 == display_days（漏基准日 → 窗口合计少算前收盘日素材）
+    cov_days = [c.get("date") for c in (w.get("covered") or [])]
+    if sorted(cov_days) != sorted(disp):
+        problems.append(f"covered 日期 {cov_days} ≠ display_days {disp}"
+                        "（漏基准日会让「窗口合计」少算前收盘日新闻/投喂）")
+
     # ③ 跨非交易日标记
     has_off = any(not is_trading_day(x) for x in span)
     cross = bool(w.get("span_is_weekend_cross"))
