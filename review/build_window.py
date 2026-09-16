@@ -218,8 +218,15 @@ def collect_covered(days, data_date: _dt.date):
     return covered, feed_by_day
 
 
-def detect_missing(span, covered, data_date: _dt.date, for_date: _dt.date, carry: dict):
-    """缺口清单（诚实标注，禁静默）：bench 读数滞后 + 交易日无新闻 + 跨周末空窗。"""
+def detect_missing(span, covered, data_date: _dt.date, for_date: _dt.date, carry: dict,
+                   today: _dt.date | None = None):
+    """缺口清单（诚实标注，禁静默）：bench 读数滞后 + 交易日无新闻 + 跨周末空窗。
+
+    🔴 2026-09-16 修：`close` 窗口的 `span` 含**未来日**（如 9/16 收盘后 for_date=9/17）——
+       未来日的数据「尚未到达」属正常，**不得判为缺口**（否则每天收盘后必然刷出一堆假缺口）。
+    """
+    today = today or _dt.date.today()
+    ts = today.isoformat()
     missing = []
     span_s = {c["date"] for c in covered}
 
@@ -235,14 +242,14 @@ def detect_missing(span, covered, data_date: _dt.date, for_date: _dt.date, carry
         elif v < data_date.isoformat():
             missing.append(f"{name} 数据日 {v} 落后于基准日 {data_date.isoformat()}")
 
-    # ② 交易日无新闻（近 3 个自然日内才算「可修」，更早属历史遗留，另标）
+    # ② 交易日无新闻（仅对**已到达**的日子判定；未来日豁免）
     for c in covered:
-        if c["is_trading_day"] and c["news"] == 0:
+        if c["is_trading_day"] and c["news"] == 0 and c["date"] <= ts:
             missing.append(f"{c['date']}（{c['weekday']}·交易日）新闻池 0 条")
 
-    # ③ 跨周末/长假空窗：非交易日全为 0 条 → 可能整池被覆盖
+    # ③ 跨周末/长假空窗：非交易日全为 0 条 → 可能整池被覆盖（同样只看已到达的日子）
     if len(span) > 1:
-        off = [c for c in covered if not c["is_trading_day"]]
+        off = [c for c in covered if not c["is_trading_day"] and c["date"] <= ts]
         if off and all(c["news"] == 0 for c in off):
             missing.append(
                 "窗口内非交易日（" + "、".join(c["date"][5:] for c in off) + "）新闻池全为 0 → "
@@ -266,7 +273,7 @@ def build(session: str = "", at: str = ""):
 
     carry = build_carry(data_date, for_date)
     covered, _ = collect_covered(span, data_date)
-    missing = detect_missing(span, covered, data_date, for_date, carry)
+    missing = detect_missing(span, covered, data_date, for_date, carry, today=now.date())
 
     mkt = load(MARKET) or {}
     us = (mkt.get("us_kline") or {})
