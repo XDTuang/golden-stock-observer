@@ -3206,7 +3206,9 @@ function renderFourVolumeChart(containerId, fv) {
 
 /* ═══════ cross_analysis 自动版（公开新闻池 × 板块资金流 · 不依赖投喂） ═══════
    数据源：output/cross_analysis.json（由 review/build_cross_analysis.py 自动生成）
-   四象限：真共振（语料热+资金进）/ 背离（语料热+资金撤）/ 暗线（语料冷+资金进）/ 双冷 */
+   四象限：共振（语料热+资金进，显示名「真共振」）/ 背离（语料热+资金撤）/
+            暗线（语料冷+资金进）/ 双冷（语料冷+资金撤）
+   🔴 象限字面值唯一权威 = review/build_cross_analysis.py 的 QUADRANTS（禁在本文件另起字面值）*/
 function drLoadCrossAnalysis() {
   const slot = document.getElementById('drCrossSlot');
   if (!slot) return;

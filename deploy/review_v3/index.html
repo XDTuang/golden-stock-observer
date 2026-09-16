@@ -1170,26 +1170,39 @@ function loadCrossAnalysis() {
   J('../output/cross_analysis.json').then(d => {
     const sm = d.summary || {};
     const items = d.items || [];
+    // 象限字面值唯一权威 —— 必须与 review/build_cross_analysis.py 的 QUADRANTS 完全一致
+    const QUAD = ['共振', '背离', '暗线', '双冷'];
     const VD = { '共振': 'var(--red)', '背离': 'var(--orange)', '暗线': 'var(--blue)', '双冷': 'var(--text-muted)' };
     let h = '<div class="dr-tag">新闻 ' + (d.news_date || '') + ' × 资金流 ' + (d.flow_date || '') + ' ｜ 热词阈值 ' + (d.hot_threshold || 8) + '</div>' +
       '<div style="margin:6px 0">' +
-      ['共振', '背离', '暗线', '双冷'].map(k =>
+      QUAD.map(k =>
         '<span class="dr-tag" style="color:' + VD[k] + ';border-color:' + VD[k] + '">' + k + ' ' + (sm[k] || 0) + '</span>').join('') + '</div>';
-    const mkList = (verdict, n, showSample) => {
-      const arr = items.filter(x => x.verdict === verdict).slice(0, n);
-      if (!arr.length) return '';
-      let s = '<div class="dr-tag" style="margin-top:8px;color:' + VD[verdict] + '">' + verdict + '（' + arr.length + '）</div>';
-      arr.forEach(x => {
-        s += '<div class="dr-note">· <b>' + esc(x.sector) + '</b> <span class="' + flowCls(x.flow_yi * 1e8) + '">' + sign(x.flow_yi) + x.flow_yi.toFixed(1) + '亿</span>' +
-          ' <span style="color:var(--text-muted)">语料 ' + x.news_count + ' 条</span> — ' + esc(x.desc || '');
-        if (showSample && x.sample_titles && x.sample_titles.length) {
-          s += '<br><span style="font-size:11px;color:var(--text-muted)">例：' + x.sample_titles.slice(0, 2).map(esc).join(' ｜ ') + '</span>';
-        }
-        s += '</div>';
+    // 判定字面值守卫：数据侧出现未登记字面值时显式报警（防「真共振」那类漂移再次静默漏空明细）
+    const unk = [...new Set(items.map(x => x.verdict))].filter(v => QUAD.indexOf(v) < 0);
+    if (unk.length) h += '<div class="dr-note" style="color:var(--orange)">⚠️ 判定字面值越界：' + esc(unk.join(' / ')) + '（不在 共振/背离/暗线/双冷 内，该类明细不会显示）</div>';
+    if (items.length) {
+      h += '<div class="dr-note" style="font-size:11px;color:var(--text-muted)">排序：按 |主力净流| 降序（同额再按新闻热度）· 共 ' + items.length + ' 个板块，每类可展开查看全量</div>';
+      QUAD.forEach(v => {
+        const arr = items.filter(x => x.verdict === v);
+        if (!arr.length) return;          // 该类当日为空 → 不占版面（计数见上方 chips）
+        const tot = arr.reduce((a, x) => a + (Number(x.flow_yi) || 0), 0);
+        const open = (v === '共振' || v === '背离') ? ' open' : '';   // 行动相关的两类默认展开
+        h += '<details class="obs-fold"' + open + '><summary>' +
+          '<span class="obs-nm" style="color:' + VD[v] + '">' + v + '</span>' +
+          '<span class="obs-sc">共 <b>' + arr.length + '</b> 个板块</span>' +
+          '<span class="obs-px">' + sign(tot) + tot.toFixed(1) + '亿</span>' +
+          '<span class="obs-cv">›</span></summary><div class="obs-body">';
+        arr.forEach(x => {
+          h += '<div class="dr-note">· <b>' + esc(x.sector) + '</b> <span class="' + flowCls(x.flow_yi * 1e8) + '">' + sign(x.flow_yi) + x.flow_yi.toFixed(1) + '亿</span>' +
+            ' <span style="color:var(--text-muted)">语料 ' + x.news_count + ' 条</span> — ' + esc(x.desc || '');
+          if (x.sample_titles && x.sample_titles.length) {
+            h += '<br><span style="font-size:11px;color:var(--text-muted)">例：' + x.sample_titles.slice(0, 2).map(esc).join(' ｜ ') + '</span>';
+          }
+          h += '</div>';
+        });
+        h += '</div></details>';
       });
-      return s;
-    };
-    h += mkList('背离', 5, true) + mkList('共振', 3, true) + mkList('暗线', 3, false);
+    }
     $('v3Cross').innerHTML = h || '<div class="dr-note">无交叉数据</div>';
   }).catch(() => { $('v3Cross').innerHTML = '<div class="dr-note">交叉验证未生成（cross_analysis）。</div>'; });
 }

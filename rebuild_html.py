@@ -44,19 +44,56 @@ html = html.replace('// DATA_PLACEHOLDER', data_loader_comment)
 today = datetime.now().strftime('%Y-%m-%d')
 # 🔴 2026-09-15 治本（铁律 9 同族）：原取「生成日」→ 盘前/非交易日/补跑重跑会把标题
 #    写成未来日或非交易日（实测 2026-09-15 09:xx 时标题仍停在 v2026-09-11）。
-#    改为锚定「信号池数据日」= output/signals.json 的 data_date，取不到才回退生成日。
+#    改为锚定「信号池数据日」。
+# 🔴 2026-09-16 再治本：原读 `output/signals.json` —— 那是 **slim 的输入（全量中转，~22MB，
+#    本机独有）**，其 data_date 会比发布版滞后（实测 09-16 时它仍是 2026-09-14，而发布版
+#    root `signals.json` 已是 2026-09-15）→ 标题被锚到过期一天。
+#    正确判据 = **发布版 root `signals.json`**（= 前端 fetch 的那份、Pages 根实际加载）；
+#    仅当它缺失/无 data_date 时才回退 output/signals.json，最后才回退生成日。
 try:
-    _sg = json.load(open(os.path.join(BASE, "output", "signals.json"), encoding="utf-8"))
-    _dd = str(_sg.get("data_date") or "")[:10]
-    if len(_dd) == 10 and _dd[4] == "-":
+    _dd = ""
+    for _cand, _label in ((os.path.join(BASE, "signals.json"), "root 发布版"),
+                          (os.path.join(BASE, "output", "signals.json"), "output 全量中转")):
+        try:
+            _sg = json.load(open(_cand, encoding="utf-8"))
+            _v = str(_sg.get("data_date") or "")[:10]
+            if len(_v) == 10 and _v[4] == "-":
+                _dd = _v
+                break
+            print(f"  ⚠️  {_label} 的 data_date 非法（{_sg.get('data_date')!r}），继续回退下一源")
+        except Exception as _e2:
+            print(f"  ⚠️  {_label} 读取失败：{_e2}")
+    if _dd:
         if _dd != today:
             print(f"  ℹ️  标题版本号锚定数据日 {_dd}（生成日 {today}）")
         today = _dd
+    else:
+        raise ValueError("两个 signals.json 均无可用 data_date")
 except Exception as _e:
-    print(f"  ⚠️  signals.json 数据日读取失败，标题回退生成日 {today}: {_e}")
+    print(f"  ⚠️  信号池数据日读取失败，标题回退生成日 {today}: {_e}")
 html, _n = re.subn(r'(兜金观测 — 量化信号池 v)[\d\-]*', rf'\g<1>{today}', html)
 if _n != 1:
     raise SystemExit(f'❌ title 版本号替换命中 {_n} 处（期望 1 处），已中止以免写坏 index.html')
+
+# 🔴 2026-09-16 治本（铁律 2 三处同步）：模板自身也是「三处同步」的成员，但本脚本一直只把
+#    index_template.html 当**源**读、从不回写 → 模板标题随日期推进越落越旧
+#    （实测 2026-09-16 时 index/deploy 已是 v2026-09-15，模板仍是 v2026-09-14）。
+#    一旦走「模板 → index」的直拷路径（非本脚本），标题就会回退一天。
+#    故在此把模板标题同步为同一 data_date，保证三处版本号恒等。
+try:
+    with open(template_path, 'r', encoding='utf-8') as f:
+        _tpl = f.read()
+    _tpl2, _tn = re.subn(r'(兜金观测 — 量化信号池 v)[\d\-]*', rf'\g<1>{today}', _tpl)
+    if _tn != 1:
+        print(f'  ⚠️  index_template.html title 替换命中 {_tn} 处（期望 1），跳过模板回写')
+    elif _tpl2 != _tpl:
+        with open(template_path, 'w', encoding='utf-8') as f:
+            f.write(_tpl2)
+        print(f'  ✅ index_template.html 标题已同步至 v{today}')
+    else:
+        print(f'  ✓ index_template.html 标题已是 v{today}（免改）')
+except Exception as _e:
+    print(f'  ⚠️  index_template.html 标题回写失败：{_e}')
 
 with open(output_html, 'w', encoding='utf-8') as f:
     f.write(html)

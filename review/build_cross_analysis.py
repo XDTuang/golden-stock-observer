@@ -9,8 +9,8 @@
   data/daily_review/market.json   指数行情（腾讯源）
 输出：output/cross_analysis.json（前端投喂复盘 Tab 消费）
 
-验证机制（语料热度 × 资金流向 四象限）：
-  新闻热度高 + 资金净流入 → 「真共振」  语料与资金同向，主线成立
+验证机制（语料热度 × 资金流向 四象限 · 字面值以 QUADRANTS 为准）：
+  新闻热度高 + 资金净流入 → 「共振」    语料与资金同向，主线成立（显示名「真共振」）
   新闻热度高 + 资金净流出 → 「背离」    语料热但资金撤，警惕高位分歧/利好出尽
   新闻热度低 + 资金净流入 → 「暗线」    主力提前布局，语料尚未发酵（潜伏机会）
   新闻热度低 + 资金净流出 → 「双冷」    无题材无资金，回避
@@ -60,6 +60,15 @@ SECTOR_KW = {
 # 热度阈值（新闻命中条数）：≥ 该值视为"语料热"
 HOT_MIN = 8
 
+# ── 判定象限「字面值」唯一权威（2026-09-16 治本 · 铁律：数据侧与渲染侧字面值不得漂移）──
+#   背景：verdict_of 原先对第一象限返回「真共振」，而 summary 的键与前端渲染的过滤条件都用「共振」
+#   → V3 第 7 段 `items.filter(x => x.verdict === '共振')` 永远命中 0 条（共振明细静默漏空，
+#     只是长期被「当日共振=0」掩盖）。现统一为「共振」，原显示名另存 verdict_raw 以便追溯。
+#   🔴 新增/改名象限时：只需改本元组 + verdict_of 的返回，前端与守卫会自动对齐。
+QUADRANTS = ("共振", "背离", "暗线", "双冷")
+# 对外显示名（仅用于文案与追溯；前端 chips / 过滤一律用 QUADRANTS 内的规范字面值）
+VERDICT_RAW = {"共振": "真共振", "背离": "背离", "暗线": "暗线", "双冷": "双冷"}
+
 
 def load(p):
     if not os.path.exists(p):
@@ -88,11 +97,11 @@ def count_news(items, sector):
 
 
 def verdict_of(news_n, flow_yi):
-    """四象限判定：语料热度 × 资金流向。"""
+    """四象限判定：语料热度 × 资金流向。返回值一律取自 QUADRANTS（禁另起字面值）。"""
     hot = news_n >= HOT_MIN
     inflow = flow_yi > 0
     if hot and inflow:
-        return "真共振", "ok", "语料与资金同向，主线成立"
+        return "共振", "ok", "语料与资金同向，主线成立"
     if hot and not inflow:
         return "背离", "warn", "语料热但资金撤，警惕高位分歧 / 利好出尽"
     if not hot and inflow:
@@ -147,10 +156,16 @@ def main():
             "news_count": n,
             "flow_yi": round(flow_yi, 2),
             "verdict": v,
+            # 原显示名（仅追溯用）；前端过滤/归类一律用 verdict（= QUADRANTS 规范字面值）
+            "verdict_raw": VERDICT_RAW.get(v, v),
             "level": lvl,
             "desc": desc,
             "sample_titles": titles,
         })
+
+    # 自检：判定字面值必须全部落在 QUADRANTS 内（否则前端某类明细会静默漏空）
+    _bad = sorted({r["verdict"] for r in rows} - set(QUADRANTS))
+    assert not _bad, f"verdict 字面值越界（不在 QUADRANTS 内）：{_bad}"
 
     # 排序：先按 |flow| 量级，再按新闻热度
     rows.sort(key=lambda x: (abs(x["flow_yi"]), x["news_count"]), reverse=True)
@@ -173,12 +188,9 @@ def main():
         "flow_is_weekend_copy": (raw_latest != latest_day),
         "hot_threshold": HOT_MIN,
         "index_context": idx_ctx,
-        "summary": {
-            "共振": sum(1 for r in rows if r["verdict"] == "真共振"),
-            "背离": sum(1 for r in rows if r["verdict"] == "背离"),
-            "暗线": sum(1 for r in rows if r["verdict"] == "暗线"),
-            "双冷": sum(1 for r in rows if r["verdict"] == "双冷"),
-        },
+        # summary 的键 = QUADRANTS，计数口径与前端 filter 完全同源
+        #（原先第一象限按 "真共振" 计数、键名却写 "共振"，两套口径是漏空的温床）
+        "summary": {q: sum(1 for r in rows if r["verdict"] == q) for q in QUADRANTS},
         "items": rows,
     }
 
