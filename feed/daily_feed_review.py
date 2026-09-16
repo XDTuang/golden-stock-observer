@@ -10,6 +10,11 @@ golden_diamond.json / market.json 可选）→ 交叉分析 → 输出后市预�
   output/feed_review_<T>.json      — 完整复盘（含当日投喂、盘面摘要、交叉分析、预测）
   output/feed_review_latest.json   — 前端「每日复盘」页动态加载的最新版
 
+🔴 日期口径（2026-09-16 用户拍板 · 见 review/check_review_dates.py）：
+  · **文件名 <T> = 复盘日 = data_date**（该份复盘在复的那一天，也是本脚本默认取到的 signals 数据日）
+  · **for_date（指引日）= 复盘日的下一交易日**，由 market_calendar.next_trading_day(d + 1) 计算（跳过周末/节假日）
+  · 两者一律由脚本产出，**禁 agent 手写**（`for_date` 此前全仓无人生成 → 历史件该字段全缺/漂移）
+
 用法:
   python daily_feed_review.py                 # 跑当日（date=最新交易日）
   python daily_feed_review.py --date 2026-08-26
@@ -18,6 +23,13 @@ golden_diamond.json / market.json 可选）→ 交叉分析 → 输出后市预�
 import os, sys, json, re, argparse, datetime
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, BASE)
+try:
+    from market_calendar import next_trading_day as _next_trading_day
+except Exception as _e:  # 交易日历缺失时降级（不阻断复盘生成）
+    _next_trading_day = None
+    print(f"  ⚠️ market_calendar 导入失败，for_date 将置空：{_e}")
+
 INDEX = os.path.join(BASE, "feed", "archive", "feed_index.json")
 SIGNALS = os.path.join(BASE, "signals.json")
 GD = os.path.join(BASE, "output", "golden_diamond.json")
@@ -178,12 +190,24 @@ def main():
     mkt = market_summary()
     date = args.date or mkt.get("signals", {}).get("data_date") or mkt.get("market_date") or \
            datetime.date.today().strftime("%Y-%m-%d")
+
+    # 指引日 = 复盘日的**下一交易日**（严格晚于 date；next_trading_day 本身是「不早于」语义）
+    for_date = ""
+    if _next_trading_day is not None:
+        try:
+            for_date = _next_trading_day(
+                datetime.date.fromisoformat(date) + datetime.timedelta(days=1)
+            ).isoformat()
+        except Exception as e:
+            print(f"  ⚠️ 指引日计算失败：{e}")
+
     feeds = [] if args.no_feed else feeds_of_day(date)
     crosses = cross_analyze(feeds, mkt)
     pred = predict(date, mkt, crosses)
 
     result = {
-        "data_date": date,
+        "data_date": date,          # 复盘日（= 文件名日期）
+        "for_date": for_date,       # 指引日（= 复盘日的下一交易日）
         "generated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
         "source": "local" if os.environ.get("GITHUB_ACTIONS") != "true" else "cloud",
         "feeds": feeds,
@@ -196,6 +220,10 @@ def main():
     os.makedirs(OUT_DIR, exist_ok=True)
     out_full = os.path.join(OUT_DIR, f"feed_review_{date}.json")
     out_latest = os.path.join(OUT_DIR, "feed_review_latest.json")
+    # 🔴 命名自检（2026-09-16）：文件名日期必须等于复盘日，否则归档检索与回测对不上号
+    assert os.path.basename(out_full) == f"feed_review_{date}.json", "归档文件名必须 = 复盘日"
+    if not for_date:
+        print("  ⚠️ for_date 为空（market_calendar 不可用）→ review/check_review_dates.py 会报错，请排查")
     # ── 字段级合并（2026-08-28 审计修复）────────────────────────────
     # 背景：此处原为整文件 json.dump，云端 cron 以 --no-feed 重跑时会全量覆写，
     #       抹掉本机 agent 产出的 feeds[] / ai_synthesis / synthesis_sources。

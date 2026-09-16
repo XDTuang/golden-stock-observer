@@ -131,7 +131,7 @@ python3 build_v3_obs_section.py --no-sync # 只改根 index，不同步副本
 🔴 **本脚本是 V3 第 6 段那段 JS 的唯一权威来源** —— 手工编辑该段会被整块覆盖
 （2026-09-11 实测踩到：先手工加日期标注、再跑脚本 → 被回退）。
 要改展示逻辑 → 改脚本内的 `NEW_JS`，然后重跑本脚本。
-`check_v3_style.py [8/8]` 内置了「生成链反查」（调用 `--check`），手工改过段内容会立刻红灯。
+`check_v3_style.py [8/9]` 内置了「生成链反查」（调用 `--check`），手工改过段内容会立刻红灯。
 
 **数据源（2026-09-11 方案 A · 用户拍板）**
 - **主源 = 步骤 3.5 产出的配对载荷 `../output/obs_panel.json`**（第 5 段映射分析 + 第 6 段观测股共 2 处引用）
@@ -200,7 +200,21 @@ cp data/daily_review/market.json  deploy/data/daily_review/market.json
 python3 review/check_analysis_style.py   # 老站排版：必须全过（[0] BOM + [9/12] 未定义类 + [10/12] 空转引用 + [11/12] 段落顺序/段号 + [12/12] 静态容器 loader）
 python3 review/check_v3_style.py         # V3 独立版：四副本一致性 + 语义色 + 兜底（必须全过）
 python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 null close（必须 ✅）
+python3 review/check_review_dates.py     # 归档命名：文件名=复盘日 & for_date=下一交易日（必须 ✅）
 ```
+
+> 🔴 **2026-09-16 · 按日归档的日期口径（用户拍板：文件名按复盘日，指引日为下一交易日）**
+> **规则**：归档件文件名日期 = **复盘日 = `data_date`**（该份复盘在复的那一天）；**`for_date`（指引日）= 复盘日的下一交易日**。
+> **背景**：`feed_review_*.json` 与 `v3_reasoning_*.json` 是「按日归档」产物，页面只读各自的 `*_latest.json` →
+>   命名漂移不影响功能，但历史检索与回测会**对不上号**。实测混用三种命名法（按 `data_date` / 按 `for_date` / 按生成日），
+>   且 **`for_date` 全仓没有任何生成脚本产出**（一直靠 agent 手写）→ 必然漂移。
+> **治本**：① `feed/daily_feed_review.py` 自产 `for_date`（`market_calendar.next_trading_day(d + 1天)`，跳过周末/节假日）；
+>   ② 新增守卫 `review/check_review_dates.py`（校验文件名=复盘日 & `for_date`=下一交易日 & `latest` 对齐；
+>   `--fix` 归一，重名冲突保留 `generated_at` 更晚者、另一份移入 `_backups/date_rename_*/`）；
+>   ③ 两个技能（`daily-reasoning` / `v3-daily-review`）已写入该规则。
+> ⚠️ **`next_trading_day(d)` 是「不早于 d」语义** → 取「下一交易日」必须 `next_trading_day(d + 1天)`，否则会返回它自己。
+> ⚠️ 归一化脚本的重命名必须走**虚拟文件系统**（`occupied` 集合）而非 `os.path.exists` —— 否则 `--dry-run` 会因
+>   「尚未真正移动」而误判冲突，清单与实际执行结果不一致（本轮即在 dry-run 中抓到一次「把正确命名件当失败方」的颠倒 bug）。
 
 > 🔴 **2026-09-11（晚）· 7.x 段落顺序与段号复发 bug（用户报「7 段排在 7.4 后、7.3 未见」）**
 > 两个都**有前科**，必须机器化守卫：
@@ -225,7 +239,7 @@ python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 
 > 语义相同（均 = index.html 的同内容副本，不含隐藏 8/9 段逻辑），但本地 deploy 侧曾落后线上 1 个版本
 > （86801 vs 88533 字节，停在 2026-09-08 的旧实现：`num()` 无兜底 → 全页卡「加载中…」；缠论列读 obs_deduce → 全空）。
 > SOP 推送清单里仍列着它 → **一旦推送即把线上正确版回退成旧 bug 版**。
-> 治本：V3 视为**四副本同内容结构**，`check_v3_style.py [1/8]` 强制四份逐字节一致；改动后必须 `cp` 到其余三份。
+> 治本：V3 视为**四副本同内容结构**，`check_v3_style.py [1/9]` 强制四份逐字节一致；改动后必须 `cp` 到其余三份。
 
 > 🔴 **2026-09-11 下午 · 空转容器清理（用户授权「空转容器可清理」）**
 > 主题 = 静默失效第 2 类「**JS 引用无容器**」：页面不报错、不崩溃，只是功能永不生效。
@@ -327,7 +341,7 @@ cd /Users/samt/golden_stock_observer && rm -f .git/index.lock && git add -A data
 > 若不在 `review/` 下，需显式逐个点名（新增文件每个都要带 `-f`）：
 > `git add review_v3/index.html review_v3/index_hide89.html && git add -f deploy/review_v3/index.html deploy/review_v3/index_hide89.html`
 > ⚠️ 2026-09-11 教训：**漏掉 `deploy/review_v3/index_hide89.html` 会留下旧版**，下次推送即回退线上正确版。
-> 推送前先跑 `python3 review/check_v3_style.py`（`[1/8]` 四副本一致性必须通过）。
+> 推送前先跑 `python3 review/check_v3_style.py`（`[1/9]` 四副本一致性必须通过）。
 >
 > 🔴 **V3 线上读 `deploy/output/`**（Pages 从 `deploy/` 发布）：6 段依赖
 > `deploy/output/obs_deduce_latest.json`（L1）与 **`deploy/output/obs_scenarios.json`（L2，2026-09-11 起）**。
