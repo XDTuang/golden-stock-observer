@@ -232,6 +232,24 @@ def fetch():
     except Exception as _e:
         print(f"[daily-review] asia 日韩抓取失败（非致命）: {type(_e).__name__} {str(_e)[:80]}")
 
+    # 🔴 继承上次的 asia.kr_stocks（2026-09-16 加固）
+    #   本脚本只抓日韩**指数**（nikkei/kospi）；韩股**个股**由 review/fengle_kr.py 另行合并。
+    #   实测云端 GitHub Actions 访问 stock.fengle.me 常失败，而两个 workflow 都用
+    #   `|| echo` 静默跳过 → 本脚本整体覆盖 asia 时会把上一次成功抓到的 kr_stocks 冲掉，
+    #   表现为「复盘 2 板块韩股个股凭空消失」且无人察觉（云端 2026-09-16 版即如此）。
+    #   保留策略：**仅当本次未产出 kr_stocks 时继承旧值**；旧值自带 date + fetched_at，
+    #   新鲜度交由页面与 check_market_json.py 按 date 判定，不做任何隐式推算。
+    try:
+        if OUT.exists():
+            _prev = json.loads(OUT.read_text(encoding="utf-8"))
+            _pk = (_prev.get("asia") or {}).get("kr_stocks")
+            if _pk and "kr_stocks" not in asia:
+                asia["kr_stocks"] = _pk
+                print(f"[daily-review] 继承上次 asia.kr_stocks（交易日 {_pk.get('date')} · "
+                      f"抓取 {_pk.get('fetched_at')}）")
+    except Exception as _e:
+        print(f"[daily-review] 继承 kr_stocks 跳过: {type(_e).__name__} {str(_e)[:60]}")
+
     out = {
         "date": data_date,
         "run_date": now.strftime("%Y-%m-%d"),

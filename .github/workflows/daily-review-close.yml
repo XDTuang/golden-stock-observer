@@ -43,7 +43,10 @@ jobs:
 
       - name: Refresh KR stocks (三星/海力士)
         # 辅助源：容错不阻断（2026-08-28 曾因 chg=None 格式化崩溃拖垮整个任务）
-        run: python3 review/fengle_kr.py || echo "⚠️ 韩股抓取失败，已跳过（不影响主行情）"
+        # 2026-09-16 加固：失败改 `::warning::` 可见 —— 原 `|| echo` 把失败静默吞掉，
+        # 导致云端 market.json 连续多日缺 asia.kr_stocks（2026-09-16 版即如此，
+        # 靠人工比对缩进差异才发现）。主脚本现已继承上次值兜底。
+        run: python3 review/fengle_kr.py || echo "::warning title=韩股个股抓取失败::fengle_kr.py 失败（三星/海力士），asia.kr_stocks 沿用上次值"
 
       - name: Refresh news pool & macro (4/5/6 段自动数据源)
         # 2026-08-28 新增：新闻池(6源694条) + 宏观(中akshare/美新闻抽取)。

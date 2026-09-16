@@ -43,6 +43,15 @@ for k, v in q.items():
     if isinstance(v, dict) and v.get('error') is None and v.get('close') is None and v.get('price') is None:
         warns.append('quotes.%s 无 close/price' % k)
 
+# asia.kr_stocks（韩股个股，辅助源）：交易日落后即提醒
+# 2026-09-16 加固：云端 fengle_kr.py 曾长期静默失败，market.json 缺/旧 kr_stocks 无人察觉
+# （该字段由 review/fengle_kr.py 合并；主脚本现已继承上次值兜底）。仅提醒，不阻断。
+ks = (d.get('asia') or {}).get('kr_stocks') or {}
+if isinstance(ks, dict) and ks.get('date') and str(ks.get('date')) != str(d.get('date')):
+    warns.append('asia.kr_stocks 交易日 %s ≠ market.date %s（抓取 %s）→ 韩股个股是上次值；'
+                 '云端 fengle_kr.py 可能失败，查 Actions 的 ::warning::'
+                 % (ks.get('date'), d.get('date'), ks.get('fetched_at')))
+
 if errs:
     print('❌ market.json 校验未通过（%d 项）:' % len(errs))
     for e in errs: print('   -', e)

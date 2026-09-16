@@ -39,7 +39,10 @@ jobs:
           # 导致 chg=None，`{None:+,}` 抛 TypeError 崩溃 → 本步骤失败 →
           # 整个 workflow 连续两天 failure，market.json 停更（脚本已修 None 安全）。
           # 此处再加一层容错，确保辅助源异常不影响主行情提交。
-          python3 review/fengle_kr.py || echo "⚠️ 韩股(三星/海力士)抓取失败，已跳过（不影响主行情）"
+          # 2026-09-16 加固：失败改 `::warning::` 可见（原先只 echo，云端连续多日
+          # kr_stocks 缺失却无人察觉）；fetch_daily_review_market.py 现已继承上次
+          # 的 asia.kr_stocks，失败也不会让页面字段凭空消失。
+          python3 review/fengle_kr.py || echo "::warning title=韩股个股抓取失败::fengle_kr.py 失败（三星/海力士），asia.kr_stocks 沿用上次值"
 
       - name: Commit & Push
         run: |
