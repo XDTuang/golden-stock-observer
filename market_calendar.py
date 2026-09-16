@@ -46,12 +46,17 @@ HOLIDAYS: dict[int, set[str]] = {
     },
 }
 
-# 调休补班日（周末上班，视为交易日）。若某休市日实际为补班，请勿列入本表。
+# 调休补班日（国家规定的「周末上班」日）。
+# 🔴🔴 重要（2026-09-16 修正）：**补班日 A 股不开市**！
+#   沪深交易所《全年休市安排》以「周六、周日 + 法定节假日」为休市日，
+#   **不因调休补班而开市**（已核实历史：2024-02-04 周日、2024-04-07 周日、2025-02-08 周六等补班日均休市）。
+#   本表仅用于「今天是否为国家工作日」这类与社会日历有关的判断（如人工值班、数据采集窗口），
+#   **绝不可**当作交易日（原先 is_trading_day 直接返回 True 是错判，曾致 for_date/指引日算成周六）。
 MAKEUP_WORKDAYS: dict[int, set[str]] = {
     2026: {
-        "2026-02-14",  # 春节前补班（周六）
-        "2026-09-19",  # 中秋前补班（周六）
-        "2026-10-10",  # 国庆后补班（周六）
+        "2026-02-14",  # 春节前补班（周六，A股休市）
+        "2026-09-19",  # 中秋前补班（周六，A股休市）
+        "2026-10-10",  # 国庆后补班（周六，A股休市）
     },
 }
 
@@ -75,16 +80,26 @@ def is_holiday(d: _dt.date | str) -> bool:
     return d.isoformat() in HOLIDAYS.get(d.year, set())
 
 
+def is_makeup_workday(d: _dt.date | str | None = None) -> bool:
+    """给定日期是否为国家调休「补班上班日」（通常是周六/周日）。
+
+    ⚠️ 补班日**不是 A 股交易日** —— 本函数仅供「社会工作日」判断使用，
+       判定交易日请一律走 `is_trading_day()`。
+    """
+    d = _parse(d) or _dt.date.today()
+    return d.isoformat() in MAKEUP_WORKDAYS.get(d.year, set())
+
+
 def is_trading_day(d: _dt.date | str | None = None) -> bool:
     """
     判断给定日期（默认今天）是否为 A 股交易日。
 
-    规则：周一到周五，且不在休市表中；补班周末视为交易日。
+    规则：**周一至周五，且不在法定休市表中**。
+    🔴 调休「补班日」（周六/周日上班）**不是交易日** —— 沪深交易所休市安排以
+       「周六、周日 + 法定节假日」为准，不因调休开市（2026-09-16 修正：
+       原实现把补班日直接返回 True，导致 for_date（指引日）被算成周六）。
     """
     d = _parse(d) or _dt.date.today()
-    # 补班日：即使是周末也算交易日
-    if d.isoformat() in MAKEUP_WORKDAYS.get(d.year, set()):
-        return True
     if d.weekday() >= 5:  # 5=Sat, 6=Sun
         return False
     if is_holiday(d):
@@ -209,3 +224,31 @@ if __name__ == "__main__":
     print(f"是否适合更新: {ok} — {reason}")
     if len(sys.argv) > 1:
         print("新鲜度:", eval_freshness(sys.argv[1]))
+
+    # ── 自检（2026-09-16 增）：补班日必须**不是**交易日 ────────────────────
+    # 回归防线：is_trading_day 曾把 MAKEUP_WORKDAYS 直接返回 True → for_date 算成周六。
+    print("\n【自检】调休补班日不得判为交易日：")
+    _bad = []
+    for _y, _ds in sorted(MAKEUP_WORKDAYS.items()):
+        for _s in sorted(_ds):
+            _d = _dt.date.fromisoformat(_s)
+            _mk, _tr = is_makeup_workday(_d), is_trading_day(_d)
+            _flag = "✅" if (_mk and not _tr) else "❌"
+            if not (_mk and not _tr):
+                _bad.append(_s)
+            print(f"   {_flag} {_s} 周{'一二三四五六日'[_d.weekday()]}  补班日={_mk}  交易日={_tr}")
+    # 关键跨周末指引日回归：周五收盘的下一交易日必须跳过周末
+    print("\n【自检】跨周末指引日（next_trading_day(d+1)）：")
+    for _b in ["2026-09-18", "2026-09-24", "2026-09-30", "2026-10-09"]:
+        _bd = _dt.date.fromisoformat(_b)
+        if not is_trading_day(_bd):
+            print(f"   —  {_b} 非交易日，跳过"); continue
+        _g = next_trading_day(_bd + _dt.timedelta(days=1))
+        _ok = _g.weekday() < 5 and is_trading_day(_g)
+        print(f"   {'✅' if _ok else '❌'} {_b}（周{'一二三四五六日'[_bd.weekday()]}）→ 指引日 {_g}（周{'一二三四五六日'[_g.weekday()]}）")
+        if not _ok:
+            _bad.append(f"{_b}→{_g}")
+    if _bad:
+        print(f"\n❌ 自检未通过：{_bad}")
+        sys.exit(1)
+    print("\n✅ 自检通过：补班日非交易日；跨周末/长假指引日均跳过非交易日")
