@@ -1,7 +1,7 @@
 {
   "date": "2026-09-17",
   "data_date": "2026-09-16",
-  "generated_at": "2026-09-17 08:56",
+  "generated_at": "2026-09-17 09:02",
   "news_date": "",
   "news_window": [
     "2026-09-16",
@@ -15,8 +15,8 @@
   "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-09-16 21:48",
-    "session": "close",
+    "generated_at": "2026-09-17 08:52",
+    "session": "preopen",
     "data_date": "2026-09-16",
     "for_date": "2026-09-17",
     "data_date_note": "",
@@ -56,8 +56,8 @@
     },
     "market_state": {
       "date": "2026-09-16",
-      "run_date": "2026-09-16",
-      "preopen_partial": null,
+      "run_date": "2026-09-17",
+      "preopen_partial": true,
       "us_kline": true,
       "asia": true
     },
@@ -75,22 +75,19 @@
         "date": "2026-09-17",
         "weekday": "周四",
         "is_trading_day": true,
-        "news": 0,
+        "news": 681,
         "feeds": 0,
         "reports": 0,
-        "macro": false
+        "macro": true
       }
     ],
     "totals": {
-      "news": 698,
+      "news": 1379,
       "feeds": 0,
       "reports": 918,
       "covered_days": 2
     },
     "missing": [
-      "signals.json 数据日 2026-09-15 落后于基准日 2026-09-16",
-      "gate_data.json 数据日 2026-09-15 落后于基准日 2026-09-16",
-      "golden_diamond.json 数据日 2026-09-15 落后于基准日 2026-09-16",
       "market_thermometer.json 数据日 2026-09-15 落后于基准日 2026-09-16",
       "valuation_band.json 数据日 2026-09-15 落后于基准日 2026-09-16",
       "承接层滞后：output/feed_review_2026-09-15.json 非基准日 2026-09-16 那份（回退使用）"
@@ -115,16 +112,16 @@
     }
   },
   "summary": {
-    "共振": 5,
+    "共振": 7,
     "背离": 9,
-    "暗线": 11,
+    "暗线": 9,
     "双冷": 6
   },
   "items": [
     {
       "sector": "电子",
-      "news_count": 97,
-      "news_per_day": 48.5,
+      "news_count": 132,
+      "news_per_day": 66.0,
       "flow_yi": 227.03,
       "verdict": "共振",
       "verdict_raw": "真共振",
@@ -138,8 +135,8 @@
     },
     {
       "sector": "通信",
-      "news_count": 27,
-      "news_per_day": 13.5,
+      "news_count": 36,
+      "news_per_day": 18.0,
       "flow_yi": 105.44,
       "verdict": "共振",
       "verdict_raw": "真共振",
@@ -153,8 +150,8 @@
     },
     {
       "sector": "电力设备",
-      "news_count": 36,
-      "news_per_day": 18.0,
+      "news_count": 53,
+      "news_per_day": 26.5,
       "flow_yi": -43.81,
       "verdict": "背离",
       "verdict_raw": "背离",
@@ -168,8 +165,8 @@
     },
     {
       "sector": "机械设备",
-      "news_count": 20,
-      "news_per_day": 10.0,
+      "news_count": 24,
+      "news_per_day": 12.0,
       "flow_yi": 28.11,
       "verdict": "共振",
       "verdict_raw": "真共振",
@@ -183,23 +180,23 @@
     },
     {
       "sector": "有色金属",
-      "news_count": 53,
-      "news_per_day": 26.5,
+      "news_count": 62,
+      "news_per_day": 31.0,
       "flow_yi": 17.48,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "【中信期货：点阵图确认加息周期开启，压制黄金趋势】日内黄金震荡下跌，主要缘于",
-        "中信期货：点阵图确认加息周期开启，压制黄金趋势",
-        "中金：黄金支撑位在4200-4500美元附近"
+        "中金：黄金支撑位在4200-4500美元附近",
+        "现货黄金突破4290美元/盎司，日内涨0.64%。",
+        "现货黄金站上4290美元/盎司"
       ]
     },
     {
       "sector": "汽车",
-      "news_count": 49,
-      "news_per_day": 24.5,
+      "news_count": 61,
+      "news_per_day": 30.5,
       "flow_yi": -17.35,
       "verdict": "背离",
       "verdict_raw": "背离",
@@ -213,8 +210,8 @@
     },
     {
       "sector": "国防军工",
-      "news_count": 21,
-      "news_per_day": 10.5,
+      "news_count": 32,
+      "news_per_day": 16.0,
       "flow_yi": -13.11,
       "verdict": "背离",
       "verdict_raw": "背离",
@@ -228,8 +225,8 @@
     },
     {
       "sector": "基础化工",
-      "news_count": 3,
-      "news_per_day": 1.5,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": 9.67,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -243,8 +240,8 @@
     },
     {
       "sector": "传媒",
-      "news_count": 33,
-      "news_per_day": 16.5,
+      "news_count": 37,
+      "news_per_day": 18.5,
       "flow_yi": -7.2,
       "verdict": "背离",
       "verdict_raw": "背离",
@@ -269,8 +266,8 @@
     },
     {
       "sector": "公用事业",
-      "news_count": 9,
-      "news_per_day": 4.5,
+      "news_count": 15,
+      "news_per_day": 7.5,
       "flow_yi": 5.79,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -284,21 +281,22 @@
     },
     {
       "sector": "交通运输",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -5.58,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "东方财富财经早餐 10月14日周二"
+        "东方财富财经早餐 10月14日周二",
+        "丁薛祥出席平陆运河通航仪式"
       ]
     },
     {
       "sector": "计算机",
-      "news_count": 64,
-      "news_per_day": 32.0,
+      "news_count": 98,
+      "news_per_day": 49.0,
       "flow_yi": -5.29,
       "verdict": "背离",
       "verdict_raw": "背离",
@@ -312,17 +310,17 @@
     },
     {
       "sector": "银行",
-      "news_count": 31,
-      "news_per_day": 15.5,
+      "news_count": 43,
+      "news_per_day": 21.5,
       "flow_yi": -5.16,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
+        "【夏粮收官、秋粮接力 各地多措并举护航粮食稳产增收】记者昨天（16日）从国家",
         "香港金管局加息25个基点 基准利率升至4.25%",
-        "险资积极融入房地产发展新模式",
-        "美财政部国际资本流动报告：7月外国投资者所持美国国债增加388亿美元"
+        "险资积极融入房地产发展新模式"
       ]
     },
     {
@@ -338,8 +336,8 @@
     },
     {
       "sector": "非银金融",
-      "news_count": 34,
-      "news_per_day": 17.0,
+      "news_count": 38,
+      "news_per_day": 19.0,
       "flow_yi": -3.01,
       "verdict": "背离",
       "verdict_raw": "背离",
@@ -353,8 +351,8 @@
     },
     {
       "sector": "房地产",
-      "news_count": 20,
-      "news_per_day": 10.0,
+      "news_count": 22,
+      "news_per_day": 11.0,
       "flow_yi": 2.61,
       "verdict": "共振",
       "verdict_raw": "真共振",
@@ -390,13 +388,13 @@
     },
     {
       "sector": "综合",
-      "news_count": 15,
-      "news_per_day": 7.5,
+      "news_count": 19,
+      "news_per_day": 9.5,
       "flow_yi": 1.53,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
         "美股三大指数跌幅扩大",
         "沃什讲话之际 美股三大指数短线跳水",
@@ -453,8 +451,8 @@
     },
     {
       "sector": "食品饮料",
-      "news_count": 39,
-      "news_per_day": 19.5,
+      "news_count": 45,
+      "news_per_day": 22.5,
       "flow_yi": -0.88,
       "verdict": "背离",
       "verdict_raw": "背离",
@@ -468,8 +466,8 @@
     },
     {
       "sector": "煤炭",
-      "news_count": 2,
-      "news_per_day": 1.0,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": -0.85,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -477,7 +475,8 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "煤博会观察：乌金蝶变 探寻煤化工产业的“升级密码”",
-        "东方财富财经早餐 8月11日周二"
+        "东方财富财经早餐 8月11日周二",
+        "国内商品期货夜盘开盘 主力合约多数上涨"
       ]
     },
     {
@@ -493,28 +492,28 @@
     },
     {
       "sector": "农林牧渔",
-      "news_count": 11,
-      "news_per_day": 5.5,
+      "news_count": 13,
+      "news_per_day": 6.5,
       "flow_yi": 0.46,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
+        "【夏粮收官、秋粮接力 各地多措并举护航粮食稳产增收】记者昨天（16日）从国家",
         "超强厄尔尼诺威力大 多重因素牵动“粮食概念股”",
-        "东方财富财经早餐 6月3日周三",
-        "东方财富财经早餐 2月4日周三"
+        "东方财富财经早餐 6月3日周三"
       ]
     },
     {
       "sector": "医药生物",
-      "news_count": 12,
-      "news_per_day": 6.0,
+      "news_count": 18,
+      "news_per_day": 9.0,
       "flow_yi": 0.45,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
         "国产药在海外密集获批 医药行业盈利修复趋势进一步确认",
         "三重动力支撑创新药企“强者更强”",
@@ -523,17 +522,17 @@
     },
     {
       "sector": "石油石化",
-      "news_count": 22,
-      "news_per_day": 11.0,
+      "news_count": 29,
+      "news_per_day": 14.5,
       "flow_yi": -0.42,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "【中信期货：点阵图确认加息周期开启，压制黄金趋势】日内黄金震荡下跌，主要缘于",
-        "中信期货：点阵图确认加息周期开启，压制黄金趋势",
-        "WTI原油期货跌幅扩大至1%"
+        "WTI原油日内跌1%，现报96.52美元/桶。",
+        "【胡塞打击沙特石油设施和空军基地 】也门胡塞武装9月16日说，沙特阿拉伯本周",
+        "布伦特原油日内跌1%，现报104.77美元/桶。"
       ]
     },
     {

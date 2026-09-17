@@ -129,8 +129,16 @@ jobs:
           cp "$DEPLOY/signals.json" signals.json
           cp "$DEPLOY/lh_calendar.json" lh_calendar.json 2>/dev/null || true
           cp "$DEPLOY/build_manifest.json" build_manifest.json 2>/dev/null || true
-          rm -rf output
-          cp -R "$DEPLOY/output" output
+          # 🔴🔴 2026-09-17 修复（P0）：原为 `rm -rf output` + `cp -R $DEPLOY/output output`
+          #   —— **整体替换**根侧 output/。但 deploy/output 只是 slim **子集**，
+          #   清空后根侧独有的按日产物全部丢失：daily_news_*.json / daily_macro_*.json /
+          #   feed_review_*.json / v3_reasoning_*.json / window_*.json / cross_analysis.json…
+          #   实测 e4a49d7（9/16 22:28）就删掉了 5 个文件；ece4d5d、d219aec 同样在删。
+          #   后果：① 按日归档断裂（历史检索/回测对不上）② **新闻 14 天滚动池退化为只剩当天**
+          #   ③ 信息窗口产物（window_latest/window_<for_date>）每次被清 → 线上窗口条失效。
+          #   改为**增量覆盖**：slim 产物覆盖同名文件，根侧独有产物原样保留。
+          mkdir -p output
+          cp -R "$DEPLOY/output/." output/
           touch .nojekyll
 
           git add -A
