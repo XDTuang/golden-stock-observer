@@ -119,6 +119,12 @@ echo "📈 Step 3: 刷新辅助数据（ETF / 板块 / 龙虎榜，best-effort�
 bash update_calendar_js.py 2>/dev/null || echo "  ⚠️  日历JS模板刷新失败（跳过）"
 "$PYTHON" fetch_index_kline.py 2>/dev/null || echo "  ⚠️  指数K线刷新失败（跳过）"
 
+echo ""
+echo "📊 Step 3.1: 板块技术分析（共振置信度分级 + 量价/压力/支撑 + 注入 7.1b 段）"
+# 依赖：cross_analysis.json（盘前推演产出）+ sector_flow.json（上一行刚刷新）
+# 产物：output/sector_tech.json（双写 deploy）+ analysis.html 的 7.1b 段（幂等注入）
+"$PYTHON" review/build_sector_tech.py 2>/dev/null || echo "  ⚠️  板块技术分析失败（跳过，不影响主流程）"
+
 echo "📄 Step 3.5: 研报分析（星球研报接入，四类命中股票研报加强，best-effort）"
 "$PYTHON" report_analysis.py || echo "  ⚠️  研报分析失败（跳过，不影响主流程）"
 

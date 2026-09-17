@@ -166,6 +166,44 @@ python3 build_v3_obs_section.py --no-sync # 只改根 index，不同步副本
 - 验收判据：`#v3Obs` 内 `details.obs-fold` 数 = **L2 只数 + 池内只数**（如 7 + 32 = 39）。
 - ⚠️ **跳过此步 + 改了分析 → 线上 V3 仍是旧版**；本脚本不参与 `update_data.sh`，必须显式调用。
 
+## 步骤 3.8 · 板块技术研判 7.1b 段（脚本，非手写 · 2026-09-17 新增）
+
+```bash
+cd /Users/samt/golden_stock_observer
+python3 review/build_sector_tech.py              # 拉申万指数 K 线 → 分级 + 三维 → JSON + 注入 7.1b 段
+python3 review/build_sector_tech.py --no-fetch   # 只用本地 K 线缓存（离线自检，含注入）
+python3 review/build_sector_tech.py --no-html    # 只出 JSON，不注入页面
+python3 review/build_sector_tech.py --dry-run    # 打印将做的注入，不落盘
+python3 review/check_sector_tech.py              # 守卫（价格单调性 / 7.1b 段在位 / 副本 md5）
+```
+
+**做什么**：把「共振」从**布尔四象限**升级为**四档置信度**，并对 L4/L3 补**量价 / 压力位 / 支撑位**三维。
+
+| 档位 | 判据（脚本为唯一权威） |
+|---|---|
+| **L4 核心共振** | 资金分位 ≥80 **且** 连续 ≥2 日净流入（或**反转首日**分位 ≥95）**且** 热度日均达标 **且** 未破 EMA20 |
+| L3 强共振 | 资金分位 ≥60 且热度达标（或 L4 的资金条件），且未破 EMA20 |
+| L2 弱共振 | 四象限为共振/暗线但未达门槛，或**技术面降档**（跌破 EMA20） |
+| L1 观察 | 背离 / 双冷，或资金净流出 |
+
+**趋势四态**（`trend`）：`趋势向上`（EMA 7/7 ≥5 且站上 EMA20）｜`上升回踩`（≥5 但破 EMA20）｜`下跌反弹`（<5 但站上 EMA20）｜`下跌破位`。
+🔴 **技术面是「否决项」**：跌破 EMA20 即降档，不因资金分位高而豁免（技术破位优先于资金面论证）。
+
+**数据源**：`ak.index_hist_sw(symbol=<申万一级代码>, period="day")` —— 申万一级指数日 K，31/31 可用，
+分类与 `cross_analysis` / `sector_flow` **完全同源**。替代方案（东财 BK `push2his`）在部分网络环境不可达，不采用。
+
+**产物**：`output/sector_tech.json`（双写 deploy）｜`output/sector_kline_cache.json`（31 板块 × 300 根，可再生产物，**不入库**）｜analysis.html 的 7.1b 段。
+
+**关键实现约束**
+- 7.1b 段插在 `<!-- 7.2 重点观测股` **之前** —— 该锚点是 `build_obs_section.py` 的 START_ANCHOR，
+  其替换区间为 `[7.2, 7.3)`，故插在 7.2 之前**不在**区间内，两者互不覆盖。
+- 一律用**显式起止标记**（`SECTOR-TECH-BEGIN/END`、`SECTOR-TECH-CSS v1`），禁宽正则定位（铁律 30）。
+- 手写 7.1b 会在下次注入被覆盖 → 改展示形式请改 `render_section()` / `render_css()`。
+- 段落顺序守卫已扩展：`check_analysis_style.py [11/12]` 期望序列 = **7.1 → 7.1b → 7.2 → 7.3 → 7.4**。
+- 新增 `st-*` 类必须同时在 analysis.html 的 `<style>` 内有定义（`[9/12]` 未定义类守卫）。
+
+> ⚠️ **跳过此步**：7.1b 段仍是上一数据日的技术研判（页面会显示旧数据日，不报错）。
+
 ## 步骤 4 · 更新 feed_review
 
 `output/feed_review_latest.json`：
@@ -220,7 +258,11 @@ python3 review/check_analysis_style.py   # 老站排版：必须全过（[0] BOM
 python3 review/check_v3_style.py         # V3 独立版：四副本一致性 + 语义色 + 兜底（必须全过）
 python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 null close（必须 ✅）
 python3 review/check_review_dates.py     # 归档命名：文件名=复盘日 & for_date=下一交易日（必须 ✅）
+python3 review/check_sector_tech.py      # 板块技术研判（2026-09-17 增）：价格单调性 support<现价<resistance + L4/L3 必带具体价位 + 档位/趋势字面值 ⊆ 权威集合 + 7.1b 段与 CSS 在位（各 1 次）+ 根/deploy md5（必须 ✅）
 ```
+
+> 🔴 **门禁清单以本节为准（当前 = 五道）**。任一道红灯 → 先修再谈推送，**不带伤推送**。
+> `check_sector_tech.py` 反向测试 10 场景（5 类产物 + 5 类页面呈现）全部按预期拦截。
 
 > 🔴 **2026-09-16 · 按日归档的日期口径（用户拍板：文件名按复盘日，指引日为下一交易日）**
 > **规则**：归档件文件名日期 = **复盘日 = `data_date`**（该份复盘在复的那一天）；**`for_date`（指引日）= 复盘日的下一交易日**。

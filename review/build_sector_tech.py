@@ -399,10 +399,174 @@ def classify(verdict, pct, streak, hot, tech, flow_yi):
         pct, streak, "达标" if hot_ok else "不足", tail)
 
 
+# ══════════════════════ 4. 页面呈现：7.1b 段 + CSS（幂等注入）══════════════════════
+# 设计要点（2026-09-17）：
+#   · 段落 =「7.1b · 板块技术研判」，插在 `<!-- 7.2 重点观测股` **之前**
+#     （该锚点是 build_obs_section.py 的 START_ANCHOR，其替换区间为 [7.2, 7.3) → 插在 7.2 之前**不在**区间内，安全）
+#   · 本段**由本脚本生成**（生成式代码纪律：脚本是唯一权威，手改会被下次注入覆盖）
+#   · 一律用**显式起止标记**（铁律 30：禁宽正则定位代码块）
+#   · CSS 同步写入 analysis.html 自包含 style（铁律 11：类名必须有定义）
+ANALYSIS = os.path.join(BASE, "data", "daily_review", "analysis.html")
+ANALYSIS_DEPLOY = os.path.join(BASE, "deploy", "data", "daily_review", "analysis.html")
+
+SEC_BEGIN = "<!-- ═══ 7.1b SECTOR-TECH-BEGIN（由 review/build_sector_tech.py 生成 · 勿手改）═══ -->"
+SEC_END = "<!-- ═══ 7.1b SECTOR-TECH-END ═══ -->"
+CSS_BEGIN = "/* ═══ SECTOR-TECH-CSS v1 ═══ */"
+CSS_END = "/* ═══ /SECTOR-TECH-CSS v1 ═══ */"
+INSERT_BEFORE = "<!-- 7.2 重点观测股"
+
+
+def esc(x):
+    return (str(x).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+
+
+def render_css():
+    return "\n".join([
+        CSS_BEGIN,
+        ".st-sum{font-size:12.5px;color:var(--text-muted);margin-bottom:6px;line-height:1.75}",
+        ".st-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:6px;align-items:start}",
+        ".st-card{border:1px solid var(--border);border-radius:5px;padding:6px 8px;background:var(--bg-subtle)}",
+        ".st-hd{font-size:13px;margin-bottom:4px;line-height:1.6}",
+        ".st-lv{display:inline-block;font-size:11px;padding:1px 5px;border-radius:3px;font-weight:700;margin-right:4px;vertical-align:1px}",
+        ".st-lv4{background:rgba(231,76,60,.16);color:var(--red)}",
+        ".st-lv3{background:rgba(245,158,11,.18);color:var(--orange)}",
+        ".st-tr{font-size:11px;color:var(--text-muted);margin-left:2px}",
+        ".st-tr-weak{color:var(--orange)}",
+        ".st-kv{width:100%;font-size:12.5px;border-collapse:collapse}",
+        ".st-kv td{padding:1px 0;vertical-align:top;line-height:1.65}",
+        ".st-kv td:first-child{color:var(--text-muted);white-space:nowrap;width:46px}",
+        ".st-kv td.st-res{color:var(--red)}",
+        ".st-kv td.st-sup{color:var(--green)}",
+        ".st-why{font-size:11.5px;color:var(--text-muted);margin-top:4px;border-top:1px dashed var(--border);padding-top:3px;line-height:1.65}",
+        ".st-note{font-size:11.5px;color:var(--orange);margin-top:6px;line-height:1.7}",
+        CSS_END,
+    ])
+
+
+def _price_line(items, cls):
+    if not items:
+        return "—"
+    return " ／ ".join(f'<b>{x["price"]}</b>（{esc(x["src"])}）' for x in items)
+
+
+def render_section(d: dict) -> str:
+    """生成 7.1b 段 HTML"""
+    s, td, LAB = d.get("summary") or {}, d.get("trend_dist") or {}, d.get("trend_labels") or {}
+    focus = [r for r in (d.get("items") or []) if r.get("level") in ("L4", "L3")]
+    trend_txt = " ｜ ".join(f"{LAB.get(k, k)} {v}" for k, v in td.items())
+    lv_txt = " ｜ ".join(
+        f'<span class="st-lv st-lv4">{k} {s.get(k, 0)}</span>' if k == "L4"
+        else f'<span class="st-lv st-lv3">{k} {s.get(k, 0)}</span>' if k == "L3"
+        else f"{k} {s.get(k, 0)}" for k in LEVELS)
+
+    parts = [
+        SEC_BEGIN,
+        '<div class="dr-h">7.1b · 板块技术研判（申万一级 31 · 数据日 '
+        f'{esc(d.get("data_date"))} · 共振置信度分级 + 量价/压力/支撑 · 自动生成）</div>',
+        '<div class="dr-card" style="margin-top:4px">',
+        f'<div class="st-sum">分级：{lv_txt}<br>趋势结构：{trend_txt}'
+        f'<br>阈值：资金分位 ≥{d["thresholds"]["pct_L4"]}/{d["thresholds"]["pct_L3"]}'
+        f' ｜ 连续 ≥{d["thresholds"]["streak_min"]} 日（或反转首日 ≥{d["thresholds"]["pct_reversal"]}）'
+        f' ｜ 热度日均 ≥{d["thresholds"]["hot_per_day"]} ｜ 破位线 EMA{d["thresholds"]["ema20_line"]}'
+        '（技术面为**否决项**：跌破即降档）</div>',
+    ]
+    if not focus:
+        parts.append('<div class="st-note">本日无 L4/L3 板块'
+                     '（资金未能同时满足「分位达标 + 连续/反转首日」且未破位）—— '
+                     '属正常结果，不代表无机会，仅表示无高置信度共振。</div>')
+    else:
+        parts.append('<div class="st-grid">')
+        for r in focus:
+            t = r.get("tech") or {}
+            lv_cls = "st-lv4" if r["level"] == "L4" else "st-lv3"
+            tr_cls = "st-tr st-tr-weak" if r.get("trend") in ("downtrend_rebound",) else "st-tr"
+            vol = t.get("vol_price_state", "—")
+            vr = t.get("vol_ratio_5")
+            parts += [
+                '<div class="st-card">',
+                f'<div class="st-hd"><span class="st-lv {lv_cls}">{r["level"]}</span>'
+                f'<b>{esc(r["sector"])}</b>'
+                f'<span class="{tr_cls}">{LAB.get(r.get("trend"), "")}</span></div>',
+                '<table class="st-kv"><tbody>',
+                f'<tr><td>现价</td><td class="dr-wrap" colspan="3"><b>{t.get("close", "—")}</b>'
+                f' ｜ EMA {t.get("ema_score", "—")}/7 ｜ 区间分位 {t.get("range_pos", "—")}%'
+                f' ｜ 距 60 日高 <b>{t.get("dd_from_hi60", "—")}%</b></td></tr>',
+                f'<tr><td>压力</td><td class="st-res dr-wrap" colspan="3">{_price_line(t.get("resistance"), "res")}</td></tr>',
+                f'<tr><td>支撑</td><td class="st-sup dr-wrap" colspan="3">{_price_line(t.get("support"), "sup")}</td></tr>',
+                f'<tr><td>量价</td><td class="dr-wrap" colspan="3">{esc(vol)}'
+                + (f'（量比 5 日 {vr}）' if vr else '')
+                + (' ｜ <b>量价背离</b>' if t.get("vol_price_diverge") else '')
+                + (' ｜ 资金与价格同向' if t.get("flow_aligned") else ' ｜ ⚠️ 资金与价格反向')
+                + '</td></tr>',
+                '</tbody></table>',
+                f'<div class="st-why">依据：{esc(r.get("why"))}</div>',
+                '</div>',
+            ]
+        parts.append('</div>')
+    if d.get("missing"):
+        parts.append(f'<div class="st-note">⚠️ 数据缺口 {len(d["missing"])} 项：'
+                     + esc("；".join(d["missing"][:3])) + '</div>')
+    parts.append('</div>')
+    parts.append(SEC_END)
+    return "\n".join(parts)
+
+
+def _block_replace(text, begin, end, new_block):
+    """幂等整块替换（显式标记；标记缺失则返回 None 表示未命中）"""
+    i, j = text.find(begin), text.find(end)
+    if i < 0 or j < 0 or j < i:
+        return None
+    return text[:i] + new_block + text[j + len(end):]
+
+
+def inject_analysis(d: dict, dry_run=False):
+    """把 7.1b 段 + CSS 注入 analysis.html 及其 deploy 副本（幂等）"""
+    if not os.path.exists(ANALYSIS):
+        return False, f"analysis.html 不存在：{ANALYSIS}"
+    msgs = []
+    sec = render_section(d)
+    css = render_css()
+    for path in (ANALYSIS, ANALYSIS_DEPLOY):
+        if not os.path.exists(path):
+            msgs.append(f"跳过（不存在）{os.path.relpath(path, BASE)}")
+            continue
+        t = open(path, encoding="utf-8").read()   # 注意：'utf-8' 保留 BOM 字符，勿用 utf-8-sig
+        n_css = t.count(CSS_BEGIN)
+        # ① CSS：幂等替换；缺失则插到 </style> 前
+        new = _block_replace(t, CSS_BEGIN, CSS_END, css)
+        if new is None:
+            k = t.find("</style>")
+            if k < 0:
+                msgs.append(f"❌ {os.path.relpath(path, BASE)} 无 </style>，CSS 未注入")
+                continue
+            new = t[:k] + css + "\n" + t[k:]
+            css_action = "插入"
+        else:
+            css_action = "替换"
+        # ② 段落：幂等替换；缺失则插到 INSERT_BEFORE 前
+        new2 = _block_replace(new, SEC_BEGIN, SEC_END, sec)
+        if new2 is None:
+            k = new.find(INSERT_BEFORE)
+            if k < 0:
+                msgs.append(f"❌ {os.path.relpath(path, BASE)} 未找到锚点 {INSERT_BEFORE!r}，段落未注入")
+                continue
+            new2 = new[:k] + sec + "\n\n" + new[k:]
+            sec_action = "插入"
+        else:
+            sec_action = "替换"
+        if not dry_run:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(new2)
+        msgs.append(f"{os.path.relpath(path, BASE)}：CSS {css_action}(旧块{n_css}) · 段落 {sec_action}")
+    return True, " ｜ ".join(msgs)
+
+
 # ══════════════════════ main ══════════════════════
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-fetch", action="store_true", help="只用本地 K 线缓存（离线自检）")
+    ap.add_argument("--no-html", action="store_true", help="只出 JSON，不注入 analysis.html")
+    ap.add_argument("--dry-run", action="store_true", help="只打印将做的注入，不落盘")
     ap.add_argument("--sectors", default="", help="只处理指定板块（逗号分隔，调试用）")
     args = ap.parse_args()
 
@@ -502,6 +666,13 @@ def main():
         for m in payload["missing"][:8]:
             print(f"     · {m}")
     print(f"\n  💾 output/sector_tech.json + deploy 副本")
+
+    # ── 页面呈现：7.1b 段 + CSS（幂等注入）──
+    if args.no_html:
+        print("  ⏭  --no-html：跳过 analysis.html 注入")
+    else:
+        ok, msg = inject_analysis(payload, dry_run=args.dry_run)
+        print(f"  {'🖼 7.1b 注入' + ('（dry-run）' if args.dry_run else '')}：{'✅' if ok else '❌'} {msg}")
 
 
 if __name__ == "__main__":

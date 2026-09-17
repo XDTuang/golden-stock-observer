@@ -116,6 +116,24 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
 .k3c-legend i.l-cond::before{background:var(--orange)}
 .k3c-legend i.l-risk::before{background:var(--green)}
 .k3c-legend i.l-verify::before{background:var(--blue)}
+/* ═══ SECTOR-TECH-CSS v1 ═══ */
+.st-sum{font-size:12.5px;color:var(--text-muted);margin-bottom:6px;line-height:1.75}
+.st-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:6px;align-items:start}
+.st-card{border:1px solid var(--border);border-radius:5px;padding:6px 8px;background:var(--bg-subtle)}
+.st-hd{font-size:13px;margin-bottom:4px;line-height:1.6}
+.st-lv{display:inline-block;font-size:11px;padding:1px 5px;border-radius:3px;font-weight:700;margin-right:4px;vertical-align:1px}
+.st-lv4{background:rgba(231,76,60,.16);color:var(--red)}
+.st-lv3{background:rgba(245,158,11,.18);color:var(--orange)}
+.st-tr{font-size:11px;color:var(--text-muted);margin-left:2px}
+.st-tr-weak{color:var(--orange)}
+.st-kv{width:100%;font-size:12.5px;border-collapse:collapse}
+.st-kv td{padding:1px 0;vertical-align:top;line-height:1.65}
+.st-kv td:first-child{color:var(--text-muted);white-space:nowrap;width:46px}
+.st-kv td.st-res{color:var(--red)}
+.st-kv td.st-sup{color:var(--green)}
+.st-why{font-size:11.5px;color:var(--text-muted);margin-top:4px;border-top:1px dashed var(--border);padding-top:3px;line-height:1.65}
+.st-note{font-size:11.5px;color:var(--orange);margin-top:6px;line-height:1.7}
+/* ═══ /SECTOR-TECH-CSS v1 ═══ */
 </style>
 <!--
   每日复盘 · 分析区（V2 完整结构）
@@ -347,6 +365,35 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
   </table>
 </div>
 
+
+<!-- ═══ 7.1b SECTOR-TECH-BEGIN（由 review/build_sector_tech.py 生成 · 勿手改）═══ -->
+<div class="dr-h">7.1b · 板块技术研判（申万一级 31 · 数据日 2026-09-16 · 共振置信度分级 + 量价/压力/支撑 · 自动生成）</div>
+<div class="dr-card" style="margin-top:4px">
+<div class="st-sum">分级：<span class="st-lv st-lv4">L4 2</span> ｜ <span class="st-lv st-lv3">L3 0</span> ｜ L2 14 ｜ L1 15<br>趋势结构：趋势向上 0 ｜ 上升回踩 2 ｜ 下跌反弹 6 ｜ 下跌破位 23 ｜ 无数据 0<br>阈值：资金分位 ≥80/60 ｜ 连续 ≥2 日（或反转首日 ≥95） ｜ 热度日均 ≥8 ｜ 破位线 EMA20（技术面为**否决项**：跌破即降档）</div>
+<div class="st-grid">
+<div class="st-card">
+<div class="st-hd"><span class="st-lv st-lv4">L4</span><b>电子</b><span class="st-tr st-tr-weak">下跌反弹</span></div>
+<table class="st-kv"><tbody>
+<tr><td>现价</td><td class="dr-wrap" colspan="3"><b>8735.31</b> ｜ EMA 2/7 ｜ 区间分位 23.6% ｜ 距 60 日高 <b>-30.1%</b></td></tr>
+<tr><td>压力</td><td class="st-res dr-wrap" colspan="3"><b>8896.38</b>（上方EMA60） ／ <b>9074.23</b>（近20日高点） ／ <b>9455.65</b>（斐波38.2%）</td></tr>
+<tr><td>支撑</td><td class="st-sup dr-wrap" colspan="3"><b>8615.32</b>（EMA20支撑） ／ <b>8159.52</b>（近20日低点） ／ <b>7574.02</b>（近60日低点）</td></tr>
+<tr><td>量价</td><td class="dr-wrap" colspan="3">放量上涨·健康推进（量比 5 日 1.18） ｜ 资金与价格同向</td></tr>
+</tbody></table>
+<div class="st-why">依据：资金分位100(≥80)+反转首日(分位100.0)+热度达标(日均≥8)｜趋势为反弹（中期趋势未反转）</div>
+</div>
+<div class="st-card">
+<div class="st-hd"><span class="st-lv st-lv4">L4</span><b>通信</b><span class="st-tr st-tr-weak">下跌反弹</span></div>
+<table class="st-kv"><tbody>
+<tr><td>现价</td><td class="dr-wrap" colspan="3"><b>7407.58</b> ｜ EMA 2/7 ｜ 区间分位 35.1% ｜ 距 60 日高 <b>-26.1%</b></td></tr>
+<tr><td>压力</td><td class="st-res dr-wrap" colspan="3"><b>7428.09</b>（上方EMA60） ／ <b>7470.26</b>（近20日高点） ／ <b>7532.53</b>（斐波38.2%）</td></tr>
+<tr><td>支撑</td><td class="st-sup dr-wrap" colspan="3"><b>7213.39</b>（EMA20支撑） ／ <b>6824.53</b>（近20日低点） ／ <b>5988.72</b>（近60日低点）</td></tr>
+<tr><td>量价</td><td class="dr-wrap" colspan="3">平量整理（量比 5 日 1.02） ｜ 资金与价格同向</td></tr>
+</tbody></table>
+<div class="st-why">依据：资金分位96(≥80)+反转首日(分位96.7)+热度达标(日均≥8)｜趋势为反弹（中期趋势未反转）</div>
+</div>
+</div>
+</div>
+<!-- ═══ 7.1b SECTOR-TECH-END ═══ -->
 
 <!-- 7.2 重点观测股 -->
 <div class="dr-h">7.2 · 重点观测股推演（obs_deduce 池 32 只 · 数据日 2026-09-16 收盘 · 分层 L1/L2 · 其他专家持股参考 · 非本人）</div>

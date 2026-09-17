@@ -293,19 +293,23 @@ ok11 = True
 note11 = []
 try:
     # a) 7.x 段落顺序
+    #    2026-09-17 扩展：引入子段号 `7.1b`（板块技术研判，由 review/build_sector_tech.py 生成），
+    #    正则须捕获字母后缀，否则 `7.1b` 会被读成 `7.1` → 序列出现两个 7.1 而误报「不齐」。
+    _EXPECT11 = ['7.1', '7.1b', '7.2', '7.3', '7.4']
     _order11 = []
     for _m11 in re.finditer(r'<div class="dr-h"[^>]*>(.*?)</div>', s, re.S):
         _t11 = re.sub(r'<[^>]+>', '', _m11.group(1)).strip()
-        _k11 = re.match(r'^(7\.\d)', _t11)
+        _k11 = re.match(r'^(7\.\d+[a-z]?)', _t11)
         if _k11:
             _order11.append(_k11.group(1))
     if _order11 != sorted(_order11):
-        note11.append(f'⚠️ 7.x 段落顺序错：{" → ".join(_order11)}（应为 7.1 → 7.2 → 7.3 → 7.4）')
+        note11.append(f'⚠️ 7.x 段落顺序错：{" → ".join(_order11)}（应为 {" → ".join(_EXPECT11)}）')
         note11.append('   → 修法：把 7.4 块整体移到 7.3 块之后；'
                       '同步把 build_obs_section.py 的 END_ANCHOR 改为 "<!-- 7.3 次日开盘指引"（两者必须同时改）')
         ok11 = False
-    elif _order11 != ['7.1', '7.2', '7.3', '7.4']:
-        note11.append(f'⚠️ 7.x 段落不齐：{" → ".join(_order11)}（应 7.1/7.2/7.3/7.4 各一段）')
+    elif _order11 != _EXPECT11:
+        note11.append(f'⚠️ 7.x 段落不齐：{" → ".join(_order11)}'
+                      f'（应 {" / ".join(_EXPECT11)} 各一段）')
         ok11 = False
 
     # b) 裸段号硬编码（须为 'x.y · ' 形式，纯数字 = 会吃掉小数段号）

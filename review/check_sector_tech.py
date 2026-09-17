@@ -141,6 +141,42 @@ def main():
     else:
         warns.append("deploy/output/sector_tech.json 不存在（V3/线上会 404）")
 
+    # 9. 页面呈现（7.1b 段 + CSS，2026-09-17 新增）
+    #    生成式代码纪律：本段由 build_sector_tech.py 注入 → 须防「块缺失（段消失）」与「块重复（多次注入）」
+    try:
+        from build_sector_tech import SEC_BEGIN, SEC_END, CSS_BEGIN, CSS_END, INSERT_BEFORE
+        sec_marks = (SEC_BEGIN, SEC_END, CSS_BEGIN, CSS_END)
+    except Exception:
+        sec_marks = ()
+    if not sec_marks:
+        warns.append("无法导入 7.1b 段标记常量 → 页面呈现校验降级跳过")
+    else:
+        for path, tag in ((os.path.join(BASE, "data", "daily_review", "analysis.html"), "根"),
+                          (os.path.join(BASE, "deploy", "data", "daily_review", "analysis.html"), "deploy")):
+            if not os.path.exists(path):
+                errs.append(f"analysis.html（{tag}）不存在")
+                continue
+            t = open(path, encoding="utf-8").read()
+            for mk, label in ((SEC_BEGIN, "段BEGIN"), (SEC_END, "段END"),
+                              (CSS_BEGIN, "CSS-BEGIN"), (CSS_END, "CSS-END")):
+                n = t.count(mk)
+                if n != 1:
+                    errs.append(f"analysis.html（{tag}）7.1b {label} 标记出现 {n} 次（须=1）")
+            if t.count(SEC_BEGIN) == 1 and t.count(SEC_END) == 1:
+                i, j = t.find(SEC_BEGIN), t.find(SEC_END)
+                if not (0 < i < j):
+                    errs.append(f"analysis.html（{tag}）7.1b 段标记顺序颠倒")
+                # 位置断言：须在 7.1 标题之后、7.2 锚点之前
+                h71, anchor = t.find(">7.1 ·"), t.find(INSERT_BEFORE)
+                if not (0 < h71 < i and (anchor < 0 or i < anchor)):
+                    errs.append(f"analysis.html（{tag}）7.1b 段位置异常（应在 7.1 之后、7.2 之前）")
+        # 根 vs deploy md5
+        pa = os.path.join(BASE, "data", "daily_review", "analysis.html")
+        pb = os.path.join(BASE, "deploy", "data", "daily_review", "analysis.html")
+        if os.path.exists(pa) and os.path.exists(pb):
+            if hashlib.md5(open(pa, "rb").read()).hexdigest() != hashlib.md5(open(pb, "rb").read()).hexdigest():
+                errs.append("analysis.html 根副本与 deploy 副本 md5 不一致")
+
     # 输出
     s = d.get("summary") or {}
     print(f"  数据日 {dd} ｜ 分级 " + " ".join(f"{k}={s.get(k, 0)}" for k in LEVELS))
