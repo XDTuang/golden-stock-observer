@@ -1473,6 +1473,10 @@ html { scroll-behavior: smooth; }
 .dr-tbl td{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:normal;word-break:break-word;overflow-wrap:anywhere;min-width:0}
 .dr-tbl th:first-child,.dr-tbl td:first-child{text-align:left}
 .dr-tbl th{color:var(--text-muted);font-weight:600}
+/* 🔴 2026-09-18 防御：禁止 <td> 被 .dr-tag 的 display:inline-block 影响 ——
+   analysis.html 注入的 .dr-tag{display:inline-block} 会让 td 脱离表格布局，
+   实测导致列宽崩溃（判定列 40px、含义列与判定列 left 重叠）。 */
+.dr-tbl td.dr-tag{display:table-cell;background:none;border-radius:0;padding:5px 9px;margin:0;font-size:12.5px}
 .dr-up{color:var(--red)}.dr-dn{color:var(--green)}
 .dr-tag{font-size:11px;color:var(--text-muted)}
 /* 2026-09-16 新闻池「更多」按钮（按日分组 · 每天收敛展示 DR_NEWS_SHOW_N 条后递增展开） */
@@ -3244,18 +3248,19 @@ function drLoadCrossAnalysis() {
         ' · 判定：共振 ' + (sm['共振'] || 0) + ' / 背离 ' + (sm['背离'] || 0) +
         ' / 暗线 ' + (sm['暗线'] || 0) + ' / 双冷 ' + (sm['双冷'] || 0) + '</div>';
       s += '<table class="dr-tbl"><thead><tr><th>板块</th><th style="width:80px">新闻热度</th>' +
-        '<th style="width:96px">主力净流(亿)</th><th style="width:70px">判定</th><th>含义</th></tr></thead><tbody>';
+        '<th style="width:108px">主力净流(亿)</th><th style="width:88px">判定</th><th>含义</th></tr></thead><tbody>';
       items.forEach(it => {
         s += '<tr><td>' + it.sector + '</td><td>' + it.news_count + ' 条</td>' +
           '<td class="' + (it.flow_yi >= 0 ? 'dr-up' : 'dr-dn') + '">' + (it.flow_yi >= 0 ? '+' : '') + it.flow_yi + '</td>' +
           '<td class="' + (LVLC[it.level] || '') + '">' + it.verdict + '</td>' +
-          '<td class="dr-tag">' + it.desc + '</td></tr>';
+          '<td style="color:var(--text-muted)">' + it.desc + '</td></tr>';
       });
       s += '</tbody></table>';
       slot.innerHTML = s;
     })
     .catch(() => { slot.innerHTML = ''; });
 }
+
 
 // ===== 投喂复盘渲染 =====
 // === feed v4: 内置 AI 综合推演(ai_synthesis) 渲染 —— 修复 rebuild 后本机产物丢失 ===
@@ -3269,6 +3274,19 @@ function drLoadFeedReview() {
   const el = document.getElementById('drFeedReviewBody');
   if (!el) return;
   const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  /* ═══════════ FEED-RICHTEXT-BEGIN（老站接入 · 2026-09-18）═══════════
+     ai_synthesis 各字段由本机 agent 手写，含 <b> 强调与 <span class="dk-*"> 语义色；
+     此前统一 esc() → 页面直接显示字面「<b>…</b>」（2026-09-18 用户报障）。
+     治本：先整体转义，仅放行白名单标签；<script> 等其余一律保持转义（无 XSS 面）。
+     机器数据（日期/价格/代码/枚举/股票名）仍走 esc()，口径不变。 */
+  const DKCLS = /^dk-(main|caution|risk|data|up|dn|neutral)$/;
+  const rich = (v) => esc(v == null ? '' : v)
+    .replace(/&lt;(\/?)(b|i)&gt;/g, '<$1$2>')
+    .replace(/&lt;br\s*\/?&gt;/g, '<br>')
+    .replace(/&lt;span class="(dk-[a-z0-9-]+)"&gt;/g, (m, c) => (DKCLS.test(c) ? '<span class="' + c + '">' : m))
+    .replace(/&lt;\/span&gt;/g, '</span>');
+  /* ═══════════ FEED-RICHTEXT-END ═══════════ */
   // 类型归一：数组→原样；对象→[对象]；字符串→[字符串]；空→[]
   const asArr = v => Array.isArray(v) ? v : (v && typeof v === 'object' ? [v] : (v ? [String(v)] : []));
   // 取文本：字符串→原样；对象→desc/text/summary/note 依次取值；其余→JSON
@@ -3297,7 +3315,7 @@ function drLoadFeedReview() {
            (d.source === 'cloud' ? '云端 08:15' : '本地 19:30') + '</div>';
       h += '<div class="dr-note"><b>后市预判：<span class="' + biasCls + '">' + esc(bias) +
            '</span></b>（score ' + (pred.bias_score == null ? '—' : pred.bias_score) + '）</div>';
-      asArr(pred.reasons).forEach(r => h += '<div class="dr-note">· ' + esc(asTxt(r)) + '</div>');  // 2026-09-10：asTxt 防对象→[object Object]
+      asArr(pred.reasons).forEach(r => h += '<div class="dr-note">· ' + rich(asTxt(r)) + '</div>');  // 2026-09-10：asTxt 防对象→[object Object]
 
       // ===== 当日投喂 =====
       h += safe('当日投喂', () => {
@@ -3306,7 +3324,7 @@ function drLoadFeedReview() {
         let s = '<div class="dr-h">当日投喂</div><table class="dr-tbl"><thead><tr><th>类别</th><th>来源</th><th>标题</th><th>关键词</th></tr></thead><tbody>';
         feeds.forEach(f => {
           s += '<tr><td>' + esc(f.category) + '</td><td>' + esc(f.source) + '</td><td>' + esc(f.title) +
-               '</td><td class="dr-tag">' + asArr(f.keywords).slice(0, 4).map(esc).join(' / ') + '</td></tr>';
+               '</td><td style="color:var(--text-muted)">' + asArr(f.keywords).slice(0, 4).map(esc).join(' / ') + '</td></tr>';
         });
         return s + '</tbody></table>';
       });
@@ -3332,14 +3350,14 @@ function drLoadFeedReview() {
         const t1 = asArr(pred.t1_focus);
         if (!t1.length) return '';
         let s = '<div class="dr-h">T+1 关注</div>';
-        t1.forEach(t => s += '<div class="dr-note">· ' + esc(asTxt(t)) + '</div>');  // 2026-09-10：asTxt 防对象→[object Object]
+        t1.forEach(t => s += '<div class="dr-note">· ' + rich(asTxt(t)) + '</div>');  // 2026-09-10：asTxt 防对象→[object Object]
         return s;
       });
       h += safe('风险提示', () => {
         const risks = asArr(pred.risks);
         if (!risks.length) return '';
         let s = '<div class="dr-h">风险提示</div>';
-        risks.forEach(r => s += '<div class="dr-note">⚠️ <span class="dr-dn">' + esc(asTxt(r)) + '</span></div>');  // 2026-09-10：asTxt 防对象→[object Object]
+        risks.forEach(r => s += '<div class="dr-note">⚠️ <span class="dr-dn">' + rich(asTxt(r)) + '</span></div>');  // 2026-09-10：asTxt 防对象→[object Object]
         return s;
       });
       if (pred.pending_ai) h += '<div class="dr-note dr-tag">深度预测待本机 agent / 专家对话补全</div>';
@@ -3353,13 +3371,13 @@ function drLoadFeedReview() {
       if (syn) {
         h += safe('AI 综合推演 · 核心结论', () => {
           if (!syn.verdict_headline) return '';
-          return '<div style="margin:14px 0 4px;padding:10px 12px;border-left:3px solid #f0b429;background:rgba(240,180,41,.08);border-radius:8px;font-size:13.5px;line-height:1.7"><b style="color:#f0b429">⚑ AI 综合推演 · 核心结论</b><br>' + esc(syn.verdict_headline) + '</div>';
+          return '<div style="margin:14px 0 4px;padding:10px 12px;border-left:3px solid #f0b429;background:rgba(240,180,41,.08);border-radius:8px;font-size:13.5px;line-height:1.7"><b style="color:#f0b429">⚑ AI 综合推演 · 核心结论</b><br>' + rich(syn.verdict_headline) + '</div>';
         });
         h += safe('AI 综合推演 · 结论先行', () => {
           const arr = asArr(syn.conclusion_first);
           if (!arr.length) return '';
           let s = '<div class="dr-h">AI 综合推演 · 结论先行</div><ol style="margin:4px 0;padding-left:20px">';
-          arr.forEach(c => s += '<li class="dr-note" style="list-style:inherit">' + esc(asTxt(c)) + '</li>');  // 2026-09-10：asTxt 防对象→[object Object]
+          arr.forEach(c => s += '<li class="dr-note" style="list-style:inherit">' + rich(asTxt(c)) + '</li>');  // 2026-09-10：asTxt 防对象→[object Object]
           return s + '</ol>';
         });
         h += safe('AI 综合推演 · 主题共振', () => {
@@ -3367,16 +3385,16 @@ function drLoadFeedReview() {
           if (!arr.length) return '';
           let s = '<div class="dr-h">AI 综合推演 · 主题共振</div>';
           arr.forEach(t => {
-            if (typeof t === 'string') { s += '<div class="dr-note" style="margin:4px 0">' + esc(t) + '</div>'; return; }
+            if (typeof t === 'string') { s += '<div class="dr-note" style="margin:4px 0">' + rich(t) + '</div>'; return; }
             const w = t.weight || '';
             const wc = w === '最强' ? 'var(--red)' : (w === '强' ? '#f0b429' : (w === '弱' ? '#94a3b8' : 'var(--text-muted)'));
             // 🔴 2026-09-02 治标：weight 为空时整段不渲染方括号（避免显示 `[]` 空牌）
             const wtBadge = w ? (' <span style="color:' + wc + '">[' + esc(w) + ']</span>') : '';
             // 🔴 2026-09-02 治标：related_stocks 空时不渲染空容器
             const rsBadge = (asArr(t.related_stocks).length) ? ('<div style="margin-top:4px">' + chips(t.related_stocks) + '</div>') : '';
-            s += '<div style="margin:6px 0;padding:8px 10px;border:1px solid var(--border);border-radius:8px"><b>' + esc(t.theme || '') +
+            s += '<div style="margin:6px 0;padding:8px 10px;border:1px solid var(--border);border-radius:8px"><b>' + rich(t.theme || '') +
                  '</b>' + wtBadge + '<div class="dr-tag" style="margin-top:4px">' +
-                 asArr(t.evidence).map(esc).join('<br>') + '</div>' + rsBadge + '</div>';
+                 asArr(t.evidence).map(rich).join('<br>') + '</div>' + rsBadge + '</div>';
           });
           return s;
         });
@@ -3386,7 +3404,7 @@ function drLoadFeedReview() {
           const a = (typeof cm === 'object') ? asArr(cm.a_shares) : [];
           const u = (typeof cm === 'object') ? asArr(cm.us_mapping) : [];
           if (!txt && !a.length && !u.length) return '';
-          let s = '<div class="dr-h">AI 综合推演 · NVDA 产业链映射</div><div class="dr-note">' + esc(txt) + '</div>';
+          let s = '<div class="dr-h">AI 综合推演 · NVDA 产业链映射</div><div class="dr-note">' + rich(txt) + '</div>';
           s += '<div style="display:flex;gap:10px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><b style="color:var(--red)">A股映射</b><div>' + chips(a) +
                '</div></div><div style="flex:1;min-width:200px"><b style="color:var(--green)">美股映射</b><div>' + chips(u) + '</div></div></div>';
           return s;
@@ -3398,7 +3416,7 @@ function drLoadFeedReview() {
           const cau = (typeof hm === 'object') ? asArr(hm.caution) : [];
           const us = (typeof hm === 'object') ? asArr(hm.us) : [];
           if (!note && !ta.length && !cau.length && !us.length) return '';
-          let s = '<div class="dr-h">AI 综合推演 · 持仓映射</div><div class="dr-tag">' + esc(note) + '</div>';
+          let s = '<div class="dr-h">AI 综合推演 · 持仓映射</div><div class="dr-tag">' + rich(note) + '</div>';
           if (ta.length) s += '<div style="margin-top:4px"><b style="color:var(--red)">主题契合</b> ' + chips(ta) + '</div>';
           if (cau.length) s += '<div style="margin-top:4px"><b style="color:#f0b429">需谨慎</b> ' +
             cau.map(x => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:#f0b429;font-size:11px">' + esc(x) + '</span>').join('') + '</div>';
@@ -3412,12 +3430,12 @@ function drLoadFeedReview() {
           if (!radar.length) return '';
           let s = '<div class="dr-h">AI 综合推演 · T+1 事件雷达</div>';
           radar.forEach(t => {
-            if (typeof t === 'string') { s += '<div class="dr-note">· ' + esc(t) + '</div>'; return; }
+            if (typeof t === 'string') { s += '<div class="dr-note">· ' + rich(t) + '</div>'; return; }
             const o = (t && typeof t === 'object') ? t : {};
             // 2026-09-10：V3 产物元素为 {time,event,impact} 对象，结构化渲染（时间加粗 + 影响上色）；asTxt 兜底杜绝 [object Object]
             const txt = asTxt(o);
             const ic = String(o.impact || '').indexOf('高') >= 0 ? 'var(--red)' : '#f0b429';  // 高/中高 上色，与风险段口径一致
-            s += '<div class="dr-note">· ' + (o.time ? '<b>' + esc(String(o.time)) + '</b> ' : '') + esc(txt)
+            s += '<div class="dr-note">· ' + (o.time ? '<b>' + esc(String(o.time)) + '</b> ' : '') + rich(txt)
               + (o.impact ? ' <span style="color:' + ic + ';font-weight:600">[' + esc(String(o.impact)) + ']</span>' : '') + '</div>';
           });
           return s;
@@ -3427,9 +3445,9 @@ function drLoadFeedReview() {
           if (!arr.length) return '';
           let s = '<div class="dr-h">AI 综合推演 · 风险（概率 × 冲击）</div>';
           arr.forEach(r => {
-            if (typeof r === 'string') { s += '<div class="dr-note">· ' + esc(r) + '</div>'; return; }
+            if (typeof r === 'string') { s += '<div class="dr-note">· ' + rich(r) + '</div>'; return; }
             const pc = (r.prob || '').indexOf('高') >= 0 ? 'var(--red)' : '#f0b429';  // 2026-09-04：「中高」也含高，与 V3 对齐
-            s += '<div class="dr-note">· <span style="color:' + pc + ';font-weight:600">[' + esc(r.prob) + '×' + esc(r.impact || '—') + ']</span> ' + esc(r.desc) + '</div>';  // 2026-09-04：impact 缺失兜底显 —（9/3 曾整列丢失）
+            s += '<div class="dr-note">· <span style="color:' + pc + ';font-weight:600">[' + esc(r.prob) + '×' + esc(r.impact || '—') + ']</span> ' + rich(r.desc) + '</div>';  // 2026-09-04：impact 缺失兜底显 —（9/3 曾整列丢失）
           });
           return s;
         });
@@ -3684,6 +3702,7 @@ function drScopeInjectedStyles(scopeEl) {
     } catch (e) { /* 只读/跨域等场景忽略，退化为原有行为 */ }
   });
 }
+
 
 // ===== 每日复盘 Tab =====
 function renderDailyReview() {

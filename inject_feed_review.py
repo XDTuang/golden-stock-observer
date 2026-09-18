@@ -39,50 +39,104 @@ TAB_BLOCK = """
 JS_BLOCK = r"""
 // ===== 投喂复盘渲染 =====
 // === feed v4: 内置 AI 综合推演(ai_synthesis) 渲染 —— 修复 rebuild 后本机产物丢失 ===
+// 2026-08-31 加固（事故复盘）：ai_synthesis 各字段增加「类型防御」+「子块隔离」。
+//   事故：8/31 产物把 theme_resonance / nvda_chain_map / holding_map / risks 降级成纯字符串，
+//   本函数按对象数组解析 → theme_resonance.forEach 抛 TypeError → 整个 then() 回调中断
+//   → el.innerHTML 永不赋值 → 投喂复盘整块空白（连已拼好的内容一起丢）。
+//   现改为：字符串 / 对象 / 数组三种形态都能渲染；每个子块独立 try/catch，单块坏不影响全局。
 function drLoadFeedReview() {
   drFeedModalInit();
   const el = document.getElementById('drFeedReviewBody');
   if (!el) return;
+  const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  /* ═══════════ FEED-RICHTEXT-BEGIN（老站接入 · 2026-09-18）═══════════
+     ai_synthesis 各字段由本机 agent 手写，含 <b> 强调与 <span class="dk-*"> 语义色；
+     此前统一 esc() → 页面直接显示字面「<b>…</b>」（2026-09-18 用户报障）。
+     治本：先整体转义，仅放行白名单标签；<script> 等其余一律保持转义（无 XSS 面）。
+     机器数据（日期/价格/代码/枚举/股票名）仍走 esc()，口径不变。 */
+  const DKCLS = /^dk-(main|caution|risk|data|up|dn|neutral)$/;
+  const rich = (v) => esc(v == null ? '' : v)
+    .replace(/&lt;(\/?)(b|i)&gt;/g, '<$1$2>')
+    .replace(/&lt;br\s*\/?&gt;/g, '<br>')
+    .replace(/&lt;span class="(dk-[a-z0-9-]+)"&gt;/g, (m, c) => (DKCLS.test(c) ? '<span class="' + c + '">' : m))
+    .replace(/&lt;\/span&gt;/g, '</span>');
+  /* ═══════════ FEED-RICHTEXT-END ═══════════ */
+  // 类型归一：数组→原样；对象→[对象]；字符串→[字符串]；空→[]
+  const asArr = v => Array.isArray(v) ? v : (v && typeof v === 'object' ? [v] : (v ? [String(v)] : []));
+  // 取文本：字符串→原样；对象→desc/text/summary/note 依次取值；其余→JSON
+  const asText = v => (typeof v === 'string' ? v
+    : (v && typeof v === 'object' ? (v.desc || v.text || v.summary || v.note || v.event || '') : ''));  // 2026-09-10：补 event 字段（V3 t1_radar 产物为 {time,event,impact} 对象，白名单缺 event 曾致 [object Object]）
+  // 2026-09-10：任意值→可读文本。对象白名单取不到时拼接其字符串字段值，绝不让对象落入 String() 产生 [object Object]
+  const asTxt = v => (typeof v === 'string' ? v
+    : (v && typeof v === 'object' ? (asText(v) || Object.values(v).filter(x => typeof x === 'string').join(' '))
+    : String(v == null ? '' : v)));
+  // 子块隔离：单块出错只在控制台告警 + 占位，不影响其余块
+  const safe = (label, fn) => { try { return fn() || ''; }
+    catch (e) { console.warn('[投喂复盘] ' + label + ' 渲染失败：', e);
+      return '<div class="dr-note dr-tag">⚠️ ' + esc(label) + ' 数据格式异常，已跳过</div>'; } };
+  const chips = arr => asArr(arr).map(s =>
+    '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('');
+
   fetch('output/feed_review_latest.json')
     .then(r => r.ok ? r.json() : Promise.reject(r.status))
     .then(d => {
+      let h = '';
       const pred = d.prediction || {};
-      const biasCls = pred.bias === '偏多' ? 'dr-up' : (pred.bias === '偏空' ? 'dr-dn' : '');
-      let h = '<div class="dr-note">数据日期 <b>' + (d.data_date || '—') + '</b> · 投喂 ' +
-              (d.feed_count || 0) + ' 条 · 来源 ' + (d.source === 'cloud' ? '云端 08:15' : '本地 19:30') + '</div>';
-      h += '<div class="dr-note"><b>后市预判：<span class="' + biasCls + '">' + (pred.bias || '—') +
-           '</span></b>（score ' + (pred.bias_score ?? '—') + '）</div>';
-      (pred.reasons || []).forEach(r => h += '<div class="dr-note">· ' + r + '</div>');
-      const feeds = d.feeds || [];
-      if (feeds.length) {
-        h += '<div class="dr-h">当日投喂</div><table class="dr-tbl"><thead><tr><th>类别</th><th>来源</th><th>标题</th><th>关键词</th></tr></thead><tbody>';
+      const bias = pred.bias || '—';
+      const biasCls = /^偏多/.test(bias) ? 'dr-up' : (/^偏空/.test(bias) ? 'dr-dn' : '');
+      h += '<div class="dr-note">数据日期 <b>' + esc(d.data_date || '—') + '</b> · 投喂 ' +
+           (d.feed_count || (d.feeds || []).length || 0) + ' 条 · 来源 ' +
+           (d.source === 'cloud' ? '云端 08:15' : '本地 19:30') + '</div>';
+      h += '<div class="dr-note"><b>后市预判：<span class="' + biasCls + '">' + esc(bias) +
+           '</span></b>（score ' + (pred.bias_score == null ? '—' : pred.bias_score) + '）</div>';
+      asArr(pred.reasons).forEach(r => h += '<div class="dr-note">· ' + rich(asTxt(r)) + '</div>');  // 2026-09-10：asTxt 防对象→[object Object]
+
+      // ===== 当日投喂 =====
+      h += safe('当日投喂', () => {
+        const feeds = d.feeds || [];
+        if (!feeds.length) return '';
+        let s = '<div class="dr-h">当日投喂</div><table class="dr-tbl"><thead><tr><th>类别</th><th>来源</th><th>标题</th><th>关键词</th></tr></thead><tbody>';
         feeds.forEach(f => {
-          h += '<tr><td>' + f.category + '</td><td>' + f.source + '</td><td>' + f.title + '</td><td class="dr-tag">' +
-               (f.keywords || []).slice(0, 4).join(' / ') + '</td></tr>';
+          s += '<tr><td>' + esc(f.category) + '</td><td>' + esc(f.source) + '</td><td>' + esc(f.title) +
+               '</td><td style="color:var(--text-muted)">' + asArr(f.keywords).slice(0, 4).map(esc).join(' / ') + '</td></tr>';
         });
-        h += '</tbody></table>';
-      }
-      const ca = d.cross_analysis || [];
-      if (ca.length) {
-        h += '<div class="dr-h">机制 × 语料交叉验证</div><table class="dr-tbl"><thead><tr><th>投喂</th><th>匹配信号标的</th><th>判定</th></tr></thead><tbody>';
+        return s + '</tbody></table>';
+      });
+
+      // ===== 机制 × 语料交叉验证 =====
+      let caEmpty = false;
+      h += safe('交叉验证', () => {
+        const ca = asArr(d.cross_analysis);
+        if (!ca.length) { caEmpty = true; return '<div id="drCrossSlot"></div>'; }
+        let s = '<div class="dr-h">机制 × 语料交叉验证</div><table class="dr-tbl"><thead><tr><th>投喂</th><th>匹配信号标的</th><th>判定</th></tr></thead><tbody>';
         ca.forEach(c => {
-          const cls = c.verdict === '共振' ? 'dr-up' : (c.verdict === '背离' ? 'dr-dn' : 'dr-tag');
-          h += '<tr><td>' + c.feed + '</td><td>' + ((c.related_stocks || []).join('、') || '—') +
-               '</td><td class="' + cls + '">' + c.verdict + '</td></tr>';
+          if (typeof c === 'string') { s += '<tr><td colspan="3" class="dr-note">' + esc(c) + '</td></tr>'; return; }
+          const v = c.verdict || '';
+          const cls = v === '共振' ? 'dr-up' : (v === '背离' ? 'dr-dn' : 'dr-tag');
+          s += '<tr><td>' + esc(c.feed || c.theme || '') + '</td><td>' + (asArr(c.related_stocks).join('、') || '—') +
+               '</td><td class="' + cls + '">' + esc(v) + '</td></tr>';
         });
-        h += '</tbody></table>';
-      }
-      const t1 = pred.t1_focus || [];
-      if (t1.length) {
-        h += '<div class="dr-h">T+1 关注</div>';
-        t1.forEach(t => h += '<div class="dr-note">· ' + t + '</div>');
-      }
-      const risks = pred.risks || [];
-      if (risks.length) {
-        h += '<div class="dr-h">风险提示</div>';
-        risks.forEach(r => h += '<div class="dr-note">⚠️ <span class="dr-dn">' + r.desc + '</span></div>');
-      }
+        return s + '</tbody></table>';
+      });
+
+      // ===== T+1 关注 / 风险提示 =====
+      h += safe('T+1 关注', () => {
+        const t1 = asArr(pred.t1_focus);
+        if (!t1.length) return '';
+        let s = '<div class="dr-h">T+1 关注</div>';
+        t1.forEach(t => s += '<div class="dr-note">· ' + rich(asTxt(t)) + '</div>');  // 2026-09-10：asTxt 防对象→[object Object]
+        return s;
+      });
+      h += safe('风险提示', () => {
+        const risks = asArr(pred.risks);
+        if (!risks.length) return '';
+        let s = '<div class="dr-h">风险提示</div>';
+        risks.forEach(r => s += '<div class="dr-note">⚠️ <span class="dr-dn">' + rich(asTxt(r)) + '</span></div>');  // 2026-09-10：asTxt 防对象→[object Object]
+        return s;
+      });
       if (pred.pending_ai) h += '<div class="dr-note dr-tag">深度预测待本机 agent / 专家对话补全</div>';
+
       // ===== AI 综合推演 (ai_synthesis) =====
       // 本机 agent 产物：d.ai_synthesis 由 output/feed_review_latest.json 提供。
       // 2026-08-28 审计修复：此块原先由 6f1d2f5 手工补进成品页，模板与注入脚本皆无，
@@ -90,57 +144,135 @@ function drLoadFeedReview() {
       // 现并入注入脚本，随「投喂复盘」一并幂等注入，重建后自动恢复。
       const syn = d.ai_synthesis;
       if (syn) {
-        const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        h += '<div style="margin:14px 0 4px;padding:10px 12px;border-left:3px solid #f0b429;background:rgba(240,180,41,.08);border-radius:8px;font-size:13.5px;line-height:1.7"><b style="color:#f0b429">⚑ AI 综合推演 · 核心结论</b><br>' + esc(syn.verdict_headline || '') + '</div>';
-        if (syn.conclusion_first && syn.conclusion_first.length) {
-          h += '<div class="dr-h">AI 综合推演 · 结论先行</div><ol style="margin:4px 0;padding-left:20px">';
-          syn.conclusion_first.forEach(c => h += '<li class="dr-note" style="list-style:inherit">' + esc(c) + '</li>');
-          h += '</ol>';
-        }
-        if (syn.theme_resonance && syn.theme_resonance.length) {
-          h += '<div class="dr-h">AI 综合推演 · 主题共振</div>';
-          syn.theme_resonance.forEach(t => {
+        h += safe('AI 综合推演 · 核心结论', () => {
+          if (!syn.verdict_headline) return '';
+          return '<div style="margin:14px 0 4px;padding:10px 12px;border-left:3px solid #f0b429;background:rgba(240,180,41,.08);border-radius:8px;font-size:13.5px;line-height:1.7"><b style="color:#f0b429">⚑ AI 综合推演 · 核心结论</b><br>' + rich(syn.verdict_headline) + '</div>';
+        });
+        h += safe('AI 综合推演 · 结论先行', () => {
+          const arr = asArr(syn.conclusion_first);
+          if (!arr.length) return '';
+          let s = '<div class="dr-h">AI 综合推演 · 结论先行</div><ol style="margin:4px 0;padding-left:20px">';
+          arr.forEach(c => s += '<li class="dr-note" style="list-style:inherit">' + rich(asTxt(c)) + '</li>');  // 2026-09-10：asTxt 防对象→[object Object]
+          return s + '</ol>';
+        });
+        h += safe('AI 综合推演 · 主题共振', () => {
+          const arr = asArr(syn.theme_resonance);
+          if (!arr.length) return '';
+          let s = '<div class="dr-h">AI 综合推演 · 主题共振</div>';
+          arr.forEach(t => {
+            if (typeof t === 'string') { s += '<div class="dr-note" style="margin:4px 0">' + rich(t) + '</div>'; return; }
             const w = t.weight || '';
-            const wc = w === '最强' ? 'var(--red)' : (w === '强' ? '#f0b429' : 'var(--text-muted)');
-            const chips = (t.related_stocks || []).map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('');
-            h += '<div style="margin:6px 0;padding:8px 10px;border:1px solid var(--border);border-radius:8px"><b>' + esc(t.theme) + '</b> <span style="color:' + wc + '">[' + esc(w) + ']</span><div class="dr-tag" style="margin-top:4px">' + (t.evidence || []).map(esc).join('<br>') + '</div><div style="margin-top:4px">' + chips + '</div></div>';
+            const wc = w === '最强' ? 'var(--red)' : (w === '强' ? '#f0b429' : (w === '弱' ? '#94a3b8' : 'var(--text-muted)'));
+            // 🔴 2026-09-02 治标：weight 为空时整段不渲染方括号（避免显示 `[]` 空牌）
+            const wtBadge = w ? (' <span style="color:' + wc + '">[' + esc(w) + ']</span>') : '';
+            // 🔴 2026-09-02 治标：related_stocks 空时不渲染空容器
+            const rsBadge = (asArr(t.related_stocks).length) ? ('<div style="margin-top:4px">' + chips(t.related_stocks) + '</div>') : '';
+            s += '<div style="margin:6px 0;padding:8px 10px;border:1px solid var(--border);border-radius:8px"><b>' + rich(t.theme || '') +
+                 '</b>' + wtBadge + '<div class="dr-tag" style="margin-top:4px">' +
+                 asArr(t.evidence).map(rich).join('<br>') + '</div>' + rsBadge + '</div>';
           });
-        }
-        const cm = syn.nvda_chain_map || {};
-        if (cm.summary || (cm.a_shares && cm.a_shares.length) || (cm.us_mapping && cm.us_mapping.length)) {
-          h += '<div class="dr-h">AI 综合推演 · NVDA 产业链映射</div>';
-          h += '<div class="dr-note">' + esc(cm.summary || '') + '</div>';
-          h += '<div style="display:flex;gap:10px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><b style="color:var(--red)">A股映射</b><div>' + ((cm.a_shares || []).map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('')) + '</div></div><div style="flex:1;min-width:200px"><b style="color:var(--green)">美股映射</b><div>' + ((cm.us_mapping || []).map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('')) + '</div></div></div>';
-        }
-        const hm = syn.holding_map || {};
-        if (hm.note || (hm.theme_aligned && hm.theme_aligned.length) || (hm.caution && hm.caution.length) || (hm.us && hm.us.length)) {
-          h += '<div class="dr-h">AI 综合推演 · 持仓映射</div>';
-          h += '<div class="dr-tag">' + esc(hm.note || '') + '</div>';
-          if (hm.theme_aligned && hm.theme_aligned.length) h += '<div style="margin-top:4px"><b style="color:var(--red)">主题契合</b> ' + hm.theme_aligned.map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('') + '</div>';
-          if (hm.caution && hm.caution.length) h += '<div style="margin-top:4px"><b style="color:#f0b429">需谨慎</b> ' + hm.caution.map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:#f0b429;font-size:11px">' + esc(s) + '</span>').join('') + '</div>';
-          if (hm.us && hm.us.length) h += '<div style="margin-top:4px"><b style="color:var(--green)">美股映射</b> ' + hm.us.map(s => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('') + '</div>';
-        }
-        // 兼容历史字段名 t1_radar_0827（8/27 产物）与通用名 t1_radar
-        const radar = syn.t1_radar_0827 || syn.t1_radar || [];
-        if (radar.length) {
-          h += '<div class="dr-h">AI 综合推演 · T+1 事件雷达</div>';
-          radar.forEach(t => h += '<div class="dr-note">· ' + esc(t) + '</div>');
-        }
-        if (syn.risks && syn.risks.length) {
-          h += '<div class="dr-h">AI 综合推演 · 风险（概率 × 冲击）</div>';
-          syn.risks.forEach(r => {
-            const pc = r.prob === '高' ? 'var(--red)' : '#f0b429';
-            h += '<div class="dr-note">· <span style="color:' + pc + ';font-weight:600">[' + esc(r.prob) + '×' + esc(r.impact) + ']</span> ' + esc(r.desc) + '</div>';
+          return s;
+        });
+        h += safe('AI 综合推演 · NVDA 产业链映射', () => {
+          const cm = asArr(syn.nvda_chain_map)[0] || {};
+          const txt = (typeof cm === 'string') ? cm : (cm.summary || '');
+          const a = (typeof cm === 'object') ? asArr(cm.a_shares) : [];
+          const u = (typeof cm === 'object') ? asArr(cm.us_mapping) : [];
+          if (!txt && !a.length && !u.length) return '';
+          let s = '<div class="dr-h">AI 综合推演 · NVDA 产业链映射</div><div class="dr-note">' + rich(txt) + '</div>';
+          s += '<div style="display:flex;gap:10px;flex-wrap:wrap"><div style="flex:1;min-width:200px"><b style="color:var(--red)">A股映射</b><div>' + chips(a) +
+               '</div></div><div style="flex:1;min-width:200px"><b style="color:var(--green)">美股映射</b><div>' + chips(u) + '</div></div></div>';
+          return s;
+        });
+        h += safe('AI 综合推演 · 持仓映射', () => {
+          const hm = asArr(syn.holding_map)[0] || {};
+          const note = (typeof hm === 'string') ? hm : (hm.note || '');
+          const ta = (typeof hm === 'object') ? asArr(hm.theme_aligned) : [];
+          const cau = (typeof hm === 'object') ? asArr(hm.caution) : [];
+          const us = (typeof hm === 'object') ? asArr(hm.us) : [];
+          if (!note && !ta.length && !cau.length && !us.length) return '';
+          let s = '<div class="dr-h">AI 综合推演 · 持仓映射</div><div class="dr-tag">' + rich(note) + '</div>';
+          if (ta.length) s += '<div style="margin-top:4px"><b style="color:var(--red)">主题契合</b> ' + chips(ta) + '</div>';
+          if (cau.length) s += '<div style="margin-top:4px"><b style="color:#f0b429">需谨慎</b> ' +
+            cau.map(x => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:#f0b429;font-size:11px">' + esc(x) + '</span>').join('') + '</div>';
+          if (us.length) s += '<div style="margin-top:4px"><b style="color:var(--green)">美股映射</b> ' + chips(us) + '</div>';
+          return s;
+        });
+        h += safe('AI 综合推演 · T+1 事件雷达', () => {
+          // 兼容任意日期后缀键名：t1_radar / t1_radar_0901 / t1_radar_0831 ...
+          let radar = [];
+          Object.keys(syn).forEach(k => { if (/^t1_radar/.test(k)) radar = radar.concat(asArr(syn[k])); });
+          if (!radar.length) return '';
+          let s = '<div class="dr-h">AI 综合推演 · T+1 事件雷达</div>';
+          radar.forEach(t => {
+            if (typeof t === 'string') { s += '<div class="dr-note">· ' + rich(t) + '</div>'; return; }
+            const o = (t && typeof t === 'object') ? t : {};
+            // 2026-09-10：V3 产物元素为 {time,event,impact} 对象，结构化渲染（时间加粗 + 影响上色）；asTxt 兜底杜绝 [object Object]
+            const txt = asTxt(o);
+            const ic = String(o.impact || '').indexOf('高') >= 0 ? 'var(--red)' : '#f0b429';  // 高/中高 上色，与风险段口径一致
+            s += '<div class="dr-note">· ' + (o.time ? '<b>' + esc(String(o.time)) + '</b> ' : '') + rich(txt)
+              + (o.impact ? ' <span style="color:' + ic + ';font-weight:600">[' + esc(String(o.impact)) + ']</span>' : '') + '</div>';
           });
-        }
+          return s;
+        });
+        h += safe('AI 综合推演 · 风险', () => {
+          const arr = asArr(syn.risks);
+          if (!arr.length) return '';
+          let s = '<div class="dr-h">AI 综合推演 · 风险（概率 × 冲击）</div>';
+          arr.forEach(r => {
+            if (typeof r === 'string') { s += '<div class="dr-note">· ' + rich(r) + '</div>'; return; }
+            const pc = (r.prob || '').indexOf('高') >= 0 ? 'var(--red)' : '#f0b429';  // 2026-09-04：「中高」也含高，与 V3 对齐
+            s += '<div class="dr-note">· <span style="color:' + pc + ';font-weight:600">[' + esc(r.prob) + '×' + esc(r.impact || '—') + ']</span> ' + rich(r.desc) + '</div>';  // 2026-09-04：impact 缺失兜底显 —（9/3 曾整列丢失）
+          });
+          return s;
+        });
         if (syn.disclaimer) h += '<div class="dr-tag" style="margin-top:8px">' + esc(syn.disclaimer) + '</div>';
       }
       el.innerHTML = h;
+      // cross_analysis 为空时，用公开新闻池 × 板块资金流自动版补位
+      if (caEmpty) drLoadCrossAnalysis();
     })
     .catch(err => { el.innerHTML = '<p class="dr-note">投喂复盘加载失败：' + err + '</p>'; });
 }
 
 // ===== 投喂弹框（modal）=====
+/* ═══════ 投喂直投中转 · GitHub contents API（2026-09-03 新增） ═══════
+   背景：页面是静态站（GitHub Pages）无后端，原「生成投喂文件」只下载到本地，
+   需人工搬进 feed/inbox/ 才归档，且附件仅记录文件名（真实内容丢失）。
+   现改为经 GitHub API 直接提交到 feed/inbox/{类别}/，附件原样上传（base64），
+   本机 git pull + feed/feed_archive.py 即可自动归档。
+   安全：Token 仅存本机 localStorage，绝不写入任何随仓库公开的文件。 */
+var _FEED_REPO = 'XDTuang/golden-stock-observer';
+var _FEED_BRANCH = 'main';
+var _FEED_TK = 'drFeedGhToken';
+function drFeedToken() { try { return localStorage.getItem(_FEED_TK) || ''; } catch (e) { return ''; } }
+function drFeedB64Blob(file) {
+  return new Promise(function (res, rej) {
+    var r = new FileReader();
+    r.onload = function () { res(String(r.result).split(',').pop()); };
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+function drFeedB64Text(s) { return btoa(unescape(encodeURIComponent(s))); }
+function drFeedPushFile(path, b64, msg) {
+  var url = 'https://api.github.com/repos/' + _FEED_REPO + '/contents/' +
+    path.split('/').map(encodeURIComponent).join('/');
+  return fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'Bearer ' + drFeedToken(),
+      'Accept': 'application/vnd.github+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ message: msg, content: b64, branch: _FEED_BRANCH })
+  }).then(function (r) {
+    return r.json().catch(function () { return {}; }).then(function (j) {
+      if (!r.ok) throw new Error((j && j.message) ? j.message : ('HTTP ' + r.status));
+      return j;
+    });
+  });
+}
 function drFeedModalInit() {
   if (document.getElementById('drFeedModal') || !document.getElementById('drFeedBtn')) return;
   const m = document.createElement('div');
@@ -151,7 +283,7 @@ function drFeedModalInit() {
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
     '<b style="font-size:16px;color:#e8edf7">📥 投喂</b>' +
     '<button id="drFeedModalClose" style="background:none;border:none;color:#9aa7bd;font-size:20px;cursor:pointer;line-height:1">×</button></div>' +
-    '<div style="font-size:12px;color:#9aa7bd;margin-bottom:12px">生成规范投喂文件 → 复制/下载 → 拖入 feed_inbox 自动归档（也可在专家对话直接说「投喂：…」）</div>' +
+    '<div style="font-size:12px;color:#9aa7bd;margin-bottom:12px"><b style="color:#d4af37">🚀 直投到中转</b>：提交到 feed/inbox/{类别}/（附件原样上传）→ 本机 git pull + feed_archive.py 自动归档。也可「生成投喂文件」下载后手动放入。</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
     '<div><div style="font-size:12px;color:#9aa7bd;margin:6px 0 4px">类别</div>' +
     '<select id="dfCat" style="width:100%;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px;font-size:13px">' +
@@ -163,11 +295,21 @@ function drFeedModalInit() {
     '<input id="dfTitle" style="width:100%;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px;font-size:13px" placeholder="示例：光模块景气 / 大盘异动">' +
     '<div style="font-size:12px;color:#9aa7bd;margin:10px 0 4px">内容</div>' +
     '<textarea id="dfText" style="width:100%;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px;font-size:13px;min-height:72px;resize:vertical" placeholder="示例：8/26 盘中放量，疑似订单传闻…"></textarea>' +
-    '<div style="font-size:12px;color:#9aa7bd;margin:10px 0 4px">附件（可选）</div>' +
+    '<div style="font-size:12px;color:#9aa7bd;margin:10px 0 4px">附件（可选 · 直投时原样上传，不再只记文件名）</div>' +
     '<input id="dfFile" type="file" style="width:100%;color:#9aa7bd;font-size:12px">' +
     '<div style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">' +
+    '<button id="dfPush" style="padding:8px 18px;border-radius:8px;border:1px solid #3b7f5a;background:#234f36;color:#e8edf7;font-size:13px;cursor:pointer">🚀 直投到中转</button>' +
     '<button id="dfGen" style="padding:8px 18px;border-radius:8px;border:1px solid #3b5a8f;background:#23324f;color:#e8edf7;font-size:13px;cursor:pointer">📤 生成投喂文件</button>' +
     '<span id="dfOut" style="font-size:12px;color:#9aa7bd"></span></div>' +
+    '<div style="margin-top:10px"><a href="javascript:void(0)" id="dfTkToggle" style="font-size:12px;color:#9aa7bd;text-decoration:none">⚙️ GitHub Token 设置（直投必需）</a>' +
+    '<div id="dfTkBox" style="display:none;margin-top:6px">' +
+    '<input id="dfTk" type="password" placeholder="github_pat_…（仅存本机浏览器，不写入仓库）" style="width:100%;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px;font-size:12px">' +
+    '<div style="font-size:11px;color:#9aa7bd;margin-top:4px;line-height:1.6">需 fine-grained token：仓库选 <b>golden-stock-observer</b>，权限 <b>Contents: Read and write</b>。' +
+    '<a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener" style="color:#d4af37">去生成</a></div>' +
+    '<div style="margin-top:6px;display:flex;gap:8px;align-items:center">' +
+    '<button id="dfTkSave" style="padding:4px 12px;border-radius:6px;border:1px solid #2b3a5c;background:#0f1626;color:#e8edf7;font-size:12px;cursor:pointer">保存</button>' +
+    '<button id="dfTkClear" style="padding:4px 12px;border-radius:6px;border:1px solid #2b3a5c;background:#0f1626;color:#e8edf7;font-size:12px;cursor:pointer">清除</button>' +
+    '<span id="dfTkState" style="font-size:12px;color:#9aa7bd"></span></div></div></div>' +
     '<div id="dfPreview" style="margin-top:10px;display:none;background:#0f1626;border:1px dashed #2b3a5c;border-radius:8px;padding:10px;font-size:12px">' +
     '<div id="dfPvName" style="font-family:Menlo,monospace;color:#d4af37;word-break:break-all;margin-bottom:6px"></div>' +
     '<pre id="dfPvBody" style="font-family:Menlo,monospace;color:#9aa7bd;white-space:pre-wrap;word-break:break-all;margin:0 0 8px;font-size:11px"></pre>' +
@@ -182,23 +324,96 @@ function drFeedModalInit() {
   document.getElementById('drFeedModalClose').onclick = close;
   m.addEventListener('click', e => { if (e.target === m) close(); });
 
-  document.getElementById('dfGen').onclick = function () {
+  // ── Token 设置 ──
+  const tkBox = document.getElementById('dfTkBox');
+  const tkState = document.getElementById('dfTkState');
+  const refreshTk = () => {
+    const has = !!drFeedToken();
+    tkState.textContent = has ? '✅ 已设置（存本机）' : '⚠️ 未设置';
+    if (has) tkBox.style.display = 'block';
+  };
+  document.getElementById('dfTkToggle').onclick = () => {
+    tkBox.style.display = (tkBox.style.display === 'none') ? 'block' : 'none';
+  };
+  document.getElementById('dfTkSave').onclick = () => {
+    const v = (document.getElementById('dfTk').value || '').trim();
+    if (!v) { tkState.textContent = '⚠️ 请输入 Token'; return; }
+    localStorage.setItem(_FEED_TK, v);
+    document.getElementById('dfTk').value = '';
+    refreshTk();
+  };
+  document.getElementById('dfTkClear').onclick = () => {
+    try { localStorage.removeItem(_FEED_TK); } catch (e) {}
+    refreshTk();
+  };
+  refreshTk();
+
+  const readForm = () => {
     const cat = document.getElementById('dfCat').value;
     const src = document.getElementById('dfSrc').value;
     const title = (document.getElementById('dfTitle').value || '未命名').replace(/[\\/:*?"<>|\s]+/g, '_').slice(0, 40).replace(/^_+|_+$/g, '');
     const text = document.getElementById('dfText').value.trim();
     const file = document.getElementById('dfFile').files[0];
     const today = new Date().toISOString().slice(0, 10);
-    const ext = file ? ('.' + ((file.name.split('.').pop() || 'txt').toLowerCase())) : '.txt';
-    const fname = today + '_' + src + '_' + title + ext;
+    return { cat, src, title, text, file, today };
+  };
+
+  // ── 直投到中转（feed/inbox/{类别}/） ──
+  document.getElementById('dfPush').onclick = async function () {
+    const out = document.getElementById('dfOut');
+    const f = readForm();
+    if (!drFeedToken()) {
+      out.textContent = '⚠️ 请先设置 Token';
+      tkBox.style.display = 'block';
+      document.getElementById('dfTk').focus();
+      return;
+    }
+    if (!f.text && !f.file) { out.textContent = '⚠️ 内容或附件至少填一项'; return; }
+    const btn = this;
+    btn.disabled = true;
+    out.style.color = '#9aa7bd';
+    out.textContent = '⏳ 提交中…';
+    try {
+      const tasks = [];
+      if (f.file) {
+        const ext = '.' + ((f.file.name.split('.').pop() || 'bin').toLowerCase());
+        tasks.push({ name: f.today + '_' + f.src + '_' + f.title + ext, b64: await drFeedB64Blob(f.file), size: f.file.size });
+      }
+      if (f.text) {
+        const tname = f.file
+          ? (f.today + '_' + f.src + '_' + f.title + '_正文.txt')
+          : (f.today + '_' + f.src + '_' + f.title + '.txt');
+        tasks.push({ name: tname, b64: drFeedB64Text(f.text), size: f.text.length });
+      }
+      const done = [];
+      for (let i = 0; i < tasks.length; i++) {
+        const t = tasks[i];
+        await drFeedPushFile('feed/inbox/' + f.cat + '/' + t.name, t.b64, 'feed: ' + t.name);
+        done.push(t.name);
+      }
+      out.style.color = '#4ade80';
+      out.innerHTML = '✅ 已投喂 ' + done.length + ' 个文件 → <b>feed/inbox/' + f.cat + '/</b><br>' +
+        done.join('<br>') + '<br><span style="color:#9aa7bd">本机执行 git pull + feed_archive.py 即自动归档</span>';
+    } catch (e) {
+      out.style.color = '#f87171';
+      out.textContent = '❌ 失败：' + e.message;
+    }
+    btn.disabled = false;
+  };
+
+  document.getElementById('dfGen').onclick = function () {
+    const f = readForm();
+    const ext = f.file ? ('.' + ((f.file.name.split('.').pop() || 'txt').toLowerCase())) : '.txt';
+    const fname = f.today + '_' + f.src + '_' + f.title + ext;
     let body = '';
-    if (text) body += text + '\n';
-    if (file) body += '\n[附件] ' + file.name + '（' + Math.round(file.size / 1024) + ' KB）\n';
-    if (!text && !file) body = '（空投喂）\n';
+    if (f.text) body += f.text + '\n';
+    if (f.file) body += '\n[附件] ' + f.file.name + '（' + Math.round(f.file.size / 1024) + ' KB）\n';
+    if (!f.text && !f.file) body = '（空投喂）\n';
     document.getElementById('dfPvName').textContent = fname;
     document.getElementById('dfPvBody').textContent = body;
     document.getElementById('dfPreview').style.display = 'block';
-    document.getElementById('dfOut').textContent = '✅ 已生成（' + cat + '）';
+    document.getElementById('dfOut').style.color = '#9aa7bd';
+    document.getElementById('dfOut').textContent = '✅ 已生成（' + f.cat + '）';
     document.getElementById('dfCopy').dataset.body = fname + '\n' + body;
     document.getElementById('dfDl').dataset.body = fname + '\n' + body;
   };
@@ -213,6 +428,56 @@ function drFeedModalInit() {
     a.href = URL.createObjectURL(blob); a.download = this.dataset.body.split('\n')[0]; a.click();
   };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 2026-09-10：analysis.html 自带 <style> 里的 body / :root / 裸标签规则，经 innerHTML 注入后会【全局生效】
+//（曾把整站限宽 980px、并覆盖主站配色变量与字体）。此处把"越界规则"作用域化到 #drAnalysis：
+//   body / html / *  → 丢弃；:root → #drAnalysis（变量局部化）；h2 / code / b,strong / br+br → 加 #drAnalysis 前缀；.dr-* 等类规则原样保留
+function drScopeInjectedStyles(scopeEl) {
+  if (!scopeEl) return;
+  const S = '#drAnalysis';
+  const fix = (rule) => {
+    const sel = rule.selectorText; if (!sel) return false;
+    const out = [];
+    sel.split(',').map(s => s.trim()).forEach(p => {
+      if (!p) return;
+      if (p === 'body' || p === 'html' || p === '*') return;
+      if (p === ':root') { out.push(S); return; }
+      if (/^[a-z][a-z0-9]*(\+[a-z][a-z0-9]*)?$/i.test(p)) { out.push(S + ' ' + p); return; }
+      out.push(p);
+    });
+    if (!out.length) return null;
+    try { rule.selectorText = out.join(','); return true; } catch (e) { return false; }
+  };
+  Array.prototype.slice.call(scopeEl.querySelectorAll('style')).forEach(st => {
+    const sheet = st.sheet; if (!sheet || !sheet.cssRules) return;
+    try {
+      for (let i = sheet.cssRules.length - 1; i >= 0; i--) {
+        const r = sheet.cssRules[i];
+        if (r.type === 1 && r.selectorText) { if (fix(r) === null) sheet.deleteRule(i); }
+        else if (r.type === 4 && r.cssRules) {
+          for (let j = r.cssRules.length - 1; j >= 0; j--) {
+            const r2 = r.cssRules[j];
+            if (r2.type === 1 && r2.selectorText && fix(r2) === null) r.deleteRule(j);
+          }
+        }
+      }
+    } catch (e) { /* 只读/跨域等场景忽略，退化为原有行为 */ }
+  });
+}
+
 """
 
 
@@ -249,23 +514,30 @@ def inject(path):
     else:
         print(f"⏭️ {path}: 投喂复盘卡片已存在")
 
-    # ② JS：函数定义挂在每日复盘 JS 块前；v3 标记缺失时整体替换（修复历史坏版）
-    if JS_MARK in idx and "feed v4" not in idx:
-        s = idx.index(JS_MARK)
-        e = idx.index("// ===== 每日复盘 Tab =====", s)
-        idx = idx[:s] + JS_BLOCK + "\n" + idx[e:]
-        changed = True
-        print(f"✅ {path}: 已升级投喂复盘 JS（v4：内置 ai_synthesis 渲染）")
-    elif JS_MARK not in idx:
-        js_anchor = "// ===== 每日复盘 Tab ====="
-        if js_anchor in idx:
-            idx = idx.replace(js_anchor, JS_BLOCK + js_anchor, 1)
-            changed = True
-            print(f"✅ {path}: 已插入投喂复盘 JS 函数")
+    # ② JS：函数定义挂在每日复盘 JS 块前
+    #    🔴 2026-09-18 改为「比对后替换」= 可升级。
+    #       原判据 `JS_MARK in idx and "feed v4" not in idx` 一旦文件里已有 v4 标记，
+    #       后续对 JS_BLOCK 的任何改进都会被**静默跳过**（实测：改完富文本渲染后跑注入器
+    #       输出「投喂复盘 JS 已存在」，页面仍显示字面 <b>，且不报错）。
+    #       与 inject_daily_auto_blocks.py 同族，凡注入器一律按此范式。
+    JS_END_ANCHOR = "// ===== 每日复盘 Tab ====="
+    if JS_MARK in idx and JS_END_ANCHOR in idx:
+        s0 = idx.index(JS_MARK)
+        e0 = idx.index(JS_END_ANCHOR, s0)
+        old_js = idx[s0:e0]
+        new_js = JS_BLOCK + "\n"
+        if old_js.strip() == new_js.strip():
+            print(f"⏭️ {path}: 投喂复盘 JS 已是最新（{len(old_js)} 字符）")
         else:
-            print(f"⚠️ {path}: 未找到每日复盘 JS 锚点，跳过 JS 注入")
+            idx = idx[:s0] + new_js + idx[e0:]
+            changed = True
+            print(f"✅ {path}: 投喂复盘 JS 已升级（{len(old_js)} → {len(new_js)} 字符）")
+    elif JS_END_ANCHOR in idx:
+        idx = idx.replace(JS_END_ANCHOR, JS_BLOCK + JS_END_ANCHOR, 1)
+        changed = True
+        print(f"✅ {path}: 已插入投喂复盘 JS 函数")
     else:
-        print(f"⏭️ {path}: 投喂复盘 JS 已存在")
+        print(f"⚠️ {path}: 未找到每日复盘 JS 锚点，跳过 JS 注入")
 
     # ③ 初始化调用（独立于定义注入，幂等补插）
     call_anchor = "if (btn.dataset.tab === 'dailyreview') renderDailyReview();"

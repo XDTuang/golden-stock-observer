@@ -258,6 +258,7 @@ python3 review/check_analysis_style.py     # 老站排版：必须全过（[0] B
 python3 review/check_v3_style.py           # V3 独立版 10 项：四副本一致性 + 语义色 + 兜底 + [10/10] 富文本白名单 rich（必须全过）
 python3 review/check_market_json.py        # 数据完整性：us_kline 不得有 null close + 「美股医疗 10 只」静默丢失守卫（必须 ✅）
 python3 review/check_macro_freshness.py    # 🆕 宏观日志时效（2026-09-18 增）：日历轨（百度经济日历）须含「CPI 同比」「非农」+ 各指标龄期合规（月频 ≤40 天 / 周频 ≤14 天）+ 新闻轨 ≤7 天 + stale 自洽 + 根↔deploy 双写一致（必须 ✅）
+python3 review/check_index_render.py       # 🆕 老站 index 渲染守卫（2026-09-18 增）：td 禁挂 .dr-tag + 防御 CSS 在位 + 富文本白名单 rich 在位 + 🔴 注入器 JS_BLOCK ≡ 线上 JS + 三处 md5 一致 + 交叉验证表列宽声明（必须 ✅）
 python3 review/check_review_dates.py       # 归档命名：文件名=复盘日 & for_date=下一交易日（必须 ✅）
 python3 review/check_sector_tech.py        # 板块技术研判（2026-09-17 增）：价格单调性 support<现价<resistance + L4/L3 必带具体价位 + 档位/趋势字面值 ⊆ 权威集合 + 7.1b 段与 CSS 在位（各 1 次）+ 根/deploy md5（必须 ✅）
 python3 review/build_us_medical.py --check # 3 段末尾「美股医疗/CXO 映射」块在位（🔴 3 段重写后必跑）
@@ -265,9 +266,28 @@ python3 review/patch_news_pool.py --check  # 新闻池块 5 副本一致
 python3 review/patch_v3_richtext.py --check # V3 rich 白名单块 4 副本一致
 ```
 
-> 🔴 **门禁清单以本节为准（当前 = 九道）**。任一道红灯 → 先修再谈推送，**不带伤推送**。
+> 🔴 **门禁清单以本节为准（当前 = 十道）**。任一道红灯 → 先修再谈推送，**不带伤推送**。
 > `check_sector_tech.py` 反向测试 10 场景（5 类产物 + 5 类页面呈现）全部按预期拦截；
-> `check_macro_freshness.py` / `build_us_medical.py --check` 亦均通过反向测试。
+> `check_macro_freshness.py` / `build_us_medical.py --check` / `check_index_render.py` 亦均通过反向测试。
+>
+> 🆕 **2026-09-18 · 老站 index 渲染两处修复（用户报障）**
+> **① 字面 `<b>` 标签**：老站「AI 综合推演」各块显示字面 `<b>…</b>`。
+> 根因 = `drLoadFeedReview`（由 `inject_feed_review.py` 注入）对 agent 手写的 `ai_synthesis`
+> 内容统一走 `esc()`，而内容含 **102 处 `<b>`**（V3 已于当日早些时候修复，**老站这条路径漏修** ——
+> 教训：修「富文本被转义」必须**同时覆盖老站 index 与 V3 两条渲染路径**）。
+> 治本 = 在函数内注入 `rich()`（白名单放行 b/i/br/span.dk-*，其余含 `<script>` 仍转义，**无 XSS 面**），
+> 13 处 agent 内容调用点 `esc → rich`；机器数据（日期/价格/代码/枚举/股票名）仍走 `esc()`。
+> **② 表格列宽崩溃**：`<td class="dr-tag">` 撞上 analysis.html 注入的 `.dr-tag{display:inline-block}`
+> → td **脱离表格布局**（实测：判定列被压到 40px、含义列 left 与判定列**重叠**、表头声明 735px 与实际 66px 脱节）。
+> 治本 = ① 去掉 td 上的 `.dr-tag`（改内联色）② 加防御 `.dr-tbl td.dr-tag{display:table-cell;…}`
+> ③ 列宽微调（判定 70→88px / 净流 96→108px）。
+> **③ 🔴 过程中踩的大坑（已立守卫）**：`inject_feed_review.py` 的 JS 注入原是「已存在则跳过」，
+> 我先把它改成「比对后替换」——结果**用注入器里的旧版 JS（14429 字符）覆盖了线上新版（24707 字符）**，
+> 丢失类型防御 / 子块隔离 / drCrossSlot 分离等改进。
+> **根因：注入器长期滞后于线上，而「跳过」逻辑意外保护了这些改进。**
+> 治本 = 先用 index.html 的**现行 JS** 更新注入器 JS_BLOCK（消除滞后），再做改造；
+> 并立守卫 `check_index_render.py [4/6]` **断言「注入器 JS_BLOCK ≡ 线上 JS 区间」**（反向测试通过）。
+> **推论：凡把注入器从「跳过」改为「替换」前，必须先做一次一致性对账。**
 >
 > 🆕 **2026-09-18 · 宏观日志「信息过期不自更新」修复（用户报障）**
 > **症状**：4 段「美国宏观（新闻源抽取）」长期显示 8/13 的「7月CPI」与 7/3 的「6月非农」。
