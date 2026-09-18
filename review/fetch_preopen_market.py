@@ -36,6 +36,10 @@ US_DAILY_MAP = {
     "us_mu": "MU", "us_sndk": "SNDK", "us_lite": "LITE", "us_aaoi": "AAOI",
     "us_cohr": "COHR", "us_wdc": "WDC", "us_skhy": "SKHY", "us_mrvl": "MRVL",
     "us_nvda": "NVDA", "us_tsla": "TSLA",
+    # 美股医疗 · CXO（2026-09-18 新增；与 fetch_daily_review_market.py 保持一致）
+    "us_crl": "CRL", "us_iqv": "IQV", "us_iclr": "ICLR", "us_medp": "MEDP",
+    "us_tmo": "TMO", "us_dhr": "DHR", "us_rgen": "RGEN", "us_lh": "LH",
+    "us_lly": "LLY", "us_wst": "WST",
 }
 # 盘前必须齐备的核心标的（缺 latest.close 即红灯）
 CORE = ["us_dji", "us_inx", "us_ixic"]

@@ -3,7 +3,7 @@
 """每日复盘 — 云端行情抓取（GitHub Actions 运行）
 
 数据源: 腾讯公开行情接口 qt.gtimg.cn（无需 API Key）
-覆盖: A股指数5 + 持仓7 + 美股指数3 + 美股映射8 + 参考2 = 25 标的
+覆盖: A股指数5 + 持仓7 + 美股指数3 + 美股映射8 + 参考2 + 美股医疗10 = 35 标的
 输出: data/daily_review/market.json（行情段）
 
 分工说明:
@@ -50,6 +50,18 @@ QUOTES = [
     ("us_mrvl", "usMRVL", "MRVL迈威尔",  "美股映射"),
     ("us_nvda", "usNVDA", "NVDA",        "美股映射·参考"),
     ("us_tsla", "usTSLA", "TSLA",        "美股映射·参考"),
+    # ── 美股医疗 · CXO 映射（2026-09-18 新增）──
+    #   对标逻辑：CRO/CDMO/生命科学工具 → A股 CXO；诊断 → 第三方医检；大药企 → GLP-1 链
+    ("us_crl",  "usCRL",  "CRL查尔斯河",  "美股医疗·CXO映射"),
+    ("us_iqv",  "usIQV",  "IQV艾昆纬",    "美股医疗·CXO映射"),
+    ("us_iclr", "usICLR", "ICLR艾可龙",   "美股医疗·CXO映射"),
+    ("us_medp", "usMEDP", "MEDP麦德派斯", "美股医疗·CXO映射"),
+    ("us_tmo",  "usTMO",  "TMO赛默飞",    "美股医疗·CXO映射"),
+    ("us_dhr",  "usDHR",  "DHR丹纳赫",    "美股医疗·CXO映射"),
+    ("us_rgen", "usRGEN", "RGEN瑞普利金", "美股医疗·CXO映射"),
+    ("us_lh",   "usLH",   "LH徕博科",     "美股医疗·CXO映射"),
+    ("us_lly",  "usLLY",  "LLY礼来",      "美股医疗·参考"),
+    ("us_wst",  "usWST",  "WST西氏医药",  "美股医疗·参考"),
     # 港股/亚太（08:15 北京 = 首尔/东京 09:15 已开盘 15 分钟，可抓盘中）
     ("hk_hsi",   "hkHSI",   "恒生指数",   "港股指数"),
     ("hk_hstech","hkHSTECH", "恒生科技",  "港股指数"),
@@ -66,6 +78,10 @@ US_DAILY_MAP = {
     "us_mu": "MU", "us_sndk": "SNDK", "us_lite": "LITE", "us_aaoi": "AAOI",
     "us_cohr": "COHR", "us_wdc": "WDC", "us_skhy": "SKHY", "us_mrvl": "MRVL",
     "us_nvda": "NVDA", "us_tsla": "TSLA",
+    # 美股医疗 · CXO（2026-09-18 新增；与 QUOTES 的「美股医疗」组一一对应）
+    "us_crl": "CRL", "us_iqv": "IQV", "us_iclr": "ICLR", "us_medp": "MEDP",
+    "us_tmo": "TMO", "us_dhr": "DHR", "us_rgen": "RGEN", "us_lh": "LH",
+    "us_lly": "LLY", "us_wst": "WST",
 }
 
 

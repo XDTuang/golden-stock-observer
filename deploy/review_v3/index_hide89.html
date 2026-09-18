@@ -307,7 +307,7 @@ async function main() {
   $('v3TblA').innerHTML = mkQuoteTable(grp('A股指数'));
   // 2026-09-08 移除：1.1 段"专家持仓"整块删除，分析功能迁至 L2 5 段"重点观测股映射分析"
   $('v3TblHK').innerHTML = mkQuoteTable(grp('港股指数'));
-  $('v3TblUsQ').innerHTML = mkQuoteTable([...grp('美股指数'), ...grp('美股映射'), ...grp('美股映射·参考')]);
+  $('v3TblUsQ').innerHTML = mkQuoteTable([...grp('美股指数'), ...grp('美股映射'), ...grp('美股映射·参考'), ...grp('美股医疗·CXO映射'), ...grp('美股医疗·参考')]);
 
   // 2026-09-10 治本：单段渲染失败不得拖垮整页
   //   （此前 renderUsDual 因 us_sox.close=null 抛 TypeError → main() reject → 后续所有段永久停在「加载中…」）
@@ -452,7 +452,11 @@ const US_ROWS = [
   ['AMZN 亚马逊','us_amzn'],['AAPL 苹果','us_aapl'],['INTC 英特尔','us_intc'],['MRVL 迈威尔','us_mrvl'],
   ['MU 美光','us_mu'],['SNDK 闪迪','us_sndk'],['TSM 台积电','us_tsm'],['AMD','us_amd'],
   ['COHR','us_cohr'],['WDC 西部数据','us_wdc'],['LITE 朗美通','us_lite'],['AAOI 应用光电','us_aaoi'],
-  ['AVGO 博通','us_avgo'],['PANW 派拓网络','us_panw'],['SMCI 超微电脑','us_smci']
+  ['AVGO 博通','us_avgo'],['PANW 派拓网络','us_panw'],['SMCI 超微电脑','us_smci'],
+  // 美股医疗 / CXO（2026-09-18 新增；与 market.json 的「美股医疗」组一一对应）
+  ['CRL 查尔斯河','us_crl'],['IQV 艾昆纬','us_iqv'],['ICLR 艾可龙','us_iclr'],['MEDP 麦德派斯','us_medp'],
+  ['TMO 赛默飞','us_tmo'],['DHR 丹纳赫','us_dhr'],['RGEN 瑞普利金','us_rgen'],['LH 徕博科','us_lh'],
+  ['LLY 礼来','us_lly'],['WST 西氏医药','us_wst']
 ];
 function renderUsDual(mkt) {
   const k = mkt.us_kline || {};

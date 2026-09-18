@@ -52,6 +52,23 @@ if isinstance(ks, dict) and ks.get('date') and str(ks.get('date')) != str(d.get(
                  '云端 fengle_kr.py 可能失败，查 Actions 的 ::warning::'
                  % (ks.get('date'), d.get('date'), ks.get('fetched_at')))
 
+# ── 美股医疗 / CXO 映射组（2026-09-18 新增）：静默丢失即红灯 ──
+#   背景：该组由 fetch_daily_review_market.py 的 QUOTES(daily) 与两个脚本的 US_DAILY_MAP 驱动。
+#   若哪天改脚本漏了、或 market.json 被旧版覆盖，页面会**静默少一整块映射**（不报错不空白）。
+MED_KEYS = ['us_crl', 'us_iqv', 'us_iclr', 'us_medp', 'us_tmo',
+            'us_dhr', 'us_rgen', 'us_lh', 'us_lly', 'us_wst']
+MED_GROUPS = ['美股医疗·CXO映射', '美股医疗·参考']
+_mq = [k for k in MED_KEYS if k not in q]
+_mk = [k for k in MED_KEYS if k not in uk]
+if _mq:
+    errs.append('美股医疗组缺失于 quotes：%s（查 fetch_daily_review_market.py 的 QUOTES）' % _mq)
+if _mk:
+    errs.append('美股医疗组缺失于 us_kline：%s（查两个抓取脚本的 US_DAILY_MAP）' % _mk)
+_groups = {v.get('group') for v in q.values() if isinstance(v, dict)}
+for _g in MED_GROUPS:
+    if _g not in _groups:
+        errs.append('quotes 缺分组「%s」' % _g)
+
 if errs:
     print('❌ market.json 校验未通过（%d 项）:' % len(errs))
     for e in errs: print('   -', e)
