@@ -1,6 +1,6 @@
 {
  "meta": {
-  "updated_at": "2026-09-18 09:15:15",
+  "updated_at": "2026-09-18 09:45:15",
   "data_date": "2026-09-18",
   "market_status": "trading",
   "algorithm": "1.0.0",
@@ -11,97 +11,97 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3875.33,
-    "chg_pct": -0.01,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3892.7,
+    "chg_pct": 0.44,
+    "turnover_yi": 2189.1,
+    "high": 3897.17,
+    "low": 3888.5
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 13409.91,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 13516.15,
+    "chg_pct": 0.79,
+    "turnover_yi": 2404.6,
+    "high": 13579.48,
+    "low": 13505.35
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 3298.31,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3337.68,
+    "chg_pct": 1.19,
+    "turnover_yi": 1161.0,
+    "high": 3359.43,
+    "low": 3329.88
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1606.09,
-    "chg_pct": -0.01,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 1638.06,
+    "chg_pct": 1.98,
+    "turnover_yi": 234.8,
+    "high": 1649.1,
+    "low": 1631.06
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4459.86,
-    "chg_pct": -0.01,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 4481.35,
+    "chg_pct": 0.48,
+    "turnover_yi": 1072.4,
+    "high": 4496.44,
+    "low": 4481.11
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 7653.03,
-    "chg_pct": -0.03,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 7725.56,
+    "chg_pct": 0.92,
+    "turnover_yi": 794.7,
+    "high": 7755.25,
+    "low": 7710.24
    }
   ],
   "breadth": {
-   "up": 2014,
-   "down": 1157,
-   "flat": 1432,
-   "ratio": 1.74,
-   "limit_up": 68,
-   "limit_down": 34,
-   "main_net_yi": 0.0,
-   "turnover_yi": 0.0,
+   "up": 3712,
+   "down": 713,
+   "flat": 178,
+   "ratio": 5.21,
+   "limit_up": 32,
+   "limit_down": 3,
+   "main_net_yi": 39.4,
+   "turnover_yi": 3911.9,
    "total": 4603
   }
  },
  "L1": {
   "sentiment": {
-   "score": 48,
-   "S1": 44,
-   "S2": 57,
-   "S3": 40,
-   "S4": 50,
+   "score": 63,
+   "S1": 100,
+   "S2": 27,
+   "S3": 59,
+   "S4": 57,
    "inputs": {
-    "ratio": 1.74,
-    "limit_up": 68,
-    "avg_idx_pct": -0.01,
-    "main_net_yi": 0
+    "ratio": 5.21,
+    "limit_up": 32,
+    "avg_idx_pct": 0.97,
+    "main_net_yi": 39.4
    }
   },
   "state": {
-   "state": "oscillation",
-   "label": "震荡分化",
-   "note": "降低频率，控制单票仓位，等待主线明朗",
-   "score": 48
+   "state": "overheat",
+   "label": "情绪过热预警",
+   "note": "情绪分极高/涨停过多，禁止追高，仓位收敛至上限以内",
+   "score": 63
   }
  },
  "L2": {
   "range": [
-   40,
-   60
+   30,
+   50
   ],
-  "note": "震荡分化，控制总仓与单票上限",
+  "note": "过热收敛，上限 50%，禁止新增追板仓位",
   "rules": [
    "单票仓位 ≤ 10%",
    "单一板块集中度 ≤ 30%",
@@ -110,21 +110,296 @@
   ]
  },
  "L3": {
-  "sectors": [],
-  "mainline": "数据不可用",
-  "resonance": []
+  "sectors": [
+   {
+    "name": "电子",
+    "net_yi": 44.72,
+    "jumbo_yi": 34.27,
+    "block_yi": 10.45,
+    "pct": 3.2
+   },
+   {
+    "name": "半导体",
+    "net_yi": 43.32,
+    "jumbo_yi": 30.18,
+    "block_yi": 13.14,
+    "pct": 6.86
+   },
+   {
+    "name": "通信网络设备及器件",
+    "net_yi": 22.45,
+    "jumbo_yi": 15.81,
+    "block_yi": 6.64,
+    "pct": 8.07
+   },
+   {
+    "name": "数字芯片设计",
+    "net_yi": 22.39,
+    "jumbo_yi": 15.91,
+    "block_yi": 6.48,
+    "pct": 8.53
+   },
+   {
+    "name": "通信",
+    "net_yi": 18.48,
+    "jumbo_yi": 13.89,
+    "block_yi": 4.59,
+    "pct": 3.75
+   },
+   {
+    "name": "通信设备",
+    "net_yi": 17.84,
+    "jumbo_yi": 13.42,
+    "block_yi": 4.43,
+    "pct": 3.75
+   },
+   {
+    "name": "半导体设备",
+    "net_yi": 7.33,
+    "jumbo_yi": 4.0,
+    "block_yi": 3.34,
+    "pct": 7.97
+   },
+   {
+    "name": "电力设备",
+    "net_yi": 6.98,
+    "jumbo_yi": 4.2,
+    "block_yi": 2.77,
+    "pct": 2.32
+   },
+   {
+    "name": "公用事业",
+    "net_yi": 5.39,
+    "jumbo_yi": 4.49,
+    "block_yi": 0.9,
+    "pct": 7.17
+   },
+   {
+    "name": "工业金属",
+    "net_yi": 5.03,
+    "jumbo_yi": 2.4,
+    "block_yi": 2.63,
+    "pct": 6.49
+   },
+   {
+    "name": "光学光电子",
+    "net_yi": 4.98,
+    "jumbo_yi": 3.73,
+    "block_yi": 1.26,
+    "pct": 3.95
+   },
+   {
+    "name": "电力",
+    "net_yi": 4.86,
+    "jumbo_yi": 4.36,
+    "block_yi": 0.5,
+    "pct": 7.08
+   },
+   {
+    "name": "有色金属",
+    "net_yi": 4.79,
+    "jumbo_yi": 3.32,
+    "block_yi": 1.47,
+    "pct": 2.43
+   },
+   {
+    "name": "电网设备",
+    "net_yi": 4.23,
+    "jumbo_yi": 2.76,
+    "block_yi": 1.47,
+    "pct": 5.65
+   },
+   {
+    "name": "医药生物",
+    "net_yi": 4.21,
+    "jumbo_yi": 2.41,
+    "block_yi": 1.8,
+    "pct": 1.44
+   },
+   {
+    "name": "集成电路封测",
+    "net_yi": 4.13,
+    "jumbo_yi": 2.53,
+    "block_yi": 1.6,
+    "pct": 8.5
+   },
+   {
+    "name": "铜",
+    "net_yi": 3.87,
+    "jumbo_yi": 2.12,
+    "block_yi": 1.75,
+    "pct": 8.14
+   },
+   {
+    "name": "分立器件",
+    "net_yi": 3.64,
+    "jumbo_yi": 6.17,
+    "block_yi": -2.54,
+    "pct": 5.87
+   },
+   {
+    "name": "计算机",
+    "net_yi": 3.45,
+    "jumbo_yi": 2.36,
+    "block_yi": 1.09,
+    "pct": 1.75
+   },
+   {
+    "name": "集成电路制造",
+    "net_yi": 3.04,
+    "jumbo_yi": 1.75,
+    "block_yi": 1.29,
+    "pct": 7.62
+   }
+  ],
+  "mainline": "电子(+44.72亿) → 半导体(+43.32亿) → 通信网络设备及器件(+22.45亿)",
+  "resonance": [
+   "全市场涨停 32 只，情绪有温度",
+   "全市场主力净流入 +39.4 亿，资金面偏多"
+  ],
+  "conc": {
+   "lead": "电子",
+   "ratio": 1.03,
+   "alert": false
+  }
  },
  "L4": {
-  "candidates": [],
+  "candidates": [
+   {
+    "code": "sz300394",
+    "name": "天孚通信",
+    "zdf": 3.79,
+    "zljlr": 6.65,
+    "lb": 5.38,
+    "hsl": 1.31,
+    "turnover_yi": 40.6,
+    "price": 288.17,
+    "stype": "GP-A-CYB",
+    "type": "中继观察"
+   },
+   {
+    "code": "sh603986",
+    "name": "兆易创新",
+    "zdf": 3.01,
+    "zljlr": 6.11,
+    "lb": 5.4,
+    "hsl": 1.45,
+    "turnover_yi": 37.2,
+    "price": 381.01,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz002241",
+    "name": "歌尔股份",
+    "zdf": 4.4,
+    "zljlr": 2.58,
+    "lb": 14.13,
+    "hsl": 1.46,
+    "turnover_yi": 10.66,
+    "price": 23.26,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sh601138",
+    "name": "工业富联",
+    "zdf": 1.99,
+    "zljlr": 2.48,
+    "lb": 4.55,
+    "hsl": 0.11,
+    "turnover_yi": 13.12,
+    "price": 62.49,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz002436",
+    "name": "兴森科技",
+    "zdf": 2.55,
+    "zljlr": 2.33,
+    "lb": 5.11,
+    "hsl": 3.12,
+    "turnover_yi": 20.25,
+    "price": 42.25,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz300014",
+    "name": "亿纬锂能",
+    "zdf": 5.97,
+    "zljlr": 2.05,
+    "lb": 13.55,
+    "hsl": 1.15,
+    "turnover_yi": 12.46,
+    "price": 51.11,
+    "stype": "GP-A-CYB",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz000725",
+    "name": "京东方Ａ",
+    "zdf": 1.39,
+    "zljlr": 1.91,
+    "lb": 7.43,
+    "hsl": 1.56,
+    "turnover_yi": 32.19,
+    "price": 5.83,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz300548",
+    "name": "长芯博创",
+    "zdf": 5.13,
+    "zljlr": 1.89,
+    "lb": 6.02,
+    "hsl": 1.88,
+    "turnover_yi": 13.39,
+    "price": 243.27,
+    "stype": "GP-A-CYB",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz002080",
+    "name": "中材科技",
+    "zdf": 0.36,
+    "zljlr": 1.88,
+    "lb": 13.54,
+    "hsl": 3.5,
+    "turnover_yi": 36.82,
+    "price": 58.9,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz300308",
+    "name": "中际旭创",
+    "zdf": 1.12,
+    "zljlr": 1.7,
+    "lb": 2.83,
+    "hsl": 0.42,
+    "turnover_yi": 42.92,
+    "price": 906.0,
+    "stype": "GP-A-CYB",
+    "type": "低吸候选"
+   }
+  ],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
  "L5": {
   "alerts": [
    {
-    "level": "green",
-    "type": "正常",
-    "msg": "未触发预警信号，按状态机规则执行即可"
+    "level": "red",
+    "type": "情绪过热",
+    "msg": "情绪分 63 / 涨停 32 只 / 涨跌比 5.21，短线过热，禁止追高"
+   },
+   {
+    "level": "yellow",
+    "type": "普涨过热",
+    "msg": "涨跌比 5.21 接近极端，次日分歧概率上升，留意兑现"
    }
   ]
  },
