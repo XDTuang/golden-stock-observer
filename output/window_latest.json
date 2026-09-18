@@ -1,79 +1,74 @@
 {
-  "generated_at": "2026-09-17 08:52",
+  "generated_at": "2026-09-18 08:48",
   "session": "preopen",
-  "data_date": "2026-09-16",
-  "for_date": "2026-09-17",
+  "data_date": "2026-09-17",
+  "for_date": "2026-09-18",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-09-17"
+    "2026-09-18"
   ],
   "span_days": 1,
   "display_days": [
-    "2026-09-16",
-    "2026-09-17"
+    "2026-09-17",
+    "2026-09-18"
   ],
-  "display_text": "09/16 + 09/17",
+  "display_text": "09/17 + 09/18",
   "span_is_weekend_cross": false,
-  "span_text": "09/17",
+  "span_text": "09/18",
   "carry": {
-    "from_data_date": "2026-09-16",
-    "ref": "output/feed_review_2026-09-15.json",
+    "from_data_date": "2026-09-17",
+    "ref": "output/feed_review_2026-09-16.json",
     "exists": true,
     "gap_days": 1,
     "stale": true,
     "bias": "偏多",
-    "bias_score": 3,
+    "bias_score": 2,
     "t1_focus": [
-      "跟踪金钻起涨 3 只回踩确认",
-      "日常投喂·观点·25个炒股群围观记录0915 与信号共振，重点跟踪 ['华正新材(sh603186·TOP1)']"
+      "跟踪金钻起涨 7 只回踩确认"
     ],
-    "risks": [
-      "投喂语料含负面信息，注意相关个股避险"
-    ],
+    "risks": [],
     "headline": ""
   },
   "layers": {
-    "base": "2026-09-16 A股收盘（基准层）",
-    "overnight": "美东 2026-09-16 收盘（北京 2026-09-17 早间到达）",
-    "premarket": "2026-09-17 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-09-17 A股收盘（基准层）",
+    "overnight": "美东 2026-09-17 收盘（北京 2026-09-18 早间到达）",
+    "premarket": "2026-09-18 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-09-16",
-    "run_date": "2026-09-17",
+    "date": "2026-09-17",
+    "run_date": "2026-09-18",
     "preopen_partial": true,
     "us_kline": true,
     "asia": true
   },
   "covered": [
     {
-      "date": "2026-09-16",
-      "weekday": "周三",
-      "is_trading_day": true,
-      "news": 698,
-      "feeds": 0,
-      "reports": 918,
-      "macro": true
-    },
-    {
       "date": "2026-09-17",
       "weekday": "周四",
       "is_trading_day": true,
-      "news": 681,
+      "news": 691,
+      "feeds": 3,
+      "reports": 1092,
+      "macro": true
+    },
+    {
+      "date": "2026-09-18",
+      "weekday": "周五",
+      "is_trading_day": true,
+      "news": 679,
       "feeds": 0,
-      "reports": 0,
+      "reports": 82,
       "macro": true
     }
   ],
   "totals": {
-    "news": 1379,
-    "feeds": 0,
-    "reports": 918,
+    "news": 1370,
+    "feeds": 3,
+    "reports": 1174,
     "covered_days": 2
   },
   "missing": [
-    "market_thermometer.json 数据日 2026-09-15 落后于基准日 2026-09-16",
-    "valuation_band.json 数据日 2026-09-15 落后于基准日 2026-09-16",
-    "承接层滞后：output/feed_review_2026-09-15.json 非基准日 2026-09-16 那份（回退使用）"
+    "承接层滞后：output/feed_review_2026-09-16.json 非基准日 2026-09-17 那份（回退使用）"
   ]
 }
