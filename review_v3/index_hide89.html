@@ -225,6 +225,17 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
 /* ═══════ 工具 ═══════ */
 const $ = (id) => document.getElementById(id);
 const esc = (s) => (s == null ? '' : String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+/* ═══════════ V3-RICHTEXT-BEGIN ═══════════ */
+/* 富文本白名单渲染（由 review/patch_v3_richtext.py 维护 · 勿手改）
+   esc() 整体转义后，仅放行受控强调标签；其余一律保持转义（防 XSS）。
+   dk-* 色板本页已定义（.dk-main/.dk-caution/.dk-risk/.dk-data/.dk-dn）。 */
+const DKCLS = /^dk-(main|caution|risk|data|up|dn|neutral)$/;
+const rich = (s) => esc(s == null ? '' : s)
+  .replace(/&lt;(\/?)(b|i)&gt;/g, '<$1$2>')
+  .replace(/&lt;br\s*\/?&gt;/g, '<br>')
+  .replace(/&lt;span class="(dk-[a-z0-9-]+)"&gt;/g, (m, c) => (DKCLS.test(c) ? '<span class="' + c + '">' : m))
+  .replace(/&lt;\/span&gt;/g, '</span>');
+/* ═══════════ V3-RICHTEXT-END ═══════════ */
 const cls = (v) => v >= 0 ? 'dr-up' : 'dr-dn';
 const sign = (v) => v >= 0 ? '+' : '';
 // 2026-09-10 治本：数值格式化统一兜底——null/undefined/非数字一律显示「—」，禁止直接 .toLocaleString()
@@ -687,7 +698,7 @@ function renderConclusion(cf, dateStr, genStr) {
     const col = colOf(cls);
     // 标题着色（保留【】视觉）
     const ttl = title
-      ? '<b class="' + (cls || '') + '" style="color:' + col + ';font-weight:' + wtOf(cls) + '">【' + esc(title) + '】</b>'
+      ? '<b class="' + (cls || '') + '" style="color:' + col + ';font-weight:' + wtOf(cls) + '">【' + rich(title) + '】</b>'
       : '';
     // 首句（≤100 字的结论句）加粗着色，其余正文保持常色 —— 防整块变粗而失去层次
     //   阈值 100 经真实数据校准：6 块中 5 块首句落在 41~99 字，1 块（关键事件）无句读分隔故跳过
@@ -695,11 +706,11 @@ function renderConclusion(cf, dateStr, genStr) {
     const cut = body.search(/[。；]/);
     if (cut > 0 && cut <= 100) { lead = body.slice(0, cut + 1); rest = body.slice(cut + 1); }
     const leadHtml = lead
-      ? '<b class="' + (cls || '') + '" style="color:' + col + ';font-weight:' + wtOf(cls) + '">' + esc(lead) + '</b>'
+      ? '<b class="' + (cls || '') + '" style="color:' + col + ';font-weight:' + wtOf(cls) + '">' + rich(lead) + '</b>'
       : '';
     h += '<div class="dr-note rc-block' + (cls ? ' rc-' + cls.slice(3) : '')
        + '" style="background:var(--bg-subtle);border-left:3px solid ' + col
-       + ';padding:8px 12px;border-radius:6px;margin-top:6px">' + ttl + leadHtml + esc(rest) + '</div>';
+       + ';padding:8px 12px;border-radius:6px;margin-top:6px">' + ttl + leadHtml + rich(rest) + '</div>';
   });
   return h;
 }
@@ -730,7 +741,7 @@ function loadSynth() {
     const asTxt = (v) => (typeof v === 'string') ? v
       : (v && typeof v === 'object' ? (asText(v) || Object.values(v).filter(x => typeof x === 'string').join(' '))
       : String(v == null ? '' : v));
-    const chips = (arr, color) => asArr(arr).map(x => '<span class="chip" style="color:' + color + '">' + esc(asTxt(x)) + '</span>').join('');
+    const chips = (arr, color) => asArr(arr).map(x => '<span class="chip" style="color:' + color + '">' + rich(asTxt(x)) + '</span>').join('');
     let h = '';
     if (!Object.keys(syn).length) {
       h = '<div class="dr-note">ai_synthesis 尚未生成（待本机 agent 跑「推演」）。</div>';
@@ -761,7 +772,7 @@ function loadSynth() {
             const m = String(hit).match(/^【([^】]+)】([\s\S]*)$/);
             const body = m ? m[2].trim() : String(hit);
             const firstSentence = body.split('；')[0].split('。')[0].slice(0, 60);
-            oe.innerHTML = '<span style="color:var(--red);font-weight:700">' + esc(firstSentence) + '</span>' +
+            oe.innerHTML = '<span style="color:var(--red);font-weight:700">' + rich(firstSentence) + '</span>' +
               (m ? '<div style="font-size:11px;color:var(--text-muted);margin-top:3px">来源：' + esc(m[1]) + ' · 全文见上方结论卡</div>' : '');
           } else {
             // 2026-09-08 修复：openExp/score/reasons 都是 renderL0 的局部变量，loadSynth 访问不到。
@@ -789,9 +800,9 @@ function loadSynth() {
       if (tr.length) {
         h += '<div class="dr-note" style="margin-top:8px"><b>主题共振：</b></div>';
         tr.forEach(t => {
-          if (typeof t === 'string') { h += '<div class="dr-note">· ' + esc(t) + '</div>'; return; }
-          h += '<div class="dr-note">· <b>' + esc(t.name || t.theme || '') + '</b>' + (t.weight ? ' <span class="dr-tag" style="color:var(--gold)">' + esc(t.weight) + '</span>' : '') +
-            (t.desc ? ' — ' + esc(t.desc) : '') +
+          if (typeof t === 'string') { h += '<div class="dr-note">· ' + rich(t) + '</div>'; return; }
+          h += '<div class="dr-note">· <b>' + rich(t.name || t.theme || '') + '</b>' + (t.weight ? ' <span class="dr-tag" style="color:var(--gold)">' + esc(t.weight) + '</span>' : '') +
+            (t.desc ? ' — ' + rich(t.desc) : '') +
             (t.related_stocks && t.related_stocks.length ? '<br><span style="color:var(--text-muted)">映射：</span>' + chips(t.related_stocks, 'var(--blue)') : '') + '</div>';
         });
       }
@@ -833,11 +844,11 @@ function loadSynth() {
         // 2026-09-07 修复：支持对象数组 {time, event, impact}，不再用 esc(对象)→[object Object]
         radar.forEach(t => {
           if (typeof t === 'string') {
-            h += '<div class="dr-note">· ' + esc(t) + '</div>';
+            h += '<div class="dr-note">· ' + rich(t) + '</div>';
             return;
           }
           const tm = t.time ? '<span style="color:var(--gold);font-family:Menlo,monospace;font-size:11px">' + esc(t.time) + '</span> ' : '';
-          const ev = esc(t.event || t.text || t.desc || t.name || '');
+          const ev = rich(t.event || t.text || t.desc || t.name || '');
           const im = t.impact ? ' <span style="color:var(--text-muted);font-size:11.5px">— ' + esc(t.impact) + '</span>' : '';
           const tag = t.impact && /★/.test(t.impact) ? ' <span style="color:var(--red);font-size:10.5px">★</span>' : '';
           h += '<div class="dr-note" style="line-height:1.55">· ' + tm + ev + im + tag + '</div>';
@@ -847,9 +858,9 @@ function loadSynth() {
       if (risks.length) {
         h += '<div class="dr-note" style="margin-top:8px"><b>风险（概率 × 冲击）：</b></div>';
         risks.forEach(r => {
-          if (typeof r === 'string') { h += '<div class="dr-note">· ' + esc(r) + '</div>'; return; }
+          if (typeof r === 'string') { h += '<div class="dr-note">· ' + rich(r) + '</div>'; return; }
           const pc = (r.prob || '').indexOf('高') >= 0 ? 'var(--red)' : 'var(--orange)';
-          h += '<div class="dr-note">· <span style="color:' + pc + ';font-weight:600">[' + esc(r.prob || '') + '×' + esc(r.impact || '—') + ']</span> ' + esc(r.desc || '') + '</div>';
+          h += '<div class="dr-note">· <span style="color:' + pc + ';font-weight:600">[' + esc(r.prob || '') + '×' + esc(r.impact || '—') + ']</span> ' + rich(r.desc || '') + '</div>';
         });
       }
       if (syn.disclaimer) h += '<div class="dr-tag" style="margin-top:8px">' + esc(syn.disclaimer) + '</div>';

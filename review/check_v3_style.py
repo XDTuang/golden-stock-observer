@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""V3 独立版（review_v3/）守卫自检（2026-09-11 立 · 9 项）
+"""V3 独立版（review_v3/）守卫自检（2026-09-11 立 · 2026-09-18 增至 10 项）
 
 跑法：python3 review/check_v3_style.py
 期望：全部通过；任何失败 = V3 存在副本漂移或渲染缺陷，必须修。
@@ -17,12 +17,12 @@
      `esc(asText(x) || x)`（白名单缺 event，对象会渲染成 [object Object]）。
   3. V3 是四副本结构（根 index / 根 hide89 / deploy index / deploy hide89），
      无生成脚本、纯手工同步 → 必然漂移，需要机器守卫。
-  4. （2026-09-11 增 · [8/9]）V3 第 6 段「重点观测股推演」原为「32 行平表 + 6 列」，
+  4. （2026-09-11 增 · [8/10]）V3 第 6 段「重点观测股推演」原为「32 行平表 + 6 列」，
      窄视口折行、重点票与全池票无区分。已按老站 daily_review 7.2 段改造为
      **分层折叠卡**（L2 重点票三情景 + L1 全池关键位），交互走原生 <details> + 纯 CSS。
      折叠卡共有 27 个 obs-*/b-*/kl-* 类，任一缺 CSS 定义即「有标记无样式」静默退化
      （与老站 dk-dn 同类）→ 必须机器守卫。
-  5. （2026-09-16 增 · [9/9]）V3 第 7 段「新闻 × 资金 交叉验证」原为**硬编码的固定 Top-N 预览**
+  5. （2026-09-16 增 · [9/10]）V3 第 7 段「新闻 × 资金 交叉验证」原为**硬编码的固定 Top-N 预览**
      `mkList('背离',5,true)+mkList('共振',3,true)+mkList('暗线',3,false)` —— 三个问题：
        · 第一象限 `filter(x => x.verdict === '共振')` 的**字面值与生成器不符**
          （build_cross_analysis.py 的 verdict_of 原返回「真共振」）→ 共振明细**永远漏空**，
@@ -53,7 +53,7 @@ def md5(p):
     return hashlib.md5(open(p, 'rb').read()).hexdigest()
 
 
-# ── [1/9] 四副本必须逐字节一致 ────────────────────────────────────────────
+# ── [1/10] 四副本必须逐字节一致 ────────────────────────────────────────────
 # index_hide89.html 经核实与 index.html 无任何差异（"hide89" 关键词 0 次，
 # 不含隐藏 8/9 段逻辑），且无脚本生成、无页面引用 → 它就是 index 的同内容副本。
 # 既然同内容，就必须保持一致，否则会出现「推送旧副本覆盖线上新版」的回退事故。
@@ -75,7 +75,7 @@ if len(existing) >= 2:
         note1.append('   → 修法：cp review_v3/index.html 到其余三份（V3 为同内容多副本结构）')
     else:
         note1.append(f'{len(existing)} 份副本逐字节一致 ✓ md5={list(uniq)[0][:10]}')
-print(f"{'✅' if ok1 else '❌'} [1/9] 四副本一致性（防推送旧副本回退线上）：{'通过' if ok1 else '未通过'}")
+print(f"{'✅' if ok1 else '❌'} [1/10] 四副本一致性（防推送旧副本回退线上）：{'通过' if ok1 else '未通过'}")
 for n in note1:
     print(f'      {n}')
 
@@ -84,7 +84,7 @@ if not os.path.exists(ROOT):
     sys.exit(1)
 s = open(ROOT, encoding='utf-8').read()
 
-# ── [2/9] dk-* 语义色定义齐备且唯一 ─────────────────────────────────────
+# ── [2/10] dk-* 语义色定义齐备且唯一 ─────────────────────────────────────
 # 结论卡按性质着色依赖这套类；缺失即静默无色（与老站 dk-dn 同类问题）。
 ok2 = True
 note2 = []
@@ -99,11 +99,11 @@ if s.count('/* DK-SEMANTIC-CSS v1') != 1:
     ok2 = False
 if ok2:
     note2.append(f"{len(DK)} 个 dk-* 类定义各 1 次 ✓；CSS 块唯一 ✓")
-print(f"{'✅' if ok2 else '❌'} [2/9] dk-* 语义色定义（结论卡着色依赖）：{'通过' if ok2 else '未通过'}")
+print(f"{'✅' if ok2 else '❌'} [2/10] dk-* 语义色定义（结论卡着色依赖）：{'通过' if ok2 else '未通过'}")
 for n in note2:
     print(f'      {n}')
 
-# ── [3/9] 结论卡分类渲染逻辑在位 ────────────────────────────────────────
+# ── [3/10] 结论卡分类渲染逻辑在位 ────────────────────────────────────────
 ok3 = True
 note3 = []
 i_rc = s.find('function renderConclusion')
@@ -127,11 +127,11 @@ else:
         ok3 = False
 if ok3:
     note3.append('renderConclusion 含 rc-block 分类 + 5 色规则 + 左侧色条 + 首句阈值 ✓')
-print(f"{'✅' if ok3 else '❌'} [3/9] 结论卡分类渲染逻辑：{'通过' if ok3 else '未通过'}")
+print(f"{'✅' if ok3 else '❌'} [3/10] 结论卡分类渲染逻辑：{'通过' if ok3 else '未通过'}")
 for n in note3:
     print(f'      {n}')
 
-# ── [4/9] 旧模式 esc(asText(x) || x) 必须清零 ───────────────────────────
+# ── [4/10] 旧模式 esc(asText(x) || x) 必须清零 ───────────────────────────
 # 老站 2026-09-10 已治本为 esc(asTxt(x))；V3 曾残留旧模式。
 # 判据必须精确到「esc( 包住整个 asText(x) || x 表达式」——
 #   否则会误判 asTxt 自身实现里的 `asText(v) || Object.values(...)`（那是兜底逻辑，正确写法）。
@@ -150,11 +150,11 @@ if bad:
     ok4 = False
 else:
     note4.append('无旧模式残留 ✓（asTxt 内部的 asText(v) || … 为正确兜底，不计入）')
-print(f"{'✅' if ok4 else '❌'} [4/9] 旧模式 esc(asText(x) || x) 清零：{'通过' if ok4 else '未通过'}")
+print(f"{'✅' if ok4 else '❌'} [4/10] 旧模式 esc(asText(x) || x) 清零：{'通过' if ok4 else '未通过'}")
 for n in note4:
     print(f'      {n}')
 
-# ── [5/9] asArr/asText/asTxt 三件套与老站对齐（asText 白名单须含 event）───
+# ── [5/10] asArr/asText/asTxt 三件套与老站对齐（asText 白名单须含 event）───
 ok5 = True
 note5 = []
 if 'const asTxt' not in s:
@@ -167,16 +167,19 @@ if not m_at:
 elif 'event' not in m_at.group(0):
     note5.append('⚠️ asText 白名单缺 event（V3 的 t1_radar 产物为 {time,event,impact}）')
     ok5 = False
-if 'chips' in s and 'esc(asTxt(x))' not in s:
-    note5.append('⚠️ chips 未使用 esc(asTxt(x))')
+if 'chips' in s and ('rich(asTxt(x))' not in s and 'esc(asTxt(x))' not in s):
+    # 2026-09-18：chips 改用 rich(asTxt(x))（富文本白名单放行，详 [10/10]）；
+    #   此处兼容旧写法 esc(asTxt(x))，两者居其一即通过
+    note5.append('⚠️ chips 未使用 rich(asTxt(x)) / esc(asTxt(x))')
     ok5 = False
 if ok5:
-    note5.append('asArr/asText（含 event）/asTxt 齐备，chips 用 esc(asTxt(x)) ✓')
-print(f"{'✅' if ok5 else '❌'} [5/9] 文本归一化三件套（对齐老站）：{'通过' if ok5 else '未通过'}")
+    _chip_fn = 'rich(asTxt(x))' if 'rich(asTxt(x))' in s else 'esc(asTxt(x))'
+    note5.append(f'asArr/asText（含 event）/asTxt 齐备，chips 用 {_chip_fn} ✓')
+print(f"{'✅' if ok5 else '❌'} [5/10] 文本归一化三件套（对齐老站）：{'通过' if ok5 else '未通过'}")
 for n in note5:
     print(f'      {n}')
 
-# ── [6/9] 空值兜底 + 逐段隔离在位（防「全页永久加载中」复发）────────────
+# ── [6/10] 空值兜底 + 逐段隔离在位（防「全页永久加载中」复发）────────────
 ok6 = True
 note6 = []
 for kw, why in [('const num =', '数值格式化兜底 num() 缺失'),
@@ -200,11 +203,11 @@ if _bad_ts:
     ok6 = False
 if ok6:
     note6.append('num() 兜底 + safe() 逐段隔离 + unhandledrejection 兜底齐备；close 直调均有 null 守卫 ✓')
-print(f"{'✅' if ok6 else '❌'} [6/9] 空值兜底与逐段隔离：{'通过' if ok6 else '未通过'}")
+print(f"{'✅' if ok6 else '❌'} [6/10] 空值兜底与逐段隔离：{'通过' if ok6 else '未通过'}")
 for n in note6:
     print(f'      {n}')
 
-# ── [7/9] 缠论买点数据源须为 gate_data.chan（obs_deduce 无该字段）────────
+# ── [7/10] 缠论买点数据源须为 gate_data.chan（obs_deduce 无该字段）────────
 ok7 = True
 note7 = []
 if 'gate_data' not in s:
@@ -225,11 +228,11 @@ else:
             ok7 = False
 if ok7:
     note7.append('缠论买点源 = gate_data.chan（chanMap 构建在位）✓')
-print(f"{'✅' if ok7 else '❌'} [7/9] 缠论买点数据源（gate_data.chan）：{'通过' if ok7 else '未通过'}")
+print(f"{'✅' if ok7 else '❌'} [7/10] 缠论买点数据源（gate_data.chan）：{'通过' if ok7 else '未通过'}")
 for n in note7:
     print(f'      {n}')
 
-# ── [8/9] 6 段「重点观测股推演」分层折叠卡（对齐老站 7.2 段 · 2026-09-11 增）──
+# ── [8/10] 6 段「重点观测股推演」分层折叠卡（对齐老站 7.2 段 · 2026-09-11 增）──
 # 背景：V3 原为「32 行平表 + 6 列」，窄视口折行、重点票与全池票无区分。
 #   2026-09-11 按老站 daily_review 7.2 段改造为分层折叠卡：
 #     L2 · 重点票完整三情景（源 obs_scenarios.json，可选）
@@ -311,11 +314,11 @@ if ok8:
     note8.append(f'CSS 起止标记各 1 次 ✓；{len(OBS_CLS)} 个折叠卡类定义齐备 ✓；7 个函数在位 ✓')
     note8.append('主源 obs_panel.json（配对载荷）✓；回退链齐备 ✓；无硬编码数据日 ✓')
     note8.append('旧平表已移除 ✓；触发线无动作词 ✓；「推测专家操作」口径在位 ✓')
-print(f"{'✅' if ok8 else '❌'} [8/9] 6 段分层折叠卡（对齐老站 7.2）：{'通过' if ok8 else '未通过'}")
+print(f"{'✅' if ok8 else '❌'} [8/10] 6 段分层折叠卡（对齐老站 7.2）：{'通过' if ok8 else '未通过'}")
 for n in note8:
     print(f'      {n}')
 
-# ── [9/9] 第 7 段「新闻 × 资金交叉验证」象限字面值一致性 + 全量展开（2026-09-16 增）──
+# ── [9/10] 第 7 段「新闻 × 资金交叉验证」象限字面值一致性 + 全量展开（2026-09-16 增）──
 # 背景见文件头第 5 条。四项判据：
 #   ① 渲染侧 QUAD 数组 == 生成器侧 QUADRANTS（逐项相等且 = 4 类）→ 否则对应类明细静默漏空
 #   ② verdict_of 的 return 字面值必须全部 ⊆ QUADRANTS
@@ -368,11 +371,58 @@ else:
 if ok9:
     note9.append(f'渲染侧 QUAD == 生成器侧 QUADRANTS（{_gq}）✓；四象限全覆盖 ✓')
     note9.append('截断写法已清零（每类 <details> 全量展开）✓；字面值越界前端报警在位 ✓')
-print(f"{'✅' if ok9 else '❌'} [9/9] 第 7 段象限字面值一致性 + 全量展开：{'通过' if ok9 else '未通过'}")
+print(f"{'✅' if ok9 else '❌'} [9/10] 第 7 段象限字面值一致性 + 全量展开：{'通过' if ok9 else '未通过'}")
 for n in note9:
     print(f'      {n}')
 
+# ── [10/10] 富文本白名单渲染（agent 手写内容的 <b>/dk-* 须放行）────────────
+#   2026-09-18 立：ai_synthesis 各字段由本机 agent 手写，含 <b> 强调与
+#   <span class="dk-*"> 语义色；此前渲染侧统一 esc() 转义 → 页面上直接显示
+#   字面「<b>…</b>」文字（用户报「V3 线上有大量 <b>  </b>」）。
+#   治本 = review/patch_v3_richtext.py 注入 rich()（白名单放行，其余仍转义）。
+note10 = []
+ok10 = True
+_RICH_FILES = ['review_v3/index.html', 'review_v3/index_hide89.html',
+               'deploy/review_v3/index.html', 'deploy/review_v3/index_hide89.html']
+_RICH_MARK = 'V3-RICHTEXT-BEGIN'
+_RICH_OLD = ['esc(title)', 'esc(lead)', 'esc(rest)', 'esc(firstSentence)',
+             'esc(t.desc)', 'esc(t.event || t.text || t.desc', "esc(r.desc || '')",
+             'h += \'<div class="dr-note">· \' + esc(t) + \'</div>\';']
+for _p in _RICH_FILES:
+    if not os.path.exists(_p):
+        note10.append(f'⚠️ 缺副本 {_p}')
+        ok10 = False
+        continue
+    _s = open(_p, encoding='utf-8').read()
+    if _RICH_MARK not in _s:
+        note10.append(f'⚠️ {_p} 缺 rich 定义块（{_RICH_MARK}）→ 内容里的 <b> 会显示成字面标签')
+        ok10 = False
+        continue
+    _nrich = len(re.findall(r'\brich\(', _s))
+    if _nrich < 12:
+        note10.append(f'⚠️ {_p} rich( 调用点仅 {_nrich}（< 12），内容标签仍会被转义')
+        ok10 = False
+    _hit = [o for o in _RICH_OLD if o in _s]
+    if _hit:
+        note10.append(f'⚠️ {_p} 残留未改写的 esc() 内容调用点：{_hit}')
+        ok10 = False
+# 内容侧断言：ai_synthesis 含 <b> 时渲染侧必须已放行
+try:
+    import json as _json10
+    _syn10 = _json10.load(open('output/v3_reasoning_latest.json', encoding='utf-8')).get('ai_synthesis', {})
+    _nb10 = str(_syn10).count('<b>')
+    if _nb10 and not ok10:
+        note10.append(f'⚠️ ai_synthesis 含 {_nb10} 个 <b>，但渲染侧未放行 → 必然显示字面标签')
+except Exception:
+    pass
+if ok10:
+    note10.append('4 份副本 rich 定义 + 调用点齐备（≥12）✓；旧 esc() 内容调用点已清零 ✓')
+    note10.append('ai_synthesis 的 <b> / dk-* span 按白名单渲染，其余（含 <script>）仍转义 ✓')
+print(f"{'✅' if ok10 else '❌'} [10/10] 富文本白名单渲染（agent 内容不被转义）：{'通过' if ok10 else '未通过'}")
+for n in note10:
+    print(f'      {n}')
+
 # ── 总结 ────────────────────────────────────────────────────────────────
-all_ok = (ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9)
+all_ok = (ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10)
 print(f"\n{'✅ 全部通过' if all_ok else '❌ V3 存在守卫项未通过，修复后重跑'}")
 sys.exit(0 if all_ok else 1)
