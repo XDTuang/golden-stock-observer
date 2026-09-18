@@ -89,11 +89,36 @@ def section_bounds(html):
     return i, j
 
 
+def _css_block_end(html, i):
+    """CSS 块收尾边界 = min(</style>, 下一个样式块标记)。
+
+    🔴 2026-09-18 治本（同 build_obs_section.ensure_css() 的 2026-09-14 修法）：
+    原实现只用 `html.find("</style>", i)` 作边界 —— 只要任何**后续**脚本把新的
+    CSS 块插到本块与 `</style>` 之间（例如 review/build_sector_tech.py 的
+    `/* ═══ SECTOR-TECH-CSS v1 ═══ */`），本函数就会把它**整段吃掉且不报错**
+    （实测：7.1b 段本体还在、但 CSS 块消失 → check_sector_tech.py 4 项红灯）。
+    故边界改为「最近的 `</style>` 与最近的兄弟样式块标记」取较小者。
+    """
+    end = html.find("</style>", i)
+    if end < 0:
+        return -1
+    # 兄弟样式块标记一律形如 `/* xxx-CSS vN ... */`（K3C / OBS-FOLD / SECTOR-TECH / SEMANTIC 等同族）
+    m = re.search(r"/\*[^\n]*?CSS", html[i + len(CSS_MARK):])
+    if m:
+        pos = i + len(CSS_MARK) + m.start()
+        if pos < end:
+            end = pos
+    return end
+
+
 def ensure_css(html):
-    """CSS 幂等：已存在 → 从标记到 </style> 整块替换；不存在 → 插到 </style> 前"""
+    """CSS 幂等：已存在 → 从标记到「下一个样式块标记或 </style>」整块替换；
+    不存在 → 插到 </style> 前"""
     if CSS_MARK in html:
         i = html.find(CSS_MARK)
-        j = html.find("</style>", i)
+        j = _css_block_end(html, i)
+        if j < 0:
+            raise RuntimeError("analysis.html 未找到 </style>，无法替换 K3C 样式块")
         return html[:i] + K3C_CSS.strip() + "\n" + html[j:], False
     i = html.find("</style>")
     if i < 0:

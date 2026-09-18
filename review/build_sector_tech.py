@@ -147,15 +147,33 @@ def fmt_price(x):
 
 
 # ══════════════════════ 1. 拉取申万指数 K 线 ══════════════════════
-def fetch_klines(names, no_fetch=False):
-    """返回 {板块名: [{date, open, close, high, low, volume, amount}, ...]}；失败项进 missing"""
+def fetch_klines(names, no_fetch=False, data_date=None):
+    """返回 {板块名: [{date, open, close, high, low, volume, amount}, ...]}；失败项进 missing
+
+    🔴 缓存陈旧判据（2026-09-18 治本）：除「缓存不存在」外，还必须判断缓存**末条日 < data_date**。
+    旧实现只判存在性 → 缓存一旦落盘永不刷新，tech_analysis 静默截断到旧日期，
+    形成「7.1b 标题写 9-18 / 数据实际 9-17」的静默错位且脚本不报错。
+    """
     cache = load(CACHE, {}) or {}
     missing = []
-    need = [n for n in names if n not in cache or not cache.get(n)]
+
+    def _stale(n):
+        bars = cache.get(n)
+        if not bars:
+            return True
+        if not data_date:
+            return False
+        return str(bars[-1].get("date") or "") < str(data_date)
+
+    need = [n for n in names if _stale(n)]
     if no_fetch or not need:
         if need:
             for n in need:
-                missing.append(f"{n}：无本地缓存（--no-fetch 模式）")
+                bars = cache.get(n)
+                if not bars:
+                    missing.append(f"{n}：无本地缓存（--no-fetch 模式）")
+                else:
+                    missing.append(f"{n}：缓存末条 {bars[-1].get('date')} < 数据日 {data_date}（--no-fetch 模式未刷新）")
         return {n: cache.get(n) for n in names if cache.get(n)}, missing
 
     try:
@@ -194,7 +212,11 @@ def fetch_klines(names, no_fetch=False):
                     time.sleep(1.0)
         if bars:
             cache[name] = bars
-            print(f"  [{i}/{len(need)}] {name:<6} {code}  {len(bars)} 根  末条 {bars[-1]['date']}")
+            flag = ""
+            if data_date and str(bars[-1]["date"]) < str(data_date):
+                flag = f"  ⚠️ 仍落后数据日 {data_date}"
+                missing.append(f"{name}：抓取后末条 {bars[-1]['date']} 仍 < 数据日 {data_date}（源未出当日 K 线）")
+            print(f"  [{i}/{len(need)}] {name:<6} {code}  {len(bars)} 根  末条 {bars[-1]['date']}{flag}")
         time.sleep(0.35)
 
     save_both("sector_kline_cache.json", cache)
@@ -592,7 +614,7 @@ def main():
         want = {s.strip() for s in args.sectors.split(",") if s.strip()}
         names = [n for n in names if n in want]
 
-    klines, missing = fetch_klines(names, no_fetch=args.no_fetch)
+    klines, missing = fetch_klines(names, no_fetch=args.no_fetch, data_date=data_date)
 
     # 资金分位（当日 31 个板块内）
     flows = [it.get("flow_yi") or 0 for it in items_in]

@@ -1,74 +1,100 @@
 {
-  "generated_at": "2026-09-18 08:48",
-  "session": "preopen",
-  "data_date": "2026-09-17",
-  "for_date": "2026-09-18",
+  "generated_at": "2026-09-18 22:01",
+  "session": "close",
+  "data_date": "2026-09-18",
+  "for_date": "2026-09-21",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-09-18"
+    "2026-09-19",
+    "2026-09-20",
+    "2026-09-21"
   ],
-  "span_days": 1,
+  "span_days": 3,
   "display_days": [
-    "2026-09-17",
-    "2026-09-18"
+    "2026-09-18",
+    "2026-09-19",
+    "2026-09-20",
+    "2026-09-21"
   ],
-  "display_text": "09/17 + 09/18",
-  "span_is_weekend_cross": false,
-  "span_text": "09/18",
+  "display_text": "09/18–09/21",
+  "span_is_weekend_cross": true,
+  "span_text": "09/19–09/21",
   "carry": {
-    "from_data_date": "2026-09-17",
-    "ref": "output/feed_review_2026-09-16.json",
+    "from_data_date": "2026-09-18",
+    "ref": "output/feed_review_2026-09-17.json",
     "exists": true,
-    "gap_days": 1,
+    "gap_days": 3,
     "stale": true,
     "bias": "偏多",
-    "bias_score": 2,
+    "bias_score": 3,
     "t1_focus": [
-      "跟踪金钻起涨 7 只回踩确认"
+      "跟踪金钻起涨 7 只回踩确认",
+      "日常投喂·其他·复利杯实盘大赛0917高手追踪 与信号共振，重点跟踪 ['科翔股份(sz300903·TOP2)', '哈药股份(sh600664·红区黄柱连续4天)']"
     ],
-    "risks": [],
+    "risks": [
+      "投喂语料含负面信息，注意相关个股避险"
+    ],
     "headline": ""
   },
   "layers": {
-    "base": "2026-09-17 A股收盘（基准层）",
-    "overnight": "美东 2026-09-17 收盘（北京 2026-09-18 早间到达）",
-    "premarket": "2026-09-18 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-09-18 A股收盘（基准层）",
+    "overnight": "美东 2026-09-18 收盘（北京 2026-09-19 早间到达）",
+    "premarket": "2026-09-21 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-09-17",
+    "date": "2026-09-18",
     "run_date": "2026-09-18",
-    "preopen_partial": true,
+    "preopen_partial": null,
     "us_kline": true,
     "asia": true
   },
   "covered": [
     {
-      "date": "2026-09-17",
-      "weekday": "周四",
-      "is_trading_day": true,
-      "news": 691,
-      "feeds": 3,
-      "reports": 1092,
-      "macro": true
-    },
-    {
       "date": "2026-09-18",
       "weekday": "周五",
       "is_trading_day": true,
-      "news": 679,
+      "news": 695,
       "feeds": 0,
-      "reports": 82,
+      "reports": 777,
       "macro": true
+    },
+    {
+      "date": "2026-09-19",
+      "weekday": "周六",
+      "is_trading_day": false,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    },
+    {
+      "date": "2026-09-20",
+      "weekday": "周日",
+      "is_trading_day": false,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    },
+    {
+      "date": "2026-09-21",
+      "weekday": "周一",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
     }
   ],
   "totals": {
-    "news": 1370,
-    "feeds": 3,
-    "reports": 1174,
-    "covered_days": 2
+    "news": 695,
+    "feeds": 0,
+    "reports": 777,
+    "covered_days": 4
   },
   "missing": [
-    "承接层滞后：output/feed_review_2026-09-16.json 非基准日 2026-09-17 那份（回退使用）"
+    "market_thermometer.json 数据日 2026-09-17 落后于基准日 2026-09-18",
+    "承接层滞后：output/feed_review_2026-09-17.json 非基准日 2026-09-18 那份（回退使用）"
   ]
 }
