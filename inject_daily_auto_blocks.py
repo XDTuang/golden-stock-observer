@@ -55,8 +55,12 @@ JS_BLOCK = r"""
 // ===== 自动宏观 + 新闻池渲染（2026-08-28 新增 · 只读 · 独立于 agent 手写区）=====
 function drLoadAutoBlocks() {
   var esc2 = function(s){ return (s == null ? '' : String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
-  // ① 宏观日历
-  fetch('output/daily_macro_latest.json').then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }).then(function(d){
+  // ① 宏观（2026-09-18 重构：经济日历主源 + 新闻兜底 + 时效标注）
+  //    背景：原实现只从新闻池抽取，而新闻池含 400 条历史（回溯至 2025-01），
+  //    无时间窗 → 抽到 36/77 天前的旧闻；9/11 公布的 8 月 CPI 与 9/4 公布的
+  //    8 月非农全被漏掉。现改由 fetch_daily_macro.py 产出 calendar 轨（权威）
+  //    + indicators 轨（近 7 日兜底），前端显示「M/D 公布 · N 天前」。
+  fetch('output/daily_macro_latest.json?_=' + Date.now()).then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }).then(function(d){
     var el = document.getElementById('drMacroBody'); if (!el) return;
     document.getElementById('drMacroDate').textContent = '数据日期 ' + (d.date || '—') + ' · ' + (d.generated_at || '');
     var c = d.china || {}; var h = '<div class="dr-note"><b>中国宏观（akshare 主源）</b></div>';
@@ -67,23 +71,67 @@ function drLoadAutoBlocks() {
       h += '<div class="dr-note">' + k + '：' + s + '</div>';
     };
     row('PMI', c.pmi); row('GDP', c.gdp); row('CPI', c.cpi); row('LPR', c.lpr);
-    var us = (d.us || {}).indicators || {};
-    var usHits = Object.keys(us).filter(function(k){ return us[k] && us[k].length; });
-    if (usHits.length) {
-      h += '<div class="dr-h">美国宏观（新闻源抽取 · best-effort）</div>';
-      usHits.forEach(function(k){
-        var items = us[k] || [];
+    var usObj = d.us || {};
+    var ageStyle = function(a){
+      if (a == null) return '';
+      if (a > 30) return ' style="color:var(--green,#16a34a)"';
+      if (a > 10) return ' style="color:var(--orange,#f59e0b)"';
+      return '';
+    };
+    var ageTxt = function(r0){
+      var a = (r0.days_ago == null ? null : Number(r0.days_ago));
+      return '<span class="dr-tag"' + ageStyle(a) + '>' + esc2(String(r0.release_date || '').slice(5)) +
+             ' 公布 · ' + (a == null ? '—' : a + ' 天前') + '</span>';
+    };
+    // ── 轨A：经济日历（最新公布值 · 带公布日/预期/前值）──
+    var calObj = usObj.calendar || {};
+    var cal = calObj.indicators || {};
+    var calKeys = Object.keys(cal);
+    if (calKeys.length) {
+      h += '<div class="dr-h">美国宏观 · 最新公布（百度经济日历）</div>';
+      calKeys.forEach(function(k){
+        var items = cal[k] || []; if (!items.length) return;
+        var r0 = items[0];
+        var vals = items.map(function(it){
+          var s = '<b>' + esc2(it.value || '—') + '</b>';
+          if (it.forecast) s += ' <span style="color:var(--text-muted,#9ca3b8)">(预期 ' + esc2(it.forecast) + ')</span>';
+          if (it.previous) s += ' <span style="color:var(--text-muted,#9ca3b8)">(前值 ' + esc2(it.previous) + ')</span>';
+          return s;
+        }).join('；');
+        var star = (Number(r0.importance) >= 2) ? ' <span class="dr-tag">★★</span>' : '';
+        h += '<div class="dr-note"><b>' + esc2(k) + '</b>：' + vals + ' ' + ageTxt(r0) + star + '</div>';
+      });
+      if (calObj.lookback_used_to) {
+        h += '<div class="dr-tag">月频指标回溯至 ' + esc2(calObj.lookback_used_to) + '（共拉取 ' + (calObj.days_fetched || '—') + ' 日）</div>';
+      }
+    } else if (calObj.error) {
+      h += '<div class="dr-h">美国宏观 · 经济日历不可用</div>' +
+           '<div class="dr-note" style="color:var(--orange,#f59e0b)">⚠️ ' + esc2(calObj.error) + '（已降级为新闻源）</div>';
+    }
+    // ── 轨B：新闻源（近 7 日兜底 + 定性补充；窗口内无命中不充数）──
+    var ind = usObj.indicators || {};
+    var hits = Object.keys(ind).filter(function(k){ return ind[k] && ind[k].length; });
+    if (hits.length) {
+      h += '<div class="dr-h">美国宏观 · 近 7 日新闻源（兜底）</div>';
+      hits.forEach(function(k){
+        var items = ind[k] || [];
         h += '<div class="dr-note"><b>' + esc2(k) + '</b>：' + items.slice(0,2).map(function(it){
-          return esc2(((it.evidence || [])[0] || '')) + ' <span class="dr-tag">[' + esc2(it.source) + ']</span>';
+          var a = (it.days_ago == null ? null : Number(it.days_ago));
+          return esc2(((it.evidence || [])[0] || '')) + ' <span class="dr-tag">[' + esc2(it.source) + ']</span>' +
+                 (a == null ? '' : '<span class="dr-tag"' + ageStyle(a) + '>' + a + ' 天前</span>');
         }).join('；') + '</div>';
       });
+    }
+    var stale = usObj.stale || [];
+    if (stale.length) {
+      h += '<div class="dr-note" style="color:var(--text-muted,#9ca3b8);font-size:12px">近 7 日无新闻更新的指标：' + esc2(stale.join(' / ')) + '</div>';
     }
     el.innerHTML = h;
   }).catch(function(e){
     var el = document.getElementById('drMacroBody'); if (el) el.innerHTML = '<p class="dr-note">宏观数据加载失败：' + e + '</p>';
   });
   // ② 新闻池（按标签取前 6 条）
-  fetch('output/daily_news_latest.json').then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }).then(function(d){
+  fetch('output/daily_news_latest.json?_=' + Date.now()).then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }).then(function(d){
     var el = document.getElementById('drNewsBody'); if (!el) return;
     document.getElementById('drNewsDate').textContent = '数据日期 ' + (d.date || '—') + ' · 共 ' + (d.total || 0) + ' 条 · ' + (d.generated_at || '');
     var tags = ['宏观', '科技', '政策', '产业'];
@@ -104,7 +152,7 @@ function drLoadAutoBlocks() {
     var el = document.getElementById('drNewsBody'); if (el) el.innerHTML = '<p class="dr-note">新闻池加载失败：' + e + '</p>';
   });
   // ③ 推演回测摘要（2026-08-28 新增 · 数据源 output/backtest_daily.json）
-  fetch('output/backtest_daily.json').then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }).then(function(d){
+  fetch('output/backtest_daily.json?_=' + Date.now()).then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }).then(function(d){
     var el = document.getElementById('drBacktestBody'); if (!el) return;
     var lt = d.latest || {};
     document.getElementById('drBacktestDate').textContent = lt.date ? '推演日 ' + lt.date + ' · ' + (d.updated_at || '') : '';
@@ -161,19 +209,25 @@ def inject(path):
     else:
         print(f"⏭️ {path}: 自动区块（含回测）已存在")
 
-    # ② JS 渲染函数（2026-08-28: 升级式——含回测段的 drLoadAutoBlocks）
-    if "// ③ 推演回测摘要" not in idx:
+    # ② JS 渲染函数（2026-09-18 改为「比对后替换」= 可升级）
+    #    🔴 原判据 `if "// ③ 推演回测摘要" not in idx` 是「已存在则跳过」 ——
+    #       一旦 JS_BLOCK 本身被改进（如今日新增经济日历轨 + 时效标注），
+    #       注入器会**静默跳过**，改动永远上不了线（2026-09-18 实测踩到）。
+    #       现改为：先比对内容，不一致则「先删旧块 → 再插新块」，与 ① 的范式一致。
+    _js_re = re.compile(r'// ===== 自动宏观 \+ 新闻池渲染.*?(?=\n// JavaScript 七信号引擎)', re.S)
+    _m = _js_re.search(idx)
+    _old_js = _m.group(0) if _m else ''
+    _new_js = JS_BLOCK[:JS_BLOCK.rfind(JS_ANCHOR)].rstrip()
+    if _old_js.strip() == _new_js.strip():
+        print(f"⏭️ {path}: drLoadAutoBlocks JS 已是最新（{len(_new_js)} 字符）")
+    else:
+        idx = _js_re.sub('', idx)
         if JS_ANCHOR in idx:
-            _js_re = re.compile(r'// ===== 自动宏观 \+ 新闻池渲染.*?(?=\n// JavaScript 七信号引擎)', re.S)
-            _idx3 = _js_re.sub('', idx)
-            _idx3 = _idx3.replace(JS_ANCHOR, JS_BLOCK, 1)
+            idx = idx.replace(JS_ANCHOR, JS_BLOCK, 1)
             changed = True
-            print(f"✅ {path}: 已插入/升级 drLoadAutoBlocks JS（含回测渲染）")
-            idx = _idx3
+            print(f"✅ {path}: drLoadAutoBlocks JS 已升级（{len(_old_js)} → {len(_new_js)} 字符）")
         else:
             print(f"⚠️ {path}: 未找到七信号引擎锚点，跳过 JS 注入")
-    else:
-        print(f"⏭️ {path}: drLoadAutoBlocks JS（含回测）已存在")
 
     # ③ 调用行
     if CALL_ANCHOR in idx and CALL_LINE.strip() not in idx:

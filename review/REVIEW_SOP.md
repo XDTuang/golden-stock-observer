@@ -254,15 +254,33 @@ cp data/daily_review/market.json  deploy/data/daily_review/market.json
 
 **自检**
 ```bash
-python3 review/check_analysis_style.py   # 老站排版：必须全过（[0] BOM + [9/12] 未定义类 + [10/12] 空转引用 + [11/12] 段落顺序/段号 + [12/12] 静态容器 loader）
-python3 review/check_v3_style.py         # V3 独立版：四副本一致性 + 语义色 + 兜底（必须全过）
-python3 review/check_market_json.py      # 数据完整性：us_kline 不得有 null close（必须 ✅）
-python3 review/check_review_dates.py     # 归档命名：文件名=复盘日 & for_date=下一交易日（必须 ✅）
-python3 review/check_sector_tech.py      # 板块技术研判（2026-09-17 增）：价格单调性 support<现价<resistance + L4/L3 必带具体价位 + 档位/趋势字面值 ⊆ 权威集合 + 7.1b 段与 CSS 在位（各 1 次）+ 根/deploy md5（必须 ✅）
+python3 review/check_analysis_style.py     # 老站排版：必须全过（[0] BOM + [9/12] 未定义类 + [10/12] 空转引用 + [11/12] 段落顺序/段号 + [12/12] 静态容器 loader）
+python3 review/check_v3_style.py           # V3 独立版 10 项：四副本一致性 + 语义色 + 兜底 + [10/10] 富文本白名单 rich（必须全过）
+python3 review/check_market_json.py        # 数据完整性：us_kline 不得有 null close + 「美股医疗 10 只」静默丢失守卫（必须 ✅）
+python3 review/check_macro_freshness.py    # 🆕 宏观日志时效（2026-09-18 增）：日历轨（百度经济日历）须含「CPI 同比」「非农」+ 各指标龄期合规（月频 ≤40 天 / 周频 ≤14 天）+ 新闻轨 ≤7 天 + stale 自洽 + 根↔deploy 双写一致（必须 ✅）
+python3 review/check_review_dates.py       # 归档命名：文件名=复盘日 & for_date=下一交易日（必须 ✅）
+python3 review/check_sector_tech.py        # 板块技术研判（2026-09-17 增）：价格单调性 support<现价<resistance + L4/L3 必带具体价位 + 档位/趋势字面值 ⊆ 权威集合 + 7.1b 段与 CSS 在位（各 1 次）+ 根/deploy md5（必须 ✅）
+python3 review/build_us_medical.py --check # 3 段末尾「美股医疗/CXO 映射」块在位（🔴 3 段重写后必跑）
+python3 review/patch_news_pool.py --check  # 新闻池块 5 副本一致
+python3 review/patch_v3_richtext.py --check # V3 rich 白名单块 4 副本一致
 ```
 
-> 🔴 **门禁清单以本节为准（当前 = 五道）**。任一道红灯 → 先修再谈推送，**不带伤推送**。
-> `check_sector_tech.py` 反向测试 10 场景（5 类产物 + 5 类页面呈现）全部按预期拦截。
+> 🔴 **门禁清单以本节为准（当前 = 九道）**。任一道红灯 → 先修再谈推送，**不带伤推送**。
+> `check_sector_tech.py` 反向测试 10 场景（5 类产物 + 5 类页面呈现）全部按预期拦截；
+> `check_macro_freshness.py` / `build_us_medical.py --check` 亦均通过反向测试。
+>
+> 🆕 **2026-09-18 · 宏观日志「信息过期不自更新」修复（用户报障）**
+> **症状**：4 段「美国宏观（新闻源抽取）」长期显示 8/13 的「7月CPI」与 7/3 的「6月非农」。
+> **根因**：新闻源 `stock_info_cjzc_em`（财经早餐）返回 **400 条历史**（时间回溯至 2025-01-23），
+> 抽取侧**无时间窗** → 命中最早的条目 → 「有值但永远旧」的静默冻结；而 9/11 公布的 8 月 CPI（3.4%）、
+> 9/4 公布的 8 月非农（16.2 万）全被漏掉。
+> **治本**：`fetch_daily_macro.py` 重构为三轨 ——
+> **轨A（主源）** = `news_economic_baidu` 百度经济日历，按**公布日**逐日拉取，得「事件/公布/预期/前值/重要性」；
+> 窗口策略：先拉近 7 天，关键月频指标（CPI 同比 / 非农）**未全部命中**则自动回看至多 30 天（实测 15 天命中，耗时 15–20 秒）；
+> **轨B（兜底）** = 新闻抽取，强制时间窗（7 天）+ 时间倒序 + **证据质量门**（句子须含数字且含指标关键词，杜绝「非农命中却给出无关证据」）；
+> **轨C** = 每条带 `release_date`/`days_ago`/`is_fresh`，前端显示「M/D 公布 · N 天前」（>10 天橙色 / >30 天绿色），窗口内无命中则列入 `stale` 并显式标注「无更新」，**不拿旧闻充数**。
+> **配套**：前端渲染由 `inject_daily_auto_blocks.py` 统一注入（三处 index），三处 `fetch` 均加 `?_=` + `Date.now()` **缓存穿透**（防浏览器/CDN 缓存旧 JSON —— 本次实测中本地预览确实读到了缓存）。
+> **踩坑**：① `inject_daily_auto_blocks.py` 的 JS 注入原为「已存在则跳过」→ 改 JS 后**静默不生效**，已改为「比对后替换」；② 日历正则须用 `(?!.*核心)` 排除，否则「CPI 同比」会取到核心 CPI 值；③ 回看判据原为「任一关键指标命中即停」→ 导致 CPI 命中后漏掉非农，已改为 `all(...)`。
 
 > 🔴 **2026-09-16 · 按日归档的日期口径（用户拍板：文件名按复盘日，指引日为下一交易日）**
 > **规则**：归档件文件名日期 = **复盘日 = `data_date`**（该份复盘在复的那一天）；**`for_date`（指引日）= 复盘日的下一交易日**。
