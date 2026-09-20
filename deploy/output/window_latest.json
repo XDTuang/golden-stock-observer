@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-18 22:01",
+  "generated_at": "2026-09-20 22:03",
   "session": "close",
   "data_date": "2026-09-18",
   "for_date": "2026-09-21",
@@ -22,19 +22,16 @@
   "span_text": "09/19–09/21",
   "carry": {
     "from_data_date": "2026-09-18",
-    "ref": "output/feed_review_2026-09-17.json",
+    "ref": "output/feed_review_2026-09-18.json",
     "exists": true,
     "gap_days": 3,
-    "stale": true,
+    "stale": false,
     "bias": "偏多",
-    "bias_score": 3,
+    "bias_score": 2,
     "t1_focus": [
-      "跟踪金钻起涨 7 只回踩确认",
-      "日常投喂·其他·复利杯实盘大赛0917高手追踪 与信号共振，重点跟踪 ['科翔股份(sz300903·TOP2)', '哈药股份(sh600664·红区黄柱连续4天)']"
+      "跟踪金钻起涨 6 只回踩确认"
     ],
-    "risks": [
-      "投喂语料含负面信息，注意相关个股避险"
-    ],
+    "risks": [],
     "headline": ""
   },
   "layers": {
@@ -44,7 +41,7 @@
   },
   "market_state": {
     "date": "2026-09-18",
-    "run_date": "2026-09-18",
+    "run_date": "2026-09-20",
     "preopen_partial": null,
     "us_kline": true,
     "asia": true
@@ -56,7 +53,7 @@
       "is_trading_day": true,
       "news": 695,
       "feeds": 0,
-      "reports": 777,
+      "reports": 926,
       "macro": true
     },
     {
@@ -65,17 +62,17 @@
       "is_trading_day": false,
       "news": 0,
       "feeds": 0,
-      "reports": 0,
+      "reports": 272,
       "macro": false
     },
     {
       "date": "2026-09-20",
       "weekday": "周日",
       "is_trading_day": false,
-      "news": 0,
+      "news": 688,
       "feeds": 0,
-      "reports": 0,
-      "macro": false
+      "reports": 352,
+      "macro": true
     },
     {
       "date": "2026-09-21",
@@ -88,13 +85,10 @@
     }
   ],
   "totals": {
-    "news": 695,
+    "news": 1383,
     "feeds": 0,
-    "reports": 777,
+    "reports": 1550,
     "covered_days": 4
   },
-  "missing": [
-    "market_thermometer.json 数据日 2026-09-17 落后于基准日 2026-09-18",
-    "承接层滞后：output/feed_review_2026-09-17.json 非基准日 2026-09-18 那份（回退使用）"
-  ]
+  "missing": []
 }
