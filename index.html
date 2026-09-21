@@ -1473,6 +1473,10 @@ html { scroll-behavior: smooth; }
 .dr-tbl td{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:normal;word-break:break-word;overflow-wrap:anywhere;min-width:0}
 .dr-tbl th:first-child,.dr-tbl td:first-child{text-align:left}
 .dr-tbl th{color:var(--text-muted);font-weight:600}
+/* 🔴 2026-09-18 防御：禁止 <td> 被 .dr-tag 的 display:inline-block 影响 ——
+   analysis.html 注入的 .dr-tag{display:inline-block} 会让 td 脱离表格布局，
+   实测导致列宽崩溃（判定列 40px、含义列与判定列 left 重叠）。 */
+.dr-tbl td.dr-tag{display:table-cell;background:none;border-radius:0;padding:5px 9px;margin:0;font-size:12.5px}
 .dr-up{color:var(--red)}.dr-dn{color:var(--green)}
 .dr-tag{font-size:11px;color:var(--text-muted)}
 /* 2026-09-16 新闻池「更多」按钮（按日分组 · 每天收敛展示 DR_NEWS_SHOW_N 条后递增展开） */
@@ -1501,6 +1505,19 @@ tr.dr-hl3 td{background:rgba(212,175,55,.08)}
     <button id="drFeedBtn" style="font-size:12px;padding:4px 12px;border-radius:14px;border:1px solid var(--border);background:var(--bg-card);color:var(--text);cursor:pointer;white-space:nowrap">📥 投喂</button>
   </div>
   <p class="dr-note" id="drFeedReviewBody">投喂复盘加载中…</p>
+</div>
+<!-- Tab: 自动宏观日历 + 自动新闻池 + 推演回测（2026-08-28 新增 · 只读 · 独立于 agent 手写区） -->
+<div class="dr-card" id="drAutoBacktest">
+  <div class="dr-h">🎯 推演回测（昨日推演 vs 实际）<span class="dr-tag" id="drBacktestDate"></span></div>
+  <p class="dr-note" id="drBacktestBody">回测加载中…</p>
+</div>
+<div class="dr-card" id="drAutoMacro">
+  <div class="dr-h">📊 自动宏观日历 <span class="dr-tag" id="drMacroDate"></span></div>
+  <p class="dr-note" id="drMacroBody">宏观数据加载中…</p>
+</div>
+<div class="dr-card" id="drAutoNews">
+  <div class="dr-h">📰 自动新闻池 <span class="dr-tag" id="drNewsDate"></span></div>
+  <p class="dr-note" id="drNewsBody">新闻池加载中…</p>
 </div>
 
 </div>

@@ -1,100 +1,78 @@
 {
   "date": "2026-09-21",
-  "data_date": "2026-09-18",
-  "generated_at": "2026-09-21 21:35",
+  "data_date": "2026-09-21",
+  "generated_at": "2026-09-21 22:02",
   "news_date": "",
   "news_window": [
-    "2026-09-18",
-    "2026-09-19",
-    "2026-09-20",
-    "2026-09-21"
+    "2026-09-21",
+    "2026-09-22"
   ],
-  "news_window_days": 4,
+  "news_window_days": 2,
   "flow_date": "2026-09-21",
   "flow_raw_latest": "2026-09-21",
   "flow_is_weekend_copy": false,
   "hot_per_day": 8,
-  "hot_threshold": 32,
+  "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-09-20 22:03",
+    "generated_at": "2026-09-21 22:02",
     "session": "close",
-    "data_date": "2026-09-18",
-    "for_date": "2026-09-21",
+    "data_date": "2026-09-21",
+    "for_date": "2026-09-22",
     "data_date_note": "",
     "warnings": [],
     "span": [
-      "2026-09-19",
-      "2026-09-20",
-      "2026-09-21"
+      "2026-09-22"
     ],
-    "span_days": 3,
+    "span_days": 1,
     "display_days": [
-      "2026-09-18",
-      "2026-09-19",
-      "2026-09-20",
-      "2026-09-21"
+      "2026-09-21",
+      "2026-09-22"
     ],
-    "display_text": "09/18–09/21",
-    "span_is_weekend_cross": true,
-    "span_text": "09/19–09/21",
+    "display_text": "09/21 + 09/22",
+    "span_is_weekend_cross": false,
+    "span_text": "09/22",
     "carry": {
-      "from_data_date": "2026-09-18",
-      "ref": "output/feed_review_2026-09-18.json",
+      "from_data_date": "2026-09-21",
+      "ref": "output/feed_review_2026-09-21.json",
       "exists": true,
-      "gap_days": 3,
+      "gap_days": 1,
       "stale": false,
       "bias": "偏多",
       "bias_score": 2,
       "t1_focus": [
-        "跟踪金钻起涨 6 只回踩确认"
+        "跟踪金钻起涨 5 只回踩确认"
       ],
-      "risks": [],
+      "risks": [
+        "金钻命中多为红区黄柱（蓄势非启动），大盘转弱易集体哑火"
+      ],
       "headline": ""
     },
     "layers": {
-      "base": "2026-09-18 A股收盘（基准层）",
-      "overnight": "美东 2026-09-18 收盘（北京 2026-09-19 早间到达）",
-      "premarket": "2026-09-21 今早日韩实时 + 盘前新闻/投喂增量"
+      "base": "2026-09-21 A股收盘（基准层）",
+      "overnight": "美东 2026-09-21 收盘（北京 2026-09-22 早间到达）",
+      "premarket": "2026-09-22 今早日韩实时 + 盘前新闻/投喂增量"
     },
     "market_state": {
-      "date": "2026-09-18",
-      "run_date": "2026-09-20",
+      "date": "2026-09-21",
+      "run_date": "2026-09-21",
       "preopen_partial": null,
       "us_kline": true,
       "asia": true
     },
     "covered": [
       {
-        "date": "2026-09-18",
-        "weekday": "周五",
-        "is_trading_day": true,
-        "news": 695,
-        "feeds": 0,
-        "reports": 926,
-        "macro": true
-      },
-      {
-        "date": "2026-09-19",
-        "weekday": "周六",
-        "is_trading_day": false,
-        "news": 0,
-        "feeds": 0,
-        "reports": 272,
-        "macro": false
-      },
-      {
-        "date": "2026-09-20",
-        "weekday": "周日",
-        "is_trading_day": false,
-        "news": 688,
-        "feeds": 0,
-        "reports": 352,
-        "macro": true
-      },
-      {
         "date": "2026-09-21",
         "weekday": "周一",
+        "is_trading_day": true,
+        "news": 697,
+        "feeds": 0,
+        "reports": 890,
+        "macro": true
+      },
+      {
+        "date": "2026-09-22",
+        "weekday": "周二",
         "is_trading_day": true,
         "news": 0,
         "feeds": 0,
@@ -103,42 +81,44 @@
       }
     ],
     "totals": {
-      "news": 1383,
+      "news": 697,
       "feeds": 0,
-      "reports": 1550,
-      "covered_days": 4
+      "reports": 890,
+      "covered_days": 2
     },
-    "missing": []
+    "missing": [
+      "market_thermometer.json 数据日 2026-09-18 落后于基准日 2026-09-21"
+    ]
   },
   "index_context": {
     "上证指数": {
-      "close": "3911.87",
-      "chg_pct": "0.94"
+      "close": "3949.91",
+      "chg_pct": "0.97"
     },
     "深证成指": {
-      "close": "13640.87",
-      "chg_pct": "1.72"
+      "close": "13730.02",
+      "chg_pct": "0.65"
     },
     "创业板指": {
-      "close": "3372.68",
-      "chg_pct": "2.25"
+      "close": "3399.59",
+      "chg_pct": "0.80"
     },
     "科创50": {
-      "close": "1652.63",
-      "chg_pct": "2.88"
+      "close": "1657.48",
+      "chg_pct": "0.29"
     }
   },
   "summary": {
-    "共振": 10,
+    "共振": 11,
     "背离": 5,
-    "暗线": 9,
+    "暗线": 8,
     "双冷": 7
   },
   "items": [
     {
       "sector": "医药生物",
-      "news_count": 36,
-      "news_per_day": 9.0,
+      "news_count": 17,
+      "news_per_day": 8.5,
       "flow_yi": 67.42,
       "verdict": "共振",
       "verdict_raw": "真共振",
@@ -152,8 +132,8 @@
     },
     {
       "sector": "电子",
-      "news_count": 155,
-      "news_per_day": 38.75,
+      "news_count": 109,
+      "news_per_day": 54.5,
       "flow_yi": -42.95,
       "verdict": "背离",
       "verdict_raw": "背离",
@@ -161,44 +141,44 @@
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
         "【“十五五”开好局起好步】我国加快建立现代化粮食流通体系",
-        "英特尔盘初涨10%",
-        "美股三大指数集体高开 英特尔涨超9%"
+        "【捷捷微电：目前有少量碳化硅器件的封测 尚未进入量产阶段】捷捷微电9月21日",
+        "消息称三星HBM4产能明年或翻倍"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 46,
-      "news_per_day": 11.5,
+      "news_count": 26,
+      "news_per_day": 13.0,
       "flow_yi": 23.38,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "英特尔盘初涨10%",
-        "【美股光通信股开盘普涨】Lumentum涨2.85%，康宁涨3.89%，Co",
-        "【卫星数据显示沙特海湾原油装船量增加】上周末，监测显示沙特阿拉伯在波斯湾内的"
+        "美股光通信股走高，Astera Labs涨超7%，Credo涨超6%，Lum",
+        "【捷捷微电：目前有少量碳化硅器件的封测 尚未进入量产阶段】捷捷微电9月21日",
+        "英特尔盘初涨10%"
       ]
     },
     {
       "sector": "有色金属",
-      "news_count": 71,
-      "news_per_day": 17.75,
+      "news_count": 53,
+      "news_per_day": 26.5,
       "flow_yi": -22.3,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "关键金属股开盘飙升32%，美国稀土上涨9%。",
         "美国银行表示铝价在未来几周可能反弹",
-        "美国银行：铝价在未来几周可能反弹，但明年将面临下行压力。"
+        "美国银行：铝价在未来几周可能反弹，但明年将面临下行压力。",
+        "美国银行：预计今年铝市场将出现供应短缺，明年则转为小幅过剩；随着更多印尼供应"
       ]
     },
     {
       "sector": "基础化工",
-      "news_count": 5,
-      "news_per_day": 1.25,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": 13.74,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -206,29 +186,28 @@
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
         "智算中心上演交付竞赛，算电协同迎来双向基建大考",
-        "东方财富财经早餐 5月28日周三",
-        "维尔利签约国家能源集团准东煤制天然气高含盐水处理成套设备项目"
+        "东方财富财经早餐 5月28日周三"
       ]
     },
     {
       "sector": "电力设备",
-      "news_count": 41,
-      "news_per_day": 10.25,
+      "news_count": 33,
+      "news_per_day": 16.5,
       "flow_yi": -13.69,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "国轩高科发布低空飞行高功率星晨电池",
+        "【捷捷微电：目前有少量碳化硅器件的封测 尚未进入量产阶段】捷捷微电9月21日",
         "安联：预计未来十年 全球在发电、输电和储能领域每年或需投资约4.8万亿美元",
         "美联储古尔斯比：只要没有更多证据表明需求过热 对美联储能够重回2%通胀目标路"
       ]
     },
     {
       "sector": "非银金融",
-      "news_count": 44,
-      "news_per_day": 11.0,
+      "news_count": 31,
+      "news_per_day": 15.5,
       "flow_yi": 12.87,
       "verdict": "共振",
       "verdict_raw": "真共振",
@@ -253,22 +232,22 @@
     },
     {
       "sector": "计算机",
-      "news_count": 117,
-      "news_per_day": 29.25,
+      "news_count": 66,
+      "news_per_day": 33.0,
       "flow_yi": 10.31,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "英特尔盘初涨10%",
-        "【谷歌宣布推出Googlebook，起售价899美元】9月21日，Alpha",
-        "戴尔科技推出XPS Googlebook：首款为谷歌Gemini大模型打造的"
+        "市场消息：尚不清楚 OpenAI 与 Anthropic 是否达成协议。",
+        "【OpenAI与Anthropic曾接近达成协议，互相开展 AI 压力测试】",
+        "市场消息： OpenAI 与 Anthropic 今年已就压力测试事宜展开讨"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 38,
+      "news_count": 19,
       "news_per_day": 9.5,
       "flow_yi": -8.91,
       "verdict": "背离",
@@ -276,45 +255,45 @@
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
+        "【捷捷微电：目前有少量碳化硅器件的封测 尚未进入量产阶段】捷捷微电9月21日",
         "2025年全球售出约7000台人形机器人",
-        "硬科技IPO或将收紧？年内总募资已超5000亿元",
-        "中亿具身完成近亿元天使轮融资"
+        "硬科技IPO或将收紧？年内总募资已超5000亿元"
       ]
     },
     {
       "sector": "房地产",
-      "news_count": 30,
-      "news_per_day": 7.5,
+      "news_count": 20,
+      "news_per_day": 10.0,
       "flow_yi": 8.87,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
+        "【湖北：鼓励各市（州）大力开展金秋购房季活动，结合实际实施购房补贴】湖北省人",
         "全国住房城乡建设系统法治工作视频会议暨“九五”普法工作部署会议召开",
-        "东方财富财经早餐 8月31日周一",
-        "东方财富财经早餐 8月25日周二"
+        "东方财富财经早餐 8月31日周一"
       ]
     },
     {
       "sector": "汽车",
-      "news_count": 59,
-      "news_per_day": 14.75,
+      "news_count": 37,
+      "news_per_day": 18.5,
       "flow_yi": 8.74,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "【美股开盘：三大股指齐涨】道指涨0.60%，标普500指数涨0.61%，纳指",
-        "美股开盘：美股三大指数集体高开",
-        "美股开市：纳指涨0.76%，英特尔涨超7%"
+        "【捷捷微电：目前有少量碳化硅器件的封测 尚未进入量产阶段】捷捷微电9月21日",
+        "西安比亚迪急招近万工人 应聘最高奖励6000元",
+        "美股开盘：美股三大指数集体高开"
       ]
     },
     {
       "sector": "银行",
-      "news_count": 38,
-      "news_per_day": 9.5,
+      "news_count": 23,
+      "news_per_day": 11.5,
       "flow_yi": 8.12,
       "verdict": "共振",
       "verdict_raw": "真共振",
@@ -328,38 +307,36 @@
     },
     {
       "sector": "传媒",
-      "news_count": 45,
-      "news_per_day": 11.25,
+      "news_count": 33,
+      "news_per_day": 16.5,
       "flow_yi": 5.43,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
+        "Meta盘初拉升涨超6%，旗下Muse智能体爆火",
         "谷歌瞄准高端笔记本市场，推出售价899美元的Googlebook",
-        "标普：AI应用将影响银行信用评级",
-        "硬科技IPO或将收紧？年内总募资已超5000亿元"
+        "标普：AI应用将影响银行信用评级"
       ]
     },
     {
       "sector": "煤炭",
-      "news_count": 5,
-      "news_per_day": 1.25,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": 3.97,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "东方财富财经早餐 8月11日周二",
-        "今年前8个月国家铁路发送货物26.9亿吨",
-        "【国内期货夜盘开盘】钯连续涨2.37%，碳酸锂连续跌2.27%，焦煤连续跌2"
+        "东方财富财经早餐 8月11日周二"
       ]
     },
     {
       "sector": "农林牧渔",
-      "news_count": 28,
-      "news_per_day": 7.0,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": -3.87,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -373,23 +350,23 @@
     },
     {
       "sector": "国防军工",
-      "news_count": 50,
-      "news_per_day": 12.5,
+      "news_count": 19,
+      "news_per_day": 9.5,
       "flow_yi": 3.25,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "【卫星数据显示沙特海湾原油装船量增加】上周末，监测显示沙特阿拉伯在波斯湾内的",
-        "伊朗称在霍尔木兹海峡击落一架美军MQ-1无人机",
-        "美国政府报告称，联邦航空管理局需要采取新措施应对航空器通信面临的威胁。"
+        "【媒体：特朗普曾考虑打击也门胡塞武装，最终暂缓行动】两名美国官员透露，特朗普",
+        "美国联邦航空局发布通知，暂停前往纽瓦克机场的航班。",
+        "伊朗称在霍尔木兹海峡击落一架美军MQ-1无人机"
       ]
     },
     {
       "sector": "石油石化",
-      "news_count": 32,
-      "news_per_day": 8.0,
+      "news_count": 19,
+      "news_per_day": 9.5,
       "flow_yi": 3.23,
       "verdict": "共振",
       "verdict_raw": "真共振",
@@ -397,23 +374,23 @@
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
         "今年我国新建主干油气管道超2500公里",
-        "俄总统新闻秘书：美对俄新制裁不利于俄美关系修复",
-        "【俄总统新闻秘书：美对俄新制裁不利于俄美关系修复】俄罗斯总统新闻秘书佩斯科夫"
+        "据路透社：沙拉拉油田工程师表示，该油田原油产量已减少约20万桶/日，目前日产",
+        "俄总统新闻秘书：美对俄新制裁不利于俄美关系修复"
       ]
     },
     {
       "sector": "公用事业",
-      "news_count": 14,
-      "news_per_day": 3.5,
+      "news_count": 10,
+      "news_per_day": 5.0,
       "flow_yi": -3.07,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "新时代能源与数字股价上涨18.4%，此前公司宣布其子公司与Vistra关联公",
-        "英飞凌与Skeleton合作开发面向AI供电的固态变压器及侧挂式储能单元",
-        "国家税务总局：1—8月份 工业销售收入同比增长7.3%"
+        "湖北：发放“算力券”，提升补贴比例，将模型、词元等服务模式纳入补贴范围",
+        "【湖北：发放“算力券”，提升补贴比例，将模型、词元等服务模式纳入补贴范围】湖",
+        "英飞凌与Skeleton合作开发面向AI供电的固态变压器及侧挂式储能单元"
       ]
     },
     {
@@ -429,17 +406,14 @@
     },
     {
       "sector": "家用电器",
-      "news_count": 2,
-      "news_per_day": 0.5,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -2.39,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "中国家用电器研究院与上海海思签署合作协议",
-        "梦百合等成立智能科技公司"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "美容护理",
@@ -465,32 +439,32 @@
     },
     {
       "sector": "综合",
-      "news_count": 32,
-      "news_per_day": 8.0,
+      "news_count": 19,
+      "news_per_day": 9.5,
       "flow_yi": -1.36,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "美股三大指数集体高开 英特尔涨超9%",
-        "道琼斯指数9月21日（周一）开盘上涨316.93点，涨幅0.61%，报519",
-        "东方财富财经早餐 7月24日周五"
+        "【湖北：鼓励各市（州）大力开展金秋购房季活动，结合实际实施购房补贴】湖北省人",
+        "湖北：发放“算力券”，提升补贴比例，将模型、词元等服务模式纳入补贴范围",
+        "【湖北：发放“算力券”，提升补贴比例，将模型、词元等服务模式纳入补贴范围】湖"
       ]
     },
     {
       "sector": "食品饮料",
-      "news_count": 58,
-      "news_per_day": 14.5,
+      "news_count": 34,
+      "news_per_day": 17.0,
       "flow_yi": 1.35,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "2025年全球售出约7000台人形机器人",
-        "5连板华瓷股份：公司预计三季度业绩同比将继续下降",
-        "东方财富财经早餐 9月15日周二"
+        "湖北：发放“算力券”，提升补贴比例，将模型、词元等服务模式纳入补贴范围",
+        "【湖北：发放“算力券”，提升补贴比例，将模型、词元等服务模式纳入补贴范围】湖",
+        "2025年全球售出约7000台人形机器人"
       ]
     },
     {
@@ -506,8 +480,8 @@
     },
     {
       "sector": "钢铁",
-      "news_count": 5,
-      "news_per_day": 1.25,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": 1.08,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -532,8 +506,8 @@
     },
     {
       "sector": "交通运输",
-      "news_count": 6,
-      "news_per_day": 1.5,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -0.59,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -541,7 +515,6 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "交通运输部部长刘伟分别会见马来西亚、澳大利亚、柬埔寨客人",
-        "刘伟分别会见马来西亚、澳大利亚、柬埔寨客人",
         "东方财富财经早餐 10月14日周二"
       ]
     },
@@ -558,17 +531,14 @@
     },
     {
       "sector": "环保",
-      "news_count": 2,
-      "news_per_day": 0.5,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -0.2,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "硅基流动今年累计股权融资额近29亿元",
-        "伟明环保：中标2.81亿元垃圾焚烧发电项目"
-      ]
+      "sample_titles": []
     }
   ]
 }

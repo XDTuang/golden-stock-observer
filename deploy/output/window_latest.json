@@ -1,82 +1,62 @@
 {
-  "generated_at": "2026-09-20 22:03",
+  "generated_at": "2026-09-21 22:02",
   "session": "close",
-  "data_date": "2026-09-18",
-  "for_date": "2026-09-21",
+  "data_date": "2026-09-21",
+  "for_date": "2026-09-22",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-09-19",
-    "2026-09-20",
-    "2026-09-21"
+    "2026-09-22"
   ],
-  "span_days": 3,
+  "span_days": 1,
   "display_days": [
-    "2026-09-18",
-    "2026-09-19",
-    "2026-09-20",
-    "2026-09-21"
+    "2026-09-21",
+    "2026-09-22"
   ],
-  "display_text": "09/18–09/21",
-  "span_is_weekend_cross": true,
-  "span_text": "09/19–09/21",
+  "display_text": "09/21 + 09/22",
+  "span_is_weekend_cross": false,
+  "span_text": "09/22",
   "carry": {
-    "from_data_date": "2026-09-18",
-    "ref": "output/feed_review_2026-09-18.json",
+    "from_data_date": "2026-09-21",
+    "ref": "output/feed_review_2026-09-21.json",
     "exists": true,
-    "gap_days": 3,
+    "gap_days": 1,
     "stale": false,
     "bias": "偏多",
     "bias_score": 2,
     "t1_focus": [
-      "跟踪金钻起涨 6 只回踩确认"
+      "跟踪金钻起涨 5 只回踩确认"
     ],
-    "risks": [],
+    "risks": [
+      "金钻命中多为红区黄柱（蓄势非启动），大盘转弱易集体哑火"
+    ],
     "headline": ""
   },
   "layers": {
-    "base": "2026-09-18 A股收盘（基准层）",
-    "overnight": "美东 2026-09-18 收盘（北京 2026-09-19 早间到达）",
-    "premarket": "2026-09-21 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-09-21 A股收盘（基准层）",
+    "overnight": "美东 2026-09-21 收盘（北京 2026-09-22 早间到达）",
+    "premarket": "2026-09-22 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-09-18",
-    "run_date": "2026-09-20",
+    "date": "2026-09-21",
+    "run_date": "2026-09-21",
     "preopen_partial": null,
     "us_kline": true,
     "asia": true
   },
   "covered": [
     {
-      "date": "2026-09-18",
-      "weekday": "周五",
-      "is_trading_day": true,
-      "news": 695,
-      "feeds": 0,
-      "reports": 926,
-      "macro": true
-    },
-    {
-      "date": "2026-09-19",
-      "weekday": "周六",
-      "is_trading_day": false,
-      "news": 0,
-      "feeds": 0,
-      "reports": 272,
-      "macro": false
-    },
-    {
-      "date": "2026-09-20",
-      "weekday": "周日",
-      "is_trading_day": false,
-      "news": 688,
-      "feeds": 0,
-      "reports": 352,
-      "macro": true
-    },
-    {
       "date": "2026-09-21",
       "weekday": "周一",
+      "is_trading_day": true,
+      "news": 697,
+      "feeds": 0,
+      "reports": 890,
+      "macro": true
+    },
+    {
+      "date": "2026-09-22",
+      "weekday": "周二",
       "is_trading_day": true,
       "news": 0,
       "feeds": 0,
@@ -85,10 +65,12 @@
     }
   ],
   "totals": {
-    "news": 1383,
+    "news": 697,
     "feeds": 0,
-    "reports": 1550,
-    "covered_days": 4
+    "reports": 890,
+    "covered_days": 2
   },
-  "missing": []
+  "missing": [
+    "market_thermometer.json 数据日 2026-09-18 落后于基准日 2026-09-21"
+  ]
 }
