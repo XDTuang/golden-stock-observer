@@ -296,6 +296,13 @@ def main():
                 payload["feeds"] = existing["feeds"]
                 payload["feed_count"] = len(existing["feeds"])
                 protected.append("feeds[]")
+            # 2026-09-21 增：feeds_recent 同款空值保护。
+            # 背景：云端 cron 以 --no-feed 重跑时 result["feeds_recent"] 恒为 []，
+            #       而同日 payload.update(result) 会把它覆写掉 → 本机产出的「投喂记录」滚动视图被抹成空。
+            #       2026-09-21 实测：云端 13:18 补跑后 feeds_recent 由 N 条变为 []（feeds[] 已被保护，feeds_recent 漏了）。
+            if not result.get("feeds_recent") and existing.get("feeds_recent"):
+                payload["feeds_recent"] = existing["feeds_recent"]
+                protected.append("feeds_recent[]")
         else:
             payload = dict(result)
             # 2026-09-03 防呆补充：盘前推演产物 data_date=T-1 / guide_date=T，
