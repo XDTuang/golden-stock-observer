@@ -481,10 +481,19 @@ def render_section(d: dict) -> str:
         else f'<span class="st-lv st-lv3">{k} {s.get(k, 0)}</span>' if k == "L3"
         else f"{k} {s.get(k, 0)}" for k in LEVELS)
 
+    # 数据日标注：K 线实际末条 < data_date 时显式披露（2026-09-22 治本，防「标题日 ≠ 数据日」静默错位）
+    _dd = esc(d.get("data_date"))
+    _kl = d.get("kline_last_date") or ""
+    if _kl and _kl < str(d.get("data_date") or ""):
+        _dd_txt = (f'{_dd} <span style="font-weight:400">'
+                   f'（⚠️ K 线源实际末条 <b>{esc(_kl)}</b>，当日 K 线尚未出 → 本段技术面读数实为 {esc(_kl)} 口径）'
+                   f'</span>')
+    else:
+        _dd_txt = _dd
     parts = [
         SEC_BEGIN,
         '<div class="dr-h">7.1b · 板块技术研判（申万一级 31 · 数据日 '
-        f'{esc(d.get("data_date"))} · 共振置信度分级 + 量价/压力/支撑 · 自动生成）</div>',
+        f'{_dd_txt} · 共振置信度分级 + 量价/压力/支撑 · 自动生成）</div>',
         '<div class="dr-card" style="margin-top:4px">',
         f'<div class="st-sum">分级：{lv_txt}<br>趋势结构：{trend_txt}'
         f'<br>阈值：资金分位 ≥{d["thresholds"]["pct_L4"]}/{d["thresholds"]["pct_L3"]}'
@@ -616,6 +625,14 @@ def main():
 
     klines, missing = fetch_klines(names, no_fetch=args.no_fetch, data_date=data_date)
 
+    # 🔴 K 线实际末条日（2026-09-22 治本）：源（akshare index_hist_sw）当日 K 线可能晚于本脚本运行时刻才出，
+    #   此时 data_date（= cross_analysis.flow_date）与实际 K 线末条会错位，形成「标题写 9-22 / 数据实为 9-21」
+    #   的静默错位（与 2026-09-18 修复的缓存陈旧同族）。故把实际末条日写入产物并在段头显式标注。
+    _lasts = [b[-1].get("date") for b in klines.values() if b]
+    kline_last = max(_lasts) if _lasts else ""
+    if kline_last and kline_last < str(data_date):
+        print(f"  ⚠️ K 线实际末条 {kline_last} < 数据日 {data_date}（源未出当日 K 线）→ 段头将显式标注")
+
     # 资金分位（当日 31 个板块内）
     flows = [it.get("flow_yi") or 0 for it in items_in]
 
@@ -658,6 +675,7 @@ def main():
     trend_dist = {t: sum(1 for r in rows if r["trend"] == t) for t in TREND_TYPES}
     payload = {
         "data_date": data_date,
+        "kline_last_date": kline_last,   # 🔴 K 线实际末条日（2026-09-22）· 与 data_date 不一致时前端显式标注
         "generated_at": _dt.datetime.now().strftime("%Y-%m-%d %H:%M"),
         "news_window": cross.get("news_window"),
         "flow_date": cross.get("flow_date"),
