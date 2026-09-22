@@ -50,17 +50,34 @@ function drLoadFeedReview() {
   if (!el) return;
   const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-  /* ═══════════ FEED-RICHTEXT-BEGIN（老站接入 · 2026-09-18）═══════════
+  /* ═══════════ FEED-RICHTEXT-BEGIN（老站接入 · 2026-09-18 ｜ 2026-09-22 补齐三处缺口）═══════════
      ai_synthesis 各字段由本机 agent 手写，含 <b> 强调与 <span class="dk-*"> 语义色；
-     此前统一 esc() → 页面直接显示字面「<b>…</b>」（2026-09-18 用户报障）。
+     此前统一 esc() → 页面直接显示字面「<b>…</b>」。
      治本：先整体转义，仅放行白名单标签；<script> 等其余一律保持转义（无 XSS 面）。
-     机器数据（日期/价格/代码/枚举/股票名）仍走 esc()，口径不变。 */
+     机器数据（日期/价格/代码/枚举/股票名）仍走 esc()，口径不变。
+
+     🔴 2026-09-22 补齐三处缺口（当日实测：全量产物 219 处标签被显示为字面文字）：
+       ① `<b|i|span class="dk-*">` —— 初版只放行「裸 <b>」，带 class 的 <b> 整段变字面文字（实测 90 处）
+       ② 单引号 `class='dk-*'` —— 初版正则只认双引号；agent 写单引号时失效（实测 78 处）
+       ③ `&amp;gt;` / `&amp;lt;` / `&amp;amp;` —— agent 若在 JSON 里写 HTML 实体
+          （如 `&gt;0.5%`、`S&amp;P100`），esc 会二次转义 → 页面显示字面「&gt;」；
+          此处**解一层多余转义**（只降一级；实体不会被还原成可执行标签，无 XSS 面）。
+
+     ⚠️ 顺序不可颠倒：先放行标签（此时尖括号仍是 &lt;/&gt; 形态），再解多余实体。
+        反序会把 agent 刻意写的 `&lt;b&gt;`（想显示字面标签）误变成真标签。 */
   const DKCLS = /^dk-(main|caution|risk|data|up|dn|neutral)$/;
+  const _rtTag = (m, close, tag, dq, sq) => {
+    if (close) return '</' + tag + '>';
+    const cls = ((dq == null ? sq : dq) || '').trim();
+    if (!cls || !cls.split(/\s+/).every(c => DKCLS.test(c))) return m;   // 非白名单 class → 保持转义
+    return '<' + tag + ' class="' + cls + '">';                          // 统一归一化为双引号
+  };
   const rich = (v) => esc(v == null ? '' : v)
+    .replace(/&lt;(\/?)(b|i|span)\s+class=(?:"([^"]*)"|'([^']*)')\s*\/?&gt;/g, _rtTag)
     .replace(/&lt;(\/?)(b|i)&gt;/g, '<$1$2>')
     .replace(/&lt;br\s*\/?&gt;/g, '<br>')
-    .replace(/&lt;span class="(dk-[a-z0-9-]+)"&gt;/g, (m, c) => (DKCLS.test(c) ? '<span class="' + c + '">' : m))
-    .replace(/&lt;\/span&gt;/g, '</span>');
+    .replace(/&lt;\/span&gt;/g, '</span>')
+    .replace(/&amp;(lt|gt|amp|quot|#39);/g, '&$1;');
   /* ═══════════ FEED-RICHTEXT-END ═══════════ */
   // 类型归一：数组→原样；对象→[对象]；字符串→[字符串]；空→[]
   const asArr = v => Array.isArray(v) ? v : (v && typeof v === 'object' ? [v] : (v ? [String(v)] : []));
@@ -76,7 +93,7 @@ function drLoadFeedReview() {
     catch (e) { console.warn('[投喂复盘] ' + label + ' 渲染失败：', e);
       return '<div class="dr-note dr-tag">⚠️ ' + esc(label) + ' 数据格式异常，已跳过</div>'; } };
   const chips = arr => asArr(arr).map(s =>
-    '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + esc(s) + '</span>').join('');
+    '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:var(--blue);font-size:11px">' + rich(s) + '</span>').join('');
 
   fetch('output/feed_review_latest.json')
     .then(r => r.ok ? r.json() : Promise.reject(r.status))
@@ -194,7 +211,7 @@ function drLoadFeedReview() {
           let s = '<div class="dr-h">AI 综合推演 · 持仓映射</div><div class="dr-tag">' + rich(note) + '</div>';
           if (ta.length) s += '<div style="margin-top:4px"><b style="color:var(--red)">主题契合</b> ' + chips(ta) + '</div>';
           if (cau.length) s += '<div style="margin-top:4px"><b style="color:#f0b429">需谨慎</b> ' +
-            cau.map(x => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:#f0b429;font-size:11px">' + esc(x) + '</span>').join('') + '</div>';
+            cau.map(x => '<span style="display:inline-block;margin:2px 4px 2px 0;padding:1px 7px;border:1px solid var(--border);border-radius:6px;color:#f0b429;font-size:11px">' + rich(x) + '</span>').join('') + '</div>';
           if (us.length) s += '<div style="margin-top:4px"><b style="color:var(--green)">美股映射</b> ' + chips(us) + '</div>';
           return s;
         });
@@ -226,7 +243,7 @@ function drLoadFeedReview() {
           });
           return s;
         });
-        if (syn.disclaimer) h += '<div class="dr-tag" style="margin-top:8px">' + esc(syn.disclaimer) + '</div>';
+        if (syn.disclaimer) h += '<div class="dr-tag" style="margin-top:8px">' + rich(syn.disclaimer) + '</div>';
       }
       el.innerHTML = h;
       // cross_analysis 为空时，用公开新闻池 × 板块资金流自动版补位

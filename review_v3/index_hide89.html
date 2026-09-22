@@ -32,7 +32,7 @@ body{background:var(--bg);color:var(--text);font:14px/1.65 -apple-system,"PingFa
 .dr-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-top:6px}
 .dr-tag{display:inline-block;padding:1px 9px;border:1px solid var(--border);border-radius:11px;font-size:11.5px;color:var(--text-secondary);margin:2px 3px 2px 0}
 .dr-note{font-size:12.5px;color:var(--text-secondary);margin:6px 0;line-height:1.7}
-.dr-note b{color:var(--text)}
+.dr-note b:not([class*="dk-"]){color:var(--text)}
 .dr-tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin:6px 0}
 .dr-tbl th{text-align:left;color:var(--text-muted);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--border);white-space:nowrap}
 .dr-tbl td{padding:6px 8px;border-bottom:1px solid rgba(36,48,74,.5);color:var(--text);word-break:break-word;overflow-wrap:anywhere;min-width:0}
@@ -66,6 +66,7 @@ tr.hl3 td{background:rgba(212,175,55,.08)}
 .dk-data{color:var(--blue);font-weight:600}
 .dk-neutral{color:var(--text-muted)}
 .dk-dn{color:var(--green)}
+.dk-up{color:var(--red);font-weight:600}
 /* OBS-FOLD-CSS v3-1 · 6 段「重点观测股推演」分层折叠卡（对齐老站 daily_review 7.2 段 · 纯 CSS 不依赖 JS） */
 .obs-sec{font-size:12.5px;font-weight:600;color:var(--text-secondary);margin:14px 0 6px;
   padding-left:8px;border-left:3px solid var(--gold);line-height:1.4}
@@ -228,13 +229,27 @@ const esc = (s) => (s == null ? '' : String(s)).replace(/&/g,'&amp;').replace(/<
 /* ═══════════ V3-RICHTEXT-BEGIN ═══════════ */
 /* 富文本白名单渲染（由 review/patch_v3_richtext.py 维护 · 勿手改）
    esc() 整体转义后，仅放行受控强调标签；其余一律保持转义（防 XSS）。
-   dk-* 色板本页已定义（.dk-main/.dk-caution/.dk-risk/.dk-data/.dk-dn）。 */
+   dk-* 色板本页已定义（.dk-main/.dk-caution/.dk-risk/.dk-data/.dk-dn/.dk-up）。
+
+   🔴 2026-09-22 补齐三处缺口（与老站 inject_feed_review.py 口径一致）：
+     ① `<b|i|span class="dk-*">` —— 初版只放行「裸 <b>」，带 class 的 <b> 整段变字面文字
+     ② 单引号 `class='dk-*'` —— 初版正则只认双引号
+     ③ `&amp;gt;` / `&amp;lt;` / `&amp;amp;` —— agent 若写 HTML 实体，esc 会二次转义 →
+        页面显示字面「&gt;」；此处解一层多余转义（只降一级，无 XSS 面）
+   ⚠️ 顺序不可颠倒：先放行标签，再解多余实体（反序会把刻意的 `&lt;b&gt;` 误变真标签）。 */
 const DKCLS = /^dk-(main|caution|risk|data|up|dn|neutral)$/;
+const _rtTag = (m, close, tag, dq, sq) => {
+  if (close) return '</' + tag + '>';
+  const cls = ((dq == null ? sq : dq) || '').trim();
+  if (!cls || !cls.split(/\s+/).every(c => DKCLS.test(c))) return m;   // 非白名单 class → 保持转义
+  return '<' + tag + ' class="' + cls + '">';                          // 统一归一化为双引号
+};
 const rich = (s) => esc(s == null ? '' : s)
+  .replace(/&lt;(\/?)(b|i|span)\s+class=(?:"([^"]*)"|'([^']*)')\s*\/?&gt;/g, _rtTag)
   .replace(/&lt;(\/?)(b|i)&gt;/g, '<$1$2>')
   .replace(/&lt;br\s*\/?&gt;/g, '<br>')
-  .replace(/&lt;span class="(dk-[a-z0-9-]+)"&gt;/g, (m, c) => (DKCLS.test(c) ? '<span class="' + c + '">' : m))
-  .replace(/&lt;\/span&gt;/g, '</span>');
+  .replace(/&lt;\/span&gt;/g, '</span>')
+  .replace(/&amp;(lt|gt|amp|quot|#39);/g, '&$1;');
 /* ═══════════ V3-RICHTEXT-END ═══════════ */
 const cls = (v) => v >= 0 ? 'dr-up' : 'dr-dn';
 const sign = (v) => v >= 0 ? '+' : '';
@@ -867,7 +882,7 @@ function loadSynth() {
           h += '<div class="dr-note">· <span style="color:' + pc + ';font-weight:600">[' + esc(r.prob || '') + '×' + esc(r.impact || '—') + ']</span> ' + rich(r.desc || '') + '</div>';
         });
       }
-      if (syn.disclaimer) h += '<div class="dr-tag" style="margin-top:8px">' + esc(syn.disclaimer) + '</div>';
+      if (syn.disclaimer) h += '<div class="dr-tag" style="margin-top:8px">' + rich(syn.disclaimer) + '</div>';
     }
     $('v3Synth').innerHTML = h;
   })().catch(e => { $('v3Synth').innerHTML = '<div class="dr-note">ai_synthesis 加载失败：' + e + '</div>'; });

@@ -258,19 +258,27 @@ python3 review/check_analysis_style.py     # 老站排版：必须全过（[0] B
 python3 review/check_v3_style.py           # V3 独立版 10 项：四副本一致性 + 语义色 + 兜底 + [10/10] 富文本白名单 rich（必须全过）
 python3 review/check_market_json.py        # 数据完整性：us_kline 不得有 null close + 「美股医疗 10 只」静默丢失守卫（必须 ✅）
 python3 review/check_macro_freshness.py    # 🆕 宏观日志时效（2026-09-18 增）：日历轨（百度经济日历）须含「CPI 同比」「非农」+ 各指标龄期合规（月频 ≤40 天 / 周频 ≤14 天）+ 新闻轨 ≤7 天 + stale 自洽 + 根↔deploy 双写一致（必须 ✅）
-python3 review/check_index_render.py       # 🆕 老站 index 渲染守卫（2026-09-18 增）：td 禁挂 .dr-tag + 防御 CSS 在位 + 富文本白名单 rich 在位 + 🔴 注入器 JS_BLOCK ≡ 线上 JS + 三处 md5 一致 + 交叉验证表列宽声明（必须 ✅）
+python3 review/check_index_render.py       # 老站 index 渲染守卫（2026-09-18 增 · 2026-09-22 扩至 9 项）：td 禁挂 .dr-tag + 防御 CSS + 富文本白名单 rich 在位 + 🔴 注入器 JS_BLOCK ≡ 线上 JS + 三处 md5 一致 + 交叉验证表列宽 + 🆕 **[7] rich() 行为级测试（Node 真跑 17 向量 × 老站/V3）** + 🆕 **[8] .dk-* 语义色 7 类齐备且取值同源 + [8b] 无未加 :not 守卫的容器 color 规则** + 🆕 **[9] agent 字段不得走裸 esc()**（必须 ✅）
 python3 review/check_review_dates.py       # 归档命名：文件名=复盘日 & for_date=下一交易日（必须 ✅）
 python3 review/check_sector_tech.py        # 板块技术研判（2026-09-17 增）：价格单调性 support<现价<resistance + L4/L3 必带具体价位 + 档位/趋势字面值 ⊆ 权威集合 + 7.1b 段与 CSS 在位（各 1 次）+ 根/deploy md5（必须 ✅）
 python3 review/build_us_medical.py --check # 3 段末尾「美股医疗/CXO 映射」块在位（🔴 3 段重写后必跑）
 python3 review/patch_news_pool.py --check  # 新闻池块 5 副本一致
 python3 review/patch_v3_richtext.py --check # V3 rich 白名单块 4 副本一致
+python3 review/patch_dk_css.py --check     # 🆕 dk-* 语义色：老站 3 块承载 / V3 4 独立承载，7 条规则逐字同源（2026-09-22 增）
+python3 review/selftest_index_render.py    # 🆕 上面那道守卫的**反向自检**（11 场景必须全红后还原转绿）。改守卫后必跑 —— 只验「正向通过」发现不了守卫早已失效
 ```
 
-> 🔴 **门禁清单以本节为准（当前 = 十道）**。任一道红灯 → 先修再谈推送，**不带伤推送**。
+> 🔴 **门禁清单以本节为准（当前 = 十二道）**。任一道红灯 → 先修再谈推送，**不带伤推送**。
 > `check_sector_tech.py` 反向测试 10 场景（5 类产物 + 5 类页面呈现）全部按预期拦截；
-> `check_macro_freshness.py` / `build_us_medical.py --check` / `check_index_render.py` 亦均通过反向测试。
+> `check_macro_freshness.py` / `build_us_medical.py --check` / `check_index_render.py` 亦均通过反向测试；
+> 🆕 `check_index_render.py` 的 [7]/[8]/[8b]/[9] 反向自检已固化为 `review/selftest_index_render.py`（11/11）。
 >
-> 🆕 **2026-09-18 · 老站 index 渲染两处修复（用户报障）**
+> 🆕 **富文本契约（2026-09-22）**：`ai_synthesis` 等 **agent 手写字段必须走 `rich()`**（白名单：`<b|i|br>`、
+> `<b|i|span class="dk-*">`，单双引号均可；实体解一层）。机器数据（日期/价格/代码/枚举）仍走 `esc()`。
+> 白名单实现有**两处权威源**：老站 = `inject_feed_review.py` 的 `JS_BLOCK`（改完必须跑注入器同步 3 份 index）；
+> V3 = `review/patch_v3_richtext.py` 的 `BLOCK`（改「比对后替换」，跑一次同步 4 副本）。
+> 新增 agent 字段渲染点时，若用 `esc()` → 该字段里的标签会以**字面文字**显示（页面不报错，只是难看）。
+>> 🆕 **2026-09-18 · 老站 index 渲染两处修复（用户报障）**
 > **① 字面 `<b>` 标签**：老站「AI 综合推演」各块显示字面 `<b>…</b>`。
 > 根因 = `drLoadFeedReview`（由 `inject_feed_review.py` 注入）对 agent 手写的 `ai_synthesis`
 > 内容统一走 `esc()`，而内容含 **102 处 `<b>`**（V3 已于当日早些时候修复，**老站这条路径漏修** ——

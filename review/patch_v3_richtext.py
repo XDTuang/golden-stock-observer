@@ -49,13 +49,27 @@ MARK_END = "/* ═══════════ V3-RICHTEXT-END ═════
 BLOCK = MARK_BEGIN + r'''
 /* 富文本白名单渲染（由 review/patch_v3_richtext.py 维护 · 勿手改）
    esc() 整体转义后，仅放行受控强调标签；其余一律保持转义（防 XSS）。
-   dk-* 色板本页已定义（.dk-main/.dk-caution/.dk-risk/.dk-data/.dk-dn）。 */
+   dk-* 色板本页已定义（.dk-main/.dk-caution/.dk-risk/.dk-data/.dk-dn/.dk-up）。
+
+   🔴 2026-09-22 补齐三处缺口（与老站 inject_feed_review.py 口径一致）：
+     ① `<b|i|span class="dk-*">` —— 初版只放行「裸 <b>」，带 class 的 <b> 整段变字面文字
+     ② 单引号 `class='dk-*'` —— 初版正则只认双引号
+     ③ `&amp;gt;` / `&amp;lt;` / `&amp;amp;` —— agent 若写 HTML 实体，esc 会二次转义 →
+        页面显示字面「&gt;」；此处解一层多余转义（只降一级，无 XSS 面）
+   ⚠️ 顺序不可颠倒：先放行标签，再解多余实体（反序会把刻意的 `&lt;b&gt;` 误变真标签）。 */
 const DKCLS = /^dk-(main|caution|risk|data|up|dn|neutral)$/;
+const _rtTag = (m, close, tag, dq, sq) => {
+  if (close) return '</' + tag + '>';
+  const cls = ((dq == null ? sq : dq) || '').trim();
+  if (!cls || !cls.split(/\s+/).every(c => DKCLS.test(c))) return m;   // 非白名单 class → 保持转义
+  return '<' + tag + ' class="' + cls + '">';                          // 统一归一化为双引号
+};
 const rich = (s) => esc(s == null ? '' : s)
+  .replace(/&lt;(\/?)(b|i|span)\s+class=(?:"([^"]*)"|'([^']*)')\s*\/?&gt;/g, _rtTag)
   .replace(/&lt;(\/?)(b|i)&gt;/g, '<$1$2>')
   .replace(/&lt;br\s*\/?&gt;/g, '<br>')
-  .replace(/&lt;span class="(dk-[a-z0-9-]+)"&gt;/g, (m, c) => (DKCLS.test(c) ? '<span class="' + c + '">' : m))
-  .replace(/&lt;\/span&gt;/g, '</span>');
+  .replace(/&lt;\/span&gt;/g, '</span>')
+  .replace(/&amp;(lt|gt|amp|quot|#39);/g, '&$1;');
 ''' + MARK_END + "\n"
 
 # ── 替换规则：(旧, 新, 预期出现次数) ──
@@ -82,6 +96,8 @@ RULES = [
     ("if (typeof r === 'string') { h += '<div class=\"dr-note\">· ' + esc(r) + '</div>'; return; }",
      "if (typeof r === 'string') { h += '<div class=\"dr-note\">· ' + rich(r) + '</div>'; return; }", 1),
     ("esc(r.desc || '')", "rich(r.desc || '')", 1),
+    # disclaimer（ai_synthesis 手写声明，实测含 <b class="dk-caution">，2026-09-22 补）
+    ("esc(syn.disclaimer)", "rich(syn.disclaimer)", 1),
 ]
 
 MIN_RICH = 12  # 渲染侧 rich( 调用点下限（不含定义行）
@@ -95,7 +111,10 @@ def patch_one(path, apply=True):
     src = open(full, encoding="utf-8").read()
     orig = src
 
-    # ① 插入 rich() 定义（幂等：标记已在则跳过）
+    # ① rich() 定义块：**比对后替换**（2026-09-22 修）
+    #    旧逻辑 = `if MARK_BEGIN not in src: 插入` → 存在即跳过：BLOCK 改版后跑补丁器
+    #    不会更新线上已有块（静默不生效，铁律 28）。现改为先比对、不一致则整块替换。
+    want_block = BLOCK.rstrip("\n")
     if MARK_BEGIN not in src:
         lines = src.split("\n")
         idx = None
@@ -106,11 +125,18 @@ def patch_one(path, apply=True):
         if idx is None:
             return False, "❌ 未找到 esc 定义锚点（结构可能已变）"
         # 兼容 CRLF/无尾随换行
-        lines.insert(idx + 1, BLOCK.rstrip("\n"))
+        lines.insert(idx + 1, want_block)
         src = "\n".join(lines)
         inserted = True
     else:
-        inserted = False
+        i0 = src.index(MARK_BEGIN)
+        i1 = src.index(MARK_END, i0) + len(MARK_END)
+        cur_block = src[i0:i1]
+        if cur_block == want_block:
+            inserted = False
+        else:
+            src = src[:i0] + want_block + src[i1:]
+            inserted = True   # 视作已改动，交由 changed 判定
 
     # ② 替换调用点
     applied, already, missing = 0, 0, []
