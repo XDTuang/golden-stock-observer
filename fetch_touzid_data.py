@@ -51,6 +51,29 @@ THERMO_ONLY = "--thermo-only" in sys.argv
 VIX_ONLY = "--vix-only" in sys.argv
 INST_ONLY = "--inst-only" in sys.argv
 NO_INST = "--no-inst" in sys.argv
+LIST_BLOCKS = "--list-blocks" in sys.argv   # 只打印将要执行的块（供守卫做行为级测试）
+VIX_SETTLE_HHMM = "16:15"            # VIX 每日结算时刻（美东）· 早于此视为盘中价
+
+
+def _resolve_blocks():
+    """返回本次要执行的块清单（唯一权威，供 main 与 --list-blocks 共用）。
+
+    🔴 2026-09-23 修：原 `if VIX_ONLY: … elif THERMO_ONLY: …` 链式判断 ——
+       同时传 `--thermo-only --vix-only` 时 **VIX 胜出、温度计整块不执行**，且不报错。
+       而云端 `daily-update` 与本机盘前缺口补跑正是这条组合命令 →
+       `market_thermometer.json` 在云端与盘前**永远补不上**：
+       窗口缺口天天报「温度计滞后」、补跑天天"成功"、产物却停在上一交易日。
+    """
+    if not (THERMO_ONLY or VIX_ONLY or INST_ONLY):
+        return ["thermometer", "valuation", "vix"]      # 默认（主站日更全量）
+    out = []
+    if THERMO_ONLY:
+        out.append("thermometer")
+    if VIX_ONLY:
+        out.append("vix")
+    if INST_ONLY:
+        out.append("inst")
+    return out
 
 
 def _data_date_str():
@@ -410,11 +433,55 @@ def build_vix():
             obj["cboe_vix"] = {"value": last["close"], "prev": prev["close"] if prev else None,
                                "date": last["date"],
                                "chg": round(last["close"] - prev["close"], 2) if prev else None,
-                               "chg_pct": round((last["close"] / prev["close"] - 1) * 100, 2) if prev and prev["close"] else None}
+                               "chg_pct": round((last["close"] / prev["close"] - 1) * 100, 2) if prev and prev["close"] else None,
+                               "source": "csv"}
             obj["vix_history"] = rows[-260:]  # 近1年
             print(f"  CBOE VIX: {last['close']} ({last['date']}) 历史 {len(rows)} 条")
     except Exception as e:
         print(f"  ⚠️  CBOE VIX 失败: {e}")
+
+    # 1b. CBOE 延时报价兜底（2026-09-23 新增）
+    #     🔴 根因：CBOE 的 `VIX_History.csv` **发布滞后** —— 实测 2026-09-22 美股收盘
+    #     3.5 小时后（北京 09-23 07:32）该文件末行仍是 09-21，而当日 A 股/美股指数
+    #     与新浪等源均已到 09-22 → 页面「CBOE VIX 恐慌指数」长期停在上一交易日。
+    #     官方 delayed_quotes 接口在美东 16:15 结算后即给出当日收盘（实测
+    #     last_trade_time=2026-09-22T16:15:01 / current_price=14.21）。
+    #     口径纪律：**只在「报价日 > CSV 末日 且 已过 16:15 结算时刻」时补最新一根** ——
+    #     盘中运行时 last_trade_time 是当日且值未定盘，**不得**当作收盘写入（会污染近1年曲线）。
+    try:
+        _r2 = _req.get("https://cdn.cboe.com/api/global/delayed_quotes/quotes/_VIX.json",
+                       timeout=15, headers={"User-Agent": "Mozilla/5.0"})
+        _qd = (_r2.json() or {}).get("data") or {}
+        _lt = str(_qd.get("last_trade_time") or "")          # "2026-09-22T16:15:01"
+        _qdate, _qhhmm = _lt[:10], _lt[11:16]
+        _qval = _qd.get("current_price")
+        _qpv = _qd.get("prev_day_close")
+        if _qdate and _qval and _qhhmm >= VIX_SETTLE_HHMM:
+            if rows and _qdate > rows[-1]["date"]:
+                rows.append({"date": _qdate, "close": round(float(_qval), 2)})
+                _prev = rows[-2]
+            elif not rows:                                    # CSV 整体失败 → 仅用报价
+                rows.append({"date": _qdate, "close": round(float(_qval), 2)})
+                _prev = {"close": _qpv} if _qpv else None
+            else:
+                _prev = None                                 # CSV 已含当日，无需要补
+            if _prev is not None:
+                _pc = _prev.get("close")
+                _lc = rows[-1]["close"]
+                obj["cboe_vix"] = {"value": _lc, "prev": _pc, "date": rows[-1]["date"],
+                                   "chg": round(_lc - _pc, 2) if _pc else None,
+                                   "chg_pct": round((_lc / _pc - 1) * 100, 2) if _pc else None,
+                                   "settled_at": _lt, "source": "csv+delayed_quote"}
+                obj["vix_history"] = rows[-260:]
+                print(f"  CBOE VIX 兜底: CSV 末 {_qdate} 前缺当日 → 用官方延时报价补 "
+                      f"{rows[-1]['date']} 收盘 {_lc}（结算 {_lt}）")
+        elif _qdate and obj.get("cboe_vix"):
+            # 未过结算时刻（盘中）→ 保留 CSV 收盘，另记盘中读数供追溯，**不进 history**
+            obj["cboe_vix"]["intraday"] = {"value": round(float(_qval), 2) if _qval else None,
+                                           "time": _lt}
+            print(f"  ℹ️  VIX 盘中读数 {_qval}（{_lt}）未达 16:15 结算，不写入收盘序列")
+    except Exception as e:
+        print(f"  ⚠️  CBOE VIX 延时报价兜底失败（保留 CSV 口径）: {e}")
 
     # 2. 美股三指数（新浪实时，需 Referer）
     try:
@@ -488,6 +555,11 @@ def build_vix():
         _us_anchor = (obj.get("cboe_vix") or {}).get("date") or obj["date"]
         obj["date"] = max(_a_anchor, _us_anchor)
         obj["generated_at"] = _dt.datetime.now().strftime("%Y-%m-%d %H:%M")
+        # 两个锚显式落盘（2026-09-23）：面板「数据日期」取较晚者，但两锚可能不同日
+        # （A股 9/22、CBOE 9/21）→ 前端 CBOE 卡自带日期、段落 meta 用 date；
+        # 落盘 a_anchor/us_anchor 让守卫与排错能直接判「谁落后」，不必反推。
+        obj["a_anchor"] = _a_anchor
+        obj["us_anchor"] = _us_anchor
         print(f"  数据日期 {obj['date']}（A股锚 {_a_anchor} / 美股锚 {_us_anchor}）")
         _write_both("vix_panel.json", obj)
     except Exception as e:
@@ -610,15 +682,14 @@ if __name__ == "__main__":
     print("═══ touzid 数据抓取 ═══")
     if SKIP_SPOT:
         print("(--no-spot 模式：跳过 gtimg 全市场市值扫描)")
-    if VIX_ONLY:
-        build_vix()
-    elif INST_ONLY:
-        build_institutional_flow()
-    elif THERMO_ONLY:
-        build_thermometer()
-    else:
-        # 默认（主站日更）：温度计 + 估值分位 + VIX；股东户数由周更 workflow 单独跑 --inst-only
-        build_thermometer()
-        build_valuation_band()
-        build_vix()
+    blocks = _resolve_blocks()
+    if LIST_BLOCKS:
+        # 只输出块清单后立即退出（不写盘、不发请求）→ 供 check_touzid_panel.py 行为级断言
+        print(",".join(blocks))
+        raise SystemExit(0)
+    print("待执行块: " + " → ".join(blocks))
+    RUNNERS = {"thermometer": build_thermometer, "valuation": build_valuation_band,
+               "vix": build_vix, "inst": build_institutional_flow}
+    for b in blocks:
+        RUNNERS[b]()
     print("\n═══ 完成 ═══")
