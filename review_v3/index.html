@@ -1007,10 +1007,26 @@ const obsPct = (v) => (v == null || v === '' || isNaN(Number(v))) ? '—' : sign
 const obsClsPct = (v) => (v == null || v === '' || isNaN(Number(v))) ? '' : (Number(v) > 0 ? 'dr-up' : (Number(v) < 0 ? 'dr-dn' : ''));
 const obsBadge = (p) => p === '多头排列' ? 'b-up' : (p === '空头排列' ? 'b-dn' : 'b-ms');
 const obsShortBadge = (p) => ({ '多头排列': '多头', '空头排列': '空头' })[p] || '震荡';
-// 情景文本含 <b> 富文本（与老站 analysis.html 同源）→ 先整体转义、再放行白名单标签，防注入
+// 情景文本含 <b> 富文本（与老站 analysis.html 同源）→ 先整体转义、再放行白名单标签，防注入。
+// 🔴 2026-09-22 补齐（与老站 inject_feed_review.rich() / V3 patch_v3_richtext.rich() 同口径）：
+//    ① 放行**带 class 的** <b|i|span class="dk-*">（**单双引号都认**，class 须 ⊆ OBS_DKCLS）
+//    ② **解一层多余实体**（&amp;gt; → &gt;）—— agent 在 obs_panel.json 里写了 HTML 实体，
+//       只做一次转义会让页面显示字面「&gt;」（同一文本在老站静态 HTML 里是正常的，故只在 JS 渲染侧需要）
+//    ③ ⚠️ 顺序 = 先放行标签、再解实体；反序会把刻意的 `&lt;b&gt;` 误变成真标签
+//    <script>/<img>/<a> 等仍全转义（无 XSS 面）
+const OBS_DKCLS = /^dk-(main|caution|risk|data|up|dn|neutral)$/;
+const _obsRtTag = (m, close, tag, dq, sq) => {
+  if (close) return '</' + tag + '>';
+  const cls = ((dq == null ? sq : dq) || '').trim();
+  if (!cls || !cls.split(/\s+/).every(c => OBS_DKCLS.test(c))) return m;
+  return '<' + tag + ' class="' + cls + '">';
+};
 const obsRich = (v) => String(v == null ? '' : v)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-  .replace(/&lt;(\/?)(b|br|code|em|strong)&gt;/g, '<$1$2>');
+  .replace(/&lt;(\/?)(b|i|em|strong|code|span)\s+class=(?:"([^"]*)"|'([^']*)')\s*\/?&gt;/g, _obsRtTag)
+  .replace(/&lt;(\/?)(b|i|br|code|em|strong)\s*\/?&gt;/g, '<$1$2>')
+  .replace(/&lt;\/span&gt;/g, '</span>')
+  .replace(/&amp;(lt|gt|amp|quot|#39);/g, '&$1;');
 
 // 关键位机械推导（复刻老站 build_obs_section.py 的 key_levels()，零人工估计）
 function obsKey(x) {
@@ -1070,7 +1086,7 @@ function obsL2(picks, byCode, scenDate) {
       '<span class="obs-bd ' + obsBadge(x.pattern) + '">' + esc(x.pattern || '') + ' · ' + esc(x.trend || '') + '</span>' +
       '<span class="obs-px">收 ' + obsF(x.close) + ' <b class="' + obsClsPct(x.chg_last) + '">' + obsPct(x.chg_last) + '</b></span>' +
       '<span class="obs-cv">▶</span></summary>' +
-      '<div class="obs-body">' + (p.reason ? '<div class="obs-rsn">入选理由：' + esc(p.reason) + '</div>' : '') + obsKl(x, k) +
+      '<div class="obs-body">' + (p.reason ? '<div class="obs-rsn">入选理由：' + obsRich(p.reason) + '</div>' : '') + obsKl(x, k) +
       '<div class="obs-stwrap"><table class="dr-tbl obs-stbl">' +
       '<colgroup><col class="cc1"><col class="cc2"><col class="cc3"><col class="cc4"></colgroup>' +
       '<thead><tr><th>情景</th><th>概率</th><th>路径（机制 + 价位）</th><th>推测专家操作</th></tr></thead>' +

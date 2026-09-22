@@ -81,6 +81,8 @@ BAD_ESC = [
      "color:#f0b429;font-size:11px\">' + esc(x) + '</span>').join('')"),
     ('ai_synthesis.disclaimer 用 esc()（实测含 <b class="dk-caution">）',
      "esc(syn.disclaimer)"),
+    ('V3 观测池「入选理由」用 esc()（实测算含 <b> 与 <span class="dk-*">）',
+     "入选理由：' + esc(p.reason)"),
 ]
 
 NODE_CANDIDATES = [
@@ -94,7 +96,7 @@ const fs = require('fs');
 const code = fs.readFileSync(process.argv[2], 'utf8');
 const cases = JSON.parse(fs.readFileSync(process.argv[3], 'utf8'));
 let f;
-try { f = new Function(code + '\n;return rich;')(); }
+try { f = new Function(code + '\n;return (typeof rich !== "undefined") ? rich : obsRich;')(); }
 catch (e) { console.log(JSON.stringify({error: String(e.message)})); process.exit(0); }
 const bad = [];
 for (const [inp, want] of cases) {
@@ -123,8 +125,21 @@ def _extract_rich(path, begin_mark, end_mark):
     return s[k:e]
 
 
+def _extract_obsrich():
+    """抽出 V3 观测池段独立的 obsRich()（权威源 = build_v3_obs_section.py）。
+
+    为什么单独抽：该段是**另一套渲染器**（不共用 rich()），2026-09-22 用户报「V3 也出现
+    <b class="dk-risk">」正是它 —— 行为级测试若只覆盖 rich()，这里就是盲区。
+    """
+    src = open(os.path.join(BASE, 'build_v3_obs_section.py'), encoding='utf-8').read()
+    m = re.search(r"const OBS_DKCLS[\s\S]*?/&amp;\(lt\|gt\|amp\|quot\|#39\);[^\n]*", src)
+    if not m:
+        raise RuntimeError('未找到 OBS_DKCLS..obsRich 段（生成器结构可能已变）')
+    return m.group(0)
+
+
 def rich_behavior():
-    """真跑真代码：Node 里对老站与 V3 两套 rich() 求值。返回 (ok|None, fails)。"""
+    """真跑真代码：Node 里对老站 / V3 / V3-obs 三套渲染器求值。返回 (ok|None, fails)。"""
     node = _node()
     if not node:
         return None, ['未找到 node 可执行文件，行为级测试跳过']
@@ -143,37 +158,48 @@ def rich_behavior():
         open(rp, 'w', encoding='utf-8').write(_RUNNER)
         cp = os.path.join(d, 'cases.json')
         open(cp, 'w', encoding='utf-8').write(_json.dumps(RICH_CASES, ensure_ascii=False))
+        n_src = [0]
+
+        def check_src(label, src):
+            """把一段 JS（须导出 rich 或 obsRich）丢给 Node 实跑向量。"""
+            n_src[0] += 1
+            sp = os.path.join(d, f'src{n_src[0]}.js')
+            open(sp, 'w', encoding='utf-8').write(src)
+            try:
+                r = subprocess.run([node, rp, sp, cp], capture_output=True, text=True, timeout=60)
+            except Exception as e:
+                bad.append(f'{label}: node 执行失败（{type(e).__name__}）')
+                return
+            out = [x for x in (r.stdout or '').strip().splitlines() if x.strip()]
+            if not out:
+                bad.append(f'{label}: node 无输出（{(r.stderr or "")[:70]}）')
+                return
+            try:
+                res = _json.loads(out[-1])
+            except Exception:
+                bad.append(f'{label}: node 输出非 JSON')
+                return
+            if res.get('error'):
+                bad.append(f'{label}: 渲染器语法错误 — {res["error"][:70]}')
+                return
+            for b in res.get('bad', []):
+                bad.append(f'{label}: ({b["inp"][:30]!r}) → {b["got"][:52]!r}，期望 {b["want"][:52]!r}')
+
         for label, rel, bm, em in targets:
             p = os.path.join(BASE, rel)
             if not os.path.exists(p):
                 bad.append(f'{label}: 文件不存在')
                 continue
             try:
-                src = _extract_rich(p, bm, em)
+                check_src(label, _extract_rich(p, bm, em))
             except Exception as e:
                 bad.append(f'{label}: 抽取 rich 块失败（{type(e).__name__}）')
-                continue
-            sp = os.path.join(d, 'rich_src.js')
-            open(sp, 'w', encoding='utf-8').write(src)
-            try:
-                r = subprocess.run([node, rp, sp, cp], capture_output=True, text=True, timeout=60)
-            except Exception as e:
-                bad.append(f'{label}: node 执行失败（{type(e).__name__}）')
-                continue
-            out = [x for x in (r.stdout or '').strip().splitlines() if x.strip()]
-            if not out:
-                bad.append(f'{label}: node 无输出（{(r.stderr or "")[:70]}）')
-                continue
-            try:
-                res = _json.loads(out[-1])
-            except Exception:
-                bad.append(f'{label}: node 输出非 JSON')
-                continue
-            if res.get('error'):
-                bad.append(f'{label}: rich 块语法错误 — {res["error"][:70]}')
-                continue
-            for b in res.get('bad', []):
-                bad.append(f'{label}: rich({b["inp"][:30]!r}) → {b["got"][:52]!r}，期望 {b["want"][:52]!r}')
+
+        # ③ V3 观测池段的 obsRich（独立渲染器；权威源 = build_v3_obs_section.py）
+        try:
+            check_src('V3 obsRich', _extract_obsrich())
+        except Exception as e:
+            bad.append(f'V3 obsRich: 抽取失败（{type(e).__name__}: {e}）')
     return (not bad), bad
 
 
@@ -289,7 +315,7 @@ def main():
             errs.append(f'rich() 行为级测试未通过（{len(d7)} 项）：')
             errs.extend('     ' + x for x in d7[:8])
         print(f"{'✅' if ok7 else '❌'} [7/9] rich() 行为级测试"
-              f"（{len(RICH_CASES)} 向量 × 老站/V3 双实现）"
+              f"（{len(RICH_CASES)} 向量 × 三实现：老站 rich / V3 rich / V3 obsRich）"
               + ('' if ok7 else f" — {len(d7)} 项不符"))
 
     # ── [8] .dk-* 语义色 7 类齐备且取值同源 ──

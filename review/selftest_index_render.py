@@ -28,7 +28,9 @@ INJ = 'inject_feed_review.py'
 V3 = ['review_v3/index.html', 'review_v3/index_hide89.html',
       'deploy/review_v3/index.html', 'deploy/review_v3/index_hide89.html']
 FILES = INDEXES + [INJ]
-ALL = FILES + V3
+# V3 观测池段的**权威源**（其 obsRich 是独立渲染器，[7] 会直接读它）→ 必须纳入可还原清单
+GEN = ['build_v3_obs_section.py']
+ALL = FILES + V3 + GEN
 ORIG = {f: io.open(f, encoding='utf-8').read() for f in ALL}
 
 
@@ -62,9 +64,13 @@ _OLD2 = r'''.replace(/&lt;span class="(dk-[a-z0-9-]+)"&gt;/g, (m, c) => (DKCLS.t
 _OLD3 = r""".replace(/&amp;(lt|gt|amp|quot|#39);/g, '&$1;');"""
 
 
-def rp(indent):
-    """按缩进生成「退化为初版 rich()」的替换对。"""
-    return [(indent + _OLD1, indent + _OLD2, 1), (indent + _OLD3, indent + ";", 1)]
+def rp(indent, unesc_cnt=1):
+    """按缩进生成「退化为初版 rich()」的替换对。
+
+    unesc_cnt：解实体那一行在目标文件里的出现次数 —— V3 页有 **两套**渲染器
+    （rich + obsRich），故为 2；老站只有 rich，为 1。
+    """
+    return [(indent + _OLD1, indent + _OLD2, 1), (indent + _OLD3, indent + ";", unesc_cnt)]
 
 
 UNESC = lambda i: [(i + r".replace(/&amp;(lt|gt|amp|quot|#39);/g, '&$1;');", i + ";", 1)]
@@ -75,7 +81,11 @@ CASES = [
     ("[7] 放宽白名单：任意 class 放行",
      [("if (!cls || !cls.split(/\\s+/).every(c => DKCLS.test(c))) return m;",
        "if (false) return m;", 1)], FILES),
-    ("[7] V3 退回初版（只动 V3 四副本）", rp("  "), V3),
+    ("[7] V3 退回初版（只动 V3 四副本 · 两套渲染器）", rp("  ", 2), V3),
+    ("[7] V3 obsRich 退回初版（另一套渲染器）",
+     [('  .replace(/&lt;(\\/?)(b|i|br|code|em|strong)\\s*\\/?&gt;/g, \'<$1$2>\')',
+       '  .replace(/&lt;(\\/?)(b|br|code|em|strong)&gt;/g, \'<$1$2>\')', 1),
+      ("  .replace(/&amp;(lt|gt|amp|quot|#39);/g, '&$1;');", "  ;", 1)], ['build_v3_obs_section.py']),
     ("[8] 删掉 .dk-up 定义",
      [(".dk-up{color:var(--red);font-weight:600}\n", "", 1)], INDEXES),
     ("[8] .dk-risk 取值漂移（红↔绿颠倒）",
@@ -94,6 +104,8 @@ CASES = [
        """color:#f0b429;font-size:11px">' + esc(x) + '</span>').join('')""", 1)], FILES),
     ("[9] disclaimer 改回 esc()（含 V3）",
      [("rich(syn.disclaimer)", "esc(syn.disclaimer)", 1)], FILES + V3),
+    ("[9] V3 观测池「入选理由」改回 esc()",
+     [("入选理由：' + obsRich(p.reason)", "入选理由：' + esc(p.reason)", 1)], V3 + GEN),
 ]
 
 print("═══ 反向测试（每例都应变红）═══")
