@@ -275,8 +275,13 @@ python3 review/selftest_index_render.py    # 🆕 上面那道守卫的**反向�
 >
 > 🆕 **富文本契约（2026-09-22）**：`ai_synthesis` 等 **agent 手写字段必须走 `rich()`**（白名单：`<b|i|br>`、
 > `<b|i|span class="dk-*">`，单双引号均可；实体解一层）。机器数据（日期/价格/代码/枚举）仍走 `esc()`。
-> 白名单实现有**两处权威源**：老站 = `inject_feed_review.py` 的 `JS_BLOCK`（改完必须跑注入器同步 3 份 index）；
-> V3 = `review/patch_v3_richtext.py` 的 `BLOCK`（改「比对后替换」，跑一次同步 4 副本）。
+> 白名单实现有**三处权威源**（改任一 → 必须同步其源并跑 `check_index_render [7]`）：
+> ① 老站 = `inject_feed_review.py` 的 `JS_BLOCK`（改完**必须跑注入器**同步 3 份 index）；
+> ② V3「AI 综合推演/结论」= `review/patch_v3_richtext.py` 的 `BLOCK`（「比对后替换」，跑一次同步 4 副本）；
+> ③ 🆕 **V3 6 段「重点观测股推演」= `build_v3_obs_section.py` 内的 `obsRich()`**（独立渲染器，跑一次同步 4 副本）。
+> 🔴 ②③ 是两套**并存**的渲染器 —— 只修其中一套 = 另一套照旧报障（2026-09-22 实测：先修 ①②，
+> 用户随即报「V3 也出现」，根因正是漏掉的 ③）。
+> `check_index_render [7]` 现对**三套实现**各跑同一组 17 个向量（含 4 个注入向量）。
 > 新增 agent 字段渲染点时，若用 `esc()` → 该字段里的标签会以**字面文字**显示（页面不报错，只是难看）。
 >> 🆕 **2026-09-18 · 老站 index 渲染两处修复（用户报障）**
 > **① 字面 `<b>` 标签**：老站「AI 综合推演」各块显示字面 `<b>…</b>`。
