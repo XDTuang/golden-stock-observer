@@ -265,13 +265,27 @@ python3 review/build_us_medical.py --check # 3 段末尾「美股医疗/CXO 映�
 python3 review/patch_news_pool.py --check  # 新闻池块 5 副本一致
 python3 review/patch_v3_richtext.py --check # V3 rich 白名单块 4 副本一致
 python3 review/patch_dk_css.py --check     # 🆕 dk-* 语义色：老站 3 块承载 / V3 4 独立承载，7 条规则逐字同源（2026-09-22 增）
+python3 review/check_touzid_panel.py       # 🆕 主页三块面板（市场温度计 / 全市场估值趋势 / CBOE VIX）（2026-09-23 增）：
+                                           #   [1] 块解析**行为级**（--thermo-only --vix-only 必须两块都跑）
+                                           #   [2] 温度计新鲜度 + history/snapshot 与顶层 date 自洽 + 升序
+                                           #   [3] VIX 锚自洽 + 与 CBOE 官方报价精确交叉校验（官方不可达时退回 us_kline 容差判据）
+                                           #   [4] root ↔ deploy 双写一致
 python3 review/selftest_index_render.py    # 🆕 上面那道守卫的**反向自检**（11 场景必须全红后还原转绿）。改守卫后必跑 —— 只验「正向通过」发现不了守卫早已失效
+python3 review/selftest_touzid_panel.py    # 🆕 touzid 面板守卫的反向自检（6 场景：块解析退回 elif / 温度计滞后与不自洽 / VIX 兜底失效与锚错 / deploy 漂移）
 ```
 
-> 🔴 **门禁清单以本节为准（当前 = 十二道）**。任一道红灯 → 先修再谈推送，**不带伤推送**。
+> 🔴 **门禁清单以本节为准（当前 = 十三道）**。任一道红灯 → 先修再谈推送，**不带伤推送**。
 > `check_sector_tech.py` 反向测试 10 场景（5 类产物 + 5 类页面呈现）全部按预期拦截；
 > `check_macro_freshness.py` / `build_us_medical.py --check` / `check_index_render.py` 亦均通过反向测试；
 > 🆕 `check_index_render.py` 的 [7]/[8]/[8b]/[9] 反向自检已固化为 `review/selftest_index_render.py`（11/11）。
+> 🆕 `check_touzid_panel.py` 的反向自检 = `review/selftest_touzid_panel.py`（6/6，含归因正确性）。
+>
+> 🆕 **touzid 面板口径（2026-09-23 立）**：主页「市场温度计 + 全市场估值趋势」同读 `market_thermometer.json`，
+> 「CBOE VIX 恐慌指数」读 `vix_panel.json`。🔴 **盘前缺口补跑那条 `--thermo-only --vix-only` 曾因
+> `if VIX_ONLY / elif THERMO_ONLY` 链式判断而只跑 VIX、温度计被静默跳过**（云端链与盘前都中招）→
+> 已改 `_resolve_blocks()` 独立生效，并用 `--list-blocks` 做**行为级**验证。
+> 判据纪律：这类「有值但永远旧」的缺陷**只比对日期抓不住** → 守卫必须跑代码（参照 `rich()` 行为级测试）。
+> VIX 另有 CBOE 官方延时报价兜底（CSV 发布滞后约 1 日），**仅在美东 16:15 结算后**才把报价当收盘写入。
 >
 > 🆕 **富文本契约（2026-09-22）**：`ai_synthesis` 等 **agent 手写字段必须走 `rich()`**（白名单：`<b|i|br>`、
 > `<b|i|span class="dk-*">`，单双引号均可；实体解一层）。机器数据（日期/价格/代码/枚举）仍走 `esc()`。
