@@ -318,6 +318,14 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
   <div class="dr-note" style="margin-top:6px" data-page-node-id="y2LPc1NXwMnpnS4KYIYqtg">数据源：<code data-page-node-id="OQFDoshAc0TBbG83tsNIx7">output/gate_data.json</code>（三重门控 + chan 缠论明细）JOIN <code data-page-node-id="G4Y8QNrJyOFVhB7xQ8Qy7e">valuation_band.json</code> / <code data-page-node-id="ZmRo0RErXHQ5L6RRARZYLc">institutional_flow.json</code> / <code data-page-node-id="8WEHcalTHqQCZFetSOBGEN">golden_diamond_history.json</code>。三档门控：全A市场 / 当前门控（成交额TOP800）/ 板块前100·换手≥4%；按代码合并去重，门控徽章标识交叉命中（金=三重全中 / 蓝=双门控 / 紫=单门控）。排序：门控数↓ → 信号强度（金钻起涨 &gt; 买入 &gt; 红区黄柱连续）↓ → DY2↓。缠论买点取门控扫描 <code data-page-node-id="GbY8qBoOb4msd9noBnEDQ8">chan</code> 明细（近 2 交易日窗口，与 <code data-page-node-id="cTJijeVz18aRnVh03dIGqg">signals.check_chan_buy_signal</code> 同源），<b data-page-node-id="Rv7CWgDnKD71RE7TxFxdrE">T-N</b> = 买点枢轴距最新交易日天数（分型枢轴需后续 K 线确认，天然滞后 T-1）。</div>
 </div>
 
+<!-- 1.3 引擎观测池 -->
+<div class="dr-h">1.3 · 引擎观测池（obs_deduce 池 · 关键位 / 趋势 / 开盘标签 · JS 自动）</div>
+<div class="dr-card" style="margin-top:4px">
+  <div id="drObsMeta" style="margin-bottom:6px"></div>
+  <div id="drTblObs"><div class="dr-note">观测池数据加载中…</div></div>
+  <div class="dr-note" style="color:var(--text-muted);font-size:12px">口径：收盘 / 均线 / 技术位 / 量比 / 形态来自 <code>output/obs_deduce_latest.json</code>（<code>derive_obs.py</code> 引擎日更，机械计算无人工估计）；<b>三情景推演（含机制路径与概率）见 7.2 段</b>。池内标的为其他专家持股参考 · 非本人持仓，仅客观技术读数，不构成买卖建议。</div>
+</div>
+
 <!-- 2 日韩股市与商品 -->
 <div class="dr-h">2 · 日韩股市与商品利率（JS 自动 · market.json / preopen_ext）</div>
 <div class="dr-card" style="margin-top:4px">
