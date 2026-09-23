@@ -228,7 +228,8 @@ def build_thermometer():
     if snap["total_mv_yi"] and snap["gdp_ttm_yi"] and snap["gdp_ttm_yi"] > 0:
         snap["buffett"] = round(snap["total_mv_yi"] / snap["gdp_ttm_yi"], 3)
 
-    # ── 历史序列（近5年，日频；乐咕 PE/PB/国债/破净率 有历史，巴菲特指数待积累）──
+    # ── 历史序列（近5年；口径分指标：PE/PB/国债 = 月频（乐咕月序列 + 当月滚动点），
+    #    破净率 = 日频（乐咕 REST 日序列，2026-09-23 起并入，见下方补充段）；巴菲特指数待积累）──
     hist = []
     if ttm_df is not None and len(ttm_df) and pb_df is not None and len(pb_df):
         pb_dates = {str(d): r for d, r in zip(pb_df["date"], pb_df.to_dict("records"))}
@@ -296,12 +297,36 @@ def build_thermometer():
                         x["pb_pct"] = round(float(_np.searchsorted(pb_arr, x["pb"], side="right")) / len(pb_arr) * 100, 1)
         except Exception as _e:
             print(f"  ⚠️  分位曲线补算失败(降级，仅快照有分位): {_e}")
+        # ── 破净率日频补充（2026-09-23）──
+        # 乐咕破净率 REST 是日序列（2005 起），而 PE/PB 源为月序列 → 原 history 只有 ~62 个月频点，
+        # 前端「破净率%」曲线被稀释成月频。此处并入日频破净率点：
+        # ① 仅并入 ≤ 现有末条日期的点 → data_day（=hist[-1].date）与日期自洽契约保持不变；
+        # ② 已存在的日期不重复；③ 只带 date/below_net_ratio 两键 —— 前端 renderThermoChart 按指标
+        #    过滤 null（hist.filter(h => h[metric] != null)），缺键行对其他指标天然不可见，安全。
+        if below_map and hist:
+            _have = {str(x.get("date"))[:10] for x in hist}
+            _last_d = str(hist[-1].get("date"))[:10]
+            _extra = []
+            for _d in sorted(below_map.keys()):
+                _dd = str(_d)[:10]
+                if _dd in _have or _dd < "2021-08-01" or _dd > _last_d:
+                    continue
+                if below_map.get(_d) is None:
+                    continue
+                _extra.append({"date": _dd, "below_net_ratio": below_map[_d]})
+            if _extra:
+                hist.extend(_extra)
+                hist.sort(key=lambda x: str(x.get("date"))[:10])
+                print(f"  破净率日频补充: +{len(_extra)} 点（月频 {len(hist) - len(_extra)} → 合计 {len(hist)}）")
         # 每交易日保留（上限 ~1250 行 ≈ 5年），超出按日期抽样
         if len(hist) > 1250:
             step = len(hist) // 1250
+            _tail = hist[-1]
             hist = hist[::step]
-            if hist[-1]["date"] != today:
-                hist.append(hist[-1])
+            # 🔴 2026-09-23 修正：原 `hist.append(hist[-1])` 是自追加同一行（等于没补），
+            #    抽样后真实末条可能被丢弃 → data_day 锚定跟着变旧；改为保留抽样前的真实末条
+            if hist[-1] is not _tail and str(hist[-1].get("date"))[:10] != str(_tail.get("date"))[:10]:
+                hist.append(_tail)
         # 乐咕 quantile 列时有时无（8/20 起 NaN、最新行给 0.0 异常）→ 用自算分位回填快照
         try:
             if snap.get("pe_pct_10y") in (None, 0):
