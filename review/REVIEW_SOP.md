@@ -286,6 +286,9 @@ python3 review/selftest_touzid_panel.py    # 🆕 touzid 面板守卫的反向�
 > 已改 `_resolve_blocks()` 独立生效，并用 `--list-blocks` 做**行为级**验证。
 > 判据纪律：这类「有值但永远旧」的缺陷**只比对日期抓不住** → 守卫必须跑代码（参照 `rich()` 行为级测试）。
 > VIX 另有 CBOE 官方延时报价兜底（CSV 发布滞后约 1 日），**仅在美东 16:15 结算后**才把报价当收盘写入。
+> 🆕 **温度计频率口径（2026-09-23 修）**：`market_thermometer.history` **分指标口径** —— PE/PB/国债 = **月频**（乐咕月序列 + 当月滚动点，~62 点），破净率 = **日频**（乐咕 REST 日序列，2005 起，已并入 ~1200 点）。
+> 前端 `renderThermoChart` 按 `hist.filter(h => h[metric] != null)` 过滤，故日频行（仅带 date/below_net_ratio 两键）对其他指标不可见。
+> 页面标题已显式标注「破净率日频，其余月频」；⚠️ **全A PE/PB 日频无免费源**（akshare 乐咕系列全为月序列），勿据标题误判全部日频。
 >
 > 🆕 **富文本契约（2026-09-22）**：`ai_synthesis` 等 **agent 手写字段必须走 `rich()`**（白名单：`<b|i|br>`、
 > `<b|i|span class="dk-*">`，单双引号均可；实体解一层）。机器数据（日期/价格/代码/枚举）仍走 `esc()`。
