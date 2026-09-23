@@ -64,6 +64,7 @@ python3 review/build_window.py --at "2026-09-21 08:50" --dry-run   # 模拟跨�
 | 1 | 昨日 A 股走势总结 | 每日滚动（指数 / 量能 / 资金流向 / 4~5 条结构特征） |
 | 1.1 | 当日 TOP10 | 🚨 标题日期必须写「**最新交易日**」而非硬编码日期（数据由 JS 从 `top10_history.json` 动态加载；写死日期会每天显示过期） |
 | 1.2 | 当日金钻（三重门控合并去重） | 🚨 **纯动态渲染**：HTML 只留容器 `<div id="drTblDiamond"></div>`，标题固定「1.2 · 当日金钻 · 三重门控合并去重（动态）」；数据全部由 `drLoadDiamond()` 从 `gate_data.json`（门控 + `chan` 缠论明细）JOIN `valuation_band` / `institutional_flow` / `golden_diamond_history` 渲染。**禁止在 HTML 内写死金钻数据，禁止回退为「三个门控分类」分表版式**（与 V3 独立版 1.2 段同构；改动日期 2026-09-10）。⚠️ 自包含 `<style>` **必须保留** `.dr-scroll{overflow-x:auto}` + `.dr-scroll td,.dr-scroll th{white-space:nowrap}`（该 style 注入晚于 index.html，缺失会导致 12 列表格被 `.dr-tbl td` 的 `white-space:normal` 覆盖而严重折行） |
+| 1.3 | 引擎观测池 🆕 | **纯动态渲染（2026-09-23 新增）**：HTML 只留 `<div id="drObsMeta">` + `<div id="drTblObs">`，数据由 `drLoadObs()` 从 `output/obs_deduce_latest.json`（`derive_obs.py` 引擎日更）渲染 10 列（股票/板块/收盘/涨跌/MA5偏离/5日/量比/形态/趋势/开盘标签）。**agent 不手写本段**；三情景推演（机制路径+概率）仍归 7.2 段 agent 手写，两段分工不重叠。⚠️ `drLoadObs()` 必须置于 `/* ═══ NEWS-POOL-BEGIN ═══ */` 管理块**之外**（插进块内会让 `patch_news_pool --check` 报块不一致）|
 | 3 | 隔夜美股双日表 | 🚨 **硬编码**，必须手动滚动到最新双日 |
 | 4 | 重点宏观 | 🚨 **硬编码，必须每日滚动**（2026-09-11 补入清单）：① 中国段（最新国内数据，无新数据须显式标注）② 海外段（美债收益率 / 加息概率 / 油价 / 贵金属）③ **今日事件日历**（必须是**当天**日期，禁留前一日事件） |
 | 5 | 重点科技 | 🚨 **硬编码，必须每日滚动**（2026-09-11 补入清单）：存储 / 半导体、光通信 / CPO、AI 应用 / 海外巨头、能源资源 **4 线**，每线数据须取**最近一个美股收盘日**，禁留前一日预判 |
