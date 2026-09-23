@@ -1,10 +1,10 @@
 {
  "data_date": "2026-09-22",
  "kline_last_date": "2026-09-21",
- "generated_at": "2026-09-23 18:04",
+ "generated_at": "2026-09-23 22:25",
  "news_window": [
-  "2026-09-22",
-  "2026-09-23"
+  "2026-09-23",
+  "2026-09-24"
  ],
  "flow_date": "2026-09-22",
  "thresholds": {
@@ -36,8 +36,8 @@
   "unknown": "无数据"
  },
  "summary": {
-  "L4": 2,
-  "L3": 0,
+  "L4": 1,
+  "L3": 1,
   "L2": 1,
   "L1": 28
  },
@@ -50,79 +50,6 @@
  },
  "items": [
   {
-   "sector": "传媒",
-   "level": "L4",
-   "why": "资金分位100(≥80)+连续2日净流入+热度达标(日均≥8)｜趋势为反弹（中期趋势未反转）",
-   "trend": "downtrend_rebound",
-   "verdict": "共振",
-   "level_quad": "ok",
-   "flow_yi": 28.9,
-   "flow_pct": 100.0,
-   "flow_streak": 2,
-   "news_count": 43,
-   "news_per_day": 21.5,
-   "hot": true,
-   "tech": {
-    "as_of": "2026-09-21",
-    "close": 686.52,
-    "ema_score": 0,
-    "ema_groups": [
-     false,
-     false,
-     false,
-     false,
-     false,
-     false,
-     false
-    ],
-    "ema_strong": false,
-    "ema_perfect": false,
-    "ma_bullish": false,
-    "above_ema20": true,
-    "ema20": 684.36,
-    "ema60": 690.64,
-    "hi60": 731.5,
-    "lo60": 607.35,
-    "range_pos": 63.8,
-    "dd_from_hi60": -6.1,
-    "vol_ratio_5": 1.17,
-    "vol_ratio_20": 0.92,
-    "chg_pct": 1.21,
-    "vol_price_state": "放量上涨·健康推进",
-    "vol_price_level": "up",
-    "vol_price_diverge": false,
-    "flow_aligned": true,
-    "resistance": [
-     {
-      "price": 690.64,
-      "src": "上方EMA60"
-     },
-     {
-      "price": 730.64,
-      "src": "近20日高点"
-     },
-     {
-      "price": 808.22,
-      "src": "斐波161.8%延伸"
-     }
-    ],
-    "support": [
-     {
-      "price": 684.36,
-      "src": "EMA20支撑"
-     },
-     {
-      "price": 669.42,
-      "src": "斐波50%"
-     },
-     {
-      "price": 654.78,
-      "src": "斐波38.2%"
-     }
-    ]
-   }
-  },
-  {
    "sector": "计算机",
    "level": "L4",
    "why": "资金分位96(≥80)+连续3日净流入+热度达标(日均≥8)｜趋势为反弹（中期趋势未反转）",
@@ -132,8 +59,8 @@
    "flow_yi": 24.81,
    "flow_pct": 96.7,
    "flow_streak": 3,
-   "news_count": 105,
-   "news_per_day": 52.5,
+   "news_count": 21,
+   "news_per_day": 10.5,
    "hot": true,
    "tech": {
     "as_of": "2026-09-21",
@@ -196,6 +123,79 @@
    }
   },
   {
+   "sector": "传媒",
+   "level": "L3",
+   "why": "资金分位100+连续2日净流入｜趋势为反弹（中期趋势未反转）",
+   "trend": "downtrend_rebound",
+   "verdict": "暗线",
+   "level_quad": "info",
+   "flow_yi": 28.9,
+   "flow_pct": 100.0,
+   "flow_streak": 2,
+   "news_count": 5,
+   "news_per_day": 2.5,
+   "hot": false,
+   "tech": {
+    "as_of": "2026-09-21",
+    "close": 686.52,
+    "ema_score": 0,
+    "ema_groups": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "ema_strong": false,
+    "ema_perfect": false,
+    "ma_bullish": false,
+    "above_ema20": true,
+    "ema20": 684.36,
+    "ema60": 690.64,
+    "hi60": 731.5,
+    "lo60": 607.35,
+    "range_pos": 63.8,
+    "dd_from_hi60": -6.1,
+    "vol_ratio_5": 1.17,
+    "vol_ratio_20": 0.92,
+    "chg_pct": 1.21,
+    "vol_price_state": "放量上涨·健康推进",
+    "vol_price_level": "up",
+    "vol_price_diverge": false,
+    "flow_aligned": true,
+    "resistance": [
+     {
+      "price": 690.64,
+      "src": "上方EMA60"
+     },
+     {
+      "price": 730.64,
+      "src": "近20日高点"
+     },
+     {
+      "price": 808.22,
+      "src": "斐波161.8%延伸"
+     }
+    ],
+    "support": [
+     {
+      "price": 684.36,
+      "src": "EMA20支撑"
+     },
+     {
+      "price": 669.42,
+      "src": "斐波50%"
+     },
+     {
+      "price": 654.78,
+      "src": "斐波38.2%"
+     }
+    ]
+   }
+  },
+  {
    "sector": "煤炭",
    "level": "L2",
    "why": "技术面降档：跌破 EMA20（3350.65）——长期趋势仍向上（EMA 5/7），属回踩",
@@ -205,8 +205,8 @@
    "flow_yi": 4.29,
    "flow_pct": 93.3,
    "flow_streak": 2,
-   "news_count": 1,
-   "news_per_day": 0.5,
+   "news_count": 2,
+   "news_per_day": 1.0,
    "hot": false,
    "tech": {
     "as_of": "2026-09-21",
@@ -271,16 +271,16 @@
   {
    "sector": "通信",
    "level": "L1",
-   "why": "背离·资金净流出",
+   "why": "双冷·资金净流出",
    "trend": "downtrend_rebound",
-   "verdict": "背离",
-   "level_quad": "warn",
+   "verdict": "双冷",
+   "level_quad": "mute",
    "flow_yi": -60.11,
    "flow_pct": 0.0,
    "flow_streak": 0,
-   "news_count": 29,
-   "news_per_day": 14.5,
-   "hot": true,
+   "news_count": 7,
+   "news_per_day": 3.5,
+   "hot": false,
    "tech": {
     "as_of": "2026-09-21",
     "close": 7719.91,
@@ -351,8 +351,8 @@
    "flow_yi": -58.79,
    "flow_pct": 3.3,
    "flow_streak": 0,
-   "news_count": 144,
-   "news_per_day": 72.0,
+   "news_count": 19,
+   "news_per_day": 9.5,
    "hot": true,
    "tech": {
     "as_of": "2026-09-21",
@@ -417,16 +417,16 @@
   {
    "sector": "机械设备",
    "level": "L1",
-   "why": "背离·资金净流出",
+   "why": "双冷·资金净流出",
    "trend": "downtrend_rebound",
-   "verdict": "背离",
-   "level_quad": "warn",
+   "verdict": "双冷",
+   "level_quad": "mute",
    "flow_yi": -43.39,
    "flow_pct": 6.7,
    "flow_streak": 0,
-   "news_count": 27,
-   "news_per_day": 13.5,
-   "hot": true,
+   "news_count": 5,
+   "news_per_day": 2.5,
+   "hot": false,
    "tech": {
     "as_of": "2026-09-21",
     "close": 2227.88,
@@ -490,16 +490,16 @@
   {
    "sector": "医药生物",
    "level": "L1",
-   "why": "背离·资金净流出",
+   "why": "双冷·资金净流出",
    "trend": "downtrend_rebound",
-   "verdict": "背离",
-   "level_quad": "warn",
+   "verdict": "双冷",
+   "level_quad": "mute",
    "flow_yi": -34.81,
    "flow_pct": 10.0,
    "flow_streak": 0,
-   "news_count": 21,
-   "news_per_day": 10.5,
-   "hot": true,
+   "news_count": 4,
+   "news_per_day": 2.0,
+   "hot": false,
    "tech": {
     "as_of": "2026-09-21",
     "close": 7977.55,
@@ -563,16 +563,16 @@
   {
    "sector": "电力设备",
    "level": "L1",
-   "why": "背离·资金净流出",
+   "why": "双冷·资金净流出",
    "trend": "downtrend",
-   "verdict": "背离",
-   "level_quad": "warn",
+   "verdict": "双冷",
+   "level_quad": "mute",
    "flow_yi": -30.14,
    "flow_pct": 13.3,
    "flow_streak": 0,
-   "news_count": 32,
-   "news_per_day": 16.0,
-   "hot": true,
+   "news_count": 6,
+   "news_per_day": 3.0,
+   "hot": false,
    "tech": {
     "as_of": "2026-09-21",
     "close": 8574.63,
@@ -635,8 +635,8 @@
    "flow_yi": -18.89,
    "flow_pct": 16.7,
    "flow_streak": 0,
-   "news_count": 8,
-   "news_per_day": 4.0,
+   "news_count": 0,
+   "news_per_day": 0.0,
    "hot": false,
    "tech": {
     "as_of": "2026-09-21",
@@ -701,16 +701,16 @@
   {
    "sector": "国防军工",
    "level": "L1",
-   "why": "背离·资金净流出",
+   "why": "双冷·资金净流出",
    "trend": "downtrend_rebound",
-   "verdict": "背离",
-   "level_quad": "warn",
+   "verdict": "双冷",
+   "level_quad": "mute",
    "flow_yi": -18.42,
    "flow_pct": 20.0,
    "flow_streak": 0,
-   "news_count": 28,
-   "news_per_day": 14.0,
-   "hot": true,
+   "news_count": 8,
+   "news_per_day": 4.0,
+   "hot": false,
    "tech": {
     "as_of": "2026-09-21",
     "close": 1720.23,
@@ -854,8 +854,8 @@
    "flow_yi": -10.79,
    "flow_pct": 26.7,
    "flow_streak": 0,
-   "news_count": 10,
-   "news_per_day": 5.0,
+   "news_count": 2,
+   "news_per_day": 1.0,
    "hot": false,
    "tech": {
     "as_of": "2026-09-21",
@@ -920,16 +920,16 @@
   {
    "sector": "非银金融",
    "level": "L1",
-   "why": "背离·资金净流出",
+   "why": "双冷·资金净流出",
    "trend": "downtrend",
-   "verdict": "背离",
-   "level_quad": "warn",
+   "verdict": "双冷",
+   "level_quad": "mute",
    "flow_yi": -8.95,
    "flow_pct": 30.0,
    "flow_streak": 0,
-   "news_count": 37,
-   "news_per_day": 18.5,
-   "hot": true,
+   "news_count": 0,
+   "news_per_day": 0.0,
+   "hot": false,
    "tech": {
     "as_of": "2026-09-21",
     "close": 1736.11,
@@ -1065,8 +1065,8 @@
    "flow_yi": -8.38,
    "flow_pct": 36.7,
    "flow_streak": 0,
-   "news_count": 3,
-   "news_per_day": 1.5,
+   "news_count": 0,
+   "news_per_day": 0.0,
    "hot": false,
    "tech": {
     "as_of": "2026-09-21",
@@ -1127,16 +1127,16 @@
   {
    "sector": "汽车",
    "level": "L1",
-   "why": "背离·资金净流出",
+   "why": "双冷·资金净流出",
    "trend": "downtrend_rebound",
-   "verdict": "背离",
-   "level_quad": "warn",
+   "verdict": "双冷",
+   "level_quad": "mute",
    "flow_yi": -7.98,
    "flow_pct": 40.0,
    "flow_streak": 0,
-   "news_count": 59,
-   "news_per_day": 29.5,
-   "hot": true,
+   "news_count": 10,
+   "news_per_day": 5.0,
+   "hot": false,
    "tech": {
     "as_of": "2026-09-21",
     "close": 6394.44,
@@ -1200,16 +1200,16 @@
   {
    "sector": "房地产",
    "level": "L1",
-   "why": "背离·资金净流出",
+   "why": "双冷·资金净流出",
    "trend": "downtrend_rebound",
-   "verdict": "背离",
-   "level_quad": "warn",
+   "verdict": "双冷",
+   "level_quad": "mute",
    "flow_yi": -6.73,
    "flow_pct": 43.3,
    "flow_streak": 0,
-   "news_count": 25,
-   "news_per_day": 12.5,
-   "hot": true,
+   "news_count": 1,
+   "news_per_day": 0.5,
+   "hot": false,
    "tech": {
     "as_of": "2026-09-21",
     "close": 1971.06,
@@ -1269,16 +1269,16 @@
   {
    "sector": "农林牧渔",
    "level": "L1",
-   "why": "背离·资金净流出",
+   "why": "双冷·资金净流出",
    "trend": "downtrend_rebound",
-   "verdict": "背离",
-   "level_quad": "warn",
+   "verdict": "双冷",
+   "level_quad": "mute",
    "flow_yi": -6.42,
    "flow_pct": 46.7,
    "flow_streak": 0,
-   "news_count": 18,
-   "news_per_day": 9.0,
-   "hot": true,
+   "news_count": 4,
+   "news_per_day": 2.0,
+   "hot": false,
    "tech": {
     "as_of": "2026-09-21",
     "close": 2632.57,
@@ -1414,8 +1414,8 @@
    "flow_yi": -5.32,
    "flow_pct": 53.3,
    "flow_streak": 0,
-   "news_count": 4,
-   "news_per_day": 2.0,
+   "news_count": 0,
+   "news_per_day": 0.0,
    "hot": false,
    "tech": {
     "as_of": "2026-09-21",
@@ -1553,16 +1553,16 @@
   {
    "sector": "食品饮料",
    "level": "L1",
-   "why": "背离·资金净流出",
+   "why": "双冷·资金净流出",
    "trend": "downtrend",
-   "verdict": "背离",
-   "level_quad": "warn",
+   "verdict": "双冷",
+   "level_quad": "mute",
    "flow_yi": -3.83,
    "flow_pct": 60.0,
    "flow_streak": 0,
-   "news_count": 43,
-   "news_per_day": 21.5,
-   "hot": true,
+   "news_count": 2,
+   "news_per_day": 1.0,
+   "hot": false,
    "tech": {
     "as_of": "2026-09-21",
     "close": 13612.73,
@@ -1629,8 +1629,8 @@
    "flow_yi": -3.67,
    "flow_pct": 63.3,
    "flow_streak": 0,
-   "news_count": 0,
-   "news_per_day": 0.0,
+   "news_count": 1,
+   "news_per_day": 0.5,
    "hot": false,
    "tech": {
     "as_of": "2026-09-21",
@@ -1698,8 +1698,8 @@
    "flow_yi": -2.85,
    "flow_pct": 66.7,
    "flow_streak": 0,
-   "news_count": 2,
-   "news_per_day": 1.0,
+   "news_count": 0,
+   "news_per_day": 0.0,
    "hot": false,
    "tech": {
     "as_of": "2026-09-21",
@@ -1829,16 +1829,16 @@
   {
    "sector": "石油石化",
    "level": "L1",
-   "why": "背离·资金净流出",
+   "why": "双冷·资金净流出",
    "trend": "uptrend_pullback",
-   "verdict": "背离",
-   "level_quad": "warn",
+   "verdict": "双冷",
+   "level_quad": "mute",
    "flow_yi": -2.8,
    "flow_pct": 73.3,
    "flow_streak": 0,
-   "news_count": 43,
-   "news_per_day": 21.5,
-   "hot": true,
+   "news_count": 10,
+   "news_per_day": 5.0,
+   "hot": false,
    "tech": {
     "as_of": "2026-09-21",
     "close": 2719.27,
@@ -1982,8 +1982,8 @@
    "flow_yi": -2.02,
    "flow_pct": 80.0,
    "flow_streak": 0,
-   "news_count": 62,
-   "news_per_day": 31.0,
+   "news_count": 18,
+   "news_per_day": 9.0,
    "hot": true,
    "tech": {
     "as_of": "2026-09-21",
@@ -2121,16 +2121,16 @@
   {
    "sector": "银行",
    "level": "L1",
-   "why": "背离·资金净流出",
+   "why": "双冷·资金净流出",
    "trend": "downtrend_rebound",
-   "verdict": "背离",
-   "level_quad": "warn",
+   "verdict": "双冷",
+   "level_quad": "mute",
    "flow_yi": -0.47,
    "flow_pct": 86.7,
    "flow_streak": 0,
-   "news_count": 32,
-   "news_per_day": 16.0,
-   "hot": true,
+   "news_count": 14,
+   "news_per_day": 7.0,
+   "hot": false,
    "tech": {
     "as_of": "2026-09-21",
     "close": 4151.09,
@@ -2190,16 +2190,16 @@
   {
    "sector": "综合",
    "level": "L1",
-   "why": "背离·资金净流出",
+   "why": "双冷·资金净流出",
    "trend": "downtrend",
-   "verdict": "背离",
-   "level_quad": "warn",
+   "verdict": "双冷",
+   "level_quad": "mute",
    "flow_yi": -0.04,
    "flow_pct": 90.0,
    "flow_streak": 0,
-   "news_count": 24,
-   "news_per_day": 12.0,
-   "hot": true,
+   "news_count": 7,
+   "news_per_day": 3.5,
+   "hot": false,
    "tech": {
     "as_of": "2026-09-21",
     "close": 4216.23,

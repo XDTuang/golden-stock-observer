@@ -42,6 +42,23 @@ OUT_DIR = os.path.join(BASE, "output")
 DATE = datetime.datetime.now().strftime("%Y-%m-%d")
 KEEP_DAYS = 14
 
+# 🔴 内容时效窗（2026-09-23 治本）：`stock_info_cjzc_em` 返回 **400 条固定长度历史**
+#   （实测跨度 2025-02-05 → 当日，时间倒序），抽取侧原先**无时间窗** → 371/701 条当日池
+#   是 40 天以上的旧闻（最老 595 天），容器 `collected_date` 却是当天 ——
+#   与 `fetch_daily_macro.py` 2026-09-18 修的是同族缺陷（「有值但永远旧」）。
+#   处置：① 抓取侧按发布时间窗过滤 ② 池构建侧再兜一道「条目龄期」闸（可回溯清理历史归档）。
+FRESH_DAYS = 7          # 单条内容允许的最大龄期（天）；留过周末余量
+POOL_GRACE_DAYS = 7     # 池构建侧额外宽限：条目龄期 > keep_days + POOL_GRACE_DAYS 才丢弃
+
+
+def _content_age_days(ts, ref_date):
+    """条目内容时间距参考日的天数；不可解析返回 None（调用方须保留而非丢弃）。"""
+    try:
+        d = datetime.datetime.strptime(str(ts)[:10], "%Y-%m-%d").date()
+    except Exception:
+        return None
+    return (ref_date - d).days
+
 # ── 标签关键词（按优先级匹配）─────────────────────────────
 TAG_RULES = {
     "宏观":   ["PCE", "CPI", "PMI", "GDP", "非农", "初请", "美联储", "降息", "加息", "央行",
@@ -120,18 +137,28 @@ def grab_breakfast():
     out = []
     if df is None or df.empty:
         return out
+    today = datetime.date.today()
+    dropped = 0
     for _, r in df.iterrows():
         title = str(r.get("标题", "") or "")
         if not title:
             continue
+        ts = str(r.get("发布时间", "") or "")
+        # 🔴 时间窗过滤（2026-09-23）：源固定返回 400 条历史，不过滤则永远掺入 1 年多前的旧闻
+        age = _content_age_days(ts, today)
+        if age is not None and age > FRESH_DAYS:
+            dropped += 1
+            continue
         out.append({
             "title": title,
             "summary": str(r.get("摘要", "") or ""),
-            "time": str(r.get("发布时间", "") or ""),
+            "time": ts,
             "source": "财经早餐",
             "url": str(r.get("链接", "") or ""),
             "_key": norm_title(title),
         })
+    if dropped:
+        print(f"  ℹ️ 财经早餐：按内容时效窗（≤{FRESH_DAYS} 天）滤除陈旧条目 {dropped} 条")
     return out
 
 def grab_sina():
@@ -270,6 +297,7 @@ def rebuild_window_pool(keep_days=None):
     dropped = [d for d, _ in cands[keep_days:]]
 
     by_day, day_stats, merged = {}, {}, []
+    stale_days = {}
     bad = []
     for ds, p in kept:
         try:
@@ -279,6 +307,25 @@ def rebuild_window_pool(keep_days=None):
             bad.append(f"{ds}({e})")
             continue
         arr = doc.get("news") or []
+        # 🔴 池级内容时效闸（2026-09-23 治本）：归档件里的**陈旧条目**在纳入池时滤除，
+        #   使其不再参与窗口统计与前端渲染；磁盘归档件本身不删（可回溯）。
+        #   闸门 = 条目龄期 > keep_days + POOL_GRACE_DAYS（`time` 不可解析者一律保留）。
+        try:
+            _ref = datetime.datetime.strptime(ds, "%Y-%m-%d").date()
+        except Exception:
+            _ref = None
+        if _ref is not None:
+            _limit = keep_days + POOL_GRACE_DAYS
+            _kept, _drop = [], 0
+            for it in arr:
+                _a = _content_age_days(it.get("time"), _ref)
+                if _a is not None and _a > _limit:
+                    _drop += 1
+                    continue
+                _kept.append(it)
+            if _drop:
+                stale_days[ds] = _drop
+            arr = _kept
         for it in arr:
             it["collected_date"] = ds
         # 累积顺序：新的一天在前 → 去重保留「最新一次出现」的副本
@@ -318,7 +365,8 @@ def rebuild_window_pool(keep_days=None):
           f" → {covered_days[0] if covered_days else '—'}）· 去重后 {len(merged)} 条"
           + (f" · 已滚动出 {len(dropped)} 日" if dropped else ""))
     for ds in covered_days:
-        print(f"     {ds}  {day_stats[ds]['total']:>4} 条")
+        print(f"     {ds}  {day_stats[ds]['total']:>4} 条"
+              + (f"（滤除陈旧 {stale_days[ds]} 条）" if ds in stale_days else ""))
     if bad:
         print(f"   ⚠️ 读取失败跳过：{', '.join(bad)}")
     return pool
