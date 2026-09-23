@@ -1,0 +1,263 @@
+{
+  "date": "2026-09-23",
+  "generated_at": "2026-09-23 08:31",
+  "china": {
+    "pmi": {
+      "latest": {
+        "月份": "2026年08月份",
+        "制造业-指数": 49.8,
+        "制造业-同比增长": 0.8097166,
+        "非制造业-指数": 49.0,
+        "非制造业-同比增长": -2.58449304
+      },
+      "rows": 224
+    },
+    "gdp": {
+      "latest": {
+        "季度": "2026年第1-2季度",
+        "国内生产总值-绝对值": 695704.0,
+        "国内生产总值-同比增长": 4.7,
+        "第一产业-绝对值": 31521.8,
+        "第一产业-同比增长": 3.7,
+        "第二产业-绝对值": 250472.9,
+        "第二产业-同比增长": 3.9,
+        "第三产业-绝对值": 413709.2,
+        "第三产业-同比增长": 5.2
+      },
+      "rows": 82
+    },
+    "cpi": {
+      "latest": {
+        "月份": "2026年08月份",
+        "全国-当月": 100.8,
+        "全国-同比增长": 0.8,
+        "全国-环比增长": 0.4,
+        "全国-累计": 100.9,
+        "城市-当月": 100.8,
+        "城市-同比增长": 0.8,
+        "城市-环比增长": 0.4,
+        "城市-累计": 100.9,
+        "农村-当月": 100.7,
+        "农村-同比增长": 0.7,
+        "农村-环比增长": 0.4,
+        "农村-累计": 100.7
+      },
+      "rows": 224
+    },
+    "lpr": {
+      "latest": {
+        "TRADE_DATE": "2026-09-20",
+        "LPR1Y": 3.0,
+        "LPR5Y": 3.5,
+        "RATE_1": 4.35,
+        "RATE_2": 4.9
+      },
+      "rows": 1576
+    }
+  },
+  "us": {
+    "note": "主源=百度经济日历(带公布日/预期/前值)；兜底=新闻抽取(近 7 日)",
+    "calendar": {
+      "source": "百度经济日历 news_economic_baidu",
+      "window_days": 7,
+      "lookback_days": 30,
+      "lookback_used_to": "2026-09-04",
+      "days_fetched": 20,
+      "as_of": "2026-09-23 08:31",
+      "indicators": {
+        "CPI 同比": [
+          {
+            "event": "美国8月CPI年率未季调(%)",
+            "value": "3.4",
+            "forecast": "3.4",
+            "previous": "3.4",
+            "importance": 2,
+            "release_date": "2026-09-11",
+            "release_time": "20:30",
+            "days_ago": 12,
+            "is_fresh": false
+          }
+        ],
+        "核心 CPI": [
+          {
+            "event": "美国8月核心CPI年率未季调(%)",
+            "value": "2.4",
+            "forecast": "2.4",
+            "previous": "2.5",
+            "importance": 2,
+            "release_date": "2026-09-11",
+            "release_time": "20:30",
+            "days_ago": 12,
+            "is_fresh": false
+          }
+        ],
+        "CPI 月率": [
+          {
+            "event": "美国8月CPI月率季调后(%)",
+            "value": "0.4",
+            "forecast": "0.4",
+            "previous": "0.1",
+            "importance": 1,
+            "release_date": "2026-09-11",
+            "release_time": "20:30",
+            "days_ago": 12,
+            "is_fresh": false
+          }
+        ],
+        "核心CPI月率": [
+          {
+            "event": "美国8月核心CPI月率季调后(%)",
+            "value": "0.3",
+            "forecast": "0.2",
+            "previous": "0.2",
+            "importance": 1,
+            "release_date": "2026-09-11",
+            "release_time": "20:30",
+            "days_ago": 12,
+            "is_fresh": false
+          }
+        ],
+        "非农": [
+          {
+            "event": "美国8月非农就业人口变动季调后(万)",
+            "value": "16.2",
+            "forecast": "5.6",
+            "previous": "-2.3",
+            "importance": 2,
+            "release_date": "2026-09-04",
+            "release_time": "20:30",
+            "days_ago": 19,
+            "is_fresh": false
+          }
+        ],
+        "失业率": [
+          {
+            "event": "美国8月失业率(%)",
+            "value": "4.1",
+            "forecast": "4.1",
+            "previous": "4.1",
+            "importance": 2,
+            "release_date": "2026-09-04",
+            "release_time": "20:30",
+            "days_ago": 19,
+            "is_fresh": false
+          }
+        ],
+        "ADP 就业": [
+          {
+            "event": "美国截至9月5日当周ADP就业周度发布变动(万人)",
+            "value": "2.0",
+            "forecast": "",
+            "previous": "1.63",
+            "importance": 2,
+            "release_date": "2026-09-22",
+            "release_time": "20:15",
+            "days_ago": 1,
+            "is_fresh": true
+          }
+        ],
+        "初请失业金": [
+          {
+            "event": "美国截至9月12日当周初请失业金人数(万)",
+            "value": "19.6",
+            "forecast": "20.8",
+            "previous": "20.6",
+            "importance": 2,
+            "release_date": "2026-09-17",
+            "release_time": "20:30",
+            "days_ago": 6,
+            "is_fresh": true
+          }
+        ],
+        "GDP": [
+          {
+            "event": "美国8月关联GDP的零售额控制组月率-季调后(%)",
+            "value": "1.4",
+            "forecast": "0.4",
+            "previous": "-0.4",
+            "importance": 2,
+            "release_date": "2026-09-16",
+            "release_time": "20:30",
+            "days_ago": 7,
+            "is_fresh": true
+          }
+        ],
+        "零售销售": [
+          {
+            "event": "美国8月核心零售销售月率(%)",
+            "value": "1.4",
+            "forecast": "0.5",
+            "previous": "-0.3",
+            "importance": 2,
+            "release_date": "2026-09-16",
+            "release_time": "20:30",
+            "days_ago": 7,
+            "is_fresh": true
+          },
+          {
+            "event": "美国8月零售销售月率(%)",
+            "value": "1.2",
+            "forecast": "0.8",
+            "previous": "-0.6",
+            "importance": 2,
+            "release_date": "2026-09-16",
+            "release_time": "20:30",
+            "days_ago": 7,
+            "is_fresh": true
+          }
+        ]
+      }
+    },
+    "indicators": {
+      "美联储/利率": [
+        {
+          "title": "美联储加息靴子落地 私募机构谋划A股“新打法”",
+          "evidence": [
+            "美联储加息靴子落地 私募机构谋划A股“新打法” 【美联储加息靴子落地 私募机构谋划A股“新打法”】上周四，备受全球市场瞩目的美联储9月加息靴子落地"
+          ],
+          "date": "2026-09-23",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-09-23 07:17:03",
+          "source": "东财全球"
+        },
+        {
+          "title": "美联储10月加息的概率为54.2%",
+          "evidence": [
+            "美联储10月加息的概率为54.2% 【美联储10月加息的概率为54.2%】据CME“美联储观察”：美联储10月会议维持利率在3.75%-4.00%不变的概率为45.8%，加息25个",
+            "美联储到12月维持利率在3.75%-4.00%不变的概率为10.8%，累计加息25个基点的概率为47.8%，累计加息50个基点的概率为41.4%"
+          ],
+          "date": "2026-09-23",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-09-23 06:03:40",
+          "source": "东财全球"
+        },
+        {
+          "title": "周二（9月22日） 美联储隔夜逆回购协议（RRP）使用规模为4.53亿美元",
+          "evidence": [
+            "周二（9月22日） 美联储隔夜逆回购协议（RRP）使用规模为4.53亿美元 周二（9月22日），美联储隔夜逆回购协议（RRP）使用规模为4.53亿美元"
+          ],
+          "date": "2026-09-23",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-09-23 01:17:06",
+          "source": "东财全球"
+        }
+      ]
+    },
+    "stale": [
+      "核心PCE",
+      "整体PCE",
+      "CPI",
+      "非农",
+      "初请失业金",
+      "耐用品订单",
+      "美国GDP",
+      "美债收益率"
+    ],
+    "log": [
+      "新闻池 600 条 → 窗口内(7日) 206 条；命中 1 指标"
+    ]
+  }
+}
