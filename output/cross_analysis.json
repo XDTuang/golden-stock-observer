@@ -1,7 +1,7 @@
 {
-  "date": "2026-09-23",
+  "date": "2026-09-24",
   "data_date": "2026-09-23",
-  "generated_at": "2026-09-23 22:18",
+  "generated_at": "2026-09-24 08:56",
   "news_date": "",
   "news_window": [
     "2026-09-23",
@@ -15,8 +15,8 @@
   "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-09-23 22:18",
-    "session": "close",
+    "generated_at": "2026-09-24 08:30",
+    "session": "preopen",
     "data_date": "2026-09-23",
     "for_date": "2026-09-24",
     "data_date_note": "",
@@ -65,7 +65,7 @@
         "is_trading_day": true,
         "news": 307,
         "feeds": 0,
-        "reports": 855,
+        "reports": 1010,
         "macro": true
       },
       {
@@ -73,19 +73,20 @@
         "weekday": "周四",
         "is_trading_day": true,
         "news": 0,
-        "feeds": 0,
-        "reports": 0,
+        "feeds": 3,
+        "reports": 59,
         "macro": false
       }
     ],
     "totals": {
       "news": 307,
-      "feeds": 0,
-      "reports": 855,
+      "feeds": 3,
+      "reports": 1069,
       "covered_days": 2
     },
     "missing": [
-      "market_thermometer.json 数据日 2026-09-22 落后于基准日 2026-09-23"
+      "market_thermometer.json 数据日 2026-09-22 落后于基准日 2026-09-23",
+      "2026-09-24（周四·交易日）新闻池 0 条"
     ]
   },
   "index_context": {
@@ -108,140 +109,143 @@
   },
   "summary": {
     "共振": 1,
-    "背离": 2,
+    "背离": 6,
     "暗线": 2,
-    "双冷": 26
+    "双冷": 22
   },
   "items": [
     {
       "sector": "通信",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 14,
+      "news_per_day": 7.0,
       "flow_yi": -60.11,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "英国空军中新设“第三太空效应中队”",
-        "三星与KT和SK Telecom携手 为韩国AI RAN项目提供支持",
-        "小米发布18 Pro系列透明特别版 起售价9999元"
+        "【星移联信连续完成A+、A++轮融资，合计融资数亿元】9月23日，星移联信航",
+        "泰和新材：发光纤维产品研发成功 将落地应用于汽车内饰",
+        "东方财富财经早餐 9月24日周四"
       ]
     },
     {
       "sector": "电子",
-      "news_count": 19,
-      "news_per_day": 9.5,
+      "news_count": 56,
+      "news_per_day": 28.0,
       "flow_yi": -58.79,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "美股三大股指小幅低开 热门股票多数下跌",
-        "三星与KT和SK Telecom携手 为韩国AI RAN项目提供支持",
-        "奥联电子：控股股东将变更为骏图天泽 股票复牌"
+        "【深圳燃气成立智联科技公司 含AI及集成电路芯片业务】企查查APP显示，近日",
+        "深圳燃气成立智联科技公司 含AI及集成电路芯片业务",
+        "从数据中心迈入“工控”新赛道 海光信息端侧芯片能否开辟新增长曲线？"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 5,
-      "news_per_day": 2.5,
+      "news_count": 16,
+      "news_per_day": 8.0,
       "flow_yi": -43.39,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "上纬新材：公司复合材料已应用于机器人脚掌、连杆研发验证",
-        "高通公司表示将收购机器人软件公司Picknik",
-        "1000亿台人形机器人？马斯克新表态 产业链个股梳理"
+        "众诚科技成立数据科技公司 含AI及机器人业务",
+        "越疆、凡拓数创等入股广东省具身智能科技公司",
+        "【越疆、凡拓数创等入股广东省具身智能科技公司】企查查APP显示，近日，广东省"
       ]
     },
     {
       "sector": "医药生物",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 8,
+      "news_per_day": 4.0,
       "flow_yi": -34.81,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "Moderna盘初续涨，现涨近5%，再创2023年1月以来新高；自8月19日",
-        "上海莱士：拟收购勃林格殷格翰生物药业（中国）有限公司100%股权",
-        "复星医药：控股子公司获T-MATE技术平台独家许可"
+        "国金证券：肺癌治疗迭代 中国新药崛起",
+        "国金证券：肺癌治疗迭代，中国新药崛起",
+        "红利ETF失宠成长方向吸金 市场风格再平衡进入后半程"
       ]
     },
     {
       "sector": "电力设备",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": -30.14,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "腾势纯电轿车Z9S正式上市",
-        "启境GX7车型正式上市 全系标配宁德时代电池",
-        "宝马集团：第六代动力电池核心环节在中国实现本土化"
+        "Meta推出轻量化VR眼镜，目标推动Reality Labs业务盈利",
+        "特朗普政府拟批准部分风电项目，换取能源许可改革支持",
+        "供需格局变化 轻稀土价格上涨明显"
       ]
     },
     {
       "sector": "传媒",
-      "news_count": 5,
-      "news_per_day": 2.5,
+      "news_count": 14,
+      "news_per_day": 7.0,
       "flow_yi": 28.9,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "美股部分AI应用软件股上涨",
-        "美股部分AI应用软件股上扬，Palantir盘初拉升涨超4%，Service",
-        "南威软件：公司政务智能体、WellWork智能体平台相关业务尚处于市场开拓初"
+        "【由于市场环境不利 Amaero推迟了其在美国的IPO】Amaero Inc",
+        "又一家A股公司暂缓H股IPO 赴港上市进入“冷静期”？",
+        "  Amaero Inc. 宣布推迟其在美国的首次公开募股（IPO）计划 。"
       ]
     },
     {
       "sector": "计算机",
-      "news_count": 21,
-      "news_per_day": 10.5,
+      "news_count": 72,
+      "news_per_day": 36.0,
       "flow_yi": 24.81,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "HASHGRAPH GROUP与IBM就代理式AI身份解决方案达成协议。",
-        "美股部分AI应用软件股上涨",
-        "美股部分AI应用软件股上扬，Palantir盘初拉升涨超4%，Service"
+        "【深圳燃气成立智联科技公司 含AI及集成电路芯片业务】企查查APP显示，近日",
+        "众诚科技成立数据科技公司 含AI及机器人业务",
+        "越疆、凡拓数创等入股广东省具身智能科技公司"
       ]
     },
     {
       "sector": "基础化工",
-      "news_count": 0,
-      "news_per_day": 0.0,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -18.89,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": []
+      "sample_titles": [
+        "9月24日股市避雷针",
+        "手握磷矿 磷化工龙头再度加码磷酸铁锂 年内投资近150亿"
+      ]
     },
     {
       "sector": "国防军工",
-      "news_count": 8,
-      "news_per_day": 4.0,
+      "news_count": 16,
+      "news_per_day": 8.0,
       "flow_yi": -18.42,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "以色列议会批准追加近150亿新谢克尔国防预算",
-        "伊朗官员：不会急于谈判 开放霍尔木兹海峡需满足伊朗的条件",
-        "伊朗最高国家安全委员会秘书：我们首次成功在美国“华盛顿号”航母上空引爆了一枚"
+        "孟加拉航空向波音追加订购11架客机 订单总数增至25架",
+        "【星移联信连续完成A+、A++轮融资，合计融资数亿元】9月23日，星移联信航",
+        "孟加拉国航空公司向波音(BA.N)订购11架787梦想飞机和737 MAX飞"
       ]
     },
     {
@@ -257,28 +261,33 @@
     },
     {
       "sector": "公用事业",
-      "news_count": 2,
-      "news_per_day": 1.0,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": -10.79,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "前8个月工业经济稳步增长 新质生产力加快培育",
-        "我国自研F级重型燃机首次成套出口"
+        "【深圳燃气成立智联科技公司 含AI及集成电路芯片业务】企查查APP显示，近日",
+        "深圳燃气成立智联科技公司 含AI及集成电路芯片业务",
+        "前8个月工业经济稳步增长 新质生产力加快培育"
       ]
     },
     {
       "sector": "非银金融",
-      "news_count": 0,
-      "news_per_day": 0.0,
+      "news_count": 11,
+      "news_per_day": 5.5,
       "flow_yi": -8.95,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": []
+      "sample_titles": [
+        "【由于市场环境不利 Amaero推迟了其在美国的IPO】Amaero Inc",
+        "又一家A股公司暂缓H股IPO 赴港上市进入“冷静期”？",
+        "  Amaero Inc. 宣布推迟其在美国的首次公开募股（IPO）计划 。"
+      ]
     },
     {
       "sector": "建筑装饰",
@@ -304,45 +313,47 @@
     },
     {
       "sector": "汽车",
-      "news_count": 10,
-      "news_per_day": 5.0,
+      "news_count": 16,
+      "news_per_day": 8.0,
       "flow_yi": -7.98,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "腾势纯电轿车Z9S正式上市",
-        "美股开盘：美股三大指数集体低开",
-        "江淮汽车：公司及控股股东不存在其他应披露而未披露的重大资产重组、重大业务合作"
+        "【途虎-W：拟2.78亿澳元收购Conti Trade Australia ",
+        "【8月销量超雷诺、奥迪，中国品牌正从“走出去”迈向“站得住”】据《欧洲汽车新",
+        "泰和新材：发光纤维产品研发成功 将落地应用于汽车内饰"
       ]
     },
     {
       "sector": "房地产",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 5,
+      "news_per_day": 2.5,
       "flow_yi": -6.73,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "美联储理事巴尔：多种因素导致美国住房负担能力下降。"
+        "一线城市新房成交面积同比增长超10% 楼市“金九”成色向好",
+        "“迷你豪宅”火了！房企争夺“迷你宅地”",
+        "时报观察 | 民企五百强“含新量”跃升 科技产业增长极加速成形"
       ]
     },
     {
       "sector": "农林牧渔",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": -6.42,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "【新思想引领新征程】丰收的底气",
-        "俄罗斯央行：粮食出口持续下降将挤压农业盈利能力，长期内将导致产量减少。",
-        "乌克兰农业部长：乌克兰预计可通过波罗的海航线出口2000万吨粮食"
+        "福建实施“农科+农垦”行动计划",
+        "印度政府下令将粗棕榈油和原油大豆油的进口关税从10%下调至5%",
+        "【新思想引领新征程】丰收的底气"
       ]
     },
     {
@@ -380,30 +391,32 @@
     },
     {
       "sector": "煤炭",
-      "news_count": 2,
-      "news_per_day": 1.0,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": 4.29,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
+        "煤炭保供贵在安全主动",
         "期市夜盘开盘，国内期货主力合约多数下跌",
         "国内商品期货夜盘开盘 主力合约跌多涨少"
       ]
     },
     {
       "sector": "食品饮料",
-      "news_count": 2,
-      "news_per_day": 1.0,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": -3.83,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "力积存储：消费级DRAM和工业级DRAM订单持续上涨 价格随行就市",
-        "中国香港8月消费者价格指数同比上涨1.7%"
+        "【晶泰向美国FDA提交KQTD-126新药临床试验申请】9月24日，晶泰科技",
+        "晶泰向美国FDA提交KQTD-126新药临床试验申请",
+        "银河证券：车市进入“金九银十”与年末消费旺季"
       ]
     },
     {
@@ -443,17 +456,17 @@
     },
     {
       "sector": "石油石化",
-      "news_count": 10,
-      "news_per_day": 5.0,
+      "news_count": 15,
+      "news_per_day": 7.5,
       "flow_yi": -2.8,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "俄罗斯央行：八月份卢布贬值部分是由于使用出口收益支付进口，包括石油精炼厂维护",
-        "上期所原油主力合约大涨5%",
-        "布伦特原油期货涨幅扩大至2%"
+        "国际原油期货结算价收涨",
+        "国际原油期货日内涨幅缩窄",
+        "印度政府下令将粗棕榈油和原油大豆油的进口关税从10%下调至5%"
       ]
     },
     {
@@ -469,17 +482,17 @@
     },
     {
       "sector": "有色金属",
-      "news_count": 18,
-      "news_per_day": 9.0,
+      "news_count": 29,
+      "news_per_day": 14.5,
       "flow_yi": -2.02,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "COMEX铜期货跌超1%",
-        "COMEX白银期货跌超2%",
-        "硅业分会：减产预期明确 本周多晶硅市场成交好转"
+        "【印度铜生产商寻求减税 以应对铜价创纪录的飙升行情】印度铜生产商正寻求国内税",
+        "全球最大的黄金ETF SPDR Gold Trust持仓较前日增加0.86吨",
+        "现货白银失守64美元/盎司"
       ]
     },
     {
@@ -495,32 +508,32 @@
     },
     {
       "sector": "银行",
-      "news_count": 14,
-      "news_per_day": 7.0,
+      "news_count": 23,
+      "news_per_day": 11.5,
       "flow_yi": -0.47,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "国内联播快讯",
-        "阿联酋央行：已决定禁止伊朗梅利银行所有在阿联酋运营的分行开展业务",
-        "报道：摩根士丹利投资银行交易清单意外泄露"
+        "大摩员工发错邮件，逾百笔亚洲投行业务信息遭泄露",
+        "美元存款投资者面临“账面亏损” 还能继续买吗？",
+        "银行黄金代客业务一进一退：“炒金”通道收窄 积存金扩容"
       ]
     },
     {
       "sector": "综合",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 11,
+      "news_per_day": 5.5,
       "flow_yi": -0.04,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "美国企业活动升至五年多来最高水平，通胀压力加剧",
-        "美国9月标普全球综合PMI升至五年新高",
-        "美国9月标普全球综合PMI初值录得58.4，升至五年高位。"
+        "【晶泰向美国FDA提交KQTD-126新药临床试验申请】9月24日，晶泰科技",
+        "晶泰向美国FDA提交KQTD-126新药临床试验申请",
+        "公募秋季策略会密集召开，积极看多权益资产"
       ]
     }
   ]
