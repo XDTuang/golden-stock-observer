@@ -1,6 +1,6 @@
 {
  "meta": {
-  "updated_at": "2026-09-24 09:15:25",
+  "updated_at": "2026-09-24 09:45:15",
   "data_date": "2026-09-24",
   "market_status": "trading",
   "algorithm": "1.0.0",
@@ -11,89 +11,89 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3935.96,
-    "chg_pct": -0.01,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3922.29,
+    "chg_pct": -0.36,
+    "turnover_yi": 1768.9,
+    "high": 3930.5,
+    "low": 3921.03
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 13636.07,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 13529.96,
+    "chg_pct": -0.78,
+    "turnover_yi": 1963.7,
+    "high": 13577.86,
+    "low": 13514.2
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 3379.61,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3357.01,
+    "chg_pct": -0.67,
+    "turnover_yi": 926.7,
+    "high": 3370.34,
+    "low": 3348.08
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1660.8,
-    "chg_pct": -0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 1641.62,
+    "chg_pct": -1.16,
+    "turnover_yi": 137.6,
+    "high": 1652.69,
+    "low": 1636.65
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4515.83,
-    "chg_pct": -0.03,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 4488.52,
+    "chg_pct": -0.64,
+    "turnover_yi": 692.3,
+    "high": 4500.2,
+    "low": 4486.36
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 7791.25,
-    "chg_pct": -0.01,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 7739.19,
+    "chg_pct": -0.68,
+    "turnover_yi": 558.3,
+    "high": 7774.22,
+    "low": 7730.09
    }
   ],
   "breadth": {
-   "up": 1288,
-   "down": 1963,
-   "flat": 1353,
-   "ratio": 0.66,
-   "limit_up": 65,
-   "limit_down": 76,
-   "main_net_yi": 0.0,
-   "turnover_yi": 0.0,
+   "up": 1829,
+   "down": 2491,
+   "flat": 284,
+   "ratio": 0.73,
+   "limit_up": 29,
+   "limit_down": 4,
+   "main_net_yi": -82.91,
+   "turnover_yi": 3216.5,
    "total": 4604
   }
  },
  "L1": {
   "sentiment": {
-   "score": 39,
-   "S1": 16,
-   "S2": 54,
-   "S3": 40,
-   "S4": 50,
+   "score": 26,
+   "S1": 18,
+   "S2": 24,
+   "S3": 26,
+   "S4": 36,
    "inputs": {
-    "ratio": 0.66,
-    "limit_up": 65,
-    "avg_idx_pct": -0.01,
-    "main_net_yi": 0
+    "ratio": 0.73,
+    "limit_up": 29,
+    "avg_idx_pct": -0.71,
+    "main_net_yi": -82.91
    }
   },
   "state": {
    "state": "weak",
    "label": "弱势回调",
    "note": "防守为主，仅小仓低吸，严格止损",
-   "score": 39
+   "score": 26
   }
  },
  "L2": {
@@ -115,7 +115,92 @@
   "resonance": []
  },
  "L4": {
-  "candidates": [],
+  "candidates": [
+   {
+    "code": "sz300285",
+    "name": "国瓷材料",
+    "zdf": 4.65,
+    "zljlr": 5.43,
+    "lb": 11.48,
+    "hsl": 6.87,
+    "turnover_yi": 42.54,
+    "price": 72.21,
+    "stype": "GP-A-CYB",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz002579",
+    "name": "中京电子",
+    "zdf": 6.24,
+    "zljlr": 2.2,
+    "lb": 7.23,
+    "hsl": 11.12,
+    "turnover_yi": 12.63,
+    "price": 19.76,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sh605358",
+    "name": "立昂微",
+    "zdf": 4.29,
+    "zljlr": 1.84,
+    "lb": 8.07,
+    "hsl": 3.19,
+    "turnover_yi": 12.22,
+    "price": 50.09,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz300489",
+    "name": "光智科技",
+    "zdf": 1.79,
+    "zljlr": 1.42,
+    "lb": 3.61,
+    "hsl": 2.86,
+    "turnover_yi": 10.55,
+    "price": 268.74,
+    "stype": "GP-A-CYB",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz002413",
+    "name": "雷科防务",
+    "zdf": 6.38,
+    "zljlr": 1.38,
+    "lb": 32.33,
+    "hsl": 6.79,
+    "turnover_yi": 7.72,
+    "price": 8.67,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz002491",
+    "name": "通鼎互联",
+    "zdf": 2.51,
+    "zljlr": 1.19,
+    "lb": 2.81,
+    "hsl": 3.36,
+    "turnover_yi": 9.67,
+    "price": 24.89,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sh601689",
+    "name": "拓普集团",
+    "zdf": 3.62,
+    "zljlr": 1.14,
+    "lb": 7.78,
+    "hsl": 0.75,
+    "turnover_yi": 6.16,
+    "price": 47.55,
+    "stype": "GP-A",
+    "type": "中继观察"
+   }
+  ],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
