@@ -1,75 +1,109 @@
 {
-  "generated_at": "2026-09-24 08:30",
-  "session": "preopen",
-  "data_date": "2026-09-23",
-  "for_date": "2026-09-24",
+  "generated_at": "2026-09-24 22:05",
+  "session": "close",
+  "data_date": "2026-09-24",
+  "for_date": "2026-09-28",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-09-24"
+    "2026-09-25",
+    "2026-09-26",
+    "2026-09-27",
+    "2026-09-28"
   ],
-  "span_days": 1,
+  "span_days": 4,
   "display_days": [
-    "2026-09-23",
-    "2026-09-24"
+    "2026-09-24",
+    "2026-09-25",
+    "2026-09-26",
+    "2026-09-27",
+    "2026-09-28"
   ],
-  "display_text": "09/23 + 09/24",
-  "span_is_weekend_cross": false,
-  "span_text": "09/24",
+  "display_text": "09/24–09/28",
+  "span_is_weekend_cross": true,
+  "span_text": "09/25–09/28",
   "carry": {
-    "from_data_date": "2026-09-23",
-    "ref": "output/feed_review_2026-09-23.json",
+    "from_data_date": "2026-09-24",
+    "ref": "output/feed_review_2026-09-24.json",
     "exists": true,
-    "gap_days": 1,
+    "gap_days": 4,
     "stale": false,
     "bias": "中性",
-    "bias_score": 1,
+    "bias_score": 0,
     "t1_focus": [
       "跟踪金钻起涨 2 只回踩确认"
     ],
-    "risks": [],
+    "risks": [
+      "投喂语料含负面信息，注意相关个股避险"
+    ],
     "headline": ""
   },
   "layers": {
-    "base": "2026-09-23 A股收盘（基准层）",
-    "overnight": "美东 2026-09-23 收盘（北京 2026-09-24 早间到达）",
-    "premarket": "2026-09-24 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-09-24 A股收盘（基准层）",
+    "overnight": "美东 2026-09-24 收盘（北京 2026-09-25 早间到达）",
+    "premarket": "2026-09-28 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-09-23",
-    "run_date": "2026-09-23",
+    "date": "2026-09-24",
+    "run_date": "2026-09-24",
     "preopen_partial": null,
     "us_kline": true,
     "asia": true
   },
   "covered": [
     {
-      "date": "2026-09-23",
-      "weekday": "周三",
-      "is_trading_day": true,
-      "news": 307,
-      "feeds": 0,
-      "reports": 1010,
-      "macro": true
-    },
-    {
       "date": "2026-09-24",
       "weekday": "周四",
       "is_trading_day": true,
-      "news": 0,
+      "news": 300,
       "feeds": 3,
-      "reports": 59,
+      "reports": 644,
+      "macro": true
+    },
+    {
+      "date": "2026-09-25",
+      "weekday": "周五",
+      "is_trading_day": false,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    },
+    {
+      "date": "2026-09-26",
+      "weekday": "周六",
+      "is_trading_day": false,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    },
+    {
+      "date": "2026-09-27",
+      "weekday": "周日",
+      "is_trading_day": false,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    },
+    {
+      "date": "2026-09-28",
+      "weekday": "周一",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
       "macro": false
     }
   ],
   "totals": {
-    "news": 307,
+    "news": 300,
     "feeds": 3,
-    "reports": 1069,
-    "covered_days": 2
+    "reports": 644,
+    "covered_days": 5
   },
   "missing": [
-    "market_thermometer.json 数据日 2026-09-22 落后于基准日 2026-09-23",
-    "2026-09-24（周四·交易日）新闻池 0 条"
+    "market_thermometer.json 数据日 2026-09-23 落后于基准日 2026-09-24"
   ]
 }

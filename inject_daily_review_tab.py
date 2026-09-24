@@ -96,6 +96,7 @@ function renderDailyReview() {
       drLoadNewsPool();
       drLoadWindow();
       drLoadSelfCheck();
+      drLoadObs();
     }).catch(err => {
       ana.innerHTML = `<p class="dr-note">分析区加载失败：${err}</p>`;
     });
@@ -641,6 +642,46 @@ function drLoadDiamond() {
     }).catch(err => {
       el.innerHTML = `<div class="dr-note">金钻数据加载失败：${err}</div>`;
     });
+}
+
+/* ═══════ 1.3 引擎观测池（output/obs_deduce_latest.json · derive_obs.py 日更）═══════ */
+function drLoadObs() {
+  const el = document.getElementById('drTblObs');
+  if (!el) return;
+  const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  fetch('./output/obs_deduce_latest.json', { cache: 'no-store' }).then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(d => {
+    const items = (d && d.items) || [];
+    const meta = document.getElementById('drObsMeta');
+    if (meta) {
+      meta.innerHTML = '<span class="dr-tag">数据日：' + esc(d.date || '—') + ' ｜ ' + items.length + ' 只</span>' +
+        '<span class="dr-tag">来源：derive_obs.py 引擎日更</span>' +
+        '<span class="dr-tag">三情景推演见 7.2 段</span>';
+    }
+    if (!items.length) { el.innerHTML = '<div class="dr-note">暂无观测池数据</div>'; return; }
+    let h = '<table class="dr-tbl"><thead><tr><th>股票</th><th>板块</th><th>收盘</th><th>涨跌</th><th>MA5 偏离</th><th>5 日</th><th>量比</th><th>形态</th><th>趋势</th><th>开盘标签</th></tr></thead><tbody>';
+    items.forEach(it => {
+      const chg = Number(it.chg_last);
+      const cCls = chg > 0 ? 'dr-up' : (chg < 0 ? 'dr-dn' : '');
+      const dev = (it.dev_ma5 == null) ? '—' : (it.dev_ma5 > 0 ? '+' : '') + Number(it.dev_ma5).toFixed(2) + '%';
+      const dCls = (it.dev_ma5 == null) ? '' : (it.dev_ma5 > 0 ? 'dr-up' : 'dr-dn');
+      const c5 = (it.chg5 == null) ? '—' : (it.chg5 > 0 ? '+' : '') + Number(it.chg5).toFixed(2) + '%';
+      h += '<tr><td><b>' + esc(it.name) + '</b> <span style="font-size:11px;color:var(--text-muted)">' + esc(it.code) + '</span></td>' +
+        '<td class="dr-wrap" style="font-size:11.5px">' + esc(it.sector || '—') + '</td>' +
+        '<td>' + (it.close != null ? it.close : '—') + '</td>' +
+        '<td class="' + cCls + '">' + (isNaN(chg) ? '—' : (chg > 0 ? '+' : '') + chg.toFixed(2) + '%') + '</td>' +
+        '<td class="' + dCls + '">' + dev + '</td>' +
+        '<td>' + c5 + '</td>' +
+        '<td>' + (it.vol_ratio != null ? Number(it.vol_ratio).toFixed(2) : '—') + '</td>' +
+        '<td class="dr-wrap" style="font-size:11.5px">' + esc(it.pattern || '—') + '</td>' +
+        '<td class="dr-wrap" style="font-size:11.5px">' + esc(it.trend || '—') + '</td>' +
+        '<td style="font-size:11.5px">' + esc(it.open_label || '—') + '</td></tr>';
+    });
+    h += '</tbody></table>';
+    el.innerHTML = h;
+  }).catch(e => { el.innerHTML = '<div class="dr-note">观测池加载失败：' + e + '</div>'; });
 }
 
 /* ═══ NEWS-POOL-BEGIN ═══
