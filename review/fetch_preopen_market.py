@@ -79,6 +79,12 @@ US_GT_CODES = {
     "us_mu": "usMU", "us_sndk": "usSNDK", "us_lite": "usLITE", "us_aaoi": "usAAOI",
     "us_cohr": "usCOHR", "us_wdc": "usWDC", "us_skhy": "usSKHY", "us_mrvl": "usMRVL",
     "us_nvda": "usNVDA", "us_tsla": "usTSLA",
+    # 2026-09-25 补：美股医疗 / CXO 组（build_us_medical.py 的 10 只对标源）
+    # 此前仅 us_kline 含这 10 只、quotes 未被本脚本滚动 → 盘前页行情表残留上一交易日盘中值，
+    # 与 §3「美股医疗 / CXO 映射」的完整收盘读数自相矛盾（2026-09-25 实测 CRL 292.22 vs 294.44）。
+    "us_crl": "usCRL", "us_iqv": "usIQV", "us_iclr": "usICLR", "us_medp": "usMEDP",
+    "us_tmo": "usTMO", "us_dhr": "usDHR", "us_rgen": "usRGEN", "us_lh": "usLH",
+    "us_lly": "usLLY", "us_wst": "usWST",
 }
 # 腾讯美股字段位：2=现价 3=昨收 29=时间 30=涨跌额 31=涨跌幅 32=最高 33=最低
 F_IDX = dict(close=2, prev=3, time=29, chg_amt=30, chg_pct=31, high=32, low=33)
