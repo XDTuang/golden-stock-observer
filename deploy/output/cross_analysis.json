@@ -1,7 +1,7 @@
 {
-  "date": "2026-09-25",
+  "date": "2026-09-26",
   "data_date": "2026-09-24",
-  "generated_at": "2026-09-25 22:02",
+  "generated_at": "2026-09-26 08:59",
   "news_date": "",
   "news_window": [
     "2026-09-24",
@@ -18,8 +18,8 @@
   "hot_threshold": 40,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-09-25 08:31",
-    "session": "preopen",
+    "generated_at": "2026-09-25 22:08",
+    "session": "nontrade",
     "data_date": "2026-09-24",
     "for_date": "2026-09-28",
     "data_date_note": "",
@@ -64,7 +64,7 @@
     },
     "market_state": {
       "date": "2026-09-24",
-      "run_date": "2026-09-24",
+      "run_date": "2026-09-25",
       "preopen_partial": null,
       "us_kline": true,
       "asia": true
@@ -76,17 +76,17 @@
         "is_trading_day": true,
         "news": 300,
         "feeds": 3,
-        "reports": 724,
+        "reports": 726,
         "macro": true
       },
       {
         "date": "2026-09-25",
         "weekday": "周五",
         "is_trading_day": false,
-        "news": 0,
+        "news": 295,
         "feeds": 0,
-        "reports": 11,
-        "macro": false
+        "reports": 142,
+        "macro": true
       },
       {
         "date": "2026-09-26",
@@ -117,15 +117,12 @@
       }
     ],
     "totals": {
-      "news": 300,
+      "news": 595,
       "feeds": 3,
-      "reports": 735,
+      "reports": 868,
       "covered_days": 5
     },
-    "missing": [
-      "market_thermometer.json 数据日 2026-09-23 落后于基准日 2026-09-24",
-      "窗口内非交易日（09-25）新闻池全为 0 → 疑整池被覆盖，跨周末信息可能丢失"
-    ]
+    "missing": []
   },
   "index_context": {
     "上证指数": {
@@ -146,25 +143,25 @@
     }
   },
   "summary": {
-    "共振": 1,
+    "共振": 2,
     "背离": 2,
-    "暗线": 8,
+    "暗线": 7,
     "双冷": 20
   },
   "items": [
     {
       "sector": "电子",
-      "news_count": 40,
-      "news_per_day": 8.0,
+      "news_count": 52,
+      "news_per_day": 10.4,
       "flow_yi": -228.76,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "MeetKai将基于英伟达构建的主权人工智能推广至六个国家。",
-        "【Anthropic大单引爆股价 美股阿克迈开盘飙升超14%】阿克迈(AKA",
-        "Anthropic大单引爆股价 美股阿克迈开盘飙升超14%"
+        "高速光互联与计算技术北京市重点实验室落地北京经开区",
+        "【高速光互联与计算技术北京市重点实验室落地北京经开区】据“北京亦庄”公众号，",
+        "【10只低估值绩优潜力次新股出炉】上市公司股价过高之后，估值往往会偏离行业的"
       ]
     },
     {
@@ -184,32 +181,32 @@
     },
     {
       "sector": "有色金属",
-      "news_count": 18,
-      "news_per_day": 3.6,
+      "news_count": 23,
+      "news_per_day": 4.6,
       "flow_yi": -74.47,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "老铺黄金国内最大门店在沪亮相",
-        "现货黄金向上触及4300美元",
-        "“请3休13”超长版黄金周首日：本地及周边游预订占比超六成 多地景区启动限流"
+        "暗盘白银跌破58美元/盎司，日内跌幅0.4%。",
+        "国际贵金属期货普遍收涨",
+        "CFTC：截至9月22日当周 COMEX黄金投机净多头减少5,727手"
       ]
     },
     {
       "sector": "医药生物",
-      "news_count": 8,
-      "news_per_day": 1.6,
+      "news_count": 9,
+      "news_per_day": 1.8,
       "flow_yi": -69.0,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
+        "【10只低估值绩优潜力次新股出炉】上市公司股价过高之后，估值往往会偏离行业的",
         "贝莱德（BlackRock）在恒瑞医药H股的持股比例于09月22日从6.56",
-        "港股生物医药概念股走高 金斯瑞生物科技涨超9%",
-        "科技巨头渗透与顶层政策提振医药股 金斯瑞生物科技月内累计涨超20%"
+        "港股生物医药概念股走高 金斯瑞生物科技涨超9%"
       ]
     },
     {
@@ -229,29 +226,31 @@
     },
     {
       "sector": "计算机",
-      "news_count": 57,
-      "news_per_day": 11.4,
+      "news_count": 67,
+      "news_per_day": 13.4,
       "flow_yi": -36.76,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "MeetKai将基于英伟达构建的主权人工智能推广至六个国家。",
-        "【Anthropic大单引爆股价 美股阿克迈开盘飙升超14%】阿克迈(AKA",
-        "微软股价上涨3%"
+        "OpenAI确认其模型访问了美国部分政府网站的信息",
+        "OpenAI Codex产品负责人：是的，我们重新上线了，将为所有付费用户重",
+        "OpenAI模型访问美国人口普查局、SEC公开数据"
       ]
     },
     {
       "sector": "基础化工",
-      "news_count": 0,
-      "news_per_day": 0.0,
+      "news_count": 1,
+      "news_per_day": 0.2,
       "flow_yi": -27.5,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": []
+      "sample_titles": [
+        "【10只低估值绩优潜力次新股出炉】上市公司股价过高之后，估值往往会偏离行业的"
+      ]
     },
     {
       "sector": "建筑材料",
@@ -266,47 +265,47 @@
     },
     {
       "sector": "非银金融",
-      "news_count": 8,
-      "news_per_day": 1.6,
+      "news_count": 13,
+      "news_per_day": 2.6,
       "flow_yi": -23.71,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "AI云计算公司Nscale在IPO前通过可转换票据融资33.6亿美元",
-        "Anthropic在IPO前寻求联合创始人50.1%的投票控制权",
-        "“双节”后行情怎么看？反弹仍待四大变量验证"
+        "SK海力士旗下Solidigm据称最早拟于2027年赴美IPO",
+        "花旗集团考虑将墨西哥银行Banmex按逾30亿美元估值IPO",
+        "美股史上最大半导体IPO要来了？主角是SK海力士子公司"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 15,
-      "news_per_day": 3.0,
+      "news_count": 16,
+      "news_per_day": 3.2,
       "flow_yi": -19.31,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
+        "特斯拉大动作！商用车、乘用车及机器人业务三条战线同步推进",
         "报道称特斯拉近几个月已将其Optimus人形机器人的产量提升约10倍",
-        "报道：特斯拉近几个月已将其Optimus人形机器人的产量提升约10倍",
-        "据The Information：特斯拉管理层告知员工，公司希望在今年年底前"
+        "又一只目标规模百亿产业基金落地湖南！"
       ]
     },
     {
       "sector": "食品饮料",
-      "news_count": 9,
-      "news_per_day": 1.8,
+      "news_count": 12,
+      "news_per_day": 2.4,
       "flow_yi": -13.96,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "密歇根大学9月份消费者信心指数报48.1，预期为47.5。",
-        "美国9月密歇根大学消费者信心指数终值 48.1，预期47.6，前值47.8。",
-        "美国企业设备订单超预期增长 资本投资延续强劲势头"
+        "【1000元一吨 五仁月饼成回收香饽饽】市场上在售月饼的保质期普遍较短，通常",
+        "据相关陪审团裁定 Meta Platforms在剑桥分析丑闻相关诉讼中误导了",
+        "密歇根大学9月份消费者信心指数报48.1，预期为47.5。"
       ]
     },
     {
@@ -325,47 +324,47 @@
     },
     {
       "sector": "传媒",
-      "news_count": 10,
-      "news_per_day": 2.0,
+      "news_count": 18,
+      "news_per_day": 3.6,
       "flow_yi": -10.06,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "AI云计算公司Nscale在IPO前通过可转换票据融资33.6亿美元",
-        "Anthropic在IPO前寻求联合创始人50.1%的投票控制权",
-        "IMF：2026年全球AI投资规模或突破2万亿美元 债务融资依赖同步扩大"
+        "苹果因侵犯触觉专利被判赔57亿美元",
+        "SK海力士旗下Solidigm据称最早拟于2027年赴美IPO",
+        "苹果在专利案中被判向诉讼融资支持的公司支付57亿美元赔偿金"
       ]
     },
     {
       "sector": "国防军工",
-      "news_count": 24,
-      "news_per_day": 4.8,
+      "news_count": 27,
+      "news_per_day": 5.4,
       "flow_yi": 8.84,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "加拿大航空股票在多伦多下跌10%，创下自2025年7月以来最大跌幅。",
-        "加拿大航空<AC.TO>股价下跌7%，此前公司公布重大发行人回购的初步结果。",
-        "在俄罗斯控制的霍尔利夫卡市场发生无人机袭击，造成一人死亡，一人受伤。"
+        "巴沙土高级将领举行会谈 讨论深化三国武装部队合作",
+        "普京：乌克兰挑衅行动只会恶化自身处境 俄方将继续反击",
+        "美国联邦航空管理局要求检查部分波音787飞机货舱密封胶带缺失风险"
       ]
     },
     {
       "sector": "汽车",
-      "news_count": 35,
-      "news_per_day": 7.0,
+      "news_count": 40,
+      "news_per_day": 8.0,
       "flow_yi": 6.88,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "美股开盘：三大股指齐涨",
-        "美股三大指数小幅高开",
-        "美股开盘：三大指数小幅上涨，特斯拉涨近2%"
+        "美股走高 道指涨逾1%",
+        "特朗普将于下周二推出AI驱动的新网站America.gov",
+        "德国大众拟在全球召回约286万辆汽车"
       ]
     },
     {
@@ -429,14 +428,15 @@
     },
     {
       "sector": "公用事业",
-      "news_count": 2,
-      "news_per_day": 0.4,
+      "news_count": 3,
+      "news_per_day": 0.6,
       "flow_yi": -3.24,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
+        "欧盟能源专员致函各成员国部长：正面临一场由供给危机引发的能源价格危机",
         "美国能源部将投入近20亿美元升级电网",
         "合康新能：获得政府补助4000万元"
       ]
@@ -465,32 +465,32 @@
     },
     {
       "sector": "石油石化",
-      "news_count": 25,
-      "news_per_day": 5.0,
+      "news_count": 38,
+      "news_per_day": 7.6,
       "flow_yi": 2.3,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "伊拉克总理：我们正在努力多样化石油出口渠道，以进入全球市场。",
-        "利比亚国家石油公司：因沙拉拉至扎维亚原油管道阀门被迫关闭，截至9月24日已导",
-        "美国贸易代表格里尔表示，美国仍从加拿大获取所需的石油、天然气和钾肥"
+        "哥伦比亚国家石油公司（ECOPETROL）首席执行官：将寻求与美国建立合作联",
+        "哥伦比亚国家石油公司首席执行官：公司将推进常规与非常规油气项目",
+        "哥伦比亚国家石油公司首席执行官表示：公司将推进常规与非常规油气项目，实施水力"
       ]
     },
     {
       "sector": "银行",
-      "news_count": 50,
-      "news_per_day": 10.0,
+      "news_count": 55,
+      "news_per_day": 11.0,
       "flow_yi": 1.51,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "美国银行将：AMD目标股价从620美元上调至720美元。",
-        "美国银行将AMD目标股价从620美元上调至720美元。",
-        "美国银行将AMD目标股价从620美元上调至720美元"
+        "【玻利维亚取消银行美元卖出汇率限制】玻利维亚央行官网信息显示，该国央行出台新",
+        "花旗集团考虑将墨西哥银行Banmex按逾30亿美元估值IPO",
+        "美国银行存款从前一周的19.658万亿美元降至19.568万亿美元。"
       ]
     },
     {
@@ -533,17 +533,17 @@
     },
     {
       "sector": "综合",
-      "news_count": 13,
-      "news_per_day": 2.6,
+      "news_count": 16,
+      "news_per_day": 3.2,
       "flow_yi": 0.33,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "道琼斯指数9月25日（周五）开盘上涨92.25点，涨幅0.18%，报5144",
-        "美股三大指数小幅高开",
-        "新世界百货中国(00825)发盈警：预期年度股东应占亏损不多于约7.8亿港元"
+        "2028年前后 FAST有望实现全链条国产化",
+        "道琼斯指数9月25日（周五）收盘上涨478.61点，涨幅0.93%，报518",
+        "美股走高 道指涨逾1%"
       ]
     },
     {
