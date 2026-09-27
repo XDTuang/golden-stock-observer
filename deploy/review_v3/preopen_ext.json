@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-26 22:01:42",
+ "generated_at": "2026-09-27 22:02:55",
  "mode": "nontrade",
  "mode_note": "周末（法定节假日未判，以 market.json.date 复核）",
  "us_dst": true,
@@ -244,7 +244,11 @@
    "date": "2026-09-23"
   }
  },
- "vix": null,
+ "vix": {
+  "date": "09/25/2026",
+  "close": 14.87,
+  "note": "CBOE 日频·前一交易日收盘值"
+ },
  "global_ext": {
   "date": "2026-09-26",
   "items": {
@@ -286,7 +290,5 @@
    }
   }
  },
- "errors": [
-  "vix: TimeoutError The read operation timed out"
- ]
+ "errors": []
 }
