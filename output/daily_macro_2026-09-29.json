@@ -1,6 +1,6 @@
 {
   "date": "2026-09-29",
-  "generated_at": "2026-09-29 22:02",
+  "generated_at": "2026-09-29 22:57",
   "china": {
     "pmi": {
       "latest": {
@@ -63,7 +63,7 @@
       "lookback_days": 30,
       "lookback_used_to": "2026-09-04",
       "days_fetched": 26,
-      "as_of": "2026-09-29 22:02",
+      "as_of": "2026-09-29 22:57",
       "indicators": {
         "CPI 同比": [
           {
@@ -158,14 +158,51 @@
         ],
         "初请失业金": [
           {
-            "event": "美国截至9月5日当周初请失业金人数(万)",
-            "value": "20.6",
-            "forecast": "20.5",
-            "previous": "20.6",
+            "event": "美国截至9月19日当周初请失业金人数(万)",
+            "value": "19.7",
+            "forecast": "20.1",
+            "previous": "19.6",
             "importance": 2,
-            "release_date": "2026-09-10",
+            "release_date": "2026-09-24",
             "release_time": "20:30",
-            "days_ago": 19,
+            "days_ago": 5,
+            "is_fresh": true
+          }
+        ],
+        "GDP": [
+          {
+            "event": "美国8月关联GDP的零售额控制组月率-季调后(%)",
+            "value": "1.4",
+            "forecast": "0.4",
+            "previous": "-0.4",
+            "importance": 2,
+            "release_date": "2026-09-16",
+            "release_time": "20:30",
+            "days_ago": 13,
+            "is_fresh": false
+          }
+        ],
+        "零售销售": [
+          {
+            "event": "美国8月核心零售销售月率(%)",
+            "value": "1.4",
+            "forecast": "0.5",
+            "previous": "-0.3",
+            "importance": 2,
+            "release_date": "2026-09-16",
+            "release_time": "20:30",
+            "days_ago": 13,
+            "is_fresh": false
+          },
+          {
+            "event": "美国8月零售销售月率(%)",
+            "value": "1.2",
+            "forecast": "0.8",
+            "previous": "-0.6",
+            "importance": 2,
+            "release_date": "2026-09-16",
+            "release_time": "20:30",
+            "days_ago": 13,
             "is_fresh": false
           }
         ]
@@ -184,9 +221,6 @@
       "美债收益率"
     ],
     "log": [
-      "日历 2026-09-24 失败: HTTPError",
-      "日历 2026-09-17 失败: HTTPError",
-      "日历 2026-09-16 失败: HTTPError",
       "新闻池 600 条 → 窗口内(7日) 205 条；命中 0 指标"
     ]
   }
