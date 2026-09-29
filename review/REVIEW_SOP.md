@@ -476,6 +476,27 @@ python3 review/check_narrative_consistency.py  # 🆕 **叙述 ↔ 数据一致�
   **禁用 `find('}\n')` 这类模糊收尾锚点** —— 会误抓后方 JS 的括号吃掉整段代码）。
   漂移自检：`python3 build_v3_obs_section.py --check`（不一致则退出码 1）；`[8/8]` 守卫已内置该反查。
 
+## 步骤 5.9 · 传输层加固（git 网络重试 · 2026-09-29 实测立规）
+
+🔴 **背景**：2026-09-29 22:50 实测本机到 GitHub 的 **SSH(22) 通道不稳定** ——
+`git ls-remote git@github.com:XDTuang/…` 10 次里 **3 次** 报 `git@github.com: Permission denied (publickey).`；
+证书本身没问题（`ssh -T` 可成功、连打时多数成功、`~/.ssh/config` 的 `IdentityFile` 正确）
+→ **属通道抖动，不是配置错误**。同刻对照：**HTTPS(443) 通道 10/10 全通**；
+**SSH over 443（`ssh.github.com:443`）0/5 不通**（该备选**勿用**）。
+⇒ 单次 `fetch`/`push` 有可观概率失败 → **凡 git 远端操作一律带退避重试**：
+
+1. `git fetch` / `git push` / `git ls-remote` 失败时（尤其报 `Permission denied (publickey)`、`Connection reset`、超时）
+   → **退避 3 秒后重试，同一条命令内循环，至多 3 次**（🔴 禁并发、禁高频轰击）。
+2. 3 次仍失败 → **改用 HTTPS 通道只读验证**：
+   `git ls-remote https://github.com/XDTuang/golden-stock-observer.git main`
+   · **能返回 sha** → 证明「网络通、SSH 认证抖动」→ **本档标注「推送未完成（SSH 抖动，已重试 3 次）」并停止**，
+     不要反复重试、不要改 remote、**不要动凭据**；留给下一档（夜间 22:15 / 早间哨兵）或人工处理。
+   · **也失败** → 按「数据源不可达」处理（记录并跳过，报告标 ⚠️ 并写明源名）。
+3. 🔴 **禁**在链路内临时执行 `git remote set-url`、`git config credential.*`、改 `~/.ssh/*`
+   —— 凭据与 remote 的变更**只由用户人工执行**。
+4. 判定「推送是否成功」**不要只看退出码**：`push` 报错后仍可能已推成功 →
+   以 `git ls-remote origin main` 的 sha 与本地 `git rev-parse HEAD` 比对为**唯一权威**（`review/verify_push.py --git` 亦据此）。
+
 ## 步骤 6 · 提交推送
 
 沙箱环境下 git 写操作会被 `index.lock`（带 `com.apple.provenance`）阻塞，**需交用户终端执行**：
