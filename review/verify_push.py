@@ -50,6 +50,7 @@ verify_push.py —— GitHub Pages 推送后「线上一致性」权威校验脚
 退出码：全部一致 = 0；存在不一致或异常 = 1
 """
 
+import shlex
 import argparse
 import json
 import os
@@ -67,7 +68,12 @@ else:
 
 
 def run(cmd, capture=True):
-    """执行 shell 命令，返回 (returncode, stdout)"""
+    """执行 shell 命令，返回 (returncode, stdout)
+
+    🔴 2026-09-29 注：本函数走 `shell=True`，**所有含用户数据的参数（尤其路径）必须先
+    `shlex.quote()`** —— 否则含**空格**的路径（如 `…/F20260907_008_SEMICON Taiw.json`）
+    会被 shell 切成两个参数，git 找不到文件 → 静默返回空 → 上游误报「远端无此文件」。
+    """
     r = subprocess.run(cmd, shell=True, capture_output=capture, text=True)
     return r.returncode, (r.stdout or "").strip()
 
@@ -138,12 +144,24 @@ def git_fetch(remote="origin", ref="main", quiet=True):
 
 
 def git_remote_blob(path, remote="origin", ref="main"):
-    """远端分支上该路径的 blob SHA（文件不存在返回 None）"""
-    rc, out = run("git ls-tree %s/%s -- %s" % (remote, ref, path))
+    """远端分支上该路径的 blob SHA（文件不存在返回 None）
+
+    🔴 2026-09-29 修（假阴性）：原实现 `out.split()` 按**空白**切分，
+    对**含空格/中文**的路径（如 `…/F20260907_008_SEMICON Taiw.json`）会把路径切碎
+    → `len(parts) >= 3` 仍成立但取到的 sha 位置错位/解析失败 → 误报「远端无此文件」，
+    使每次推送都假红一次、掩盖真问题。改为：
+      ① `-c core.quotepath=false`（禁用八进制转义，中文路径原样输出）
+      ② 按 **`\t`** 切分（`git ls-tree` 的格式是 `<mode> <type> <sha>\t<path>`，路径只在 tab 之后）
+    """
+    rc, out = run('git -c core.quotepath=false ls-tree %s/%s -- %s'
+                  % (remote, ref, shlex.quote(path)))
     if rc != 0 or not out:
         return None
-    # 输出格式：<mode> <type> <sha>\t<path>
-    parts = out.split()
+    line = out.strip().splitlines()[0] if out.strip() else ""
+    if "\t" not in line:
+        return None
+    meta = line.split("\t", 1)[0]          # <mode> <type> <sha>
+    parts = meta.split()
     return parts[2] if len(parts) >= 3 else None
 
 
@@ -168,7 +186,7 @@ def git_verify(path, remote="origin", ref="main", local_ref="HEAD"):
 
 def head_commit_files(commit="HEAD"):
     """某提交涉及的文件列表（排除已删除的）"""
-    rc, out = run("git show --name-only --pretty=format: %s" % commit)
+    rc, out = run("git -c core.quotepath=false show --name-only --pretty=format: %s" % commit)
     if rc != 0:
         return []
     files, seen = [], set()
