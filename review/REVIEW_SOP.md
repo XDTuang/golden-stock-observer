@@ -60,7 +60,7 @@ python3 review/build_window.py --at "2026-09-21 08:50" --dry-run   # 模拟跨�
 | 段 | 内容 | 关键点 |
 |---|---|---|
 | 0 | 结论先行速览卡 | 🚨 必须带 `data-preopen` 等属性（防 JS 覆盖） |
-| 0.5 | 深度判读 + 四象限 | 需含 2×2 grid（自检第 3 项） |
+| 0.5 | 深度判读 + 四象限 | 需含 2×2 grid（自检第 3 项）。🔴 **象限数字必须现场读 `output/cross_analysis.json` 计算，禁沿用上一版**（2026-09-29 立）—— 该文件**每天重算，且云端 workflow 可能白天抢跑**，抄旧数字会造成「页面说的 ≠ 数据是的」。写完跑 `python3 review/check_narrative_consistency.py`（红灯可 `--fix` 机械修） |
 | 1 | 昨日 A 股走势总结 | 每日滚动（指数 / 量能 / 资金流向 / 4~5 条结构特征） |
 | 1.1 | 当日 TOP10 | 🚨 标题日期必须写「**最新交易日**」而非硬编码日期（数据由 JS 从 `top10_history.json` 动态加载；写死日期会每天显示过期） |
 | 1.2 | 当日金钻（三重门控合并去重） | 🚨 **纯动态渲染**：HTML 只留容器 `<div id="drTblDiamond"></div>`，标题固定「1.2 · 当日金钻 · 三重门控合并去重（动态）」；数据全部由 `drLoadDiamond()` 从 `gate_data.json`（门控 + `chan` 缠论明细）JOIN `valuation_band` / `institutional_flow` / `golden_diamond_history` 渲染。**禁止在 HTML 内写死金钻数据，禁止回退为「三个门控分类」分表版式**（与 V3 独立版 1.2 段同构；改动日期 2026-09-10）。⚠️ 自包含 `<style>` **必须保留** `.dr-scroll{overflow-x:auto}` + `.dr-scroll td,.dr-scroll th{white-space:nowrap}`（该 style 注入晚于 index.html，缺失会导致 12 列表格被 `.dr-tbl td` 的 `white-space:normal` 覆盖而严重折行） |
@@ -273,13 +273,30 @@ python3 review/check_touzid_panel.py       # 🆕 主页三块面板（市场温
                                            #   [4] root ↔ deploy 双写一致
 python3 review/selftest_index_render.py    # 🆕 上面那道守卫的**反向自检**（11 场景必须全红后还原转绿）。改守卫后必跑 —— 只验「正向通过」发现不了守卫早已失效
 python3 review/selftest_touzid_panel.py    # 🆕 touzid 面板守卫的反向自检（6 场景：块解析退回 elif / 温度计滞后与不自洽 / VIX 兜底失效与锚错 / deploy 漂移）
+python3 review/check_narrative_consistency.py  # 🆕 **叙述 ↔ 数据一致性**（2026-09-29 增 · 第十四道）：
+                                           #   [1] 四象限「共振 A / 背离 B / 暗线 C / 双冷 D」的**全式 + 斜杠简写**两种写法，
+                                           #       其中判为「当前值」者必须逐项 == output/cross_analysis.json 实际分布；
+                                           #       「前版 / 由 …」类历史引用自动豁免；多处当前值不容许不同源；无法分类者按失败处理
+                                           #   [2] 归因句（迁移主因）位置提示（语义层由 agent 复核，脚本不代改）
+                                           #   [3] 同时校验 analysis.html 的 BOM 与 root↔deploy 一致
+                                           #   `--fix` 可**一条命令**机械修数字（全式 + 简写，历史引用不动，双站同步写入）
+                                           #   🆕 反向自检 = `review/selftest_narrative_consistency.py`（10 场景，**沙箱式**不动正式文件）
 ```
 
-> 🔴 **门禁清单以本节为准（当前 = 十三道）**。任一道红灯 → 先修再谈推送，**不带伤推送**。
+> 🔴 **门禁清单以本节为准（当前 = 十四道）**。任一道红灯 → 先修再谈推送，**不带伤推送**。
 > `check_sector_tech.py` 反向测试 10 场景（5 类产物 + 5 类页面呈现）全部按预期拦截；
 > `check_macro_freshness.py` / `build_us_medical.py --check` / `check_index_render.py` 亦均通过反向测试；
 > 🆕 `check_index_render.py` 的 [7]/[8]/[8b]/[9] 反向自检已固化为 `review/selftest_index_render.py`（11/11）。
 > 🆕 `check_touzid_panel.py` 的反向自检 = `review/selftest_touzid_panel.py`（6/6，含归因正确性）。
+> 🆕 `check_narrative_consistency.py` 的反向自检 = `review/selftest_narrative_consistency.py`（10/10；
+>   **与另两个 selftest 不同，它在 `/tmp` 沙箱内构造副本、不触碰正式文件** → 可在任意时刻安全运行）。
+>
+> 🔴 **为什么加第十四道（2026-09-29 两次踩坑）**：四象限分布是**手写叙述**（非脚本生成），
+> 而数据侧 `cross_analysis.json` **每天会被重算、且云端 workflow 也可能在白天抢跑**（本次 10:21 即被抢跑一轮）。
+> 数据一变、页面不动 → **「页面说的」和「数据是的」不是一回事**，不报错、不空白。
+> 一天内出现两次：① 资金列 9/24→9/28 推进（4/6/5/16 → 2/8/5/16）；② 云端新闻池扩容
+> 306→584 条导致热度抬升（2/8/5/16 → 1/11/6/13）。⇒ 本道门禁把「页面 == 数据」从
+> **靠 agent 记性**升级为**脚本强制**，并让修复也只剩一条命令。
 >
 > 🆕 **touzid 面板口径（2026-09-23 立）**：主页「市场温度计 + 全市场估值趋势」同读 `market_thermometer.json`，
 > 「CBOE VIX 恐慌指数」读 `vix_panel.json`。🔴 **盘前缺口补跑那条 `--thermo-only --vix-only` 曾因
