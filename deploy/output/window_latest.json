@@ -1,82 +1,74 @@
 {
-  "generated_at": "2026-09-29 08:33",
-  "session": "preopen",
-  "data_date": "2026-09-28",
-  "for_date": "2026-09-29",
+  "generated_at": "2026-09-29 22:30",
+  "session": "close",
+  "data_date": "2026-09-29",
+  "for_date": "2026-09-30",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-09-29"
+    "2026-09-30"
   ],
   "span_days": 1,
   "display_days": [
-    "2026-09-28",
-    "2026-09-29"
+    "2026-09-29",
+    "2026-09-30"
   ],
-  "display_text": "09/28 + 09/29",
+  "display_text": "09/29 + 09/30",
   "span_is_weekend_cross": false,
-  "span_text": "09/29",
+  "span_text": "09/30",
   "carry": {
-    "from_data_date": "2026-09-28",
-    "ref": "output/feed_review_2026-09-28.json",
+    "from_data_date": "2026-09-29",
+    "ref": "output/feed_review_2026-09-29.json",
     "exists": true,
     "gap_days": 1,
     "stale": false,
-    "bias": "偏空",
-    "bias_score": -2,
+    "bias": "偏多",
+    "bias_score": 2,
     "t1_focus": [
-      "9/29 09:15 前复测 9/28 美股完整收盘（覆盖口径 B）",
-      "上证能否收回 3,880（K3 R22 证伪确认日）",
-      "广度修复门槛：主力 ≥ -300 亿 + 涨跌比 ≥0.5 + 跌停 <30",
-      "观测池 6 只电子/通信样本能否 ≥2 只站回 MA5",
-      "恒生红盘（+0.54%）的脱钩可持续性"
+      "跟踪金钻起涨 6 只回踩确认"
     ],
-    "risks": [
-      "破位加速延续 → 节前两日无承接",
-      "K3 证伪线 R22 口径正式成立",
-      "资金维度盲区（申万一级锚定 9-24，滞后 2 个交易日）",
-      "政策对冲被过度定价 → 冲高回落",
-      "长假前流动性折价 + 信息在不可交易时段释放（10/8 跳空风险）"
-    ],
+    "risks": [],
     "headline": ""
   },
   "layers": {
-    "base": "2026-09-28 A股收盘（基准层）",
-    "overnight": "美东 2026-09-28 收盘（北京 2026-09-29 早间到达）",
-    "premarket": "2026-09-29 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-09-29 A股收盘（基准层）",
+    "overnight": "美东 2026-09-29 收盘（北京 2026-09-30 早间到达）",
+    "premarket": "2026-09-30 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-09-28",
+    "date": "2026-09-29",
     "run_date": "2026-09-29",
-    "preopen_partial": true,
+    "preopen_partial": null,
     "us_kline": true,
     "asia": true
   },
   "covered": [
     {
-      "date": "2026-09-28",
-      "weekday": "周一",
-      "is_trading_day": true,
-      "news": 307,
-      "feeds": 0,
-      "reports": 820,
-      "macro": true
-    },
-    {
       "date": "2026-09-29",
       "weekday": "周二",
       "is_trading_day": true,
-      "news": 281,
-      "feeds": 0,
-      "reports": 26,
+      "news": 304,
+      "feeds": 4,
+      "reports": 667,
       "macro": true
+    },
+    {
+      "date": "2026-09-30",
+      "weekday": "周三",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
     }
   ],
   "totals": {
-    "news": 588,
-    "feeds": 0,
-    "reports": 846,
+    "news": 304,
+    "feeds": 4,
+    "reports": 667,
     "covered_days": 2
   },
-  "missing": []
+  "missing": [
+    "market_thermometer.json 数据日 2026-09-28 落后于基准日 2026-09-29"
+  ]
 }

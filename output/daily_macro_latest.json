@@ -1,6 +1,6 @@
 {
   "date": "2026-09-29",
-  "generated_at": "2026-09-29 08:31",
+  "generated_at": "2026-09-29 22:02",
   "china": {
     "pmi": {
       "latest": {
@@ -63,7 +63,7 @@
       "lookback_days": 30,
       "lookback_used_to": "2026-09-04",
       "days_fetched": 26,
-      "as_of": "2026-09-29 08:31",
+      "as_of": "2026-09-29 22:02",
       "indicators": {
         "CPI 同比": [
           {
@@ -158,93 +158,20 @@
         ],
         "初请失业金": [
           {
-            "event": "美国截至9月19日当周初请失业金人数(万)",
-            "value": "19.7",
-            "forecast": "20.1",
-            "previous": "19.6",
+            "event": "美国截至9月5日当周初请失业金人数(万)",
+            "value": "20.6",
+            "forecast": "20.5",
+            "previous": "20.6",
             "importance": 2,
-            "release_date": "2026-09-24",
+            "release_date": "2026-09-10",
             "release_time": "20:30",
-            "days_ago": 5,
-            "is_fresh": true
-          }
-        ],
-        "GDP": [
-          {
-            "event": "美国8月关联GDP的零售额控制组月率-季调后(%)",
-            "value": "1.4",
-            "forecast": "0.4",
-            "previous": "-0.4",
-            "importance": 2,
-            "release_date": "2026-09-16",
-            "release_time": "20:30",
-            "days_ago": 13,
-            "is_fresh": false
-          }
-        ],
-        "零售销售": [
-          {
-            "event": "美国8月核心零售销售月率(%)",
-            "value": "1.4",
-            "forecast": "0.5",
-            "previous": "-0.3",
-            "importance": 2,
-            "release_date": "2026-09-16",
-            "release_time": "20:30",
-            "days_ago": 13,
-            "is_fresh": false
-          },
-          {
-            "event": "美国8月零售销售月率(%)",
-            "value": "1.2",
-            "forecast": "0.8",
-            "previous": "-0.6",
-            "importance": 2,
-            "release_date": "2026-09-16",
-            "release_time": "20:30",
-            "days_ago": 13,
+            "days_ago": 19,
             "is_fresh": false
           }
         ]
       }
     },
-    "indicators": {
-      "美联储/利率": [
-        {
-          "title": "周一（9月28日） 美联储隔夜逆回购协议（RRP）使用规模为8.51亿美元",
-          "evidence": [
-            "周一（9月28日） 美联储隔夜逆回购协议（RRP）使用规模为8.51亿美元 周一（9月28日），美联储隔夜逆回购协议（RRP）使用规模为8.51亿美元"
-          ],
-          "date": "2026-09-29",
-          "days_ago": 0,
-          "is_fresh": true,
-          "time": "2026-09-29 01:18:03",
-          "source": "东财全球"
-        },
-        {
-          "title": "哈塞特：3个月年化核心通胀率接近美联储目标",
-          "evidence": [
-            "哈塞特：3个月年化核心通胀率接近美联储目标 白宫国家经济委员会主任哈塞特在纽约经济俱乐部发表讲话称，3个月年化核心通胀率接近美联储目标"
-          ],
-          "date": "2026-09-29",
-          "days_ago": 0,
-          "is_fresh": true,
-          "time": "2026-09-29 00:47:41",
-          "source": "东财全球"
-        },
-        {
-          "title": "交易员减少对欧洲央行加息的押注",
-          "evidence": [
-            "交易员减少对欧洲央行加息的押注 【交易员减少对欧洲央行加息的押注】交易员减少对欧洲央行加息的押注，认为10月份加息的可能性不足40%"
-          ],
-          "date": "2026-09-28",
-          "days_ago": 1,
-          "is_fresh": true,
-          "time": "2026-09-28 22:16:55",
-          "source": "东财全球"
-        }
-      ]
-    },
+    "indicators": {},
     "stale": [
       "核心PCE",
       "整体PCE",
@@ -253,10 +180,14 @@
       "初请失业金",
       "耐用品订单",
       "美国GDP",
+      "美联储/利率",
       "美债收益率"
     ],
     "log": [
-      "新闻池 600 条 → 窗口内(7日) 205 条；命中 1 指标"
+      "日历 2026-09-24 失败: HTTPError",
+      "日历 2026-09-17 失败: HTTPError",
+      "日历 2026-09-16 失败: HTTPError",
+      "新闻池 600 条 → 窗口内(7日) 205 条；命中 0 指标"
     ]
   }
 }
