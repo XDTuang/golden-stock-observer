@@ -1,8 +1,8 @@
 {
  "meta": {
-  "updated_at": "2026-09-28 22:04:24",
-  "data_date": "2026-09-28",
-  "market_status": "closed",
+  "updated_at": "2026-09-29 09:15:16",
+  "data_date": "2026-09-29",
+  "market_status": "trading",
   "algorithm": "1.0.0",
   "next_hint": "每 30 分钟自动刷新（交易日 9:30-15:00，GitHub Actions 驱动）"
  },
@@ -11,97 +11,97 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3823.62,
-    "chg_pct": -1.67,
-    "turnover_yi": 8045.4,
-    "high": 3878.41,
-    "low": 3806.67
+    "price": 3823.44,
+    "chg_pct": -0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "399001",
     "name": "深证成指",
     "price": 12858.75,
-    "chg_pct": -3.44,
-    "turnover_yi": 8982.6,
-    "high": 13267.65,
-    "low": 12801.2
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "399006",
     "name": "创业板指",
     "price": 3139.82,
-    "chg_pct": -4.53,
-    "turnover_yi": 4303.8,
-    "high": 3270.81,
-    "low": 3125.2
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000688",
     "name": "科创50",
     "price": 1555.98,
-    "chg_pct": -4.06,
-    "turnover_yi": 805.9,
-    "high": 1610.92,
-    "low": 1548.95
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4340.76,
-    "chg_pct": -2.22,
-    "turnover_yi": 4286.2,
-    "high": 4423.82,
-    "low": 4323.57
+    "price": 4340.58,
+    "chg_pct": -0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 7402.3,
-    "chg_pct": -2.91,
-    "turnover_yi": 2890.4,
-    "high": 7601.09,
-    "low": 7364.43
+    "price": 7402.19,
+    "chg_pct": -0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    }
   ],
   "breadth": {
-   "up": 807,
-   "down": 3686,
-   "flat": 111,
-   "ratio": 0.22,
-   "limit_up": 35,
-   "limit_down": 83,
-   "main_net_yi": -744.84,
-   "turnover_yi": 14412.5,
-   "total": 4604
+   "up": 1204,
+   "down": 1905,
+   "flat": 1496,
+   "ratio": 0.63,
+   "limit_up": 55,
+   "limit_down": 76,
+   "main_net_yi": 0.0,
+   "turnover_yi": 0.0,
+   "total": 4605
   }
  },
  "L1": {
   "sentiment": {
-   "score": 9,
-   "S1": 6,
-   "S2": 29,
-   "S3": 0,
-   "S4": 0,
+   "score": 37,
+   "S1": 16,
+   "S2": 46,
+   "S3": 40,
+   "S4": 50,
    "inputs": {
-    "ratio": 0.22,
-    "limit_up": 35,
-    "avg_idx_pct": -3.14,
-    "main_net_yi": -744.84
+    "ratio": 0.63,
+    "limit_up": 55,
+    "avg_idx_pct": 0.0,
+    "main_net_yi": 0
    }
   },
   "state": {
-   "state": "panic",
-   "label": "恐慌下跌",
-   "note": "空仓或极轻仓观望，不抄底，等企稳信号",
-   "score": 9
+   "state": "weak",
+   "label": "弱势回调",
+   "note": "防守为主，仅小仓低吸，严格止损",
+   "score": 37
   }
  },
  "L2": {
   "range": [
-   0,
-   20
+   25,
+   40
   ],
-  "note": "恐慌下跌，空仓或极轻仓等待企稳",
+  "note": "弱势回调，防守为主，严格止损",
   "rules": [
    "单票仓位 ≤ 10%",
    "单一板块集中度 ≤ 30%",
@@ -115,128 +115,7 @@
   "resonance": []
  },
  "L4": {
-  "candidates": [
-   {
-    "code": "sh600206",
-    "name": "有研新材",
-    "zdf": 3.65,
-    "zljlr": 4.43,
-    "lb": 1.41,
-    "hsl": 12.91,
-    "turnover_yi": 56.47,
-    "price": 51.63,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sz003006",
-    "name": "百亚股份",
-    "zdf": -0.66,
-    "zljlr": 3.59,
-    "lb": 1.04,
-    "hsl": 11.54,
-    "turnover_yi": 11.17,
-    "price": 22.49,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz300776",
-    "name": "帝尔激光",
-    "zdf": -0.18,
-    "zljlr": 3.55,
-    "lb": 1.56,
-    "hsl": 10.27,
-    "turnover_yi": 24.25,
-    "price": 129.74,
-    "stype": "GP-A-CYB",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz300750",
-    "name": "宁德时代",
-    "zdf": -0.51,
-    "zljlr": 2.66,
-    "lb": 0.9,
-    "hsl": 0.8,
-    "turnover_yi": 98.3,
-    "price": 291.99,
-    "stype": "GP-A-CYB",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sh601816",
-    "name": "京沪高铁",
-    "zdf": 1.92,
-    "zljlr": 2.08,
-    "lb": 2.36,
-    "hsl": 0.48,
-    "turnover_yi": 11.11,
-    "price": 4.78,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sh601766",
-    "name": "中国中车",
-    "zdf": 2.51,
-    "zljlr": 2.0,
-    "lb": 1.59,
-    "hsl": 0.79,
-    "turnover_yi": 11.73,
-    "price": 6.12,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz300207",
-    "name": "欣旺达",
-    "zdf": 6.42,
-    "zljlr": 1.97,
-    "lb": 1.75,
-    "hsl": 9.41,
-    "turnover_yi": 33.82,
-    "price": 21.38,
-    "stype": "GP-A-CYB",
-    "type": "中继观察"
-   },
-   {
-    "code": "sz000333",
-    "name": "美的集团",
-    "zdf": -0.79,
-    "zljlr": 1.89,
-    "lb": 0.82,
-    "hsl": 0.37,
-    "turnover_yi": 21.02,
-    "price": 82.0,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sh600059",
-    "name": "古越龙山",
-    "zdf": 6.64,
-    "zljlr": 1.66,
-    "lb": 1.13,
-    "hsl": 13.48,
-    "turnover_yi": 14.52,
-    "price": 11.73,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh601728",
-    "name": "中国电信",
-    "zdf": 1.46,
-    "zljlr": 1.66,
-    "lb": 1.61,
-    "hsl": 0.15,
-    "turnover_yi": 7.3,
-    "price": 6.25,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   }
-  ],
+  "candidates": [],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
