@@ -498,7 +498,7 @@ def main():
             if last_success:
                 data["source_status"] = {
                     "ok": True,
-                    "endpoint": "daykline@backfill(no-op)",
+                    "endpoint": "status-refresh(no-op)",
                     "last_success": last_success,
                     "stale_days": trading_days_between(target, last_success),
                     "checked_at": datetime.now().isoformat(timespec="seconds"),
@@ -600,7 +600,8 @@ def main():
         return 4
 
     entry = write_day(data, date_str, per_name, board_codes, endpoint)
-    data["source_status"] = {"ok": True, "endpoint": endpoint,
+    # 🔴 成功分支与失败/回填分支的 source_status **须同 schema**（下游/简报按字段读，缺字段会 KeyError）
+    data["source_status"] = {"ok": True, "endpoint": endpoint, "last_success": date_str,
                              "checked_at": now.isoformat(timespec="seconds"), "stale_days": 0}
     data["last_updated"] = now.isoformat()
     save_history(data)
