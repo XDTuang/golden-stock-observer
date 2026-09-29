@@ -10642,5 +10642,13 @@
       ]
     }
   },
-  "last_updated": "2026-09-28T08:32:01.086547"
+  "last_updated": "2026-09-29T08:31:39.240691",
+  "source_status": {
+    "ok": false,
+    "error": "clist ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) | ulist RuntimeError: secid 自举表为空（sw1_secids.json 未建立）",
+    "last_success": "2026-09-24",
+    "stale_days": 1,
+    "checked_at": "2026-09-29T08:31:39",
+    "note": "资金流源不可达 → 本次未更新，snapshot 保留上一成功交易日；cross_analysis / build_sector_tech 的资金列会随之滞后，页面须显示该 stale 天数。"
+  }
 }
