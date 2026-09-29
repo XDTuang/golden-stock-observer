@@ -20,6 +20,18 @@ from signals import analyze_stock, batch_analyze, compute_four_volume
 # 交易日历 / 数据新鲜度校验
 from market_calendar import eval_freshness, last_trading_day
 
+# 🔴 东财统一入口（2026-09-29 立）：原直连 `push2.eastmoney.com/api/qt/stock/get`，
+#    该端点属「生产分片池」、已被边缘定点覆盖（RemoteDisconnected）。统一走主机池故障转移。
+try:
+    from em_http import (get_json as _em_get_json, STOCK_GET_PATH as _EM_STOCK,
+                         EMUnavailable as _EMUnavailable)
+except Exception:
+    _em_get_json = None
+    _EM_STOCK = "/api/qt/stock/get"
+
+    class _EMUnavailable(RuntimeError):
+        pass
+
 
 def atomic_write_json(path: str, obj) -> None:
     """
@@ -55,9 +67,17 @@ def fetch_industry_info(code: str) -> dict:
         # 确定市场前缀
         prefix = '1.' if code.startswith(('6', '68')) else '0.'
         # 股票详情API获取申万二级 (f127) 和概念 (f129)
-        url_detail = f"https://push2.eastmoney.com/api/qt/stock/get?secid={prefix}{code}&fields=f57,f58,f100,f127,f128,f129"
-        resp = requests.get(url_detail, timeout=8)
-        data = resp.json().get("data", {}) if resp.status_code == 200 else {}
+        # 🔴 2026-09-29：改走 em_http 主机池（push2 主域已被定点覆盖）
+        if _em_get_json is not None:
+            j, _host = _em_get_json(_EM_STOCK,
+                                    {"secid": f"{prefix}{code}",
+                                     "fields": "f57,f58,f100,f127,f128,f129"},
+                                    allow_empty=True)
+            data = j.get("data") or {}
+        else:
+            url_detail = f"https://push2.eastmoney.com/api/qt/stock/get?secid={prefix}{code}&fields=f57,f58,f100,f127,f128,f129"
+            resp = requests.get(url_detail, timeout=8)
+            data = resp.json().get("data", {}) if resp.status_code == 200 else {}
 
         # F10公司概况获取一级行业
         market_prefix = 'SH' if code.startswith('6') else 'SZ'

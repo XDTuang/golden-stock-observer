@@ -293,14 +293,19 @@ def fetch_snapshot(codes, force=False):
 
 
 # ─────────────────── 3. 板块→成份股映射（push2 直连，带重试）───────────────────
+# 🔴 2026-09-29 标注：以下 `_push2_boards` / `_push2_cons` 为**历史遗留死代码**（全仓已无调用点，
+#    板块映射实际走 `fetch_sectors()` 的新浪源）。保留仅为回溯，**不会被调用、不产生请求**。
+#    东财 push2 生产分片池自 2026-09-29 起被边缘定点覆盖 —— 若日后要复活本段，
+#    必须改走 `em_http.get_json()`（统一入口：主机池故障转移 + 每台只试 1 次 + 节流）。
 def _push2_boards():
-    """板块列表：优先 akshare THS（本机稳定），返回 [(code6, name)]。"""
+    """[死代码] 板块列表：优先 akshare THS（本机稳定），返回 [(code6, name)]。"""
     import akshare as ak
     boards = [(b["code"], b["name"]) for _, b in ak.stock_board_industry_name_ths().iterrows()]
     return boards
 
 
 def _push2_cons(code6, attempt=0):
+    """[死代码] 板块成份股（东财 push2 clist）。**勿直接复活**，见上方标注。"""
     u = (f"https://push2.eastmoney.com/api/qt/clist/get?pn=1&pz=1000"
          f"&fs=b:{code6}&fields=f12,f14")
     try:

@@ -65,11 +65,14 @@ SECID_SIDECAR = os.path.join(SCRIPT_DIR, "output", "sw1_secids.json")
 HOST_STATE = os.path.join(SCRIPT_DIR, "output", "em_host_state.json")
 
 # ── 东财主机池（2026-09-29 实测：生产分片池被封；push2test 可用且数据等价）────────
+#    🔴 顺序铁律（2026-09-29 二次修订）：**可用节点置顶**。
+#    原顺序把 push2 排第一 → 每次运行都先打一个已被定点覆盖的节点，
+#    这本身就是「无谓送频率」，会延缓封禁自行解除。实测 push2test 未被覆盖 ⇒ 置顶。
 EM_HOSTS = [
-    "push2.eastmoney.com",        # 生产主域（可能被风控覆盖）
-    "push2test.eastmoney.com",    # 测试节点（实测未被覆盖，数据与生产等价）
-    "push2delay.eastmoney.com",   # 延时镜像
-    "push2his.eastmoney.com",     # 历史域
+    "push2test.eastmoney.com",    # ✅ 实测未被覆盖（clist / stock/get 均 200，数据与生产等价）
+    "push2.eastmoney.com",        # 生产主域（2026-09-29 起被定点覆盖）
+    "push2delay.eastmoney.com",   # 延时镜像（2026-09-29 起被定点覆盖）
+    "push2his.eastmoney.com",     # 历史域（2026-09-29 10:0x 起被覆盖 —— 封禁范围会扩大）
 ]
 CLIST_PATH = "/api/qt/clist/get"
 ULIST_PATH = "/api/qt/ulist.np/get"

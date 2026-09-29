@@ -1,21 +1,21 @@
 {
   "date": "2026-09-29",
   "data_date": "2026-09-28",
-  "generated_at": "2026-09-29 08:32",
+  "generated_at": "2026-09-29 09:51",
   "news_date": "",
   "news_window": [
     "2026-09-28",
     "2026-09-29"
   ],
   "news_window_days": 2,
-  "flow_date": "2026-09-24",
-  "flow_raw_latest": "2026-09-24",
+  "flow_date": "2026-09-28",
+  "flow_raw_latest": "2026-09-28",
   "flow_is_weekend_copy": false,
   "hot_per_day": 8,
   "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-09-29 08:30",
+    "generated_at": "2026-09-29 08:33",
     "session": "preopen",
     "data_date": "2026-09-28",
     "for_date": "2026-09-29",
@@ -63,8 +63,8 @@
     },
     "market_state": {
       "date": "2026-09-28",
-      "run_date": "2026-09-28",
-      "preopen_partial": null,
+      "run_date": "2026-09-29",
+      "preopen_partial": true,
       "us_kline": true,
       "asia": true
     },
@@ -82,22 +82,19 @@
         "date": "2026-09-29",
         "weekday": "周二",
         "is_trading_day": true,
-        "news": 0,
+        "news": 281,
         "feeds": 0,
         "reports": 26,
-        "macro": false
+        "macro": true
       }
     ],
     "totals": {
-      "news": 307,
+      "news": 588,
       "feeds": 0,
       "reports": 846,
       "covered_days": 2
     },
-    "missing": [
-      "market_thermometer.json 数据日 2026-09-24 落后于基准日 2026-09-28",
-      "2026-09-29（周二·交易日）新闻池 0 条"
-    ]
+    "missing": []
   },
   "index_context": {
     "上证指数": {
@@ -118,8 +115,8 @@
     }
   },
   "summary": {
-    "共振": 4,
-    "背离": 6,
+    "共振": 2,
+    "背离": 8,
     "暗线": 5,
     "双冷": 16
   },
@@ -128,7 +125,7 @@
       "sector": "电子",
       "news_count": 82,
       "news_per_day": 41.0,
-      "flow_yi": -228.76,
+      "flow_yi": -323.71,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
@@ -143,7 +140,7 @@
       "sector": "通信",
       "news_count": 19,
       "news_per_day": 9.5,
-      "flow_yi": -98.73,
+      "flow_yi": -171.68,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
@@ -155,111 +152,10 @@
       ]
     },
     {
-      "sector": "有色金属",
-      "news_count": 24,
-      "news_per_day": 12.0,
-      "flow_yi": -74.47,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "新型电池产业发展“十五五”规划发布 固态电池发展有望提速",
-        "【金价在七周低点附近徘徊 美联储升息压力加剧】金价维持大幅跌幅，由于美国和伊",
-        "【全球最大的黄金ETF SPDR Gold Trust持仓较前日增加4.28"
-      ]
-    },
-    {
-      "sector": "医药生物",
-      "news_count": 9,
-      "news_per_day": 4.5,
-      "flow_yi": -69.0,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "海思科：创新药HSK42360-Na片纳入突破性治疗药物程序",
-        "【海思科：创新药HSK42360-Na片纳入突破性治疗药物程序】据海思科消息",
-        "和黄医药：提交治疗MET驱动的EGFR突变肺癌的美国新药上市申请"
-      ]
-    },
-    {
-      "sector": "电力设备",
-      "news_count": 16,
-      "news_per_day": 8.0,
-      "flow_yi": -37.5,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "新型电池产业发展“十五五”规划发布 固态电池发展有望提速",
-        "退役电池变“城市矿山”",
-        "固态电池产业化迎利好 温等静压等专用设备成关键抓手"
-      ]
-    },
-    {
-      "sector": "计算机",
-      "news_count": 57,
-      "news_per_day": 28.5,
-      "flow_yi": -36.76,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "智界RX25.98万元起售 余承东：鸿蒙智行最好开的车",
-        "OpenAI再次叫停前沿模型开发 AI+网络安全成国家级战略重点方向",
-        "【Anthropic IPO申报文件警告：人工智能可能对人类构成“生存威胁”"
-      ]
-    },
-    {
-      "sector": "基础化工",
-      "news_count": 3,
-      "news_per_day": 1.5,
-      "flow_yi": -27.5,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "花旗聘请摩根大通的Power担任化工银行业务联席主管。",
-        "国内商品期货夜盘开盘 主力合约跌多涨少",
-        "央行等八部门：引导金融机构综合运用信贷、债券、股权等多样化工具 支持“人工智"
-      ]
-    },
-    {
-      "sector": "建筑材料",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": -25.53,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": []
-    },
-    {
-      "sector": "非银金融",
-      "news_count": 15,
-      "news_per_day": 7.5,
-      "flow_yi": -23.71,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "【Anthropic IPO申报文件警告：人工智能可能对人类构成“生存威胁”",
-        "Anthropic在IPO申报文件中警告称，人工智能可能对人类构成“生存威胁",
-        "科技股大跌之后！“公募一哥”郑希放宽限购 抄底信号来了？"
-      ]
-    },
-    {
       "sector": "机械设备",
       "news_count": 12,
       "news_per_day": 6.0,
-      "flow_yi": -19.31,
+      "flow_yi": -65.67,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
@@ -271,40 +167,126 @@
       ]
     },
     {
-      "sector": "食品饮料",
-      "news_count": 22,
-      "news_per_day": 11.0,
-      "flow_yi": -13.96,
+      "sector": "有色金属",
+      "news_count": 24,
+      "news_per_day": 12.0,
+      "flow_yi": -64.55,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "中信证券：预计2027年春节前后房价会在较为广阔的范围内止跌回升",
-        "【中信证券：预计2027年春节前后房价会在较为广阔的范围内止跌回升】中信证券",
-        "中信证券：美妆礼品、医美新品、珠宝旺季 关注假期场景消费品类格局变化"
+        "新型电池产业发展“十五五”规划发布 固态电池发展有望提速",
+        "【金价在七周低点附近徘徊 美联储升息压力加剧】金价维持大幅跌幅，由于美国和伊",
+        "【全球最大的黄金ETF SPDR Gold Trust持仓较前日增加4.28"
       ]
     },
     {
-      "sector": "房地产",
-      "news_count": 13,
-      "news_per_day": 6.5,
-      "flow_yi": -13.03,
+      "sector": "电力设备",
+      "news_count": 16,
+      "news_per_day": 8.0,
+      "flow_yi": -54.53,
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sample_titles": [
+        "新型电池产业发展“十五五”规划发布 固态电池发展有望提速",
+        "退役电池变“城市矿山”",
+        "固态电池产业化迎利好 温等静压等专用设备成关键抓手"
+      ]
+    },
+    {
+      "sector": "基础化工",
+      "news_count": 3,
+      "news_per_day": 1.5,
+      "flow_yi": -49.71,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "国常会研究出台稳定房地产市场政策 行业有望迎来企稳修复",
-        "【上海楼市再度上演“千人摇”：多个新盘开盘即售罄，中端改善项目去化热度持续走",
-        "上海发布现房销售细则！专家解读：北京、上海有何差异化？"
+        "花旗聘请摩根大通的Power担任化工银行业务联席主管。",
+        "国内商品期货夜盘开盘 主力合约跌多涨少",
+        "央行等八部门：引导金融机构综合运用信贷、债券、股权等多样化工具 支持“人工智"
+      ]
+    },
+    {
+      "sector": "计算机",
+      "news_count": 57,
+      "news_per_day": 28.5,
+      "flow_yi": -44.02,
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sample_titles": [
+        "智界RX25.98万元起售 余承东：鸿蒙智行最好开的车",
+        "OpenAI再次叫停前沿模型开发 AI+网络安全成国家级战略重点方向",
+        "【Anthropic IPO申报文件警告：人工智能可能对人类构成“生存威胁”"
+      ]
+    },
+    {
+      "sector": "建筑材料",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -26.94,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
+    },
+    {
+      "sector": "非银金融",
+      "news_count": 15,
+      "news_per_day": 7.5,
+      "flow_yi": -24.18,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "【Anthropic IPO申报文件警告：人工智能可能对人类构成“生存威胁”",
+        "Anthropic在IPO申报文件中警告称，人工智能可能对人类构成“生存威胁",
+        "科技股大跌之后！“公募一哥”郑希放宽限购 抄底信号来了？"
+      ]
+    },
+    {
+      "sector": "医药生物",
+      "news_count": 9,
+      "news_per_day": 4.5,
+      "flow_yi": -23.67,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "海思科：创新药HSK42360-Na片纳入突破性治疗药物程序",
+        "【海思科：创新药HSK42360-Na片纳入突破性治疗药物程序】据海思科消息",
+        "和黄医药：提交治疗MET驱动的EGFR突变肺癌的美国新药上市申请"
+      ]
+    },
+    {
+      "sector": "国防军工",
+      "news_count": 26,
+      "news_per_day": 13.0,
+      "flow_yi": -23.66,
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sample_titles": [
+        "SpaceX星舰完成入轨首秀：发动机提前熄火后上演“极限反转”",
+        "市场消息：美国15个州起诉美国联邦航空管理局（FAA），针对商业无人机包裹配",
+        "伊朗点名沙特媒体炒作核让步消息 称报道不实"
       ]
     },
     {
       "sector": "传媒",
       "news_count": 14,
       "news_per_day": 7.0,
-      "flow_yi": -10.06,
+      "flow_yi": -17.48,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
@@ -316,25 +298,95 @@
       ]
     },
     {
-      "sector": "国防军工",
-      "news_count": 26,
-      "news_per_day": 13.0,
-      "flow_yi": 8.84,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
+      "sector": "建筑装饰",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -9.46,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
+    },
+    {
+      "sector": "银行",
+      "news_count": 22,
+      "news_per_day": 11.0,
+      "flow_yi": -8.97,
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "SpaceX星舰完成入轨首秀：发动机提前熄火后上演“极限反转”",
-        "市场消息：美国15个州起诉美国联邦航空管理局（FAA），针对商业无人机包裹配",
-        "伊朗点名沙特媒体炒作核让步消息 称报道不实"
+        "中小银行改革重组提速",
+        "加大对“六张网”等重点领域支持力度 货币政策更重逆周期调节",
+        "理财产品密集下调费率 倒逼行业寻求差异化竞争"
       ]
+    },
+    {
+      "sector": "公用事业",
+      "news_count": 3,
+      "news_per_day": 1.5,
+      "flow_yi": 6.43,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": [
+        "三星将向英伟达和KKR支持的人工智能基础设施公司注资10亿美元",
+        "能源价格飙涨 欧盟能源专员呼吁节能",
+        "电力市场化交易纾解供需矛盾"
+      ]
+    },
+    {
+      "sector": "环保",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -5.28,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
+    },
+    {
+      "sector": "社会服务",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -5.08,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
+    },
+    {
+      "sector": "纺织服饰",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -3.71,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
+    },
+    {
+      "sector": "轻工制造",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -3.7,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
     },
     {
       "sector": "汽车",
       "news_count": 25,
       "news_per_day": 12.5,
-      "flow_yi": 6.88,
+      "flow_yi": 3.37,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
@@ -346,56 +398,10 @@
       ]
     },
     {
-      "sector": "建筑装饰",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": -6.47,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": []
-    },
-    {
-      "sector": "家用电器",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": 5.98,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": []
-    },
-    {
-      "sector": "煤炭",
-      "news_count": 1,
-      "news_per_day": 0.5,
-      "flow_yi": 5.5,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": [
-        "日本8月煤炭进口总量同比下降8.2%。日本8月液化天然气进口量下降6.8%。"
-      ]
-    },
-    {
-      "sector": "纺织服饰",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": 4.93,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": []
-    },
-    {
       "sector": "农林牧渔",
       "news_count": 8,
       "news_per_day": 4.0,
-      "flow_yi": -3.78,
+      "flow_yi": -3.19,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
@@ -407,88 +413,10 @@
       ]
     },
     {
-      "sector": "公用事业",
-      "news_count": 3,
-      "news_per_day": 1.5,
-      "flow_yi": -3.24,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "三星将向英伟达和KKR支持的人工智能基础设施公司注资10亿美元",
-        "能源价格飙涨 欧盟能源专员呼吁节能",
-        "电力市场化交易纾解供需矛盾"
-      ]
-    },
-    {
-      "sector": "美容护理",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": 2.94,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": []
-    },
-    {
-      "sector": "社会服务",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": -2.81,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": []
-    },
-    {
-      "sector": "石油石化",
-      "news_count": 16,
-      "news_per_day": 8.0,
-      "flow_yi": 2.3,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
-      "sample_titles": [
-        "美伊谈判聚焦霍尔木兹海峡与核计划，特朗普否认愿给制裁和资产让步",
-        "国际原油期货结算价收涨",
-        "WTI原油期货价格跌超1%"
-      ]
-    },
-    {
-      "sector": "银行",
-      "news_count": 22,
-      "news_per_day": 11.0,
-      "flow_yi": 1.51,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
-      "sample_titles": [
-        "中小银行改革重组提速",
-        "加大对“六张网”等重点领域支持力度 货币政策更重逆周期调节",
-        "理财产品密集下调费率 倒逼行业寻求差异化竞争"
-      ]
-    },
-    {
-      "sector": "商贸零售",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": -1.08,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": []
-    },
-    {
       "sector": "钢铁",
       "news_count": 7,
       "news_per_day": 3.5,
-      "flow_yi": -1.02,
+      "flow_yi": -2.77,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
@@ -500,29 +428,90 @@
       ]
     },
     {
-      "sector": "交通运输",
-      "news_count": 3,
-      "news_per_day": 1.5,
-      "flow_yi": -0.54,
+      "sector": "石油石化",
+      "news_count": 16,
+      "news_per_day": 8.0,
+      "flow_yi": 2.48,
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
+      "sample_titles": [
+        "美伊谈判聚焦霍尔木兹海峡与核计划，特朗普否认愿给制裁和资产让步",
+        "国际原油期货结算价收涨",
+        "WTI原油期货价格跌超1%"
+      ]
+    },
+    {
+      "sector": "美容护理",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": 2.44,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": []
+    },
+    {
+      "sector": "食品饮料",
+      "news_count": 22,
+      "news_per_day": 11.0,
+      "flow_yi": -2.18,
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sample_titles": [
+        "中信证券：预计2027年春节前后房价会在较为广阔的范围内止跌回升",
+        "【中信证券：预计2027年春节前后房价会在较为广阔的范围内止跌回升】中信证券",
+        "中信证券：美妆礼品、医美新品、珠宝旺季 关注假期场景消费品类格局变化"
+      ]
+    },
+    {
+      "sector": "煤炭",
+      "news_count": 1,
+      "news_per_day": 0.5,
+      "flow_yi": 1.58,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": [
+        "日本8月煤炭进口总量同比下降8.2%。日本8月液化天然气进口量下降6.8%。"
+      ]
+    },
+    {
+      "sector": "商贸零售",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": 1.23,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": []
+    },
+    {
+      "sector": "家用电器",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -1.08,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "新型电池产业发展“十五五”规划发布 固态电池发展有望提速",
-        "七部门印发新型电池产业发展“十五五”规划 目标2030年全固态电池初步实现规",
-        "中国将援建斯里兰卡14座因热带气旋损毁的桥梁"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "综合",
       "news_count": 12,
       "news_per_day": 6.0,
-      "flow_yi": 0.33,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "flow_yi": -0.51,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
         "国常会研究出台稳定房地产市场政策 行业有望迎来企稳修复",
         "特朗普点名美媒有关“放松伊朗制裁和解冻资金”的报道不实",
@@ -530,26 +519,34 @@
       ]
     },
     {
-      "sector": "环保",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": -0.28,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": []
+      "sector": "交通运输",
+      "news_count": 3,
+      "news_per_day": 1.5,
+      "flow_yi": 0.31,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": [
+        "新型电池产业发展“十五五”规划发布 固态电池发展有望提速",
+        "七部门印发新型电池产业发展“十五五”规划 目标2030年全固态电池初步实现规",
+        "中国将援建斯里兰卡14座因热带气旋损毁的桥梁"
+      ]
     },
     {
-      "sector": "轻工制造",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": -0.27,
+      "sector": "房地产",
+      "news_count": 13,
+      "news_per_day": 6.5,
+      "flow_yi": -0.22,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": []
+      "sample_titles": [
+        "国常会研究出台稳定房地产市场政策 行业有望迎来企稳修复",
+        "【上海楼市再度上演“千人摇”：多个新盘开盘即售罄，中端改善项目去化热度持续走",
+        "上海发布现房销售细则！专家解读：北京、上海有何差异化？"
+      ]
     }
   ]
 }

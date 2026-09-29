@@ -147,6 +147,32 @@ def fmt_price(x):
 
 
 # ══════════════════════ 1. 拉取申万指数 K 线 ══════════════════════
+def _probe_source_freshness(names, cache):
+    """源新鲜度预探（**仅 1 请求**）→ 返回源实际末条日期（str；失败/不可用返回 ""）
+
+    2026-09-29 立：申万宏源官网指数数据为**盘后发布**，当日 T 常到下午才出 T-1 的行。
+    各申万指数**同一时序发布**（2026-09-29 实测 银行/电子/医药生物 三只末条完全相同），
+    故探 1 只即可代表全体 → 用它挡掉「31 次逐只抓取必然同样落后」的无效风暴。
+    """
+    rep = next((n for n in names if SW1.get(n) and cache.get(n)), None) \
+          or next((n for n in names if SW1.get(n)), None)
+    if not rep:
+        return ""
+    try:
+        import akshare as ak
+    except ImportError:
+        return ""
+    import warnings
+    warnings.filterwarnings("ignore")
+    try:
+        df = ak.index_hist_sw(symbol=SW1[rep], period="day")
+        if df is None or df.empty:
+            return ""
+        return str(df["日期"].iloc[-1])[:10]
+    except Exception:
+        return ""
+
+
 def fetch_klines(names, no_fetch=False, data_date=None):
     """返回 {板块名: [{date, open, close, high, low, volume, amount}, ...]}；失败项进 missing
 
@@ -174,6 +200,19 @@ def fetch_klines(names, no_fetch=False, data_date=None):
                     missing.append(f"{n}：无本地缓存（--no-fetch 模式）")
                 else:
                     missing.append(f"{n}：缓存末条 {bars[-1].get('date')} < 数据日 {data_date}（--no-fetch 模式未刷新）")
+        return {n: cache.get(n) for n in names if cache.get(n)}, missing
+
+    # 🔴 源新鲜度预探（2026-09-29 立 · 反封禁 + 省无效请求）
+    #   申万宏源官网指数数据为**盘后发布**，且当日（T）通常要到**下午**才出 T-1 的行。
+    #   若预探（**仅 1 请求**）显示源末条已 < 数据日，则逐只抓取**必然同样落后**
+    #   → 31 次请求纯属浪费，且持续小流量会推到上游频率风控阈值（2026-09-29 东财封禁同族教训）。
+    #   故：源未更新 ⇒ **直接跳过抓取**，复用缓存，并只在 missing 里给**一条**统一说明（不刷 31 条噪音）。
+    _probe = _probe_source_freshness(names, cache)
+    if _probe and _probe < str(data_date):
+        miss_note = (f"K 线源（申万宏源官网）预探末条 {_probe} < 数据日 {data_date}"
+                     f"（源未发布）→ 已跳过 {len(need)} 次逐只抓取，复用本地缓存")
+        print(f"  ⏭ {miss_note}")
+        missing.append(miss_note)
         return {n: cache.get(n) for n in names if cache.get(n)}, missing
 
     try:
