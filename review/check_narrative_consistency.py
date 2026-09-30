@@ -18,10 +18,14 @@
    并提供 `--fix` 让修复也是**一条命令**（消除人为遗漏空间）。
 
 ━━ 检查维度 ━━
-  [1] 四象限分布（硬断言）—— 覆盖**两种写法**
+  [1] 四象限分布（硬断言）—— 覆盖**三种写法**
       (a) **全式**「共振 A / 背离 B / 暗线 C / 双冷 D」
       (b) **斜杠简写**「A/B/C/D」（例：「前版 4/6/5/16 → 回炉后 2/8/5/16」）
-      两者中判定为**当前值**的命中，必须逐项等于 `output/cross_analysis.json` 的实际分布。
+      (c) **四卡式**「共振 A = 7」（§0 四象限速览卡逐卡列举；可带/不带字母）
+          🔴 2026-09-30 补：此前 (c) 未被覆盖 → 四卡数字改了但守卫仍报绿
+             （「有定义无守卫」型静默失效）。现每卡按**其自报象限**逐张断言。
+      (a)(b) 中判定为**当前值**的命中，必须逐项等于 `output/cross_analysis.json` 的实际分布；
+      (c) 每张卡的值必须等于**该卡自报象限**的实际值（无需分组，逐卡独立断言）。
       · 准入（仅简写）：前后 60 字符内须含「共振/背离/暗线/双冷/象限/迁移」之一，
         避免把日期、比例等无关的 A/B/C/D 误纳入。
       · 分类（当前 vs 历史）：取命中点**前 30 字符**内**最后出现的标记词**——
@@ -69,6 +73,9 @@ FULL_RE = re.compile(
 )
 # 斜杠简写 A/B/C/D（需结合上下文准入 + 标记词分类）
 SLASH_RE = re.compile(r"(?<![\d.])(\d{1,2})/(\d{1,2})/(\d{1,2})/(\d{1,2})(?![\d.])")
+# 四卡式「共振 A = 7」（字母可省；等号两侧容错空格/全角括号）
+#   2026-09-30 补：§0 速览卡用此写法，此前未被覆盖 → 静默漏检
+CARD_RE = re.compile(r"(共振|背离|暗线|双冷)\s*[（(]?\s*([ABCD])?\s*[)）]?\s*=\s*(\d{1,2})")
 
 # 当前值标记（命中点之前最后出现者决定归属）
 CUR_MARKS = ("变为", "回炉后", "本版", "现为", "当前", "判定为", "更新为", "已更正为", "修正为")
@@ -148,11 +155,14 @@ def scan(text):
     for m in FULL_RE.finditer(text):
         vals = tuple(int(x) for x in m.groups())
         pre = text[max(0, m.start() - CLASS_WIN): m.start()]
-        lh = max([pre.rfind(k) for k in HIST_MARKS] + [-1])
+        # 全式**默认当前**：含「变为 / 本版 / 现为」等当前标记即为当前；
+        # 仅当窗口内出现明确历史标记（前版 / 上一版 …）且无当前标记时才判历史。
+        # （2026-09-30 改：旧逻辑「遇历史标记即历史」会把「由上一版 2/1/15/13 变为 共振 7/…」
+        #   这句里的**当前值**误判为历史 → 静默漏检。）
         out.append({
             "span": (m.start(), m.end()),
             "vals": vals,
-            "kind": "hist" if lh >= 0 else "cur",
+            "kind": "hist" if classify(pre) == "hist" else "cur",
             "form": "full",
             "sect": section_of(text, m.start()),
             "line": line_of(text, m.start()),
@@ -165,7 +175,11 @@ def scan(text):
         if any(a <= s < b for a, b in full_spans):
             continue                                    # 与全式重叠 → 跳过
         ctx = text[max(0, s - CTX_WIN): e + CTX_WIN]
-        if not any(k in ctx for k in QUAD_CTX):
+        pre30 = text[max(0, s - CLASS_WIN): s]
+        # 准入：① 邻域含象限类词；或
+        #      ② 紧前出现**当前值标记词** —— 例「… → 上一版盘前 2/1/15/13 → 本版 7/4/10/10」，
+        #         此类链式表述末尾的「本版 X/Y/Z/W」也是本版读数，此前因邻域无象限词而**漏检**。
+        if not any(k in ctx for k in QUAD_CTX) and classify(pre30) != "cur":
             continue                                    # 非象限语境 → 不纳入
         pre = text[max(0, s - CLASS_WIN): s]
         out.append({
@@ -173,6 +187,29 @@ def scan(text):
             "vals": tuple(int(x) for x in m.groups()),
             "kind": classify(pre),
             "form": "slash",
+            "sect": section_of(text, s),
+            "line": line_of(text, s),
+            "raw": m.group(0),
+        })
+    # ── (c) 四卡式「共振 A = 7」──────────────────────────
+    #   每卡**自报象限** → 逐卡独立断言（不需分组）；未被 (a)(b) 覆盖
+    occupied = [h["span"] for h in out]
+    for m in CARD_RE.finditer(text):
+        s, e = m.span()
+        if any(a <= s < b for a, b in occupied):
+            continue                                    # 与全式/简写重叠 → 跳过
+        quad, letter, val = m.group(1), m.group(2) or "", int(m.group(3))
+        pre = text[max(0, s - CLASS_WIN): s]
+        out.append({
+            "span": (s, e),
+            "vals": None,                               # 单卡只有本象限一值
+            "quad": quad,
+            "letter": letter,
+            "val": val,
+            # 四卡**默认当前**（卡片本身即「本版读数」的断言）；
+            # 仅当紧邻前文出现明确历史标记时才判历史（如「前版 共振 A = 2」）
+            "kind": "hist" if classify(pre) == "hist" else "cur",
+            "form": "card",
             "sect": section_of(text, s),
             "line": line_of(text, s),
             "raw": m.group(0),
@@ -219,17 +256,20 @@ def main():
 
     hits = scan(text)
     nfull = sum(1 for h in hits if h["form"] == "full")
-    cur = [h for h in hits if h["kind"] == "cur"]
+    cards = [h for h in hits if h["form"] == "card"]
+    cur = [h for h in hits if h["kind"] == "cur" and h["form"] != "card"]
+    cur_cards = [h for h in cards if h["kind"] == "cur"]
     hist = [h for h in hits if h["kind"] == "hist"]
     unk = [h for h in hits if h["kind"] == "unknown"]
 
     print("  [1] 四象限分布")
-    print(f"      命中 {len(hits)} 处（全式 {nfull} / 简写 {len(hits) - nfull}）"
-          f" → 当前值 {len(cur)} · 历史 {len(hist)} · 待判 {len(unk)}")
+    print(f"      命中 {len(hits)} 处（全式 {nfull} / 简写 {len(hits) - nfull - len(cards)}"
+          f" / 四卡 {len(cards)}）"
+          f" → 当前值 {len(cur) + len(cur_cards)} · 历史 {len(hist)} · 待判 {len(unk)}")
 
     if args.verbose:
         TAG = {"cur": "当前", "hist": "历史", "unknown": "待判"}
-        FORM = {"full": "全式", "slash": "简写"}
+        FORM = {"full": "全式", "slash": "简写", "card": "四卡"}
         for h in hits:
             print(f"        [{TAG[h['kind']]}/{FORM[h['form']]}] L{h['line']:<6} "
                   f"@{h['span'][0]:<8} [{h['sect']}]  {h['raw']}")
@@ -244,7 +284,7 @@ def main():
         else:
             problems.append(msg)
             print(c("r", f"      ❌ {msg}"))
-    elif not cur:
+    elif not cur and not cur_cards:
         warns.append("无可断言的当前值（命中全部被判为历史引用）")
         print(c("y", "      ⚠️ 无可断言当前值（命中全部为历史引用）"))
     else:
@@ -262,6 +302,32 @@ def main():
                 print(f"           数据  {true_str}")
         if not bad and len(distinct) == 1:
             print(c("g", f"      ✅ 与数据侧一致（{len(cur)} 处）"))
+
+    # ── (c) 四卡逐卡断言 ──────────────────────────────────
+    if cards:
+        want_map = {k: true_q[k] for k in QUADS}
+        # 同一象限出现两种不同卡值 → 页面自相矛盾
+        seen = {}
+        dup = []
+        for h in cur_cards:
+            seen.setdefault(h["quad"], set()).add(h["val"])
+        for q, vs in seen.items():
+            if len(vs) > 1:
+                dup.append(f"{q}{sorted(vs)}")
+        cbad = [h for h in cur_cards if h["val"] != want_map[h["quad"]]]
+        if dup:
+            problems.append(f"四卡同象限出现多种值：{'、'.join(dup)}")
+            print(c("r", f"      ❌ 四卡同象限不自洽：{'、'.join(dup)}"))
+        if cbad:
+            problems.append(f"{len(cbad)} 处「四卡当前值」与数据侧不一致")
+            print(c("r", f"      ❌ 四卡 {len(cbad)} 张与数据侧不一致："))
+            for h in cbad:
+                print(f"           L{h['line']:<6} @{h['span'][0]:<8} [{h['sect']}]  "
+                      f"{h['raw']}  → 数据侧 {h['quad']} = {want_map[h['quad']]}")
+        elif not dup:
+            print(c("g", f"      ✅ 四卡 {len(cur_cards)} 张逐张与数据侧一致"
+                         f"（共振 {want_map['共振']} / 背离 {want_map['背离']} /"
+                         f" 暗线 {want_map['暗线']} / 双冷 {want_map['双冷']}）"))
 
     if unk:
         problems.append(f"{len(unk)} 处象限写法无法判定当前/历史（须人工确认）")
@@ -307,19 +373,26 @@ def main():
     # ── --fix ────────────────────────────────────────────
     if args.fix:
         want = (true_q["共振"], true_q["背离"], true_q["暗线"], true_q["双冷"])
+        want_map = {k: true_q[k] for k in QUADS}
         slash_str = "%d/%d/%d/%d" % want
         out = text
-        n_full = n_slash = 0
-        # 从后往前替换，避免位移
-        for h in sorted([x for x in cur if x["vals"] != want], key=lambda x: -x["span"][0]):
+        n_full = n_slash = n_card = 0
+        # 目标 = 全式/简写的当前值异值 + 四卡的当前值异值；从后往前替换避免位移
+        targets = [(x, None) for x in cur if x["vals"] != want]
+        targets += [(x, want_map[x["quad"]]) for x in cur_cards
+                    if x["val"] != want_map[x["quad"]]]
+        for h, card_val in sorted(targets, key=lambda t: -t[0]["span"][0]):
             s, e = h["span"]
-            rep = true_str if h["form"] == "full" else slash_str
-            out = out[:s] + rep + out[e:]
             if h["form"] == "full":
-                n_full += 1
+                rep, n_full = true_str, n_full + 1
+            elif h["form"] == "slash":
+                rep, n_slash = slash_str, n_slash + 1
             else:
-                n_slash += 1
-        n = n_full + n_slash
+                rep = (h["quad"] + (" " + h["letter"] if h["letter"] else "")
+                       + " = " + str(card_val))
+                n_card += 1
+            out = out[:s] + rep + out[e:]
+        n = n_full + n_slash + n_card
         if n:
             with open(ANALYSIS, "w", encoding="utf-8") as f:
                 f.write(out)
@@ -328,8 +401,8 @@ def main():
                 with open(DEPLOY_ANALYSIS, "w", encoding="utf-8") as f:
                     f.write(out)
             print("─" * 74)
-            print(c("g", f"  🔧 --fix 已替换 {n} 处（全式 {n_full} / 简写 {n_slash}）"
-                         f"→ 当前值 {true_str}"))
+            print(c("g", f"  🔧 --fix 已替换 {n} 处（全式 {n_full} / 简写 {n_slash}"
+                         f" / 四卡 {n_card}）→ 当前值 {true_str}"))
             print("     （历史引用未动；root + deploy 已同步写入）")
             print(c("y", "     ⚠️ 仍需人工/agent 复核归因句与结论层表述，并重跑排版门禁"))
         else:
@@ -337,12 +410,15 @@ def main():
             print("  🔧 --fix：无需替换（当前值已与数据一致）")
         # 修完复检
         text2 = open(ANALYSIS, encoding="utf-8").read()
-        want = (true_q["共振"], true_q["背离"], true_q["暗线"], true_q["双冷"])
-        cur2 = [h for h in scan(text2) if h["kind"] == "cur"]
+        hits2 = scan(text2)
+        cur2 = [h for h in hits2 if h["kind"] == "cur" and h["form"] != "card"]
+        cards2 = [h for h in hits2 if h["kind"] == "cur" and h["form"] == "card"]
         bad2 = [h for h in cur2 if h["vals"] != want]
-        if not bad2 and cur2:
+        bad2 += [h for h in cards2 if h["val"] != want_map[h["quad"]]]
+        if not bad2 and (cur2 or cards2):
             fix_resolved = True
-            print(c("g", f"  ✅ 复检通过：全部 {len(cur2)} 处「当前值」= 数据侧真实分布"))
+            print(c("g", f"  ✅ 复检通过：全部 {len(cur2)} 处「当前值」"
+                         f"+ {len(cards2)} 张四卡 = 数据侧真实分布"))
 
     # ── 结论 ─────────────────────────────────────────────
     # `--fix` 已把机械项修好 → 只保留「非象限类」问题继续拦截

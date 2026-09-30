@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-check_narrative_consistency.py 的反向自检（10 场景）
+check_narrative_consistency.py 的反向自检（11 场景）
 
 与 `selftest_index_render.py` / `selftest_touzid_panel.py` 的区别：
   那两个会**临时改坏正式文件再还原**（故不得在自动链路中途运行）；
@@ -98,7 +98,7 @@ def main():
 
     tmp = tempfile.mkdtemp(prefix="nc_selftest_")
     print("═" * 74)
-    print("  check_narrative_consistency.py · 反向自检（10 场景 · 沙箱式）")
+    print("  check_narrative_consistency.py · 反向自检（11 场景 · 沙箱式）")
     print(f"  沙箱 = {tmp}")
     print("═" * 74)
     try:
@@ -123,16 +123,17 @@ def main():
         h = h.replace(want_full, "共振 9 / 背离 9 / 暗线 9 / 双冷 9")
         h = h.replace(want_slash, "9/9/9/9")
         write(tmp, ANALYSIS_REL, h)
+        write(tmp, os.path.join("deploy", ANALYSIS_REL), h)   # 同步副本：隔离象限断言
         rc, out = run(tmp)
         n1, c1, _ = n_hits(out)
         ok("S1  构造分叉 → 红灯", rc == 1 and "未通过" in out, f"退出码 {rc}")
-        ok("S1b 命中「当前值」处数 > 0 且被逐处列出",
-           c1 is not None and c1 > 0 and out.count("❌ L") >= c1,
-           f"当前值 {c1} 处，列出 {out.count('❌ L')} 处")
+        ok("S1b 命中「当前值」处数 > 0 且不一致者被逐处列出",
+           c1 is not None and c1 > 0 and out.count("❌ L") >= 1 and "数据  " in out,
+           f"当前值 {c1} 处，不一致列出 {out.count('❌ L')} 处")
 
         # ── S2 --fix ──
         rc, out = run(tmp, "--fix")
-        m = re.search(r"--fix 已替换 (\d+) 处（全式 (\d+) / 简写 (\d+)）", out)
+        m = re.search(r"--fix 已替换 (\d+) 处（全式 (\d+) / 简写 (\d+)", out)
         ok("S2  --fix 执行且报告替换处数", rc == 0 and m is not None,
            f"替换 {m.group(1) if m else '?'} 处（全式 {m.group(2) if m else '?'} / 简写 {m.group(3) if m else '?'}）")
         ok("S2b --fix 复检自报通过", "复检通过" in out)
@@ -194,8 +195,8 @@ def main():
            nc.classify("象限分布由 ") == "hist" and nc.classify("象限分布变为 ") == "cur",
            f"由→{nc.classify('象限分布由 ')} / 变为→{nc.classify('象限分布变为 ')}")
         # 端到端：把页面里「当前值」全式替换为无标记简写 → 应报无法判定并红灯
-        hh = read(tmp, ANALYSIS_REL)
-        hh = hh.replace(want_full, "象限分布 7/7/7/7", 1)
+        hh = (read(tmp, ANALYSIS_REL)
+              + '\n<div class="dr-note">象限分布 7/7/7/7 示例</div>\n')   # 末尾追加：邻域无任何标记词
         write(tmp, ANALYSIS_REL, hh)
         rc, out = run(tmp)
         ok("S8c 页面出现无标记简写 → 红灯且提示「无法判定」",
@@ -219,6 +220,41 @@ def main():
         rc, out = run(tmp)
         ok("S10 缺 UTF-8 BOM → 红灯且明确提示",
            rc == 1 and "BOM" in out, f"退出码 {rc}")
+        shutil.copyfile(os.path.join(tmp, "deploy", ANALYSIS_REL),
+                        os.path.join(tmp, ANALYSIS_REL))       # 复原
+
+        # ── S11 四卡式「共振 A = N」（2026-09-30 新增覆盖的第三种写法）──
+        #   背景：§0 四象限速览卡用此写法，此前守卫**完全未覆盖** →
+        #   四卡数字改了而守卫仍报绿（「有定义无守卫」型静默失效）。
+        rc, _ = run(tmp, "--fix")                              # 先确保一致
+        base = read(tmp, ANALYSIS_REL)
+        m = re.search(r"(共振|背离|暗线|双冷)\s*[ABCD]?\s*=\s*\d{1,2}", base)
+        if m:
+            qn = m.group(1)
+            bad = re.sub(r"\d{1,2}\s*$", "99", m.group(0))     # 同格式、值改 99
+            inj = base[:m.start()] + bad + base[m.end():]
+            write(tmp, ANALYSIS_REL, inj)
+            write(tmp, os.path.join("deploy", ANALYSIS_REL), inj)   # 同步副本
+            rc, out = run(tmp)
+            ok("S11a 四卡值错误 → 红灯且逐张列出并给出数据侧值",
+               rc == 1 and "四卡" in out
+               and re.search(r"数据侧\s*" + re.escape(qn) + r"\s*=\s*\d+", out) is not None,
+               f"退出码 {rc}")
+            rc, out = run(tmp, "--fix")
+            fixed2 = read(tmp, ANALYSIS_REL)
+            ok("S11b --fix 修好四卡、复检通过、该卡脏值已清零",
+               rc == 0 and "四卡" in out and "复检通过" in out
+               and re.search(re.escape(qn) + r"\s*[ABCD]?\s*=\s*99", fixed2) is None,
+               f"退出码 {rc}")
+            ok("S11c 四卡修复值 == 数据侧值（逐卡同源）",
+               re.search(re.escape(qn) + r"\s*[ABCD]?\s*=\s*" + str(q_true(tmp)[qn]),
+                         fixed2) is not None,
+               f"{qn} 应为 {q_true(tmp)[qn]}")
+            shutil.copyfile(os.path.join(tmp, "deploy", ANALYSIS_REL),
+                            os.path.join(tmp, ANALYSIS_REL))   # 复原
+        else:
+            ok("S11a 四卡值错误 → 红灯且逐张列出并给出数据侧值", False,
+               "页面未找到四卡写法（§0 速览卡约定应含）")
 
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
