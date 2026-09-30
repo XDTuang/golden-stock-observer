@@ -12,6 +12,9 @@
   7. thresholds 完整且与脚本常量一致
   8. 归档副本（deploy/output）与根副本 md5 一致
   9. 数据日新鲜度（warn，不阻断）：data_date < market.json 的 date 时提示
+ 10. 🔴 **K 线缓存不得落后于源（2026-09-30 立）**：`kline_last_date < data_date`（已声称滞后）时
+     **探源 1 次**（正常态零开销）——源已前进 ⇒ **红灯**（须重跑脚本）；源亦未发布 ⇒ 黄字；
+     探测失败 ⇒ 黄字并写明原因（**禁静默**）
 
 用法: python review/check_sector_tech.py
 """
@@ -176,6 +179,34 @@ def main():
         if os.path.exists(pa) and os.path.exists(pb):
             if hashlib.md5(open(pa, "rb").read()).hexdigest() != hashlib.md5(open(pb, "rb").read()).hexdigest():
                 errs.append("analysis.html 根副本与 deploy 副本 md5 不一致")
+
+    # 10. 🔴 K 线缓存不得落后于源（2026-09-30 立）
+    #     背景：2026-09-30 实测 7.1b 段连续多日标注「K 线源实际末条 2026-09-24」——
+    #     根因是「预探即跳过」的判据在**缓存落后于源**时仍然跳过 ⇒ 旧缓存被锁死，
+    #     落入「有值但永远旧」静默失效家族（铁律 9）。本项是它的机械守卫。
+    #     成本：仅当 `kline_last_date < data_date`（已声称滞后）时才探源 **1 请求**；正常态零网络开销。
+    #     分级：源已前进 → 红灯（须重跑）；源亦未发布 → 黄字（上游问题，非本链）；探测失败 → 黄字并写明原因（禁静默）。
+    kl = d.get("kline_last_date") or ""
+    if not kl:
+        warns.append("kline_last_date 缺失（7.1b 段无法披露 K 线口径）")
+    elif kl < dd:
+        probe, why = "", ""
+        try:
+            from build_sector_tech import _probe_source_freshness, CACHE as KLINE_CACHE
+            _cache = json.load(open(KLINE_CACHE, encoding="utf-8"))
+            _names = [i.get("sector") for i in items if i.get("sector")]
+            probe = _probe_source_freshness(_names, _cache) or ""
+        except Exception as e:
+            why = f"{type(e).__name__}: {str(e)[:60]}"
+        if probe and probe > kl:
+            errs.append(f"K 线缓存落后于源：缓存末条 {kl} < 源末条 {probe} → 须重跑 review/build_sector_tech.py")
+        elif probe:
+            warns.append(f"K 线末条 {kl} < 数据日 {dd}，但源亦仅到 {probe}（上游未发布，非链路问题）")
+        else:
+            warns.append(f"K 线末条 {kl} < 数据日 {dd}，且源探测失败"
+                         f"{('：' + why) if why else ''} → 无法判定上游是否已更新")
+    else:
+        print(f"  ✅ K 线末条 {kl} 与数据日一致（无需探源）")
 
     # 输出
     s = d.get("summary") or {}

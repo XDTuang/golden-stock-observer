@@ -32,7 +32,13 @@
 用法:
   python review/build_sector_tech.py                 # 全量（拉 31 板块 K 线，约 40s）
   python review/build_sector_tech.py --no-fetch      # 只用已有缓存（离线自检）
+  python review/build_sector_tech.py --no-html       # 只写 JSON（含 deploy），不注入页面
+  python review/build_sector_tech.py --dry-run       # 🔴 真·不落盘：不写 JSON、不注入（2026-09-30 修正）
   python review/build_sector_tech.py --sectors 电子,通信   # 指定板块（调试）
+
+🔴 2026-09-30 修正：`--dry-run` 原先只抑制 HTML 注入、**仍会 save_both 写 JSON+deploy** ——
+   与「dry-run = 不改动任何东西」的通用预期相悖（实测踩到：以为在干跑，实际已刷新产物）。
+   现已改为真·不落盘；「刷新数据但不动页面」请用 `--no-html`。
 """
 import argparse
 import datetime as _dt
@@ -73,6 +79,8 @@ STREAK_MIN = 2     # 连续净流入天数门槛
 HOT_PER_DAY = 8    # 与 build_cross_analysis.HOT_PER_DAY 同源（日均口径）
 EMA20_LINE = 20     # 技术面否决线：**收盘 < EMA20 才算破位**（见下）
 KLINE_KEEP = 300   # K 线保留根数（覆盖 EMA 200 + 缓冲）
+# K 线源头口径（2026-09-30 立）：页面/缺口语义须写明源名，否则「源未发布」与「本链漏抓」无法区分
+KLINE_SOURCE = "申万宏源官网 · akshare index_hist_sw"
 
 # 🔴 2026-09-17 实跑校准（首版判据过严，会把框架打成哑火）：
 #   ① 技术面否决线只用 EMA20（短期结构），**不叠加 ema_score>=5** ——
@@ -202,18 +210,33 @@ def fetch_klines(names, no_fetch=False, data_date=None):
                     missing.append(f"{n}：缓存末条 {bars[-1].get('date')} < 数据日 {data_date}（--no-fetch 模式未刷新）")
         return {n: cache.get(n) for n in names if cache.get(n)}, missing
 
-    # 🔴 源新鲜度预探（2026-09-29 立 · 反封禁 + 省无效请求）
-    #   申万宏源官网指数数据为**盘后发布**，且当日（T）通常要到**下午**才出 T-1 的行。
-    #   若预探（**仅 1 请求**）显示源末条已 < 数据日，则逐只抓取**必然同样落后**
-    #   → 31 次请求纯属浪费，且持续小流量会推到上游频率风控阈值（2026-09-29 东财封禁同族教训）。
-    #   故：源未更新 ⇒ **直接跳过抓取**，复用缓存，并只在 missing 里给**一条**统一说明（不刷 31 条噪音）。
+    # 🔴 源新鲜度预探（2026-09-29 立 · 反封禁 + 省无效请求 ｜ 2026-09-30 修正判据）
+    #   申万宏源官网指数数据由上游**按自身节奏**发布（实测为 T+1，且**节假日前后可积压数日**）：
+    #   2026-09-30 实证 —— 9/29 全天（08:32 / 10:00 / 18:05 / 22:31 四次运行）源末条都停在 **9/24**，
+    #   9/30 08:55 仍是 9/24，直到当日**午间**才一次性补出 9/28 与 9/29 两行。
+    #   预探只花 1 请求；逐只抓取 31 请求，且持续小流量会推到上游频率风控阈值（9/29 东财封禁同族教训）。
+    #   🔴 **本日修正的缺口**：原判据只看 `_probe < data_date` 就跳过 —— 当**本地缓存落后于源**时
+    #      （例如源已到 9/28 而缓存仍停 9/24），跳过会把这个旧缓存**永久锁死**，
+    #      落入「有值但永远旧」静默失效家族（铁律 9）。
+    #      新判据追加 `_cache_last >= _probe`：**只有「源未前进 **且** 缓存已与源齐平」才跳过**（抓取确实零收益）。
     _probe = _probe_source_freshness(names, cache)
-    if _probe and _probe < str(data_date):
-        miss_note = (f"K 线源（申万宏源官网）预探末条 {_probe} < 数据日 {data_date}"
-                     f"（源未发布）→ 已跳过 {len(need)} 次逐只抓取，复用本地缓存")
+    _cache_last = ""
+    for _n in names:
+        _b = cache.get(_n)
+        if _b:
+            _d0 = str(_b[-1].get("date") or "")
+            if _d0 > _cache_last:
+                _cache_last = _d0
+    if _probe and _probe < str(data_date) and _cache_last >= _probe:
+        miss_note = (f"K 线源（{KLINE_SOURCE}）预探末条 {_probe} < 数据日 {data_date}（源未发布）；"
+                     f"本地缓存末条 {_cache_last or '—'} 已与源齐平 → 已跳过 {len(need)} 次逐只抓取"
+                     f"（抓取零收益），复用本地缓存")
         print(f"  ⏭ {miss_note}")
         missing.append(miss_note)
         return {n: cache.get(n) for n in names if cache.get(n)}, missing
+    if _probe and _probe < str(data_date):
+        print(f"  ⚠️ 源末条 {_probe} < 数据日 {data_date}，但本地缓存末条 {_cache_last or '—'} "
+              f"仍落后于源 → 照常抓取以拉平（{len(need)} 只）")
 
     try:
         import akshare as ak
@@ -521,11 +544,21 @@ def render_section(d: dict) -> str:
         else f"{k} {s.get(k, 0)}" for k in LEVELS)
 
     # 数据日标注：K 线实际末条 < data_date 时显式披露（2026-09-22 治本，防「标题日 ≠ 数据日」静默错位）
+    #   2026-09-30 改写：原措辞「当日 K 线尚未出」会让人误以为「再等一会儿就有」——
+    #   实测上游是 **T+1 且节假日前后可积压数日**（9/30 午间才补出 9/28+9/29 两行），
+    #   故改为写明 **源名 + 落后交易日数 + 成因 + 「非本链漏抓」+ 自动前进承诺**，避免误判为故障。
     _dd = esc(d.get("data_date"))
     _kl = d.get("kline_last_date") or ""
+    _lg = d.get("kline_lag") or {}
     if _kl and _kl < str(d.get("data_date") or ""):
+        _td, _cd = _lg.get("trading_days"), _lg.get("calendar_days")
+        _lag_txt = (f"落后 <b>{_td} 个交易日</b>" if _td is not None else "落后交易日数未知")
+        if _cd is not None:
+            _lag_txt += f"（自然日 {_cd} 天）"
         _dd_txt = (f'{_dd} <span style="font-weight:400">'
-                   f'（⚠️ K 线源实际末条 <b>{esc(_kl)}</b>，当日 K 线尚未出 → 本段技术面读数实为 {esc(_kl)} 口径）'
+                   f'（⚠️ K 线源 <b>申万宏源官网</b> 实际末条 <b>{esc(_kl)}</b> · {_lag_txt} · '
+                   f'<b>上游 T+1 发布、节假日前后可积压数日（非本链漏抓）</b> → '
+                   f'本段技术面以 <b>{esc(_kl)}</b> 收盘为最新已知；源补齐后重跑本脚本即自动前进）'
                    f'</span>')
     else:
         _dd_txt = _dd
@@ -664,13 +697,39 @@ def main():
 
     klines, missing = fetch_klines(names, no_fetch=args.no_fetch, data_date=data_date)
 
-    # 🔴 K 线实际末条日（2026-09-22 治本）：源（akshare index_hist_sw）当日 K 线可能晚于本脚本运行时刻才出，
-    #   此时 data_date（= cross_analysis.flow_date）与实际 K 线末条会错位，形成「标题写 9-22 / 数据实为 9-21」
-    #   的静默错位（与 2026-09-18 修复的缓存陈旧同族）。故把实际末条日写入产物并在段头显式标注。
+    # 🔴 K 线实际末条日（2026-09-22 治本 · 2026-09-30 增「落后交易日」量化）：
+    #   源（akshare index_hist_sw → 申万宏源官网）按**上游自身节奏**发布（T+1，节假日前后可积压数日），
+    #   故 data_date（= cross_analysis.flow_date，最近已收盘交易日）与实际 K 线末条会错位，
+    #   形成「标题写 9-24 / 数据实为 9-21」的静默错位（与 2026-09-18 修复的缓存陈旧同族）。
+    #   ⇒ 把实际末条日 + **落后量**写入产物，并在段头显式标注（交易日口径由 market_calendar 判定，
+    #     比自然日更能反映「少了几根 K」；节假日前后自然日会显著夸大）。
     _lasts = [b[-1].get("date") for b in klines.values() if b]
     kline_last = max(_lasts) if _lasts else ""
+    kline_lag = None
     if kline_last and kline_last < str(data_date):
-        print(f"  ⚠️ K 线实际末条 {kline_last} < 数据日 {data_date}（源未出当日 K 线）→ 段头将显式标注")
+        try:
+            _cal_d = _dt.date.fromisoformat(kline_last)
+            _ddt = _dt.date.fromisoformat(str(data_date))
+            _td, _cursor = 0, _cal_d + _dt.timedelta(days=1)
+            try:
+                sys.path.insert(0, BASE)
+                from market_calendar import is_trading_day as _is_td
+                while _cursor <= _ddt:
+                    if _is_td(_cursor):
+                        _td += 1
+                    _cursor += _dt.timedelta(days=1)
+            except Exception:
+                _td = None
+            kline_lag = {
+                "kline_last": kline_last, "data_date": str(data_date),
+                "trading_days": _td, "calendar_days": (_ddt - _cal_d).days,
+                "source": KLINE_SOURCE,
+                "reason": "上游 T+1 发布，节假日前后可积压数日（非本链漏抓）",
+            }
+            print(f"  ⚠️ K 线实际末条 {kline_last} < 数据日 {data_date}"
+                  f"（落后 {(_ddt - _cal_d).days} 自然日 / {_td} 个交易日 · 上游未发布）→ 段头将显式标注")
+        except Exception as _e:
+            print(f"  ⚠️ K 线末条 {kline_last} < 数据日 {data_date}（落后量计算失败 {type(_e).__name__}）→ 段头将显式标注")
 
     # 资金分位（当日 31 个板块内）
     flows = [it.get("flow_yi") or 0 for it in items_in]
@@ -715,6 +774,7 @@ def main():
     payload = {
         "data_date": data_date,
         "kline_last_date": kline_last,   # 🔴 K 线实际末条日（2026-09-22）· 与 data_date 不一致时前端显式标注
+        "kline_lag": kline_lag,          # 🔴 落后量化（2026-09-30）：自然日 + 交易日 + 源名 + 成因
         "generated_at": _dt.datetime.now().strftime("%Y-%m-%d %H:%M"),
         "news_window": cross.get("news_window"),
         "flow_date": cross.get("flow_date"),
@@ -729,7 +789,10 @@ def main():
         "items": rows,
         "missing": sorted(set(missing)),
     }
-    save_both("sector_tech.json", payload)
+    if args.dry_run:
+        print("\n  ⏭  --dry-run：跳过 save_both（本应写入 output/ 与 deploy/output/ 的 sector_tech.json）")
+    else:
+        save_both("sector_tech.json", payload)
 
     print(f"\n  📊 分级： " + " ｜ ".join(f"{k} {v}" for k, v in summary.items()))
     print(f"  📈 趋势： " + " ｜ ".join(f"{TREND_LABELS[k]} {v}" for k, v in trend_dist.items()))
@@ -744,7 +807,10 @@ def main():
         print(f"\n  ⚠️ 缺口 {len(payload['missing'])} 项：")
         for m in payload["missing"][:8]:
             print(f"     · {m}")
-    print(f"\n  💾 output/sector_tech.json + deploy 副本")
+    if not args.dry_run:
+        print("\n  💾 output/sector_tech.json + deploy 副本")
+    else:
+        print("\n  ⏭  --dry-run：产物未落盘（确认无误后去掉该参数重跑）")
 
     # ── 页面呈现：7.1b 段 + CSS（幂等注入）──
     if args.no_html:

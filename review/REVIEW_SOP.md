@@ -174,7 +174,7 @@ cd /Users/samt/golden_stock_observer
 python3 review/build_sector_tech.py              # 拉申万指数 K 线 → 分级 + 三维 → JSON + 注入 7.1b 段
 python3 review/build_sector_tech.py --no-fetch   # 只用本地 K 线缓存（离线自检，含注入）
 python3 review/build_sector_tech.py --no-html    # 只出 JSON，不注入页面
-python3 review/build_sector_tech.py --dry-run    # 打印将做的注入，不落盘
+python3 review/build_sector_tech.py --dry-run    # 🔴 真·不落盘（既不写 JSON 也不注入）；只想「刷新数据不动页面」用 --no-html
 python3 review/check_sector_tech.py              # 守卫（价格单调性 / 7.1b 段在位 / 副本 md5）
 ```
 
@@ -203,7 +203,34 @@ python3 review/check_sector_tech.py              # 守卫（价格单调性 / 7.
 - 段落顺序守卫已扩展：`check_analysis_style.py [11/12]` 期望序列 = **7.1 → 7.1b → 7.2 → 7.3 → 7.4**。
 - 新增 `st-*` 类必须同时在 analysis.html 的 `<style>` 内有定义（`[9/12]` 未定义类守卫）。
 
+### 🔴 K 线新鲜度时序（2026-09-30 立规 · 必读）
+
+**上游不是「当日盘后即时发布」**：申万宏源官网指数日 K 由**上游按自身节奏**发布 —— 实测 **T+1**，且**节假日前后可积压数日**。
+2026-09-30 实证：9/29 全天四次运行（08:32 / 10:00 / 18:05 / 22:31）与 9/30 08:55 的源末条**都停在 9/24**，
+直到 9/30 **午间**才一次性补出 **9/28 + 9/29 两行**。⇒ `data_date`（= `cross_analysis.flow_date`，最近已收盘交易日）
+与 `kline_last_date` **天然可能错位**，这**不是本链漏抓**。
+
+🔴 **判据（唯一正确口径）**：判断「是否该重抓」要比较 **缓存末条 vs 源末条**，
+**不是** 源末条 vs `data_date`（后者只能说明「上游滞后」，推不出「抓取无意义」）。
+`build_sector_tech.py` 的预探跳过逻辑已按此修正：仅当 `源末条 < data_date` **且** `缓存末条 >= 源末条` 才跳过
+（旧判据只看前者 ⇒ 缓存落后于源时仍跳过，把旧缓存**永久锁死**，属「有值但永远旧」家族）。
+
+**滞后处置**：
+1. 跑 `python review/check_sector_tech.py` —— 新增 **[10]** 项会在 `kline_last_date < data_date` 时**探源 1 次**（正常态零开销）：
+   · 源已前进（**红灯**）→ **先** `python review/build_sector_tech.py` 刷新后复跑守卫（源已前进时它会逐只抓取）
+   · 源亦未发布（黄字）→ 属**上游发布时序**，**不阻断发布**，但页面对应段落须显式披露
+   · 探测失败（黄字）→ 须写明原因，**禁静默**
+2. 段落披露必须给**源名 + 落后交易日数** —— 产物 `output/sector_tech.json` 的 `kline_lag` 字段
+   （`trading_days` / `calendar_days` / `source` / `reason`），由 `market_calendar` 判交易日口径。
+   🔴 **禁只写「当日 K 线尚未出」**（会让人以为「再等一会儿就有」，实际是上游 T+1 且可积压）。
+3. 🔴 **K 线补齐会改变技术面结论**（9/28+9/29 两根阴线补齐后：电子 L3 → L2、房地产 → L4）⇒
+   刷新后**必须同步正文**中引用档位/口径的位置，共三类表述必查：
+   `L3 仅…`｜`kline_last_date = …`｜`技术面为 X 口径 / 技术面读数实为 …`，
+   并重跑 `check_analysis_style.py` + `check_narrative_consistency.py`（+ `patch_dk_css --check`）。
+
 > ⚠️ **跳过此步**：7.1b 段仍是上一数据日的技术研判（页面会显示旧数据日，不报错）。
+> ⚠️ **K 线滞后 ≠ 故障**：`kline_last_date < data_date` 时页面会显式披露「源名 + 落后 N 个交易日」；
+> 只有当**源已前进而缓存未跟上**时才是本链问题（由 `check_sector_tech [10]` 判红）。
 
 ## 步骤 4 · 更新 feed_review
 
