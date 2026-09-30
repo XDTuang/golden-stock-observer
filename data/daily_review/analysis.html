@@ -147,7 +147,7 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
   本版: 2026-09-30 盘前版 08:40（A股 9/29 完整收盘〔结算价〕+ <b>美股 9/29 完整收盘〔结算价 · 单轨〕</b> + <b>日韩 9/30 早盘</b> + 港股 9/29 收盘 + 商品 9/29 收盘）→ 指引 9/30 周三（节前最后交易日 · 季末收官）
   口径升级（本版核心动作）：① **美股由 9/28 完整收盘推进至 9/29 完整收盘单轨**；② **日韩刷新为 9/30 早盘** —— 日经 225 <b>66,208.07（+1.11%）</b>、韩国综合 <b>6,938.53（+0.99%）</b>、韩存储双雄 <b>SK하이닉스 +2.72% / 삼성전자 +0.46%</b>；③ 🔴 **四象限已被云端重算（9/30 09:41，session=preopen）→ 本版叙述已同步为 7/4/10/10**（上一版盘前 2/1/15/13；迁移主因 = 新闻池隔夜扩容致热度抬升、**非**资金结构变化，详见 §0.5「迁移主因」+ 下方「口径缺口」⑤）；④ **三面板数据日全部推进至 9/29**（温度计 9/28 → 9/29、VIX 9/28 → 9/29、资金流 `stale_days = 0`）—— 上一版披露的两项面板滞后缺口本轮消除。
   🔴 **本版最重要的定性翻转**：上一版以「9/28 完整收盘存储 4/4 跌、光通信 3/3 跌（9 只均值 -2.82%）」为依据给 A股 电子 / 通信「维持回避」——**9/29 完整收盘该依据被正面推翻**（映射链 8/9 收正，LITE +5.66% / MRVL +4.51% / COHR +3.46% / MU +1.05%），本版据此把电子 / 计算机下调为「结构性参与」（见 §3 / §5）。
-  口径缺口（本版显式披露）：① `sector_tech` 的 `data_date = flow_date = 2026-09-29`，但 **K 线源（申万宏源官网）末条仍为 2026-09-24**（源未发布，盘后时序）⇒ 该段资金列 9/29、技术面 9/24；② **成交额双口径**（本机 1.20 万亿 / 公开·投喂 1.42 万亿）；③ 10Y / 30Y 美债为 9/28 值（盘前不全量刷新）；④ 温度计与 VIX 已推进至 9/29，滞后缺口消除；⑤ 🔴 **本页有「云端重算滞后」再同步留痕**：`cross_analysis.json` 在本页成稿（08:40–08:56）之后、于 **09:41 被云端 workflow 重算**，导致四象限由 2/1/15/13 变为 7/4/10/10；本页已于 9/30 11:4x **按重算后的数据回改**（四象限数字 + 四卡名单 + 本段归因 + §0.5），并跑 `check_narrative_consistency.py` 复核通过。该类漂移属**已知云端行为**（铁律「叙述↔数据必须同源」），非故障。
+  口径缺口（本版显式披露）：① `sector_tech` 的 `data_date = flow_date = 2026-09-29`，K 线源（申万宏源官网）末条**原为 2026-09-24**（上游 T+1 且节假日前后可积压：9/29 全天四次运行与 9/30 08:55 均停在 9/24，**9/30 午间才补出 9/28+9/29 两行**）⇒ 已于 **9/30 11:5x 重跑 `build_sector_tech.py` 补齐至 2026-09-29**（缓存 31/31 刷新、`kline_last_date = 2026-09-29`、`kline_lag` 清空）⇒ **本段资金列与技术面同为 9/29**；② **成交额双口径**（本机 1.20 万亿 / 公开·投喂 1.42 万亿）；③ 10Y / 30Y 美债为 9/28 值（盘前不全量刷新）；④ 温度计与 VIX 已推进至 9/29，滞后缺口消除；⑤ 🔴 **本页有「云端重算滞后」再同步留痕**：`cross_analysis.json` 在本页成稿（08:40–08:56）之后、于 **09:41 被云端 workflow 重算**，导致四象限由 2/1/15/13 变为 7/4/10/10；本页已于 9/30 11:4x **按重算后的数据回改**（四象限数字 + 四卡名单 + 本段归因 + §0.5），并跑 `check_narrative_consistency.py` 复核通过。该类漂移属**已知云端行为**（铁律「叙述↔数据必须同源」），非故障。
 
 -->
 
@@ -344,14 +344,14 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
     <b class="dk-main">① 存储 / 半导体（本版由「方向待定」上调为「结构优先之一」）</b><br>
     <b>外盘（9/29 完整收盘 · 本版收口）</b>：存储 <b class="dk-up">4/4 全数转正</b> —— MU <b class="dk-up">+1.05%</b>（1,065.08）/ SNDK <b class="dk-up">+0.98%</b>（1,729.76）/ WDC <b class="dk-up">+0.06%</b>（453.48）/ SKHY <b class="dk-up">+2.62%</b>（186.68）；与 9/28 的 <b class="dk-dn">4/4 全跌</b>（均值 -2.82%）构成完全反转。<b>亚太（9/30 早盘）</b>：韩存储双雄 SK하이닉스 <b class="dk-up">+2.72%</b> / 삼성전자 <b class="dk-up">+0.46%</b> ⇒ 连续第二日修复。<br>
     <b>内需侧（投喂 F20260929-002 · 线二）</b>：长鑫科技拟投近 <b>350 亿元</b>新建技术研发项目及存储器晶圆后道测试基地二期（二期总投资 <b>108 亿</b>，测试设备总投资 <b>81.8 亿</b>、占比近 <b>76%</b>）；兆易创新大幅上修长鑫 DRAM 全年采购金额 <b>37.5%</b> 至 <b>78.54 亿元</b>，并领衔推进 3D-DRAM 定制化落地。<b class="dk-caution">投喂侧存在明确分歧：订单确定派（高资本开支锁定未来两年测试设备业绩）vs 周期滞后派（设备招投标与交付验收需跨季度、当前量能难支撑大市值单边主升）—— 本页并列呈现、不作单一结论。</b><br>
-    <b>A股 侧读数</b>：板块技术研判（<code>sector_tech.json</code> · 数据日 9/29）申万 <b>电子 = L3（共振 / ok）</b> —— 资金分位 <b>93.3</b>、资金 <b class="dk-up">+15.01 亿</b>、热度达标（语料日均 10.0 条 ≥ 阈值 8）、趋势类型「下跌反弹」（中期趋势未反转）；<b class="dk-caution">⚠️ 该段技术面读数实为 2026-09-24 口径（申万 K 线源当日未发布），资金列为 9/29。</b><br>
+    <b>A股 侧读数</b>：板块技术研判（<code>sector_tech.json</code> · 数据日 9/29）申万 <b>电子 = L3（共振 / ok）</b> —— 资金分位 <b>93.3</b>、资金 <b class="dk-up">+15.01 亿</b>、热度达标（语料日均 10.0 条 ≥ 阈值 8）、趋势类型「下跌反弹」（中期趋势未反转）；<b class="dk-risk">🔴 该段技术面已于 9/30 补齐至 2026-09-29 口径（K 线源 9/30 午间补出 9/28+9/29 两行）⇒ 补齐后转为<b>技术否决</b>：电子收 8,424.32 &lt; EMA20（8,687.76），EMA 由 4/7 降至 <b>2/7</b>、趋势「下跌破位」⇒ <b>分级由 L3 降至 L2</b>；资金列同为 9/29。</b><br>
     <span class="dk-data">今日观察要点：① 韩存储双雄开盘后涨幅能否守住（若 SK하이닉스 冲高回落 &gt; 1pct，则外盘修复叙事降级）；② A股 后道测试设备链（长川科技 / 华峰测控 / 精智达 / 深科技）能否出现首封；③ 长鑫扩产的受益路径以「测试设备占比 76%」为定量锚，关注是否有公司公告订单呼应。</span>
   </div>
   <div class="dr-note" style="font-size:12.5px;line-height:1.6;margin-top:8px">
     <b class="dk-up">② 光通信 / CPO（本版上调关注度 · 但 A股 尚未同步）</b><br>
     <b>外盘（9/29 完整收盘）</b>：光通信 <b class="dk-up">3/3 全数转正</b> —— LITE <b class="dk-up">+5.66%</b>（973.49，映射链最强）/ AAOI <b class="dk-up">+3.98%</b>（100.67）/ COHR <b class="dk-up">+3.46%</b>（292.21）；MRVL <b class="dk-up">+4.51%</b>（263.27，定制芯片 / 光）同步走强。与 9/28 的 <b class="dk-dn">3/3 全跌</b>（LITE -2.16% / AAOI -4.52% / COHR -4.52%）构成反转。<br>
     <b>A股 侧（9/29 收盘 · 其他专家持股参考 · 非本人）</b>：华工科技 <b class="dk-up">94.25（+1.77%）</b>、永鼎股份 <b class="dk-dn">37.00（-3.34%）</b>、剑桥科技 <b class="dk-up">201.10（+1.89%）</b> ⇒ <b class="dk-caution">内部分化，未形成板块合力；外盘与 A股 之间出现「时差」而非「共振」。</b><br>
-    <b class="dk-data">板块技术（9/24 口径）</b>：申万通信不在 L3 / L4 名单内（L3 仅电子、房地产两席）。<br>
+    <b class="dk-data">板块技术（9/29 口径 · 9/30 11:5x 补齐 K 线）</b>：申万通信不在 L3 / L4 名单内；本轮补 K 线后分级为 <b>L4 = 1（房地产）· L3 = 0 · L2 = 16 · L1 = 14</b>（电子因跌破 EMA20 由 L3 降至 L2）。<br>
     <span class="dk-data">今日观察要点：① 开盘 30 分钟量能是否放大（外盘映射型修复若无量 = 无效）；② 华工科技 / 永鼎股份能否由分化转为同向（同向 = 板块合力成立）；③ 若外盘光通信强势无法传导，则按「外盘读数不可外推」纪律处理，不追加参与。</span>
   </div>
   <div class="dr-note" style="font-size:12.5px;line-height:1.6;margin-top:8px">
@@ -374,7 +374,7 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
 <div class="dr-h">5.5 · 产业链 / 景气度评估（五线滚动 · <b class="dk-main">存储：外盘与内需双支撑、方向由不一致转为一致</b> · <b class="dk-up">光通信：外盘 3/3 转正、A股 待传导</b> · <b class="dk-risk">油运：原油续跌 + 供给恢复双压</b> · <b class="dk-caution">金刚石 / 先进封装：设备与工序验证为关键、主题性大于景气性</b> · <b class="dk-caution">消费：政策口径与假期数据均属预期型</b>）</div>
 <div class="dr-card" style="margin-top:4px">
   <div class="dr-note" style="font-size:12.5px;line-height:1.6">
-    <b class="dk-main">① 存储 / 半导体设备（景气度：上行确认度提高）</b>：外盘存储 4/4 收正、韩存储双雄 9/30 早盘续涨；内需侧长鑫 350 亿扩产 + 后道测试基地二期（测试设备 81.8 亿 / 占比 76%）+ 兆易创新上修采购 37.5%。<b>景气判据 = 「资本开支 → 设备订单」的时滞</b>，投喂侧对此存在明确分歧（订单确定派 vs 周期滞后派）。<b class="dk-caution">⚠️ 技术面为 9/24 口径（数据源未发布），本线结论以资金列（9/29 电子 +15.01 亿 / 分位 93.3）与外盘为主依据。</b><br>
+    <b class="dk-main">① 存储 / 半导体设备（景气度：上行确认度提高）</b>：外盘存储 4/4 收正、韩存储双雄 9/30 早盘续涨；内需侧长鑫 350 亿扩产 + 后道测试基地二期（测试设备 81.8 亿 / 占比 76%）+ 兆易创新上修采购 37.5%。<b>景气判据 = 「资本开支 → 设备订单」的时滞</b>，投喂侧对此存在明确分歧（订单确定派 vs 周期滞后派）。<b class="dk-risk">🔴 技术面已于 9/30 补齐至 9/29 口径，且补 K 线后<b>转为技术否决</b>（电子收 8,424.32 &lt; EMA20 8,687.76，EMA 4/7 → <b>2/7</b>、趋势「下跌破位」，分级 L3 → L2）⇒ 本线由「资金正 + 技术 ok」变为「资金正但技术否决」，结论以资金列（9/29 电子 +15.01 亿 / 分位 93.3）与外盘为主，技术面不再提供支撑。</b><br>
     <span class="dk-data">今日观察要点：① 存储模组 / 测试设备是否延续 9/29 午后反抽；② 是否有公司公告呼应长鑫扩产（订单是可验证的硬证据）；③ 韩存储双雄尾盘方向决定隔夜叙事完整性。</span>
   </div>
   <div class="dr-note" style="font-size:12.5px;line-height:1.6;margin-top:8px">
@@ -419,7 +419,7 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
 <tr><td><b>裁决点 ② · R22 终级动作执行（仓位纪律）</b></td><td><span style="color:var(--green);font-weight:700">❌ 退潮档已触发</span></td><td class="dr-wrap">按预设口径终级动作触发 ⇒ <b class="dk-risk">仓位降至 40% 以下（退潮档）</b>。下方参考位：<b>3,810.81</b>（9/29 低）→ <b>3,800</b>（整数关）→ <b>3,780</b>（50% 回撤估算区）。<b class="dk-caution">本日为节前最后一个交易日，退潮档 + 长假敞口叠加 ⇒ 总仓位纪律优先于个股机会。</b><br><b class="k3c k3c-risk">→ 终级动作已生效、上方无收复证据 ⇒ 回避指数级参与、以总仓位上限约束操作</b></td></tr>
 <tr><td><b>裁决点 ③ · 地产链政策定价兑现测试</b></td><td><span style="color:var(--orange);font-weight:700">⚠️ 待今日盘中判定</span></td><td class="dr-wrap">9/29 房地产 <b>6 只涨停 / 53.64 亿</b>（万科 A 14:07 尾盘封板、成交 31.77 亿）；政策 = 首套商贷财政贴息（年化 1 个点 / 最长 5 年 / 门槛 总价 ≤150 万 且 建面 ≤120 平）+ PSL 降息 25bp。<b class="dk-caution">判定标准 = 高开是否缩量：缩量高开 = 兑现盘（不参与）；放量高开后分歧转一致 = 政策定价成立。</b>投喂侧对门槛存在明确分歧（破冰派 vs 门槛受限派），本页并列呈现、不作单一结论。<br><b class="k3c k3c-cond">→ 成立与否取决于今日竞价量与封板结构 ⇒ 有条件、待确认，未确认前不参与</b></td></tr>
 <tr><td><b>裁决点 ④ · AI 硬件 / PCB 主线延续性</b></td><td><span style="color:var(--red);font-weight:700">✅ 9/29 已成立（当日最大板块）</span></td><td class="dr-wrap">9/29 AI 硬件 <b>11 只 / 106.06 亿</b>为当日最大板块（PCB 8 只构成绝对主线：依顿电子 / 奥士康 / 超声电子 / 迅捷兴 / 崇达技术 / 澳弘电子 / 协和电子 / 安德利）；韩国与美股半导体链 9/29–9/30 同向转强。<b class="dk-main">本线为本版「结构优先」的第一顺位。</b><br><b class="k3c k3c-go">→ 语料与资金同向、外盘同向 ⇒ 可作为相对占优方向，但须以开盘量能与首封验证延续性</b></td></tr>
-<tr><td><b>裁决点 ⑤ · 存储 / 半导体后道（外盘 + 内需双支撑）</b></td><td><span style="color:var(--red);font-weight:700">✅ 双向证据齐备</span></td><td class="dr-wrap">外盘 9/29 存储 <b>4/4 收正</b>（MU +1.05% / SNDK +0.98% / WDC +0.06% / SKHY +2.62%）+ 韩存储双雄 9/30 早盘 <b>+2.72% / +0.46%</b>；内需侧长鑫科技 <b>350 亿元</b>扩产（后道测试基地二期 108 亿、测试设备 <b>81.8 亿</b>、占比 <b>76%</b>）、兆易创新上修长鑫 DRAM 采购 <b>37.5%</b> 至 78.54 亿。申万电子为四象限<b>共振之一</b>（资金 <b class="dk-up">+15.01 亿</b> / 分位 93.3 / 热度达标）。<br><b class="k3c k3c-go">→ 内外证据同向且资金列为正 ⇒ 可参与；⚠️ 技术面为 9/24 口径，须以外盘与资金列为主依据</b></td></tr>
+<tr><td><b>裁决点 ⑤ · 存储 / 半导体后道（外盘 + 内需双支撑）</b></td><td><span style="color:var(--red);font-weight:700">✅ 双向证据齐备</span></td><td class="dr-wrap">外盘 9/29 存储 <b>4/4 收正</b>（MU +1.05% / SNDK +0.98% / WDC +0.06% / SKHY +2.62%）+ 韩存储双雄 9/30 早盘 <b>+2.72% / +0.46%</b>；内需侧长鑫科技 <b>350 亿元</b>扩产（后道测试基地二期 108 亿、测试设备 <b>81.8 亿</b>、占比 <b>76%</b>）、兆易创新上修长鑫 DRAM 采购 <b>37.5%</b> 至 78.54 亿。申万电子为四象限<b>共振之一</b>（资金 <b class="dk-up">+15.01 亿</b> / 分位 93.3 / 热度达标）。<br><b class="k3c k3c-cond">→ 内外证据同向、资金列为正，但 9/30 补齐 K 线（9/29 口径）后技术面<b>转为否决</b>（电子收 8,424.32 &lt; EMA20 8,687.76、EMA 2/7）⇒ 由「可参与」降级为「<b>观察</b>」：须以「开盘量能放大 + 站回 MA5」为前置条件，未满足不参与</b></td></tr>
 <tr><td><b>裁决点 ⑥ · 光通信 / CPO 外盘映射的传导效率</b></td><td><span style="color:var(--orange);font-weight:700">⚠️ 外盘先行、内需未同步</span></td><td class="dr-wrap">外盘 9/29 光通信 <b>3/3 全数转正</b>（LITE <b class="dk-up">+5.66%</b> / AAOI +3.98% / COHR +3.46%）、MRVL +4.51%；但 9/29 A股 侧 <b>华工科技 +1.77% / 永鼎股份 -3.34%</b> 内部分化，未形成板块合力。<b class="dk-caution">⇒ 当前形态是「时差」而非「共振」。</b><br><b class="k3c k3c-cond">→ 有外盘支撑但内需未确认 ⇒ 以「开盘量能 + 同向化」为前置条件，未满足则降级为观察</b></td></tr>
 <tr><td><b>裁决点 ⑦ · 量能门槛（成交额能否重回 1.4 万亿）</b></td><td><span style="color:var(--blue);font-weight:700">🔵 待验证变量</span></td><td class="dr-wrap">9/29 本机口径 <b>1.20 万亿</b>（12,024.9 亿）创年内新低；公开/投喂口径 <b>1.42 万亿</b>（缩量约 3,000 亿）。<b class="dk-caution">节前最后一个交易日通常缩量，量能门槛本身很难在今日被满足 —— 故本项的价值是「节后对照基线」而非今日判据。</b><br><b class="k3c k3c-verify">→ 本项为方法论留痕（节前缩量属结构性因素）⇒ 只作节后对照基线，不作今日操作判据</b></td></tr>
 <tr><td><b>裁决点 ⑧ · 今夜事件窗口（长假前最后数据窗口）</b></td><td><span style="color:var(--green);font-weight:700">❌ 不可交易日敞口</span></td><td class="dr-wrap">今夜：9 月 ADP（预期 7.0 万 / 前值 3.8 万）、8 月核心 PCE 年率（预期 3.3% / 前值 3.34%）、Q2 GDP 价格指数季率终值（预期 6.4%）；叠加美国 FY2026 到期 / 政府关门 deadline 与美光财报。<b class="dk-risk">A股 9/30 15:00 收盘后至 10/7 连续 7 个自然日不可交易 ⇒ 任何读数只能 10/8 一次性定价。</b><br><b class="k3c k3c-risk">→ 不可交易日敞口 + 事件密度高 ⇒ 回避重仓过节，以敞口控制替代方向判断</b></td></tr>
@@ -429,32 +429,21 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
 </div>
 
 <!-- ═══ 7.1b SECTOR-TECH-BEGIN（由 review/build_sector_tech.py 生成 · 勿手改）═══ -->
-<div class="dr-h">7.1b · 板块技术研判（申万一级 31 · 数据日 2026-09-29 <span style="font-weight:400">（⚠️ K 线源实际末条 <b>2026-09-24</b>，当日 K 线尚未出 → 本段技术面读数实为 2026-09-24 口径）</span> · 共振置信度分级 + 量价/压力/支撑 · 自动生成）</div>
+<div class="dr-h">7.1b · 板块技术研判（申万一级 31 · 数据日 2026-09-29 · 共振置信度分级 + 量价/压力/支撑 · 自动生成）</div>
 <div class="dr-card" style="margin-top:4px">
-<div class="st-sum">分级：<span class="st-lv st-lv4">L4 0</span> ｜ <span class="st-lv st-lv3">L3 2</span> ｜ L2 15 ｜ L1 14<br>趋势结构：趋势向上 0 ｜ 上升回踩 1 ｜ 下跌反弹 8 ｜ 下跌破位 22 ｜ 无数据 0<br>阈值：资金分位 ≥80/60 ｜ 连续 ≥2 日（或反转首日 ≥95） ｜ 热度日均 ≥8 ｜ 破位线 EMA20（技术面为**否决项**：跌破即降档）</div>
+<div class="st-sum">分级：<span class="st-lv st-lv4">L4 1</span> ｜ <span class="st-lv st-lv3">L3 0</span> ｜ L2 16 ｜ L1 14<br>趋势结构：趋势向上 0 ｜ 上升回踩 0 ｜ 下跌反弹 2 ｜ 下跌破位 29 ｜ 无数据 0<br>阈值：资金分位 ≥80/60 ｜ 连续 ≥2 日（或反转首日 ≥95） ｜ 热度日均 ≥8 ｜ 破位线 EMA20（技术面为**否决项**：跌破即降档）</div>
 <div class="st-grid">
 <div class="st-card">
-<div class="st-hd"><span class="st-lv st-lv3">L3</span><b>房地产</b><span class="st-tr st-tr-weak">下跌反弹</span></div>
+<div class="st-hd"><span class="st-lv st-lv4">L4</span><b>房地产</b><span class="st-tr st-tr-weak">下跌反弹</span></div>
 <table class="st-kv"><tbody>
-<tr><td>现价</td><td class="dr-wrap" colspan="3"><b>1939.38</b> ｜ EMA 3/7 ｜ 区间分位 65.9% ｜ 距 60 日高 <b>-5.2%</b></td></tr>
+<tr><td>现价</td><td class="dr-wrap" colspan="3"><b>1994.39</b> ｜ EMA 3/7 ｜ 区间分位 83.5% ｜ 距 60 日高 <b>-2.5%</b></td></tr>
 <tr><td>压力</td><td class="st-res dr-wrap" colspan="3"><b>2046.13</b>（近20日高点） ／ <b>2239.45</b>（斐波161.8%延伸）</td></tr>
-<tr><td>支撑</td><td class="st-sup dr-wrap" colspan="3"><b>1926.63</b>（斐波61.8%） ／ <b>1902.05</b>（EMA20支撑） ／ <b>1889.72</b>（斐波50%）</td></tr>
-<tr><td>量价</td><td class="dr-wrap" colspan="3">平量整理（量比 5 日 1.07） ｜ ⚠️ 资金与价格反向</td></tr>
+<tr><td>支撑</td><td class="st-sup dr-wrap" colspan="3"><b>1926.63</b>（斐波61.8%） ／ <b>1912.1</b>（EMA20支撑） ／ <b>1889.72</b>（斐波50%）</td></tr>
+<tr><td>量价</td><td class="dr-wrap" colspan="3">放量上涨·健康推进（量比 5 日 1.1） ｜ 资金与价格同向</td></tr>
 </tbody></table>
-<div class="st-why">依据：资金分位96+反转首日(分位96.7)｜趋势为反弹（中期趋势未反转）</div>
-</div>
-<div class="st-card">
-<div class="st-hd"><span class="st-lv st-lv3">L3</span><b>电子</b><span class="st-tr st-tr-weak">下跌反弹</span></div>
-<table class="st-kv"><tbody>
-<tr><td>现价</td><td class="dr-wrap" colspan="3"><b>8786.17</b> ｜ EMA 4/7 ｜ 区间分位 29.0% ｜ 距 60 日高 <b>-25.3%</b></td></tr>
-<tr><td>压力</td><td class="st-res dr-wrap" colspan="3"><b>8900.31</b>（上方EMA60） ／ <b>9170.8</b>（斐波38.2%） ／ <b>9251.65</b>（近20日高点）</td></tr>
-<tr><td>支撑</td><td class="st-sup dr-wrap" colspan="3"><b>8753.62</b>（EMA20支撑） ／ <b>8159.52</b>（近20日低点） ／ <b>7574.02</b>（近60日低点）</td></tr>
-<tr><td>量价</td><td class="dr-wrap" colspan="3">缩量回调·洗盘观察（量比 5 日 0.79） ｜ ⚠️ 资金与价格反向</td></tr>
-</tbody></table>
-<div class="st-why">依据：资金分位93+热度达标(日均≥8)｜趋势为反弹（中期趋势未反转）</div>
+<div class="st-why">依据：资金分位96(≥80)+反转首日(分位96.7)+热度达标(日均≥8)｜趋势为反弹（中期趋势未反转）</div>
 </div>
 </div>
-<div class="st-note">⚠️ 数据缺口 1 项：K 线源（申万宏源官网）预探末条 2026-09-24 &lt; 数据日 2026-09-29（源未发布）→ 已跳过 31 次逐只抓取，复用本地缓存</div>
 </div>
 <!-- ═══ 7.1b SECTOR-TECH-END ═══ -->
 
@@ -517,12 +506,12 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
   <div class="dr-note" style="font-size:12.5px;line-height:1.6">
     <b>素材来源（本版实读 / 实取清单）</b><br>
     <b>① 投喂归档 4 件（<code>feed/archive/2026-09-29/</code> · 逐件实读）</b> —— <b>F20260929-001</b> 信息差（公众号 · 图文混合 + Vision OCR；记载成交 1.4 万亿创今年最低、国庆逆回购最后操作时点）· <b>F20260929-002</b> 25 个炒股群围观记录（公众号 · 群聊观察，20+ 股票群聊天记录 + AI 总结，五条线：AI 应用与智能体 / 半导体存储与后道设备 / 算力硬件与前沿热管理 / 宏观政策与地产博弈 / 新能源与低位资产）· <b>F20260929-003</b> 复利杯实盘大赛 9 月 29 日追踪（<b>公开实盘赛事</b>，按 2026-09-10 用户拍板的口径，选手昵称原样保留、不脱敏）· <b>F20260929-004</b> 涨停板复盘（公众号 · 750×9976 超长图 Vision OCR；<b class="dk-caution">OCR 对密集表格存在列交错风险，关键数字以原图为准</b>）。<br>
-    <b>② 行情与面板产物</b> —— <code>data/daily_review/market.json</code>（<b>9/29</b> 完整收盘 · 更新 2026-09-30 08:30）· <code>output/cross_analysis.json</code>（<b class="dk-main">9/29 22:31</b> · <code>date = flow_date = 2026-09-29</code> · 新闻窗口 09/29 + 09/30）· <code>output/sector_tech.json</code>（<b class="dk-caution">data_date = flow_date = 2026-09-29 · kline_last_date = 2026-09-24</b> · L4 <b>0</b> / L3 <b>2</b> / L2 15 / L1 14）· <code>output/gate_data.json</code>（<b>9/29</b> · 成交额 TOP800 门控命中 <b>39 只</b>）· <code>output/market_thermometer.json</code>（<b class="dk-main">9/29 已到位</b> · graham 1.62 / buffett 0.786 / 破净占比 8.19%）· <code>output/vix_panel.json</code>（<b class="dk-main">9/29 · CBOE 16.04</b> · A股 QVIX 科创 50 36.2 / 创业板指 30.78）· <code>output/sector_flow.json</code>（<b class="dk-main">9/29 · <code>source_status.stale_days = 0</code></b>）· <code>output/window_latest.json</code>（<code>session = preopen</code> · data_date 9/29 → for_date 9/30 · <code>display_days = [09/29, 09/30]</code>）· <code>output/daily_news_window.json</code>（滚动 14 日 · 合计 <b>4,056</b> 条 · 09/29 计 <b>304</b> 条 / 09/30 计 <b>283</b> 条）。<br>
+    <b>② 行情与面板产物</b> —— <code>data/daily_review/market.json</code>（<b>9/29</b> 完整收盘 · 更新 2026-09-30 08:30）· <code>output/cross_analysis.json</code>（<b class="dk-main">9/29 22:31</b> · <code>date = flow_date = 2026-09-29</code> · 新闻窗口 09/29 + 09/30）· <code>output/sector_tech.json</code>（<b class="dk-main">data_date = flow_date = kline_last_date = 2026-09-29</b>（K 线已于 9/30 11:5x 补齐，<code>kline_lag</code> 清空）· L4 <b>1</b> / L3 <b>0</b> / L2 16 / L1 14）· <code>output/gate_data.json</code>（<b>9/29</b> · 成交额 TOP800 门控命中 <b>39 只</b>）· <code>output/market_thermometer.json</code>（<b class="dk-main">9/29 已到位</b> · graham 1.62 / buffett 0.786 / 破净占比 8.19%）· <code>output/vix_panel.json</code>（<b class="dk-main">9/29 · CBOE 16.04</b> · A股 QVIX 科创 50 36.2 / 创业板指 30.78）· <code>output/sector_flow.json</code>（<b class="dk-main">9/29 · <code>source_status.stale_days = 0</code></b>）· <code>output/window_latest.json</code>（<code>session = preopen</code> · data_date 9/29 → for_date 9/30 · <code>display_days = [09/29, 09/30]</code>）· <code>output/daily_news_window.json</code>（滚动 14 日 · 合计 <b>4,056</b> 条 · 09/29 计 <b>304</b> 条 / 09/30 计 <b>283</b> 条）。<br>
     <b>③ 跨市场实时（本机直取）</b> —— 美股 <b>9/29 完整收盘</b>（腾讯 gtimg 13 只 + akshare <code>stock_us_daily</code> 双日）；日韩 <b>9/30 早盘</b>（新浪 znb 日经 225 / 韩国综合 + <code>stock.fengle.me</code> 韩存储双雄，NAVER 实时源）；港股 9/29 收盘（腾讯 gtimg）。<br>
     <b>④ 宏观</b> —— <code>output/daily_macro_latest.json</code>（<b>9/30 08:31 重抓</b> · 轨 A = 百度经济日历，回看至 2026-09-04；轨 B = 新闻抽取，窗口 ≤7 天）；中国侧 = 国家统计局 / 央行公开数据（8 月 CPI 同比 +0.8% · 制造业 PMI 49.8 · 1Y LPR 3.0%）。<br>
     <b>⑤ 研报流统计（本机判读 · 不入仓库）</b> —— <code>feed_mahoro</code> 9/30 早间轮 <b>61 条 / 约 11.6 万字</b>（来源分布：逻辑与思考 28 · 金斧头 33）。<b class="dk-risk">付费星球与订阅邮件为二手汇总 —— 只在本机统计判读，禁原文入仓库、禁粘贴正文、禁外传；token 不打印、不落盘。</b><br>
     <b>推演口径（五权重，按重要性递减）</b>：<b>第一权重</b> = <b>9/29 A股 完整收盘</b>（上证 +0.18% / 广度五项反转 / 成交 1.20 万亿创年内新低）<b>；第二权重</b> = <b class="dk-up">9/29 美股完整收盘</b>（指数微跌但映射链 8/9 收正 —— 本版推翻上一版「外盘无支撑」定性的直接依据）；<b>第三权重</b> = <b class="dk-up">9/29 投喂 4 件</b>（长鑫 350 亿扩产 / PSL 与房贷贴息 / 涨停结构 / 题材排序）；<b>第四权重</b> = <b>日韩 9/30 早盘 + 港股 9/29 收盘</b>（亚太风险偏好回温度）；<b>第五权重</b> = <b>承接结论（9/29 收盘版）与三项待验判据的可验证性</b>。<br>
-    <b class="dk-caution">本版须显式声明的口径事项（3 条）</b>：<b class="dk-risk">① 四象限已按云端重算同步</b>（原文「与前版同值、未迁移」<b>已作废</b>）—— <code>cross_analysis.json</code> 于 <b>9/30 09:41</b> 被云端 workflow 重算（<code>window session = preopen</code>、<code>display_days = [09/29, 09/30]</code>、<code>news_window_days = 2</code>）⇒ 分布由上一版盘前 <b>2/1/15/13</b> 变为 <b>共振 7 / 背离 4 / 暗线 10 / 双冷 10</b>；迁移主因 = <b class="dk-main">新闻池隔夜扩容致热度抬升</b>（全板块语料日均 2.73 → 6.44 条），而 <code>flow_date = 2026-09-29</code> 且 31 个板块资金值逐个与上一版一致 ⇒ <b class="dk-main">非资金结构变化</b>；<b class="dk-data">② 成交额双口径</b> —— 本机 1.20 万亿 / 公开·投喂 1.42 万亿，并列披露、不取平均；<b class="dk-caution">③ 三项已知口径差</b> —— <code>sector_tech</code> 技术面 2026-09-24（申万 K 线源当日未发布）/ 10Y·30Y 美债为 9/28 值（盘前不全量刷新）/ 涨停家数双口径（投喂 57 vs 门控扫描 61）。<br>
+    <b class="dk-caution">本版须显式声明的口径事项（3 条）</b>：<b class="dk-risk">① 四象限已按云端重算同步</b>（原文「与前版同值、未迁移」<b>已作废</b>）—— <code>cross_analysis.json</code> 于 <b>9/30 09:41</b> 被云端 workflow 重算（<code>window session = preopen</code>、<code>display_days = [09/29, 09/30]</code>、<code>news_window_days = 2</code>）⇒ 分布由上一版盘前 <b>2/1/15/13</b> 变为 <b>共振 7 / 背离 4 / 暗线 10 / 双冷 10</b>；迁移主因 = <b class="dk-main">新闻池隔夜扩容致热度抬升</b>（全板块语料日均 2.73 → 6.44 条），而 <code>flow_date = 2026-09-29</code> 且 31 个板块资金值逐个与上一版一致 ⇒ <b class="dk-main">非资金结构变化</b>；<b class="dk-data">② 成交额双口径</b> —— 本机 1.20 万亿 / 公开·投喂 1.42 万亿，并列披露、不取平均；<b class="dk-caution">③ 三项已知口径差</b> —— <code>sector_tech</code> 技术面已于 9/30 11:5x 补齐至 2026-09-29（K 线源 9/30 午间补出 9/28+9/29 两行；9/30 08:55 版曾停在 9/24，属**上游发布时序**而非本链漏抓）/ 10Y·30Y 美债为 9/28 值（盘前不全量刷新）/ 涨停家数双口径（投喂 57 vs 门控扫描 61）。<br>
     <b>免责声明</b>：个人学习用途，不构成投资建议。观察池个股为<b>其他专家持股参考（非本人）</b>，本页只给客观技术读数与场景路径，<b>不含任何加减仓建议</b>。投喂素材为<b>投喂语料 · 非本人持仓</b>，报价与公司信息以交易所与公司公告为准。私域聊天记录中的昵称已统一脱敏为「群友」等泛称；<b>公开赛事信息中的选手昵称按既定规则保留</b>；持牌投顾个人姓名不落盘。
   </div>
 </div>
