@@ -241,6 +241,72 @@ def main():
     print(f"{'✅' if ok2 else '❌'} [2/9] 三处 index 有 td.dr-tag 防御 CSS"
           + (f" — 缺 {bad2}" if bad2 else ""))
 
+    # ── [2b] 🔴 DR-THEME-BRIDGE（每日复盘 tab 暗色适配 · 2026-09-30 立）──
+    #  根因：analysis.html 自带 <style> 的 :root 被 drScopeInjectedStyles() 作用域化为
+    #       `#drAnalysis{--bg:#fff;--text:#1a1f2e;…}` —— 特异性 (1,0,0)，**高于**主站
+    #       `[data-theme="dark"]` 对 html 的自定义属性定义 ⇒ 暗色模式下该 tab 内变量仍取浅色值
+    #       （整篇推演正文白底深字；用户 2026-09-30 报「夜间模式有超长一大段仍是浅色」）。
+    #       其暗色分支挂在 `@media (prefers-color-scheme:dark)`（跟随**系统**偏好，与主站
+    #       `data-theme` 无关）⇒ 系统为浅色时永不生效（且系统为深色时会污染浅色站点）。
+    #  修法：`html #drAnalysis`（(1,0,1)）把重叠变量重声明为桥接变量 `--dr-*`，随 `data-theme` 切换。
+    #  守卫意义：analysis.html 若**新增与主站同名**的变量而清单未同步 → 又会静默锁死浅色
+    #           （「有定义无桥接」型静默失效）⇒ 此处断言 桥接清单 ⊇ analysis :root 的变量集合。
+    bad2b = []
+    DRB, DRE = '<!-- DR-THEME-BRIDGE-BEGIN -->', '<!-- DR-THEME-BRIDGE-END -->'
+    blocks, bridge_map, dark_vars, root_vars = {}, {}, set(), set()
+    for f in INDEXES:
+        p = os.path.join(BASE, f)
+        if not os.path.exists(p):
+            bad2b.append(f'{f}(缺失)'); continue
+        s = open(p, encoding='utf-8').read()
+        if DRB not in s or DRE not in s:
+            bad2b.append(f'{f}(无桥接块)'); continue
+        i, j = s.index(DRB), s.index(DRE) + len(DRE)
+        blocks[f] = s[i:j]
+        seg = s[i:j]
+        if not re.search(r'html\s+#drAnalysis\s*\{', seg):
+            bad2b.append(f'{f}(缺 html #drAnalysis 覆盖)')
+        if s.index('</head>') < i:
+            bad2b.append(f'{f}(块不在 </head> 前)')
+        t = s.find('<!-- Tab: 每日复盘')
+        if t != -1 and t < j:
+            bad2b.append(f'{f}(块落在注入器管理区 → 会被整段替换)')
+    if len(blocks) == len(INDEXES) and len(set(blocks.values())) != 1:
+        bad2b.append('三处桥接块内容不一致')
+    if blocks:
+        seg = list(blocks.values())[0]
+        m = re.search(r'html\s+#drAnalysis\s*\{([^}]*)\}', seg)
+        if m:
+            for vm in re.finditer(r'(--[a-z0-9-]+)\s*:\s*var\((--dr-[a-z0-9-]+)\)', m.group(1)):
+                bridge_map[vm.group(1)] = vm.group(2)
+        for mp in re.finditer(r'(\[data-theme="dark"\]|:root)\s*\{([^}]*)\}', seg):
+            got = set(re.findall(r'(--dr-[a-z0-9-]+)\s*:', mp.group(2)))
+            if mp.group(1) == ':root':
+                root_vars = got
+            else:
+                dark_vars = got
+    need_dr = set(bridge_map.values())
+    if need_dr and dark_vars != need_dr:
+        bad2b.append(f'[data-theme="dark"] 的 --dr-* 与桥接需求不等（dark {len(dark_vars)} / 需 {len(need_dr)}）')
+    if need_dr and root_vars != need_dr:
+        bad2b.append(f':root 的 --dr-* 与桥接需求不等（root {len(root_vars)} / 需 {len(need_dr)}）')
+    ana_p = os.path.join(BASE, 'data/daily_review/analysis.html')
+    ana_vars = set()
+    if os.path.exists(ana_p):
+        s2 = open(ana_p, encoding='utf-8-sig').read()
+        for blk in re.findall(r'<style[^>]*>(.*?)</style>', s2, re.S):
+            for m in re.finditer(r':root\s*\{([^}]*)\}', blk):
+                ana_vars |= set(re.findall(r'(--[a-z0-9-]+)\s*:', m.group(1)))
+        missing = sorted(ana_vars - set(bridge_map))
+        if missing:
+            bad2b.append(f'analysis.html :root 变量未纳入桥接: {missing}')
+    ok2b = not bad2b
+    if bad2b:
+        errs.append('DR-THEME-BRIDGE 缺失/失效：' + '；'.join(bad2b[:4]))
+    print(f"{'✅' if ok2b else '❌'} [2b] DR-THEME-BRIDGE 在位 · 桥接清单 ⊇ analysis :root"
+          f"（桥接 {len(bridge_map)} 项 / analysis {len(ana_vars)} 项）"
+          + ('' if ok2b else f" — {'；'.join(bad2b[:3])}"))
+
     # ── [3] FEED-RICHTEXT 块 ──
     bad3 = []
     for f in INDEXES:

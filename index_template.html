@@ -1228,6 +1228,68 @@ html { scroll-behavior: smooth; }
 .logo .logo-icon { box-shadow: 0 4px 14px rgba(227,179,65,0.30); }
 .theme-toggle:hover { box-shadow: 0 4px 14px rgba(227,179,65,0.18); }
 </style>
+<!-- DR-THEME-BRIDGE-BEGIN -->
+<style id="dr-theme-bridge">
+/* ═══ DR-THEME-BRIDGE v1 · 2026-09-30 ═══
+   问题：analysis.html 自带 <style> 的 :root 被 drScopeInjectedStyles() 作用域化为
+   `#drAnalysis{--bg:#fff;--text:#1a1f2e;…}`（浅色值），特异性 (1,0,0) 高于主站
+   `[data-theme="dark"]` 对 html 的自定义属性 → 暗色模式下该 tab 内部变量仍为浅色
+   （白底/深字），整篇推演正文「超长一大段」保持亮色。
+   其暗色分支挂在 `@media (prefers-color-scheme:dark)`（跟随系统偏好），与主站
+   `data-theme` 无关 → 主站切暗色时永不生效。
+   修法：① :root 定义 `--dr-*` 桥接变量；② 用 `html #drAnalysis`（(1,0,1) > 注入的 (1,0,0)）
+        把重叠变量重声明为桥接值。
+   → light 下取值与 analysis.html 原值完全一致（零观感变化）；dark 下对齐主站暗色；
+     并免疫 `@media (prefers-color-scheme:dark)` 对浅色站点的污染。
+   🔴 维护：analysis.html 的 :root 若新增「与主站同名」的变量，须同步加入下方清单。
+      补丁：review/patch_dr_theme.py ｜ 守卫：review/check_index_render.py [2b]
+   🔴 本块必须留在 <head> 内 —— 不得移入「每日复盘」tab 区块（该区块由
+      inject_daily_review_tab.py 整段替换，改动会被静默回退）。 */
+:root {
+  --dr-bg: #fff;
+  --dr-bg-card: #f8f9fb;
+  --dr-bg-subtle: #f1f3f6;
+  --dr-border: #e2e6ec;
+  --dr-text: #1a1f2e;
+  --dr-text-secondary: #3c4453;
+  --dr-text-muted: #6b7280;
+  --dr-accent: #4c8bf5;
+  --dr-red: #e74c3c;
+  --dr-orange: #f59e0b;
+  --dr-green: #16a34a;
+  --dr-blue: #4c8bf5;
+}
+[data-theme="dark"] {
+  --dr-bg: #0f1421;
+  --dr-bg-card: #151926;
+  --dr-bg-subtle: #1a1f2e;
+  --dr-border: #252b3b;
+  --dr-text: #e8ebf2;
+  --dr-text-secondary: #9aa1b8;
+  --dr-text-muted: #656c82;
+  --dr-accent: #e3b341;
+  --dr-red: #ff7b7b;
+  --dr-orange: #f6ad55;
+  --dr-green: #4ade80;
+  --dr-blue: #63b3ed;
+}
+html #drAnalysis {
+  --bg: var(--dr-bg);
+  --bg-card: var(--dr-bg-card);
+  --bg-subtle: var(--dr-bg-subtle);
+  --border: var(--dr-border);
+  --text: var(--dr-text);
+  --text-secondary: var(--dr-text-secondary);
+  --text-muted: var(--dr-text-muted);
+  --accent: var(--dr-accent);
+  --red: var(--dr-red);
+  --orange: var(--dr-orange);
+  --green: var(--dr-green);
+  --blue: var(--dr-blue);
+}
+</style>
+<!-- DR-THEME-BRIDGE-END -->
+
 </head>
 <body>
 
