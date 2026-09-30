@@ -1,6 +1,6 @@
 {
   "date": "2026-09-30",
-  "generated_at": "2026-09-30 22:02",
+  "generated_at": "2026-09-30 23:05",
   "china": {
     "pmi": {
       "latest": {
@@ -61,62 +61,10 @@
       "source": "百度经济日历 news_economic_baidu",
       "window_days": 7,
       "lookback_days": 30,
-      "lookback_used_to": "2026-09-04",
-      "days_fetched": 27,
-      "as_of": "2026-09-30 22:02",
+      "lookback_used_to": null,
+      "days_fetched": 30,
+      "as_of": "2026-09-30 23:05",
       "indicators": {
-        "CPI 同比": [
-          {
-            "event": "美国8月CPI年率未季调(%)",
-            "value": "3.4",
-            "forecast": "3.4",
-            "previous": "3.4",
-            "importance": 2,
-            "release_date": "2026-09-11",
-            "release_time": "20:30",
-            "days_ago": 19,
-            "is_fresh": false
-          }
-        ],
-        "核心 CPI": [
-          {
-            "event": "美国8月核心CPI年率未季调(%)",
-            "value": "2.4",
-            "forecast": "2.4",
-            "previous": "2.5",
-            "importance": 2,
-            "release_date": "2026-09-11",
-            "release_time": "20:30",
-            "days_ago": 19,
-            "is_fresh": false
-          }
-        ],
-        "CPI 月率": [
-          {
-            "event": "美国8月CPI月率季调后(%)",
-            "value": "0.4",
-            "forecast": "0.4",
-            "previous": "0.1",
-            "importance": 1,
-            "release_date": "2026-09-11",
-            "release_time": "20:30",
-            "days_ago": 19,
-            "is_fresh": false
-          }
-        ],
-        "核心CPI月率": [
-          {
-            "event": "美国8月核心CPI月率季调后(%)",
-            "value": "0.3",
-            "forecast": "0.2",
-            "previous": "0.2",
-            "importance": 1,
-            "release_date": "2026-09-11",
-            "release_time": "20:30",
-            "days_ago": 19,
-            "is_fresh": false
-          }
-        ],
         "非农": [
           {
             "event": "美国8月非农就业人口变动季调后(万)",
@@ -145,27 +93,112 @@
         ],
         "ADP 就业": [
           {
-            "event": "美国截至9月5日当周ADP就业周度发布变动(万人)",
-            "value": "2.0",
-            "forecast": "",
-            "previous": "1.63",
+            "event": "美国9月ADP就业人数变动(万)",
+            "value": "9.0",
+            "forecast": "7.0",
+            "previous": "3.8",
             "importance": 2,
-            "release_date": "2026-09-22",
+            "release_date": "2026-09-30",
             "release_time": "20:15",
-            "days_ago": 8,
+            "days_ago": 0,
+            "is_fresh": true
+          }
+        ],
+        "核心 PCE": [
+          {
+            "event": "美国8月核心PCE物价指数年率(%)",
+            "value": "3.0",
+            "forecast": "3.3",
+            "previous": "3.3441",
+            "importance": 2,
+            "release_date": "2026-09-30",
+            "release_time": "20:30",
+            "days_ago": 0,
+            "is_fresh": true
+          },
+          {
+            "event": "美国第二季度核心PCE物价指数年化季率终值(%)",
+            "value": "3.3",
+            "forecast": "3.6",
+            "previous": "4.4",
+            "importance": 2,
+            "release_date": "2026-09-30",
+            "release_time": "20:30",
+            "days_ago": 0,
             "is_fresh": true
           }
         ],
         "初请失业金": [
           {
-            "event": "美国截至9月5日当周初请失业金人数(万)",
-            "value": "20.6",
-            "forecast": "20.5",
-            "previous": "20.6",
+            "event": "美国截至9月19日当周初请失业金人数(万)",
+            "value": "19.7",
+            "forecast": "20.1",
+            "previous": "19.6",
             "importance": 2,
-            "release_date": "2026-09-10",
+            "release_date": "2026-09-24",
             "release_time": "20:30",
-            "days_ago": 20,
+            "days_ago": 6,
+            "is_fresh": true
+          }
+        ],
+        "GDP": [
+          {
+            "event": "美国第二季度GDP价格指数季率终值(%)",
+            "value": "6.3",
+            "forecast": "6.4",
+            "previous": "6.4",
+            "importance": 2,
+            "release_date": "2026-09-30",
+            "release_time": "20:30",
+            "days_ago": 0,
+            "is_fresh": true
+          },
+          {
+            "event": "美国第二季度实际GDP年化季率终值(%)",
+            "value": "2.2",
+            "forecast": "1.5",
+            "previous": "2.1",
+            "importance": 2,
+            "release_date": "2026-09-30",
+            "release_time": "20:30",
+            "days_ago": 0,
+            "is_fresh": true
+          }
+        ],
+        "零售销售": [
+          {
+            "event": "美国8月核心零售销售月率(%)",
+            "value": "1.4",
+            "forecast": "0.5",
+            "previous": "-0.3",
+            "importance": 2,
+            "release_date": "2026-09-16",
+            "release_time": "20:30",
+            "days_ago": 14,
+            "is_fresh": false
+          },
+          {
+            "event": "美国8月零售销售月率(%)",
+            "value": "1.2",
+            "forecast": "0.8",
+            "previous": "-0.6",
+            "importance": 2,
+            "release_date": "2026-09-16",
+            "release_time": "20:30",
+            "days_ago": 14,
+            "is_fresh": false
+          }
+        ],
+        "ISM 制造业": [
+          {
+            "event": "美国8月ISM制造业PMI",
+            "value": "54.6",
+            "forecast": "55.2",
+            "previous": "55.6",
+            "importance": 2,
+            "release_date": "2026-09-01",
+            "release_time": "22:00",
+            "days_ago": 29,
             "is_fresh": false
           }
         ]
@@ -256,19 +289,6 @@
           "source": "东财全球"
         }
       ],
-      "非农": [
-        {
-          "title": "罗素投资策略师：倘若美国9月非农就业数据超出市场预期 会构成阶段性利空",
-          "evidence": [
-            "罗素投资策略师：倘若美国9月非农就业数据超出市场预期 会构成阶段性利空 【罗素投资策略师：倘若美国9月非农就业数据超出市场预期 会构成阶段性利空】罗素投资策略师表示，倘若美国9月非"
-          ],
-          "date": "2026-09-30",
-          "days_ago": 0,
-          "is_fresh": true,
-          "time": "2026-09-30 15:54:05",
-          "source": "东财全球"
-        }
-      ],
       "美联储/利率": [
         {
           "title": "美股开盘集体高开 AI硬件、半导体、存储芯片和互联网科技板块权重股普涨",
@@ -306,18 +326,17 @@
       ]
     },
     "stale": [
+      "非农",
       "初请失业金",
       "耐用品订单",
       "美国GDP",
       "美债收益率"
     ],
     "log": [
-      "日历 2026-09-30 失败: HTTPError",
-      "日历 2026-09-24 失败: HTTPError",
-      "日历 2026-09-17 失败: HTTPError",
-      "日历 2026-09-16 失败: HTTPError",
-      "日历 2026-09-15 失败: HTTPError",
-      "新闻池 600 条 → 窗口内(7日) 206 条；命中 5 指标"
+      "日历 2026-09-11 失败: RuntimeError",
+      "日历 2026-09-06 失败: RuntimeError",
+      "日历 2026-09-02 失败: RuntimeError",
+      "新闻池 600 条 → 窗口内(7日) 206 条；命中 4 指标"
     ]
   }
 }
