@@ -1,7 +1,7 @@
 {
-  "date": "2026-09-29",
+  "date": "2026-09-30",
   "data_date": "2026-09-29",
-  "generated_at": "2026-09-29 22:31",
+  "generated_at": "2026-09-30 09:41",
   "news_date": "",
   "news_window": [
     "2026-09-29",
@@ -15,8 +15,8 @@
   "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-09-29 22:30",
-    "session": "close",
+    "generated_at": "2026-09-30 08:31",
+    "session": "preopen",
     "data_date": "2026-09-29",
     "for_date": "2026-09-30",
     "data_date_note": "",
@@ -53,8 +53,8 @@
     },
     "market_state": {
       "date": "2026-09-29",
-      "run_date": "2026-09-29",
-      "preopen_partial": null,
+      "run_date": "2026-09-30",
+      "preopen_partial": true,
       "us_kline": true,
       "asia": true
     },
@@ -65,28 +65,26 @@
         "is_trading_day": true,
         "news": 304,
         "feeds": 4,
-        "reports": 667,
+        "reports": 826,
         "macro": true
       },
       {
         "date": "2026-09-30",
         "weekday": "周三",
         "is_trading_day": true,
-        "news": 0,
+        "news": 283,
         "feeds": 0,
-        "reports": 0,
-        "macro": false
+        "reports": 61,
+        "macro": true
       }
     ],
     "totals": {
-      "news": 304,
+      "news": 587,
       "feeds": 4,
-      "reports": 667,
+      "reports": 887,
       "covered_days": 2
     },
-    "missing": [
-      "market_thermometer.json 数据日 2026-09-28 落后于基准日 2026-09-29"
-    ]
+    "missing": []
   },
   "index_context": {
     "上证指数": {
@@ -107,171 +105,173 @@
     }
   },
   "summary": {
-    "共振": 2,
-    "背离": 1,
-    "暗线": 15,
-    "双冷": 13
+    "共振": 7,
+    "背离": 4,
+    "暗线": 10,
+    "双冷": 10
   },
   "items": [
     {
       "sector": "电力设备",
-      "news_count": 8,
-      "news_per_day": 4.0,
+      "news_count": 17,
+      "news_per_day": 8.5,
       "flow_yi": 21.5,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "Stellantis表示，由于长续航电池供应短缺，其部分工厂已暂停生产。",
-        "国家电网与中国华电举行会谈",
-        "四部门：结合实施大规模设备更新政策，支持新能源公交车及动力电池更新"
+        "【智能电网概念走高，亚联发展涨停】智能电网概念走高，亚联发展涨停，威腾电气、",
+        "固态电池概念继续活跃 传艺科技、紫竹高科2连板",
+        "宁德时代德布勒森新建电芯工厂正式启动生产"
       ]
     },
     {
       "sector": "房地产",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 24,
+      "news_per_day": 12.0,
       "flow_yi": 15.51,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "我国将对居民购房实施贷款贴息",
-        "房贷贴息来了 一图看懂政策要点",
-        "东莞出台多项措施优化房地产政策"
+        "港股房地产股走弱，万科企业跌超11%",
+        "【港股房地产股走弱 万科企业跌超11%】截至发稿，万科企业(02202.HK",
+        "房地产板块跳水，万科A触及跌停"
       ]
     },
     {
       "sector": "电子",
-      "news_count": 20,
-      "news_per_day": 10.0,
+      "news_count": 46,
+      "news_per_day": 23.0,
       "flow_yi": 15.01,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "费城半导体指数涨幅扩大至2% ARM股价上涨6%",
-        "费城半导体指数涨幅扩大至2%，ARM涨超5%，迈威尔科技涨超4%，应用材料、",
-        "【费城半导体指数日内涨2%】费城半导体指数日内涨2.02%，现报12716."
+        "【摩根大通：9月OpenRouter平台Token用量环比增71%、同比达3",
+        "A股开盘，沪指开涨0.23%，深证成指开涨0.44%，创业板指开涨0.7%，",
+        "港股开盘：恒生指数低开0.53% 恒生科技指数低开0.41%"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 13,
+      "news_per_day": 6.5,
       "flow_yi": -14.59,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "科森科技：拟定增募资不超11.02亿元 用于收购液冷材料公司展固科技53.2",
-        "科森科技：拟定增募资不超过11.02亿元用于收购展固科技股权等项目",
-        "墨西哥央行行长：货币政策可不必跟随美联储调整"
+        "扫地机器人激光雷达龙头欢创科技(06802.HK)上市首日涨超200%，成交",
+        "ETF开盘：软件ETF领涨4.94%，地产ETF领跌3.72%",
+        "2026全球开发者先锋大会将于10月23日至25日举办"
       ]
     },
     {
       "sector": "计算机",
-      "news_count": 16,
-      "news_per_day": 8.0,
+      "news_count": 69,
+      "news_per_day": 34.5,
       "flow_yi": 12.6,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "报道：马斯克和贝佐斯将出席白宫AI午餐会",
-        "OpenAI就其智能体擅访澳医保数据致歉",
-        "艾伯维与Valkai达成合作 将AI应用于临床开发"
+        "ETF开盘：软件ETF领涨4.94%，地产ETF领跌3.72%",
+        "荣耀Magic9系列获首批“AI智能体手机”入网认证",
+        "OpenAI Codex支持原生调用GLM-5.3 Flash与Kimi K"
       ]
     },
     {
       "sector": "传媒",
-      "news_count": 8,
-      "news_per_day": 4.0,
+      "news_count": 27,
+      "news_per_day": 13.5,
       "flow_yi": 11.39,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "德国绿色钢铁公司印度IPO认购倍数在结束时达29倍。",
-        "艾伯维与Valkai达成合作 将AI应用于临床开发",
-        "德银：Muse打开AI消费入口 2030年收入最高或超360亿美元"
+        "礼来公布三受体激动剂retatrutide研究结果",
+        "OpenAI Codex支持原生调用GLM-5.3 Flash与Kimi K",
+        "调查｜金融营销“9·30”新规前夜 “消失”的大V们"
       ]
     },
     {
       "sector": "医药生物",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": 10.71,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "上海医药：拟不低于1.99亿美元出售Zeus Investment Limi",
-        "上海医药：出售Zeus股权，企业价值3.97亿美元",
-        "恩华药业：授予Somnivera一款治疗睡眠障碍的在研创新药独家权利 有权获"
+        "创新药概念反复活跃 康希诺触及20cm涨停",
+        "创新药、CRO概念再度拉升，康希诺触及20cm涨停，哈药股份逼近涨停，义翘神",
+        "港股生物技术板块活跃，康希诺生物(06185.HK)涨超10%，来凯医药(0"
       ]
     },
     {
       "sector": "有色金属",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 13,
+      "news_per_day": 6.5,
       "flow_yi": 9.7,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "欧洲央行管委艾斯克里瓦：西班牙并未考虑转移黄金储备",
-        "华联控股：加拿大FIRES意图对阿里扎罗锂盐湖项目投资展开进一步审查",
-        "现货黄金日内涨幅扩大至1%"
+        "中国稀土集团创新科技有限公司与本末科技战略合作落地",
+        "旷达科技：电子布等项目目前处于研发、验证和小规模应用阶段",
+        "黄金维持震荡 市场权衡油价回落与加息压力"
       ]
     },
     {
       "sector": "基础化工",
-      "news_count": 0,
-      "news_per_day": 0.0,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": 6.62,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": []
+      "sample_titles": [
+        "华泰证券：看好HFCs产业链保持较高景气"
+      ]
     },
     {
       "sector": "国防军工",
-      "news_count": 9,
-      "news_per_day": 4.5,
+      "news_count": 11,
+      "news_per_day": 5.5,
       "flow_yi": -5.96,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "烈士纪念日向人民英雄敬献花篮仪式9月30日上午举行 习近平等党和国家领导人将",
-        "以色列国防部长卡茨：哈马斯海外领导人受到以色列关注。",
-        "据福克斯新闻：美国国防部长赫格塞思将宣布削减20%的将军和海军上将职位。"
+        "美国机票价格因燃料涨价创十年新高",
+        "国家统计局：9月建筑业新订单指数为45.7%，比上月上升3.3个百分点",
+        "联合飞机入围2026中国邮政无人机采购项目"
       ]
     },
     {
       "sector": "石油石化",
-      "news_count": 12,
-      "news_per_day": 6.0,
+      "news_count": 17,
+      "news_per_day": 8.5,
       "flow_yi": -4.56,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "上期所原油主力合约大跌5%",
-        "期市夜盘开盘，国内期货主力合约多数下跌",
-        "国内商品期货夜盘开盘 主力合约多数下跌"
+        "国内商品期货早盘开盘 主力合约涨多跌少",
+        "杭氧膨胀机中标鲁油鲁炼百万吨乙烯装置甲烷膨胀再压缩机项目",
+        "周三你需要知道的隔夜全球要闻：多位美联储官员呼吁继续加息 美国宣布释放战略石"
       ]
     },
     {
@@ -291,17 +291,17 @@
     },
     {
       "sector": "农林牧渔",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": -3.66,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "【“十五五”开好局起好步】我国加快推进农业农村现代化",
-        "【在希望的田野上】秋粮收获陆续展开 各地抢抓时机保丰收",
-        "国际联播快讯"
+        "农业板块震荡拉升 海南橡胶涨停",
+        "【农业板块震荡拉升 海南橡胶涨停】农业板块震荡拉升，海南橡胶涨停，秋乐种业、",
+        "种植业与林业板块短线拉升，海南橡胶涨停"
       ]
     },
     {
@@ -317,73 +317,75 @@
     },
     {
       "sector": "非银金融",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 17,
+      "news_per_day": 8.5,
       "flow_yi": -3.18,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "德国绿色钢铁公司印度IPO认购倍数在结束时达29倍。",
-        "OpenAI就其智能体擅访澳医保数据致歉",
-        "英伟达寻求保险机构分担AI基础设施融资风险 探索芯片资产融资新模式"
+        "国家统计局：9月建筑业新订单指数为45.7%，比上月上升3.3个百分点",
+        "奕斯伟计算启动港股招股 “京东方之父”再创业准备敲钟",
+        "券商年内发债超1.6万亿元 资本实力进一步增强"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 11,
-      "news_per_day": 5.5,
+      "news_count": 17,
+      "news_per_day": 8.5,
       "flow_yi": -2.86,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "【广发证券：英伟达CPO放量快于预期 Lumentum有望受益】广发证券表示",
-        "美股光通信板块盘初上涨",
-        "美股光通信股盘初上扬，Lumentum、康宁涨超4%，迈威尔科技、Coher"
+        "【摩根大通：9月OpenRouter平台Token用量环比增71%、同比达3",
+        "国家统计局：9月建筑业新订单指数为45.7%，比上月上升3.3个百分点",
+        "A股开盘：三大指数集体高开"
       ]
     },
     {
       "sector": "公用事业",
-      "news_count": 5,
-      "news_per_day": 2.5,
+      "news_count": 8,
+      "news_per_day": 4.0,
       "flow_yi": -2.8,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "英国公用事业公司股价反弹，Pennon、United Utilities和S",
-        "英国首相伯纳姆：拟修法允许水务公司公有化",
-        "英国公用事业公司股价下跌，英国首相伯纳姆计划修改法律以允许水务公司公有化。"
+        "配套先行、整机突围、“出海”提速 中国燃气轮机产业链卡位崛起",
+        "东方电气：“东方曙光”1号燃气轮机获海外新订单",
+        "【甘肃特高压工程累计外送电量超3000亿千瓦时】记者从国网甘肃省电力公司获悉"
       ]
     },
     {
       "sector": "美容护理",
-      "news_count": 0,
-      "news_per_day": 0.0,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": 2.71,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": []
+      "sample_titles": [
+        "前10年31个一级行业节后首日整体表现趋于同向"
+      ]
     },
     {
       "sector": "食品饮料",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 27,
+      "news_per_day": 13.5,
       "flow_yi": 2.62,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "美国9月谘商会消费者预期指数 63.6，前值68.2。",
-        "【美国9月谘商会消费者信心指数 81.9，预期89.2，前值由89.4修正为",
-        "美国9月谘商会消费者信心指数 81.9，预期89.2，前值由89.4修正为8"
+        "【国家统计局：9月份三大重点行业较快扩张】国家统计局服务业调查中心首席统计师",
+        "【国家统计局：9月装备制造业、高技术制造业和消费品行业PMI分别为51.0%",
+        "国家统计局：9月装备制造业、高技术制造业和消费品行业PMI分别为51.0%、"
       ]
     },
     {
@@ -412,32 +414,32 @@
     },
     {
       "sector": "汽车",
-      "news_count": 9,
-      "news_per_day": 4.5,
+      "news_count": 24,
+      "news_per_day": 12.0,
       "flow_yi": 1.4,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "美股开盘：美股三大指数涨跌不一",
-        "日本主要车企全球销量同比下降4.6%",
-        "福田汽车：2030年锚定百万销量目标"
+        "固态电池概念继续活跃 传艺科技、紫竹高科2连板",
+        "宁德时代德布勒森新建电芯工厂正式启动生产",
+        "港股开市：恒指开盘跌0.53%，恒科指跌0.41%"
       ]
     },
     {
       "sector": "银行",
-      "news_count": 17,
-      "news_per_day": 8.5,
+      "news_count": 28,
+      "news_per_day": 14.0,
       "flow_yi": -1.35,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "国内联播快讯",
-        "蓝佛安以视频方式出席亚洲基础设施投资银行第十一届理事会年会",
-        "德意志银行下调奈飞目标价"
+        "消费贷“价格战”又起？记者走访北京多家银行：最低可达“1”字头 稳定客群优先",
+        "贷款贴息政策加力 买房、经营、消费都能省",
+        "央行将算力网建设纳入PSL支持领域 光通信行业或迎全方位提振"
       ]
     },
     {
@@ -497,43 +499,39 @@
     },
     {
       "sector": "钢铁",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": 0.6,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": [
-        "德国绿色钢铁公司印度IPO认购倍数在结束时达29倍。"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "煤炭",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -0.45,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "印尼将2026年煤炭产量修订至约7.2亿吨"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "综合",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 10,
+      "news_per_day": 5.0,
       "flow_yi": 0.43,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "烈士纪念日向人民英雄敬献花篮仪式9月30日上午举行 习近平等党和国家领导人将",
-        "道琼斯指数9月29日（周二）开盘下跌35.10点，跌幅0.07%，报5144",
-        "墨西哥央行行长：货币政策可不必跟随美联储调整"
+        "【国家统计局：9月份采购经理指数升至扩张区间 经济景气水平有所回升】2026",
+        "国家统计局：9月份采购经理指数升至扩张区间 经济景气水平有所回升",
+        "国家统计局服务业调查中心首席统计师霍丽慧解读2026年9月中国采购经理指数"
       ]
     }
   ]
