@@ -497,6 +497,34 @@ python3 review/check_narrative_consistency.py  # 🆕 **叙述 ↔ 数据一致�
 4. 判定「推送是否成功」**不要只看退出码**：`push` 报错后仍可能已推成功 →
    以 `git ls-remote origin main` 的 sha 与本地 `git rev-parse HEAD` 比对为**唯一权威**（`review/verify_push.py --git` 亦据此）。
 
+## 步骤 5.10 · 陈旧 index.lock 的处置（2026-09-30 实测立规 · 必做）
+
+🔴 **症状**（2026-09-30 07:53 实测）：
+· `git status` / `git add` 报 `warning: unable to unlink '.git/index.lock': Operation not permitted`
+· 随后**所有写操作失败**：`fatal: Unable to create '.git/index.lock': File exists. Another git process seems to be running…`
+⇒ **一个 0 字节的陈旧锁就能让本档 commit / push 全线失败** —— 当日若不清掉，08:30 数据档与 08:40 推演档都会被挡住、
+**页面当天不更新**。这是「静默失效家族」第 N 例：**症状像「有别的 git 进程」，实则只是残留文件**。
+
+**根因**：`git status` 会刷新索引（写 index）→ 创建 `.git/index.lock` → 该次 `unlink` 偶发 `EPERM`
+（实测**非必现**；沙箱 / 文件监视 / 同步守护进程均可触发）→ 残留锁把后续写操作全部堵死。
+
+**处置（每次 git 写操作前必须执行，且必须复验）**：
+```
+python3 -c "
+import os,glob
+for p in ['.git/index.lock','.git/rebase-merge']+glob.glob('.git/*.lock'):
+    if os.path.exists(p):
+        try: os.remove(p); print('cleared',p)
+        except Exception as e: print('FAIL',p,type(e).__name__)
+print('lock exists?', os.path.exists('.git/index.lock'))"
+```
+· 🔴 **清锁后必须复验**输出 `lock exists? False`，再执行 `git add` / `git commit` / `git rebase`。
+· 🔴 **若 `os.remove` 也失败**（极罕见）→ 退回 `mv .git/index.lock /tmp/index.lock.$(date +%s)`（rename 只走父目录写权限，通常可行）；
+  仍失败 → **停止本档并报用户**，**不要**用 `git checkout` / `reset --hard` 之类更重的动作去绕。
+· 🔴 **`git add` 报 `File exists` 一律先按本节清锁**，不要怀疑真的「有另一个 git 进程在跑」（本机实测该提示全是陈旧锁）。
+· 🔴 **另查工作区探针残留**：调试用 `.probe_*.txt` / `.gso_probe_*.txt` 等临时文件**必须 `rm -f`** ——
+  否则会被 `git add -A` 带进提交（2026-09-30 实测残留 1 个，已清理）。
+
 ## 步骤 6 · 提交推送
 
 沙箱环境下 git 写操作会被 `index.lock`（带 `com.apple.provenance`）阻塞，**需交用户终端执行**：
