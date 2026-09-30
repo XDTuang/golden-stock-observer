@@ -525,9 +525,35 @@ print('lock exists?', os.path.exists('.git/index.lock'))"
 · 🔴 **另查工作区探针残留**：调试用 `.probe_*.txt` / `.gso_probe_*.txt` 等临时文件**必须 `rm -f`** ——
   否则会被 `git add -A` 带进提交（2026-09-30 实测残留 1 个，已清理）。
 
+## 步骤 5.11 · 早间链路哨兵统一判据（2026-09-30 立 · 4 档共用）
+
+哨兵 4 档（08:45 / 09:15 / 09:50 / 10:20）**统一调用**：
+```
+bash review/sentinel_check.sh
+```
+**首行 token 即判据结论**（该脚本是判据的**唯一实现**：只读、不改仓库；唯一副作用 = 清理自己 `git status` 可能留下的陈旧 `index.lock`）：
+
+| token | 含义 | 哨兵动作 |
+|---|---|---|
+| `NONTRADE` | 周末（**法定节假日须 agent 自判**） | 一行「非交易日，跳过」后结束 |
+| `RUNNING` | 早档位正在跑 / git 被占用 | 一行输出后退出，**不改文件、不碰 git** |
+| `NOT_DONE` | 三处产物任一未晚于今日 08:15 | 按全流程补跑（含版本语义降级：≥09:50 须标「盘中版」） |
+| 🆕 `DONE_UNPUSHED` | 产物已就绪但**未推送** | **只执行「发布」**（清锁 → add → commit -F → rebase → push → verify_push），**不重做推演** |
+| `DONE_PUSHED` | 产物就绪且已推送 | 一行输出后结束 |
+
+🔴 **为什么必须加 `DONE_UNPUSHED`**：原判据只看三处产物的 mtime —— 一旦出现「产物写完、推送失败」，
+页面会**静默停在旧版**，而哨兵报「已完成」、无人知晓（2026-09-30 实测确认该缺口）。
+
+🔴 **本脚本是判据的机器可读唯一来源**：后续改判据（加检查项 / 改阈值 / 改窗口）**只改脚本，不动 4 份 prompt 的逻辑**
+（prompt 只负责按 token 分支）→ 从根本上消除「4 副本不同步」。
+
 ## 步骤 6 · 提交推送
 
-沙箱环境下 git 写操作会被 `index.lock`（带 `com.apple.provenance`）阻塞，**需交用户终端执行**：
+> ✅ **2026-09-18 勘误（本节旧表述已作废）**：以**完整权限**（沙箱外）执行时，
+> `git add` / `git commit` / `git rebase` / `git push` **全部可用且不留锁**；
+> 旧结论「沙箱下会被阻塞、需交用户终端执行」**仅在沙箱内成立**。
+> ⇒ 🔴 **自动化档一律自行完成发布**，不要因本节旧表述而放弃 `push`。
+> 🔴 若遇 `index.lock`：按 **步骤 5.10** 清锁并复验（`lock exists? False` 后再写），**不要**误判为「有别的 git 进程在跑」。
 
 ```zsh
 cd /Users/samt/golden_stock_observer && rm -f .git/index.lock && git add -A data/ feed/ review/ commands/ index.html index_template.html && git add -f deploy/data/daily_review/analysis.html deploy/data/daily_review/market.json deploy/output/feed_review_latest.json deploy/output/feed_review_YYYY-MM-DD.json deploy/index.html && git commit -m "..." && git pull --rebase origin main && git push origin main

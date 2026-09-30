@@ -14,6 +14,9 @@
   [1] 产物存在且 date/generated_at 齐备
   [2] 轨A（经济日历）非空，且**关键月频指标**（CPI 同比 / 非农）必须在位
   [3] 轨A 各指标龄期 ≤ 其频率上限（月频 40 天 / 周频 14 天 / 日频 7 天）
+      🔴 分级（2026-09-30 立）：关键指标（CPI 同比/非农）超龄 → 硬失败；
+         非关键指标超龄**且已登记 stale**（= 采集器声明源侧无更新）→ 软警告、不阻断发布；
+         非关键指标超龄但**未登记 stale** → 硬失败（链路漏抓）。
   [4] 轨B（新闻抽取）每条龄期 ≤ US_NEWS_WINDOW_DAYS（7 天）—— 窗口失效即红灯
   [5] 「未更新」指标必须在 stale 列表显式登记（禁拿旧闻充数）
   [6] 根 output 与 deploy/output 双写 md5 一致
@@ -77,22 +80,40 @@ def main():
     if cal and not us.get("stale") and not (us.get("indicators") or {}):
         warns.append("轨A 有数据但轨B 与 stale 皆空 —— 请确认新闻抽取是否真的执行")
 
-    # ── [3] 轨A 龄期 ──
-    ok3, over = True, []
+    # ── [3] 轨A 龄期（**分级**：关键指标硬失败 / 非关键且已登记 stale → 软警告）──
+    #   2026-09-30 立：原口径「任一超标即红灯」会把**源侧未发布**误判为链路故障，
+    #   而 08:40 推演档的门禁是「任一红灯即停止发布」⇒ 一次源滞后就阻断整条发布链。
+    #   实测：09-30 初请失业金 公布日 09-11（龄期 19 天 > 周频上限 14 天），重抓后即可得 09-24。
+    #   分级口径：
+    #     ① 关键指标（CPI 同比 / 非农）超龄                  → 硬失败（阻断发布）
+    #     ② 非关键指标超龄 且 已登记 stale（采集器显式声明
+    #        「近窗无更新」，即源侧滞后）                      → 软警告（不阻断，但须显式标注）
+    #     ③ 非关键指标超龄 但 **未**登记 stale               → 硬失败（说明是链路漏抓，非源滞后）
+    ok3, over, soft_over = True, [], []
+    stale_set = set(us.get("stale") or [])
     for k, items in cal.items():
         lim = MAX_AGE.get(k, 40)
         for it in items:
             age = it.get("days_ago")
             if age is None:
                 over.append(f"{k}(无龄期字段)")
+                ok3 = False
                 continue
             if age > lim:
-                over.append(f"{k}({age}天 > {lim}天)")
-                ok3 = False
+                if k in KEY_INDICATORS or k not in stale_set:
+                    over.append(f"{k}({age}天 > {lim}天)")
+                    ok3 = False
+                else:
+                    soft_over.append(f"{k}({age}天 > {lim}天·源侧未发布)")
     if over:
         errs.extend(over)
-    print(f"{'✅' if ok3 else '❌'} [3/6] 轨A 龄期合规（上限：月频 40 / 周频 14 天）"
-          + (f" — 超标 {over}" if over else ""))
+    if soft_over:
+        warns.append("轨A 源侧滞后（不阻断发布，但须在 4 段与简报显式标注公布日/龄期）: "
+                     + ", ".join(soft_over))
+    tag3 = "❌" if not ok3 else ("⚠️" if soft_over else "✅")
+    print(f"{tag3} [3/6] 轨A 龄期合规（上限：月频 40 / 周频 14 天）"
+          + (f" — 硬超标 {over}" if over else "")
+          + (f" — 源侧滞后 {soft_over}（不阻断）" if soft_over else ""))
 
     # ── [4] 轨B 窗口 ──
     ind = us.get("indicators") or {}
