@@ -1,42 +1,63 @@
 {
   "date": "2026-09-30",
-  "data_date": "2026-09-29",
-  "generated_at": "2026-09-30 21:19",
+  "data_date": "2026-09-30",
+  "generated_at": "2026-09-30 22:03",
   "news_date": "",
   "news_window": [
-    "2026-09-29",
-    "2026-09-30"
+    "2026-09-30",
+    "2026-10-01",
+    "2026-10-02",
+    "2026-10-03",
+    "2026-10-04",
+    "2026-10-05",
+    "2026-10-06",
+    "2026-10-07",
+    "2026-10-08"
   ],
-  "news_window_days": 2,
+  "news_window_days": 9,
   "flow_date": "2026-09-30",
   "flow_raw_latest": "2026-09-30",
   "flow_is_weekend_copy": false,
   "hot_per_day": 8,
-  "hot_threshold": 16,
+  "hot_threshold": 72,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-09-30 08:31",
-    "session": "preopen",
-    "data_date": "2026-09-29",
-    "for_date": "2026-09-30",
+    "generated_at": "2026-09-30 22:03",
+    "session": "close",
+    "data_date": "2026-09-30",
+    "for_date": "2026-10-08",
     "data_date_note": "",
     "warnings": [],
     "span": [
-      "2026-09-30"
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-03",
+      "2026-10-04",
+      "2026-10-05",
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08"
     ],
-    "span_days": 1,
+    "span_days": 8,
     "display_days": [
-      "2026-09-29",
-      "2026-09-30"
+      "2026-09-30",
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-03",
+      "2026-10-04",
+      "2026-10-05",
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08"
     ],
-    "display_text": "09/29 + 09/30",
-    "span_is_weekend_cross": false,
-    "span_text": "09/30",
+    "display_text": "09/30–10/08",
+    "span_is_weekend_cross": true,
+    "span_text": "10/01–10/08",
     "carry": {
-      "from_data_date": "2026-09-29",
-      "ref": "output/feed_review_2026-09-29.json",
+      "from_data_date": "2026-09-30",
+      "ref": "output/feed_review_2026-09-30.json",
       "exists": true,
-      "gap_days": 1,
+      "gap_days": 8,
       "stale": false,
       "bias": "偏多",
       "bias_score": 2,
@@ -47,119 +68,184 @@
       "headline": ""
     },
     "layers": {
-      "base": "2026-09-29 A股收盘（基准层）",
-      "overnight": "美东 2026-09-29 收盘（北京 2026-09-30 早间到达）",
-      "premarket": "2026-09-30 今早日韩实时 + 盘前新闻/投喂增量"
+      "base": "2026-09-30 A股收盘（基准层）",
+      "overnight": "美东 2026-09-30 收盘（北京 2026-10-01 早间到达）",
+      "premarket": "2026-10-08 今早日韩实时 + 盘前新闻/投喂增量"
     },
     "market_state": {
-      "date": "2026-09-29",
+      "date": "2026-09-30",
       "run_date": "2026-09-30",
-      "preopen_partial": true,
+      "preopen_partial": null,
       "us_kline": true,
       "asia": true
     },
     "covered": [
       {
-        "date": "2026-09-29",
-        "weekday": "周二",
-        "is_trading_day": true,
-        "news": 304,
-        "feeds": 4,
-        "reports": 826,
-        "macro": true
-      },
-      {
         "date": "2026-09-30",
         "weekday": "周三",
         "is_trading_day": true,
-        "news": 283,
+        "news": 299,
         "feeds": 0,
-        "reports": 61,
+        "reports": 609,
         "macro": true
+      },
+      {
+        "date": "2026-10-01",
+        "weekday": "周四",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-10-02",
+        "weekday": "周五",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-10-03",
+        "weekday": "周六",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-10-04",
+        "weekday": "周日",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-10-05",
+        "weekday": "周一",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-10-06",
+        "weekday": "周二",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-10-07",
+        "weekday": "周三",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-10-08",
+        "weekday": "周四",
+        "is_trading_day": true,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
       }
     ],
     "totals": {
-      "news": 587,
-      "feeds": 4,
-      "reports": 887,
-      "covered_days": 2
+      "news": 299,
+      "feeds": 0,
+      "reports": 609,
+      "covered_days": 9
     },
-    "missing": []
+    "missing": [
+      "market_thermometer.json 数据日 2026-09-29 落后于基准日 2026-09-30"
+    ]
   },
   "index_context": {
     "上证指数": {
-      "close": "3830.45",
-      "chg_pct": "0.18"
+      "close": "3842.19",
+      "chg_pct": "0.31"
     },
     "深证成指": {
-      "close": "12901.95",
-      "chg_pct": "0.34"
+      "close": "12887.62",
+      "chg_pct": "-0.11"
     },
     "创业板指": {
-      "close": "3142.56",
-      "chg_pct": "0.09"
+      "close": "3135.28",
+      "chg_pct": "-0.23"
     },
     "科创50": {
-      "close": "1569.34",
-      "chg_pct": "0.86"
+      "close": "1530.01",
+      "chg_pct": "-2.51"
     }
   },
   "summary": {
-    "共振": 3,
-    "背离": 7,
-    "暗线": 10,
-    "双冷": 11
+    "共振": 0,
+    "背离": 0,
+    "暗线": 13,
+    "双冷": 18
   },
   "items": [
     {
       "sector": "电子",
-      "news_count": 42,
-      "news_per_day": 21.0,
+      "news_count": 25,
+      "news_per_day": 2.78,
       "flow_yi": -150.22,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "应用材料和铠侠在EPIC中心合作开发下一代先进存储技术",
-        "新思科技股价盘前上涨2.4%，此前该公司与亚马逊云科技签署价值超10亿美元的",
-        "Coreweave(CRWV.O)实现生产级规模的英伟达(NVDA.O)Ve"
+        "【新思科技与亚马逊签署多年期超 10 亿美元协议，推进定制芯片合作】当地时间",
+        "新思科技盘初拉升涨超3%，公司与亚马逊签署多年期超10亿美元协议，推进定制芯",
+        "美股开盘集体高开 AI硬件、半导体、存储芯片和互联网科技板块权重股普涨"
       ]
     },
     {
       "sector": "医药生物",
-      "news_count": 9,
-      "news_per_day": 4.5,
+      "news_count": 3,
+      "news_per_day": 0.33,
       "flow_yi": 61.91,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "【多只宽基ETF产品逆势吸金】今日，A股大消费板块整体温和走强，酿酒、粮食等",
         "康希诺：正在进行mRNA预防用疫苗及治疗性生物制品的开发 以及相关递送系统的",
-        "国家药监局附条件批准盐酸艾泊度胺胶囊上市"
+        "国家药监局附条件批准盐酸艾泊度胺胶囊上市",
+        "博瑞医药：终止发行H股股票并在香港联交所主板上市"
       ]
     },
     {
       "sector": "计算机",
-      "news_count": 42,
-      "news_per_day": 21.0,
+      "news_count": 22,
+      "news_per_day": 2.44,
       "flow_yi": -29.33,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "Airtel Africa股价大幅下跌，最新跌幅为5.2%。",
-        "DoorDash面向美国iPhone用户推出文本下单AI代理",
-        "Jacobs获英伟达研发设施三年期SaaS合同"
+        "【新思科技与亚马逊签署多年期超 10 亿美元协议，推进定制芯片合作】当地时间",
+        "美国联邦贸易委员会据悉正在对Anthropic和OpenAI加大调查力度",
+        "FTC对Anthropic、OpenAI等超级智能模型公司展开全面调查"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 3,
+      "news_per_day": 0.33,
       "flow_yi": -18.76,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -173,53 +259,53 @@
     },
     {
       "sector": "食品饮料",
-      "news_count": 30,
-      "news_per_day": 15.0,
+      "news_count": 14,
+      "news_per_day": 1.56,
       "flow_yi": 14.21,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "【多只宽基ETF产品逆势吸金】今日，A股大消费板块整体温和走强，酿酒、粮食等",
-        "调查显示日本10月将迎来新一波涨价潮",
-        "【调查显示日本10月将迎来新一波涨价潮】日本一家调查机构9月30日公布的调查"
+        "美国联邦贸易委员会据悉正在对Anthropic和OpenAI加大调查力度",
+        "FTC对Anthropic、OpenAI等超级智能模型公司展开全面调查",
+        "调查显示日本10月将迎来新一波涨价潮"
       ]
     },
     {
       "sector": "传媒",
-      "news_count": 18,
-      "news_per_day": 9.0,
+      "news_count": 9,
+      "news_per_day": 1.0,
       "flow_yi": -13.85,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
         "人民日报社论：在新的伟大征程上接续奋斗再创辉煌——热烈庆祝中华人民共和国成立",
-        "随着Meta发布下一代VR眼镜，Virtuix将Quest平台的Omni O",
+        "【新思科技与亚马逊签署多年期超 10 亿美元协议，推进定制芯片合作】当地时间",
         "DoorDash面向美国iPhone用户推出文本下单AI代理"
       ]
     },
     {
       "sector": "汽车",
-      "news_count": 18,
-      "news_per_day": 9.0,
+      "news_count": 8,
+      "news_per_day": 0.89,
       "flow_yi": 10.32,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "IG Metall：大众汽车对其员工犯下严重不当行为——雇主终止多项集体协议",
-        "以色列空袭加沙致4人死亡",
-        "国庆新能源车充电高峰将至"
+        "江淮汽车：与华为、Stellantis合作尚未确定",
+        "江淮汽车：与华为、Stellantis三方确有沟洽合作意向 但合作内容、合作",
+        "美股开盘集体高开 AI硬件、半导体、存储芯片和互联网科技板块权重股普涨"
       ]
     },
     {
       "sector": "基础化工",
       "news_count": 1,
-      "news_per_day": 0.5,
+      "news_per_day": 0.11,
       "flow_yi": -10.01,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -231,8 +317,8 @@
     },
     {
       "sector": "电力设备",
-      "news_count": 13,
-      "news_per_day": 6.5,
+      "news_count": 3,
+      "news_per_day": 0.33,
       "flow_yi": 9.58,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -246,63 +332,59 @@
     },
     {
       "sector": "有色金属",
-      "news_count": 19,
-      "news_per_day": 9.5,
+      "news_count": 12,
+      "news_per_day": 1.33,
       "flow_yi": 8.29,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
-      "sample_titles": [
-        "国内联播快讯",
-        "智利铜产量降至15年多来最低水平",
-        "现货黄金价格短线拉涨"
-      ]
-    },
-    {
-      "sector": "通信",
-      "news_count": 20,
-      "news_per_day": 10.0,
-      "flow_yi": -7.26,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "国内联播快讯",
-        "俄旅游运营商协会：中国排名俄罗斯人今夏旅游目的地前三",
-        "9月30日 周三《新闻联播》要闻14条"
-      ]
-    },
-    {
-      "sector": "石油石化",
-      "news_count": 21,
-      "news_per_day": 10.5,
-      "flow_yi": -5.1,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "布伦特原油期货涨幅扩大至2%",
-        "布伦特原油站上98美元/桶",
-        "分析师预计2026年布伦特原油均价为每桶89.05美元"
-      ]
-    },
-    {
-      "sector": "农林牧渔",
-      "news_count": 4,
-      "news_per_day": 2.0,
-      "flow_yi": 4.86,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "【多只宽基ETF产品逆势吸金】今日，A股大消费板块整体温和走强，酿酒、粮食等",
-        "【“十五五”开好局起好步】我国加快推进农业农村现代化",
-        "【在希望的田野上】秋粮收获陆续展开 各地抢抓时机保丰收"
+        "国内联播快讯",
+        "巴拿马政府表示，第一量子矿业公司必须兑现有关Cobre Panama铜矿的所",
+        "第一量子在加拿大股市盘初跌13%，然后触发盘中临时停牌。消息面上，巴拿马政府"
       ]
+    },
+    {
+      "sector": "通信",
+      "news_count": 10,
+      "news_per_day": 1.11,
+      "flow_yi": -7.26,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "国内联播快讯",
+        "俄旅游运营商协会：中国排名俄罗斯人今夏旅游目的地前三",
+        "纳睿雷达：拟1.62亿元收购芯泰通信51%股权"
+      ]
+    },
+    {
+      "sector": "石油石化",
+      "news_count": 11,
+      "news_per_day": 1.22,
+      "flow_yi": -5.1,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "美国商品贸易逆差意外扩大 创2025年以来最大",
+        "WTI原油涨超2%",
+        "WTI原油期货涨幅扩大至2%"
+      ]
+    },
+    {
+      "sector": "农林牧渔",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": 4.86,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": []
     },
     {
       "sector": "建筑材料",
@@ -317,8 +399,8 @@
     },
     {
       "sector": "房地产",
-      "news_count": 12,
-      "news_per_day": 6.0,
+      "news_count": 6,
+      "news_per_day": 0.67,
       "flow_yi": -4.41,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -332,17 +414,17 @@
     },
     {
       "sector": "国防军工",
-      "news_count": 17,
-      "news_per_day": 8.5,
+      "news_count": 22,
+      "news_per_day": 2.44,
       "flow_yi": -4.32,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
         "国内联播快讯",
-        "欧洲航空安全局（EASA）：波斯湾及阿曼空域的冲突区域信息通报有效期已延长至",
-        "欧盟航空安全局：约旦空域冲突区信息公告延长至2026年10月16日。"
+        "以色列机场管理局：暂不计划对迪拜航空航班事件展开调查。",
+        "以色列机场管理局表示，其不计划对迪拜航空飞行事故展开调查。"
       ]
     },
     {
@@ -369,8 +451,8 @@
     },
     {
       "sector": "非银金融",
-      "news_count": 10,
-      "news_per_day": 5.0,
+      "news_count": 3,
+      "news_per_day": 0.33,
       "flow_yi": -2.1,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -384,17 +466,17 @@
     },
     {
       "sector": "综合",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 3,
+      "news_per_day": 0.33,
       "flow_yi": 2.09,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
+        "道琼斯指数9月30日（周三）开盘上涨64.96点，涨幅0.13%，报5141",
         "纳睿雷达：拟1.62亿元收购芯泰通信51%股权",
-        "快手成立企业AI生产力跨事业部虚拟组织",
-        "上海出口集装箱运价指数（综合指数）SCFI报3662.30点 与上期相比下跌"
+        "快手成立企业AI生产力跨事业部虚拟组织"
       ]
     },
     {
@@ -432,18 +514,14 @@
     },
     {
       "sector": "交通运输",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": 1.08,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": [
-        "交通部门多措并举服务国庆假期出行",
-        "四部门：结合实施大规模设备更新政策，支持新能源公交车及动力电池更新",
-        "四部门：加快人工智能等新技术在公交客流预测、线网优化、智能调度、运行安全中的"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "煤炭",
@@ -458,17 +536,17 @@
     },
     {
       "sector": "银行",
-      "news_count": 26,
-      "news_per_day": 13.0,
+      "news_count": 13,
+      "news_per_day": 1.44,
       "flow_yi": -0.87,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "【美联储投票改革压力测试 华尔街大银行获重大胜利】美联储负责监管事务的副主席",
-        "美联储就与银行模型及手续费收入相关的计划征求意见。",
-        "土耳其主要股指伊斯坦布尔100指数下跌2%"
+        "土耳其主要BIST-100指数下跌2.7%",
+        "加拿大多伦多道明银行拟启动100亿加元股票回购计划",
+        "美联储投票通过对压力测试的改革"
       ]
     },
     {
@@ -484,30 +562,28 @@
     },
     {
       "sector": "环保",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": 0.8,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": [
-        "联泰环保：拟16.11亿元出售湖南联泰及汕头联泰100%股权"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "公用事业",
-      "news_count": 13,
-      "news_per_day": 6.5,
+      "news_count": 4,
+      "news_per_day": 0.44,
       "flow_yi": 0.75,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
+        "特朗普将宣布由韩国资助的德克萨斯州电力设施项目。",
         "调查显示日本10月将迎来新一波涨价潮",
-        "【调查显示日本10月将迎来新一波涨价潮】日本一家调查机构9月30日公布的调查",
-        "法国总统马克龙：需要动员欧盟资金用于电力互联。"
+        "AIB Data Centers与Nebius签署协议 将在美国东南部提供5"
       ]
     },
     {

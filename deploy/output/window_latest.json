@@ -1,26 +1,40 @@
 {
-  "generated_at": "2026-09-30 08:31",
-  "session": "preopen",
-  "data_date": "2026-09-29",
-  "for_date": "2026-09-30",
+  "generated_at": "2026-09-30 22:03",
+  "session": "close",
+  "data_date": "2026-09-30",
+  "for_date": "2026-10-08",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-09-30"
+    "2026-10-01",
+    "2026-10-02",
+    "2026-10-03",
+    "2026-10-04",
+    "2026-10-05",
+    "2026-10-06",
+    "2026-10-07",
+    "2026-10-08"
   ],
-  "span_days": 1,
+  "span_days": 8,
   "display_days": [
-    "2026-09-29",
-    "2026-09-30"
+    "2026-09-30",
+    "2026-10-01",
+    "2026-10-02",
+    "2026-10-03",
+    "2026-10-04",
+    "2026-10-05",
+    "2026-10-06",
+    "2026-10-07",
+    "2026-10-08"
   ],
-  "display_text": "09/29 + 09/30",
-  "span_is_weekend_cross": false,
-  "span_text": "09/30",
+  "display_text": "09/30–10/08",
+  "span_is_weekend_cross": true,
+  "span_text": "10/01–10/08",
   "carry": {
-    "from_data_date": "2026-09-29",
-    "ref": "output/feed_review_2026-09-29.json",
+    "from_data_date": "2026-09-30",
+    "ref": "output/feed_review_2026-09-30.json",
     "exists": true,
-    "gap_days": 1,
+    "gap_days": 8,
     "stale": false,
     "bias": "偏多",
     "bias_score": 2,
@@ -31,42 +45,107 @@
     "headline": ""
   },
   "layers": {
-    "base": "2026-09-29 A股收盘（基准层）",
-    "overnight": "美东 2026-09-29 收盘（北京 2026-09-30 早间到达）",
-    "premarket": "2026-09-30 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-09-30 A股收盘（基准层）",
+    "overnight": "美东 2026-09-30 收盘（北京 2026-10-01 早间到达）",
+    "premarket": "2026-10-08 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-09-29",
+    "date": "2026-09-30",
     "run_date": "2026-09-30",
-    "preopen_partial": true,
+    "preopen_partial": null,
     "us_kline": true,
     "asia": true
   },
   "covered": [
     {
-      "date": "2026-09-29",
-      "weekday": "周二",
-      "is_trading_day": true,
-      "news": 304,
-      "feeds": 4,
-      "reports": 826,
-      "macro": true
-    },
-    {
       "date": "2026-09-30",
       "weekday": "周三",
       "is_trading_day": true,
-      "news": 283,
+      "news": 299,
       "feeds": 0,
-      "reports": 61,
+      "reports": 609,
       "macro": true
+    },
+    {
+      "date": "2026-10-01",
+      "weekday": "周四",
+      "is_trading_day": false,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    },
+    {
+      "date": "2026-10-02",
+      "weekday": "周五",
+      "is_trading_day": false,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    },
+    {
+      "date": "2026-10-03",
+      "weekday": "周六",
+      "is_trading_day": false,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    },
+    {
+      "date": "2026-10-04",
+      "weekday": "周日",
+      "is_trading_day": false,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    },
+    {
+      "date": "2026-10-05",
+      "weekday": "周一",
+      "is_trading_day": false,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    },
+    {
+      "date": "2026-10-06",
+      "weekday": "周二",
+      "is_trading_day": false,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    },
+    {
+      "date": "2026-10-07",
+      "weekday": "周三",
+      "is_trading_day": false,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    },
+    {
+      "date": "2026-10-08",
+      "weekday": "周四",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
     }
   ],
   "totals": {
-    "news": 587,
-    "feeds": 4,
-    "reports": 887,
-    "covered_days": 2
+    "news": 299,
+    "feeds": 0,
+    "reports": 609,
+    "covered_days": 9
   },
-  "missing": []
+  "missing": [
+    "market_thermometer.json 数据日 2026-09-29 落后于基准日 2026-09-30"
+  ]
 }
