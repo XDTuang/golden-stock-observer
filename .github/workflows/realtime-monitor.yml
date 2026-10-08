@@ -61,12 +61,32 @@ jobs:
         run: |
           python fetch_realtime.py --out realtime.json
 
+      # 🔴 2026-10-08 新增「产出校验」：防「run success 而产物零变化」。
+      #    旧守卫 `[ ! -f realtime.json ]` 因该文件常驻仓库而**恒不成立** ⇒ 脚本未落盘时
+      #    仍走到「数据无变化」分支、run 报 success ⇒ 故障被静默掩盖
+      #    （2026-10-08 休市日历误判 10-08 为假期，正是被这个守卫藏了一整天）。
+      #    现按 meta.updated_at 判断「本次是否真产出当日数据」：
+      #      盘中外未产出 = 异常 → 大声失败（exit 1）
+      #      非盘中未产出 = 预期 → 放行（preopen/lunch/closed/holiday）
+      - name: 产出校验（盘中未产出即失败）
+        run: |
+          UPD=$(python -c "import json;print(json.load(open('realtime.json',encoding='utf-8'))['meta']['updated_at'][:10])" 2>/dev/null || echo "")
+          ST=$(python -c "import sys,datetime as dt;sys.path.insert(0,'.');from fetch_realtime import market_status;print(market_status(dt.datetime.now()))" 2>/dev/null || echo "unknown")
+          TODAY=$(date +%Y-%m-%d)
+          echo "updated_at 日期=${UPD:-空} / 市场状态=${ST} / 今日=${TODAY}"
+          if [ "$UPD" = "$TODAY" ]; then
+            echo "✅ 本次已产出当日数据"
+          elif [ "$ST" = "trading" ]; then
+            echo "❌ 盘中却未产出当日数据（updated_at=${UPD:-空}）—— 疑似抓取失败或交易日历误判，请人工核查" >&2
+            exit 1
+          else
+            echo "ℹ️ 非盘中（${ST}），未产出新数据属预期"
+          fi
+
       - name: 提交并推送（数据有变化才推）
         run: |
-          if [ ! -f realtime.json ]; then
-            echo "ℹ️ 非盘中时段（未开盘/午休/收盘/非交易日），脚本未产出新数据，跳过推送"
-            exit 0
-          fi
+          # 注：realtime.json 为常驻文件，「文件是否存在」不能作为「有无新数据」的判据；
+          #     真正的判据是下方 `git diff --cached --quiet`（无变化才跳过）。
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
           # 2026-09-01：同步 deploy 副本。
