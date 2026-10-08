@@ -1,15 +1,8 @@
 {
  "data_date": "2026-09-30",
- "kline_last_date": "2026-09-29",
- "kline_lag": {
-  "kline_last": "2026-09-29",
-  "data_date": "2026-09-30",
-  "trading_days": 1,
-  "calendar_days": 1,
-  "source": "申万宏源官网 · akshare index_hist_sw",
-  "reason": "上游 T+1 发布，节假日前后可积压数日（非本链漏抓）"
- },
- "generated_at": "2026-09-30 22:27",
+ "kline_last_date": "2026-09-30",
+ "kline_lag": null,
+ "generated_at": "2026-10-08 07:57",
  "news_window": [
   "2026-09-30",
   "2026-10-01",
@@ -52,37 +45,37 @@
  },
  "summary": {
   "L4": 0,
-  "L3": 0,
-  "L2": 13,
+  "L3": 2,
+  "L2": 11,
   "L1": 18
  },
  "trend_dist": {
-  "uptrend": 0,
+  "uptrend": 1,
   "uptrend_pullback": 0,
-  "downtrend_rebound": 2,
-  "downtrend": 29,
+  "downtrend_rebound": 3,
+  "downtrend": 27,
   "unknown": 0
  },
  "items": [
   {
    "sector": "医药生物",
-   "level": "L2",
-   "why": "技术面降档：破位（收盘 < EMA20 7793.73，EMA 2/7）",
-   "trend": "downtrend",
+   "level": "L3",
+   "why": "资金分位100+连续2日净流入｜趋势为反弹（中期趋势未反转）",
+   "trend": "downtrend_rebound",
    "verdict": "暗线",
    "level_quad": "info",
    "flow_yi": 61.91,
    "flow_pct": 100.0,
    "flow_streak": 2,
-   "news_count": 3,
-   "news_per_day": 0.33,
+   "news_count": 13,
+   "news_per_day": 1.44,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 7776.51,
-    "ema_score": 2,
+    "as_of": "2026-09-30",
+    "close": 7989.13,
+    "ema_score": 3,
     "ema_groups": [
-     false,
+     true,
      true,
      true,
      false,
@@ -93,46 +86,119 @@
     "ema_strong": false,
     "ema_perfect": false,
     "ma_bullish": false,
-    "above_ema20": false,
-    "ema20": 7793.73,
-    "ema60": 7774.06,
+    "above_ema20": true,
+    "ema20": 7812.34,
+    "ema60": 7781.11,
     "hi60": 8427.88,
     "lo60": 7257.76,
-    "range_pos": 44.3,
-    "dd_from_hi60": -7.7,
-    "vol_ratio_5": 0.77,
-    "vol_ratio_20": 0.92,
-    "chg_pct": -0.01,
-    "vol_price_state": "缩量回调·洗盘观察",
-    "vol_price_level": "info",
+    "range_pos": 62.5,
+    "dd_from_hi60": -5.2,
+    "vol_ratio_5": 1.06,
+    "vol_ratio_20": 1.17,
+    "chg_pct": 2.73,
+    "vol_price_state": "平量整理",
+    "vol_price_level": "mute",
     "vol_price_diverge": false,
-    "flow_aligned": false,
+    "flow_aligned": true,
     "resistance": [
      {
-      "price": 7793.73,
-      "src": "上方EMA20"
+      "price": 8082.3,
+      "src": "近20日高点"
      },
+     {
+      "price": 8427.88,
+      "src": "近60日高点"
+     },
+     {
+      "price": 9151.01,
+      "src": "斐波161.8%延伸"
+     }
+    ],
+    "support": [
      {
       "price": 7842.82,
       "src": "斐波50%"
      },
      {
-      "price": 7980.89,
-      "src": "斐波61.8%"
+      "price": 7781.11,
+      "src": "EMA60支撑"
+     },
+     {
+      "price": 7704.75,
+      "src": "斐波38.2%"
+     }
+    ]
+   }
+  },
+  {
+   "sector": "美容护理",
+   "level": "L3",
+   "why": "资金分位80+连续5日净流入｜趋势为反弹（中期趋势未反转）",
+   "trend": "downtrend_rebound",
+   "verdict": "暗线",
+   "level_quad": "info",
+   "flow_yi": 3.77,
+   "flow_pct": 80.0,
+   "flow_streak": 5,
+   "news_count": 0,
+   "news_per_day": 0.0,
+   "hot": false,
+   "tech": {
+    "as_of": "2026-09-30",
+    "close": 3487.3,
+    "ema_score": 1,
+    "ema_groups": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "ema_strong": false,
+    "ema_perfect": false,
+    "ma_bullish": false,
+    "above_ema20": true,
+    "ema20": 3452.78,
+    "ema60": 3484.94,
+    "hi60": 3643.7,
+    "lo60": 3239.5,
+    "range_pos": 61.3,
+    "dd_from_hi60": -4.3,
+    "vol_ratio_5": 1.0,
+    "vol_ratio_20": 0.96,
+    "chg_pct": 1.7,
+    "vol_price_state": "平量整理",
+    "vol_price_level": "mute",
+    "vol_price_diverge": false,
+    "flow_aligned": true,
+    "resistance": [
+     {
+      "price": 3559.8,
+      "src": "近20日高点"
+     },
+     {
+      "price": 3643.7,
+      "src": "近60日高点"
+     },
+     {
+      "price": 3893.5,
+      "src": "斐波161.8%延伸"
      }
     ],
     "support": [
      {
-      "price": 7704.75,
+      "price": 3452.78,
+      "src": "EMA20支撑"
+     },
+     {
+      "price": 3393.9,
       "src": "斐波38.2%"
      },
      {
-      "price": 7388.76,
+      "price": 3301.93,
       "src": "近20日低点"
-     },
-     {
-      "price": 7257.76,
-      "src": "近60日低点"
      }
     ]
    }
@@ -140,19 +206,19 @@
   {
    "sector": "食品饮料",
    "level": "L2",
-   "why": "技术面降档：破位（收盘 < EMA20 13665.82，EMA 0/7）",
+   "why": "技术面降档：破位（收盘 < EMA20 13661.29，EMA 0/7）",
    "trend": "downtrend",
    "verdict": "暗线",
    "level_quad": "info",
    "flow_yi": 14.21,
    "flow_pct": 96.7,
    "flow_streak": 2,
-   "news_count": 14,
-   "news_per_day": 1.56,
+   "news_count": 45,
+   "news_per_day": 5.0,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 13392.58,
+    "as_of": "2026-09-30",
+    "close": 13618.21,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -167,34 +233,38 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 13665.82,
-    "ema60": 13899.87,
+    "ema20": 13661.29,
+    "ema60": 13890.63,
     "hi60": 14666.42,
     "lo60": 12920.65,
-    "range_pos": 27.0,
-    "dd_from_hi60": -8.7,
-    "vol_ratio_5": 0.79,
-    "vol_ratio_20": 0.75,
-    "chg_pct": -0.32,
-    "vol_price_state": "缩量回调·洗盘观察",
-    "vol_price_level": "info",
+    "range_pos": 40.0,
+    "dd_from_hi60": -7.1,
+    "vol_ratio_5": 0.9,
+    "vol_ratio_20": 0.86,
+    "chg_pct": 1.68,
+    "vol_price_state": "平量整理",
+    "vol_price_level": "mute",
     "vol_price_diverge": false,
-    "flow_aligned": false,
+    "flow_aligned": true,
     "resistance": [
      {
-      "price": 13587.53,
-      "src": "斐波38.2%"
-     },
-     {
-      "price": 13665.82,
+      "price": 13661.29,
       "src": "上方EMA20"
      },
      {
       "price": 13793.53,
       "src": "斐波50%"
+     },
+     {
+      "price": 13890.63,
+      "src": "上方EMA60"
      }
     ],
     "support": [
+     {
+      "price": 13587.53,
+      "src": "斐波38.2%"
+     },
      {
       "price": 13347.07,
       "src": "近20日低点"
@@ -209,19 +279,19 @@
   {
    "sector": "汽车",
    "level": "L2",
-   "why": "技术面降档：破位（收盘 < EMA20 6336.54，EMA 0/7）",
+   "why": "技术面降档：破位（收盘 < EMA20 6330.43，EMA 0/7）",
    "trend": "downtrend",
    "verdict": "暗线",
    "level_quad": "info",
    "flow_yi": 10.32,
    "flow_pct": 93.3,
    "flow_streak": 5,
-   "news_count": 8,
-   "news_per_day": 0.89,
+   "news_count": 50,
+   "news_per_day": 5.56,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 6230.2,
+    "as_of": "2026-09-30",
+    "close": 6272.47,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -236,31 +306,31 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 6336.54,
-    "ema60": 6512.57,
-    "hi60": 6973.66,
+    "ema20": 6330.43,
+    "ema60": 6504.7,
+    "hi60": 6752.35,
     "lo60": 6079.36,
-    "range_pos": 16.9,
-    "dd_from_hi60": -10.7,
-    "vol_ratio_5": 0.97,
-    "vol_ratio_20": 1.01,
-    "chg_pct": 0.19,
+    "range_pos": 28.7,
+    "dd_from_hi60": -7.1,
+    "vol_ratio_5": 1.05,
+    "vol_ratio_20": 1.08,
+    "chg_pct": 0.68,
     "vol_price_state": "平量整理",
     "vol_price_level": "mute",
     "vol_price_diverge": false,
     "flow_aligned": true,
     "resistance": [
      {
-      "price": 6336.54,
+      "price": 6330.43,
       "src": "上方EMA20"
      },
      {
-      "price": 6420.98,
-      "src": "斐波38.2%"
+      "price": 6415.85,
+      "src": "斐波50%"
      },
      {
-      "price": 6512.57,
-      "src": "上方EMA60"
+      "price": 6495.27,
+      "src": "斐波61.8%"
      }
     ],
     "support": [
@@ -278,19 +348,19 @@
   {
    "sector": "电力设备",
    "level": "L2",
-   "why": "技术面降档：破位（收盘 < EMA20 8628.68，EMA 0/7）",
+   "why": "技术面降档：破位（收盘 < EMA20 8593.01，EMA 0/7）",
    "trend": "downtrend",
    "verdict": "暗线",
    "level_quad": "info",
    "flow_yi": 9.58,
    "flow_pct": 90.0,
    "flow_streak": 2,
-   "news_count": 3,
-   "news_per_day": 0.33,
+   "news_count": 13,
+   "news_per_day": 1.44,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 8202.98,
+    "as_of": "2026-09-30",
+    "close": 8254.09,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -305,30 +375,30 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 8628.68,
-    "ema60": 9210.17,
-    "hi60": 10341.97,
+    "ema20": 8593.01,
+    "ema60": 9178.82,
+    "hi60": 10102.21,
     "lo60": 8111.41,
-    "range_pos": 4.1,
-    "dd_from_hi60": -20.7,
-    "vol_ratio_5": 0.9,
-    "vol_ratio_20": 0.89,
-    "chg_pct": 0.43,
+    "range_pos": 7.2,
+    "dd_from_hi60": -18.3,
+    "vol_ratio_5": 0.98,
+    "vol_ratio_20": 0.94,
+    "chg_pct": 0.62,
     "vol_price_state": "平量整理",
     "vol_price_level": "mute",
     "vol_price_diverge": false,
     "flow_aligned": true,
     "resistance": [
      {
-      "price": 8628.68,
+      "price": 8593.01,
       "src": "上方EMA20"
      },
      {
-      "price": 8963.48,
+      "price": 8871.9,
       "src": "斐波38.2%"
      },
      {
-      "price": 9110.83,
+      "price": 8977.03,
       "src": "近20日高点"
      }
     ],
@@ -343,19 +413,19 @@
   {
    "sector": "有色金属",
    "level": "L2",
-   "why": "技术面降档：破位（收盘 < EMA20 8007.68，EMA 0/7）",
+   "why": "技术面降档：破位（收盘 < EMA20 7960.52，EMA 0/7）",
    "trend": "downtrend",
    "verdict": "暗线",
    "level_quad": "info",
    "flow_yi": 8.29,
    "flow_pct": 86.7,
    "flow_streak": 2,
-   "news_count": 12,
-   "news_per_day": 1.33,
+   "news_count": 41,
+   "news_per_day": 4.56,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 7495.57,
+    "as_of": "2026-09-30",
+    "close": 7512.52,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -370,15 +440,15 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 8007.68,
-    "ema60": 8237.33,
+    "ema20": 7960.52,
+    "ema60": 8213.57,
     "hi60": 8919.41,
     "lo60": 7097.68,
-    "range_pos": 21.8,
-    "dd_from_hi60": -16.0,
-    "vol_ratio_5": 0.81,
-    "vol_ratio_20": 0.64,
-    "chg_pct": 1.33,
+    "range_pos": 22.8,
+    "dd_from_hi60": -15.8,
+    "vol_ratio_5": 0.69,
+    "vol_ratio_20": 0.54,
+    "chg_pct": 0.23,
     "vol_price_state": "缩量上涨·动能衰减",
     "vol_price_level": "warn",
     "vol_price_diverge": false,
@@ -389,12 +459,12 @@
       "src": "斐波38.2%"
      },
      {
-      "price": 8007.68,
+      "price": 7960.52,
       "src": "上方EMA20"
      },
      {
-      "price": 8223.51,
-      "src": "斐波61.8%"
+      "price": 8008.55,
+      "src": "斐波50%"
      }
     ],
     "support": [
@@ -412,19 +482,19 @@
   {
    "sector": "农林牧渔",
    "level": "L2",
-   "why": "技术面降档：破位（收盘 < EMA20 2585.3，EMA 1/7）",
+   "why": "技术面降档：破位（收盘 < EMA20 2583.32，EMA 1/7）",
    "trend": "downtrend",
    "verdict": "暗线",
    "level_quad": "info",
    "flow_yi": 4.86,
    "flow_pct": 83.3,
    "flow_streak": 1,
-   "news_count": 0,
-   "news_per_day": 0.0,
+   "news_count": 16,
+   "news_per_day": 1.78,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 2538.61,
+    "as_of": "2026-09-30",
+    "close": 2564.54,
     "ema_score": 1,
     "ema_groups": [
      false,
@@ -439,34 +509,38 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 2585.3,
-    "ema60": 2541.14,
+    "ema20": 2583.32,
+    "ema60": 2541.9,
     "hi60": 2806.99,
     "lo60": 2286.63,
-    "range_pos": 48.4,
-    "dd_from_hi60": -9.6,
-    "vol_ratio_5": 0.73,
-    "vol_ratio_20": 0.54,
-    "chg_pct": -0.01,
-    "vol_price_state": "缩量回调·洗盘观察",
-    "vol_price_level": "info",
+    "range_pos": 53.4,
+    "dd_from_hi60": -8.6,
+    "vol_ratio_5": 0.82,
+    "vol_ratio_20": 0.57,
+    "chg_pct": 1.02,
+    "vol_price_state": "缩量上涨·动能衰减",
+    "vol_price_level": "warn",
     "vol_price_diverge": false,
-    "flow_aligned": false,
+    "flow_aligned": true,
     "resistance": [
      {
-      "price": 2546.81,
-      "src": "斐波50%"
-     },
-     {
-      "price": 2585.3,
+      "price": 2583.32,
       "src": "上方EMA20"
      },
      {
       "price": 2608.21,
       "src": "斐波61.8%"
+     },
+     {
+      "price": 2806.99,
+      "src": "近20日高点"
      }
     ],
     "support": [
+     {
+      "price": 2546.81,
+      "src": "斐波50%"
+     },
      {
       "price": 2517.99,
       "src": "近20日低点"
@@ -474,83 +548,6 @@
      {
       "price": 2485.41,
       "src": "斐波38.2%"
-     },
-     {
-      "price": 2286.63,
-      "src": "近60日低点"
-     }
-    ]
-   }
-  },
-  {
-   "sector": "美容护理",
-   "level": "L2",
-   "why": "技术面降档：破位（收盘 < EMA20 3449.15，EMA 0/7）",
-   "trend": "downtrend",
-   "verdict": "暗线",
-   "level_quad": "info",
-   "flow_yi": 3.77,
-   "flow_pct": 80.0,
-   "flow_streak": 5,
-   "news_count": 0,
-   "news_per_day": 0.0,
-   "hot": false,
-   "tech": {
-    "as_of": "2026-09-29",
-    "close": 3429.07,
-    "ema_score": 0,
-    "ema_groups": [
-     false,
-     false,
-     false,
-     false,
-     false,
-     false,
-     false
-    ],
-    "ema_strong": false,
-    "ema_perfect": false,
-    "ma_bullish": false,
-    "above_ema20": false,
-    "ema20": 3449.15,
-    "ema60": 3484.86,
-    "hi60": 3643.7,
-    "lo60": 3239.5,
-    "range_pos": 46.9,
-    "dd_from_hi60": -5.9,
-    "vol_ratio_5": 0.81,
-    "vol_ratio_20": 0.85,
-    "chg_pct": 0.02,
-    "vol_price_state": "缩量上涨·动能衰减",
-    "vol_price_level": "warn",
-    "vol_price_diverge": false,
-    "flow_aligned": true,
-    "resistance": [
-     {
-      "price": 3441.6,
-      "src": "斐波50%"
-     },
-     {
-      "price": 3484.86,
-      "src": "上方EMA60"
-     },
-     {
-      "price": 3559.8,
-      "src": "近20日高点"
-     }
-    ],
-    "support": [
-     {
-      "price": 3393.9,
-      "src": "斐波38.2%"
-     },
-     {
-      "price": 3301.93,
-      "src": "近20日低点"
-     },
-     {
-      "price": 3239.5,
-      "src": "近60日低点"
      }
     ]
    }
@@ -558,19 +555,19 @@
   {
    "sector": "综合",
    "level": "L2",
-   "why": "技术面降档：破位（收盘 < EMA20 4194.72，EMA 0/7）",
+   "why": "技术面降档：破位（收盘 < EMA20 4187.32，EMA 0/7）",
    "trend": "downtrend",
    "verdict": "暗线",
    "level_quad": "info",
    "flow_yi": 2.09,
    "flow_pct": 76.7,
    "flow_streak": 2,
-   "news_count": 3,
-   "news_per_day": 0.33,
+   "news_count": 8,
+   "news_per_day": 0.89,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 4094.5,
+    "as_of": "2026-09-30",
+    "close": 4117.05,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -585,26 +582,26 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 4194.72,
-    "ema60": 4253.66,
+    "ema20": 4187.32,
+    "ema60": 4249.18,
     "hi60": 4584.67,
     "lo60": 3566.02,
-    "range_pos": 51.9,
-    "dd_from_hi60": -10.7,
-    "vol_ratio_5": 0.73,
-    "vol_ratio_20": 0.72,
-    "chg_pct": 0.76,
-    "vol_price_state": "缩量上涨·动能衰减",
-    "vol_price_level": "warn",
+    "range_pos": 54.1,
+    "dd_from_hi60": -10.2,
+    "vol_ratio_5": 0.99,
+    "vol_ratio_20": 0.88,
+    "chg_pct": 0.55,
+    "vol_price_state": "平量整理",
+    "vol_price_level": "mute",
     "vol_price_diverge": false,
     "flow_aligned": true,
     "resistance": [
      {
-      "price": 4194.72,
+      "price": 4187.32,
       "src": "上方EMA20"
      },
      {
-      "price": 4253.66,
+      "price": 4249.18,
       "src": "上方EMA60"
      },
      {
@@ -631,7 +628,7 @@
   {
    "sector": "商贸零售",
    "level": "L2",
-   "why": "技术面降档：破位（收盘 < EMA20 1795.31，EMA 0/7）",
+   "why": "技术面降档：破位（收盘 < EMA20 1791.64，EMA 0/7）",
    "trend": "downtrend",
    "verdict": "暗线",
    "level_quad": "info",
@@ -642,8 +639,8 @@
    "news_per_day": 0.0,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 1745.2,
+    "as_of": "2026-09-30",
+    "close": 1756.77,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -658,34 +655,38 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 1795.31,
-    "ema60": 1815.24,
+    "ema20": 1791.64,
+    "ema60": 1813.33,
     "hi60": 1906.38,
     "lo60": 1654.98,
-    "range_pos": 35.9,
-    "dd_from_hi60": -8.5,
-    "vol_ratio_5": 0.88,
-    "vol_ratio_20": 0.71,
-    "chg_pct": 0.23,
-    "vol_price_state": "缩量上涨·动能衰减",
-    "vol_price_level": "warn",
+    "range_pos": 40.5,
+    "dd_from_hi60": -7.8,
+    "vol_ratio_5": 0.94,
+    "vol_ratio_20": 0.72,
+    "chg_pct": 0.66,
+    "vol_price_state": "平量整理",
+    "vol_price_level": "mute",
     "vol_price_diverge": false,
     "flow_aligned": true,
     "resistance": [
-     {
-      "price": 1751.01,
-      "src": "斐波38.2%"
-     },
      {
       "price": 1780.68,
       "src": "斐波50%"
      },
      {
-      "price": 1795.31,
+      "price": 1791.64,
       "src": "上方EMA20"
+     },
+     {
+      "price": 1810.35,
+      "src": "斐波61.8%"
      }
     ],
     "support": [
+     {
+      "price": 1751.01,
+      "src": "斐波38.2%"
+     },
      {
       "price": 1730.38,
       "src": "近20日低点"
@@ -700,7 +701,7 @@
   {
    "sector": "轻工制造",
    "level": "L2",
-   "why": "技术面降档：破位（收盘 < EMA20 2089.83，EMA 0/7）",
+   "why": "技术面降档：破位（收盘 < EMA20 2088.43，EMA 0/7）",
    "trend": "downtrend",
    "verdict": "暗线",
    "level_quad": "info",
@@ -711,8 +712,8 @@
    "news_per_day": 0.0,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 2070.67,
+    "as_of": "2026-09-30",
+    "close": 2075.07,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -727,26 +728,26 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 2089.83,
-    "ema60": 2103.68,
+    "ema20": 2088.43,
+    "ema60": 2102.74,
     "hi60": 2147.99,
     "lo60": 1848.59,
-    "range_pos": 74.2,
-    "dd_from_hi60": -3.6,
-    "vol_ratio_5": 0.83,
-    "vol_ratio_20": 0.81,
-    "chg_pct": 0.56,
-    "vol_price_state": "缩量上涨·动能衰减",
-    "vol_price_level": "warn",
+    "range_pos": 75.6,
+    "dd_from_hi60": -3.4,
+    "vol_ratio_5": 0.91,
+    "vol_ratio_20": 0.86,
+    "chg_pct": 0.21,
+    "vol_price_state": "平量整理",
+    "vol_price_level": "mute",
     "vol_price_diverge": false,
     "flow_aligned": true,
     "resistance": [
      {
-      "price": 2089.83,
+      "price": 2088.43,
       "src": "上方EMA20"
      },
      {
-      "price": 2103.68,
+      "price": 2102.74,
       "src": "上方EMA60"
      },
      {
@@ -773,19 +774,19 @@
   {
    "sector": "交通运输",
    "level": "L2",
-   "why": "技术面降档：破位（收盘 < EMA20 2082.17，EMA 0/7）",
+   "why": "技术面降档：破位（收盘 < EMA20 2081.26，EMA 0/7）",
    "trend": "downtrend",
    "verdict": "暗线",
    "level_quad": "info",
    "flow_yi": 1.08,
    "flow_pct": 66.7,
    "flow_streak": 1,
-   "news_count": 0,
-   "news_per_day": 0.0,
+   "news_count": 11,
+   "news_per_day": 1.22,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 2053.23,
+    "as_of": "2026-09-30",
+    "close": 2072.57,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -800,34 +801,38 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 2082.17,
-    "ema60": 2082.96,
+    "ema20": 2081.26,
+    "ema60": 2082.62,
     "hi60": 2131.71,
     "lo60": 1955.46,
-    "range_pos": 55.5,
-    "dd_from_hi60": -3.7,
-    "vol_ratio_5": 0.8,
-    "vol_ratio_20": 0.72,
-    "chg_pct": -0.36,
-    "vol_price_state": "缩量回调·洗盘观察",
-    "vol_price_level": "info",
+    "range_pos": 66.4,
+    "dd_from_hi60": -2.8,
+    "vol_ratio_5": 0.93,
+    "vol_ratio_20": 0.8,
+    "chg_pct": 0.94,
+    "vol_price_state": "平量整理",
+    "vol_price_level": "mute",
     "vol_price_diverge": false,
-    "flow_aligned": false,
+    "flow_aligned": true,
     "resistance": [
      {
-      "price": 2064.38,
-      "src": "斐波61.8%"
-     },
-     {
-      "price": 2082.17,
+      "price": 2081.26,
       "src": "上方EMA20"
      },
      {
       "price": 2131.71,
       "src": "近20日高点"
+     },
+     {
+      "price": 2240.63,
+      "src": "斐波161.8%延伸"
      }
     ],
     "support": [
+     {
+      "price": 2064.38,
+      "src": "斐波61.8%"
+     },
      {
       "price": 2046.72,
       "src": "近20日低点"
@@ -835,10 +840,6 @@
      {
       "price": 2022.79,
       "src": "斐波38.2%"
-     },
-     {
-      "price": 1955.46,
-      "src": "近60日低点"
      }
     ]
    }
@@ -846,7 +847,7 @@
   {
    "sector": "环保",
    "level": "L2",
-   "why": "技术面降档：破位（收盘 < EMA20 1897.62，EMA 0/7）",
+   "why": "技术面降档：破位（收盘 < EMA20 1893.7，EMA 0/7）",
    "trend": "downtrend",
    "verdict": "暗线",
    "level_quad": "info",
@@ -857,8 +858,8 @@
    "news_per_day": 0.0,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 1855.68,
+    "as_of": "2026-09-30",
+    "close": 1856.4,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -873,45 +874,45 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 1897.62,
-    "ema60": 1926.66,
-    "hi60": 2012.05,
+    "ema20": 1893.7,
+    "ema60": 1924.36,
+    "hi60": 1977.21,
     "lo60": 1688.44,
-    "range_pos": 51.7,
-    "dd_from_hi60": -7.8,
-    "vol_ratio_5": 0.82,
-    "vol_ratio_20": 0.77,
-    "chg_pct": 0.67,
+    "range_pos": 58.2,
+    "dd_from_hi60": -6.1,
+    "vol_ratio_5": 0.89,
+    "vol_ratio_20": 0.81,
+    "chg_pct": 0.04,
     "vol_price_state": "缩量上涨·动能衰减",
     "vol_price_level": "warn",
     "vol_price_diverge": false,
     "flow_aligned": true,
     "resistance": [
      {
-      "price": 1888.43,
+      "price": 1866.9,
       "src": "斐波61.8%"
      },
      {
-      "price": 1926.66,
-      "src": "上方EMA60"
+      "price": 1893.7,
+      "src": "上方EMA20"
      },
      {
-      "price": 1964.49,
-      "src": "近20日高点"
+      "price": 1924.36,
+      "src": "上方EMA60"
      }
     ],
     "support": [
-     {
-      "price": 1850.24,
-      "src": "斐波50%"
-     },
      {
       "price": 1834.11,
       "src": "近20日低点"
      },
      {
-      "price": 1812.06,
+      "price": 1798.75,
       "src": "斐波38.2%"
+     },
+     {
+      "price": 1688.44,
+      "src": "近60日低点"
      }
     ]
    }
@@ -919,19 +920,19 @@
   {
    "sector": "公用事业",
    "level": "L2",
-   "why": "技术面降档：破位（收盘 < EMA20 2458.95，EMA 0/7）",
+   "why": "技术面降档：破位（收盘 < EMA20 2457.43，EMA 0/7）",
    "trend": "downtrend",
    "verdict": "暗线",
    "level_quad": "info",
    "flow_yi": 0.75,
    "flow_pct": 60.0,
    "flow_streak": 1,
-   "news_count": 4,
-   "news_per_day": 0.44,
+   "news_count": 13,
+   "news_per_day": 1.44,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 2425.43,
+    "as_of": "2026-09-30",
+    "close": 2443.03,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -946,22 +947,22 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 2458.95,
-    "ema60": 2490.49,
+    "ema20": 2457.43,
+    "ema60": 2488.94,
     "hi60": 2573.4,
     "lo60": 2390.41,
-    "range_pos": 19.1,
-    "dd_from_hi60": -5.7,
-    "vol_ratio_5": 0.84,
-    "vol_ratio_20": 0.71,
-    "chg_pct": -0.32,
-    "vol_price_state": "缩量回调·洗盘观察",
-    "vol_price_level": "info",
+    "range_pos": 28.8,
+    "dd_from_hi60": -5.1,
+    "vol_ratio_5": 0.88,
+    "vol_ratio_20": 0.72,
+    "chg_pct": 0.73,
+    "vol_price_state": "缩量上涨·动能衰减",
+    "vol_price_level": "warn",
     "vol_price_diverge": false,
-    "flow_aligned": false,
+    "flow_aligned": true,
     "resistance": [
      {
-      "price": 2458.95,
+      "price": 2457.43,
       "src": "上方EMA20"
      },
      {
@@ -975,6 +976,10 @@
     ],
     "support": [
      {
+      "price": 2421.66,
+      "src": "近20日低点"
+     },
+     {
       "price": 2390.41,
       "src": "近60日低点"
      }
@@ -984,19 +989,19 @@
   {
    "sector": "电子",
    "level": "L1",
-   "why": "双冷·资金净流出",
+   "why": "背离·资金净流出",
    "trend": "downtrend",
-   "verdict": "双冷",
-   "level_quad": "mute",
+   "verdict": "背离",
+   "level_quad": "warn",
    "flow_yi": -150.22,
    "flow_pct": 0.0,
    "flow_streak": 0,
-   "news_count": 25,
-   "news_per_day": 2.78,
-   "hot": false,
+   "news_count": 98,
+   "news_per_day": 10.89,
+   "hot": true,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 8424.32,
+    "as_of": "2026-09-30",
+    "close": 8223.61,
     "ema_score": 2,
     "ema_groups": [
      false,
@@ -1011,26 +1016,26 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 8687.76,
-    "ema60": 8867.36,
+    "ema20": 8643.55,
+    "ema60": 8846.25,
     "hi60": 11754.08,
     "lo60": 7574.02,
-    "range_pos": 20.3,
-    "dd_from_hi60": -28.3,
-    "vol_ratio_5": 0.72,
-    "vol_ratio_20": 0.79,
-    "chg_pct": 0.85,
-    "vol_price_state": "缩量上涨·动能衰减",
-    "vol_price_level": "warn",
+    "range_pos": 15.5,
+    "dd_from_hi60": -30.0,
+    "vol_ratio_5": 0.76,
+    "vol_ratio_20": 0.78,
+    "chg_pct": -2.38,
+    "vol_price_state": "缩量回调·洗盘观察",
+    "vol_price_level": "info",
     "vol_price_diverge": false,
-    "flow_aligned": false,
+    "flow_aligned": true,
     "resistance": [
      {
-      "price": 8687.76,
+      "price": 8643.55,
       "src": "上方EMA20"
      },
      {
-      "price": 8867.36,
+      "price": 8846.25,
       "src": "上方EMA60"
      },
      {
@@ -1053,19 +1058,19 @@
   {
    "sector": "计算机",
    "level": "L1",
-   "why": "双冷·资金净流出",
+   "why": "背离·资金净流出",
    "trend": "downtrend",
-   "verdict": "双冷",
-   "level_quad": "mute",
+   "verdict": "背离",
+   "level_quad": "warn",
    "flow_yi": -29.33,
    "flow_pct": 3.3,
    "flow_streak": 0,
-   "news_count": 22,
-   "news_per_day": 2.44,
-   "hot": false,
+   "news_count": 104,
+   "news_per_day": 11.56,
+   "hot": true,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 4233.91,
+    "as_of": "2026-09-30",
+    "close": 4192.48,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -1080,22 +1085,22 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 4339.81,
-    "ema60": 4453.42,
+    "ema20": 4325.78,
+    "ema60": 4444.87,
     "hi60": 4757.86,
     "lo60": 4128.41,
-    "range_pos": 16.8,
-    "dd_from_hi60": -11.0,
-    "vol_ratio_5": 0.83,
-    "vol_ratio_20": 0.85,
-    "chg_pct": 0.94,
-    "vol_price_state": "缩量上涨·动能衰减",
-    "vol_price_level": "warn",
+    "range_pos": 10.2,
+    "dd_from_hi60": -11.9,
+    "vol_ratio_5": 0.78,
+    "vol_ratio_20": 0.78,
+    "chg_pct": -0.98,
+    "vol_price_state": "缩量回调·洗盘观察",
+    "vol_price_level": "info",
     "vol_price_diverge": false,
-    "flow_aligned": false,
+    "flow_aligned": true,
     "resistance": [
      {
-      "price": 4339.81,
+      "price": 4325.78,
       "src": "上方EMA20"
      },
      {
@@ -1129,12 +1134,12 @@
    "flow_yi": -18.76,
    "flow_pct": 6.7,
    "flow_streak": 0,
-   "news_count": 3,
-   "news_per_day": 0.33,
+   "news_count": 11,
+   "news_per_day": 1.22,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 2099.01,
+    "as_of": "2026-09-30",
+    "close": 2080.16,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -1149,38 +1154,34 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 2186.54,
-    "ema60": 2240.54,
-    "hi60": 2585.37,
+    "ema20": 2176.41,
+    "ema60": 2235.28,
+    "hi60": 2540.91,
     "lo60": 1936.03,
-    "range_pos": 25.1,
-    "dd_from_hi60": -18.8,
-    "vol_ratio_5": 0.85,
-    "vol_ratio_20": 0.83,
-    "chg_pct": 0.13,
-    "vol_price_state": "缩量上涨·动能衰减",
-    "vol_price_level": "warn",
+    "range_pos": 23.8,
+    "dd_from_hi60": -18.1,
+    "vol_ratio_5": 0.8,
+    "vol_ratio_20": 0.78,
+    "chg_pct": -0.9,
+    "vol_price_state": "缩量回调·洗盘观察",
+    "vol_price_level": "info",
     "vol_price_diverge": false,
-    "flow_aligned": false,
+    "flow_aligned": true,
     "resistance": [
      {
-      "price": 2184.08,
+      "price": 2167.09,
       "src": "斐波38.2%"
      },
      {
-      "price": 2240.54,
+      "price": 2235.28,
       "src": "上方EMA60"
      },
      {
-      "price": 2260.7,
-      "src": "斐波50%"
+      "price": 2262.54,
+      "src": "近20日高点"
      }
     ],
     "support": [
-     {
-      "price": 2083.53,
-      "src": "近20日低点"
-     },
      {
       "price": 1936.03,
       "src": "近60日低点"
@@ -1198,12 +1199,12 @@
    "flow_yi": -13.85,
    "flow_pct": 10.0,
    "flow_streak": 0,
-   "news_count": 9,
-   "news_per_day": 1.0,
+   "news_count": 40,
+   "news_per_day": 4.44,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 668.1,
+    "as_of": "2026-09-30",
+    "close": 664.55,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -1218,31 +1219,31 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 680.17,
-    "ema60": 688.22,
+    "ema20": 678.68,
+    "ema60": 687.44,
     "hi60": 731.5,
     "lo60": 607.35,
-    "range_pos": 48.9,
-    "dd_from_hi60": -8.7,
-    "vol_ratio_5": 0.95,
-    "vol_ratio_20": 0.86,
-    "chg_pct": 1.85,
-    "vol_price_state": "平量整理",
-    "vol_price_level": "mute",
+    "range_pos": 46.1,
+    "dd_from_hi60": -9.2,
+    "vol_ratio_5": 0.8,
+    "vol_ratio_20": 0.74,
+    "chg_pct": -0.53,
+    "vol_price_state": "缩量回调·洗盘观察",
+    "vol_price_level": "info",
     "vol_price_diverge": false,
-    "flow_aligned": false,
+    "flow_aligned": true,
     "resistance": [
      {
-      "price": 680.17,
+      "price": 669.42,
+      "src": "斐波50%"
+     },
+     {
+      "price": 678.68,
       "src": "上方EMA20"
      },
      {
       "price": 684.07,
       "src": "斐波61.8%"
-     },
-     {
-      "price": 688.22,
-      "src": "上方EMA60"
      }
     ],
     "support": [
@@ -1267,12 +1268,12 @@
    "flow_yi": -10.01,
    "flow_pct": 13.3,
    "flow_streak": 0,
-   "news_count": 1,
-   "news_per_day": 0.11,
+   "news_count": 3,
+   "news_per_day": 0.33,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 4105.54,
+    "as_of": "2026-09-30",
+    "close": 4119.76,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -1287,31 +1288,31 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 4270.6,
-    "ema60": 4354.04,
-    "hi60": 4714.84,
+    "ema20": 4256.23,
+    "ema60": 4346.36,
+    "hi60": 4578.75,
     "lo60": 3857.7,
-    "range_pos": 28.9,
-    "dd_from_hi60": -12.9,
-    "vol_ratio_5": 0.74,
-    "vol_ratio_20": 0.63,
-    "chg_pct": -0.25,
-    "vol_price_state": "缩量回调·洗盘观察",
-    "vol_price_level": "info",
+    "range_pos": 36.3,
+    "dd_from_hi60": -10.0,
+    "vol_ratio_5": 0.8,
+    "vol_ratio_20": 0.65,
+    "chg_pct": 0.35,
+    "vol_price_state": "缩量上涨·动能衰减",
+    "vol_price_level": "warn",
     "vol_price_diverge": false,
-    "flow_aligned": true,
+    "flow_aligned": false,
     "resistance": [
      {
-      "price": 4185.13,
+      "price": 4133.14,
       "src": "斐波38.2%"
      },
      {
-      "price": 4270.6,
-      "src": "上方EMA20"
+      "price": 4218.23,
+      "src": "斐波50%"
      },
      {
-      "price": 4354.04,
-      "src": "上方EMA60"
+      "price": 4256.23,
+      "src": "上方EMA20"
      }
     ],
     "support": [
@@ -1336,12 +1337,12 @@
    "flow_yi": -7.26,
    "flow_pct": 16.7,
    "flow_streak": 0,
-   "news_count": 10,
-   "news_per_day": 1.11,
+   "news_count": 32,
+   "news_per_day": 3.56,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 6849.87,
+    "as_of": "2026-09-30",
+    "close": 6807.58,
     "ema_score": 1,
     "ema_groups": [
      false,
@@ -1356,30 +1357,30 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 7276.6,
-    "ema60": 7414.22,
+    "ema20": 7231.93,
+    "ema60": 7394.33,
     "hi60": 8869.75,
     "lo60": 5988.72,
-    "range_pos": 29.9,
-    "dd_from_hi60": -22.8,
-    "vol_ratio_5": 0.79,
-    "vol_ratio_20": 0.76,
-    "chg_pct": 0.1,
-    "vol_price_state": "缩量上涨·动能衰减",
-    "vol_price_level": "warn",
+    "range_pos": 28.4,
+    "dd_from_hi60": -23.2,
+    "vol_ratio_5": 0.73,
+    "vol_ratio_20": 0.66,
+    "chg_pct": -0.62,
+    "vol_price_state": "缩量回调·洗盘观察",
+    "vol_price_level": "info",
     "vol_price_diverge": false,
-    "flow_aligned": false,
+    "flow_aligned": true,
     "resistance": [
      {
       "price": 7089.27,
       "src": "斐波38.2%"
      },
      {
-      "price": 7276.6,
+      "price": 7231.93,
       "src": "上方EMA20"
      },
      {
-      "price": 7414.22,
+      "price": 7394.33,
       "src": "上方EMA60"
      }
     ],
@@ -1398,19 +1399,19 @@
   {
    "sector": "石油石化",
    "level": "L1",
-   "why": "双冷·资金净流出",
+   "why": "背离·资金净流出",
    "trend": "downtrend",
-   "verdict": "双冷",
-   "level_quad": "mute",
+   "verdict": "背离",
+   "level_quad": "warn",
    "flow_yi": -5.1,
    "flow_pct": 20.0,
    "flow_streak": 0,
-   "news_count": 11,
-   "news_per_day": 1.22,
-   "hot": false,
+   "news_count": 89,
+   "news_per_day": 9.89,
+   "hot": true,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 2665.83,
+    "as_of": "2026-09-30",
+    "close": 2677.3,
     "ema_score": 4,
     "ema_groups": [
      false,
@@ -1425,26 +1426,26 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 2718.25,
-    "ema60": 2695.85,
+    "ema20": 2714.35,
+    "ema60": 2695.24,
     "hi60": 2906.86,
     "lo60": 2356.86,
-    "range_pos": 56.2,
-    "dd_from_hi60": -8.3,
-    "vol_ratio_5": 0.92,
-    "vol_ratio_20": 0.75,
-    "chg_pct": -1.66,
-    "vol_price_state": "平量整理",
-    "vol_price_level": "mute",
+    "range_pos": 58.3,
+    "dd_from_hi60": -7.9,
+    "vol_ratio_5": 0.81,
+    "vol_ratio_20": 0.64,
+    "chg_pct": 0.43,
+    "vol_price_state": "缩量上涨·动能衰减",
+    "vol_price_level": "warn",
     "vol_price_diverge": false,
-    "flow_aligned": true,
+    "flow_aligned": false,
     "resistance": [
      {
-      "price": 2695.85,
+      "price": 2695.24,
       "src": "上方EMA60"
      },
      {
-      "price": 2718.25,
+      "price": 2714.35,
       "src": "上方EMA20"
      },
      {
@@ -1482,9 +1483,9 @@
    "news_per_day": 0.0,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 5799.94,
-    "ema_score": 1,
+    "as_of": "2026-09-30",
+    "close": 5796.95,
+    "ema_score": 0,
     "ema_groups": [
      false,
      false,
@@ -1492,37 +1493,37 @@
      false,
      false,
      false,
-     true
+     false
     ],
     "ema_strong": false,
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 5998.34,
-    "ema60": 6107.36,
-    "hi60": 7263.51,
+    "ema20": 5979.16,
+    "ema60": 6097.18,
+    "hi60": 7057.46,
     "lo60": 5372.11,
-    "range_pos": 22.6,
-    "dd_from_hi60": -20.1,
-    "vol_ratio_5": 0.68,
-    "vol_ratio_20": 0.74,
-    "chg_pct": 1.01,
-    "vol_price_state": "缩量上涨·动能衰减",
-    "vol_price_level": "warn",
+    "range_pos": 25.2,
+    "dd_from_hi60": -17.9,
+    "vol_ratio_5": 0.79,
+    "vol_ratio_20": 0.78,
+    "chg_pct": -0.05,
+    "vol_price_state": "缩量回调·洗盘观察",
+    "vol_price_level": "info",
     "vol_price_diverge": false,
-    "flow_aligned": false,
+    "flow_aligned": true,
     "resistance": [
      {
-      "price": 5998.34,
+      "price": 5979.16,
       "src": "上方EMA20"
      },
      {
-      "price": 6094.62,
+      "price": 6015.91,
       "src": "斐波38.2%"
      },
      {
-      "price": 6317.81,
-      "src": "斐波50%"
+      "price": 6097.18,
+      "src": "上方EMA60"
      }
     ],
     "support": [
@@ -1547,12 +1548,12 @@
    "flow_yi": -4.41,
    "flow_pct": 26.7,
    "flow_streak": 0,
-   "news_count": 6,
-   "news_per_day": 0.67,
+   "news_count": 32,
+   "news_per_day": 3.56,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 1994.39,
+    "as_of": "2026-09-30",
+    "close": 2007.7,
     "ema_score": 3,
     "ema_groups": [
      true,
@@ -1567,15 +1568,15 @@
     "ema_perfect": false,
     "ma_bullish": true,
     "above_ema20": true,
-    "ema20": 1912.1,
-    "ema60": 1904.39,
+    "ema20": 1921.21,
+    "ema60": 1907.78,
     "hi60": 2046.13,
     "lo60": 1733.31,
-    "range_pos": 83.5,
-    "dd_from_hi60": -2.5,
-    "vol_ratio_5": 1.1,
-    "vol_ratio_20": 1.53,
-    "chg_pct": 4.06,
+    "range_pos": 87.7,
+    "dd_from_hi60": -1.9,
+    "vol_ratio_5": 1.43,
+    "vol_ratio_20": 2.0,
+    "chg_pct": 0.67,
     "vol_price_state": "放量上涨·健康推进",
     "vol_price_level": "up",
     "vol_price_diverge": false,
@@ -1596,8 +1597,8 @@
       "src": "斐波61.8%"
      },
      {
-      "price": 1912.1,
-      "src": "EMA20支撑"
+      "price": 1907.78,
+      "src": "EMA60支撑"
      },
      {
       "price": 1889.72,
@@ -1609,19 +1610,19 @@
   {
    "sector": "国防军工",
    "level": "L1",
-   "why": "双冷·资金净流出",
+   "why": "背离·资金净流出",
    "trend": "downtrend",
-   "verdict": "双冷",
-   "level_quad": "mute",
+   "verdict": "背离",
+   "level_quad": "warn",
    "flow_yi": -4.32,
    "flow_pct": 30.0,
    "flow_streak": 0,
-   "news_count": 22,
-   "news_per_day": 2.44,
-   "hot": false,
+   "news_count": 76,
+   "news_per_day": 8.44,
+   "hot": true,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 1617.76,
+    "as_of": "2026-09-30",
+    "close": 1617.28,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -1636,30 +1637,30 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 1663.5,
-    "ema60": 1687.3,
+    "ema20": 1659.09,
+    "ema60": 1685.0,
     "hi60": 1910.99,
     "lo60": 1483.44,
-    "range_pos": 31.4,
-    "dd_from_hi60": -15.3,
-    "vol_ratio_5": 0.77,
-    "vol_ratio_20": 0.69,
-    "chg_pct": 0.14,
-    "vol_price_state": "缩量上涨·动能衰减",
-    "vol_price_level": "warn",
+    "range_pos": 31.3,
+    "dd_from_hi60": -15.4,
+    "vol_ratio_5": 0.75,
+    "vol_ratio_20": 0.64,
+    "chg_pct": -0.03,
+    "vol_price_state": "缩量回调·洗盘观察",
+    "vol_price_level": "info",
     "vol_price_diverge": false,
-    "flow_aligned": false,
+    "flow_aligned": true,
     "resistance": [
      {
       "price": 1646.76,
       "src": "斐波38.2%"
      },
      {
-      "price": 1663.5,
+      "price": 1659.09,
       "src": "上方EMA20"
      },
      {
-      "price": 1687.3,
+      "price": 1685.0,
       "src": "上方EMA60"
      }
     ],
@@ -1689,8 +1690,8 @@
    "news_per_day": 0.0,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 1499.55,
+    "as_of": "2026-09-30",
+    "close": 1496.05,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -1705,30 +1706,30 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 1522.49,
-    "ema60": 1532.73,
+    "ema20": 1519.97,
+    "ema60": 1531.52,
     "hi60": 1581.81,
     "lo60": 1364.64,
-    "range_pos": 62.1,
-    "dd_from_hi60": -5.2,
-    "vol_ratio_5": 0.74,
-    "vol_ratio_20": 0.8,
-    "chg_pct": 0.26,
-    "vol_price_state": "缩量上涨·动能衰减",
-    "vol_price_level": "warn",
+    "range_pos": 60.5,
+    "dd_from_hi60": -5.4,
+    "vol_ratio_5": 0.83,
+    "vol_ratio_20": 0.84,
+    "chg_pct": -0.23,
+    "vol_price_state": "缩量回调·洗盘观察",
+    "vol_price_level": "info",
     "vol_price_diverge": false,
-    "flow_aligned": false,
+    "flow_aligned": true,
     "resistance": [
      {
-      "price": 1522.49,
+      "price": 1519.97,
       "src": "上方EMA20"
      },
      {
-      "price": 1532.73,
+      "price": 1531.52,
       "src": "上方EMA60"
      },
      {
-      "price": 1581.81,
+      "price": 1581.75,
       "src": "近20日高点"
      }
     ],
@@ -1758,12 +1759,12 @@
    "flow_yi": -2.1,
    "flow_pct": 36.7,
    "flow_streak": 0,
-   "news_count": 3,
-   "news_per_day": 0.33,
+   "news_count": 35,
+   "news_per_day": 3.89,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 1671.26,
+    "as_of": "2026-09-30",
+    "close": 1682.48,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -1778,26 +1779,26 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 1728.6,
-    "ema60": 1751.96,
+    "ema20": 1724.21,
+    "ema60": 1749.68,
     "hi60": 1836.49,
     "lo60": 1667.83,
-    "range_pos": 2.0,
-    "dd_from_hi60": -9.0,
-    "vol_ratio_5": 0.72,
-    "vol_ratio_20": 0.6,
-    "chg_pct": 0.0,
+    "range_pos": 8.7,
+    "dd_from_hi60": -8.4,
+    "vol_ratio_5": 0.73,
+    "vol_ratio_20": 0.57,
+    "chg_pct": 0.67,
     "vol_price_state": "缩量上涨·动能衰减",
     "vol_price_level": "warn",
     "vol_price_diverge": false,
     "flow_aligned": false,
     "resistance": [
      {
-      "price": 1728.6,
+      "price": 1724.21,
       "src": "上方EMA20"
      },
      {
-      "price": 1751.96,
+      "price": 1749.68,
       "src": "上方EMA60"
      },
      {
@@ -1827,8 +1828,8 @@
    "news_per_day": 0.0,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 1896.13,
+    "as_of": "2026-09-30",
+    "close": 1905.08,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -1843,34 +1844,38 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 1937.62,
-    "ema60": 1968.5,
-    "hi60": 2020.43,
+    "ema20": 1934.52,
+    "ema60": 1966.42,
+    "hi60": 2019.56,
     "lo60": 1822.46,
-    "range_pos": 37.2,
-    "dd_from_hi60": -6.2,
-    "vol_ratio_5": 0.78,
-    "vol_ratio_20": 0.74,
-    "chg_pct": 0.77,
-    "vol_price_state": "缩量上涨·动能衰减",
-    "vol_price_level": "warn",
+    "range_pos": 41.9,
+    "dd_from_hi60": -5.7,
+    "vol_ratio_5": 0.98,
+    "vol_ratio_20": 0.89,
+    "chg_pct": 0.47,
+    "vol_price_state": "平量整理",
+    "vol_price_level": "mute",
     "vol_price_diverge": false,
     "flow_aligned": false,
     "resistance": [
      {
-      "price": 1921.45,
+      "price": 1921.01,
       "src": "斐波50%"
      },
      {
-      "price": 1937.62,
+      "price": 1934.52,
       "src": "上方EMA20"
      },
      {
-      "price": 1968.5,
-      "src": "上方EMA60"
+      "price": 1944.27,
+      "src": "斐波61.8%"
      }
     ],
     "support": [
+     {
+      "price": 1897.75,
+      "src": "斐波38.2%"
+     },
      {
       "price": 1877.19,
       "src": "近20日低点"
@@ -1892,12 +1897,12 @@
    "flow_yi": -1.03,
    "flow_pct": 43.3,
    "flow_streak": 0,
-   "news_count": 0,
-   "news_per_day": 0.0,
+   "news_count": 2,
+   "news_per_day": 0.22,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 3301.28,
+    "as_of": "2026-09-30",
+    "close": 3329.36,
     "ema_score": 4,
     "ema_groups": [
      false,
@@ -1912,36 +1917,36 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 3345.21,
-    "ema60": 3292.8,
+    "ema20": 3343.7,
+    "ema60": 3294.0,
     "hi60": 3623.18,
     "lo60": 2923.0,
-    "range_pos": 54.0,
-    "dd_from_hi60": -8.9,
-    "vol_ratio_5": 0.99,
-    "vol_ratio_20": 0.8,
-    "chg_pct": -1.34,
-    "vol_price_state": "平量整理",
-    "vol_price_level": "mute",
+    "range_pos": 58.0,
+    "dd_from_hi60": -8.1,
+    "vol_ratio_5": 0.78,
+    "vol_ratio_20": 0.65,
+    "chg_pct": 0.85,
+    "vol_price_state": "缩量上涨·动能衰减",
+    "vol_price_level": "warn",
     "vol_price_diverge": false,
-    "flow_aligned": true,
+    "flow_aligned": false,
     "resistance": [
      {
-      "price": 3345.21,
+      "price": 3343.7,
       "src": "上方EMA20"
      },
      {
-      "price": 3623.18,
+      "price": 3561.07,
       "src": "近20日高点"
      },
      {
-      "price": 4055.89,
-      "src": "斐波161.8%延伸"
+      "price": 3623.18,
+      "src": "近60日高点"
      }
     ],
     "support": [
      {
-      "price": 3292.8,
+      "price": 3294.0,
       "src": "EMA60支撑"
      },
      {
@@ -1959,43 +1964,43 @@
    "sector": "银行",
    "level": "L1",
    "why": "双冷·资金净流出",
-   "trend": "downtrend_rebound",
+   "trend": "uptrend",
    "verdict": "双冷",
    "level_quad": "mute",
    "flow_yi": -0.87,
    "flow_pct": 46.7,
    "flow_streak": 0,
-   "news_count": 13,
-   "news_per_day": 1.44,
+   "news_count": 42,
+   "news_per_day": 4.67,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 4142.94,
-    "ema_score": 3,
+    "as_of": "2026-09-30",
+    "close": 4203.77,
+    "ema_score": 5,
     "ema_groups": [
-     false,
-     false,
+     true,
+     true,
      true,
      true,
      true,
      false,
      false
     ],
-    "ema_strong": false,
+    "ema_strong": true,
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": true,
-    "ema20": 4138.32,
-    "ema60": 4066.12,
+    "ema20": 4144.55,
+    "ema60": 4070.63,
     "hi60": 4259.01,
-    "lo60": 3766.26,
-    "range_pos": 76.4,
-    "dd_from_hi60": -2.7,
-    "vol_ratio_5": 1.06,
-    "vol_ratio_20": 0.87,
-    "chg_pct": 0.23,
-    "vol_price_state": "平量整理",
-    "vol_price_level": "mute",
+    "lo60": 3766.4,
+    "range_pos": 88.8,
+    "dd_from_hi60": -1.3,
+    "vol_ratio_5": 1.1,
+    "vol_ratio_20": 0.95,
+    "chg_pct": 1.47,
+    "vol_price_state": "放量上涨·健康推进",
+    "vol_price_level": "up",
     "vol_price_diverge": false,
     "flow_aligned": false,
     "resistance": [
@@ -2004,22 +2009,22 @@
       "src": "近20日高点"
      },
      {
-      "price": 4563.53,
+      "price": 4563.44,
       "src": "斐波161.8%延伸"
      }
     ],
     "support": [
      {
-      "price": 4097.69,
+      "price": 4144.55,
+      "src": "EMA20支撑"
+     },
+     {
+      "price": 4111.16,
       "src": "近20日低点"
      },
      {
-      "price": 4070.78,
+      "price": 4070.83,
       "src": "斐波61.8%"
-     },
-     {
-      "price": 4012.64,
-      "src": "斐波50%"
      }
     ]
    }
@@ -2038,13 +2043,13 @@
    "news_per_day": 0.0,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 7252.81,
-    "ema_score": 1,
+    "as_of": "2026-09-30",
+    "close": 7232.67,
+    "ema_score": 0,
     "ema_groups": [
      false,
      false,
-     true,
+     false,
      false,
      false,
      false,
@@ -2054,23 +2059,23 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 7401.15,
-    "ema60": 7401.11,
+    "ema20": 7385.1,
+    "ema60": 7395.59,
     "hi60": 7748.19,
     "lo60": 6417.63,
-    "range_pos": 62.8,
-    "dd_from_hi60": -6.4,
-    "vol_ratio_5": 0.69,
-    "vol_ratio_20": 0.6,
-    "chg_pct": 0.13,
-    "vol_price_state": "缩量上涨·动能衰减",
-    "vol_price_level": "warn",
+    "range_pos": 61.3,
+    "dd_from_hi60": -6.7,
+    "vol_ratio_5": 0.73,
+    "vol_ratio_20": 0.59,
+    "chg_pct": -0.28,
+    "vol_price_state": "缩量回调·洗盘观察",
+    "vol_price_level": "info",
     "vol_price_diverge": false,
-    "flow_aligned": false,
+    "flow_aligned": true,
     "resistance": [
      {
-      "price": 7401.11,
-      "src": "上方EMA60"
+      "price": 7385.1,
+      "src": "上方EMA20"
      },
      {
       "price": 7748.19,
@@ -2111,8 +2116,8 @@
    "news_per_day": 0.0,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 8385.5,
+    "as_of": "2026-09-30",
+    "close": 8337.71,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -2127,36 +2132,36 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 8531.5,
-    "ema60": 8603.74,
+    "ema20": 8513.04,
+    "ema60": 8595.02,
     "hi60": 8792.13,
-    "lo60": 8320.66,
-    "range_pos": 13.8,
-    "dd_from_hi60": -4.6,
-    "vol_ratio_5": 0.87,
-    "vol_ratio_20": 0.84,
-    "chg_pct": -0.24,
+    "lo60": 8317.39,
+    "range_pos": 4.3,
+    "dd_from_hi60": -5.2,
+    "vol_ratio_5": 0.83,
+    "vol_ratio_20": 0.78,
+    "chg_pct": -0.57,
     "vol_price_state": "缩量回调·洗盘观察",
     "vol_price_level": "info",
     "vol_price_diverge": false,
     "flow_aligned": true,
     "resistance": [
      {
-      "price": 8500.76,
+      "price": 8498.74,
       "src": "斐波38.2%"
      },
      {
-      "price": 8556.4,
+      "price": 8554.76,
       "src": "斐波50%"
      },
      {
-      "price": 8603.74,
-      "src": "上方EMA60"
+      "price": 8610.78,
+      "src": "斐波61.8%"
      }
     ],
     "support": [
      {
-      "price": 8351.52,
+      "price": 8317.39,
       "src": "近20日低点"
      }
     ]
@@ -2172,12 +2177,12 @@
    "flow_yi": -0.08,
    "flow_pct": 56.7,
    "flow_streak": 0,
-   "news_count": 0,
-   "news_per_day": 0.0,
+   "news_count": 1,
+   "news_per_day": 0.11,
    "hot": false,
    "tech": {
-    "as_of": "2026-09-29",
-    "close": 2099.81,
+    "as_of": "2026-09-30",
+    "close": 2125.77,
     "ema_score": 0,
     "ema_groups": [
      false,
@@ -2192,15 +2197,15 @@
     "ema_perfect": false,
     "ma_bullish": false,
     "above_ema20": false,
-    "ema20": 2158.02,
-    "ema60": 2210.7,
+    "ema20": 2154.95,
+    "ema60": 2207.92,
     "hi60": 2259.43,
     "lo60": 2051.99,
-    "range_pos": 23.1,
-    "dd_from_hi60": -7.1,
-    "vol_ratio_5": 0.81,
-    "vol_ratio_20": 0.81,
-    "chg_pct": 0.74,
+    "range_pos": 35.6,
+    "dd_from_hi60": -5.9,
+    "vol_ratio_5": 0.88,
+    "vol_ratio_20": 0.87,
+    "chg_pct": 1.24,
     "vol_price_state": "缩量上涨·动能衰减",
     "vol_price_level": "warn",
     "vol_price_diverge": false,
@@ -2211,8 +2216,8 @@
       "src": "斐波38.2%"
      },
      {
-      "price": 2155.71,
-      "src": "斐波50%"
+      "price": 2154.95,
+      "src": "上方EMA20"
      },
      {
       "price": 2180.19,
@@ -2232,7 +2237,5 @@
    }
   }
  ],
- "missing": [
-  "K 线源（申万宏源官网 · akshare index_hist_sw）预探末条 2026-09-29 < 数据日 2026-09-30（源未发布）；本地缓存末条 2026-09-29 已与源齐平 → 已跳过 31 次逐只抓取（抓取零收益），复用本地缓存"
- ]
+ "missing": []
 }
