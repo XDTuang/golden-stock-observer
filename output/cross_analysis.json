@@ -1,63 +1,42 @@
 {
   "date": "2026-10-08",
-  "data_date": "2026-09-30",
-  "generated_at": "2026-10-08 22:21",
+  "data_date": "2026-10-08",
+  "generated_at": "2026-10-08 22:02",
   "news_date": "",
   "news_window": [
-    "2026-09-30",
-    "2026-10-01",
-    "2026-10-02",
-    "2026-10-03",
-    "2026-10-04",
-    "2026-10-05",
-    "2026-10-06",
-    "2026-10-07",
-    "2026-10-08"
+    "2026-10-08",
+    "2026-10-09"
   ],
-  "news_window_days": 9,
+  "news_window_days": 2,
   "flow_date": "2026-10-08",
   "flow_raw_latest": "2026-10-08",
   "flow_is_weekend_copy": false,
   "hot_per_day": 8,
-  "hot_threshold": 72,
+  "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-10-08 08:30",
-    "session": "preopen",
-    "data_date": "2026-09-30",
-    "for_date": "2026-10-08",
+    "generated_at": "2026-10-08 22:02",
+    "session": "close",
+    "data_date": "2026-10-08",
+    "for_date": "2026-10-09",
     "data_date_note": "",
     "warnings": [],
     "span": [
-      "2026-10-01",
-      "2026-10-02",
-      "2026-10-03",
-      "2026-10-04",
-      "2026-10-05",
-      "2026-10-06",
-      "2026-10-07",
-      "2026-10-08"
+      "2026-10-09"
     ],
-    "span_days": 8,
+    "span_days": 1,
     "display_days": [
-      "2026-09-30",
-      "2026-10-01",
-      "2026-10-02",
-      "2026-10-03",
-      "2026-10-04",
-      "2026-10-05",
-      "2026-10-06",
-      "2026-10-07",
-      "2026-10-08"
+      "2026-10-08",
+      "2026-10-09"
     ],
-    "display_text": "09/30–10/08",
-    "span_is_weekend_cross": true,
-    "span_text": "10/01–10/08",
+    "display_text": "10/08 + 10/09",
+    "span_is_weekend_cross": false,
+    "span_text": "10/09",
     "carry": {
-      "from_data_date": "2026-09-30",
-      "ref": "output/feed_review_2026-09-30.json",
+      "from_data_date": "2026-10-08",
+      "ref": "output/feed_review_2026-10-08.json",
       "exists": true,
-      "gap_days": 8,
+      "gap_days": 1,
       "stale": false,
       "bias": "偏多",
       "bias_score": 2,
@@ -68,167 +47,106 @@
       "headline": ""
     },
     "layers": {
-      "base": "2026-09-30 A股收盘（基准层）",
-      "overnight": "美东 2026-09-30 收盘（北京 2026-10-01 早间到达）",
-      "premarket": "2026-10-08 今早日韩实时 + 盘前新闻/投喂增量"
+      "base": "2026-10-08 A股收盘（基准层）",
+      "overnight": "美东 2026-10-08 收盘（北京 2026-10-09 早间到达）",
+      "premarket": "2026-10-09 今早日韩实时 + 盘前新闻/投喂增量"
     },
     "market_state": {
-      "date": "2026-09-30",
+      "date": "2026-10-08",
       "run_date": "2026-10-08",
-      "preopen_partial": true,
+      "preopen_partial": null,
       "us_kline": true,
       "asia": true
     },
     "covered": [
       {
-        "date": "2026-09-30",
-        "weekday": "周三",
-        "is_trading_day": true,
-        "news": 299,
-        "feeds": 0,
-        "reports": 704,
-        "macro": true
-      },
-      {
-        "date": "2026-10-01",
-        "weekday": "周四",
-        "is_trading_day": false,
-        "news": 299,
-        "feeds": 0,
-        "reports": 176,
-        "macro": true
-      },
-      {
-        "date": "2026-10-02",
-        "weekday": "周五",
-        "is_trading_day": false,
-        "news": 301,
-        "feeds": 0,
-        "reports": 178,
-        "macro": true
-      },
-      {
-        "date": "2026-10-03",
-        "weekday": "周六",
-        "is_trading_day": false,
-        "news": 0,
-        "feeds": 0,
-        "reports": 98,
-        "macro": false
-      },
-      {
-        "date": "2026-10-04",
-        "weekday": "周日",
-        "is_trading_day": false,
-        "news": 0,
-        "feeds": 0,
-        "reports": 130,
-        "macro": false
-      },
-      {
-        "date": "2026-10-05",
-        "weekday": "周一",
-        "is_trading_day": false,
-        "news": 0,
-        "feeds": 0,
-        "reports": 206,
-        "macro": false
-      },
-      {
-        "date": "2026-10-06",
-        "weekday": "周二",
-        "is_trading_day": false,
-        "news": 286,
-        "feeds": 0,
-        "reports": 352,
-        "macro": true
-      },
-      {
-        "date": "2026-10-07",
-        "weekday": "周三",
-        "is_trading_day": false,
-        "news": 297,
-        "feeds": 0,
-        "reports": 697,
-        "macro": true
-      },
-      {
         "date": "2026-10-08",
         "weekday": "周四",
         "is_trading_day": true,
-        "news": 277,
+        "news": 301,
         "feeds": 0,
-        "reports": 46,
+        "reports": 902,
         "macro": true
+      },
+      {
+        "date": "2026-10-09",
+        "weekday": "周五",
+        "is_trading_day": true,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
       }
     ],
     "totals": {
-      "news": 1759,
+      "news": 301,
       "feeds": 0,
-      "reports": 2587,
-      "covered_days": 9
+      "reports": 902,
+      "covered_days": 2
     },
-    "missing": []
+    "missing": [
+      "market_thermometer.json 数据日 2026-09-30 落后于基准日 2026-10-08"
+    ]
   },
   "index_context": {
     "上证指数": {
-      "close": "3842.19",
-      "chg_pct": "0.31"
+      "close": "3811.90",
+      "chg_pct": "-0.79"
     },
     "深证成指": {
-      "close": "12887.62",
-      "chg_pct": "-0.11"
+      "close": "12620.90",
+      "chg_pct": "-2.07"
     },
     "创业板指": {
-      "close": "3135.28",
-      "chg_pct": "-0.23"
+      "close": "3036.66",
+      "chg_pct": "-3.15"
     },
     "科创50": {
-      "close": "1530.01",
-      "chg_pct": "-2.51"
+      "close": "1456.32",
+      "chg_pct": "-4.82"
     }
   },
   "summary": {
-    "共振": 2,
-    "背离": 2,
-    "暗线": 10,
-    "双冷": 17
+    "共振": 0,
+    "背离": 3,
+    "暗线": 12,
+    "双冷": 16
   },
   "items": [
     {
       "sector": "电子",
-      "news_count": 108,
-      "news_per_day": 12.0,
+      "news_count": 25,
+      "news_per_day": 12.5,
       "flow_yi": -233.04,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "费城半导体指数盘初跌幅扩大至2%，Arm(ARM.O)跌4.3%，英特尔(I",
-        "费城半导体指数跌2%",
-        "Meta Platforms(META.O)开跌0.18%，英伟达(NVDA"
+        "金斯瑞与英伟达联合推出生命科学初创企业推介大赛，以推动生物技术创新加速发展。",
+        "【光弘科技：已开始为国内外头部客户提供各类服务算力器板卡、冷却组件等产品的制",
+        "费城半导体指数盘初跌幅扩大至2%，Arm(ARM.O)跌4.3%，英特尔(I"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 37,
-      "news_per_day": 4.11,
+      "news_count": 8,
+      "news_per_day": 4.0,
       "flow_yi": -99.65,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
+        "市场消息：荷兰公司利用人工智能实现乌克兰战场上的无人机通信。",
         "美股三大指数集体低开 光通信板块领跌",
-        "胡塞武装称沙特空袭也门荷台达机场",
-        "东山精密回应光芯片采购限制相关传闻：光模块业务所用光芯片部分为自研自产 整体"
+        "胡塞武装称沙特空袭也门荷台达机场"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 16,
-      "news_per_day": 1.78,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": -50.52,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -242,38 +160,38 @@
     },
     {
       "sector": "计算机",
-      "news_count": 109,
-      "news_per_day": 12.11,
+      "news_count": 20,
+      "news_per_day": 10.0,
       "flow_yi": -42.33,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "  Elastic 推出 AlertZero，一套由专用 AI 智能体组成的",
-        "埃森哲盘中拉升 现涨超5%",
-        "埃森哲盘中拉升，现涨超5%；戴尔科技转涨，此前一度跌超2%。消息面上，公司与"
+        "AT&T与OpenAI达成旗舰合作协议。",
+        "谷歌推出通用型Gemini AI智能体，加码争夺企业办公市场",
+        "【光弘科技：已开始为国内外头部客户提供各类服务算力器板卡、冷却组件等产品的制"
       ]
     },
     {
       "sector": "传媒",
-      "news_count": 46,
-      "news_per_day": 5.11,
+      "news_count": 7,
+      "news_per_day": 3.5,
       "flow_yi": -20.85,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "【星巴克曾洽谈收购Chipotle 拟打造餐饮业重磅并购交易】星巴克曾探讨收",
-        "  星巴克收购 Chipotle 相关计划目前无法核实。",
-        "据英国金融时报：星巴克(SBUX.O)已探讨收购美国连锁快餐企业Chipot"
+        "中证协公布今年第五批IPO现场检查名单 年内累计51家IPO企业被抽中",
+        "8连板新华传媒：如股价进一步异常上涨 可能申请停牌核查",
+        "新华传媒：如公司股价进一步异常上涨可能申请停牌核查"
       ]
     },
     {
       "sector": "非银金融",
-      "news_count": 33,
-      "news_per_day": 3.67,
+      "news_count": 8,
+      "news_per_day": 4.0,
       "flow_yi": -20.61,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -281,14 +199,14 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "我国实施医疗康复护理扩容提升工程",
-        "美国健康保险公司股走弱，Humana跌3.2%，联合健康跌1.5%",
-        "【星巴克曾洽谈收购Chipotle 拟打造餐饮业重磅并购交易】星巴克曾探讨收"
+        "毕马威报告：上半年中国150家证券公司合计实现营收同比增逾三成",
+        "中证协公布今年第五批IPO现场检查名单 年内累计51家IPO企业被抽中"
       ]
     },
     {
       "sector": "医药生物",
-      "news_count": 16,
-      "news_per_day": 1.78,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": -20.61,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -302,8 +220,8 @@
     },
     {
       "sector": "电力设备",
-      "news_count": 18,
-      "news_per_day": 2.0,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": 19.43,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -317,8 +235,8 @@
     },
     {
       "sector": "汽车",
-      "news_count": 65,
-      "news_per_day": 7.22,
+      "news_count": 15,
+      "news_per_day": 7.5,
       "flow_yi": -15.49,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -332,8 +250,8 @@
     },
     {
       "sector": "基础化工",
-      "news_count": 5,
-      "news_per_day": 0.56,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": 11.79,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -347,8 +265,8 @@
     },
     {
       "sector": "公用事业",
-      "news_count": 12,
-      "news_per_day": 1.33,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": 11.57,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -356,22 +274,21 @@
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
         "航宇科技：拟6亿元投建航空发动机燃气轮机用环锻件研发及生产能力提升项目",
-        "长源电力：9月完成发电量32.53亿千瓦时 同比增长18.66%",
-        "Constellation Energy美股盘前涨超10%"
+        "长源电力：9月完成发电量32.53亿千瓦时 同比增长18.66%"
       ]
     },
     {
       "sector": "银行",
-      "news_count": 54,
-      "news_per_day": 6.0,
+      "news_count": 18,
+      "news_per_day": 9.0,
       "flow_yi": -10.95,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
         "中国人民银行今天发布关于人民币汇率的政策立场",
-        "塔塔咨询服务高管：银行业、制造业和生命科学垂直领域在人工智能应用方面处于领先",
+        "房利美报告出售不良贷款。",
         "央行征信管理局迎来新局长，江西省分行原行长陈建新已到任"
       ]
     },
@@ -388,45 +305,41 @@
     },
     {
       "sector": "煤炭",
-      "news_count": 1,
-      "news_per_day": 0.11,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": 7.03,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": [
-        "A股前三季度最牛股票涨逾500%"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "房地产",
-      "news_count": 21,
-      "news_per_day": 2.33,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": -7.01,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "楼市“银十”序幕拉开 国庆二手房咨询量普涨",
-        "科研人员发现特定细菌具有调节胆固醇代谢的功能",
-        "10月7日港股收盘：恒指跌0.62% 恒生科技指数跌0.68%"
+        "楼市“银十”序幕拉开 国庆二手房咨询量普涨"
       ]
     },
     {
       "sector": "石油石化",
-      "news_count": 99,
-      "news_per_day": 11.0,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": 5.87,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
         "国际联播快讯",
-        "美股石油股走高 壳牌涨超3%",
-        "美股石油股走高，壳牌涨超3%，西方石油、埃克森美孚、雪佛龙涨近3%；国际油价"
+        "美股石油股走高，壳牌涨超3%，西方石油、埃克森美孚、雪佛龙涨近3%；国际油价",
+        "德国副总理兼财政部长克林拜尔：石油公司因高能源价格获利。"
       ]
     },
     {
@@ -442,8 +355,8 @@
     },
     {
       "sector": "食品饮料",
-      "news_count": 49,
-      "news_per_day": 5.44,
+      "news_count": 11,
+      "news_per_day": 5.5,
       "flow_yi": -3.93,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -452,7 +365,7 @@
       "sample_titles": [
         "【新思想引领新征程】以人的需求为原点 激活消费大市场",
         "我国加快建立全链条循环经济体系",
-        "【星巴克曾洽谈收购Chipotle 拟打造餐饮业重磅并购交易】星巴克曾探讨收"
+        "坦桑尼亚9月份消费者价格同比上涨4.3%。"
       ]
     },
     {
@@ -479,17 +392,15 @@
     },
     {
       "sector": "交通运输",
-      "news_count": 13,
-      "news_per_day": 1.44,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": 3.34,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "国庆假期全社会跨区域人员流动量日均超3亿人次",
-        "【国家邮政局召开局长办公会议】会议强调，要深入贯彻落实习近平法治思想，坚持科",
-        "国庆假期出行需求旺盛 发展活力持续释放"
+        "国庆假期全社会跨区域人员流动量日均超3亿人次"
       ]
     },
     {
@@ -505,8 +416,8 @@
     },
     {
       "sector": "有色金属",
-      "news_count": 47,
-      "news_per_day": 5.22,
+      "news_count": 8,
+      "news_per_day": 4.0,
       "flow_yi": -3.16,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -514,19 +425,19 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "我国加快建立全链条循环经济体系",
-        "期市夜盘开盘，国内期货主力合约多数下跌，甲醇涨超6%",
-        "国内商品期货夜盘开盘 主力合约多数下跌"
+        "波兰央行行长格拉平斯基：波兰央行持有672吨黄金，目标是将黄金储备提高到70",
+        "印度官员证实已取消贵金属进口税收优惠，金银进口成本上升"
       ]
     },
     {
       "sector": "国防军工",
-      "news_count": 89,
-      "news_per_day": 9.89,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": 2.4,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
         "沙特称摧毁也门胡塞武装82处军事目标 胡塞武装称打击亚丁机场附近沙特目标",
         "美媒称美国防部下令为重启对伊朗行动做好准备",
@@ -546,8 +457,8 @@
     },
     {
       "sector": "农林牧渔",
-      "news_count": 17,
-      "news_per_day": 1.89,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": -1.62,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -555,14 +466,14 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "联合国警告说厄尔尼诺现象将于12月达到顶峰",
-        "*ST广糖：拟4.88亿元出售两家子公司股权",
-        "【在希望的田野上】各地秋粮加紧收获"
+        "美国气象预报机构CPC：发生超过自1950年以来历次厄尔尼诺事件强度的历史性",
+        "*ST广糖：拟4.88亿元出售两家子公司股权"
       ]
     },
     {
       "sector": "综合",
-      "news_count": 21,
-      "news_per_day": 2.33,
+      "news_count": 8,
+      "news_per_day": 4.0,
       "flow_yi": 1.22,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -571,27 +482,26 @@
       "sample_titles": [
         "“伟大的远征”主题展览国庆期间接待观众21万人次",
         "国庆假期全社会跨区域人员流动量日均超3亿人次",
-        "【国家邮政局召开局长办公会议】会议强调，要深入贯彻落实习近平法治思想，坚持科"
+        "沙特民防部门：被拦截弹道导弹的坠落碎片对利雅得一所幼儿园和医疗诊所综合体造成"
       ]
     },
     {
       "sector": "钢铁",
-      "news_count": 2,
-      "news_per_day": 0.22,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": -1.15,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "期市夜盘开盘，国内期货主力合约多数下跌，甲醇涨超6%",
-        "墨西哥对美关税谈判取得进展，有望下调钢铁和汽车关税"
+        "期市夜盘开盘，国内期货主力合约多数下跌，甲醇涨超6%"
       ]
     },
     {
       "sector": "家用电器",
       "news_count": 1,
-      "news_per_day": 0.11,
+      "news_per_day": 0.5,
       "flow_yi": -1.12,
       "verdict": "双冷",
       "verdict_raw": "双冷",
