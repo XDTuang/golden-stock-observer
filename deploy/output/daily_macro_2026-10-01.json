@@ -1,0 +1,345 @@
+{
+  "date": "2026-10-01",
+  "generated_at": "2026-10-01 23:35",
+  "china": {
+    "pmi": {
+      "latest": {
+        "月份": "2026年09月份",
+        "制造业-指数": 50.1,
+        "制造业-同比增长": 0.60240964,
+        "非制造业-指数": 50.2,
+        "非制造业-同比增长": 0.4
+      },
+      "rows": 225
+    },
+    "gdp": {
+      "latest": {
+        "季度": "2026年第1-2季度",
+        "国内生产总值-绝对值": 695704.0,
+        "国内生产总值-同比增长": 4.7,
+        "第一产业-绝对值": 31521.8,
+        "第一产业-同比增长": 3.7,
+        "第二产业-绝对值": 250472.9,
+        "第二产业-同比增长": 3.9,
+        "第三产业-绝对值": 413709.2,
+        "第三产业-同比增长": 5.2
+      },
+      "rows": 82
+    },
+    "cpi": {
+      "latest": {
+        "月份": "2026年08月份",
+        "全国-当月": 100.8,
+        "全国-同比增长": 0.8,
+        "全国-环比增长": 0.4,
+        "全国-累计": 100.9,
+        "城市-当月": 100.8,
+        "城市-同比增长": 0.8,
+        "城市-环比增长": 0.4,
+        "城市-累计": 100.9,
+        "农村-当月": 100.7,
+        "农村-同比增长": 0.7,
+        "农村-环比增长": 0.4,
+        "农村-累计": 100.7
+      },
+      "rows": 224
+    },
+    "lpr": {
+      "latest": {
+        "TRADE_DATE": "2026-09-20",
+        "LPR1Y": 3.0,
+        "LPR5Y": 3.5,
+        "RATE_1": 4.35,
+        "RATE_2": 4.9
+      },
+      "rows": 1576
+    }
+  },
+  "us": {
+    "note": "主源=百度经济日历(带公布日/预期/前值)；兜底=新闻抽取(近 7 日)",
+    "calendar": {
+      "source": "百度经济日历 news_economic_baidu",
+      "window_days": 7,
+      "lookback_days": 30,
+      "lookback_used_to": "2026-09-04",
+      "days_fetched": 28,
+      "as_of": "2026-10-01 23:35",
+      "indicators": {
+        "CPI 同比": [
+          {
+            "event": "美国8月CPI年率未季调(%)",
+            "value": "3.4",
+            "forecast": "3.4",
+            "previous": "3.4",
+            "importance": 2,
+            "release_date": "2026-09-11",
+            "release_time": "20:30",
+            "days_ago": 20,
+            "is_fresh": false
+          }
+        ],
+        "核心 CPI": [
+          {
+            "event": "美国8月核心CPI年率未季调(%)",
+            "value": "2.4",
+            "forecast": "2.4",
+            "previous": "2.5",
+            "importance": 2,
+            "release_date": "2026-09-11",
+            "release_time": "20:30",
+            "days_ago": 20,
+            "is_fresh": false
+          }
+        ],
+        "CPI 月率": [
+          {
+            "event": "美国8月CPI月率季调后(%)",
+            "value": "0.4",
+            "forecast": "0.4",
+            "previous": "0.1",
+            "importance": 1,
+            "release_date": "2026-09-11",
+            "release_time": "20:30",
+            "days_ago": 20,
+            "is_fresh": false
+          }
+        ],
+        "核心CPI月率": [
+          {
+            "event": "美国8月核心CPI月率季调后(%)",
+            "value": "0.3",
+            "forecast": "0.2",
+            "previous": "0.2",
+            "importance": 1,
+            "release_date": "2026-09-11",
+            "release_time": "20:30",
+            "days_ago": 20,
+            "is_fresh": false
+          }
+        ],
+        "非农": [
+          {
+            "event": "美国8月非农就业人口变动季调后(万)",
+            "value": "16.2",
+            "forecast": "5.6",
+            "previous": "-2.3",
+            "importance": 2,
+            "release_date": "2026-09-04",
+            "release_time": "20:30",
+            "days_ago": 27,
+            "is_fresh": false
+          }
+        ],
+        "失业率": [
+          {
+            "event": "美国8月失业率(%)",
+            "value": "4.1",
+            "forecast": "4.1",
+            "previous": "4.1",
+            "importance": 2,
+            "release_date": "2026-09-04",
+            "release_time": "20:30",
+            "days_ago": 27,
+            "is_fresh": false
+          }
+        ],
+        "ADP 就业": [
+          {
+            "event": "美国9月ADP就业人数变动(万)",
+            "value": "9.0",
+            "forecast": "7.0",
+            "previous": "3.8",
+            "importance": 2,
+            "release_date": "2026-09-30",
+            "release_time": "20:15",
+            "days_ago": 1,
+            "is_fresh": true
+          }
+        ],
+        "核心 PCE": [
+          {
+            "event": "美国8月核心PCE物价指数年率(%)",
+            "value": "3.0",
+            "forecast": "3.3",
+            "previous": "3.3441",
+            "importance": 2,
+            "release_date": "2026-09-30",
+            "release_time": "20:30",
+            "days_ago": 1,
+            "is_fresh": true
+          },
+          {
+            "event": "美国第二季度核心PCE物价指数年化季率终值(%)",
+            "value": "3.3",
+            "forecast": "3.6",
+            "previous": "4.4",
+            "importance": 2,
+            "release_date": "2026-09-30",
+            "release_time": "20:30",
+            "days_ago": 1,
+            "is_fresh": true
+          }
+        ],
+        "初请失业金": [
+          {
+            "event": "美国截至9月26日当周初请失业金人数(万)",
+            "value": "19.7",
+            "forecast": "20.0",
+            "previous": "19.7",
+            "importance": 2,
+            "release_date": "2026-10-01",
+            "release_time": "20:30",
+            "days_ago": 0,
+            "is_fresh": true
+          }
+        ],
+        "GDP": [
+          {
+            "event": "美国第二季度GDP价格指数季率终值(%)",
+            "value": "6.3",
+            "forecast": "6.4",
+            "previous": "6.4",
+            "importance": 2,
+            "release_date": "2026-09-30",
+            "release_time": "20:30",
+            "days_ago": 1,
+            "is_fresh": true
+          },
+          {
+            "event": "美国第二季度实际GDP年化季率终值(%)",
+            "value": "2.2",
+            "forecast": "1.5",
+            "previous": "2.1",
+            "importance": 2,
+            "release_date": "2026-09-30",
+            "release_time": "20:30",
+            "days_ago": 1,
+            "is_fresh": true
+          }
+        ],
+        "零售销售": [
+          {
+            "event": "美国8月核心零售销售月率(%)",
+            "value": "1.4",
+            "forecast": "0.5",
+            "previous": "-0.3",
+            "importance": 2,
+            "release_date": "2026-09-16",
+            "release_time": "20:30",
+            "days_ago": 15,
+            "is_fresh": false
+          },
+          {
+            "event": "美国8月零售销售月率(%)",
+            "value": "1.2",
+            "forecast": "0.8",
+            "previous": "-0.6",
+            "importance": 2,
+            "release_date": "2026-09-16",
+            "release_time": "20:30",
+            "days_ago": 15,
+            "is_fresh": false
+          }
+        ],
+        "ISM 制造业": [
+          {
+            "event": "美国9月ISM制造业PMI",
+            "value": "54.5",
+            "forecast": "55.0",
+            "previous": "54.6",
+            "importance": 2,
+            "release_date": "2026-10-01",
+            "release_time": "22:00",
+            "days_ago": 0,
+            "is_fresh": true
+          }
+        ]
+      }
+    },
+    "indicators": {
+      "CPI": [
+        {
+          "title": "巴基斯坦9月消费者物价指数同比上涨10.26%",
+          "evidence": [
+            "巴基斯坦9月消费者物价指数同比上涨10.26% 巴基斯坦9月消费者物价指数同比上涨10.26%"
+          ],
+          "date": "2026-10-01",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-01 16:50:08",
+          "source": "东财全球"
+        },
+        {
+          "title": "印尼9月核心CPI同比上涨2.88%",
+          "evidence": [
+            "印尼9月核心CPI同比上涨2.88% 印尼9月核心CPI同比上涨2.88%，市场预期上涨2.90%"
+          ],
+          "date": "2026-10-01",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-01 12:16:13",
+          "source": "东财全球"
+        }
+      ],
+      "初请失业金": [
+        {
+          "title": "美国上周初请失业金人数低于预期",
+          "evidence": [
+            "美国上周初请失业金人数低于预期 【美国上周初请失业金人数低于预期】美国上周初请失业金人数为19.7万人，市场预估为20万人，前值19.7万人"
+          ],
+          "date": "2026-10-01",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-01 20:30:35",
+          "source": "东财全球"
+        }
+      ],
+      "美联储/利率": [
+        {
+          "title": "汇丰下调今明两年金价预估 称加息和高油价或继续施压黄金",
+          "evidence": [
+            "该行经济学家预计，美联储将在今年12月再次加息"
+          ],
+          "date": "2026-10-01",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-01 21:40:39",
+          "source": "东财全球"
+        },
+        {
+          "title": "美联储卡什卡利：我推测9月的美国2年期国债收益率为略高于4%",
+          "evidence": [
+            "美联储卡什卡利：我推测9月的美国2年期国债收益率为略高于4% 美联储卡什卡利表示，我推测9月的美国2年期国债收益率为略高于4%"
+          ],
+          "date": "2026-10-01",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-01 19:38:56",
+          "source": "东财全球"
+        },
+        {
+          "title": "交易员减少对欧洲央行加息押注 倾向于认为到2027年底前将加息三次",
+          "evidence": [
+            "交易员减少对欧洲央行加息押注 倾向于认为到2027年底前将加息三次 交易员减少对欧洲央行加息押注 倾向于认为到2027年底前将加息三次"
+          ],
+          "date": "2026-10-01",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-01 18:29:02",
+          "source": "东财全球"
+        }
+      ]
+    },
+    "stale": [
+      "核心PCE",
+      "整体PCE",
+      "非农",
+      "耐用品订单",
+      "美国GDP",
+      "美债收益率"
+    ],
+    "log": [
+      "新闻池 600 条 → 窗口内(7日) 205 条；命中 3 指标"
+    ]
+  }
+}

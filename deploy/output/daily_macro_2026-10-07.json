@@ -1,0 +1,238 @@
+{
+  "date": "2026-10-07",
+  "generated_at": "2026-10-07 23:41",
+  "china": {
+    "pmi": {
+      "latest": {
+        "月份": "2026年09月份",
+        "制造业-指数": 50.1,
+        "制造业-同比增长": 0.60240964,
+        "非制造业-指数": 50.2,
+        "非制造业-同比增长": 0.4
+      },
+      "rows": 225
+    },
+    "gdp": {
+      "latest": {
+        "季度": "2026年第1-2季度",
+        "国内生产总值-绝对值": 695704.0,
+        "国内生产总值-同比增长": 4.7,
+        "第一产业-绝对值": 31521.8,
+        "第一产业-同比增长": 3.7,
+        "第二产业-绝对值": 250472.9,
+        "第二产业-同比增长": 3.9,
+        "第三产业-绝对值": 413709.2,
+        "第三产业-同比增长": 5.2
+      },
+      "rows": 82
+    },
+    "cpi": {
+      "latest": {
+        "月份": "2026年08月份",
+        "全国-当月": 100.8,
+        "全国-同比增长": 0.8,
+        "全国-环比增长": 0.4,
+        "全国-累计": 100.9,
+        "城市-当月": 100.8,
+        "城市-同比增长": 0.8,
+        "城市-环比增长": 0.4,
+        "城市-累计": 100.9,
+        "农村-当月": 100.7,
+        "农村-同比增长": 0.7,
+        "农村-环比增长": 0.4,
+        "农村-累计": 100.7
+      },
+      "rows": 224
+    },
+    "lpr": {
+      "latest": {
+        "TRADE_DATE": "2026-09-20",
+        "LPR1Y": 3.0,
+        "LPR5Y": 3.5,
+        "RATE_1": 4.35,
+        "RATE_2": 4.9
+      },
+      "rows": 1576
+    }
+  },
+  "us": {
+    "note": "主源=百度经济日历(带公布日/预期/前值)；兜底=新闻抽取(近 7 日)",
+    "calendar": {
+      "source": "百度经济日历 news_economic_baidu",
+      "window_days": 7,
+      "lookback_days": 30,
+      "lookback_used_to": "2026-09-11",
+      "days_fetched": 27,
+      "as_of": "2026-10-07 23:41",
+      "indicators": {
+        "CPI 同比": [
+          {
+            "event": "美国8月CPI年率未季调(%)",
+            "value": "3.4",
+            "forecast": "3.4",
+            "previous": "3.4",
+            "importance": 2,
+            "release_date": "2026-09-11",
+            "release_time": "20:30",
+            "days_ago": 26,
+            "is_fresh": false
+          }
+        ],
+        "核心 CPI": [
+          {
+            "event": "美国8月核心CPI年率未季调(%)",
+            "value": "2.4",
+            "forecast": "2.4",
+            "previous": "2.5",
+            "importance": 2,
+            "release_date": "2026-09-11",
+            "release_time": "20:30",
+            "days_ago": 26,
+            "is_fresh": false
+          }
+        ],
+        "CPI 月率": [
+          {
+            "event": "美国8月CPI月率季调后(%)",
+            "value": "0.4",
+            "forecast": "0.4",
+            "previous": "0.1",
+            "importance": 1,
+            "release_date": "2026-09-11",
+            "release_time": "20:30",
+            "days_ago": 26,
+            "is_fresh": false
+          }
+        ],
+        "核心CPI月率": [
+          {
+            "event": "美国8月核心CPI月率季调后(%)",
+            "value": "0.3",
+            "forecast": "0.2",
+            "previous": "0.2",
+            "importance": 1,
+            "release_date": "2026-09-11",
+            "release_time": "20:30",
+            "days_ago": 26,
+            "is_fresh": false
+          }
+        ],
+        "非农": [
+          {
+            "event": "美国9月非农就业人口变动季调后(万)",
+            "value": "2.9",
+            "forecast": "9.0",
+            "previous": "13.3",
+            "importance": 2,
+            "release_date": "2026-10-02",
+            "release_time": "20:30",
+            "days_ago": 5,
+            "is_fresh": true
+          }
+        ],
+        "失业率": [
+          {
+            "event": "美国9月失业率(%)",
+            "value": "4.2",
+            "forecast": "4.1",
+            "previous": "4.1",
+            "importance": 2,
+            "release_date": "2026-10-02",
+            "release_time": "20:30",
+            "days_ago": 5,
+            "is_fresh": true
+          }
+        ],
+        "ADP 就业": [
+          {
+            "event": "美国截至9月5日当周ADP就业周度发布变动(万人)",
+            "value": "2.0",
+            "forecast": "",
+            "previous": "1.63",
+            "importance": 2,
+            "release_date": "2026-09-22",
+            "release_time": "20:15",
+            "days_ago": 15,
+            "is_fresh": false
+          }
+        ],
+        "初请失业金": [
+          {
+            "event": "美国截至9月26日当周初请失业金人数(万)",
+            "value": "19.7",
+            "forecast": "20.0",
+            "previous": "19.7",
+            "importance": 2,
+            "release_date": "2026-10-01",
+            "release_time": "20:30",
+            "days_ago": 6,
+            "is_fresh": true
+          }
+        ],
+        "ISM 制造业": [
+          {
+            "event": "美国9月ISM制造业PMI",
+            "value": "54.5",
+            "forecast": "55.0",
+            "previous": "54.6",
+            "importance": 2,
+            "release_date": "2026-10-01",
+            "release_time": "22:00",
+            "days_ago": 6,
+            "is_fresh": true
+          }
+        ]
+      }
+    },
+    "indicators": {
+      "初请失业金": [
+        {
+          "title": "本周（10月8日-11日）资本市场大事提醒：A股明起开市",
+          "evidence": [
+            "2、经济数据方面，10月8日有日本、德国8月贸易帐，美国上周初请失业金人数，美国8月批发销售数据等"
+          ],
+          "date": "2026-10-07",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-07 22:03:07",
+          "source": "东财全球"
+        }
+      ],
+      "美债收益率": [
+        {
+          "title": "美股盘前要闻一览：AMD称对HBM4“非常满意”；谷歌与Unity合作推出下一代AI游戏平台；30年期美债收益率升破5.",
+          "evidence": [
+            "30年期美债收益率升破5.7% 美股盘前要闻一览：AMD称对HBM4“非常满意”",
+            "30年期美债收益率升破5.7%"
+          ],
+          "date": "2026-10-07",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-07 20:32:31",
+          "source": "东财全球"
+        }
+      ]
+    },
+    "stale": [
+      "核心PCE",
+      "整体PCE",
+      "CPI",
+      "非农",
+      "耐用品订单",
+      "美国GDP",
+      "美联储/利率"
+    ],
+    "log": [
+      "日历 2026-10-07 失败: RuntimeError",
+      "日历 2026-10-06 失败: RuntimeError",
+      "日历 2026-09-30 失败: HTTPError",
+      "日历 2026-09-27 失败: RuntimeError",
+      "日历 2026-09-24 失败: HTTPError",
+      "日历 2026-09-23 失败: RuntimeError",
+      "日历 2026-09-17 失败: HTTPError",
+      "日历 2026-09-16 失败: HTTPError",
+      "日历 2026-09-15 失败: RuntimeError",
+      "新闻池 600 条 → 窗口内(7日) 201 条；命中 2 指标"
+    ]
+  }
+}
