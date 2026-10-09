@@ -1,140 +1,166 @@
 {
   "date": "2026-10-09",
-  "data_date": "2026-10-08",
-  "generated_at": "2026-10-09 22:06",
+  "data_date": "2026-10-09",
+  "generated_at": "2026-10-09 22:03",
   "news_date": "",
   "news_window": [
-    "2026-10-08",
-    "2026-10-09"
+    "2026-10-09",
+    "2026-10-10",
+    "2026-10-11",
+    "2026-10-12"
   ],
-  "news_window_days": 2,
+  "news_window_days": 4,
   "flow_date": "2026-10-09",
   "flow_raw_latest": "2026-10-09",
   "flow_is_weekend_copy": false,
   "hot_per_day": 8,
-  "hot_threshold": 16,
+  "hot_threshold": 32,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-10-09 08:32",
-    "session": "preopen",
-    "data_date": "2026-10-08",
-    "for_date": "2026-10-09",
+    "generated_at": "2026-10-09 22:03",
+    "session": "close",
+    "data_date": "2026-10-09",
+    "for_date": "2026-10-12",
     "data_date_note": "",
     "warnings": [],
     "span": [
-      "2026-10-09"
+      "2026-10-10",
+      "2026-10-11",
+      "2026-10-12"
     ],
-    "span_days": 1,
+    "span_days": 3,
     "display_days": [
-      "2026-10-08",
-      "2026-10-09"
+      "2026-10-09",
+      "2026-10-10",
+      "2026-10-11",
+      "2026-10-12"
     ],
-    "display_text": "10/08 + 10/09",
-    "span_is_weekend_cross": false,
-    "span_text": "10/09",
+    "display_text": "10/09–10/12",
+    "span_is_weekend_cross": true,
+    "span_text": "10/10–10/12",
     "carry": {
-      "from_data_date": "2026-10-08",
-      "ref": "output/feed_review_2026-10-08.json",
+      "from_data_date": "2026-10-09",
+      "ref": "output/feed_review_2026-10-09.json",
       "exists": true,
-      "gap_days": 1,
+      "gap_days": 3,
       "stale": false,
       "bias": "偏多",
       "bias_score": 2,
       "t1_focus": [
-        "跟踪金钻起涨 6 只回踩确认"
+        "跟踪金钻起涨 8 只回踩确认"
       ],
       "risks": [],
       "headline": ""
     },
     "layers": {
-      "base": "2026-10-08 A股收盘（基准层）",
-      "overnight": "美东 2026-10-08 收盘（北京 2026-10-09 早间到达）",
-      "premarket": "2026-10-09 今早日韩实时 + 盘前新闻/投喂增量"
+      "base": "2026-10-09 A股收盘（基准层）",
+      "overnight": "美东 2026-10-09 收盘（北京 2026-10-10 早间到达）",
+      "premarket": "2026-10-12 今早日韩实时 + 盘前新闻/投喂增量"
     },
     "market_state": {
-      "date": "2026-10-08",
+      "date": "2026-10-09",
       "run_date": "2026-10-09",
-      "preopen_partial": true,
+      "preopen_partial": null,
       "us_kline": true,
       "asia": true
     },
     "covered": [
       {
-        "date": "2026-10-08",
-        "weekday": "周四",
-        "is_trading_day": true,
-        "news": 296,
-        "feeds": 0,
-        "reports": 1087,
-        "macro": true
-      },
-      {
         "date": "2026-10-09",
         "weekday": "周五",
         "is_trading_day": true,
-        "news": 281,
+        "news": 297,
         "feeds": 0,
-        "reports": 105,
+        "reports": 827,
         "macro": true
+      },
+      {
+        "date": "2026-10-10",
+        "weekday": "周六",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-10-11",
+        "weekday": "周日",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-10-12",
+        "weekday": "周一",
+        "is_trading_day": true,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
       }
     ],
     "totals": {
-      "news": 577,
+      "news": 297,
       "feeds": 0,
-      "reports": 1192,
-      "covered_days": 2
+      "reports": 827,
+      "covered_days": 4
     },
-    "missing": []
+    "missing": [
+      "market_thermometer.json 数据日 2026-10-08 落后于基准日 2026-10-09"
+    ]
   },
   "index_context": {
     "上证指数": {
-      "close": "3811.90",
-      "chg_pct": "-0.79"
+      "close": "3813.79",
+      "chg_pct": "0.05"
     },
     "深证成指": {
-      "close": "12620.90",
-      "chg_pct": "-2.07"
+      "close": "12641.86",
+      "chg_pct": "0.17"
     },
     "创业板指": {
-      "close": "3036.66",
-      "chg_pct": "-3.15"
+      "close": "3043.33",
+      "chg_pct": "0.22"
     },
     "科创50": {
-      "close": "1456.32",
-      "chg_pct": "-4.82"
+      "close": "1457.27",
+      "chg_pct": "0.07"
     }
   },
   "summary": {
-    "共振": 3,
-    "背离": 6,
-    "暗线": 12,
-    "双冷": 10
+    "共振": 0,
+    "背离": 0,
+    "暗线": 15,
+    "双冷": 16
   },
   "items": [
     {
       "sector": "电子",
-      "news_count": 37,
-      "news_per_day": 18.5,
+      "news_count": 21,
+      "news_per_day": 5.25,
       "flow_yi": -151.2,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
         "【新闻特写】“六张网”带来的新机遇",
         "【伟测半导体再融资将于10月15日上会】上交所上市审核委员会定于2026年1",
-        "季丰电子创业板IPO将于10月15日上会"
+        "【季丰电子创业板IPO将于10月15日上会】10月9日，据深交所网站披露，深"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 23,
-      "news_per_day": 11.5,
+      "news_count": 14,
+      "news_per_day": 3.5,
       "flow_yi": -42.35,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
         "【中国科学院院士郭华东获颁2026年度国际宇航联合会“名人堂”奖】10月9日",
         "美股光通信盘初走强，Lumentum涨近9%，股价创历史新高，公司CEO称光",
@@ -143,23 +169,23 @@
     },
     {
       "sector": "机械设备",
-      "news_count": 10,
-      "news_per_day": 5.0,
+      "news_count": 7,
+      "news_per_day": 1.75,
       "flow_yi": -41.3,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
+        "景嘉微：CH37系列正推进客户导入及小批量量产",
         "广东力争到2028年人形机器人年产量突破8万台",
-        "一边破产一边排队IPO 机器人赛道迎来资本泡沫清算？",
-        "中共中央、国务院：建立未来产业投入增长和风险分担机制 引导社会资本持续加大投"
+        "一边破产一边排队IPO 机器人赛道迎来资本泡沫清算？"
       ]
     },
     {
       "sector": "有色金属",
-      "news_count": 15,
-      "news_per_day": 7.5,
+      "news_count": 10,
+      "news_per_day": 2.5,
       "flow_yi": 31.14,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -167,29 +193,29 @@
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
         "LME铜主力合约涨超2%",
-        "现货白银突破61美元/盎司",
-        "锂精矿出口禁令临近 全球第四大锂生产国重申不会延期"
+        "现货白银突破61美元/盎司，日内涨3.13%。",
+        "现货白银突破61美元/盎司"
       ]
     },
     {
       "sector": "传媒",
-      "news_count": 12,
-      "news_per_day": 6.0,
+      "news_count": 7,
+      "news_per_day": 1.75,
       "flow_yi": 30.56,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
+        "【季丰电子创业板IPO将于10月15日上会】10月9日，据深交所网站披露，深",
         "季丰电子创业板IPO将于10月15日上会",
-        "香港暂停进口加拿大部分地区禽肉及禽类产品",
-        "苹果盘初下跌2.7%"
+        "香港暂停进口加拿大部分地区禽肉及禽类产品"
       ]
     },
     {
       "sector": "电力设备",
-      "news_count": 13,
-      "news_per_day": 6.5,
+      "news_count": 6,
+      "news_per_day": 1.5,
       "flow_yi": 26.19,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -203,8 +229,8 @@
     },
     {
       "sector": "农林牧渔",
-      "news_count": 15,
-      "news_per_day": 7.5,
+      "news_count": 9,
+      "news_per_day": 2.25,
       "flow_yi": 19.02,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -218,43 +244,43 @@
     },
     {
       "sector": "非银金融",
-      "news_count": 18,
-      "news_per_day": 9.0,
+      "news_count": 13,
+      "news_per_day": 3.25,
       "flow_yi": 15.69,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
+        "【季丰电子创业板IPO将于10月15日上会】10月9日，据深交所网站披露，深",
         "季丰电子创业板IPO将于10月15日上会",
-        "OpenAI收入或比市场预期低30%，GPT-6发布评价分化",
-        "一边破产一边排队IPO 机器人赛道迎来资本泡沫清算？"
+        "OpenAI收入或比市场预期低30%，GPT-6发布评价分化"
       ]
     },
     {
       "sector": "国防军工",
-      "news_count": 33,
-      "news_per_day": 16.5,
+      "news_count": 13,
+      "news_per_day": 3.25,
       "flow_yi": -14.71,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
         "沙特称利雅得机场遭袭造成人员死伤 媒体称也门胡塞武装控制区遭沙特空袭",
-        "达美航空首席执行官在电话会议上表示，受消费者行为长期结构性转变支撑，需求仍保",
-        "【中国科学院院士郭华东获颁2026年度国际宇航联合会“名人堂”奖】10月9日"
+        "【中国科学院院士郭华东获颁2026年度国际宇航联合会“名人堂”奖】10月9日",
+        "乌克兰一周袭击俄罗斯四座炼化设施，涉及原油日加工能力达72万桶"
       ]
     },
     {
       "sector": "银行",
-      "news_count": 20,
-      "news_per_day": 10.0,
+      "news_count": 8,
+      "news_per_day": 2.0,
       "flow_yi": -14.36,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
         "云南能投：子公司拟投资3.53亿元建设马鹿光伏发电项目",
         "央行行长潘功胜会见高盛集团总裁兼首席运营官温泽恩",
@@ -263,13 +289,13 @@
     },
     {
       "sector": "计算机",
-      "news_count": 37,
-      "news_per_day": 18.5,
+      "news_count": 18,
+      "news_per_day": 4.5,
       "flow_yi": 10.86,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
         "【新闻特写】“六张网”带来的新机遇",
         "国内联播快讯",
@@ -278,8 +304,8 @@
     },
     {
       "sector": "医药生物",
-      "news_count": 12,
-      "news_per_day": 6.0,
+      "news_count": 5,
+      "news_per_day": 1.25,
       "flow_yi": -10.27,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -304,8 +330,8 @@
     },
     {
       "sector": "公用事业",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 4,
+      "news_per_day": 1.0,
       "flow_yi": -7.85,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -330,16 +356,14 @@
     },
     {
       "sector": "家用电器",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -5.64,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "增值税发票数据显示：国庆假期旅游游览和娱乐服务销售收入同比增长23.6%"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "建筑装饰",
@@ -354,13 +378,13 @@
     },
     {
       "sector": "汽车",
-      "news_count": 33,
-      "news_per_day": 16.5,
+      "news_count": 19,
+      "news_per_day": 4.75,
       "flow_yi": -4.98,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
         "欧洲斯托克600汽车及零部件指数创下盘中新高",
         "欧洲斯托克600汽车及零部件指数创下盘中新高，涨幅扩大至2.6%。",
@@ -369,17 +393,15 @@
     },
     {
       "sector": "基础化工",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 1,
+      "news_per_day": 0.25,
       "flow_yi": 3.86,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "夯实技术基础 我国低空经济领域国际标准化建设提速",
-        "国内商品期市夜盘收盘多数下跌 黑色系跌幅居前",
-        "国内商品期货夜盘开盘 主力合约多数下跌"
+        "夯实技术基础 我国低空经济领域国际标准化建设提速"
       ]
     },
     {
@@ -396,7 +418,7 @@
     {
       "sector": "煤炭",
       "news_count": 2,
-      "news_per_day": 1.0,
+      "news_per_day": 0.5,
       "flow_yi": 2.67,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -409,13 +431,13 @@
     },
     {
       "sector": "石油石化",
-      "news_count": 29,
-      "news_per_day": 14.5,
+      "news_count": 16,
+      "news_per_day": 4.0,
       "flow_yi": -2.66,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
         "伊朗革命卫队：加剧地区海上运输紧张局势的责任在美军",
         "惠誉评级：阿联酋非石油增长模式在战争基线下总体具有韧性。",
@@ -425,7 +447,7 @@
     {
       "sector": "环保",
       "news_count": 1,
-      "news_per_day": 0.5,
+      "news_per_day": 0.25,
       "flow_yi": -2.42,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -459,16 +481,14 @@
     },
     {
       "sector": "交通运输",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": 1.83,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": [
-        "国庆假期全社会跨区域人员流动量日均超3亿人次"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "社会服务",
@@ -483,37 +503,34 @@
     },
     {
       "sector": "钢铁",
-      "news_count": 2,
-      "news_per_day": 1.0,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -1.53,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "国内商品期市夜盘收盘多数下跌 黑色系跌幅居前",
-        "期市夜盘收盘，国内期货主力合约多数下跌，甲醇涨超7%"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "食品饮料",
-      "news_count": 18,
-      "news_per_day": 9.0,
+      "news_count": 10,
+      "news_per_day": 2.5,
       "flow_yi": 0.7,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "达美航空首席执行官在电话会议上表示，受消费者行为长期结构性转变支撑，需求仍保",
         "美国10月密歇根大学消费者信心指数初值 46.3，预期47.8，前值48.1",
-        "美国10月密歇根大学消费者信心指数初值为46.3 预估为47.6"
+        "美国10月密歇根大学消费者信心指数初值为46.3，预期为47.8，前值为48",
+        "美国食品药品监督管理局（FDA）就标准化食品中的盐替代品发布最终规则。"
       ]
     },
     {
       "sector": "综合",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 2,
+      "news_per_day": 0.5,
       "flow_yi": 0.12,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -521,22 +538,19 @@
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
         "我国年人均快递量超140件",
-        "川金诺：预计2026年前三季度净利润同比下降40.87%-47.44%",
-        "“伟大的远征”主题展览国庆期间接待观众21万人次"
+        "川金诺：预计2026年前三季度净利润同比下降40.87%-47.44%"
       ]
     },
     {
       "sector": "房地产",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": 0.11,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": [
-        "楼市“银十”序幕拉开 国庆二手房咨询量普涨"
-      ]
+      "sample_titles": []
     }
   ]
 }
