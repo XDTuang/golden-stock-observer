@@ -1,11 +1,11 @@
 {
   "data_date": "2026-10-08",
   "for_date": "2026-10-09",
-  "generated_at": "2026-10-09 08:40",
-  "source": "local+agent",
+  "generated_at": "2026-10-09 14:31",
+  "source": "cloud",
   "window": {
-    "generated_at": "2026-10-08 22:02",
-    "session": "close",
+    "generated_at": "2026-10-09 08:32",
+    "session": "preopen",
     "data_date": "2026-10-08",
     "for_date": "2026-10-09",
     "data_date_note": "",
@@ -19,15 +19,65 @@
       "2026-10-09"
     ],
     "display_text": "10/08 + 10/09",
+    "span_is_weekend_cross": false,
     "span_text": "10/09",
+    "carry": {
+      "from_data_date": "2026-10-08",
+      "ref": "output/feed_review_2026-10-08.json",
+      "exists": true,
+      "gap_days": 1,
+      "stale": false,
+      "bias": "偏多",
+      "bias_score": 2,
+      "t1_focus": [
+        "跟踪金钻起涨 6 只回踩确认"
+      ],
+      "risks": [],
+      "headline": ""
+    },
     "layers": {
       "base": "2026-10-08 A股收盘（基准层）",
       "overnight": "美东 2026-10-08 收盘（北京 2026-10-09 早间到达）",
       "premarket": "2026-10-09 今早日韩实时 + 盘前新闻/投喂增量"
-    }
+    },
+    "market_state": {
+      "date": "2026-10-08",
+      "run_date": "2026-10-09",
+      "preopen_partial": true,
+      "us_kline": true,
+      "asia": true
+    },
+    "covered": [
+      {
+        "date": "2026-10-08",
+        "weekday": "周四",
+        "is_trading_day": true,
+        "news": 296,
+        "feeds": 0,
+        "reports": 1087,
+        "macro": true
+      },
+      {
+        "date": "2026-10-09",
+        "weekday": "周五",
+        "is_trading_day": true,
+        "news": 281,
+        "feeds": 0,
+        "reports": 105,
+        "macro": true
+      }
+    ],
+    "totals": {
+      "news": 577,
+      "feeds": 0,
+      "reports": 1192,
+      "covered_days": 2
+    },
+    "missing": []
   },
   "feeds_days": [
-    "2026-10-08"
+    "2026-10-08",
+    "2026-10-09"
   ],
   "feeds": [],
   "feed_count": 0,
