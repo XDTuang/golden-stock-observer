@@ -1,11 +1,11 @@
 {
  "_schema": "obs_panel v1 · V3 第 6 段专用配对载荷（由 build_obs_section.py 产出）",
  "_howto": "V3 读 ../output/obs_panel.json 即可，不要再分别读 obs_deduce_latest 与 obs_scenarios；items 与 picks 已由同一次运行配对，data_date 即两者共同的数据日。picks[].scenarios[].path/action 含 <b> 富文本，前端须「先整体转义再放行白名单标签」。",
- "generated_at": "2026-10-08 22:29:25",
+ "generated_at": "2026-10-09 08:46:29",
  "data_date": "2026-10-08",
  "for_date": "2026-10-09",
  "scen_data_date": "2026-10-08",
- "obs_source": "output/obs_deduce_latest.json",
+ "obs_source": "data/daily_review_history/2026-10-08/obs_deduce_auto_2026-10-08.json",
  "derive_engine": "derive_obs.py v3 (技术70% + 大盘10% + 板块20%)",
  "count": 32,
  "picks_count": 7,
