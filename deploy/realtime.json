@@ -1,7 +1,7 @@
 {
  "meta": {
-  "updated_at": "2026-10-09 14:45:17",
-  "data_date": "2026-10-09",
+  "updated_at": "2026-10-12 09:15:20",
+  "data_date": "2026-10-12",
   "market_status": "trading",
   "algorithm": "1.0.0",
   "next_hint": "每 30 分钟自动刷新（交易日 9:30-15:00，GitHub Actions 驱动）"
@@ -11,89 +11,89 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3822.1,
-    "chg_pct": 0.27,
-    "turnover_yi": 8376.9,
-    "high": 3824.71,
-    "low": 3754.14
+    "price": 3813.73,
+    "chg_pct": -0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 12665.36,
-    "chg_pct": 0.35,
-    "turnover_yi": 9522.1,
-    "high": 12679.63,
-    "low": 12278.78
+    "price": 12641.86,
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 3049.2,
-    "chg_pct": 0.41,
-    "turnover_yi": 4637.7,
-    "high": 3053.38,
-    "low": 2932.8
+    "price": 3043.33,
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1460.87,
-    "chg_pct": 0.31,
-    "turnover_yi": 877.1,
-    "high": 1466.88,
-    "low": 1390.0
+    "price": 1457.23,
+    "chg_pct": -0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4326.29,
-    "chg_pct": 0.37,
-    "turnover_yi": 4695.4,
-    "high": 4330.74,
-    "low": 4239.74
+    "price": 4317.01,
+    "chg_pct": -0.01,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 7266.69,
-    "chg_pct": 0.25,
-    "turnover_yi": 3134.3,
-    "high": 7277.14,
-    "low": 7048.45
+    "price": 7250.86,
+    "chg_pct": -0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    }
   ],
   "breadth": {
-   "up": 2807,
-   "down": 1677,
-   "flat": 122,
-   "ratio": 1.67,
-   "limit_up": 73,
-   "limit_down": 14,
-   "main_net_yi": -148.83,
-   "turnover_yi": 15244.9,
+   "up": 1596,
+   "down": 1465,
+   "flat": 1545,
+   "ratio": 1.09,
+   "limit_up": 78,
+   "limit_down": 42,
+   "main_net_yi": 0.0,
+   "turnover_yi": 0.0,
    "total": 4606
   }
  },
  "L1": {
   "sentiment": {
-   "score": 44,
-   "S1": 42,
-   "S2": 61,
-   "S3": 47,
-   "S4": 25,
+   "score": 45,
+   "S1": 27,
+   "S2": 65,
+   "S3": 40,
+   "S4": 50,
    "inputs": {
-    "ratio": 1.67,
-    "limit_up": 73,
-    "avg_idx_pct": 0.33,
-    "main_net_yi": -148.83
+    "ratio": 1.09,
+    "limit_up": 78,
+    "avg_idx_pct": -0.0,
+    "main_net_yi": 0
    }
   },
   "state": {
    "state": "oscillation",
    "label": "震荡分化",
    "note": "降低频率，控制单票仓位，等待主线明朗",
-   "score": 44
+   "score": 45
   }
  },
  "L2": {
@@ -110,291 +110,21 @@
   ]
  },
  "L3": {
-  "sectors": [
-   {
-    "name": "电池",
-    "net_yi": 47.59,
-    "jumbo_yi": 20.82,
-    "block_yi": 26.77,
-    "pct": 5.07
-   },
-   {
-    "name": "电池化学品",
-    "net_yi": 30.71,
-    "jumbo_yi": 17.84,
-    "block_yi": 12.88,
-    "pct": 8.21
-   },
-   {
-    "name": "有色金属",
-    "net_yi": 27.7,
-    "jumbo_yi": 10.27,
-    "block_yi": 17.43,
-    "pct": 3.14
-   },
-   {
-    "name": "传媒",
-    "net_yi": 27.56,
-    "jumbo_yi": 22.86,
-    "block_yi": 4.7,
-    "pct": 5.63
-   },
-   {
-    "name": "电力设备",
-    "net_yi": 22.03,
-    "jumbo_yi": 10.7,
-    "block_yi": 11.33,
-    "pct": 1.27
-   },
-   {
-    "name": "锂电池",
-    "net_yi": 18.17,
-    "jumbo_yi": 3.47,
-    "block_yi": 14.7,
-    "pct": 4.5
-   },
-   {
-    "name": "农林牧渔",
-    "net_yi": 17.39,
-    "jumbo_yi": 12.64,
-    "block_yi": 4.75,
-    "pct": 6.14
-   },
-   {
-    "name": "贵金属",
-    "net_yi": 17.03,
-    "jumbo_yi": 3.55,
-    "block_yi": 13.49,
-    "pct": 9.08
-   },
-   {
-    "name": "铜",
-    "net_yi": 15.46,
-    "jumbo_yi": 10.81,
-    "block_yi": 4.64,
-    "pct": 8.89
-   },
-   {
-    "name": "工业金属",
-    "net_yi": 14.73,
-    "jumbo_yi": 9.42,
-    "block_yi": 5.31,
-    "pct": 5.1
-   },
-   {
-    "name": "非银金融",
-    "net_yi": 14.36,
-    "jumbo_yi": 9.31,
-    "block_yi": 5.05,
-    "pct": 4.53
-   },
-   {
-    "name": "软件开发",
-    "net_yi": 14.27,
-    "jumbo_yi": 9.37,
-    "block_yi": 4.9,
-    "pct": 3.74
-   },
-   {
-    "name": "黄金",
-    "net_yi": 13.66,
-    "jumbo_yi": 2.19,
-    "block_yi": 11.47,
-    "pct": 8.95
-   },
-   {
-    "name": "证券Ⅲ",
-    "net_yi": 12.66,
-    "jumbo_yi": 10.98,
-    "block_yi": 1.68,
-    "pct": 5.75
-   },
-   {
-    "name": "证券Ⅱ",
-    "net_yi": 12.66,
-    "jumbo_yi": 10.98,
-    "block_yi": 1.68,
-    "pct": 5.75
-   },
-   {
-    "name": "种植业",
-    "net_yi": 10.44,
-    "jumbo_yi": 5.95,
-    "block_yi": 4.49,
-    "pct": 9.07
-   },
-   {
-    "name": "横向通用软件",
-    "net_yi": 9.4,
-    "jumbo_yi": 6.52,
-    "block_yi": 2.88,
-    "pct": 6.26
-   },
-   {
-    "name": "数字媒体",
-    "net_yi": 8.9,
-    "jumbo_yi": 8.31,
-    "block_yi": 0.59,
-    "pct": 9.0
-   },
-   {
-    "name": "有机硅",
-    "net_yi": 8.35,
-    "jumbo_yi": 8.23,
-    "block_yi": 0.12,
-    "pct": 16.74
-   },
-   {
-    "name": "一般零售",
-    "net_yi": 8.2,
-    "jumbo_yi": 4.8,
-    "block_yi": 3.4,
-    "pct": 7.87
-   }
-  ],
-  "mainline": "电池(+47.59亿) → 电池化学品(+30.71亿) → 有色金属(+27.7亿)",
-  "resonance": [
-   "全市场涨停 73 只，情绪有温度",
-   "⚠ 资金高度集中于 电池，追高风险上升"
-  ],
-  "conc": {
-   "lead": "电池",
-   "ratio": 1.55,
-   "alert": true
-  }
+  "sectors": [],
+  "mainline": "数据不可用",
+  "resonance": []
  },
  "L4": {
-  "candidates": [
-   {
-    "code": "sz300750",
-    "name": "宁德时代",
-    "zdf": 3.99,
-    "zljlr": 25.57,
-    "lb": 1.72,
-    "hsl": 1.2,
-    "turnover_yi": 151.8,
-    "price": 298.18,
-    "stype": "GP-A-CYB",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh601899",
-    "name": "紫金矿业",
-    "zdf": 5.07,
-    "zljlr": 9.15,
-    "lb": 1.71,
-    "hsl": 1.11,
-    "turnover_yi": 69.18,
-    "price": 30.86,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh600988",
-    "name": "赤峰黄金",
-    "zdf": 6.37,
-    "zljlr": 3.9,
-    "lb": 1.88,
-    "hsl": 4.4,
-    "turnover_yi": 29.76,
-    "price": 41.56,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh603993",
-    "name": "洛阳钼业",
-    "zdf": 3.79,
-    "zljlr": 3.59,
-    "lb": 1.45,
-    "hsl": 0.82,
-    "turnover_yi": 24.16,
-    "price": 17.24,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sz002594",
-    "name": "比亚迪",
-    "zdf": 4.04,
-    "zljlr": 3.48,
-    "lb": 1.92,
-    "hsl": 1.09,
-    "turnover_yi": 31.71,
-    "price": 85.02,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sz002407",
-    "name": "多氟多",
-    "zdf": 5.79,
-    "zljlr": 3.19,
-    "lb": 3.07,
-    "hsl": 12.41,
-    "turnover_yi": 41.5,
-    "price": 31.79,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh600519",
-    "name": "贵州茅台",
-    "zdf": 0.71,
-    "zljlr": 2.91,
-    "lb": 1.17,
-    "hsl": 0.26,
-    "turnover_yi": 41.67,
-    "price": 1264.7,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sh600547",
-    "name": "山东黄金",
-    "zdf": 2.91,
-    "zljlr": 2.44,
-    "lb": 1.22,
-    "hsl": 3.1,
-    "turnover_yi": 30.16,
-    "price": 27.2,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz300059",
-    "name": "东方财富",
-    "zdf": 3.88,
-    "zljlr": 2.41,
-    "lb": 1.88,
-    "hsl": 1.83,
-    "turnover_yi": 43.24,
-    "price": 17.95,
-    "stype": "GP-A-CYB",
-    "type": "中继观察"
-   },
-   {
-    "code": "sz003006",
-    "name": "百亚股份",
-    "zdf": 2.52,
-    "zljlr": 2.3,
-    "lb": 0.99,
-    "hsl": 11.3,
-    "turnover_yi": 11.03,
-    "price": 22.76,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   }
-  ],
+  "candidates": [],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
  "L5": {
   "alerts": [
    {
-    "level": "yellow",
-    "type": "板块集中",
-    "msg": "资金高度集中于 电池（第一/第二板块净流入比 1.55），拥挤度风险"
+    "level": "green",
+    "type": "正常",
+    "msg": "未触发预警信号，按状态机规则执行即可"
    }
   ]
  },
