@@ -1,31 +1,32 @@
 {
  "date": "2026-10-12",
  "cboe_vix": {
-  "value": 14.84,
-  "prev": 15.41,
-  "date": "2026-10-09",
-  "chg": -0.57,
-  "chg_pct": -3.7,
-  "source": "csv"
+  "value": 15.21,
+  "prev": 14.84,
+  "date": "2026-10-12",
+  "chg": 0.37,
+  "chg_pct": 2.49,
+  "settled_at": "2026-10-12T16:15:01",
+  "source": "csv+delayed_quote"
  },
  "us": [
   {
    "code": "gb_dji",
    "name": "道琼斯",
-   "value": 51654.95,
-   "chg_pct": 0.83
+   "value": 51850.55,
+   "chg_pct": 0.38
   },
   {
    "code": "gb_ixic",
    "name": "纳斯达克",
-   "value": 27366.17,
-   "chg_pct": 0.64
+   "value": 27245.9,
+   "chg_pct": -0.44
   },
   {
    "code": "gb_inx",
    "name": "标普500",
-   "value": 7811.54,
-   "chg_pct": 0.59
+   "value": 7807.24,
+   "chg_pct": -0.06
   }
  ],
  "a_share": [
@@ -39,16 +40,12 @@
   {
    "name": "创业板指",
    "code": "sz399006",
-   "value": 3043.34,
+   "value": 2963.82,
    "qvix": 28.92,
-   "vol20": 28.47
+   "vol20": 29.51
   }
  ],
  "vix_history": [
-  {
-   "date": "2025-10-08",
-   "close": 16.3
-  },
   {
    "date": "2025-10-09",
    "close": 16.43
@@ -1084,9 +1081,13 @@
   {
    "date": "2026-10-09",
    "close": 14.84
+  },
+  {
+   "date": "2026-10-12",
+   "close": 15.21
   }
  ],
- "generated_at": "2026-10-12 18:18",
+ "generated_at": "2026-10-13 08:32",
  "a_anchor": "2026-10-12",
- "us_anchor": "2026-10-09"
+ "us_anchor": "2026-10-12"
 }
