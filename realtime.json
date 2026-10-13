@@ -1,6 +1,6 @@
 {
  "meta": {
-  "updated_at": "2026-10-13 09:15:17",
+  "updated_at": "2026-10-13 09:45:20",
   "data_date": "2026-10-13",
   "market_status": "trading",
   "algorithm": "1.0.0",
@@ -11,97 +11,97 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3797.21,
-    "chg_pct": -0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3748.1,
+    "chg_pct": -1.29,
+    "turnover_yi": 1704.4,
+    "high": 3770.08,
+    "low": 3747.89
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 12384.87,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 12080.32,
+    "chg_pct": -2.46,
+    "turnover_yi": 1989.9,
+    "high": 12217.09,
+    "low": 12078.1
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 2963.82,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 2865.23,
+    "chg_pct": -3.33,
+    "turnover_yi": 1002.7,
+    "high": 2907.76,
+    "low": 2863.91
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1426.72,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 1377.62,
+    "chg_pct": -3.44,
+    "turnover_yi": 152.4,
+    "high": 1397.75,
+    "low": 1376.18
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4287.98,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 4220.16,
+    "chg_pct": -1.58,
+    "turnover_yi": 867.7,
+    "high": 4249.0,
+    "low": 4220.16
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 7092.57,
-    "chg_pct": -0.01,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 6922.31,
+    "chg_pct": -2.41,
+    "turnover_yi": 559.5,
+    "high": 7000.0,
+    "low": 6920.55
    }
   ],
   "breadth": {
-   "up": 1023,
-   "down": 2284,
-   "flat": 1300,
-   "ratio": 0.45,
-   "limit_up": 63,
-   "limit_down": 109,
-   "main_net_yi": 0.0,
-   "turnover_yi": 0.0,
+   "up": 391,
+   "down": 4135,
+   "flat": 81,
+   "ratio": 0.09,
+   "limit_up": 28,
+   "limit_down": 20,
+   "main_net_yi": -122.96,
+   "turnover_yi": 3198.4,
    "total": 4607
   }
  },
  "L1": {
   "sentiment": {
-   "score": 37,
-   "S1": 11,
-   "S2": 52,
-   "S3": 40,
-   "S4": 50,
+   "score": 14,
+   "S1": 2,
+   "S2": 23,
+   "S3": 0,
+   "S4": 30,
    "inputs": {
-    "ratio": 0.45,
-    "limit_up": 63,
-    "avg_idx_pct": -0.0,
-    "main_net_yi": 0
+    "ratio": 0.09,
+    "limit_up": 28,
+    "avg_idx_pct": -2.42,
+    "main_net_yi": -122.96
    }
   },
   "state": {
-   "state": "weak",
-   "label": "弱势回调",
-   "note": "防守为主，仅小仓低吸，严格止损",
-   "score": 37
+   "state": "panic",
+   "label": "恐慌下跌",
+   "note": "空仓或极轻仓观望，不抄底，等企稳信号",
+   "score": 14
   }
  },
  "L2": {
   "range": [
-   25,
-   40
+   0,
+   20
   ],
-  "note": "弱势回调，防守为主，严格止损",
+  "note": "恐慌下跌，空仓或极轻仓等待企稳",
   "rules": [
    "单票仓位 ≤ 10%",
    "单一板块集中度 ≤ 30%",
@@ -110,21 +110,183 @@
   ]
  },
  "L3": {
-  "sectors": [],
-  "mainline": "数据不可用",
-  "resonance": []
+  "sectors": [
+   {
+    "name": "集成电路制造",
+    "net_yi": 4.81,
+    "jumbo_yi": 1.86,
+    "block_yi": 2.95,
+    "pct": 10.17
+   },
+   {
+    "name": "农林牧渔",
+    "net_yi": 2.32,
+    "jumbo_yi": 2.02,
+    "block_yi": 0.3,
+    "pct": 2.66
+   },
+   {
+    "name": "种植业",
+    "net_yi": 2.03,
+    "jumbo_yi": 1.34,
+    "block_yi": 0.69,
+    "pct": 6.29
+   },
+   {
+    "name": "水泥",
+    "net_yi": 1.69,
+    "jumbo_yi": 1.81,
+    "block_yi": -0.12,
+    "pct": 19.3
+   },
+   {
+    "name": "煤炭",
+    "net_yi": 1.59,
+    "jumbo_yi": 0.62,
+    "block_yi": 0.96,
+    "pct": 4.09
+   },
+   {
+    "name": "航运",
+    "net_yi": 1.57,
+    "jumbo_yi": 0.96,
+    "block_yi": 0.61,
+    "pct": 6.46
+   },
+   {
+    "name": "综合Ⅲ",
+    "net_yi": 1.5,
+    "jumbo_yi": 2.17,
+    "block_yi": -0.67,
+    "pct": 11.98
+   },
+   {
+    "name": "综合",
+    "net_yi": 1.5,
+    "jumbo_yi": 2.17,
+    "block_yi": -0.67,
+    "pct": 11.98
+   },
+   {
+    "name": "综合Ⅱ",
+    "net_yi": 1.5,
+    "jumbo_yi": 2.17,
+    "block_yi": -0.67,
+    "pct": 11.99
+   },
+   {
+    "name": "焦炭Ⅲ",
+    "net_yi": 1.46,
+    "jumbo_yi": 1.44,
+    "block_yi": 0.02,
+    "pct": 15.98
+   },
+   {
+    "name": "焦炭Ⅱ",
+    "net_yi": 1.46,
+    "jumbo_yi": 1.44,
+    "block_yi": 0.02,
+    "pct": 15.97
+   },
+   {
+    "name": "石油石化",
+    "net_yi": 1.43,
+    "jumbo_yi": 0.63,
+    "block_yi": 0.8,
+    "pct": 5.58
+   },
+   {
+    "name": "水泥制造",
+    "net_yi": 1.36,
+    "jumbo_yi": 1.54,
+    "block_yi": -0.18,
+    "pct": 21.6
+   },
+   {
+    "name": "白酒Ⅲ",
+    "net_yi": 1.12,
+    "jumbo_yi": 0.36,
+    "block_yi": 0.77,
+    "pct": 4.97
+   },
+   {
+    "name": "白酒Ⅱ",
+    "net_yi": 1.12,
+    "jumbo_yi": 0.36,
+    "block_yi": 0.77,
+    "pct": 4.97
+   },
+   {
+    "name": "种子",
+    "net_yi": 1.08,
+    "jumbo_yi": 0.66,
+    "block_yi": 0.42,
+    "pct": 6.08
+   },
+   {
+    "name": "航运港口",
+    "net_yi": 1.05,
+    "jumbo_yi": 0.68,
+    "block_yi": 0.37,
+    "pct": 3.47
+   },
+   {
+    "name": "航空装备Ⅲ",
+    "net_yi": 1.01,
+    "jumbo_yi": 0.7,
+    "block_yi": 0.31,
+    "pct": 3.29
+   },
+   {
+    "name": "航空装备Ⅱ",
+    "net_yi": 1.01,
+    "jumbo_yi": 0.7,
+    "block_yi": 0.31,
+    "pct": 3.29
+   },
+   {
+    "name": "其他种植业",
+    "net_yi": 0.97,
+    "jumbo_yi": 0.7,
+    "block_yi": 0.28,
+    "pct": 7.9
+   }
+  ],
+  "mainline": "集成电路制造(+4.81亿) → 农林牧渔(+2.32亿) → 种植业(+2.03亿)",
+  "resonance": [
+   "全市场涨停 28 只，情绪有温度",
+   "⚠ 资金高度集中于 集成电路制造，追高风险上升"
+  ],
+  "conc": {
+   "lead": "集成电路制造",
+   "ratio": 2.07,
+   "alert": true
+  }
  },
  "L4": {
-  "candidates": [],
+  "candidates": [
+   {
+    "code": "sh601872",
+    "name": "招商轮船",
+    "zdf": 4.1,
+    "zljlr": 1.07,
+    "lb": 4.02,
+    "hsl": 0.52,
+    "turnover_yi": 8.72,
+    "price": 20.82,
+    "stype": "GP-A",
+    "type": "中继观察"
+   }
+  ],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
  "L5": {
   "alerts": [
    {
-    "level": "green",
-    "type": "正常",
-    "msg": "未触发预警信号，按状态机规则执行即可"
+    "level": "yellow",
+    "type": "板块集中",
+    "msg": "资金高度集中于 集成电路制造（第一/第二板块净流入比 2.07），拥挤度风险"
    }
   ]
  },
