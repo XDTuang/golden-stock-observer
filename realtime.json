@@ -1,6 +1,6 @@
 {
  "meta": {
-  "updated_at": "2026-10-14 09:15:24",
+  "updated_at": "2026-10-14 09:45:16",
   "data_date": "2026-10-14",
   "market_status": "trading",
   "algorithm": "1.0.0",
@@ -11,89 +11,89 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3800.61,
-    "chg_pct": -0.01,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3791.9,
+    "chg_pct": -0.24,
+    "turnover_yi": 1343.3,
+    "high": 3797.58,
+    "low": 3786.21
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 12353.7,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 12281.61,
+    "chg_pct": -0.58,
+    "turnover_yi": 1609.0,
+    "high": 12332.91,
+    "low": 12259.02
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 2958.34,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 2932.8,
+    "chg_pct": -0.86,
+    "turnover_yi": 763.9,
+    "high": 2949.96,
+    "low": 2926.4
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1427.18,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 1410.97,
+    "chg_pct": -1.14,
+    "turnover_yi": 88.8,
+    "high": 1423.02,
+    "low": 1407.71
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4275.41,
-    "chg_pct": -0.01,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 4259.62,
+    "chg_pct": -0.38,
+    "turnover_yi": 619.0,
+    "high": 4267.37,
+    "low": 4251.19
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 7083.79,
-    "chg_pct": -0.02,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 7053.82,
+    "chg_pct": -0.44,
+    "turnover_yi": 433.0,
+    "high": 7082.41,
+    "low": 7040.18
    }
   ],
   "breadth": {
-   "up": 1321,
-   "down": 1817,
-   "flat": 1469,
-   "ratio": 0.73,
-   "limit_up": 62,
-   "limit_down": 56,
-   "main_net_yi": 0.0,
-   "turnover_yi": 0.0,
+   "up": 1010,
+   "down": 3427,
+   "flat": 170,
+   "ratio": 0.29,
+   "limit_up": 30,
+   "limit_down": 5,
+   "main_net_yi": -40.97,
+   "turnover_yi": 2637.4,
    "total": 4607
   }
  },
  "L1": {
   "sentiment": {
-   "score": 39,
-   "S1": 18,
-   "S2": 52,
-   "S3": 40,
-   "S4": 50,
+   "score": 25,
+   "S1": 7,
+   "S2": 25,
+   "S3": 28,
+   "S4": 43,
    "inputs": {
-    "ratio": 0.73,
-    "limit_up": 62,
-    "avg_idx_pct": -0.01,
-    "main_net_yi": 0
+    "ratio": 0.29,
+    "limit_up": 30,
+    "avg_idx_pct": -0.61,
+    "main_net_yi": -40.97
    }
   },
   "state": {
    "state": "weak",
    "label": "弱势回调",
    "note": "防守为主，仅小仓低吸，严格止损",
-   "score": 39
+   "score": 25
   }
  },
  "L2": {
@@ -110,12 +110,197 @@
   ]
  },
  "L3": {
-  "sectors": [],
-  "mainline": "数据不可用",
-  "resonance": []
+  "sectors": [
+   {
+    "name": "印制电路板",
+    "net_yi": 4.91,
+    "jumbo_yi": 2.79,
+    "block_yi": 2.12,
+    "pct": 2.67
+   },
+   {
+    "name": "元件",
+    "net_yi": 4.32,
+    "jumbo_yi": 2.65,
+    "block_yi": 1.67,
+    "pct": 2.12
+   },
+   {
+    "name": "石油石化",
+    "net_yi": 3.12,
+    "jumbo_yi": 1.62,
+    "block_yi": 1.49,
+    "pct": 10.2
+   },
+   {
+    "name": "游戏Ⅲ",
+    "net_yi": 2.19,
+    "jumbo_yi": 1.09,
+    "block_yi": 1.1,
+    "pct": 7.68
+   },
+   {
+    "name": "游戏Ⅱ",
+    "net_yi": 2.19,
+    "jumbo_yi": 1.09,
+    "block_yi": 1.1,
+    "pct": 7.67
+   },
+   {
+    "name": "其他自动化设备",
+    "net_yi": 1.92,
+    "jumbo_yi": 0.92,
+    "block_yi": 1.0,
+    "pct": 11.82
+   },
+   {
+    "name": "食品饮料",
+    "net_yi": 1.69,
+    "jumbo_yi": 0.89,
+    "block_yi": 0.8,
+    "pct": 3.27
+   },
+   {
+    "name": "自动化设备",
+    "net_yi": 1.56,
+    "jumbo_yi": 0.48,
+    "block_yi": 1.08,
+    "pct": 3.34
+   },
+   {
+    "name": "电池化学品",
+    "net_yi": 1.29,
+    "jumbo_yi": 2.05,
+    "block_yi": -0.76,
+    "pct": 2.33
+   },
+   {
+    "name": "装修装饰Ⅲ",
+    "net_yi": 1.18,
+    "jumbo_yi": 0.99,
+    "block_yi": 0.19,
+    "pct": 9.86
+   },
+   {
+    "name": "装修装饰Ⅱ",
+    "net_yi": 1.18,
+    "jumbo_yi": 0.99,
+    "block_yi": 0.19,
+    "pct": 9.86
+   },
+   {
+    "name": "油气开采Ⅲ",
+    "net_yi": 1.17,
+    "jumbo_yi": 0.61,
+    "block_yi": 0.55,
+    "pct": 15.27
+   },
+   {
+    "name": "油气开采Ⅱ",
+    "net_yi": 1.17,
+    "jumbo_yi": 0.61,
+    "block_yi": 0.55,
+    "pct": 15.27
+   },
+   {
+    "name": "炼化及贸易",
+    "net_yi": 1.15,
+    "jumbo_yi": 0.64,
+    "block_yi": 0.51,
+    "pct": 7.57
+   },
+   {
+    "name": "轨交设备Ⅲ",
+    "net_yi": 1.15,
+    "jumbo_yi": 0.73,
+    "block_yi": 0.41,
+    "pct": 15.6
+   },
+   {
+    "name": "轨交设备Ⅱ",
+    "net_yi": 1.15,
+    "jumbo_yi": 0.73,
+    "block_yi": 0.41,
+    "pct": 15.6
+   },
+   {
+    "name": "炼油化工",
+    "net_yi": 1.11,
+    "jumbo_yi": 0.67,
+    "block_yi": 0.44,
+    "pct": 9.44
+   },
+   {
+    "name": "机械设备",
+    "net_yi": 0.93,
+    "jumbo_yi": 1.02,
+    "block_yi": -0.1,
+    "pct": 0.47
+   },
+   {
+    "name": "厨房小家电",
+    "net_yi": 0.9,
+    "jumbo_yi": 0.84,
+    "block_yi": 0.06,
+    "pct": 10.76
+   },
+   {
+    "name": "建筑装饰",
+    "net_yi": 0.83,
+    "jumbo_yi": 0.3,
+    "block_yi": 0.53,
+    "pct": 1.96
+   }
+  ],
+  "mainline": "印制电路板(+4.91亿) → 元件(+4.32亿) → 石油石化(+3.12亿)",
+  "resonance": [
+   "全市场涨停 30 只，情绪有温度"
+  ],
+  "conc": {
+   "lead": "印制电路板",
+   "ratio": 1.14,
+   "alert": false
+  }
  },
  "L4": {
-  "candidates": [],
+  "candidates": [
+   {
+    "code": "sz300757",
+    "name": "罗博特科",
+    "zdf": 2.82,
+    "zljlr": 1.67,
+    "lb": 5.05,
+    "hsl": 1.15,
+    "turnover_yi": 9.51,
+    "price": 507.12,
+    "stype": "GP-A-CYB",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz002436",
+    "name": "兴森科技",
+    "zdf": 4.89,
+    "zljlr": 1.08,
+    "lb": 6.57,
+    "hsl": 3.2,
+    "turnover_yi": 18.36,
+    "price": 37.96,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sh600938",
+    "name": "中国海油",
+    "zdf": 3.24,
+    "zljlr": 1.06,
+    "lb": 6.66,
+    "hsl": 0.53,
+    "turnover_yi": 5.54,
+    "price": 35.4,
+    "stype": "GP-A",
+    "type": "中继观察"
+   }
+  ],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
