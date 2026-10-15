@@ -1,72 +1,74 @@
 {
-  "generated_at": "2026-10-15 08:33",
-  "session": "preopen",
-  "data_date": "2026-10-14",
-  "for_date": "2026-10-15",
+  "generated_at": "2026-10-15 22:02",
+  "session": "close",
+  "data_date": "2026-10-15",
+  "for_date": "2026-10-16",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-10-15"
+    "2026-10-16"
   ],
   "span_days": 1,
   "display_days": [
-    "2026-10-14",
-    "2026-10-15"
+    "2026-10-15",
+    "2026-10-16"
   ],
-  "display_text": "10/14 + 10/15",
+  "display_text": "10/15 + 10/16",
   "span_is_weekend_cross": false,
-  "span_text": "10/15",
+  "span_text": "10/16",
   "carry": {
-    "from_data_date": "2026-10-14",
-    "ref": "output/feed_review_2026-10-14.json",
+    "from_data_date": "2026-10-15",
+    "ref": "output/feed_review_2026-10-15.json",
     "exists": true,
     "gap_days": 1,
     "stale": false,
-    "bias": "偏多",
-    "bias_score": 2,
+    "bias": "中性",
+    "bias_score": 1,
     "t1_focus": [
-      "跟踪金钻起涨 15 只回踩确认"
+      "跟踪金钻起涨 17 只回踩确认"
     ],
     "risks": [],
     "headline": ""
   },
   "layers": {
-    "base": "2026-10-14 A股收盘（基准层）",
-    "overnight": "美东 2026-10-14 收盘（北京 2026-10-15 早间到达）",
-    "premarket": "2026-10-15 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-10-15 A股收盘（基准层）",
+    "overnight": "美东 2026-10-15 收盘（北京 2026-10-16 早间到达）",
+    "premarket": "2026-10-16 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-10-14",
+    "date": "2026-10-15",
     "run_date": "2026-10-15",
-    "preopen_partial": true,
+    "preopen_partial": null,
     "us_kline": true,
     "asia": true
   },
   "covered": [
-    {
-      "date": "2026-10-14",
-      "weekday": "周三",
-      "is_trading_day": true,
-      "news": 306,
-      "feeds": 0,
-      "reports": 582,
-      "macro": true
-    },
     {
       "date": "2026-10-15",
       "weekday": "周四",
       "is_trading_day": true,
       "news": 286,
       "feeds": 0,
-      "reports": 67,
+      "reports": 634,
       "macro": true
+    },
+    {
+      "date": "2026-10-16",
+      "weekday": "周五",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
     }
   ],
   "totals": {
-    "news": 592,
+    "news": 286,
     "feeds": 0,
-    "reports": 649,
+    "reports": 634,
     "covered_days": 2
   },
-  "missing": []
+  "missing": [
+    "market_thermometer.json 数据日 2026-10-14 落后于基准日 2026-10-15"
+  ]
 }
