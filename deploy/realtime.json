@@ -1,7 +1,7 @@
 {
  "meta": {
-  "updated_at": "2026-10-14 14:45:24",
-  "data_date": "2026-10-14",
+  "updated_at": "2026-10-15 09:15:22",
+  "data_date": "2026-10-15",
   "market_status": "trading",
   "algorithm": "1.0.0",
   "next_hint": "每 30 分钟自动刷新（交易日 9:30-15:00，GitHub Actions 驱动）"
@@ -11,97 +11,97 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3769.24,
-    "chg_pct": -0.83,
-    "turnover_yi": 6102.8,
-    "high": 3811.81,
-    "low": 3761.96
+    "price": 3766.7,
+    "chg_pct": -0.01,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 12122.4,
-    "chg_pct": -1.87,
-    "turnover_yi": 6935.3,
-    "high": 12383.62,
-    "low": 12097.5
+    "price": 12110.59,
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 2870.26,
-    "chg_pct": -2.98,
-    "turnover_yi": 3313.8,
-    "high": 2962.73,
-    "low": 2865.65
+    "price": 2866.76,
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1383.46,
-    "chg_pct": -3.06,
-    "turnover_yi": 519.9,
-    "high": 1429.38,
-    "low": 1381.64
+    "price": 1380.26,
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4220.78,
-    "chg_pct": -1.28,
-    "turnover_yi": 3361.3,
-    "high": 4281.46,
-    "low": 4214.01
+    "price": 4217.04,
+    "chg_pct": -0.02,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 6987.56,
-    "chg_pct": -1.38,
-    "turnover_yi": 2123.7,
-    "high": 7120.11,
-    "low": 6969.02
+    "price": 6979.79,
+    "chg_pct": -0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    }
   ],
   "breadth": {
-   "up": 872,
-   "down": 3639,
-   "flat": 96,
-   "ratio": 0.24,
-   "limit_up": 42,
-   "limit_down": 15,
-   "main_net_yi": -266.92,
-   "turnover_yi": 11415.3,
-   "total": 4607
+   "up": 478,
+   "down": 3306,
+   "flat": 824,
+   "ratio": 0.14,
+   "limit_up": 54,
+   "limit_down": 176,
+   "main_net_yi": 0.0,
+   "turnover_yi": 0.0,
+   "total": 4608
   }
  },
  "L1": {
   "sentiment": {
-   "score": 12,
-   "S1": 6,
-   "S2": 35,
-   "S3": 2,
-   "S4": 6,
+   "score": 33,
+   "S1": 4,
+   "S2": 45,
+   "S3": 40,
+   "S4": 50,
    "inputs": {
-    "ratio": 0.24,
-    "limit_up": 42,
-    "avg_idx_pct": -1.9,
-    "main_net_yi": -266.92
+    "ratio": 0.14,
+    "limit_up": 54,
+    "avg_idx_pct": -0.01,
+    "main_net_yi": 0
    }
   },
   "state": {
-   "state": "panic",
-   "label": "恐慌下跌",
-   "note": "空仓或极轻仓观望，不抄底，等企稳信号",
-   "score": 12
+   "state": "weak",
+   "label": "弱势回调",
+   "note": "防守为主，仅小仓低吸，严格止损",
+   "score": 33
   }
  },
  "L2": {
   "range": [
-   0,
-   20
+   25,
+   40
   ],
-  "note": "恐慌下跌，空仓或极轻仓等待企稳",
+  "note": "弱势回调，防守为主，严格止损",
   "rules": [
    "单票仓位 ≤ 10%",
    "单一板块集中度 ≤ 30%",
@@ -110,281 +110,12 @@
   ]
  },
  "L3": {
-  "sectors": [
-   {
-    "name": "传媒",
-    "net_yi": 24.23,
-    "jumbo_yi": 23.71,
-    "block_yi": 0.53,
-    "pct": 3.15
-   },
-   {
-    "name": "印制电路板",
-    "net_yi": 19.81,
-    "jumbo_yi": 7.59,
-    "block_yi": 12.22,
-    "pct": 2.68
-   },
-   {
-    "name": "元件",
-    "net_yi": 16.23,
-    "jumbo_yi": 6.05,
-    "block_yi": 10.19,
-    "pct": 1.92
-   },
-   {
-    "name": "石油石化",
-    "net_yi": 9.87,
-    "jumbo_yi": 6.1,
-    "block_yi": 3.77,
-    "pct": 6.58
-   },
-   {
-    "name": "公用事业",
-    "net_yi": 7.8,
-    "jumbo_yi": 6.83,
-    "block_yi": 0.97,
-    "pct": 2.33
-   },
-   {
-    "name": "数字媒体",
-    "net_yi": 7.38,
-    "jumbo_yi": 7.3,
-    "block_yi": 0.08,
-    "pct": 4.11
-   },
-   {
-    "name": "煤炭",
-    "net_yi": 6.77,
-    "jumbo_yi": 6.15,
-    "block_yi": 0.62,
-    "pct": 4.62
-   },
-   {
-    "name": "电力",
-    "net_yi": 6.61,
-    "jumbo_yi": 6.41,
-    "block_yi": 0.2,
-    "pct": 2.23
-   },
-   {
-    "name": "游戏Ⅲ",
-    "net_yi": 6.53,
-    "jumbo_yi": 7.26,
-    "block_yi": -0.73,
-    "pct": 5.26
-   },
-   {
-    "name": "游戏Ⅱ",
-    "net_yi": 6.53,
-    "jumbo_yi": 7.26,
-    "block_yi": -0.73,
-    "pct": 5.26
-   },
-   {
-    "name": "动力煤",
-    "net_yi": 6.28,
-    "jumbo_yi": 5.27,
-    "block_yi": 1.02,
-    "pct": 6.15
-   },
-   {
-    "name": "煤炭开采",
-    "net_yi": 6.28,
-    "jumbo_yi": 5.36,
-    "block_yi": 0.92,
-    "pct": 5.13
-   },
-   {
-    "name": "炼化及贸易",
-    "net_yi": 5.3,
-    "jumbo_yi": 2.52,
-    "block_yi": 2.78,
-    "pct": 6.88
-   },
-   {
-    "name": "炼油化工",
-    "net_yi": 5.11,
-    "jumbo_yi": 2.54,
-    "block_yi": 2.58,
-    "pct": 8.61
-   },
-   {
-    "name": "水力发电",
-    "net_yi": 4.76,
-    "jumbo_yi": 4.54,
-    "block_yi": 0.22,
-    "pct": 6.07
-   },
-   {
-    "name": "营销代理",
-    "net_yi": 4.11,
-    "jumbo_yi": 3.55,
-    "block_yi": 0.56,
-    "pct": 2.62
-   },
-   {
-    "name": "文字媒体",
-    "net_yi": 4.02,
-    "jumbo_yi": 4.78,
-    "block_yi": -0.77,
-    "pct": 6.62
-   },
-   {
-    "name": "塑料",
-    "net_yi": 3.69,
-    "jumbo_yi": 2.54,
-    "block_yi": 1.15,
-    "pct": 2.58
-   },
-   {
-    "name": "广告营销",
-    "net_yi": 3.62,
-    "jumbo_yi": 3.66,
-    "block_yi": -0.04,
-    "pct": 2.04
-   },
-   {
-    "name": "出版",
-    "net_yi": 3.35,
-    "jumbo_yi": 2.72,
-    "block_yi": 0.63,
-    "pct": 2.93
-   }
-  ],
-  "mainline": "传媒(+24.23亿) → 印制电路板(+19.81亿) → 元件(+16.23亿)",
-  "resonance": [
-   "全市场涨停 42 只，情绪有温度"
-  ],
-  "conc": {
-   "lead": "传媒",
-   "ratio": 1.22,
-   "alert": false
-  }
+  "sectors": [],
+  "mainline": "数据不可用",
+  "resonance": []
  },
  "L4": {
-  "candidates": [
-   {
-    "code": "sz002463",
-    "name": "沪电股份",
-    "zdf": -0.62,
-    "zljlr": 4.2,
-    "lb": 1.01,
-    "hsl": 2.23,
-    "turnover_yi": 49.98,
-    "price": 115.18,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sh601857",
-    "name": "中国石油",
-    "zdf": 2.12,
-    "zljlr": 3.17,
-    "lb": 1.07,
-    "hsl": 0.1,
-    "turnover_yi": 19.39,
-    "price": 12.51,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz300604",
-    "name": "长川科技",
-    "zdf": -0.34,
-    "zljlr": 2.79,
-    "lb": 0.97,
-    "hsl": 3.36,
-    "turnover_yi": 37.22,
-    "price": 219.05,
-    "stype": "GP-A-CYB",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz003006",
-    "name": "百亚股份",
-    "zdf": -0.82,
-    "zljlr": 2.75,
-    "lb": 0.85,
-    "hsl": 9.02,
-    "turnover_yi": 8.98,
-    "price": 23.01,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz002436",
-    "name": "兴森科技",
-    "zdf": 4.34,
-    "zljlr": 2.66,
-    "lb": 1.47,
-    "hsl": 10.07,
-    "turnover_yi": 58.45,
-    "price": 37.76,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sz300757",
-    "name": "罗博特科",
-    "zdf": -0.87,
-    "zljlr": 2.61,
-    "lb": 1.13,
-    "hsl": 3.64,
-    "turnover_yi": 29.87,
-    "price": 488.92,
-    "stype": "GP-A-CYB",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz002851",
-    "name": "麦格米特",
-    "zdf": 0.86,
-    "zljlr": 2.53,
-    "lb": 1.08,
-    "hsl": 4.56,
-    "turnover_yi": 23.58,
-    "price": 103.12,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz002585",
-    "name": "双星新材",
-    "zdf": 5.64,
-    "zljlr": 2.37,
-    "lb": 2.39,
-    "hsl": 17.85,
-    "turnover_yi": 16.42,
-    "price": 10.3,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh600938",
-    "name": "中国海油",
-    "zdf": 4.05,
-    "zljlr": 2.25,
-    "lb": 2.05,
-    "hsl": 2.3,
-    "turnover_yi": 24.43,
-    "price": 35.68,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh600601",
-    "name": "方正科技",
-    "zdf": 0.33,
-    "zljlr": 2.25,
-    "lb": 1.09,
-    "hsl": 4.66,
-    "turnover_yi": 23.92,
-    "price": 12.14,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   }
-  ],
+  "candidates": [],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
