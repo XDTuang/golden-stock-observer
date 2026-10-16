@@ -1,21 +1,21 @@
 {
   "date": "2026-10-16",
   "data_date": "2026-10-15",
-  "generated_at": "2026-10-16 08:32",
+  "generated_at": "2026-10-16 20:04",
   "news_date": "",
   "news_window": [
     "2026-10-15",
     "2026-10-16"
   ],
   "news_window_days": 2,
-  "flow_date": "2026-10-15",
-  "flow_raw_latest": "2026-10-15",
+  "flow_date": "2026-10-16",
+  "flow_raw_latest": "2026-10-16",
   "flow_is_weekend_copy": false,
   "hot_per_day": 8,
   "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-10-16 08:31",
+    "generated_at": "2026-10-16 08:32",
     "session": "preopen",
     "data_date": "2026-10-15",
     "for_date": "2026-10-16",
@@ -53,8 +53,8 @@
     },
     "market_state": {
       "date": "2026-10-15",
-      "run_date": "2026-10-15",
-      "preopen_partial": null,
+      "run_date": "2026-10-16",
+      "preopen_partial": true,
       "us_kline": true,
       "asia": true
     },
@@ -72,22 +72,19 @@
         "date": "2026-10-16",
         "weekday": "周五",
         "is_trading_day": true,
-        "news": 0,
+        "news": 285,
         "feeds": 0,
         "reports": 36,
-        "macro": false
+        "macro": true
       }
     ],
     "totals": {
-      "news": 307,
+      "news": 592,
       "feeds": 0,
       "reports": 916,
       "covered_days": 2
     },
-    "missing": [
-      "market_thermometer.json 数据日 2026-10-14 落后于基准日 2026-10-15",
-      "2026-10-16（周五·交易日）新闻池 0 条"
-    ]
+    "missing": []
   },
   "index_context": {
     "上证指数": {
@@ -108,210 +105,197 @@
     }
   },
   "summary": {
-    "共振": 1,
-    "背离": 10,
-    "暗线": 2,
-    "双冷": 18
+    "共振": 3,
+    "背离": 6,
+    "暗线": 6,
+    "双冷": 16
   },
   "items": [
     {
+      "sector": "传媒",
+      "news_count": 21,
+      "news_per_day": 10.5,
+      "flow_yi": -36.84,
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sample_titles": [
+        "《求是》杂志发表习近平总书记重要文章《以更高标准、更实举措推进全面从严治党》",
+        "乌克兰总统泽连斯基：俄罗斯总统普京在玩文字游戏，他不想让战争结束。",
+        "四部门：车企不得作虚假、夸大或引人误解的宣传 不得诱导驾驶人忽视安全驾驶责任"
+      ]
+    },
+    {
+      "sector": "国防军工",
+      "news_count": 13,
+      "news_per_day": 6.5,
+      "flow_yi": 29.34,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": [
+        "也门政府称总统府遭袭 胡塞武装称袭击沙特指挥部",
+        "欧洲通信卫星公司股价扩大涨幅，目前上涨20.4%。",
+        "欧盟：“星链”对乌至关重要 欧洲暂无替代方案"
+      ]
+    },
+    {
+      "sector": "汽车",
+      "news_count": 30,
+      "news_per_day": 15.0,
+      "flow_yi": 28.07,
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
+      "sample_titles": [
+        "商务部新闻发言人就欧盟峰会提出对华“双轨”思路答记者问：中欧按照双方确定的遵",
+        "【商务部新闻发言人就欧盟峰会提出对华“双轨”思路答记者问】商务部新闻发言人就",
+        "商务部新闻发言人就欧盟峰会提出对华“双轨”思路答记者问"
+      ]
+    },
+    {
       "sector": "电子",
-      "news_count": 77,
-      "news_per_day": 38.5,
-      "flow_yi": -132.22,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "news_count": 59,
+      "news_per_day": 29.5,
+      "flow_yi": 23.4,
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "新加坡9月非电子产品出口较上年同期增长54.2%，新加坡9月电子产品出口较上",
-        "中国智能算力中心投资规模持续扩大 国产算力量价齐升逻辑扎实",
-        "谷歌发布量子计算重大突破 量子科技投资风口有望到来"
+        "第140届广交会：以前沿创新展品对接全球供需",
+        "申昊科技：子公司签订8.81亿元算力设备采购合同",
+        "江丰电子：实控人提议5000万元至1亿元回购公司股份"
       ]
     },
     {
-      "sector": "通信",
-      "news_count": 16,
-      "news_per_day": 8.0,
-      "flow_yi": -89.36,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "黄仁勋称CoreWeave财务实力改善 英伟达无需为其提供兜底支持",
-        "欧盟据悉拟快速审批欧洲卫星合资项目",
-        "工博会机器人“不按剧本走” 在不完美场景中训练真实能力"
-      ]
-    },
-    {
-      "sector": "机械设备",
-      "news_count": 7,
-      "news_per_day": 3.5,
-      "flow_yi": -61.16,
+      "sector": "非银金融",
+      "news_count": 9,
+      "news_per_day": 4.5,
+      "flow_yi": -16.97,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "“从每天一万三，降到每天三千九！”人形机器人行业迎来商业化大考",
-        "机器人初创企业扎堆做投资 边融边投模式引热议",
-        "工博会机器人“不按剧本走” 在不完美场景中训练真实能力"
+        "中东战火持续 迪拜投资园仍推进IPO计划",
+        "优艾智合机器人港股IPO获中国证监会备案",
+        "南向资金净卖近36亿港元 净买入友邦保险近8亿港元"
       ]
     },
     {
       "sector": "有色金属",
-      "news_count": 31,
-      "news_per_day": 15.5,
-      "flow_yi": -48.48,
+      "news_count": 17,
+      "news_per_day": 8.5,
+      "flow_yi": -14.02,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "【中国铝业集团200亿元小公募债申报获上交所受理】上交所公司债券项目信息平台",
-        "主要央行行长轮番讲话，沃什11:30出场",
-        "美国铝业三季度调整后每股收益1.82美元超预期"
+        "藏格矿业：前三季度净利润同比增长122.09% 碳酸锂收入增加及投资收益同比",
+        "国城矿业：控股子公司签署碳酸锂购销合同",
+        "新疆众和成立矿业公司 含高性能有色金属相关业务"
+      ]
+    },
+    {
+      "sector": "医药生物",
+      "news_count": 10,
+      "news_per_day": 5.0,
+      "flow_yi": -13.21,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "佰仁医疗：ePTFE产品进入创新医疗器械特别审查程序（第三类）",
+        "华东医药：控股子公司注射用DR30206获批开展Ⅲ期非小细胞肺癌临床试验",
+        "贝莱德在恒瑞医药H股的持股比例于10月13日从6.33%降至5.72%"
       ]
     },
     {
       "sector": "电力设备",
       "news_count": 19,
       "news_per_day": 9.5,
-      "flow_yi": -43.52,
+      "flow_yi": -11.33,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "10月16日投资避雷针：高盛发布研报称 储能增长难抵全球电池行业供应过剩压力",
-        "美国算力供给面临双重约束",
-        "锂电池上市公司前三季度业绩整体向好"
+        "宁德时代携手国际可再生能源署(IRENA)重磅发布《能源转型关键支撑：跨界协",
+        "市场监管总局等八部门印发《检验检测促进产业优化升级试点工作方案》",
+        "蠡湖股份：子公司与智安芯创签署十年期战略合作框架协议"
       ]
     },
     {
       "sector": "计算机",
-      "news_count": 61,
-      "news_per_day": 30.5,
-      "flow_yi": -33.55,
+      "news_count": 48,
+      "news_per_day": 24.0,
+      "flow_yi": -10.28,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "智能眼镜新品密集发布 12只概念股前三季度业绩预喜",
-        "【智能眼镜新品密集发布 12只概念股前三季度业绩预喜】近期，多款智能眼镜新品",
-        "中国智能算力中心投资规模持续扩大 国产算力量价齐升逻辑扎实"
+        "无界智航Xspark AI完成天使+轮融资",
+        "Circle CEO：计划进军约 40 个新兴及发展中国家，区块链正进入主流",
+        "申昊科技：子公司签订8.81亿元算力设备采购合同"
       ]
     },
     {
       "sector": "基础化工",
-      "news_count": 3,
-      "news_per_day": 1.5,
-      "flow_yi": -31.54,
+      "news_count": 4,
+      "news_per_day": 2.0,
+      "flow_yi": -10.17,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "我国首个全链条绿色低碳乙烯工程 每年可消纳10亿千瓦时绿电",
-        "化工下游企业多方施策对冲成本压力",
-        "桐昆股份：预计2026年前三季度净利润同比增长333%-358%"
+        "佰仁医疗：ePTFE产品进入创新医疗器械特别审查程序（第三类）",
+        "康辰药业：KC1086联合氟维司群治疗乳腺癌获临床试验通知书",
+        "遏制利用团体标准乱收费等 市场监管总局公开征求意见"
       ]
     },
     {
-      "sector": "国防军工",
-      "news_count": 19,
-      "news_per_day": 9.5,
-      "flow_yi": -30.54,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sector": "房地产",
+      "news_count": 4,
+      "news_per_day": 2.0,
+      "flow_yi": 8.53,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "韩媒：韩国拟将“清海部队”行动范围扩大至阿曼湾海域",
-        "亚洲首条波音777-200LR客改货生产线在青岛投产",
-        "【亚洲首条波音777-200LR客改货生产线在青岛投产】据青岛日报，10月1"
-      ]
-    },
-    {
-      "sector": "汽车",
-      "news_count": 19,
-      "news_per_day": 9.5,
-      "flow_yi": -22.7,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "沃尔沃汽车与英伟达扩大合作 共同推进安全自动驾驶技术",
-        "揭秘零跑汽车成本优势",
-        "美媒：因美商务部长反对，美墨关税谈判陷入停滞"
-      ]
-    },
-    {
-      "sector": "传媒",
-      "news_count": 19,
-      "news_per_day": 9.5,
-      "flow_yi": -22.5,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "“大魔王” Faker自曝炒股被套 直播分心选错符文",
-        "Anthropic营收增速放缓 部分投资者据悉下调对其IPO估值预期",
-        "Anthropic营收增速放缓，部分投资者据悉下调对其IPO估值预期"
+        "市场监管总局等八部门联合印发试点方案 打造产业升级“质量强引擎”",
+        "一线城市调整土拍节奏 房企拿地更加理性",
+        "六部门：启动城镇供热“温暖工程”三年行动"
       ]
     },
     {
       "sector": "公用事业",
-      "news_count": 6,
-      "news_per_day": 3.0,
-      "flow_yi": -17.27,
+      "news_count": 4,
+      "news_per_day": 2.0,
+      "flow_yi": -6.86,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "媒体调查：伊朗方面自冲突爆发以来共打击了84处基础设施",
-        "美国算力供给面临双重约束",
-        "从“配套设施”到“新型基础设施” 储能产业角色重塑"
+        "江苏全面取消工商业“固定电价”",
+        "首华燃气：拟通过市场化方式购买铝土矿资源",
+        "国际原子能机构：促成俄乌局部停火以维修扎波罗热核电站附近电力设施"
       ]
     },
     {
-      "sector": "农林牧渔",
-      "news_count": 9,
-      "news_per_day": 4.5,
-      "flow_yi": -15.08,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "今年夏粮旺季收购 全国累计收购小麦1.09亿吨",
-        "化工下游企业多方施策对冲成本压力",
-        "全国粮食标准仓房完好仓容达7.3亿吨"
-      ]
-    },
-    {
-      "sector": "建筑材料",
-      "news_count": 1,
-      "news_per_day": 0.5,
-      "flow_yi": -13.39,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "美国零售销售数据强劲 通胀压力加剧正侵蚀购买力"
-      ]
-    },
-    {
-      "sector": "建筑装饰",
+      "sector": "煤炭",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": -11.91,
+      "flow_yi": -5.05,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
@@ -320,182 +304,59 @@
     },
     {
       "sector": "交通运输",
+      "news_count": 1,
+      "news_per_day": 0.5,
+      "flow_yi": -3.04,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "国务院新闻办举行“新征程上的奋斗者”中外记者见面会"
+      ]
+    },
+    {
+      "sector": "建筑装饰",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": -11.45,
+      "flow_yi": 2.92,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": []
+    },
+    {
+      "sector": "石油石化",
+      "news_count": 13,
+      "news_per_day": 6.5,
+      "flow_yi": -2.85,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "消息人士：乌克兰国家石油天然气公司代理首席执行官表示，乌克兰天然气储备升至六",
+        "消息人士：俄罗斯2026年对乌克兰国家石油天然气公司（Naftogaz）设施",
+        "国家能源局负责人会见壳牌集团执行委员会委员"
+      ]
+    },
+    {
+      "sector": "环保",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -2.72,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": []
-    },
-    {
-      "sector": "银行",
-      "news_count": 20,
-      "news_per_day": 10.0,
-      "flow_yi": -6.76,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "放大政策性金融的投资撬动效应",
-        "裕信银行增持德国商业银行获欧洲央行批准 为取得控制权铺平道路",
-        "古巴外长：美最新制裁旨在“关闭古巴经济减压阀”"
-      ]
-    },
-    {
-      "sector": "房地产",
-      "news_count": 4,
-      "news_per_day": 2.0,
-      "flow_yi": -5.75,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "【三季度深圳写字楼市场：四成租赁成交面积来自升级搬迁需求】今年三季度，深圳甲",
-        "三季度深圳写字楼市场：四成租赁成交面积来自升级搬迁需求",
-        "美国抵押贷款利率维持在7.4%不变"
-      ]
-    },
-    {
-      "sector": "石油石化",
-      "news_count": 21,
-      "news_per_day": 10.5,
-      "flow_yi": -5.69,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "新加坡9月非石油国内出口较上年同期+68.4%(调查预估为+32.2%)。",
-        "【中信建投：油价或维持区间波动】中信建投研报指出，美伊会谈重启叠加IEA加速",
-        "媒体调查：伊朗方面自冲突爆发以来共打击了84处基础设施"
-      ]
     },
     {
       "sector": "商贸零售",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": -5.68,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": []
-    },
-    {
-      "sector": "煤炭",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": -4.89,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": []
-    },
-    {
-      "sector": "医药生物",
-      "news_count": 5,
-      "news_per_day": 2.5,
-      "flow_yi": 3.93,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": [
-        "中信证券：中药红利资产配置价值凸显 关注两条投资主线",
-        "热景生物：子公司创新药SGC001新增适应症Ⅱ期临床完成首例受试者入组给药",
-        "贝莱德在恒瑞医药H股的持股比例于10月12日从5.69%升至6.31%"
-      ]
-    },
-    {
-      "sector": "非银金融",
-      "news_count": 9,
-      "news_per_day": 4.5,
-      "flow_yi": -3.75,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "【中国铝业集团200亿元小公募债申报获上交所受理】上交所公司债券项目信息平台",
-        "Anthropic营收增速放缓 部分投资者据悉下调对其IPO估值预期",
-        "Anthropic营收增速放缓，部分投资者据悉下调对其IPO估值预期"
-      ]
-    },
-    {
-      "sector": "钢铁",
-      "news_count": 3,
-      "news_per_day": 1.5,
-      "flow_yi": -3.7,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "美媒：因美商务部长反对，美墨关税谈判陷入停滞",
-        "据华尔街日报：消息人士称，美国商务部长卢特尼克反对大幅削减针对墨西哥产汽车、",
-        "中钢协：10月上旬重点统计钢铁企业钢材库存量1697万吨 环比上一旬增加13"
-      ]
-    },
-    {
-      "sector": "纺织服饰",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": -3.68,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": []
-    },
-    {
-      "sector": "环保",
-      "news_count": 1,
-      "news_per_day": 0.5,
-      "flow_yi": -3.61,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "A股限售股解禁一览：37.98亿元市值限售股今日解禁"
-      ]
-    },
-    {
-      "sector": "食品饮料",
-      "news_count": 25,
-      "news_per_day": 12.5,
-      "flow_yi": 3.57,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
-      "sample_titles": [
-        "肯德基美国门店将改用可口可乐饮料",
-        "天猫“双11”启动：AI服务首次加入 消费者可“囤Token”",
-        "工信部：推动“人工智能+制造”赋能新型工业化"
-      ]
-    },
-    {
-      "sector": "社会服务",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": -2.89,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": []
-    },
-    {
-      "sector": "轻工制造",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": -2.71,
+      "flow_yi": -2.69,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
@@ -506,7 +367,18 @@
       "sector": "家用电器",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": -2.08,
+      "flow_yi": 2.65,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": []
+    },
+    {
+      "sector": "纺织服饰",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -2.56,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
@@ -514,30 +386,153 @@
       "sample_titles": []
     },
     {
+      "sector": "银行",
+      "news_count": 25,
+      "news_per_day": 12.5,
+      "flow_yi": -2.28,
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sample_titles": [
+        "美银策略师料避险情绪升温 美联储和中期选举成焦点",
+        "中国人民银行行长潘功胜会见欧盟委员会经济和生产力委员东布罗夫斯基斯、欧洲中央",
+        "中国人民银行行长潘功胜会见欧盟委员会经济和生产力委员东布罗夫斯基斯、欧洲中央"
+      ]
+    },
+    {
+      "sector": "社会服务",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -1.57,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
+    },
+    {
+      "sector": "通信",
+      "news_count": 19,
+      "news_per_day": 9.5,
+      "flow_yi": 1.06,
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
+      "sample_titles": [
+        "欧洲通信卫星公司股价扩大涨幅，目前上涨20.4%。",
+        "欧盟：“星链”对乌至关重要 欧洲暂无替代方案",
+        "卫星化学：前三季度净利润同比增长141.24%"
+      ]
+    },
+    {
       "sector": "综合",
-      "news_count": 7,
-      "news_per_day": 3.5,
-      "flow_yi": -1.42,
+      "news_count": 8,
+      "news_per_day": 4.0,
+      "flow_yi": -1.03,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "日经指数早盘上涨1.0%。日本基准指数中表现居前的个股包括：野村综合研究所上",
-        "工信部：推动“人工智能+制造”赋能新型工业化",
-        "工业废渣释放巨大经济价值"
+        "四部门将常态化开展综合治理加油机作弊监管执法",
+        "中东战火持续 迪拜投资园仍推进IPO计划",
+        "港交所：目标于2028年下半年过渡至T+1结算"
+      ]
+    },
+    {
+      "sector": "钢铁",
+      "news_count": 1,
+      "news_per_day": 0.5,
+      "flow_yi": -1.01,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "中钢协：10月上旬重点统计钢铁企业钢材库存量1697万吨 环比上一旬增加13"
+      ]
+    },
+    {
+      "sector": "建筑材料",
+      "news_count": 1,
+      "news_per_day": 0.5,
+      "flow_yi": -0.65,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "美国零售销售数据强劲 通胀压力加剧正侵蚀购买力"
+      ]
+    },
+    {
+      "sector": "食品饮料",
+      "news_count": 17,
+      "news_per_day": 8.5,
+      "flow_yi": -0.51,
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sample_titles": [
+        "国家粮食和物资储备局：中国粮食安全根基持续夯实",
+        "海外战争推高油价 食品通胀风险或随后显现",
+        "贝莱德在蒙牛乳业H股的持股比例于10月13日从6.15%降至5.55%"
+      ]
+    },
+    {
+      "sector": "农林牧渔",
+      "news_count": 10,
+      "news_per_day": 5.0,
+      "flow_yi": 0.43,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": [
+        "我国智能粮仓建设取得显著成效",
+        "3位中国女性获联合国粮农组织“巾帼英雄”表彰",
+        "国家粮食和物资储备局：中国粮食安全根基持续夯实"
       ]
     },
     {
       "sector": "美容护理",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": 1.11,
+      "flow_yi": -0.3,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
+    },
+    {
+      "sector": "轻工制造",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": 0.2,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": []
+    },
+    {
+      "sector": "机械设备",
+      "news_count": 6,
+      "news_per_day": 3.0,
+      "flow_yi": -0.16,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "无界智航Xspark AI完成天使+轮融资",
+        "优艾智合机器人港股IPO获中国证监会备案",
+        "鸿富瀚：拟投资10.07亿元建设机器人精密金属组件生产基地"
+      ]
     }
   ]
 }
