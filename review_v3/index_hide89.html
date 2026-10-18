@@ -1325,6 +1325,8 @@ function selfCheck() {
       return (t.n ? t.n + ' 样本 · 方向 ' + t.dir_acc + '%' : '待 R5 起累计（旧档无 meta）') + ' · 更新 ' + (d.updated_at || '').slice(5, 16) + '（V3 大盘回测按推演日累计，非每日源）';
     }],
     ['交叉验证 cross_analysis', '../output/cross_analysis.json', (d) => d.date + ' · 新闻 ' + d.news_date + ' × 资金 ' + d.flow_date],
+    ['机构资金 institutional_flow', '../output/institutional_flow.json', (d) => (d.date || '—') + ' · 报告期 ' + (d.report || '?') + '（季度低频豁免：股东户数为季度报告期数据，每周日刷新）'],
+    ['市场温度计 thermometer', '../output/market_thermometer.json', (d) => (d.date || '—') + '（月频豁免：PE/PB 序列为月频数据，date 锚定序列末行）'],
   ];
   Promise.all(SRC.map(it =>
     J(it[1]).then(d => ({ name: it[0], ok: true, val: String(it[2](d) || '—') }))
@@ -1334,7 +1336,10 @@ function selfCheck() {
     list.forEach(it => {
       // 2026-09-09 修复：判定改为"对齐 ≥ REVIEW_DATE"——news/macro/global_ext 是每日动态抓的，date=今天 > REVIEW_DATE 是预期状态，不属滞后
       // 仅当源 date < REVIEW_DATE 才警告"已滞后"
-      const hasExcuse = it.val.indexOf('T+1 豁免') >= 0 || it.val.indexOf('昨日 备查') >= 0 || it.val.indexOf('按推演日累计') >= 0;
+      // 2026-10-18 修复（真机纠偏）：原实现只认 3 个固定串，「季度低频豁免」「月频豁免」均不含「T+1 豁免」
+      // → hasExcuse 恒 false、selfCheck 新增两源仍是空转（不报错、页面照旧标滞后）。
+      // 治本：凡 val 文本含「豁免」即视为已声明豁免，不再叠加固定串白名单。
+      const hasExcuse = it.val.indexOf('豁免') >= 0 || it.val.indexOf('昨日 备查') >= 0 || it.val.indexOf('按推演日累计') >= 0;
       const dateRe = /(\d{4}-\d{2}-\d{2})/g;
       const matches = it.val.match(dateRe) || [];
       const minDate = matches.filter(d => d <= '2099-12-31').sort()[0];

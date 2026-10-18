@@ -23,7 +23,7 @@ cd "$(dirname "$0")/.." || { echo "ERROR"; echo "无法进入仓库根"; exit 9;
 TODAY=$(date +%Y-%m-%d)
 DOW=$(date +%u)                      # 1=周一 … 7=周日
 case "$DOW" in
-  6|7) echo "NONTRADE"; echo "非交易日（周末 $TODAY）"; exit 0 ;;
+  6|7) echo "NONTRADE"; echo "非交易日（周末 ${TODAY}）"; exit 0 ;;
 esac
 
 # ── 1) git 被占用 → 判「发布进行中」，退出不干预（最安全分支，须最先判）──
