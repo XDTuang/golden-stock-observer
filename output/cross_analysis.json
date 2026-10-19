@@ -1,146 +1,122 @@
 {
   "date": "2026-10-19",
-  "data_date": "2026-10-16",
-  "generated_at": "2026-10-19 22:18",
+  "data_date": "2026-10-19",
+  "generated_at": "2026-10-19 22:02",
   "news_date": "",
   "news_window": [
-    "2026-10-16",
-    "2026-10-17",
-    "2026-10-18",
-    "2026-10-19"
+    "2026-10-19",
+    "2026-10-20"
   ],
-  "news_window_days": 4,
+  "news_window_days": 2,
   "flow_date": "2026-10-19",
   "flow_raw_latest": "2026-10-19",
   "flow_is_weekend_copy": false,
   "hot_per_day": 8,
-  "hot_threshold": 32,
+  "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-10-19 08:36",
-    "session": "preopen",
-    "data_date": "2026-10-16",
-    "for_date": "2026-10-19",
+    "generated_at": "2026-10-19 22:01",
+    "session": "close",
+    "data_date": "2026-10-19",
+    "for_date": "2026-10-20",
     "data_date_note": "",
     "warnings": [],
     "span": [
-      "2026-10-17",
-      "2026-10-18",
-      "2026-10-19"
+      "2026-10-20"
     ],
-    "span_days": 3,
+    "span_days": 1,
     "display_days": [
-      "2026-10-16",
-      "2026-10-17",
-      "2026-10-18",
-      "2026-10-19"
+      "2026-10-19",
+      "2026-10-20"
     ],
-    "display_text": "10/16–10/19",
-    "span_is_weekend_cross": true,
-    "span_text": "10/17–10/19",
+    "display_text": "10/19 + 10/20",
+    "span_is_weekend_cross": false,
+    "span_text": "10/20",
     "carry": {
-      "from_data_date": "2026-10-16",
-      "ref": "output/feed_review_2026-10-16.json",
+      "from_data_date": "2026-10-19",
+      "ref": "output/feed_review_2026-10-19.json",
       "exists": true,
-      "gap_days": 3,
+      "gap_days": 1,
       "stale": false,
       "bias": "中性",
       "bias_score": 1,
       "t1_focus": [
-        "跟踪金钻起涨 13 只回踩确认"
+        "跟踪金钻起涨 15 只回踩确认"
       ],
       "risks": [],
       "headline": ""
     },
     "layers": {
-      "base": "2026-10-16 A股收盘（基准层）",
-      "overnight": "美东 2026-10-16 收盘（北京 2026-10-17 早间到达）",
-      "premarket": "2026-10-19 今早日韩实时 + 盘前新闻/投喂增量"
+      "base": "2026-10-19 A股收盘（基准层）",
+      "overnight": "美东 2026-10-19 收盘（北京 2026-10-20 早间到达）",
+      "premarket": "2026-10-20 今早日韩实时 + 盘前新闻/投喂增量"
     },
     "market_state": {
-      "date": "2026-10-16",
+      "date": "2026-10-19",
       "run_date": "2026-10-19",
-      "preopen_partial": true,
+      "preopen_partial": null,
       "us_kline": true,
       "asia": true
     },
     "covered": [
-      {
-        "date": "2026-10-16",
-        "weekday": "周五",
-        "is_trading_day": true,
-        "news": 301,
-        "feeds": 0,
-        "reports": 932,
-        "macro": true
-      },
-      {
-        "date": "2026-10-17",
-        "weekday": "周六",
-        "is_trading_day": false,
-        "news": 0,
-        "feeds": 0,
-        "reports": 250,
-        "macro": false
-      },
-      {
-        "date": "2026-10-18",
-        "weekday": "周日",
-        "is_trading_day": false,
-        "news": 0,
-        "feeds": 1,
-        "reports": 639,
-        "macro": false
-      },
       {
         "date": "2026-10-19",
         "weekday": "周一",
         "is_trading_day": true,
         "news": 279,
         "feeds": 0,
-        "reports": 40,
+        "reports": 986,
         "macro": true
+      },
+      {
+        "date": "2026-10-20",
+        "weekday": "周二",
+        "is_trading_day": true,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
       }
     ],
     "totals": {
-      "news": 580,
-      "feeds": 1,
-      "reports": 1861,
-      "covered_days": 4
+      "news": 279,
+      "feeds": 0,
+      "reports": 986,
+      "covered_days": 2
     },
     "missing": [
-      "窗口内非交易日（10-17、10-18）新闻池全为 0 → 疑整池被覆盖，跨周末信息可能丢失"
+      "market_thermometer.json 数据日 2026-10-16 落后于基准日 2026-10-19"
     ]
   },
   "index_context": {
     "上证指数": {
-      "close": "3716.28",
-      "chg_pct": "0.24"
+      "close": "3730.92",
+      "chg_pct": "0.39"
     },
     "深证成指": {
-      "close": "11802.46",
-      "chg_pct": "-0.12"
+      "close": "11817.42",
+      "chg_pct": "0.13"
     },
     "创业板指": {
-      "close": "2772.38",
-      "chg_pct": "-0.39"
+      "close": "2746.29",
+      "chg_pct": "-0.94"
     },
     "科创50": {
-      "close": "1358.65",
-      "chg_pct": "-0.06"
+      "close": "1329.19",
+      "chg_pct": "-2.17"
     }
   },
   "summary": {
-    "共振": 0,
+    "共振": 1,
     "背离": 2,
-    "暗线": 9,
+    "暗线": 8,
     "双冷": 20
   },
   "items": [
     {
       "sector": "电力设备",
-      "news_count": 11,
-      "news_per_day": 2.75,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": -30.38,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -148,59 +124,58 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "国内联播快讯",
-        "卡塔尔计划向黎巴嫩提供电力援助：包括两座发电厂和一项LNG供应协议",
-        "引望与宁德时代、时代电服达成战略合作"
+        "引望与宁德时代、时代电服达成战略合作",
+        "安徽：全链条加强先进光伏和新型储能产业知识产权保护"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 16,
-      "news_per_day": 4.0,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": 26.5,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
+        "机构：供需缺口扩大带动全球光纤产品价格倍数增长",
         "移远通信推出3GPP NB-NTN R19卫星通信模组",
-        "移远通信：前三季度净利润同比增长65.21%",
-        "根据卫星图像，沙特阿拉伯的石油装载活动持续强劲。昨日（10月15日），该国从"
+        "移远通信：前三季度净利润同比增长65.21%"
       ]
     },
     {
       "sector": "传媒",
-      "news_count": 24,
-      "news_per_day": 6.0,
+      "news_count": 7,
+      "news_per_day": 3.5,
       "flow_yi": -20.1,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "邦飞利传动首次公开募股（IPO）认购截止时，散户投资者需求达到46倍。",
         "中文传媒：2026年度第七期超短融完成发行，规模5亿元",
-        "7天6板慈文传媒：近期出品的微短剧《开标之战》投资规模较小"
+        "7天6板慈文传媒：近期出品的微短剧《开标之战》投资规模较小",
+        "霍尔木兹海峡漂满iPhone是假的"
       ]
     },
     {
       "sector": "医药生物",
-      "news_count": 5,
-      "news_per_day": 1.25,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -19.84,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "北大医药：瑞舒伐他汀依折麦布片（I）获得药品注册证书",
-        "泰格医药：公司实控人因信披违规被罚100万元",
-        "佰仁医疗：ePTFE肺动脉带瓣管道进入创新医疗器械特别审查程序"
+        "【中信证券包承超：A股投资价值逐步提升】今日，证监会主席吴清在2026金融街",
+        "北大医药：瑞舒伐他汀依折麦布片（I）获得药品注册证书"
       ]
     },
     {
       "sector": "电子",
-      "news_count": 58,
-      "news_per_day": 14.5,
+      "news_count": 27,
+      "news_per_day": 13.5,
       "flow_yi": -19.39,
       "verdict": "背离",
       "verdict_raw": "背离",
@@ -208,14 +183,14 @@
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
         "存储芯片股集体大涨 多股涨超5%",
-        "AI算力租赁商COREWEAVE开盘上涨7%",
-        "费城半导体指数盘初反弹逾3%，英特尔、迈威尔科技升逾5%，美光升逾4%，AM"
+        "【中信证券包承超：A股投资价值逐步提升】今日，证监会主席吴清在2026金融街",
+        "AI算力租赁商COREWEAVE开盘上涨7%"
       ]
     },
     {
       "sector": "农林牧渔",
-      "news_count": 7,
-      "news_per_day": 1.75,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": -10.25,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -229,17 +204,15 @@
     },
     {
       "sector": "基础化工",
-      "news_count": 3,
-      "news_per_day": 0.75,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": -8.21,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "佰仁医疗：ePTFE肺动脉带瓣管道进入创新医疗器械特别审查程序",
-        "康辰药业：KC1086联合氟维司群治疗乳腺癌获临床试验通知书",
-        "遏制利用团体标准乱收费等 市场监管总局公开征求意见"
+        "【中信证券包承超：A股投资价值逐步提升】今日，证监会主席吴清在2026金融街"
       ]
     },
     {
@@ -255,22 +228,22 @@
     },
     {
       "sector": "非银金融",
-      "news_count": 10,
-      "news_per_day": 2.5,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": -6.54,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "邦飞利传动首次公开募股（IPO）认购截止时，散户投资者需求达到46倍。",
         "深交所首批9只主动ETF正式获中国证监会批复",
-        "央行等多部门：鼓励有条件的保险公司、担保公司探索为科技成果先使用后付费开发相"
+        "央行等多部门：鼓励有条件的保险公司、担保公司探索为科技成果先使用后付费开发相",
+        "上周无新增IPO受理企业"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 8,
+      "news_count": 4,
       "news_per_day": 2.0,
       "flow_yi": -6.43,
       "verdict": "双冷",
@@ -279,14 +252,14 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "第140届广交会：丰富全链条配套供给 筑牢全球贸易合作根基",
-        "【中机认检：已在低空领域进行布局，可开展无人装备系列试验】中机认检在互动平台",
-        "德马科技：拟发行不超7.02亿元可转债用于具身智能系统研发等项目"
+        "德马科技：拟发行不超7.02亿元可转债用于具身智能系统研发等项目",
+        "宇树市值重回2000亿！人形机器人概念梳理"
       ]
     },
     {
       "sector": "有色金属",
-      "news_count": 17,
-      "news_per_day": 4.25,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": -6.32,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -294,14 +267,14 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "我国加快建设贯通国家沿边沿海“黄金大外环”",
-        "高盛：我们仍认为央行需求是黄金的结构性支撑。",
-        "现货黄金跌破4150美元"
+        "高盛：持续认为各国央行需求是黄金的结构性支撑。",
+        "高盛：我们仍认为央行需求是黄金的结构性支撑。"
       ]
     },
     {
       "sector": "食品饮料",
-      "news_count": 14,
-      "news_per_day": 3.5,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": 3.95,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -310,28 +283,28 @@
       "sample_titles": [
         "我国多措并举加快推进科技兴商",
         "我国户外运动产业蓬勃发展",
-        "星巴克回应“将实施消费才可入座”：确实有新规定 全国门店10月20日起开始实"
+        "机构：核心CPI走软，交易员将重新评估加拿大加息预期"
       ]
     },
     {
       "sector": "汽车",
-      "news_count": 25,
-      "news_per_day": 6.25,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": -3.41,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "【中机认检：已在低空领域进行布局，可开展无人装备系列试验】中机认检在互动平台",
-        "商务部就英方称将共同应对中国汽车产业占主导地位事答记者问",
-        "商务部新闻发言人就英方称将共同应对中国汽车产业占主导地位事答记者问"
+        "商务部新闻发言人就英方称将共同应对中国汽车产业占主导地位事答记者问",
+        "【商务部新闻发言人就英方称将共同应对中国汽车产业占主导地位事答记者问】问：近",
+        "【被杨立昆质疑，马斯克“没绷住”】从马斯克和杨立昆在海外社交平台上的互动记录"
       ]
     },
     {
       "sector": "环保",
       "news_count": 1,
-      "news_per_day": 0.25,
+      "news_per_day": 0.5,
       "flow_yi": -3.39,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -365,32 +338,30 @@
     },
     {
       "sector": "银行",
-      "news_count": 27,
-      "news_per_day": 6.75,
+      "news_count": 18,
+      "news_per_day": 9.0,
       "flow_yi": 3.3,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "阿根廷与日本国际协力银行续签2018年石油、天然气和矿业合作谅解备忘录。",
-        "帝商银行：加拿大央行尚有时间暂缓加息",
-        "工行重回“市值一哥” 42家银行股全景一览"
+        "KAPITAL同意以3000万美元收购人工智能初创公司WOZ，以增强其AI原",
+        "巴克莱：私人信贷资产贷款总收益互换的按市值计价贡献约3亿英镑的总敞口，相当于",
+        "土耳其进出口银行计划在海外发行至多80亿美元债券。"
       ]
     },
     {
       "sector": "房地产",
-      "news_count": 4,
-      "news_per_day": 1.0,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": -3.15,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "荣盛发展：拟对38.52亿元债务进行重组",
-        "房地产新政宁波细则确定 即日起施行",
-        "市场监管总局等八部门联合印发试点方案 打造产业升级“质量强引擎”"
+        "荣盛发展：拟对38.52亿元债务进行重组"
       ]
     },
     {
@@ -406,22 +377,22 @@
     },
     {
       "sector": "公用事业",
-      "news_count": 6,
-      "news_per_day": 1.5,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": 2.87,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "卡塔尔计划向黎巴嫩提供电力援助：包括两座发电厂和一项LNG供应协议",
         "一份电力计划草案显示，卡塔尔将为黎巴嫩建设两座发电厂，并与黎巴嫩签署一项为期",
-        "国电南瑞：低功耗WAPI无线通讯压板状态在线监测系统落地应用"
+        "国电南瑞：低功耗WAPI无线通讯压板状态在线监测系统落地应用",
+        "美国电力公司AEP携手亚马逊、X-energy开发960兆瓦先进核电项目"
       ]
     },
     {
       "sector": "交通运输",
-      "news_count": 2,
+      "news_count": 1,
       "news_per_day": 0.5,
       "flow_yi": -2.87,
       "verdict": "双冷",
@@ -429,8 +400,7 @@
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "我国加快建设贯通国家沿边沿海“黄金大外环”",
-        "国务院新闻办举行“新征程上的奋斗者”中外记者见面会"
+        "我国加快建设贯通国家沿边沿海“黄金大外环”"
       ]
     },
     {
@@ -468,17 +438,17 @@
     },
     {
       "sector": "计算机",
-      "news_count": 33,
-      "news_per_day": 8.25,
+      "news_count": 19,
+      "news_per_day": 9.5,
       "flow_yi": -2.02,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "法庭文件显示，一名前OpenAI员工被指控秘密安放录音设备，该员工似乎曾获得",
-        "AI算力租赁商COREWEAVE开盘上涨7%",
-        "纳斯达克指数高开逾1% AI硬件股票集体止跌反攻"
+        "KAPITAL同意以3000万美元收购人工智能初创公司WOZ，以增强其AI原",
+        "【被杨立昆质疑，马斯克“没绷住”】从马斯克和杨立昆在海外社交平台上的互动记录",
+        "【中信证券包承超：A股投资价值逐步提升】今日，证监会主席吴清在2026金融街"
       ]
     },
     {
@@ -494,8 +464,8 @@
     },
     {
       "sector": "国防军工",
-      "news_count": 21,
-      "news_per_day": 5.25,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": 1.48,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -503,43 +473,42 @@
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
         "俄称正对乌进行系统性打击 乌称打击俄数据中心",
-        "【秘鲁利马机场一架客机起飞时引擎起火】当地时间10月19日，秘鲁豪尔赫·查韦",
-        "也门一军事基地遭导弹袭击致53死200余伤"
+        "乌总统称再次未收到西方伙伴提供的俄方袭击预警",
+        "乌克兰外长：乌克兰在获取拦截俄罗斯弹道导弹的拦截弹方面面临“障碍”。"
       ]
     },
     {
       "sector": "石油石化",
-      "news_count": 8,
-      "news_per_day": 2.0,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": 1.3,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "阿根廷与日本国际协力银行续签2018年石油、天然气和矿业合作谅解备忘录。",
         "俄罗斯外长拉夫罗夫：俄罗斯希望实现石油市场的稳定。",
         "伊拉克10月迄今石油出口已大幅攀升至接近战前水平"
       ]
     },
     {
       "sector": "综合",
-      "news_count": 13,
-      "news_per_day": 3.25,
+      "news_count": 5,
+      "news_per_day": 2.5,
       "flow_yi": -1.12,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "卡塔尔计划向黎巴嫩提供电力援助：包括两座发电厂和一项LNG供应协议",
         "道琼斯指数10月19日（周一）开盘下跌31.20点，跌幅0.06%，报519",
-        "纳斯达克指数高开逾1% AI硬件股票集体止跌反攻"
+        "纳斯达克指数高开逾1% AI硬件股票集体止跌反攻",
+        "深交所首批9只主动ETF正式获中国证监会批复"
       ]
     },
     {
       "sector": "钢铁",
-      "news_count": 2,
+      "news_count": 1,
       "news_per_day": 0.5,
       "flow_yi": -0.84,
       "verdict": "双冷",
@@ -547,14 +516,13 @@
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "中钢协副会长姜维与巴西盖尔道公司董事长安德烈·盖尔道举行会谈",
-        "特朗普关税政策推高美国钢价 热轧卷板价格创四年多新高"
+        "中钢协副会长姜维与巴西盖尔道公司董事长安德烈·盖尔道举行会谈"
       ]
     },
     {
       "sector": "煤炭",
-      "news_count": 5,
-      "news_per_day": 1.25,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": -0.79,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -562,8 +530,8 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "国内商品期货夜盘开盘 主力合约多数下跌",
-        "印度搁置了此前为应对煤炭库存减少而制定的进口计划",
-        "神火股份：前三季度净利润同比增长114.54%"
+        "期市夜盘开盘，国内期货主力合约多数下跌，乙二醇跌超2%",
+        "印度搁置了此前为应对煤炭库存减少而制定的进口计划"
       ]
     }
   ]

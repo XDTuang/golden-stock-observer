@@ -1,49 +1,159 @@
 {
-  "data_date": "2026-10-16",
-  "generated_at": "2026-10-16 19:11:19",
-  "source": "output/golden_diamond.json",
-  "total_hits": 94,
-  "valid_samples": 50,
-  "excluded_signal_day_equals_latest": 44,
-  "baseline_mean_pct": -4.872,
-  "baseline_win_rate_pct": 20.0,
-  "by_signal": {
-    "买入": {
-      "n": 34,
-      "win_rate_pct": 8.8235,
-      "mean_pct": -7.0402,
-      "median_pct": -7.6825,
-      "excess_vs_baseline_pct": -2.1682,
-      "verdict_vs_baseline": "跑输",
-      "sample_sufficiency": "充分(>=20)"
-    },
-    "金钻起涨": {
-      "n": 12,
-      "win_rate_pct": 41.6667,
-      "mean_pct": -0.8717,
-      "median_pct": -2.1364,
-      "excess_vs_baseline_pct": 4.0003,
-      "verdict_vs_baseline": "跑赢",
-      "sample_sufficiency": "样本不足以下结论(n=12)"
-    },
-    "红区黄柱连续4天": {
-      "n": 3,
-      "win_rate_pct": 66.6667,
-      "mean_pct": 2.3787,
-      "median_pct": 1.4085,
-      "excess_vs_baseline_pct": 7.2507,
-      "verdict_vs_baseline": "跑赢",
-      "sample_sufficiency": "样本不足以下结论(n=3)"
-    },
-    "红区黄柱连续3天": {
-      "n": 1,
-      "win_rate_pct": 0.0,
-      "mean_pct": -0.9079,
-      "median_pct": -0.9079,
-      "excess_vs_baseline_pct": 3.9641,
-      "verdict_vs_baseline": "跑赢",
-      "sample_sufficiency": "样本不足以下结论(n=1)"
-    }
+ "data_date": "2026-10-19",
+ "generated_at": "2026-10-19 19:11:03",
+ "source": "output/golden_diamond.json",
+ "total_hits": 97,
+ "valid_samples": 66,
+ "excluded_breakdown": {
+  "信号日=最新日": 31
+ },
+ "excluded_by_primary": {
+  "金钻起涨": 1,
+  "买入": 15,
+  "红区黄柱连续3天": 8,
+  "红区黄柱连续5天": 4,
+  "红区黄柱连续4天": 3
+ },
+ "baseline_mean_pct": -2.8184,
+ "baseline_median_pct": -2.3417,
+ "baseline_win_rate_pct": 25.7576,
+ "by_signal": {
+  "买入": {
+   "n": 48,
+   "win_rate_pct": 16.6667,
+   "mean_pct": -4.0651,
+   "median_pct": -3.1016,
+   "excess_vs_baseline_pct": -1.2467,
+   "verdict_vs_baseline": "跑输",
+   "sample_sufficiency": "充分(>=20)",
+   "signal_date_dist": {
+    "2026-10-13": 18,
+    "2026-10-14": 2,
+    "2026-10-15": 3,
+    "2026-10-16": 25
+   }
   },
-  "note": "基准价=signals[0].date 当日收盘价，最新交易日=kline 末条；后验收益=最新收盘/信号日收盘-1。中位数用 statistics.median（偶数取中间两值均值）。44 个样本因信号日=最新交易日(当日信号天然无后验)剔除，为机制固有属性非数据缺陷。本产物仅客观统计，不含任何买卖建议。"
+  "金钻起涨": {
+   "n": 14,
+   "win_rate_pct": 42.8571,
+   "mean_pct": 0.0773,
+   "median_pct": -2.0502,
+   "excess_vs_baseline_pct": 2.8957,
+   "verdict_vs_baseline": "跑赢",
+   "sample_sufficiency": "样本不足以下结论(n=14)",
+   "signal_date_dist": {
+    "2026-10-13": 11,
+    "2026-10-16": 3
+   }
+  },
+  "红区黄柱连续4天": {
+   "n": 3,
+   "win_rate_pct": 66.6667,
+   "mean_pct": 1.6626,
+   "median_pct": 2.5641,
+   "excess_vs_baseline_pct": 4.481,
+   "verdict_vs_baseline": "跑赢",
+   "sample_sufficiency": "样本不足以下结论(n=3)",
+   "signal_date_dist": {
+    "2026-10-16": 3
+   }
+  },
+  "红区黄柱连续3天": {
+   "n": 1,
+   "win_rate_pct": 100.0,
+   "mean_pct": 3.042,
+   "median_pct": 3.042,
+   "excess_vs_baseline_pct": 5.8604,
+   "verdict_vs_baseline": "跑赢",
+   "sample_sufficiency": "样本不足以下结论(n=1)",
+   "signal_date_dist": {
+    "2026-10-15": 1
+   }
+  },
+  "红区黄柱连续5天": {
+   "n": 0,
+   "win_rate_pct": null,
+   "mean_pct": null,
+   "median_pct": null,
+   "excess_vs_baseline_pct": null,
+   "verdict_vs_baseline": "无法检验",
+   "sample_sufficiency": "当日有效样本 0（总命中 4 全部为信号日=最新日，天然无后验）",
+   "signal_date_dist": {}
+  }
+ },
+ "worst5": [
+  {
+   "code": "sz300666",
+   "name": "江丰电子",
+   "primary": "买入",
+   "sig_date": "2026-10-13",
+   "ret_pct": -14.0184
+  },
+  {
+   "code": "sz301165",
+   "name": "锐捷网络",
+   "primary": "买入",
+   "sig_date": "2026-10-13",
+   "ret_pct": -12.5401
+  },
+  {
+   "code": "sh603228",
+   "name": "景旺电子",
+   "primary": "金钻起涨",
+   "sig_date": "2026-10-13",
+   "ret_pct": -11.7856
+  },
+  {
+   "code": "sh603650",
+   "name": "彤程新材",
+   "primary": "买入",
+   "sig_date": "2026-10-13",
+   "ret_pct": -11.5893
+  },
+  {
+   "code": "sz300548",
+   "name": "长芯博创",
+   "primary": "金钻起涨",
+   "sig_date": "2026-10-13",
+   "ret_pct": -11.3028
+  }
+ ],
+ "best5": [
+  {
+   "code": "sz300911",
+   "name": "亿田智能",
+   "primary": "金钻起涨",
+   "sig_date": "2026-10-16",
+   "ret_pct": 18.3405
+  },
+  {
+   "code": "sh600316",
+   "name": "洪都航空",
+   "primary": "金钻起涨",
+   "sig_date": "2026-10-13",
+   "ret_pct": 11.7944
+  },
+  {
+   "code": "sh600391",
+   "name": "航发科技",
+   "primary": "金钻起涨",
+   "sig_date": "2026-10-13",
+   "ret_pct": 11.3461
+  },
+  {
+   "code": "sz300516",
+   "name": "久之洋",
+   "primary": "金钻起涨",
+   "sig_date": "2026-10-13",
+   "ret_pct": 10.3333
+  },
+  {
+   "code": "sz002342",
+   "name": "巨力索具",
+   "primary": "买入",
+   "sig_date": "2026-10-15",
+   "ret_pct": 4.3544
+  }
+ ],
+ "note": "基准价=signals[0].date 当日收盘价，最新交易日=2026-10-19 收盘；后验收益=最新收盘/信号日收盘-1。中位数用 statistics.median（偶数取中间两值均值）。31 个样本因信号日=最新交易日剔除，为机制固有属性非数据缺陷。本产物仅客观统计读数，不含任何买卖建议。"
 }
