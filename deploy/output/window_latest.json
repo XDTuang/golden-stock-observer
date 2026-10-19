@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-16 22:02",
-  "session": "close",
+  "generated_at": "2026-10-19 08:36",
+  "session": "preopen",
   "data_date": "2026-10-16",
   "for_date": "2026-10-19",
   "data_date_note": "",
@@ -41,8 +41,8 @@
   },
   "market_state": {
     "date": "2026-10-16",
-    "run_date": "2026-10-16",
-    "preopen_partial": null,
+    "run_date": "2026-10-19",
+    "preopen_partial": true,
     "us_kline": true,
     "asia": true
   },
@@ -53,7 +53,7 @@
       "is_trading_day": true,
       "news": 301,
       "feeds": 0,
-      "reports": 811,
+      "reports": 932,
       "macro": true
     },
     {
@@ -62,7 +62,7 @@
       "is_trading_day": false,
       "news": 0,
       "feeds": 0,
-      "reports": 0,
+      "reports": 250,
       "macro": false
     },
     {
@@ -70,27 +70,27 @@
       "weekday": "周日",
       "is_trading_day": false,
       "news": 0,
-      "feeds": 0,
-      "reports": 0,
+      "feeds": 1,
+      "reports": 639,
       "macro": false
     },
     {
       "date": "2026-10-19",
       "weekday": "周一",
       "is_trading_day": true,
-      "news": 0,
+      "news": 279,
       "feeds": 0,
-      "reports": 0,
-      "macro": false
+      "reports": 40,
+      "macro": true
     }
   ],
   "totals": {
-    "news": 301,
-    "feeds": 0,
-    "reports": 811,
+    "news": 580,
+    "feeds": 1,
+    "reports": 1861,
     "covered_days": 4
   },
   "missing": [
-    "market_thermometer.json 数据日 2026-10-15 落后于基准日 2026-10-16"
+    "窗口内非交易日（10-17、10-18）新闻池全为 0 → 疑整池被覆盖，跨周末信息可能丢失"
   ]
 }
