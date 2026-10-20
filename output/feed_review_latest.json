@@ -1,8 +1,8 @@
 {
   "data_date": "2026-10-19",
   "for_date": "2026-10-20",
-  "generated_at": "2026-10-20 08:31",
-  "source": "local-preopen",
+  "generated_at": "2026-10-20 13:08",
+  "source": "cloud",
   "window": {
     "generated_at": "2026-10-20 08:32",
     "session": "preopen",
@@ -42,8 +42,8 @@
     },
     "market_state": {
       "date": "2026-10-19",
-      "run_date": "2026-10-19",
-      "preopen_partial": null,
+      "run_date": "2026-10-20",
+      "preopen_partial": true,
       "us_kline": true,
       "asia": true
     },
@@ -52,30 +52,28 @@
         "date": "2026-10-19",
         "weekday": "周一",
         "is_trading_day": true,
-        "news": 279,
+        "news": 302,
         "feeds": 0,
-        "reports": 986,
+        "reports": 1191,
         "macro": true
       },
       {
         "date": "2026-10-20",
         "weekday": "周二",
         "is_trading_day": true,
-        "news": 0,
+        "news": 283,
         "feeds": 0,
-        "reports": 0,
-        "macro": false
+        "reports": 42,
+        "macro": true
       }
     ],
     "totals": {
-      "news": 279,
+      "news": 585,
       "feeds": 0,
-      "reports": 986,
+      "reports": 1233,
       "covered_days": 2
     },
-    "missing": [
-      "market_thermometer.json 数据日 2026-10-16 落后于基准日 2026-10-19"
-    ]
+    "missing": []
   },
   "feeds_days": [
     "2026-10-19",
@@ -1683,7 +1681,7 @@
   },
   "cross_analysis": [],
   "prediction": {
-    "bias": "中性偏空",
+    "bias": "中性",
     "bias_score": 1,
     "reasons": [
       "金钻起涨 15 只，启动信号活跃",
@@ -1693,7 +1691,7 @@
       "跟踪金钻起涨 15 只回踩确认"
     ],
     "risks": [],
-    "pending_ai": false
+    "pending_ai": true
   },
   "ai_synthesis": {
     "conclusion_first": [
