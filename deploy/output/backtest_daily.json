@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-19 18:23",
+ "updated_at": "2026-10-20 18:34",
  "note": "T 日推演 vs T+1 实际（方向+开盘双维度）；当日推演需次日收盘后才有结果",
  "periods": [
   {
@@ -95,24 +95,24 @@
   },
   {
    "date": "2026-10-16",
-   "n": 29,
-   "dir_hit": 16,
-   "dir_acc": 55.2,
-   "open_acc": 24.1
+   "n": 3,
+   "dir_hit": 2,
+   "dir_acc": 66.7,
+   "open_acc": 33.3
   }
  ],
  "latest": {
   "date": "2026-10-16",
-  "n": 29,
-  "dir_hit": 16,
-  "dir_acc": 55.2,
-  "open_acc": 24.1
+  "n": 3,
+  "dir_hit": 2,
+  "dir_acc": 66.7,
+  "open_acc": 33.3
  },
  "by_trend": {
   "震荡": {
    "n": 33,
    "dir_hit": 1,
-   "open_hit": 8
+   "open_hit": 10
   },
   "强势上涨": {
    "n": 2,
@@ -120,8 +120,8 @@
    "open_hit": 0
   },
   "震荡偏弱": {
-   "n": 55,
-   "dir_hit": 33,
+   "n": 56,
+   "dir_hit": 36,
    "open_hit": 18
   },
   "震荡上行": {
@@ -130,10 +130,59 @@
    "open_hit": 0
   },
   "弱势下跌": {
-   "n": 8,
-   "dir_hit": 6,
+   "n": 10,
+   "dir_hit": 7,
    "open_hit": 6
   }
  },
- "detail": []
+ "detail": [
+  {
+   "code": "hk00189",
+   "name": "东岳集团",
+   "trend": "震荡偏弱",
+   "open_label": "低开破位风险",
+   "pred_date": "2026-10-16",
+   "t_close": 10.12,
+   "date": "2026-10-20",
+   "chg_pct": -2.08,
+   "dir_hit": true,
+   "open_hit": true,
+   "actual_dir": "down",
+   "actual_open": "down",
+   "nxt_open": 10.03,
+   "nxt_close": 9.91
+  },
+  {
+   "code": "hk02655",
+   "name": "果下科技",
+   "trend": "弱势下跌",
+   "open_label": "平开偏弱",
+   "pred_date": "2026-10-16",
+   "t_close": 12.2,
+   "date": "2026-10-20",
+   "chg_pct": -3.61,
+   "dir_hit": true,
+   "open_hit": false,
+   "actual_dir": "down",
+   "actual_open": "down",
+   "nxt_open": 12.02,
+   "nxt_close": 11.76
+  },
+  {
+   "code": "hk06651",
+   "name": "五一视界",
+   "trend": "弱势下跌",
+   "open_label": "低开破位风险",
+   "pred_date": "2026-10-16",
+   "t_close": 40.82,
+   "date": "2026-10-20",
+   "chg_pct": 22.49,
+   "dir_hit": false,
+   "open_hit": false,
+   "actual_dir": "up",
+   "actual_open": "up",
+   "nxt_open": 45.0,
+   "nxt_close": 50.0
+  }
+ ]
 }
