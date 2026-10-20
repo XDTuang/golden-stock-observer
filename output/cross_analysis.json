@@ -1,11 +1,11 @@
 {
   "date": "2026-10-20",
-  "data_date": "2026-10-19",
-  "generated_at": "2026-10-20 20:30",
+  "data_date": "2026-10-20",
+  "generated_at": "2026-10-20 22:02",
   "news_date": "",
   "news_window": [
-    "2026-10-19",
-    "2026-10-20"
+    "2026-10-20",
+    "2026-10-21"
   ],
   "news_window_days": 2,
   "flow_date": "2026-10-20",
@@ -15,136 +15,138 @@
   "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-10-20 08:32",
-    "session": "preopen",
-    "data_date": "2026-10-19",
-    "for_date": "2026-10-20",
+    "generated_at": "2026-10-20 22:01",
+    "session": "close",
+    "data_date": "2026-10-20",
+    "for_date": "2026-10-21",
     "data_date_note": "",
     "warnings": [],
     "span": [
-      "2026-10-20"
+      "2026-10-21"
     ],
     "span_days": 1,
     "display_days": [
-      "2026-10-19",
-      "2026-10-20"
+      "2026-10-20",
+      "2026-10-21"
     ],
-    "display_text": "10/19 + 10/20",
+    "display_text": "10/20 + 10/21",
     "span_is_weekend_cross": false,
-    "span_text": "10/20",
+    "span_text": "10/21",
     "carry": {
-      "from_data_date": "2026-10-19",
-      "ref": "output/feed_review_2026-10-19.json",
+      "from_data_date": "2026-10-20",
+      "ref": "output/feed_review_2026-10-20.json",
       "exists": true,
       "gap_days": 1,
       "stale": false,
       "bias": "中性",
       "bias_score": 1,
       "t1_focus": [
-        "跟踪金钻起涨 15 只回踩确认"
+        "跟踪金钻起涨 4 只回踩确认"
       ],
       "risks": [],
       "headline": ""
     },
     "layers": {
-      "base": "2026-10-19 A股收盘（基准层）",
-      "overnight": "美东 2026-10-19 收盘（北京 2026-10-20 早间到达）",
-      "premarket": "2026-10-20 今早日韩实时 + 盘前新闻/投喂增量"
+      "base": "2026-10-20 A股收盘（基准层）",
+      "overnight": "美东 2026-10-20 收盘（北京 2026-10-21 早间到达）",
+      "premarket": "2026-10-21 今早日韩实时 + 盘前新闻/投喂增量"
     },
     "market_state": {
-      "date": "2026-10-19",
+      "date": "2026-10-20",
       "run_date": "2026-10-20",
-      "preopen_partial": true,
+      "preopen_partial": null,
       "us_kline": true,
       "asia": true
     },
     "covered": [
-      {
-        "date": "2026-10-19",
-        "weekday": "周一",
-        "is_trading_day": true,
-        "news": 302,
-        "feeds": 0,
-        "reports": 1191,
-        "macro": true
-      },
       {
         "date": "2026-10-20",
         "weekday": "周二",
         "is_trading_day": true,
         "news": 283,
         "feeds": 0,
-        "reports": 42,
+        "reports": 830,
         "macro": true
+      },
+      {
+        "date": "2026-10-21",
+        "weekday": "周三",
+        "is_trading_day": true,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
       }
     ],
     "totals": {
-      "news": 585,
+      "news": 283,
       "feeds": 0,
-      "reports": 1233,
+      "reports": 830,
       "covered_days": 2
     },
-    "missing": []
+    "missing": [
+      "market_thermometer.json 数据日 2026-10-19 落后于基准日 2026-10-20"
+    ]
   },
   "index_context": {
     "上证指数": {
-      "close": "3730.92",
-      "chg_pct": "0.39"
+      "close": "3735.37",
+      "chg_pct": "0.12"
     },
     "深证成指": {
-      "close": "11817.42",
-      "chg_pct": "0.13"
+      "close": "11801.29",
+      "chg_pct": "-0.14"
     },
     "创业板指": {
-      "close": "2746.29",
-      "chg_pct": "-0.94"
+      "close": "2739.20",
+      "chg_pct": "-0.26"
     },
     "科创50": {
-      "close": "1329.19",
-      "chg_pct": "-2.17"
+      "close": "1342.42",
+      "chg_pct": "1.00"
     }
   },
   "summary": {
     "共振": 1,
-    "背离": 5,
+    "背离": 2,
     "暗线": 6,
-    "双冷": 19
+    "双冷": 22
   },
   "items": [
     {
       "sector": "电力设备",
-      "news_count": 11,
-      "news_per_day": 5.5,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": -39.12,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "欣旺达：全资子公司拟出资2.25亿元参与设立储能产业基金",
-        "宁德时代、奇瑞在芜湖成立新能源公司 注册资本10亿元",
-        "阳光电源：拟出资1.74亿元参与设立储能产业基金"
+        "理想自研电池命名为连山 官方推出兜底计划",
+        "锂业分会：9月碳酸锂价格加速下跌 锂辉石进口量增长 津巴布韦锂矿陆续到港",
+        "特斯拉与保加利亚企业将斥资超3.5亿欧元开发多个储能项目"
       ]
     },
     {
       "sector": "有色金属",
-      "news_count": 21,
-      "news_per_day": 10.5,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": -30.12,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "BNP Paribas下调赣锋锂业、天齐锂业A股评级",
-        "盈新发展：全资子公司拟公开挂牌增资扩股引入投资者",
-        "中色股份：中色哈萨克斯坦签署准备协议，涉及30万吨/年项目"
+        "锂业分会：9月碳酸锂价格加速下跌 锂辉石进口量增长 津巴布韦锂矿陆续到港",
+        "盘后A股上市公司重点业绩公告精选",
+        "BNP Paribas下调赣锋锂业、天齐锂业A股评级"
       ]
     },
     {
       "sector": "非银金融",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": -29.45,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -158,8 +160,8 @@
     },
     {
       "sector": "机械设备",
-      "news_count": 9,
-      "news_per_day": 4.5,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": 23.95,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -167,14 +169,14 @@
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
         "国内联播快讯",
-        "兆丰股份：控股子公司预中标机器人创新服务平台项目",
-        "宇树科技：人形机器人行业尚处于商业化早期"
+        "智元全尺寸人形机器人智慧零售仓落地武汉江滩",
+        "兆丰股份：控股子公司预中标机器人创新服务平台项目"
       ]
     },
     {
       "sector": "国防军工",
-      "news_count": 26,
-      "news_per_day": 13.0,
+      "news_count": 17,
+      "news_per_day": 8.5,
       "flow_yi": -12.81,
       "verdict": "背离",
       "verdict_raw": "背离",
@@ -182,59 +184,59 @@
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
         "【赓续长征精神 奋进复兴征程】传承红色血脉 打好实现建军一百年奋斗目标攻坚战",
-        "【英国将派遣战斗机协助沙特抵御胡塞武装袭击】英国将派遣皇家空军“台风”战斗机",
-        "英国将派遣战斗机协助沙特抵御胡塞武装袭击"
+        "土耳其国防部长：土耳其军队将留在伊拉克和叙利亚，直到边境安全得到保障。",
+        "以色列国防部长卡茨： 倘若真主党配合伊朗一同袭击以色列，它将遭受沉重打击。以"
       ]
     },
     {
       "sector": "电子",
-      "news_count": 43,
-      "news_per_day": 21.5,
+      "news_count": 23,
+      "news_per_day": 11.5,
       "flow_yi": 10.6,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "DeepSeek宣布将内部推理框架DeepInfer全面开源",
-        "润建股份：目前AI、算力、词元等业务占公司总营收比重仍较低",
-        "润建股份：股价异动期间AI、算力概念活跃，新业务收入占比较低"
+        "【LG家电自研AI半导体搭载量两年增10倍】LG电子正在快速扩大自研半导体在",
+        "我国智能算力规模达2592EFLOPS，同比增长146%",
+        "美股AI算力租赁商Nebius股价下跌5%"
       ]
     },
     {
       "sector": "公用事业",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 5,
+      "news_per_day": 2.5,
       "flow_yi": -8.64,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "谷歌安全产品部门表示，电力故障影响已得到缓解，工程团队已完成修复措施，恢复服",
-        "华菱线缆：近期冶金矿山及电力新能源领域中标合同额约4.76亿元",
-        "印度电力部与沙特阿拉伯举行双边会谈。"
+        "【外媒：谷歌在伦敦的云服务中断，多家银行与金融公司受影响，谷歌致歉】 综合英",
+        "干旱持续 英国供水公司考虑从挪威进口饮用水",
+        "乌克兰国家电力公司宣布全境开始工业限电"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 11,
-      "news_per_day": 5.5,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": -8.27,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "国家数据集团有限公司组建成立 位列央企名录第28位",
-        "中国移动前三季度移动客户净增889万户 5G网络客户达7.02亿户",
-        "富信科技：前三季度净利润同比增长50.04% 高速率光模块的热电器件销售收入"
+        "TRACE SYSTEMS赢得美国和平队后续合同，将提供全天候全球卫星通信服",
+        "我国智能算力规模达2592EFLOPS，同比增长146%",
+        "美股光通信板块走低 Coherent跌5%"
       ]
     },
     {
       "sector": "煤炭",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -7.95,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -242,23 +244,21 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "山西多管齐下推进复工复产 煤炭稳产稳供成效显现",
-        "秦港股份：筹划发行股份及支付现金购买资产并募集配套资金事项停牌",
-        "国内商品期货夜盘收盘"
+        "秦港股份：筹划发行股份及支付现金购买资产并募集配套资金事项停牌"
       ]
     },
     {
       "sector": "基础化工",
-      "news_count": 3,
-      "news_per_day": 1.5,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -5.43,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "惠通科技：签署3.66亿元涤纶化纤项目合同",
-        "三友化工：预计2026年前三季度净利润同比增长116%",
-        "国内商品期货夜盘收盘"
+        "国内商品期货夜盘开盘 主力合约多数上涨",
+        "惠通科技：签署3.66亿元涤纶化纤项目合同"
       ]
     },
     {
@@ -274,45 +274,43 @@
     },
     {
       "sector": "交通运输",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -4.66,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "我国加快建设贯通国家沿边沿海“黄金大外环”"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "房地产",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 5,
+      "news_per_day": 2.5,
       "flow_yi": -3.96,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "招商蛇口等在苏州成立房地产公司 注册资本7.5亿元",
-        "机构：美国第四季度房贷利率料将维持在7%左右",
-        "美国住宅建筑商信心降至14年低点 销售持续疲软"
+        "美财长贝森特：受能源价格冲击影响 美国利率上升",
+        "美国财长贝森特：能源冲击导致利率上升，住房市场已放缓。",
+        "美国财长贝森特：我认为房贷利率将会下降。"
       ]
     },
     {
       "sector": "传媒",
-      "news_count": 9,
-      "news_per_day": 4.5,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": -3.45,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "苹果(AAPL.O)：正扩大与Qnity Electronics的合作，为i",
-        "苹果(AAPL.O)：与Perryman公司合作，为包括iPhone Duo",
-        "苹果(AAPL.O)：扩大与Qnity Electronics的合作，共同推"
+        "苹果就iPhone Duo关键材料及组件同美企签署协议",
+        "保伦股份沪市主板IPO定于10月27日上会",
+        "东方财富财经早餐 10月13日周二"
       ]
     },
     {
@@ -328,32 +326,32 @@
     },
     {
       "sector": "医药生物",
-      "news_count": 3,
-      "news_per_day": 1.5,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": 3.12,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "天邑股份：成为中国电信智能机顶盒集采项目第二成交候选人",
-        "百洋医药：证券简称拟变更为“百洋制药”",
-        "海思科：预计前三季度净利润同比增长297%-321%"
+        "女性平均减重25% 诺和诺德新一代减肥药传来新进展",
+        "诺和诺德表示，其新一代减肥药CagriSema在肥胖或超重成年女性中实现了平",
+        "诺和诺德表示其新一代减肥药CagriSema在肥胖或超重成年女性中实现了平均"
       ]
     },
     {
       "sector": "汽车",
-      "news_count": 30,
-      "news_per_day": 15.0,
+      "news_count": 18,
+      "news_per_day": 9.0,
       "flow_yi": -2.65,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "【长春一东：股价累计涨幅较大 提示交易风险】长春一东公告称，公司股票自202",
-        "长春一东：基本面未发生重大变化",
-        "通用汽车美股盘前跌幅扩大至8%"
+        "【法拉利CEO盛赞特斯拉Roadster的重新设计是该行业亟需的大胆创新】法",
+        "通用汽车美股盘初跌7%",
+        "美股开盘，道指开跌0.04%，标普500指数跌0.22%，纳指跌0.49%。"
       ]
     },
     {
@@ -369,17 +367,17 @@
     },
     {
       "sector": "农林牧渔",
-      "news_count": 5,
-      "news_per_day": 2.5,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": 2.46,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
+        "生猪期价跌破1万元/吨 交易所提示风险",
         "近期生猪品种价格波动较大 大商所发布市场风险提示函",
-        "特朗普宣布向农民提供80亿美元补贴",
-        "农业农村部：推动人工智能赋能育种创新 加快培育一批突破性品种"
+        "特朗普宣布向农民提供80亿美元补贴"
       ]
     },
     {
@@ -406,17 +404,17 @@
     },
     {
       "sector": "计算机",
-      "news_count": 25,
-      "news_per_day": 12.5,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": -1.61,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "DeepSeek宣布将内部推理框架DeepInfer全面开源",
-        "地铁设计：王建减持计划实施完毕，减持8075股，超计划75股",
-        "【机构重申对Meta强力买入评级 看好公司基本面】雷蒙德·詹姆斯（Raymo"
+        "【LG家电自研AI半导体搭载量两年增10倍】LG电子正在快速扩大自研半导体在",
+        "我国智能算力规模达2592EFLOPS，同比增长146%",
+        "美股AI算力租赁商Nebius股价下跌5%"
       ]
     },
     {
@@ -432,30 +430,28 @@
     },
     {
       "sector": "环保",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -1.24,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "中创环保：股东周口中控拟公开征集转让7%股份"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "银行",
-      "news_count": 23,
-      "news_per_day": 11.5,
+      "news_count": 7,
+      "news_per_day": 3.5,
       "flow_yi": -1.21,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "【中国银行董事长葛海蛟会见法国巴黎银行董事长乐明瀚】10月20日，中国银行董",
-        "中国银行董事长葛海蛟会见法国巴黎银行董事长乐明瀚",
-        "华福证券任志强：统筹风险防范与金融改革开放"
+        "【外媒：谷歌在伦敦的云服务中断，多家银行与金融公司受影响，谷歌致歉】 综合英",
+        "加拿大皇家银行（RBC）首席执行官戴夫·麦凯表示，该行正考虑屏蔽Meta旗下",
+        "富国银行下调微芯科技目标价"
       ]
     },
     {
@@ -482,37 +478,36 @@
     },
     {
       "sector": "钢铁",
-      "news_count": 2,
-      "news_per_day": 1.0,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": -0.85,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "国内商品期货夜盘收盘",
-        "中钢协副会长姜维与巴西盖尔道公司董事长安德烈·盖尔道举行会谈"
+        "【中钢协：2026年地方行业协会负责人座谈会在河北武安召开】10月14日—1"
       ]
     },
     {
       "sector": "石油石化",
-      "news_count": 9,
-      "news_per_day": 4.5,
+      "news_count": 7,
+      "news_per_day": 3.5,
       "flow_yi": -0.42,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "国际能源署署长：如果有需要 IEA将考虑进一步释放紧急石油储备",
-        "布伦特原油期货涨幅扩大至2%",
-        "南向资金净卖逾17亿港元 净买入腾讯控股逾11亿港元"
+        "WTI原油期货回落至98.512美元/桶",
+        "美国战略原油储备降至44年来最低水平",
+        "美国财长贝森特：自今年8月以来，未监测到伊朗哈尔克岛石油设施有任何装油作业。"
       ]
     },
     {
       "sector": "食品饮料",
-      "news_count": 12,
-      "news_per_day": 6.0,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -0.41,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -520,23 +515,22 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "月结1320元！一图了解前三季度全国居民收支“账单”",
-        "抖音电商：双11前4天成交额破亿元 商家数同比增加200%",
-        "我国多措并举加快推进科技兴商"
+        "抖音电商：双11前4天成交额破亿元 商家数同比增加200%"
       ]
     },
     {
       "sector": "综合",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 5,
+      "news_per_day": 2.5,
       "flow_yi": -0.08,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "江波龙：公司已推出多款支持PCIe、SATA协议的高速企业级eSSD产品",
-        "机构：美国第四季度房贷利率料将维持在7%左右",
-        "汽车零部件保税再制造新业态在海南正式落地"
+        "【外媒：谷歌在伦敦的云服务中断，多家银行与金融公司受影响，谷歌致歉】 综合英",
+        "四川能源核产业有限公司揭牌成立",
+        "道琼斯指数10月20日（周二）开盘上涨7.45点，涨幅0.01%，报5197"
       ]
     }
   ]
