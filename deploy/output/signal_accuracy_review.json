@@ -1,34 +1,34 @@
 {
- "data_date": "2026-10-20",
- "generated_at": "2026-10-20 19:16:31",
+ "data_date": "2026-10-21",
+ "generated_at": "2026-10-21 19:11:38",
  "source": "output/golden_diamond.json",
- "total_hits": 59,
- "valid_samples": 27,
+ "total_hits": 73,
+ "valid_samples": 45,
  "excluded_breakdown": {
-  "信号日=最新日": 32
+  "信号日=最新日": 28
  },
  "excluded_by_primary": {
-  "金钻起涨": 3,
-  "买入": 11,
-  "红区黄柱连续3天": 9,
-  "红区黄柱连续5天": 2,
-  "红区黄柱连续4天": 7
+  "金钻起涨": 1,
+  "买入": 22,
+  "红区黄柱连续4天": 1,
+  "红区黄柱连续3天": 2,
+  "红区黄柱连续5天": 2
  },
  "excl_rate_by_primary": {
   "买入": {
-   "total_hits": 35,
-   "excluded": 11,
-   "excl_rate_pct": 31.43
+   "total_hits": 53,
+   "excluded": 22,
+   "excl_rate_pct": 41.51
   },
   "红区黄柱连续3天": {
-   "total_hits": 11,
-   "excluded": 9,
-   "excl_rate_pct": 81.82
+   "total_hits": 10,
+   "excluded": 2,
+   "excl_rate_pct": 20.0
   },
   "红区黄柱连续4天": {
-   "total_hits": 7,
-   "excluded": 7,
-   "excl_rate_pct": 100.0
+   "total_hits": 3,
+   "excluded": 1,
+   "excl_rate_pct": 33.33
   },
   "红区黄柱连续5天": {
    "total_hits": 2,
@@ -36,63 +36,67 @@
    "excl_rate_pct": 100.0
   },
   "金钻起涨": {
-   "total_hits": 4,
-   "excluded": 3,
-   "excl_rate_pct": 75.0
+   "total_hits": 5,
+   "excluded": 1,
+   "excl_rate_pct": 20.0
   }
  },
- "baseline_mean_pct": 1.444,
- "baseline_median_pct": 0.508,
- "baseline_win_rate_pct": 66.6667,
+ "baseline_mean_pct": 1.2527,
+ "baseline_median_pct": 0.4829,
+ "baseline_win_rate_pct": 55.5556,
  "by_signal": {
   "买入": {
-   "n": 24,
-   "win_rate_pct": 62.5,
-   "mean_pct": 0.0464,
-   "median_pct": 0.3324,
-   "excess_vs_baseline_pct": -1.3976,
+   "n": 31,
+   "win_rate_pct": 45.1613,
+   "mean_pct": -0.0199,
+   "median_pct": -0.3546,
+   "excess_vs_baseline_pct": -1.2726,
    "verdict_vs_baseline": "跑输",
    "sample_sufficiency": "充分(>=20)",
    "signal_date_dist": {
-    "2026-10-15": 6,
-    "2026-10-16": 12,
-    "2026-10-19": 6
+    "2026-10-15": 3,
+    "2026-10-16": 16,
+    "2026-10-19": 3,
+    "2026-10-20": 9
    }
   },
   "红区黄柱连续3天": {
-   "n": 2,
-   "win_rate_pct": 100.0,
-   "mean_pct": 9.4648,
-   "median_pct": 9.4648,
-   "excess_vs_baseline_pct": 8.0208,
+   "n": 8,
+   "win_rate_pct": 75.0,
+   "mean_pct": 3.6414,
+   "median_pct": 2.5018,
+   "excess_vs_baseline_pct": 2.3887,
    "verdict_vs_baseline": "跑赢",
-   "sample_sufficiency": "样本不足以下结论(n=2)",
+   "sample_sufficiency": "样本不足以下结论(n=8)",
    "signal_date_dist": {
-    "2026-10-16": 1,
-    "2026-10-19": 1
+    "2026-10-19": 2,
+    "2026-10-20": 6
    }
   },
   "金钻起涨": {
-   "n": 1,
+   "n": 4,
    "win_rate_pct": 100.0,
-   "mean_pct": 18.9459,
-   "median_pct": 18.9459,
-   "excess_vs_baseline_pct": 17.5019,
+   "mean_pct": 5.7809,
+   "median_pct": 2.0966,
+   "excess_vs_baseline_pct": 4.5282,
    "verdict_vs_baseline": "跑赢",
-   "sample_sufficiency": "样本不足以下结论(n=1)",
+   "sample_sufficiency": "样本不足以下结论(n=4)",
    "signal_date_dist": {
-    "2026-10-16": 1
+    "2026-10-16": 1,
+    "2026-10-20": 3
    }
   },
   "红区黄柱连续4天": {
-   "n": 0,
-   "win_rate_pct": null,
-   "mean_pct": null,
-   "median_pct": null,
-   "excess_vs_baseline_pct": null,
-   "verdict_vs_baseline": "无法检验",
-   "sample_sufficiency": "当日有效样本 0（总命中 7 全部为信号日=最新日，天然无后验）",
-   "signal_date_dist": {}
+   "n": 2,
+   "win_rate_pct": 50.0,
+   "mean_pct": 2.3662,
+   "median_pct": 2.3662,
+   "excess_vs_baseline_pct": 1.1135,
+   "verdict_vs_baseline": "跑赢",
+   "sample_sufficiency": "样本不足以下结论(n=2)",
+   "signal_date_dist": {
+    "2026-10-20": 2
+   }
   },
   "红区黄柱连续5天": {
    "n": 0,
@@ -108,152 +112,151 @@
  "baseline_robustness": {
   "contrib_by_signal": {
    "金钻起涨": {
-    "n": 1,
-    "sum_pct": 18.9459,
-    "share_of_total_pct": 48.59
+    "n": 4,
+    "sum_pct": 23.1235,
+    "share_of_total_pct": 41.02
    },
    "买入": {
-    "n": 24,
-    "sum_pct": 1.1131,
-    "share_of_total_pct": 2.85
+    "n": 31,
+    "sum_pct": -0.6162,
+    "share_of_total_pct": -1.09
    },
    "红区黄柱连续3天": {
+    "n": 8,
+    "sum_pct": 29.1314,
+    "share_of_total_pct": 51.68
+   },
+   "红区黄柱连续4天": {
     "n": 2,
-    "sum_pct": 18.9296,
-    "share_of_total_pct": 48.55
+    "sum_pct": 4.7323,
+    "share_of_total_pct": 8.39
    }
   },
   "excess_vs_median_baseline_pct": {
-   "买入": -0.1756,
-   "红区黄柱连续3天": 8.9568,
-   "金钻起涨": 18.4379
+   "买入": -0.8375,
+   "红区黄柱连续3天": 2.0189,
+   "金钻起涨": 1.6137,
+   "红区黄柱连续4天": 1.8833
   },
   "buy_only_baseline": {
-   "n": 24,
-   "mean_pct": 0.0464,
-   "median_pct": 0.3324,
-   "win_rate_pct": 62.5
+   "n": 31,
+   "mean_pct": -0.0199,
+   "median_pct": -0.3546,
+   "win_rate_pct": 45.1613
   },
-  "warning": "全池基准由极少数样本主导：起涨1只+红区3天2只贡献全池收益和的 97.1%；中位数基准下买入超额仅 -0.1756%（均值基准 -1.3976%）⇒ 基准口径在本日极不稳定，「跑赢/跑输基准」判读须降级为参考级"
+  "warning": "全池基准由少数类型主导：起涨 + 红区3天 合计贡献全池收益和的 92.7%（买入31只仅 -1.1%）；中位数基准下买入超额 -0.8375%（均值基准 -1.2726%）⇒ 「跑赢/跑输基准」判读须同时看中位数基准，均值基准降级为参考级"
  },
  "market_env": {
-  "date": "2026-10-20",
+  "date": "2026-10-21",
   "source": "腾讯行情单次拉取(qt.gtimg.cn)",
   "sh000001": {
-   "close": 3735.37,
-   "pct": 0.12
+   "close": 3713.03,
+   "pct": -0.6
   },
   "sz399001": {
-   "close": 11801.29,
-   "pct": -0.14
+   "close": 11704.35,
+   "pct": -0.82
   },
   "sz399006": {
-   "close": 2739.2,
-   "pct": -0.26
+   "close": 2694.71,
+   "pct": -1.62
   },
   "sh000300": {
-   "close": 4152.11,
-   "pct": -0.54
+   "close": 4111.93,
+   "pct": -0.97
   },
-  "regime": "震荡偏弱（四大指数无一上涨）",
-  "note": "当日并非上涨环境 ⇒ R-1/R-4 要求的「上涨环境反证」本日仍不具备样本条件"
+  "regime": "普跌（四大指数全线下跌，创业板领跌）",
+  "note": "当日并非上涨环境 => R-1/R-4 要求的「上涨环境反证」连续第5个数据日无样本"
  },
  "dedup_check": {
-  "method": "用 output/golden_diamond_history.json 20 个交易日快照，对每只标的只取「首次出现」的信号日；基准=信号日收盘、终点=2026-10-20 收盘；价格取 output/kline_all.json（750 只池）",
-  "dedup_universe": 373,
-  "checkable": 65,
-  "no_kline": 294,
-  "skipped_signal_is_last": 14,
-  "cross_day_overlap_1019_1020": "30/59 = 50.8%（10-19 与 10-20 命中集重叠）",
-  "baseline_mean_pct": -4.6699,
-  "baseline_median_pct": -5.0815,
-  "baseline_win_rate_pct": 29.2308,
+  "method": "用 output/golden_diamond_history.json 20 个交易日快照，对每只标的只取「首次出现」的信号日；基准=信号日收盘、终点=2026-10-21 收盘（持有期跨 2-11 自然日）；价格取 output/kline_all.json（750 只池）",
+  "dedup_universe": 379,
+  "checkable": 64,
+  "no_kline": 307,
+  "skipped_signal_is_last": 8,
+  "cross_day_overlap_1020_1021": "40/73 = 54.8%（10-20 与 10-21 命中集重叠）",
+  "baseline_mean_pct": -4.684,
+  "baseline_median_pct": -4.5469,
+  "baseline_win_rate_pct": 25.0,
   "by_signal": {
    "金钻起涨": {
     "n": 8,
-    "mean_pct": -2.5243,
-    "median_pct": 1.5186,
-    "win_rate_pct": 62.5,
-    "excess_mean_pct": 2.1456,
-    "excess_median_pct": 6.6001
+    "mean_pct": -3.2699,
+    "median_pct": 0.4194,
+    "win_rate_pct": 50.0,
+    "excess_mean_pct": 1.4141,
+    "excess_median_pct": 4.9663
    },
    "买入": {
     "n": 41,
-    "mean_pct": -4.7586,
-    "median_pct": -4.7987,
-    "win_rate_pct": 26.8293,
-    "excess_mean_pct": -0.0887,
-    "excess_median_pct": 0.2828
-   },
-   "红区黄柱连续4日": {
-    "n": 2,
-    "mean_pct": -8.7545,
-    "median_pct": -8.7545,
-    "win_rate_pct": 50.0,
-    "excess_mean_pct": -4.0846,
-    "excess_median_pct": -3.673
+    "mean_pct": -4.6471,
+    "median_pct": -4.721,
+    "win_rate_pct": 24.3902,
+    "excess_mean_pct": 0.0369,
+    "excess_median_pct": -0.1741
    },
    "红区黄柱连续3日": {
     "n": 13,
-    "mean_pct": -4.9355,
-    "median_pct": -5.3417,
+    "mean_pct": -4.5523,
+    "median_pct": -4.0848,
     "win_rate_pct": 15.3846,
-    "excess_mean_pct": -0.2656,
-    "excess_median_pct": -0.2602
+    "excess_mean_pct": 0.1318,
+    "excess_median_pct": 0.4621
    },
    "红区黄柱连续5日": {
-    "n": 1,
-    "mean_pct": -6.5753,
-    "median_pct": -6.5753,
+    "n": 2,
+    "mean_pct": -11.9544,
+    "median_pct": -11.9544,
     "win_rate_pct": 0.0,
-    "excess_mean_pct": -1.9054,
-    "excess_median_pct": -1.4938
+    "excess_mean_pct": -7.2703,
+    "excess_median_pct": -7.4075
    }
   },
-  "conclusion": "去重后「买入」超额由日频 −1.40% 收敛至 -0.09%（中位数基准 +0.28%）⇒ 日频口径的连续跑输中含显著跨日重复计数成分，不能等同为「新增独立样本持续失效」；「金钻起涨」在去重口径下仍为唯一显著跑赢类型（超额 +2.15%／中位 +6.60%，n=8 仍不足 20）"
+  "conclusion": "去重后「买入」超额 = +0.04%（中位数基准 -0.17%），n=41 ⇒ 日频口径的连续跑输中含显著跨日重复计数成分，买入信号实为「中性偏弱」而非「持续失效」；「金钻起涨」去重口径仍跑赢（超额 +1.41%／中位 +4.97%，n=8 仍不足 20）；「红区黄柱连续5日」去重口径超额 -7.27%（n=2，仅登记不定论）"
  },
  "alerts": [
-  "有效样本 27 < 30 ⇒ 触发台账 5.3 节预设告警：本轮停止「连续跑输/跑赢」判定（R-4 连续 3 日保留为历史事实，不追加第 4 日）",
-  "剔除占比 54.2%（32/59）为四日最高（27.6%→46.8%→32.0%→54.2%）",
-  "全池基准 +1.44% 由 3 只样本驱动 97.1% 收益和 ⇒ 均值基准当日不可作强判据",
-  "当日大盘并非上涨环境（沪深300 −0.54%、创业板 −0.26%）⇒ R-1/R-4 的「上涨环境反证」本日仍无样本",
-  "10-19 与 10-20 命中集重叠 50.8% ⇒ 日频「连续」判据存在样本重复计数成分"
+  "有效样本 45 ≥ 30 ⇒ 台账 5.3 节熔断告警解除，连续性判定恢复（10-20 因 n=27 停止的判定本轮重启）",
+  "剔除占比 38.4%（28/73），较 10-20 的 54.2% 回落但仍处四日次高（27.6%→46.8%→32.0%→54.2%→38.4%）",
+  "全池基准 +1.25%% 由 3 只样本驱动 92.7%% 收益和（起涨4只41.0%% + 红区3天8只51.7%%），买入31只仅贡献 -1.09%% ⇒ 均值基准仍脆弱，须并看中位数基准",
+  "当日大盘普跌（沪深300 -0.97%、创业板 -1.62%、深成 -0.82%、上证 -0.60%）⇒ R-1/R-4 的「上涨环境反证」连续第 5 个数据日无样本",
+  "10-20 与 10-21 命中集重叠 54.8%%（40/73）⇒ 日频「连续」判据的样本重复计数问题未缓解（R-8 口径改造仍待用户确认）",
+  "「红区黄柱连续5天」当日总命中 2 只、剔除率 100%% ⇒ 有效样本 0，连续第 2 日不可用（R-6/R-7 维持登记）"
  ],
  "worst5": [
   {
-   "code": "sz300408",
-   "name": "三环集团",
-   "primary": "买入",
-   "sig_date": "2026-10-16",
-   "ret_pct": -5.0731
-  },
-  {
-   "code": "sz002080",
-   "name": "中材科技",
-   "primary": "买入",
-   "sig_date": "2026-10-16",
-   "ret_pct": -2.2972
-  },
-  {
-   "code": "sz002602",
-   "name": "世纪华通",
+   "code": "sz300037",
+   "name": "新宙邦",
    "primary": "买入",
    "sig_date": "2026-10-19",
-   "ret_pct": -2.1704
+   "ret_pct": -6.8843
   },
   {
-   "code": "sh601628",
-   "name": "中国人寿",
-   "primary": "买入",
-   "sig_date": "2026-10-15",
-   "ret_pct": -1.3893
-  },
-  {
-   "code": "sz002156",
-   "name": "通富微电",
+   "code": "sz002145",
+   "name": "钛能化学",
    "primary": "买入",
    "sig_date": "2026-10-16",
-   "ret_pct": -1.1506
+   "ret_pct": -3.6058
+  },
+  {
+   "code": "sz002240",
+   "name": "盛新锂能",
+   "primary": "买入",
+   "sig_date": "2026-10-16",
+   "ret_pct": -3.1702
+  },
+  {
+   "code": "sz301358",
+   "name": "湖南裕能",
+   "primary": "买入",
+   "sig_date": "2026-10-20",
+   "ret_pct": -2.7086
+  },
+  {
+   "code": "sz002192",
+   "name": "融捷股份",
+   "primary": "买入",
+   "sig_date": "2026-10-16",
+   "ret_pct": -2.4686
   }
  ],
  "best5": [
@@ -262,36 +265,36 @@
    "name": "亿田智能",
    "primary": "金钻起涨",
    "sig_date": "2026-10-16",
-   "ret_pct": 18.9459
+   "ret_pct": 18.4473
   },
   {
    "code": "sz300461",
    "name": "田中精机",
    "primary": "红区黄柱连续3天",
    "sig_date": "2026-10-19",
-   "ret_pct": 14.4986
+   "ret_pct": 11.7547
   },
   {
-   "code": "sz002768",
-   "name": "国恩股份",
+   "code": "sz002201",
+   "name": "九鼎新材",
    "primary": "红区黄柱连续3天",
-   "sig_date": "2026-10-16",
-   "ret_pct": 4.431
-  },
-  {
-   "code": "sh601179",
-   "name": "中国西电",
-   "primary": "买入",
-   "sig_date": "2026-10-15",
-   "ret_pct": 2.4931
-  },
-  {
-   "code": "sz300570",
-   "name": "太辰光",
-   "primary": "买入",
    "sig_date": "2026-10-19",
-   "ret_pct": 1.9297
+   "ret_pct": 7.497
+  },
+  {
+   "code": "sz301183",
+   "name": "东田微",
+   "primary": "红区黄柱连续3天",
+   "sig_date": "2026-10-20",
+   "ret_pct": 7.2237
+  },
+  {
+   "code": "sz002046",
+   "name": "国机精工",
+   "primary": "红区黄柱连续4天",
+   "sig_date": "2026-10-20",
+   "ret_pct": 5.4657
   }
  ],
- "note": "基准价=signals[0].date 当日收盘价，最新交易日=2026-10-20 收盘；后验收益=最新收盘/信号日收盘-1。中位数用 statistics.median（偶数取中间两值均值）。32 个样本因信号日=最新交易日剔除，为机制固有属性非数据缺陷。本产物仅客观统计读数，不含任何买卖建议。"
+ "note": "基准价=signals[0].date 当日收盘价，最新交易日=2026-10-21 收盘；后验收益=最新收盘/信号日收盘-1。中位数用 statistics.median（偶数取中间两值均值）。28 个样本因信号日=最新交易日剔除，为机制固有属性非数据缺陷。本产物仅客观统计读数，不含任何买卖建议。"
 }

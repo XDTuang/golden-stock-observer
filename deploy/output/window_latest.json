@@ -1,79 +1,74 @@
 {
-  "generated_at": "2026-10-21 08:32",
-  "session": "preopen",
-  "data_date": "2026-10-20",
-  "for_date": "2026-10-21",
+  "generated_at": "2026-10-21 22:01",
+  "session": "close",
+  "data_date": "2026-10-21",
+  "for_date": "2026-10-22",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-10-21"
+    "2026-10-22"
   ],
   "span_days": 1,
   "display_days": [
-    "2026-10-20",
-    "2026-10-21"
+    "2026-10-21",
+    "2026-10-22"
   ],
-  "display_text": "10/20 + 10/21",
+  "display_text": "10/21 + 10/22",
   "span_is_weekend_cross": false,
-  "span_text": "10/21",
+  "span_text": "10/22",
   "carry": {
-    "from_data_date": "2026-10-20",
-    "ref": "output/feed_review_2026-10-20.json",
+    "from_data_date": "2026-10-21",
+    "ref": "output/feed_review_2026-10-21.json",
     "exists": true,
     "gap_days": 1,
     "stale": false,
     "bias": "中性",
     "bias_score": 1,
     "t1_focus": [
-      "电子资金能否连续第二日净流入（连续 = 共振 A 成立；转负 = 单日脉冲）",
-      "上证 3,702.44（10/20 低点）与 3,740.07（10/20 高点）两个机械判据",
-      "通信双冷 D 后的二次杀伤（-8.27 亿 + 美股光通信重挫）",
-      "机械设备 +23.95 亿（分位 100）是否为单日脉冲"
+      "跟踪金钻起涨 5 只回踩确认"
     ],
-    "risks": [
-      "广度修复被证伪为「无量反抽」",
-      "电子共振 A 仅存续一日",
-      "亚太全线收跌（KOSPI -3.73% / 恒生科技 -1.52%）向 A股 传导"
-    ],
+    "risks": [],
     "headline": ""
   },
   "layers": {
-    "base": "2026-10-20 A股收盘（基准层）",
-    "overnight": "美东 2026-10-20 收盘（北京 2026-10-21 早间到达）",
-    "premarket": "2026-10-21 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-10-21 A股收盘（基准层）",
+    "overnight": "美东 2026-10-21 收盘（北京 2026-10-22 早间到达）",
+    "premarket": "2026-10-22 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-10-20",
+    "date": "2026-10-21",
     "run_date": "2026-10-21",
-    "preopen_partial": true,
+    "preopen_partial": null,
     "us_kline": true,
     "asia": true
   },
   "covered": [
-    {
-      "date": "2026-10-20",
-      "weekday": "周二",
-      "is_trading_day": true,
-      "news": 302,
-      "feeds": 0,
-      "reports": 1133,
-      "macro": true
-    },
     {
       "date": "2026-10-21",
       "weekday": "周三",
       "is_trading_day": true,
       "news": 281,
       "feeds": 0,
-      "reports": 36,
+      "reports": 917,
       "macro": true
+    },
+    {
+      "date": "2026-10-22",
+      "weekday": "周四",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
     }
   ],
   "totals": {
-    "news": 583,
+    "news": 281,
     "feeds": 0,
-    "reports": 1169,
+    "reports": 917,
     "covered_days": 2
   },
-  "missing": []
+  "missing": [
+    "market_thermometer.json 数据日 2026-10-20 落后于基准日 2026-10-21"
+  ]
 }
