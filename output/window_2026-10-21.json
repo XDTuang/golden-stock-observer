@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-20 22:01",
-  "session": "close",
+  "generated_at": "2026-10-21 08:32",
+  "session": "preopen",
   "data_date": "2026-10-20",
   "for_date": "2026-10-21",
   "data_date_note": "",
@@ -25,9 +25,16 @@
     "bias": "中性",
     "bias_score": 1,
     "t1_focus": [
-      "跟踪金钻起涨 4 只回踩确认"
+      "电子资金能否连续第二日净流入（连续 = 共振 A 成立；转负 = 单日脉冲）",
+      "上证 3,702.44（10/20 低点）与 3,740.07（10/20 高点）两个机械判据",
+      "通信双冷 D 后的二次杀伤（-8.27 亿 + 美股光通信重挫）",
+      "机械设备 +23.95 亿（分位 100）是否为单日脉冲"
     ],
-    "risks": [],
+    "risks": [
+      "广度修复被证伪为「无量反抽」",
+      "电子共振 A 仅存续一日",
+      "亚太全线收跌（KOSPI -3.73% / 恒生科技 -1.52%）向 A股 传导"
+    ],
     "headline": ""
   },
   "layers": {
@@ -37,8 +44,8 @@
   },
   "market_state": {
     "date": "2026-10-20",
-    "run_date": "2026-10-20",
-    "preopen_partial": null,
+    "run_date": "2026-10-21",
+    "preopen_partial": true,
     "us_kline": true,
     "asia": true
   },
@@ -47,28 +54,26 @@
       "date": "2026-10-20",
       "weekday": "周二",
       "is_trading_day": true,
-      "news": 283,
+      "news": 302,
       "feeds": 0,
-      "reports": 830,
+      "reports": 1133,
       "macro": true
     },
     {
       "date": "2026-10-21",
       "weekday": "周三",
       "is_trading_day": true,
-      "news": 0,
+      "news": 281,
       "feeds": 0,
-      "reports": 0,
-      "macro": false
+      "reports": 36,
+      "macro": true
     }
   ],
   "totals": {
-    "news": 283,
+    "news": 583,
     "feeds": 0,
-    "reports": 830,
+    "reports": 1169,
     "covered_days": 2
   },
-  "missing": [
-    "market_thermometer.json 数据日 2026-10-19 落后于基准日 2026-10-20"
-  ]
+  "missing": []
 }
