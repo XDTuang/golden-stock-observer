@@ -1,6 +1,6 @@
 {
  "meta": {
-  "updated_at": "2026-10-22 09:15:19",
+  "updated_at": "2026-10-22 09:45:19",
   "data_date": "2026-10-22",
   "market_status": "trading",
   "algorithm": "1.0.0",
@@ -11,97 +11,97 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3712.83,
-    "chg_pct": -0.01,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3690.16,
+    "chg_pct": -0.62,
+    "turnover_yi": 1259.0,
+    "high": 3714.48,
+    "low": 3683.55
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 11704.35,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 11605.34,
+    "chg_pct": -0.85,
+    "turnover_yi": 1725.0,
+    "high": 11690.92,
+    "low": 11575.46
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 2694.71,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 2657.69,
+    "chg_pct": -1.37,
+    "turnover_yi": 856.0,
+    "high": 2688.11,
+    "low": 2647.16
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1343.28,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 1338.8,
+    "chg_pct": -0.33,
+    "turnover_yi": 91.7,
+    "high": 1346.96,
+    "low": 1332.84
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4111.65,
-    "chg_pct": -0.01,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 4072.79,
+    "chg_pct": -0.95,
+    "turnover_yi": 682.0,
+    "high": 4110.65,
+    "low": 4065.02
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 6840.34,
-    "chg_pct": -0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 6814.84,
+    "chg_pct": -0.38,
+    "turnover_yi": 467.7,
+    "high": 6842.87,
+    "low": 6795.45
    }
   ],
   "breadth": {
-   "up": 1590,
-   "down": 1589,
-   "flat": 1428,
-   "ratio": 1.0,
-   "limit_up": 83,
-   "limit_down": 65,
-   "main_net_yi": 0.0,
-   "turnover_yi": 0.0,
+   "up": 1705,
+   "down": 2700,
+   "flat": 202,
+   "ratio": 0.63,
+   "limit_up": 29,
+   "limit_down": 7,
+   "main_net_yi": -108.29,
+   "turnover_yi": 2647.3,
    "total": 4607
   }
  },
  "L1": {
   "sentiment": {
-   "score": 45,
-   "S1": 25,
-   "S2": 69,
-   "S3": 40,
-   "S4": 50,
+   "score": 24,
+   "S1": 16,
+   "S2": 24,
+   "S3": 25,
+   "S4": 32,
    "inputs": {
-    "ratio": 1.0,
-    "limit_up": 83,
-    "avg_idx_pct": -0.0,
-    "main_net_yi": 0
+    "ratio": 0.63,
+    "limit_up": 29,
+    "avg_idx_pct": -0.75,
+    "main_net_yi": -108.29
    }
   },
   "state": {
-   "state": "oscillation",
-   "label": "震荡分化",
-   "note": "降低频率，控制单票仓位，等待主线明朗",
-   "score": 45
+   "state": "panic",
+   "label": "恐慌下跌",
+   "note": "空仓或极轻仓观望，不抄底，等企稳信号",
+   "score": 24
   }
  },
  "L2": {
   "range": [
-   40,
-   60
+   0,
+   20
   ],
-  "note": "震荡分化，控制总仓与单票上限",
+  "note": "恐慌下跌，空仓或极轻仓等待企稳",
   "rules": [
    "单票仓位 ≤ 10%",
    "单一板块集中度 ≤ 30%",
@@ -110,21 +110,183 @@
   ]
  },
  "L3": {
-  "sectors": [],
-  "mainline": "数据不可用",
-  "resonance": []
+  "sectors": [
+   {
+    "name": "机械设备",
+    "net_yi": 7.58,
+    "jumbo_yi": 6.39,
+    "block_yi": 1.19,
+    "pct": 2.64
+   },
+   {
+    "name": "电机Ⅲ",
+    "net_yi": 4.44,
+    "jumbo_yi": 4.65,
+    "block_yi": -0.2,
+    "pct": 18.53
+   },
+   {
+    "name": "电机Ⅱ",
+    "net_yi": 4.44,
+    "jumbo_yi": 4.65,
+    "block_yi": -0.2,
+    "pct": 18.5
+   },
+   {
+    "name": "通用设备",
+    "net_yi": 3.76,
+    "jumbo_yi": 3.36,
+    "block_yi": 0.4,
+    "pct": 2.84
+   },
+   {
+    "name": "能源及重型设备",
+    "net_yi": 2.56,
+    "jumbo_yi": 2.39,
+    "block_yi": 0.18,
+    "pct": 8.25
+   },
+   {
+    "name": "机器人",
+    "net_yi": 2.24,
+    "jumbo_yi": 1.29,
+    "block_yi": 0.95,
+    "pct": 7.16
+   },
+   {
+    "name": "专用设备",
+    "net_yi": 2.04,
+    "jumbo_yi": 2.5,
+    "block_yi": -0.46,
+    "pct": 2.97
+   },
+   {
+    "name": "制冷空调设备",
+    "net_yi": 1.91,
+    "jumbo_yi": 2.62,
+    "block_yi": -0.72,
+    "pct": 6.13
+   },
+   {
+    "name": "横向通用软件",
+    "net_yi": 1.23,
+    "jumbo_yi": 1.81,
+    "block_yi": -0.58,
+    "pct": 2.87
+   },
+   {
+    "name": "其他石化",
+    "net_yi": 1.16,
+    "jumbo_yi": 1.54,
+    "block_yi": -0.38,
+    "pct": 13.25
+   },
+   {
+    "name": "底盘与发动机系统",
+    "net_yi": 0.99,
+    "jumbo_yi": 0.63,
+    "block_yi": 0.36,
+    "pct": 1.98
+   },
+   {
+    "name": "炼化及贸易",
+    "net_yi": 0.85,
+    "jumbo_yi": 1.16,
+    "block_yi": -0.31,
+    "pct": 4.73
+   },
+   {
+    "name": "自动化设备",
+    "net_yi": 0.82,
+    "jumbo_yi": 0.14,
+    "block_yi": 0.69,
+    "pct": 1.16
+   },
+   {
+    "name": "工程机械",
+    "net_yi": 0.8,
+    "jumbo_yi": 0.36,
+    "block_yi": 0.44,
+    "pct": 6.62
+   },
+   {
+    "name": "其他通用设备",
+    "net_yi": 0.78,
+    "jumbo_yi": 0.34,
+    "block_yi": 0.44,
+    "pct": 3.87
+   },
+   {
+    "name": "金属制品",
+    "net_yi": 0.77,
+    "jumbo_yi": 0.17,
+    "block_yi": 0.6,
+    "pct": 1.78
+   },
+   {
+    "name": "空调",
+    "net_yi": 0.77,
+    "jumbo_yi": 0.19,
+    "block_yi": 0.58,
+    "pct": 8.9
+   },
+   {
+    "name": "白色家电",
+    "net_yi": 0.77,
+    "jumbo_yi": 0.18,
+    "block_yi": 0.59,
+    "pct": 7.56
+   },
+   {
+    "name": "工程机械整机",
+    "net_yi": 0.75,
+    "jumbo_yi": 0.49,
+    "block_yi": 0.26,
+    "pct": 9.6
+   },
+   {
+    "name": "膜材料",
+    "net_yi": 0.71,
+    "jumbo_yi": 0.17,
+    "block_yi": 0.54,
+    "pct": 3.83
+   }
+  ],
+  "mainline": "机械设备(+7.58亿) → 电机Ⅲ(+4.44亿) → 电机Ⅱ(+4.44亿)",
+  "resonance": [
+   "全市场涨停 29 只，情绪有温度",
+   "⚠ 资金高度集中于 机械设备，追高风险上升"
+  ],
+  "conc": {
+   "lead": "机械设备",
+   "ratio": 1.71,
+   "alert": true
+  }
  },
  "L4": {
-  "candidates": [],
+  "candidates": [
+   {
+    "code": "sz002212",
+    "name": "天融信",
+    "zdf": 5.42,
+    "zljlr": 1.11,
+    "lb": 20.98,
+    "hsl": 9.95,
+    "turnover_yi": 8.76,
+    "price": 7.39,
+    "stype": "GP-A",
+    "type": "中继观察"
+   }
+  ],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
  "L5": {
   "alerts": [
    {
-    "level": "green",
-    "type": "正常",
-    "msg": "未触发预警信号，按状态机规则执行即可"
+    "level": "yellow",
+    "type": "板块集中",
+    "msg": "资金高度集中于 机械设备（第一/第二板块净流入比 1.71），拥挤度风险"
    }
   ]
  },
