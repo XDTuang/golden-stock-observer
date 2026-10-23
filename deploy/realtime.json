@@ -1,6 +1,6 @@
 {
  "meta": {
-  "updated_at": "2026-10-23 09:15:19",
+  "updated_at": "2026-10-23 09:45:18",
   "data_date": "2026-10-23",
   "market_status": "trading",
   "algorithm": "1.0.0",
@@ -11,97 +11,97 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3656.71,
-    "chg_pct": -0.04,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3603.02,
+    "chg_pct": -1.5,
+    "turnover_yi": 1570.6,
+    "high": 3627.56,
+    "low": 3602.41
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 11357.32,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 11189.7,
+    "chg_pct": -1.48,
+    "turnover_yi": 1943.6,
+    "high": 11223.66,
+    "low": 11149.83
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 2576.9,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 2531.9,
+    "chg_pct": -1.75,
+    "turnover_yi": 939.8,
+    "high": 2541.34,
+    "low": 2521.37
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1305.69,
-    "chg_pct": -0.01,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 1285.02,
+    "chg_pct": -1.6,
+    "turnover_yi": 145.6,
+    "high": 1291.08,
+    "low": 1273.34
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4033.84,
-    "chg_pct": -0.06,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3984.17,
+    "chg_pct": -1.29,
+    "turnover_yi": 841.0,
+    "high": 3996.27,
+    "low": 3978.58
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 6654.5,
-    "chg_pct": -0.01,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 6557.82,
+    "chg_pct": -1.46,
+    "turnover_yi": 551.8,
+    "high": 6577.28,
+    "low": 6526.29
    }
   ],
   "breadth": {
-   "up": 901,
-   "down": 2693,
-   "flat": 1012,
-   "ratio": 0.33,
-   "limit_up": 55,
-   "limit_down": 174,
-   "main_net_yi": 0.0,
-   "turnover_yi": 0.0,
+   "up": 395,
+   "down": 4162,
+   "flat": 49,
+   "ratio": 0.09,
+   "limit_up": 17,
+   "limit_down": 23,
+   "main_net_yi": -143.43,
+   "turnover_yi": 3059.7,
    "total": 4606
   }
  },
  "L1": {
   "sentiment": {
-   "score": 34,
-   "S1": 8,
-   "S2": 46,
-   "S3": 40,
-   "S4": 50,
+   "score": 13,
+   "S1": 2,
+   "S2": 14,
+   "S3": 10,
+   "S4": 26,
    "inputs": {
-    "ratio": 0.33,
-    "limit_up": 55,
-    "avg_idx_pct": -0.02,
-    "main_net_yi": 0
+    "ratio": 0.09,
+    "limit_up": 17,
+    "avg_idx_pct": -1.51,
+    "main_net_yi": -143.43
    }
   },
   "state": {
-   "state": "weak",
-   "label": "弱势回调",
-   "note": "防守为主，仅小仓低吸，严格止损",
-   "score": 34
+   "state": "panic",
+   "label": "恐慌下跌",
+   "note": "空仓或极轻仓观望，不抄底，等企稳信号",
+   "score": 13
   }
  },
  "L2": {
   "range": [
-   25,
-   40
+   0,
+   20
   ],
-  "note": "弱势回调，防守为主，严格止损",
+  "note": "恐慌下跌，空仓或极轻仓等待企稳",
   "rules": [
    "单票仓位 ≤ 10%",
    "单一板块集中度 ≤ 30%",
@@ -110,12 +110,185 @@
   ]
  },
  "L3": {
-  "sectors": [],
-  "mainline": "数据不可用",
-  "resonance": []
+  "sectors": [
+   {
+    "name": "广告营销",
+    "net_yi": 5.37,
+    "jumbo_yi": 7.01,
+    "block_yi": -1.64,
+    "pct": 15.78
+   },
+   {
+    "name": "营销代理",
+    "net_yi": 5.31,
+    "jumbo_yi": 6.95,
+    "block_yi": -1.64,
+    "pct": 16.76
+   },
+   {
+    "name": "传媒",
+    "net_yi": 2.25,
+    "jumbo_yi": 7.15,
+    "block_yi": -4.9,
+    "pct": 1.5
+   },
+   {
+    "name": "一般零售",
+    "net_yi": 1.09,
+    "jumbo_yi": 1.12,
+    "block_yi": -0.03,
+    "pct": 4.12
+   },
+   {
+    "name": "多业态零售",
+    "net_yi": 0.96,
+    "jumbo_yi": 1.04,
+    "block_yi": -0.08,
+    "pct": 13.88
+   },
+   {
+    "name": "白酒Ⅲ",
+    "net_yi": 0.83,
+    "jumbo_yi": -0.64,
+    "block_yi": 1.47,
+    "pct": 3.35
+   },
+   {
+    "name": "白酒Ⅱ",
+    "net_yi": 0.83,
+    "jumbo_yi": -0.64,
+    "block_yi": 1.47,
+    "pct": 3.35
+   },
+   {
+    "name": "数字芯片设计",
+    "net_yi": 0.73,
+    "jumbo_yi": 5.51,
+    "block_yi": -4.78,
+    "pct": 0.39
+   },
+   {
+    "name": "影视动漫制作",
+    "net_yi": 0.6,
+    "jumbo_yi": 1.25,
+    "block_yi": -0.65,
+    "pct": 2.25
+   },
+   {
+    "name": "商贸零售",
+    "net_yi": 0.59,
+    "jumbo_yi": 0.95,
+    "block_yi": -0.36,
+    "pct": 1.49
+   },
+   {
+    "name": "通信工程及服务",
+    "net_yi": 0.53,
+    "jumbo_yi": 0.56,
+    "block_yi": -0.03,
+    "pct": 4.85
+   },
+   {
+    "name": "影视院线",
+    "net_yi": 0.52,
+    "jumbo_yi": 1.26,
+    "block_yi": -0.74,
+    "pct": 1.87
+   },
+   {
+    "name": "食品饮料",
+    "net_yi": 0.52,
+    "jumbo_yi": -1.44,
+    "block_yi": 1.96,
+    "pct": 0.87
+   },
+   {
+    "name": "水产饲料",
+    "net_yi": 0.43,
+    "jumbo_yi": -0.14,
+    "block_yi": 0.57,
+    "pct": 5.75
+   },
+   {
+    "name": "空调",
+    "net_yi": 0.39,
+    "jumbo_yi": 0.17,
+    "block_yi": 0.23,
+    "pct": 4.33
+   },
+   {
+    "name": "个护用品",
+    "net_yi": 0.36,
+    "jumbo_yi": 0.03,
+    "block_yi": 0.33,
+    "pct": 8.71
+   },
+   {
+    "name": "其他家居用品",
+    "net_yi": 0.35,
+    "jumbo_yi": 0.34,
+    "block_yi": 0.02,
+    "pct": 5.22
+   },
+   {
+    "name": "饲料",
+    "net_yi": 0.34,
+    "jumbo_yi": -0.18,
+    "block_yi": 0.52,
+    "pct": 3.6
+   },
+   {
+    "name": "生活用纸",
+    "net_yi": 0.24,
+    "jumbo_yi": -0.03,
+    "block_yi": 0.27,
+    "pct": 8.58
+   },
+   {
+    "name": "百货",
+    "net_yi": 0.24,
+    "jumbo_yi": 0.15,
+    "block_yi": 0.09,
+    "pct": 2.02
+   }
+  ],
+  "mainline": "广告营销(+5.37亿) → 营销代理(+5.31亿) → 传媒(+2.25亿)",
+  "resonance": [
+   "全市场涨停 17 只，情绪有温度"
+  ],
+  "conc": {
+   "lead": "广告营销",
+   "ratio": 1.01,
+   "alert": false
+  }
  },
  "L4": {
-  "candidates": [],
+  "candidates": [
+   {
+    "code": "sh603986",
+    "name": "兆易创新",
+    "zdf": 0.56,
+    "zljlr": 1.84,
+    "lb": 3.62,
+    "hsl": 1.1,
+    "turnover_yi": 20.18,
+    "price": 278.29,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz001309",
+    "name": "德明利",
+    "zdf": 1.8,
+    "zljlr": 1.17,
+    "lb": 4.77,
+    "hsl": 2.99,
+    "turnover_yi": 16.74,
+    "price": 247.55,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   }
+  ],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
