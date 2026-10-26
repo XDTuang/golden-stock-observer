@@ -1,14 +1,7 @@
 {
- "updated_at": "2026-10-23 18:35",
+ "updated_at": "2026-10-26 18:43",
  "note": "T 日推演 vs T+1 实际（方向+开盘双维度）；当日推演需次日收盘后才有结果",
  "periods": [
-  {
-   "date": "2026-09-30",
-   "n": 3,
-   "dir_hit": 1,
-   "dir_acc": 33.3,
-   "open_acc": 33.3
-  },
   {
    "date": "2026-10-01",
    "n": 3,
@@ -99,20 +92,27 @@
    "dir_hit": 1,
    "dir_acc": 33.3,
    "open_acc": 66.7
+  },
+  {
+   "date": "2026-10-23",
+   "n": 3,
+   "dir_hit": 0,
+   "dir_acc": 0.0,
+   "open_acc": 0.0
   }
  ],
  "latest": {
-  "date": "2026-10-22",
+  "date": "2026-10-23",
   "n": 3,
-  "dir_hit": 1,
-  "dir_acc": 33.3,
-  "open_acc": 66.7
+  "dir_hit": 0,
+  "dir_acc": 0.0,
+  "open_acc": 0.0
  },
  "by_trend": {
   "震荡": {
-   "n": 35,
+   "n": 36,
    "dir_hit": 1,
-   "open_hit": 13
+   "open_hit": 12
   },
   "强势上涨": {
    "n": 2,
@@ -121,8 +121,8 @@
   },
   "震荡偏弱": {
    "n": 62,
-   "dir_hit": 44,
-   "open_hit": 20
+   "dir_hit": 45,
+   "open_hit": 22
   },
   "震荡上行": {
    "n": 4,
@@ -130,7 +130,7 @@
    "open_hit": 0
   },
   "弱势下跌": {
-   "n": 14,
+   "n": 16,
    "dir_hit": 9,
    "open_hit": 8
   }
@@ -139,50 +139,50 @@
   {
    "code": "hk00189",
    "name": "东岳集团",
-   "trend": "震荡偏弱",
-   "open_label": "低开偏弱",
-   "pred_date": "2026-10-22",
-   "t_close": 9.81,
-   "date": "2026-10-23",
-   "chg_pct": -3.11,
-   "dir_hit": true,
-   "open_hit": true,
-   "actual_dir": "down",
-   "actual_open": "down",
-   "nxt_open": 9.28,
-   "nxt_close": 9.505
+   "trend": "弱势下跌",
+   "open_label": "低开破位风险",
+   "pred_date": "2026-10-23",
+   "t_close": 9.33,
+   "date": "2026-10-26",
+   "chg_pct": 1.45,
+   "dir_hit": false,
+   "open_hit": false,
+   "actual_dir": "up",
+   "actual_open": "up",
+   "nxt_open": 9.41,
+   "nxt_close": 9.465
   },
   {
    "code": "hk02655",
    "name": "果下科技",
-   "trend": "震荡偏弱",
-   "open_label": "低开偏弱",
-   "pred_date": "2026-10-22",
-   "t_close": 11.58,
-   "date": "2026-10-23",
-   "chg_pct": 3.28,
+   "trend": "弱势下跌",
+   "open_label": "低开破位风险",
+   "pred_date": "2026-10-23",
+   "t_close": 10.64,
+   "date": "2026-10-26",
+   "chg_pct": 7.89,
    "dir_hit": false,
-   "open_hit": true,
+   "open_hit": false,
    "actual_dir": "up",
-   "actual_open": "down",
-   "nxt_open": 10.98,
-   "nxt_close": 11.96
+   "actual_open": "up",
+   "nxt_open": 11.96,
+   "nxt_close": 11.48
   },
   {
    "code": "hk06651",
    "name": "五一视界",
    "trend": "震荡",
-   "open_label": "高开偏强",
-   "pred_date": "2026-10-22",
-   "t_close": 50.7,
-   "date": "2026-10-23",
-   "chg_pct": 28.21,
+   "open_label": "低开偏弱",
+   "pred_date": "2026-10-23",
+   "t_close": 49.88,
+   "date": "2026-10-26",
+   "chg_pct": 17.48,
    "dir_hit": false,
    "open_hit": false,
    "actual_dir": "up",
-   "actual_open": "down",
-   "nxt_open": 48.0,
-   "nxt_close": 65.0
+   "actual_open": "up",
+   "nxt_open": 63.5,
+   "nxt_close": 58.6
   }
  ]
 }
