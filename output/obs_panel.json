@@ -1,11 +1,11 @@
 {
  "_schema": "obs_panel v1 · V3 第 6 段专用配对载荷（由 build_obs_section.py 产出）",
  "_howto": "V3 读 ../output/obs_panel.json 即可，不要再分别读 obs_deduce_latest 与 obs_scenarios；items 与 picks 已由同一次运行配对，data_date 即两者共同的数据日。picks[].scenarios[].path/action 含 <b> 富文本，前端须「先整体转义再放行白名单标签」。",
- "generated_at": "2026-10-23 22:24:33",
+ "generated_at": "2026-10-26 08:46:43",
  "data_date": "2026-10-23",
  "for_date": "2026-10-26",
  "scen_data_date": "2026-10-23",
- "obs_source": "output/obs_deduce_latest.json",
+ "obs_source": "data/daily_review_history/2026-10-23/obs_deduce_auto_2026-10-23.json",
  "derive_engine": "derive_obs.py v3 (技术70% + 大盘10% + 板块20%)",
  "count": 32,
  "picks_count": 7,
@@ -589,8 +589,8 @@
   {
    "code": "sh603019",
    "name": "中科曙光",
-   "sector": "算力 · 服务器（计算机 · 唯一 L3）",
-   "reason": "<b class=\"dk-up\">算力核心 · 全池唯一「多头排列」+ 所属板块唯一 L3</b>：收 <b>78.11</b>（<span class=\"dk-up\">+2.51%</span>）· MA5 <b>75.82</b>（偏离 <span class=\"dk-up\">+3.02%</span>、价格在 MA5 上方）· MA10 <b>73.19</b>（价格亦在其上方）· 5 日 <span class=\"dk-up\">+10.83%</span>。<b class=\"dk-data\">入选理由</b>：计算机 10/23 资金 <b class=\"dk-up\">+40.80 亿</b>（分位 96.7），技术档位 <b>L3</b>、趋势「downtrend_rebound（反弹 · 反转首日）」，为 31 个申万一级中唯一 L3；催化 = 《国家信息化\"十五五\"规划》18:07「加快构建全国一体化算力网」；本票是观测池中唯一「价格 &gt; MA5 &gt; MA10」的多头排列标的。<b class=\"dk-caution\">风控点</b>：MA5 75.82 与 MA10 73.19 间距仅 3.6%，一旦跌破 MA5 会快速触及 MA10；且政策发布于收盘后，存在「消息兑现即出货」风险。<b class=\"dk-risk\">红线：其他专家持股参考（非本人），仅客观读数。</b>",
+   "sector": "算力 · 服务器（计算机 · 唯一 L4）",
+   "reason": "<b class=\"dk-up\">算力核心 · 全池唯一「多头排列」+ 所属板块唯一 L4</b>：收 <b>78.11</b>（<span class=\"dk-up\">+2.51%</span>）· MA5 <b>75.82</b>（偏离 <span class=\"dk-up\">+3.02%</span>、价格在 MA5 上方）· MA10 <b>73.19</b>（价格亦在其上方）· 5 日 <span class=\"dk-up\">+10.83%</span>。<b class=\"dk-data\">入选理由</b>：计算机 10/23 资金 <b class=\"dk-up\">+40.80 亿</b>（分位 96.7），技术档位 <b>L4</b>、趋势「downtrend_rebound（反弹 · 反转首日）」，为 31 个申万一级中唯一 L4；催化 = 《国家信息化\"十五五\"规划》18:07「加快构建全国一体化算力网」；本票是观测池中唯一「价格 &gt; MA5 &gt; MA10」的多头排列标的。<b class=\"dk-caution\">风控点</b>：MA5 75.82 与 MA10 73.19 间距仅 3.6%，一旦跌破 MA5 会快速触及 MA10；且政策发布于收盘后，存在「消息兑现即出货」风险。<b class=\"dk-risk\">红线：其他专家持股参考（非本人），仅客观读数。</b>",
    "scenarios": [
     {
      "tag": "A",
