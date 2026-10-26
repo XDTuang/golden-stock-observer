@@ -1,133 +1,109 @@
 {
   "date": "2026-10-26",
-  "data_date": "2026-10-23",
-  "generated_at": "2026-10-26 21:50",
+  "data_date": "2026-10-26",
+  "generated_at": "2026-10-26 22:02",
   "news_date": "",
   "news_window": [
-    "2026-10-23",
-    "2026-10-24",
-    "2026-10-25",
-    "2026-10-26"
+    "2026-10-26",
+    "2026-10-27"
   ],
-  "news_window_days": 4,
+  "news_window_days": 2,
   "flow_date": "2026-10-26",
   "flow_raw_latest": "2026-10-26",
   "flow_is_weekend_copy": false,
   "hot_per_day": 8,
-  "hot_threshold": 32,
+  "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-10-26 08:34",
-    "session": "preopen",
-    "data_date": "2026-10-23",
-    "for_date": "2026-10-26",
+    "generated_at": "2026-10-26 22:01",
+    "session": "close",
+    "data_date": "2026-10-26",
+    "for_date": "2026-10-27",
     "data_date_note": "",
     "warnings": [],
     "span": [
-      "2026-10-24",
-      "2026-10-25",
-      "2026-10-26"
+      "2026-10-27"
     ],
-    "span_days": 3,
+    "span_days": 1,
     "display_days": [
-      "2026-10-23",
-      "2026-10-24",
-      "2026-10-25",
-      "2026-10-26"
+      "2026-10-26",
+      "2026-10-27"
     ],
-    "display_text": "10/23–10/26",
-    "span_is_weekend_cross": true,
-    "span_text": "10/24–10/26",
+    "display_text": "10/26 + 10/27",
+    "span_is_weekend_cross": false,
+    "span_text": "10/27",
     "carry": {
-      "from_data_date": "2026-10-23",
-      "ref": "output/feed_review_2026-10-23.json",
+      "from_data_date": "2026-10-26",
+      "ref": "output/feed_review_2026-10-26.json",
       "exists": true,
-      "gap_days": 3,
+      "gap_days": 1,
       "stale": false,
       "bias": "中性",
       "bias_score": 1,
       "t1_focus": [
-        "跟踪金钻起涨 7 只回踩确认"
+        "跟踪金钻起涨 8 只回踩确认"
       ],
       "risks": [],
       "headline": ""
     },
     "layers": {
-      "base": "2026-10-23 A股收盘（基准层）",
-      "overnight": "美东 2026-10-23 收盘（北京 2026-10-24 早间到达）",
-      "premarket": "2026-10-26 今早日韩实时 + 盘前新闻/投喂增量"
+      "base": "2026-10-26 A股收盘（基准层）",
+      "overnight": "美东 2026-10-26 收盘（北京 2026-10-27 早间到达）",
+      "premarket": "2026-10-27 今早日韩实时 + 盘前新闻/投喂增量"
     },
     "market_state": {
-      "date": "2026-10-23",
+      "date": "2026-10-26",
       "run_date": "2026-10-26",
-      "preopen_partial": true,
+      "preopen_partial": null,
       "us_kline": true,
       "asia": true
     },
     "covered": [
-      {
-        "date": "2026-10-23",
-        "weekday": "周五",
-        "is_trading_day": true,
-        "news": 300,
-        "feeds": 0,
-        "reports": 1909,
-        "macro": true
-      },
-      {
-        "date": "2026-10-24",
-        "weekday": "周六",
-        "is_trading_day": false,
-        "news": 0,
-        "feeds": 0,
-        "reports": 386,
-        "macro": false
-      },
-      {
-        "date": "2026-10-25",
-        "weekday": "周日",
-        "is_trading_day": false,
-        "news": 0,
-        "feeds": 0,
-        "reports": 809,
-        "macro": false
-      },
       {
         "date": "2026-10-26",
         "weekday": "周一",
         "is_trading_day": true,
         "news": 278,
         "feeds": 0,
-        "reports": 34,
+        "reports": 969,
         "macro": true
+      },
+      {
+        "date": "2026-10-27",
+        "weekday": "周二",
+        "is_trading_day": true,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
       }
     ],
     "totals": {
-      "news": 578,
+      "news": 278,
       "feeds": 0,
-      "reports": 3138,
-      "covered_days": 4
+      "reports": 969,
+      "covered_days": 2
     },
     "missing": [
-      "窗口内非交易日（10-24、10-25）新闻池全为 0 → 疑整池被覆盖，跨周末信息可能丢失"
+      "market_thermometer.json 数据日 2026-10-23 落后于基准日 2026-10-26"
     ]
   },
   "index_context": {
     "上证指数": {
-      "close": "3690.48",
-      "chg_pct": "0.89"
+      "close": "3697.52",
+      "chg_pct": "0.19"
     },
     "深证成指": {
-      "close": "11673.83",
-      "chg_pct": "2.79"
+      "close": "11534.38",
+      "chg_pct": "-1.19"
     },
     "创业板指": {
-      "close": "2684.10",
-      "chg_pct": "4.16"
+      "close": "2638.23",
+      "chg_pct": "-1.71"
     },
     "科创50": {
-      "close": "1345.51",
-      "chg_pct": "3.04"
+      "close": "1315.50",
+      "chg_pct": "-2.23"
     }
   },
   "summary": {
@@ -139,23 +115,23 @@
   "items": [
     {
       "sector": "电子",
-      "news_count": 50,
-      "news_per_day": 12.5,
+      "news_count": 27,
+      "news_per_day": 13.5,
       "flow_yi": -146.16,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "美股AI算力租赁商盘初下挫 Nebius下跌5%",
-        "Anthropic预计将为算力和AI基础设施协议支付1250亿至1500亿美",
-        "Anthropic预计将为算力和基础设施协议支付1250亿至1500亿美元"
+        "谷歌、亚马逊和博通向Anthropic提供770亿美元融资",
+        "总部位于拉丁美洲的电子商务公司美客多股价下跌7.5%。",
+        "美股AI算力租赁商盘初下挫 Nebius下跌5%"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 18,
-      "news_per_day": 4.5,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": -47.54,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -169,23 +145,23 @@
     },
     {
       "sector": "有色金属",
-      "news_count": 16,
-      "news_per_day": 4.0,
+      "news_count": 11,
+      "news_per_day": 5.5,
       "flow_yi": -35.18,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "中铝国际：中标越南55.95亿元氧化铝项目",
-        "云南铜业：第三季度归母净利润同比增长143.77%",
-        "盛新锂能：第三季度归母净利润2.2亿元 同比增长148.26%"
+        "现货白银失守53美元/盎司",
+        "现货白银跌超1%",
+        "COMEX白银期货跌超1%"
       ]
     },
     {
       "sector": "电力设备",
-      "news_count": 10,
-      "news_per_day": 2.5,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": -24.96,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -210,8 +186,8 @@
     },
     {
       "sector": "公用事业",
-      "news_count": 10,
-      "news_per_day": 2.5,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -12.13,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -219,29 +195,28 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "俄安全局称挫败一起乌方无人机袭击图谋",
-        "金刚光伏：签订4.8亿元GPU卡及服务器采购合同",
-        "西藏那曲市巴青县7.0级地震抢险救援工作抓紧进行"
+        "金刚光伏：签订4.8亿元GPU卡及服务器采购合同"
       ]
     },
     {
       "sector": "汽车",
-      "news_count": 18,
-      "news_per_day": 4.5,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": 11.6,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "特斯拉股价上涨5.8%",
-        "特斯拉(TSLA.O)盘中涨幅扩大至5.5%，触及三个多月高点。",
-        "特斯拉股价触及逾三个月高点"
+        "【美媒：中国汽车制造商在欧洲的季度销量超过日本】据美国彭博社当地时间26日报",
+        "美媒：中国汽车制造商在欧洲的季度销量超过日本",
+        "特斯拉股价上涨5.8%"
       ]
     },
     {
       "sector": "国防军工",
-      "news_count": 16,
-      "news_per_day": 4.0,
+      "news_count": 11,
+      "news_per_day": 5.5,
       "flow_yi": -10.0,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -249,29 +224,29 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "特色农产品喜获丰收 助力乡村全面振兴",
-        "伊朗总统与沙特、土耳其、巴基斯坦高级官员举行会晤",
-        "俄安全局称挫败一起乌方无人机袭击图谋"
+        "美国航空航天局（NASA）：NASA与美国农业部签署协议，推进地球科学与农业",
+        "美国国家航空航天局（NASA）：NASA与美国农业部签署协议，推进地球科学和"
       ]
     },
     {
       "sector": "计算机",
-      "news_count": 41,
-      "news_per_day": 10.25,
+      "news_count": 22,
+      "news_per_day": 11.0,
       "flow_yi": -8.42,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
+        "谷歌、亚马逊和博通向Anthropic提供770亿美元融资",
         "美股AI算力租赁商盘初下挫 Nebius下跌5%",
-        "Anthropic预计将为算力和AI基础设施协议支付1250亿至1500亿美",
-        "Anthropic预计将为算力和基础设施协议支付1250亿至1500亿美元"
+        "Anthropic预计将为算力和AI基础设施协议支付1250亿至1500亿美"
       ]
     },
     {
       "sector": "医药生物",
-      "news_count": 8,
-      "news_per_day": 2.0,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": 7.19,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -279,23 +254,22 @@
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
         "深圳市市场监督管理局召开脑机接口医疗器械专题学习研讨会",
-        "北大医药：公司的实际控制人变更为程栋",
-        "艾力斯：注射用AST1001临床试验申请获FDA批准"
+        "北大医药：公司的实际控制人变更为程栋"
       ]
     },
     {
       "sector": "石油石化",
-      "news_count": 23,
-      "news_per_day": 5.75,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": 6.9,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "巴西在美股上市的公司暴跌，XP跌超52%",
-        "美股三大指数集体高开 巴西在美股上市的公司暴跌",
-        "国内商品期货夜盘开盘 主力合约多数下跌"
+        "美股上市的巴西公司跌幅有所收窄。巴西石油公司下跌15.8%，伊塔乌联合银行下",
+        "沙特阿美接近与全球银行签署100亿美元贷款协议",
+        "巴西企业在美上市股票在卢拉连任总统后收窄跌幅。巴西石油公司下跌15.8%，伊"
       ]
     },
     {
@@ -311,8 +285,8 @@
     },
     {
       "sector": "非银金融",
-      "news_count": 13,
-      "news_per_day": 3.25,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": -6.6,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -326,17 +300,15 @@
     },
     {
       "sector": "基础化工",
-      "news_count": 4,
-      "news_per_day": 1.0,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": -5.85,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "洁美科技：拟投资26.84亿元建设高端离型膜等项目 新增高端MLCC离型膜生",
-        "消息人士称阿尔及利亚已指示尿素化肥生产商停止向法国供货",
-        "消息人士称，阿尔及利亚已指示尿素化肥生产商停止向法国供货。"
+        "洁美科技：拟投资26.84亿元建设高端离型膜等项目 新增高端MLCC离型膜生"
       ]
     },
     {
@@ -352,8 +324,8 @@
     },
     {
       "sector": "房地产",
-      "news_count": 6,
-      "news_per_day": 1.5,
+      "news_count": 5,
+      "news_per_day": 2.5,
       "flow_yi": 4.38,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -367,8 +339,8 @@
     },
     {
       "sector": "传媒",
-      "news_count": 19,
-      "news_per_day": 4.75,
+      "news_count": 11,
+      "news_per_day": 5.5,
       "flow_yi": 3.69,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -394,7 +366,7 @@
     {
       "sector": "交通运输",
       "news_count": 1,
-      "news_per_day": 0.25,
+      "news_per_day": 0.5,
       "flow_yi": -3.16,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -406,8 +378,8 @@
     },
     {
       "sector": "食品饮料",
-      "news_count": 12,
-      "news_per_day": 3.0,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": 2.92,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -421,34 +393,30 @@
     },
     {
       "sector": "煤炭",
-      "news_count": 1,
-      "news_per_day": 0.25,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -2.48,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "中国神华：第三季度净利润同比增长3.2%"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "钢铁",
-      "news_count": 1,
-      "news_per_day": 0.25,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -2.1,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "世界钢铁协会：2026年9月全球粗钢产量同比下降0.2%"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "机械设备",
-      "news_count": 15,
-      "news_per_day": 3.75,
+      "news_count": 7,
+      "news_per_day": 3.5,
       "flow_yi": 1.85,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -473,23 +441,23 @@
     },
     {
       "sector": "农林牧渔",
-      "news_count": 6,
-      "news_per_day": 1.5,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": -1.06,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "Anthropic：其他承销行包括摩根大通、花旗、蒙特利尔银行、法国巴黎银行",
-        "农业农村部：大力发展优质饲草料产业 加快补上农产品加工、冷链物流、品牌营销等",
-        "西藏巴青发生7.0级地震 多家银行启动抗震救灾应急机制"
+        "美国航空航天局（NASA）：NASA与美国农业部签署协议，推进地球科学与农业",
+        "美国国家航空航天局（NASA）：NASA与美国农业部签署协议，推进地球科学和",
+        "俄罗斯副外长表示，俄罗斯正在考虑通过黑海保障粮食供应安全的提议，并正与土耳其"
       ]
     },
     {
       "sector": "综合",
-      "news_count": 18,
-      "news_per_day": 4.5,
+      "news_count": 5,
+      "news_per_day": 2.5,
       "flow_yi": 0.86,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -514,17 +482,17 @@
     },
     {
       "sector": "银行",
-      "news_count": 23,
-      "news_per_day": 5.75,
+      "news_count": 15,
+      "news_per_day": 7.5,
       "flow_yi": 0.77,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "【巴西股汇“双杀” 投资者押注卢拉将加剧财政压力】巴西货币与股市周一暴跌，投",
-        "据媒体报道， 因PHP漏洞 ，三菱日联银行暂停部分服务。",
-        "知情人士透露，沙特阿美即将与全球银行签署100亿美元贷款协议。"
+        "美股上市的巴西公司跌幅有所收窄。巴西石油公司下跌15.8%，伊塔乌联合银行下",
+        "沙特阿美接近与全球银行签署100亿美元贷款协议",
+        "巴西企业在美上市股票在卢拉连任总统后收窄跌幅。巴西石油公司下跌15.8%，伊"
       ]
     },
     {

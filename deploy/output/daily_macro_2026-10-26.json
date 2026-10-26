@@ -1,6 +1,6 @@
 {
   "date": "2026-10-26",
-  "generated_at": "2026-10-26 08:33",
+  "generated_at": "2026-10-26 22:01",
   "china": {
     "pmi": {
       "latest": {
@@ -63,7 +63,7 @@
       "lookback_days": 45,
       "lookback_used_to": "2026-10-02",
       "days_fetched": 25,
-      "as_of": "2026-10-26 08:33",
+      "as_of": "2026-10-26 22:01",
       "indicators": {
         "CPI 同比": [
           {
@@ -168,24 +168,47 @@
             "days_ago": 4,
             "is_fresh": true
           }
+        ],
+        "GDP": [
+          {
+            "event": "美国9月关联GDP的零售额控制组月率-季调后(%)",
+            "value": "0.1",
+            "forecast": "0.3",
+            "previous": "1.2",
+            "importance": 2,
+            "release_date": "2026-10-15",
+            "release_time": "20:30",
+            "days_ago": 11,
+            "is_fresh": false
+          }
+        ],
+        "零售销售": [
+          {
+            "event": "美国9月零售销售月率(%)",
+            "value": "0.8",
+            "forecast": "0.3",
+            "previous": "1.3",
+            "importance": 2,
+            "release_date": "2026-10-15",
+            "release_time": "20:30",
+            "days_ago": 11,
+            "is_fresh": false
+          },
+          {
+            "event": "美国9月核心零售销售月率(%)",
+            "value": "0.9",
+            "forecast": "0.5",
+            "previous": "1.4",
+            "importance": 2,
+            "release_date": "2026-10-15",
+            "release_time": "20:30",
+            "days_ago": 11,
+            "is_fresh": false
+          }
         ]
       }
     },
-    "indicators": {
-      "美联储/利率": [
-        {
-          "title": "黄金4000美元“保卫战”",
-          "evidence": [
-            "黄金4000美元“保卫战” 【黄金4000美元“保卫战”】持续攀升的油价，让美联储加息的预期进一步升高"
-          ],
-          "date": "2026-10-26",
-          "days_ago": 0,
-          "is_fresh": true,
-          "time": "2026-10-26 06:18:20",
-          "source": "东财全球"
-        }
-      ]
-    },
+    "indicators": {},
     "stale": [
       "核心PCE",
       "整体PCE",
@@ -194,13 +217,11 @@
       "初请失业金",
       "耐用品订单",
       "美国GDP",
+      "美联储/利率",
       "美债收益率"
     ],
     "log": [
-      "日历 2026-10-21 失败: HTTPError",
-      "日历 2026-10-15 失败: HTTPError",
-      "日历 2026-10-07 失败: HTTPError",
-      "新闻池 600 条 → 窗口内(7日) 206 条；命中 1 指标"
+      "新闻池 600 条 → 窗口内(7日) 206 条；命中 0 指标"
     ]
   }
 }
