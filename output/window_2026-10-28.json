@@ -1,0 +1,74 @@
+{
+  "generated_at": "2026-10-27 22:01",
+  "session": "close",
+  "data_date": "2026-10-27",
+  "for_date": "2026-10-28",
+  "data_date_note": "",
+  "warnings": [],
+  "span": [
+    "2026-10-28"
+  ],
+  "span_days": 1,
+  "display_days": [
+    "2026-10-27",
+    "2026-10-28"
+  ],
+  "display_text": "10/27 + 10/28",
+  "span_is_weekend_cross": false,
+  "span_text": "10/28",
+  "carry": {
+    "from_data_date": "2026-10-27",
+    "ref": "output/feed_review_2026-10-27.json",
+    "exists": true,
+    "gap_days": 1,
+    "stale": false,
+    "bias": "中性",
+    "bias_score": 1,
+    "t1_focus": [
+      "跟踪金钻起涨 4 只回踩确认"
+    ],
+    "risks": [],
+    "headline": ""
+  },
+  "layers": {
+    "base": "2026-10-27 A股收盘（基准层）",
+    "overnight": "美东 2026-10-27 收盘（北京 2026-10-28 早间到达）",
+    "premarket": "2026-10-28 今早日韩实时 + 盘前新闻/投喂增量"
+  },
+  "market_state": {
+    "date": "2026-10-27",
+    "run_date": "2026-10-27",
+    "preopen_partial": null,
+    "us_kline": true,
+    "asia": true
+  },
+  "covered": [
+    {
+      "date": "2026-10-27",
+      "weekday": "周二",
+      "is_trading_day": true,
+      "news": 284,
+      "feeds": 0,
+      "reports": 1126,
+      "macro": true
+    },
+    {
+      "date": "2026-10-28",
+      "weekday": "周三",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    }
+  ],
+  "totals": {
+    "news": 284,
+    "feeds": 0,
+    "reports": 1126,
+    "covered_days": 2
+  },
+  "missing": [
+    "market_thermometer.json 数据日 2026-10-26 落后于基准日 2026-10-27"
+  ]
+}
