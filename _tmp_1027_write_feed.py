@@ -1,0 +1,194 @@
+# -*- coding: utf-8 -*-
+"""2026-10-27 盘前版 · feed_review 落盘（ai_synthesis 四处）
+文件名 = 复盘日（2026-10-26）
+口径一致性：direction / direction_confidence / open_call 与老站 §0、V3 meta 同值
+"""
+import json
+
+BASE = "output/feed_review_latest.json"
+d = json.load(open(BASE, encoding="utf-8"))
+win = json.load(open("output/window_latest.json", encoding="utf-8"))
+cross = json.load(open("output/cross_analysis.json", encoding="utf-8"))
+
+META = {
+    "direction": "中性",
+    "direction_confidence": "中",
+    "open_call": "高开回吐压力",
+    "sh_index_close": 3697.52,
+    "position_range": "0%–20%",
+    "quadrants": cross["summary"],
+    "risk_level": "中高",
+}
+
+CF = [
+    "【总判定 · 10/27（周二）开盘（盘前版 08:40）】方向「<b class=\"dk-caution\">中性</b>」（由「中性偏空」上调一档）· 置信度「<b>中</b>」· 开盘「<b class=\"dk-caution\">高开回吐压力</b>」（预计 <b class=\"dk-up\">+0.6%~+1.2%</b>）· 风险「<b class=\"dk-caution\">中高</b>」· 总仓位 <b class=\"dk-risk\">0%–20%</b>。",
+
+    "【本版语料侧唯一硬事实】10/27 新闻池 <b>284 条</b>（08:31 抓取）相对 10/26 的 304 条并未放量，但<b class=\"dk-risk\">内容重心极端集中</b>：「AI」29 次、「芯片」12 次、「存储」5 次、「HBM」3 次、「算力」4 次 —— <b class=\"dk-caution\">即隔夜美股存储 / 光通信暴涨在 07:30–08:30 的两小时内被国内媒体全量转载，形成「一源多述」的语料放大</b>。<b class=\"dk-caution\">后果：四象限由 0/2/14/15 迁至 5/5/9/12，共振 5 席全部由「暗线 C 跨过 16 条语料门槛」产生，而 flow_yi 31/31 逐项零变化 ⇒ 属语料侧扩容，不是资金行为变化</b>。",
+
+    "【语料串味 · 必须披露的一处噪声】10/27 池内出现明显的<b class=\"dk-risk\">跨板块标题误匹配</b>：传媒 27 条样本标题实为「韩国存储芯片股上涨」「Anthropic 资本开支」；非银金融 24 条同源；国防军工 16 条样本实为「荷航暂停迪拜航线」。<b class=\"dk-main\">⇒ 本版对传媒 / 非银 / 军工三席只按资金侧解读（传媒 +3.69 亿 / 非银 -6.60 亿 / 军工 -10.00 亿），不按四象限标签解读</b>。<b class=\"dk-caution\">这不是数据错误，而是「标题关键词匹配」方法的固有局限，如实披露比修正更有价值</b>。",
+
+    "【语料与资金背离的三组读数】① <b>电子</b>：语料 <b>65 条</b>（全市场第一，因 HBM / 存储消息放大）vs 资金 <b class=\"dk-dn\">-146.16 亿</b>（分位 <b>0</b>）⇒ 背离 B 极值；<b>但细分「数字芯片设计」+9.90 亿是全市场流入第三</b>，说明资金在「设计端」而非「设备制造端」。② <b>汽车</b>：语料 18 条（刚跨门槛）vs 资金 <b class=\"dk-up\">+11.60 亿</b>（分位 100）⇒ 共振 A，<b>是唯一「语料刚起、资金已到」的组合</b>。③ <b>通信</b>：语料仅 4 条 vs 资金 <b class=\"dk-dn\">-47.54 亿</b> ⇒ 双冷 D，<b class=\"dk-risk\">外盘 LITE +8.19% 未被任何一条报道映射到 A股 光模块</b>，这正是今日最大的预期差来源。",
+
+    "【对今日的语料提示】<b>今日 20:15 ADP 周度就业、20:30 美国 9 月数据；10/29 凌晨三央行议息</b>为已知事件；<b class=\"dk-caution\">本版语料中未见「监管收紧」「业绩爆雷」类新增负面，唯一风险提示为「投资避雷针：福莱新材、宇树科技等机器人概念股密集提示风险」</b> ⇒ 语料面本身不构成今日的下行催化，下行风险来自资金与技术面（L4 = 0 / 28 downtrend / 情绪 22）。",
+]
+
+TR = [
+    {
+        "theme": "存储 / HBM（语料第一热门 · 外部驱动）",
+        "weight": "高",
+        "related_stocks": [
+            "长鑫科技（其他专家持股参考·非本人 · 10/26 -0.44% 全池最抗跌）",
+            "德明利（观察池 · 存储控制器）",
+            "数字芯片设计细分（资金 +9.90 亿）",
+        ],
+        "evidence": "语料样本：韩国央行「受 HBM 产品带动，预计明年芯片产量将上升」· 韩国存储芯片股上涨（股东回报 + 资本开支预期）· 日本芯片股大涨、铠侠 +6.8% · 韩国综指涨幅扩大至 4%。<b class=\"dk-caution\">对应资金：电子一级 <b class=\"dk-dn\">-146.16 亿</b>（分位 0）而细分数字芯片设计 <b class=\"dk-up\">+9.90 亿</b> ⇒ 只认细分、不认板块</b>。",
+    },
+    {
+        "theme": "汽车 / 智能驾驶（语料刚跨门槛 + 资金已到位）",
+        "weight": "高",
+        "related_stocks": [
+            "汽车一级（+11.60 亿 · 分位 100.0）",
+            "汽车零部件（+10.23 亿）",
+        ],
+        "evidence": "语料 18 条（刚跨 16 条门槛）：小鹏 Robotaxi 获批公开示范运营资质 · 大众集团（中国）取得 L3 级测试牌照 · 目标 2027 年 L3 技术就绪。<b class=\"dk-up\">是唯一「语料刚起、资金已到」的组合 ⇒ 共振 A</b>；<b class=\"dk-caution\">技术仍破位（10-23 收 5,954.84 &lt; EMA20 6,078.16）</b>。",
+    },
+    {
+        "theme": "创新药 / CXO（业绩驱动 · 语料仅 2 条）",
+        "weight": "中",
+        "related_stocks": [
+            "医疗研发外包（+3.48 亿 · CXO）",
+            "医疗服务（+7.85 亿）",
+            "三生国健（观察池 · 创新抗体药）",
+        ],
+        "evidence": "语料：药明康德进一步上调全年收入指引、创新药产业链持续高景气 · AI 制药交易提速、临床验证成下一关口 · 中国生物制药两款乙肝创新药纳入突破性治疗。<b class=\"dk-caution\">但医药生物语料仅 2 条（暗线 C 的典型形态：钱到话未到）</b>。",
+    },
+    {
+        "theme": "光通信（语料几乎空白 · 外盘暴涨未被映射）",
+        "weight": "中",
+        "related_stocks": [
+            "剑桥科技（10/26 -7.89% · 其他专家持股参考·非本人）",
+            "永鼎股份（-6.38%）",
+            "华工科技（-2.98%）",
+        ],
+        "evidence": "A股 语料仅 4 条、资金 <b class=\"dk-dn\">-47.54 亿</b>；而外盘 LITE <b class=\"dk-up\">+8.19%</b> / AAOI <b class=\"dk-up\">+6.56%</b> / COHR <b class=\"dk-up\">+5.83%</b>。<b class=\"dk-risk\">「语料空白 + 外盘暴涨 + 资金流出」三者并存 ⇒ 今日高开幅度最大、也是出货风险最大的一处</b>。",
+    },
+    {
+        "theme": "机器人 / 物理 AI（主题扩散但资金未单列）",
+        "weight": "低",
+        "related_stocks": [
+            "机械设备（+1.85 亿 · 分位 76.7 · 共振 A）",
+            "果下科技（观察池 · 港股 AI+机器人）",
+        ],
+        "evidence": "语料：中信证券「物理 AI 爆发，挖掘端侧机遇」· 广电「十五五」规划（AI 渗透率 ≥95%）；<b class=\"dk-risk\">反向：投资避雷针提示「福莱新材、宇树科技等机器人概念股密集提示风险」</b>。<b class=\"dk-caution\">主题仍在扩散但无板块级资金承接，列观察、不入主线</b>。",
+    },
+]
+
+HM = {
+    "theme_aligned": [
+        "汽车 / 汽车零部件（资金分位 100 · 语料刚跨门槛 · Robotaxi + L3 双催化，单板块 ≤10%）",
+        "CXO / 医疗服务（医疗研发外包 +3.48 亿 · 药明康德上调指引，观察级不超过 5%）",
+        "食品饮料（唯一 L3 + 站上 EMA20 13,750.41，观察级不超过 5%）",
+    ],
+    "caution": [
+        "电子一级（-146.16 亿 · 分位 0 · 背离 B；细分数字芯片设计 +9.90 亿只支持「个股」不支持「板块」）",
+        "通信 / 光模块（-47.54 亿 · 语料仅 4 条 · 外盘 LITE +8.19% 今日必高开，<b class=\"dk-risk\">追高即接昨日出货盘</b>）",
+        "计算机 / 算力（-8.42 亿 · 背离 B；技术是科技线唯一未破位，但资金未转正）",
+        "有色金属 / 国防军工（-35.18 / -10.00 亿；语料热度分别系单一来源放大与标题误匹配）",
+    ],
+    "us": [
+        "LITE 朗美通（10/26 收 818.10，+8.19% · 光通信外盘暴涨，A股 通信未映射）",
+        "AAOI（71.94，+6.56%）· COHR（221.50，+5.83%）",
+        "SKHY 海力士 ADR（142.62，+4.09%）· MU（903.70，+2.98%）· WDC（356.13，+3.63%）",
+        "NVDA（216.00，+2.39%）· MRVL（233.78，+2.31%）",
+        "CRL 查尔斯河（357.27，+3.45%，医疗 10 只最强）· IQV（273.60，-2.06%，最弱）",
+        "TSLA（391.62，+5.21% · 个股事件，<b class=\"dk-caution\">不纳入 A股 主线映射</b>）",
+    ],
+}
+
+T1 = [
+    {"time": "09:25（北京）", "event": "<b class=\"dk-data\">集合竞价</b>：上证能否高开在 3,720 上方（+0.6%）。<b class=\"dk-risk\">低于 3,690.48 ⇒ 隔夜外盘正面贡献被完全吸收</b>", "impact": "高"},
+    {"time": "09:35–10:00", "event": "<b class=\"dk-caution\">光模块 / 存储首波抛压</b>：昨日剑桥 -7.89%、永鼎 -6.38% 收在日内低点。<b class=\"dk-risk\">回补昨日跌幅不足 50% ⇒ 出货式高开，当日不参与光链</b>", "impact": "高"},
+    {"time": "09:45", "event": "<b class=\"dk-caution\">电子一级资金</b>：昨日 -146.16 亿。<b class=\"dk-up\">转正 ≥+20 亿 ⇒ 可用至 20% 上沿；继续净流出 ≥50 亿 ⇒ 科创50 下探 1,300</b>", "impact": "高"},
+    {"time": "10:00", "event": "<b class=\"dk-data\">涨停家数</b>：昨日 61 家。<b class=\"dk-risk\">低于 40 家 ⇒ 情绪转冰点（0%–10%）</b>", "impact": "中高"},
+    {"time": "11:00", "event": "<b class=\"dk-caution\">创业板能否站回 2,638.23</b>（10/26 收盘）。<b class=\"dk-risk\">站不回 ⇒ 判「一日游」</b>", "impact": "中高"},
+    {"time": "20:15 / 20:30", "event": "<b class=\"dk-data\">美国数据窗口</b>：ADP 周度就业 + 美国 9 月数据（日历条目原文截断，不推测具体指标）", "impact": "中"},
+    {"time": "10/29 02:00（北京）", "event": "<b class=\"dk-risk\">三央行议息</b>：FOMC + 欧央行 + 日央行。华泰基准 = 年内 12 月再加息 1 次、明年 2 次。<b class=\"dk-risk\">10Y 若上破 5.1%（现 5.00%，10-23 口径）⇒ 仓位归 0</b>", "impact": "高"},
+]
+
+RISKS = [
+    {"name": "语料热度被误读为资金信号", "prob": "高", "impact": "中高", "desc": "四象限共振由 0 升至 5，<b class=\"dk-risk\">但 flow_yi 31/31 零变化、全部由语料跨 16 条门槛产生</b>，且当日池内出现跨板块串味（传媒 / 非银 / 军工）。<b class=\"dk-caution\">误读后果 = 在资金仍流出的板块上放大仓位</b>。"},
+    {"name": "外强内弱第二次确认", "prob": "高", "impact": "高", "desc": "隔夜美股三大全红 + 韩股 +3.77%，而 A股 电子 -146.16 亿、通信 -47.54 亿。<b class=\"dk-risk\">若高开后电子资金继续净流出，则高开将被全额回吐</b>。"},
+    {"name": "光模块高开出货", "prob": "中高", "impact": "高", "desc": "昨日两只光链标的收在日内低点，今日外盘缺口必大。<b class=\"dk-risk\">「跌停附近收盘 + 隔夜外盘暴涨」的次日高开，30 分钟内第一波抛压最重</b>。"},
+    {"name": "情绪 S4 资金项归零（机械锁仓）", "prob": "已发生", "impact": "高", "desc": "情绪 22，资金项 <b class=\"dk-risk\">0 分</b>（9 月以来首次）⇒ 即便指数大涨，只要当日主力净流出，仓位上限 20% 无法解除。"},
+    {"name": "技术分层未改善", "prob": "已发生", "impact": "中高", "desc": "L4 = 0 / L3 = 1 / 28 板块 downtrend / 站上 EMA20 仅 2 席。<b class=\"dk-caution\">K 线 as_of 10-23（上游 T+1 未发布），10/26 若已破坏形态未反映</b>。"},
+    {"name": "美债长端（一票否决，连续第三版无法复核）", "prob": "中", "impact": "高", "desc": "10Y <b>5.00%</b> / 30Y <b>5.33%</b> 为 10-23 口径。<b class=\"dk-risk\">若 ≥5.1%（需人工确认）⇒ 取消全部可执行项</b>。"},
+]
+
+AI = {
+    "conclusion_first": CF,
+    "theme_resonance": TR,
+    "holding_map": HM,
+    "t1_radar": T1,
+    "risks": RISKS,
+    "meta": META,
+    "disclaimer": "个人学习用途，不构成投资建议；持仓段为「其他专家持股参考（非本人）」，仅客观技术读数，不给加减仓建议。投喂与研报素材为「投喂语料 · 非本人持仓」。口径：A股 = 10/26 完整收盘；美股 = 10/26 完整收盘（23/23 双日）；日韩 = 10/27 早盘 08:43 复取；港股 = 10/26 收盘；商品汇率 = 10/26；美债 = 10/23；VIX = 10-26 结算 18.39；板块技术 K 线 as_of = 10-23。",
+}
+
+d["data_date"] = "2026-10-26"
+d["for_date"] = "2026-10-27"
+d["generated_at"] = "2026-10-27 08:55"
+d["source"] = "local-preopen"
+d["window"] = win
+d["feeds_days"] = ["2026-10-26", "2026-10-27"]
+d["feeds"] = []
+d["feeds_recent"] = []
+d["feed_count"] = 0
+d["cross_analysis"] = []
+d["prediction"] = {
+    "bias": "中性",
+    "bias_score": 1,
+    "reasons": [
+        "隔夜美股 10/26 完整收盘三大全红（+0.28% / +0.70% / +0.82%），存储与光通信单点暴涨（LITE +8.19% / AAOI +6.56% / COHR +5.83%）",
+        "日韩 10/27 早盘 KOSPI +3.77% / SK하이닉스 +6.51% / 日经 +1.86%，韩国央行 HBM 表态为直接催化",
+        "A股 10/26 内部结构未修复：情绪 22（资金项归零）/ L4 = 0 / 28 板块 downtrend / 站上 EMA20 仅 2 席",
+        "四象限 5/5/9/12 的共振 5 席全部由语料跨门槛产生，flow_yi 31/31 零变化 ⇒ 不构成加仓依据",
+    ],
+    "t1_focus": [
+        "09:45 电子一级资金能否转正 ≥+20 亿（外强内弱是否被打破）",
+        "09:35–10:00 光模块 / 存储高开后的回补比例（50% 为换手 vs 出货分界）",
+        "10:00 涨停家数是否守住 40 家（情绪是否转冰点）",
+        "汽车资金能否连续第三日为正（唯一可执行方向的存续条件）",
+    ],
+    "risks": [
+        "光模块 / 存储高开出货（昨日两只标的收在日内低点）",
+        "电子资金继续净流出 ⇒ 高开全额回吐",
+        "10/29 三央行议息 + 美债 10Y 5.00%（10-23 口径）未刷新",
+    ],
+    "pending_ai": False,
+}
+d["ai_synthesis"] = AI
+d["synthesis_sources"] = {
+    "market": "market.json（date 2026-10-26 · updated_at 2026-10-27 08:43:46 · preopen_partial：us/asia 局部刷新，A股/港股/商品沿用 10/26 收盘）",
+    "breadth": "realtime.json（updated_at 2026-10-26 22:17:07 · market_status closed · 4,606 只全样本）",
+    "cross_analysis": "cross_analysis.json（generated_at 2026-10-27 08:41 · flow_date 2026-10-26 · 2 日窗 · 门槛 16 条 · 5/5/9/12 · flow_yi 31/31 零变化）",
+    "news": "daily_news_latest.json（284 条 · 2026-10-27 08:31）+ daily_news_window.json（4,110 条滚动池 · 窗口 583 条）",
+    "macro": "daily_macro_latest.json（date 2026-10-27 · as_of 08:31）",
+    "sector_tech": "sector_tech.json（data_date 2026-10-26 · kline_last_date 2026-10-23 · kline_lag 1）",
+    "feeds": "feed/archive/2026-10-26/_index.json（feed_count 0）· 2026-10-27 目录不存在 · 无伪造条目",
+    "reports": "report_analysis.json（60 条 · 2026-10-26 20:30 · 目标池 415）",
+}
+
+OUTS = [
+    "output/feed_review_latest.json",
+    "output/feed_review_2026-10-26.json",
+    "deploy/output/feed_review_latest.json",
+    "deploy/output/feed_review_2026-10-26.json",
+]
+for p in OUTS:
+    with open(p, "w", encoding="utf-8") as f:
+        json.dump(d, f, ensure_ascii=False, indent=1)
+    print("  OK 写出 %s" % p)
+
+print("  cf=%d tr=%d t1=%d risks=%d | meta=%s / %s / %s | quad=%s"
+      % (len(CF), len(TR), len(T1), len(RISKS), META["direction"],
+         META["direction_confidence"], META["open_call"], META["quadrants"]))

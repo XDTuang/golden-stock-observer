@@ -1,7 +1,7 @@
 {
-  "date": "2026-10-26",
+  "date": "2026-10-27",
   "data_date": "2026-10-26",
-  "generated_at": "2026-10-26 22:02",
+  "generated_at": "2026-10-27 08:41",
   "news_date": "",
   "news_window": [
     "2026-10-26",
@@ -15,8 +15,8 @@
   "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-10-26 22:01",
-    "session": "close",
+    "generated_at": "2026-10-27 08:32",
+    "session": "preopen",
     "data_date": "2026-10-26",
     "for_date": "2026-10-27",
     "data_date_note": "",
@@ -53,8 +53,8 @@
     },
     "market_state": {
       "date": "2026-10-26",
-      "run_date": "2026-10-26",
-      "preopen_partial": null,
+      "run_date": "2026-10-27",
+      "preopen_partial": true,
       "us_kline": true,
       "asia": true
     },
@@ -63,25 +63,25 @@
         "date": "2026-10-26",
         "weekday": "周一",
         "is_trading_day": true,
-        "news": 278,
+        "news": 304,
         "feeds": 0,
-        "reports": 969,
+        "reports": 1432,
         "macro": true
       },
       {
         "date": "2026-10-27",
         "weekday": "周二",
         "is_trading_day": true,
-        "news": 0,
+        "news": 284,
         "feeds": 0,
-        "reports": 0,
-        "macro": false
+        "reports": 57,
+        "macro": true
       }
     ],
     "totals": {
-      "news": 278,
+      "news": 588,
       "feeds": 0,
-      "reports": 969,
+      "reports": 1489,
       "covered_days": 2
     },
     "missing": [
@@ -107,70 +107,70 @@
     }
   },
   "summary": {
-    "共振": 0,
-    "背离": 2,
-    "暗线": 14,
-    "双冷": 15
+    "共振": 5,
+    "背离": 5,
+    "暗线": 9,
+    "双冷": 12
   },
   "items": [
     {
       "sector": "电子",
-      "news_count": 27,
-      "news_per_day": 13.5,
+      "news_count": 65,
+      "news_per_day": 32.5,
       "flow_yi": -146.16,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "谷歌、亚马逊和博通向Anthropic提供770亿美元融资",
-        "总部位于拉丁美洲的电子商务公司美客多股价下跌7.5%。",
-        "美股AI算力租赁商盘初下挫 Nebius下跌5%"
+        "韩国央行官员：受HBM产品带动，预计明年芯片产量将上升",
+        "韩国存储芯片股上涨 受股东回报增长前景和资本支出预期提振",
+        "Anthropic预计资本开支仍将大幅增长 AI算力需求有望保持在高位"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 15,
+      "news_per_day": 7.5,
       "flow_yi": -47.54,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "苹果发布新款iPad mini：配备8.5英寸OLED屏，起售价5499元",
-        "内存条价格坚挺 内存条市场有价无市",
-        "长芯博创：第三季度净利润同比增长232.27%"
+        "【三季报披露进入高峰期 10只个股业绩大增】三季报披露进入高峰期。据证券时报",
+        "三季报披露进入高峰期 10只个股业绩大增",
+        "马斯克称SpaceX移动网络建设将耗时2至3年"
       ]
     },
     {
       "sector": "有色金属",
-      "news_count": 11,
-      "news_per_day": 5.5,
+      "news_count": 24,
+      "news_per_day": 12.0,
       "flow_yi": -35.18,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "现货白银失守53美元/盎司",
-        "现货白银跌超1%",
-        "COMEX白银期货跌超1%"
+        "中信证券Q4大宗商品价格展望",
+        "中信证券：预计26Q4国内铝价为22500元/吨",
+        "中信证券：黄金买盘韧性支撑价格，铜价关注低库存与年底关税节点"
       ]
     },
     {
       "sector": "电力设备",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 11,
+      "news_per_day": 5.5,
       "flow_yi": -24.96,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "我国工业降碳水平持续提升",
-        "广汽埃安陷“香蕉电池”风波：客服称在走召回流程 三名车主投诉遭“只修不换”后",
-        "金刚光伏：签订4.8亿元GPU卡及服务器采购合同"
+        "中信证券：预计26Q4国内铝价为22500元/吨",
+        "有序开采退役电池这座“城市矿山”",
+        "风电产业链进入盈利修复阶段"
       ]
     },
     {
@@ -186,90 +186,92 @@
     },
     {
       "sector": "公用事业",
-      "news_count": 2,
-      "news_per_day": 1.0,
+      "news_count": 5,
+      "news_per_day": 2.5,
       "flow_yi": -12.13,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "俄安全局称挫败一起乌方无人机袭击图谋",
-        "金刚光伏：签订4.8亿元GPU卡及服务器采购合同"
+        "新能源成为我国推进能源转型的主要力量",
+        "算电协同迎产业盛会 八只概念股年内涨幅超一成",
+        "厄尔尼诺预期强化 三大板块逆势走强"
       ]
     },
     {
       "sector": "汽车",
-      "news_count": 12,
-      "news_per_day": 6.0,
+      "news_count": 18,
+      "news_per_day": 9.0,
       "flow_yi": 11.6,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "【美媒：中国汽车制造商在欧洲的季度销量超过日本】据美国彭博社当地时间26日报",
-        "美媒：中国汽车制造商在欧洲的季度销量超过日本",
-        "特斯拉股价上涨5.8%"
+        "小鹏Robotaxi获批公开示范运营资质 智能驾驶迈向规模化落地",
+        "大众集团（中国）取得L3级测试牌照 目标于2027年实现L3技术就绪",
+        "一根玻纤如何“拉”出百亿营收 实探中国巨石智能制造基地"
       ]
     },
     {
       "sector": "国防军工",
-      "news_count": 11,
-      "news_per_day": 5.5,
+      "news_count": 16,
+      "news_per_day": 8.0,
       "flow_yi": -10.0,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "特色农产品喜获丰收 助力乡村全面振兴",
-        "美国航空航天局（NASA）：NASA与美国农业部签署协议，推进地球科学与农业",
-        "美国国家航空航天局（NASA）：NASA与美国农业部签署协议，推进地球科学和"
+        "【荷航将暂停阿姆斯特丹至迪拜航线运营，直至2027年3月27日】当地时间10",
+        "荷航将暂停阿姆斯特丹至迪拜航线运营，直至2027年3月27日",
+        "荷航将暂停阿姆斯特丹至迪拜航线运营，直至3月27日"
       ]
     },
     {
       "sector": "计算机",
-      "news_count": 22,
-      "news_per_day": 11.0,
+      "news_count": 59,
+      "news_per_day": 29.5,
       "flow_yi": -8.42,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "谷歌、亚马逊和博通向Anthropic提供770亿美元融资",
-        "美股AI算力租赁商盘初下挫 Nebius下跌5%",
-        "Anthropic预计将为算力和AI基础设施协议支付1250亿至1500亿美"
+        "Anthropic预计资本开支仍将大幅增长 AI算力需求有望保持在高位",
+        "【OpenAI推出GPT-6.1 Terra】当地时间10月26日，Open",
+        "OpenAI推出GPT-6.1 Terra"
       ]
     },
     {
       "sector": "医药生物",
-      "news_count": 2,
-      "news_per_day": 1.0,
+      "news_count": 13,
+      "news_per_day": 6.5,
       "flow_yi": 7.19,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "深圳市市场监督管理局召开脑机接口医疗器械专题学习研讨会",
-        "北大医药：公司的实际控制人变更为程栋"
+        "【中国生物制药：TQ-A3334及TQA3605获CDE纳入突破性治疗药物程",
+        "药明康德进一步上调全年收入指引 我国创新药产业链持续高景气",
+        "和黄医药：将举办专家解读会探讨赛沃替尼治疗非小细胞肺癌最新临床数据"
       ]
     },
     {
       "sector": "石油石化",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 20,
+      "news_per_day": 10.0,
       "flow_yi": 6.9,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "美股上市的巴西公司跌幅有所收窄。巴西石油公司下跌15.8%，伊塔乌联合银行下",
-        "沙特阿美接近与全球银行签署100亿美元贷款协议",
-        "巴西企业在美上市股票在卢拉连任总统后收窄跌幅。巴西石油公司下跌15.8%，伊"
+        "中信证券Q4大宗商品价格展望",
+        "布伦特原油失守110美元/桶",
+        "中信证券：四季度供给约束延续 大宗商品分化加深"
       ]
     },
     {
@@ -285,30 +287,32 @@
     },
     {
       "sector": "非银金融",
-      "news_count": 9,
-      "news_per_day": 4.5,
+      "news_count": 24,
+      "news_per_day": 12.0,
       "flow_yi": -6.6,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "Anthropic目标估值仍未披露 融资规模有望达到1000亿美元",
-        "Anthropic警告算力扩张将持续消耗大量现金 资本开支或显著增长",
-        "Anthropic的IPO承销行包括美国银行、德意志银行、加拿大皇家银行和瑞"
+        "韩国存储芯片股上涨 受股东回报增长前景和资本支出预期提振",
+        "Anthropic预计资本开支仍将大幅增长 AI算力需求有望保持在高位",
+        "车险拖累财险保费、人身险保费反弹 跑输大盘的保险股后市怎么走"
       ]
     },
     {
       "sector": "基础化工",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": -5.85,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "洁美科技：拟投资26.84亿元建设高端离型膜等项目 新增高端MLCC离型膜生"
+        "万华化学前三季度归母净利润同比增长70.99%",
+        "国瓷材料：球形氧化硅产品在下游客户的验证推进较为顺利，已实现小批量销售",
+        "神剑股份：子公司产线关停调整及改造"
       ]
     },
     {
@@ -324,32 +328,32 @@
     },
     {
       "sector": "房地产",
-      "news_count": 5,
-      "news_per_day": 2.5,
+      "news_count": 10,
+      "news_per_day": 5.0,
       "flow_yi": 4.38,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "前三季度1.6万个老旧小区“焕新”",
-        "国内联播快讯",
-        "成都出台关于贯彻落实《关于完善商品住房销售制度的通知》的实施意见"
+        "六城市将开展数字家庭建设",
+        "1.6万个老旧小区 今年完成“焕新”",
+        "成都出台楼市新政 成为全国第13个落实“8·28”地产新政的城市"
       ]
     },
     {
       "sector": "传媒",
-      "news_count": 11,
-      "news_per_day": 5.5,
+      "news_count": 27,
+      "news_per_day": 13.5,
       "flow_yi": 3.69,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "Anthropic目标估值仍未披露 融资规模有望达到1000亿美元",
-        "苹果发布新款iPad mini：配备8.5英寸OLED屏，起售价5499元",
-        "苹果发布新款iPad mini：配备8.5英寸OLED屏 起售价5499元"
+        "韩国存储芯片股上涨 受股东回报增长前景和资本支出预期提振",
+        "Anthropic预计资本开支仍将大幅增长 AI算力需求有望保持在高位",
+        "【韩国存储芯片股上涨 受股东回报预期和资本支出预期提振】受市场预期股东回报力"
       ]
     },
     {
@@ -378,54 +382,62 @@
     },
     {
       "sector": "食品饮料",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 14,
+      "news_per_day": 7.0,
       "flow_yi": 2.92,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "Anthropic：2026年上半年基于消费的收入为130.6亿美元，上年同",
-        "上纬新材：公司消费级具身智能机器人业务目前处于规模化量产爬坡及商业化验证阶段",
-        "Meta预计2026年资本开支最高1450亿美元 计划通过股权融资等方式支持"
+        "韩国央行官员：预计第四季度出口和投资将保持强劲，重点将放在私人消费是否会反弹",
+        "肉牛业仍需强筋健骨",
+        "22家食品饮料公司前三季度营收及净利总额同比双增"
       ]
     },
     {
       "sector": "煤炭",
-      "news_count": 0,
-      "news_per_day": 0.0,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": -2.48,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": []
+      "sample_titles": [
+        "中信证券Q4大宗商品价格展望",
+        "【中信证券：供给约束延续，原油、煤炭及橡胶价格仍有支撑】中信证券研报表示，展",
+        "期市夜盘收盘，国内期货主力合约多数下跌"
+      ]
     },
     {
       "sector": "钢铁",
-      "news_count": 0,
-      "news_per_day": 0.0,
+      "news_count": 7,
+      "news_per_day": 3.5,
       "flow_yi": -2.1,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": []
+      "sample_titles": [
+        "中信证券Q4大宗商品价格展望",
+        "中信证券：四季度供给约束延续 大宗商品分化加深",
+        "【中信证券：供给约束延续，原油、煤炭及橡胶价格仍有支撑】中信证券研报表示，展"
+      ]
     },
     {
       "sector": "机械设备",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 20,
+      "news_per_day": 10.0,
       "flow_yi": 1.85,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "特色农产品喜获丰收 助力乡村全面振兴",
-        "6天4板福莱新材：柔性传感器项目收入占公司整体收入比重极低",
-        "丰田和本田在日本工厂测试人形机器人 加速产线“人机协作”"
+        "10月27日投资避雷针：福莱新材、宇树科技等机器人概念股密集提示风险",
+        "用人造钻石散热，为啥“热”起来",
+        "中信证券：物理AI爆发 挖掘端侧机遇"
       ]
     },
     {
@@ -441,32 +453,32 @@
     },
     {
       "sector": "农林牧渔",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": -1.06,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "美国航空航天局（NASA）：NASA与美国农业部签署协议，推进地球科学与农业",
-        "美国国家航空航天局（NASA）：NASA与美国农业部签署协议，推进地球科学和",
-        "俄罗斯副外长表示，俄罗斯正在考虑通过黑海保障粮食供应安全的提议，并正与土耳其"
+        "厄尔尼诺预期强化 三大板块逆势走强",
+        "巴西大选冲击雷亚尔 大豆、咖啡和糖价齐跌",
+        "俄罗斯1至9月向非洲出口粮食1300万吨。"
       ]
     },
     {
       "sector": "综合",
-      "news_count": 5,
-      "news_per_day": 2.5,
+      "news_count": 14,
+      "news_per_day": 7.0,
       "flow_yi": 0.86,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "【中信建投：预计本轮急跌行情有望结束，迎来反弹修复行情】中信建投研报认为，当",
-        "中信建投：预计本轮急跌行情有望结束，迎来反弹修复行情",
-        "标普500指数10月26日（周一）开盘上涨22.20点，涨幅0.29%，报7"
+        "【韩国存储芯片股上涨 受股东回报预期和资本支出预期提振】受市场预期股东回报力",
+        "广电“十五五”规划出台 明确AI渗透率不低于95%",
+        "韩国综合股价指数（KOSPI）上涨4.1％，至5692.64。SK海力士涨超"
       ]
     },
     {
@@ -482,17 +494,17 @@
     },
     {
       "sector": "银行",
-      "news_count": 15,
-      "news_per_day": 7.5,
+      "news_count": 19,
+      "news_per_day": 9.5,
       "flow_yi": 0.77,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "美股上市的巴西公司跌幅有所收窄。巴西石油公司下跌15.8%，伊塔乌联合银行下",
-        "沙特阿美接近与全球银行签署100亿美元贷款协议",
-        "巴西企业在美上市股票在卢拉连任总统后收窄跌幅。巴西石油公司下跌15.8%，伊"
+        "【央行公告：设立新工具】中国人民银行10月26日发布消息，决定设立债市非银大",
+        "有了“减震垫”理财也不是稳赚不赔",
+        "维护市场稳定 央行设立债市非银大额赎回互换便利"
       ]
     },
     {

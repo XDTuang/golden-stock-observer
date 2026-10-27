@@ -1,0 +1,41 @@
+preopen(10-27): 方向「中性偏空」→「中性」（上调一档）· 开盘「低开偏弱」→「高开回吐压力」
+
+数据日 2026-10-26（周一）→ 指引日 2026-10-27（周二 · 盘前推演）
+
+核心事件
+- 隔夜美股 10/26 完整收盘三大全红：道指 +0.28% / 标普 +0.70% / 纳指 +0.82%
+  （上一版 22:15 引用的「盘中 45 分钟」口径已收口）
+- 存储 / 光通信单点暴动：LITE +8.19% / AAOI +6.56% / COHR +5.83% / MU +2.98% / WDC +3.63% / SKHY +4.09%
+- 日韩 10/27 早盘（08:43 复取）：KOSPI 5,675.49 +3.77% / 日经 63,345.75 +1.86%
+  / SK하이닉스 1,358,000 +6.51% / 삼성전자 223,500 +4.93%；催化 = 韩国央行 HBM 表态
+- A股 10/26 分裂日：上证 +0.19%（3,697.52）而 深成 -1.19% / 创业板 -1.71% / 科创50 -2.23%
+  广度 1,901 涨 / 2,560 跌（比 0.74）· 涨停 61 / 跌停 37 · 主力 -299.27 亿 · 情绪 22「恐慌下跌」（S4 资金项归零）
+
+判定（老站 §0 / V3 meta / feed_review meta 三处同值）
+- 方向 中性（由「中性偏空」上调一档）· 置信度 中（下调一档）· 开盘 高开回吐压力（+0.6%~+1.2%）
+- 风险 中高（维持）· 仓位 0%–20%（维持，L2 panic 档机械锁死，不因高开上调）
+
+关键口径动作
+- cross_analysis 08:41 盘前重算 + 补入 10/27 新闻池：窗口语料 304 → 583 条
+  四象限 0/2/14/15 → 5/5/9/12；flow_yi 31/31 逐项零变化 ⇒ 定性「纯语料侧扩容」，不得读作资金变化、不得据此加仓
+- sector_tech 同步重建（data_date 2026-10-26 · kline_last_date 2026-10-23 · lag 1）
+  L4=0 / L3=1（食品饮料）/ L2=13 / L1=17；uptrend=0 / downtrend=28；站上 EMA20 仅 2 席
+- obs_scenarios A 情景外盘读数由「10/26 盘中」推进为「10/26 完整收盘」（LITE +8.19% / NVDA +2.39%）
+- V3 preopen_ext / global_ext 双写刷新；VIX 面板 10-26 结算 18.39（-5.45%）
+
+门禁（十四道 + 3 项附加）
+- em_http ok=true（push2his ConnectionError 为已知）· check_analysis_style 12/12 · check_v3_style 10/10
+- check_market_json 通过（1 项已知提示：asia.kr_stocks 交易日 10-27 ≠ data_date 10-26，盘前复取属正常）
+- check_macro_freshness 6/6 · check_index_render 9/9 · check_review_dates 通过
+- check_sector_tech 通过（kline 缺口上游未发布，非链路）· check_touzid_panel 通过（温度计 T-1 警告）
+- check_narrative_consistency ✅（四象限 5/5/9/12 与数据侧一致，四卡 4/4 一致，root↔deploy 一致，未用 --fix）
+- build_us_medical --check ✅ · patch_news_pool --check 5/5 · patch_v3_richtext --check 4 份同源 · patch_dk_css --check 归零
+- 附加：analysis.html 18 段齐全 · 裸 <p>=0 · BOM 保留 · root↔deploy md5 一致
+  · V3 页面实测 加载中=0 / undefined=0 / [object Object]=0 / JS error=0 / 自检 16 行全 ✅
+
+产物
+- analysis.html ×2（113,001 字符 · preopen-0840 · k3c 9 行全上色 · US-MEDICAL 重注 · 7.1b 重注 · 7.2 --data-date 2026-10-26）
+- v3_reasoning ×4（preopen · cf 9 / tr 5 / t1 7 / risks 8）· feed_review ×4（cf 5 / tr 5 / t1 7 / risks 6 · pending_ai=false）
+- cross_analysis ×2 · sector_tech ×2 · obs_panel ×2 · obs_scenarios ×2 · kr_stocks ×2 · preopen_ext / global_ext ×2
+
+未推副站（diamond_site/ 独立仓库）。投喂归档 0 件（10/26 与 10/27 均无 F*.txt，如实未伪造）。
