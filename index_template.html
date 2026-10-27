@@ -4291,21 +4291,26 @@ function drLoadDiamond() {
           const sig = (s.signals && s.signals[0]) || {};
           const det = sig.detail || {};
           const code = s.code || s.symbol; if (!code) return;
-          if (!merged[code]) merged[code] = { code, name: s.name, primary: s.primary || sig.type || '—', sig, det, gates: [], dy2: det.dy2 != null ? Number(det.dy2) : null };
+          if (!merged[code]) merged[code] = { code, name: s.name, primary: s.primary || sig.type || '—', sig, det, gates: [], dy2: det.dy2 != null ? Number(det.dy2) : null, isUp: false };
           if (merged[code].gates.indexOf(k) < 0) merged[code].gates.push(k);
+          // 仅金钻起涨：任一门控命中即保留（看各档原始 primary/signals，规避 pool 覆盖合并口径）
+          if ((s.primary || '').indexOf('金钻起涨') >= 0 || (s.signals || []).some(x => x && x.type && String(x.type).indexOf('金钻起涨') >= 0)) merged[code].isUp = true;
           if (k === 'pool') { merged[code].primary = s.primary || sig.type || merged[code].primary; merged[code].sig = sig; merged[code].det = det; merged[code].dy2 = det.dy2 != null ? Number(det.dy2) : merged[code].dy2; }
         });
       });
       // 排序：门控数↓ → 信号强度(起涨3/买入2/其他1)↓ → DY2↓
       const SIG_RANK = p => (p || '').indexOf('起涨') >= 0 ? 3 : ((p || '').indexOf('买入') >= 0 ? 2 : 1);
-      const rows = Object.values(merged).sort((a, b) =>
-        (b.gates.length - a.gates.length) || (SIG_RANK(b.primary) - SIG_RANK(a.primary)) ||
-        ((b.dy2 != null ? b.dy2 : -1e9) - (a.dy2 != null ? a.dy2 : -1e9)));
+      const rows = Object.values(merged).filter(r => r.isUp)
+        .map(r => { if ((r.primary || '').indexOf('金钻起涨') < 0) r.primary = '金钻起涨'; return r; })
+        .sort((a, b) =>
+          (b.gates.length - a.gates.length) || (SIG_RANK(b.primary) - SIG_RANK(a.primary)) ||
+          ((b.dy2 != null ? b.dy2 : -1e9) - (a.dy2 != null ? a.dy2 : -1e9)));
+      if (!rows.length) { el.innerHTML = '<div class="dr-note">数据日 ' + (g.data_date || '—') + '：当日无「金钻起涨」命中（买点 / 红区黄柱 类已隐藏）。</div>'; return; }
       const n3 = rows.filter(r => r.gates.length >= 3).length;
       const n2 = rows.filter(r => r.gates.length === 2).length;
       const n1 = rows.filter(r => r.gates.length === 1).length;
       const multi = keys.length > 1;
-      let h = `<div class="dr-chip">数据日：${g.data_date || '—'} ｜ 合并去重 <b>${rows.length}</b> 只${multi ? '（' + keys.length + ' 门控并集）' : ''}</div>`;
+      let h = `<div class="dr-chip">数据日：${g.data_date || '—'} ｜ 金钻起涨 <b>${rows.length}</b> 只${multi ? '（' + keys.length + ' 门控并集 · 仅金钻起涨，买点/红区黄柱已隐藏）' : ''}</div>`;
       h += '<div style="margin:4px 0 8px">' + keys.map(k => `<span class="dr-chip">${SHORT[k] || gates[k].label}：扫描 ${gates[k].scope_size} / 命中 ${(gates[k].overview || {}).total || (gates[k].stocks || []).length}</span>`).join('') +
         (multi ? `<span class="dr-chip" style="color:var(--gold);border-color:var(--gold)">⭐ 三重全中 ${n3}</span><span class="dr-chip" style="color:var(--blue);border-color:var(--blue)">双门控 ${n2}</span><span class="dr-chip" style="color:var(--purple);border-color:var(--purple)">单门控 ${n1}</span>` : '') + '</div>';
       const anaTxt = (gates.pool && gates.pool.overview && gates.pool.overview.analysis) || (gates[keys[0]].overview && gates[keys[0]].overview.analysis) || '';
