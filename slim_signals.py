@@ -291,6 +291,32 @@ def main():
     if os.path.exists(os.path.join(BASE, "output", "gate_data.json")):
         print("  ✓ 金钻门控文件已从 output 同步到 deploy（gate_data + 分片）")
 
+    # 2.55b 生成 gate_data_lite.json（去 kline + 精简未用字段）—— 1.2 前端拉取此文件（~57KB），
+    #        完整 gate_data.json 保留给 build_diamond_pool 构建兜宝金钻（避免慢链路下 4MB 拉不完 → 1.2 空白）
+    _gd_full = os.path.join(BASE, "output", "gate_data.json")
+    if os.path.exists(_gd_full):
+        try:
+            _g = json.load(open(_gd_full, encoding="utf-8"))
+            _lite = {"data_date": _g.get("data_date"), "updated_at": _g.get("updated_at"),
+                     "default_gate": _g.get("default_gate"), "gates": {}}
+            for _k, _gd in (_g.get("gates") or {}).items():
+                _st = []
+                for _s in (_gd.get("stocks") or []):
+                    _ns = {"code": _s.get("code") or _s.get("symbol"), "name": _s.get("name"), "primary": _s.get("primary")}
+                    if _s.get("signals"):
+                        _ns["signals"] = _s["signals"]
+                    _st.append(_ns)
+                _lite["gates"][_k] = {"label": _gd.get("label"), "scope_size": _gd.get("scope_size"),
+                                      "overview": _gd.get("overview"), "stocks": _st, "chan": _gd.get("chan")}
+            for _p in [os.path.join(BASE, "output", "gate_data_lite.json"),
+                       os.path.join(DEPLOY, "output", "gate_data_lite.json")]:
+                os.makedirs(os.path.dirname(_p), exist_ok=True)
+                with open(_p, "w", encoding="utf-8") as _f:
+                    json.dump(_lite, _f, ensure_ascii=False)
+            print(f"  ✓ gate_data_lite.json 已生成（去 kline，{os.path.getsize(os.path.join(BASE, 'output', 'gate_data_lite.json'))}B）")
+        except Exception as _e:
+            print(f"  ⚠️  gate_data_lite 生成失败：{_e}")
+
     # 2.6 兜底：金钻门控分片缺失时生成空 manifest（云端 gate_scan 失败时避免前端 404）
     manifest_dst = os.path.join(DEPLOY, "output", "golden_pool_manifest.json")
     meta_dst = os.path.join(DEPLOY, "output", "golden_pool_meta.json")

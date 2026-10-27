@@ -540,7 +540,7 @@ function drLoadDiamond() {
   // 本函数自带转义：index.html 的 esc 是 drLoadFeedReview 内的局部 helper，函数外不可见（否则 ReferenceError）
   const esc = s => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const j = (u) => fetch(u, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null);
-  Promise.all([j('./output/gate_data.json'), j('./output/valuation_band.json'), j('./output/institutional_flow.json'), j('./output/golden_diamond_history.json')])
+  Promise.all([j('./output/gate_data_lite.json'), j('./output/valuation_band.json'), j('./output/institutional_flow.json'), j('./output/golden_diamond_history.json')])
     .then(([g, vb, ifl, gdh]) => {
       if (!g) { el.innerHTML = '<div class="dr-note">金钻数据加载失败：gate_data.json 不可用</div>'; return; }
       const gates = g.gates || {};

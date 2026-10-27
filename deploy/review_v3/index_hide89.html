@@ -521,7 +521,7 @@ function loadTop10() {
 /* ── 1.2 金钻：三重门控合并去重 ── */
 function loadDiamond() {
   // 2026-09-04 增强：估值带 + 股东户数 + 历史趋势 JOIN
-  Promise.all([J('../output/gate_data.json'), tryJ('../output/valuation_band.json'), tryJ('../output/institutional_flow.json'), tryJ('../output/golden_diamond_history.json')]).then(([g, vb, ifl, gdh]) => {
+  Promise.all([J('../output/gate_data_lite.json'), tryJ('../output/valuation_band.json'), tryJ('../output/institutional_flow.json'), tryJ('../output/golden_diamond_history.json')]).then(([g, vb, ifl, gdh]) => {
     const gates = g.gates || {};
     const vbMap = {}; ((vb && vb.items) || []).forEach(x => { if (x.code) vbMap[x.code] = x; });
     const ifMap = {}; ((ifl && ifl.items) || []).forEach(x => { if (x.code) ifMap[x.code] = x; });
