@@ -307,6 +307,22 @@ def main():
           f"（桥接 {len(bridge_map)} 项 / analysis {len(ana_vars)} 项）"
           + ('' if ok2b else f" — {'；'.join(bad2b[:3])}"))
 
+    # ── [2c] 1.2 当日金钻「仅金钻起涨」过滤在位（10/27 用户定规则 · 防未来误改回退）──
+    DIAMOND_MARK = 'filter(r => r.isUp)'
+    DIAMOND_FILES = INDEXES + V3_INDEXES + ['daily_review_tab_snippet.js', 'inject_daily_review_tab.py']
+    bad2c = {}
+    for f in DIAMOND_FILES:
+        p = os.path.join(BASE, f)
+        if not os.path.exists(p):
+            bad2c[f] = '缺失'; continue
+        if DIAMOND_MARK not in open(p, encoding='utf-8').read():
+            bad2c[f] = '无过滤/已回退'
+    ok2c = not bad2c
+    if bad2c:
+        errs.append(f"1.2 金钻过滤缺失（须保留 {DIAMOND_MARK}）: {bad2c}")
+    print(f"{'✅' if ok2c else '❌'} [2c] 1.2 当日金钻「仅金钻起涨」过滤在位（{len(DIAMOND_FILES)} 文件）"
+          + ('' if ok2c else f" — {bad2c}"))
+
     # ── [3] FEED-RICHTEXT 块 ──
     bad3 = []
     for f in INDEXES:
