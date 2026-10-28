@@ -1,6 +1,6 @@
 {
   "date": "2026-10-27",
-  "generated_at": "2026-10-27 22:02",
+  "generated_at": "2026-10-27 22:47",
   "china": {
     "pmi": {
       "latest": {
@@ -63,7 +63,7 @@
       "lookback_days": 45,
       "lookback_used_to": "2026-10-02",
       "days_fetched": 26,
-      "as_of": "2026-10-27 22:02",
+      "as_of": "2026-10-27 22:47",
       "indicators": {
         "CPI 同比": [
           {
@@ -168,43 +168,6 @@
             "days_ago": 5,
             "is_fresh": true
           }
-        ],
-        "GDP": [
-          {
-            "event": "美国9月关联GDP的零售额控制组月率-季调后(%)",
-            "value": "0.1",
-            "forecast": "0.3",
-            "previous": "1.2",
-            "importance": 2,
-            "release_date": "2026-10-15",
-            "release_time": "20:30",
-            "days_ago": 12,
-            "is_fresh": false
-          }
-        ],
-        "零售销售": [
-          {
-            "event": "美国9月零售销售月率(%)",
-            "value": "0.8",
-            "forecast": "0.3",
-            "previous": "1.3",
-            "importance": 2,
-            "release_date": "2026-10-15",
-            "release_time": "20:30",
-            "days_ago": 12,
-            "is_fresh": false
-          },
-          {
-            "event": "美国9月核心零售销售月率(%)",
-            "value": "0.9",
-            "forecast": "0.5",
-            "previous": "1.4",
-            "importance": 2,
-            "release_date": "2026-10-15",
-            "release_time": "20:30",
-            "days_ago": 12,
-            "is_fresh": false
-          }
         ]
       }
     },
@@ -234,7 +197,9 @@
       "美债收益率"
     ],
     "log": [
-      "日历 2026-10-20 失败: RuntimeError",
+      "日历 2026-10-21 失败: HTTPError",
+      "日历 2026-10-15 失败: HTTPError",
+      "日历 2026-10-07 失败: HTTPError",
       "新闻池 600 条 → 窗口内(7日) 206 条；命中 1 指标"
     ]
   }

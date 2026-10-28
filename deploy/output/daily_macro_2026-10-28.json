@@ -1,0 +1,276 @@
+{
+  "date": "2026-10-28",
+  "generated_at": "2026-10-28 08:30",
+  "china": {
+    "pmi": {
+      "latest": {
+        "月份": "2026年09月份",
+        "制造业-指数": 50.1,
+        "制造业-同比增长": 0.60240964,
+        "非制造业-指数": 50.2,
+        "非制造业-同比增长": 0.4
+      },
+      "rows": 225
+    },
+    "gdp": {
+      "latest": {
+        "季度": "2026年第1-3季度",
+        "国内生产总值-绝对值": 1071071.2,
+        "国内生产总值-同比增长": 4.6,
+        "第一产业-绝对值": 58993.9,
+        "第一产业-同比增长": 3.7,
+        "第二产业-绝对值": 383822.3,
+        "第二产业-同比增长": 3.8,
+        "第三产业-绝对值": 628255.0,
+        "第三产业-同比增长": 5.2
+      },
+      "rows": 83
+    },
+    "cpi": {
+      "latest": {
+        "月份": "2026年09月份",
+        "全国-当月": 100.9,
+        "全国-同比增长": 0.9,
+        "全国-环比增长": 0.2,
+        "全国-累计": 100.9,
+        "城市-当月": 100.9,
+        "城市-同比增长": 0.9,
+        "城市-环比增长": 0.2,
+        "城市-累计": 100.9,
+        "农村-当月": 100.8,
+        "农村-同比增长": 0.8,
+        "农村-环比增长": 0.4,
+        "农村-累计": 100.7
+      },
+      "rows": 225
+    },
+    "lpr": {
+      "latest": {
+        "TRADE_DATE": "2026-10-20",
+        "LPR1Y": 3.0,
+        "LPR5Y": 3.5,
+        "RATE_1": 4.35,
+        "RATE_2": 4.9
+      },
+      "rows": 1577
+    }
+  },
+  "us": {
+    "note": "主源=百度经济日历(带公布日/预期/前值)；兜底=新闻抽取(近 7 日)",
+    "calendar": {
+      "source": "百度经济日历 news_economic_baidu",
+      "window_days": 7,
+      "lookback_days": 45,
+      "lookback_used_to": "2026-10-02",
+      "days_fetched": 27,
+      "as_of": "2026-10-28 08:30",
+      "indicators": {
+        "CPI 同比": [
+          {
+            "event": "美国9月CPI年率未季调(%)",
+            "value": "3.7",
+            "forecast": "3.6",
+            "previous": "3.4",
+            "importance": 2,
+            "release_date": "2026-10-14",
+            "release_time": "20:30",
+            "days_ago": 14,
+            "is_fresh": false
+          }
+        ],
+        "核心 CPI": [
+          {
+            "event": "美国9月核心CPI年率未季调(%)",
+            "value": "2.6",
+            "forecast": "2.5",
+            "previous": "2.4",
+            "importance": 2,
+            "release_date": "2026-10-14",
+            "release_time": "20:30",
+            "days_ago": 14,
+            "is_fresh": false
+          }
+        ],
+        "CPI 月率": [
+          {
+            "event": "美国9月CPI月率季调后(%)",
+            "value": "0.6",
+            "forecast": "0.6",
+            "previous": "0.4",
+            "importance": 1,
+            "release_date": "2026-10-14",
+            "release_time": "20:30",
+            "days_ago": 14,
+            "is_fresh": false
+          }
+        ],
+        "核心CPI月率": [
+          {
+            "event": "美国9月核心CPI月率季调后(%)",
+            "value": "0.3",
+            "forecast": "0.2",
+            "previous": "0.3",
+            "importance": 1,
+            "release_date": "2026-10-14",
+            "release_time": "20:30",
+            "days_ago": 14,
+            "is_fresh": false
+          }
+        ],
+        "非农": [
+          {
+            "event": "美国9月非农就业人口变动季调后(万)",
+            "value": "2.9",
+            "forecast": "9.0",
+            "previous": "13.3",
+            "importance": 2,
+            "release_date": "2026-10-02",
+            "release_time": "20:30",
+            "days_ago": 26,
+            "is_fresh": false
+          }
+        ],
+        "失业率": [
+          {
+            "event": "美国9月失业率(%)",
+            "value": "4.2",
+            "forecast": "4.1",
+            "previous": "4.1",
+            "importance": 2,
+            "release_date": "2026-10-02",
+            "release_time": "20:30",
+            "days_ago": 26,
+            "is_fresh": false
+          }
+        ],
+        "ADP 就业": [
+          {
+            "event": "美国截至10月10日当周ADP就业周度发布变动(万人)",
+            "value": "1.68",
+            "forecast": "",
+            "previous": "1.85",
+            "importance": 2,
+            "release_date": "2026-10-27",
+            "release_time": "20:15",
+            "days_ago": 1,
+            "is_fresh": true
+          }
+        ],
+        "初请失业金": [
+          {
+            "event": "美国截至10月17日当周初请失业金人数(万)",
+            "value": "19.4",
+            "forecast": "20.0",
+            "previous": "19.9",
+            "importance": 2,
+            "release_date": "2026-10-22",
+            "release_time": "20:30",
+            "days_ago": 6,
+            "is_fresh": true
+          }
+        ],
+        "GDP": [
+          {
+            "event": "美国9月关联GDP的零售额控制组月率-季调后(%)",
+            "value": "0.1",
+            "forecast": "0.3",
+            "previous": "1.2",
+            "importance": 2,
+            "release_date": "2026-10-15",
+            "release_time": "20:30",
+            "days_ago": 13,
+            "is_fresh": false
+          }
+        ],
+        "零售销售": [
+          {
+            "event": "美国9月零售销售月率(%)",
+            "value": "0.8",
+            "forecast": "0.3",
+            "previous": "1.3",
+            "importance": 2,
+            "release_date": "2026-10-15",
+            "release_time": "20:30",
+            "days_ago": 13,
+            "is_fresh": false
+          },
+          {
+            "event": "美国9月核心零售销售月率(%)",
+            "value": "0.9",
+            "forecast": "0.5",
+            "previous": "1.4",
+            "importance": 2,
+            "release_date": "2026-10-15",
+            "release_time": "20:30",
+            "days_ago": 13,
+            "is_fresh": false
+          }
+        ]
+      }
+    },
+    "indicators": {
+      "CPI": [
+        {
+          "title": "周三（10月28日）重点关注财经事件和经济数据",
+          "evidence": [
+            "周三（10月28日）重点关注财经事件和经济数据 【周三（10月28日）重点关注财经事件和经济数据】①澳大利亚9月未季调CPI"
+          ],
+          "date": "2026-10-28",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-28 05:26:21",
+          "source": "东财全球"
+        }
+      ],
+      "美联储/利率": [
+        {
+          "title": "周三（10月28日）重点关注财经事件和经济数据",
+          "evidence": [
+            "② 09:00 新西兰联储公布利率决议"
+          ],
+          "date": "2026-10-28",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-28 05:26:21",
+          "source": "东财全球"
+        },
+        {
+          "title": "美联储隔夜逆回购协议周二使用规模为2.26亿美元（交易对手2家） 上个交易日报2亿美元",
+          "evidence": [
+            "美联储隔夜逆回购协议周二使用规模为2.26亿美元（交易对手2家） 上个交易日报2亿美元 美联储隔夜逆回购协议（RRP）周二使用规模为2.26亿美元（交易对手2家），上个交易日报2亿"
+          ],
+          "date": "2026-10-28",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-28 01:25:22",
+          "source": "东财全球"
+        },
+        {
+          "title": "全球央行“超级周” 加息按下暂停键？",
+          "evidence": [
+            "全球央行“超级周” 加息按下暂停键？ 【全球央行“超级周” 加息按下暂停键？】北京时间10月29日至30日，美联储、欧洲央行、日本央行将接连公布利率决议",
+            "9月，三家央行均已实施加息",
+            "尽管通胀压力仍在持续，但市场普遍预计，三家央行将在本次会议上共同按下加息“暂停键”，或在12月的会议中继续加息"
+          ],
+          "date": "2026-10-28",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-28 00:24:00",
+          "source": "东财全球"
+        }
+      ]
+    },
+    "stale": [
+      "核心PCE",
+      "整体PCE",
+      "非农",
+      "初请失业金",
+      "耐用品订单",
+      "美国GDP",
+      "美债收益率"
+    ],
+    "log": [
+      "新闻池 600 条 → 窗口内(7日) 206 条；命中 2 指标"
+    ]
+  }
+}
