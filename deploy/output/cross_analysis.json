@@ -1,11 +1,11 @@
 {
   "date": "2026-10-28",
-  "data_date": "2026-10-27",
-  "generated_at": "2026-10-28 21:48",
+  "data_date": "2026-10-28",
+  "generated_at": "2026-10-28 22:02",
   "news_date": "",
   "news_window": [
-    "2026-10-27",
-    "2026-10-28"
+    "2026-10-28",
+    "2026-10-29"
   ],
   "news_window_days": 2,
   "flow_date": "2026-10-28",
@@ -15,106 +15,108 @@
   "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-10-28 08:32",
-    "session": "preopen",
-    "data_date": "2026-10-27",
-    "for_date": "2026-10-28",
+    "generated_at": "2026-10-28 22:02",
+    "session": "close",
+    "data_date": "2026-10-28",
+    "for_date": "2026-10-29",
     "data_date_note": "",
     "warnings": [],
     "span": [
-      "2026-10-28"
+      "2026-10-29"
     ],
     "span_days": 1,
     "display_days": [
-      "2026-10-27",
-      "2026-10-28"
+      "2026-10-28",
+      "2026-10-29"
     ],
-    "display_text": "10/27 + 10/28",
+    "display_text": "10/28 + 10/29",
     "span_is_weekend_cross": false,
-    "span_text": "10/28",
+    "span_text": "10/29",
     "carry": {
-      "from_data_date": "2026-10-27",
-      "ref": "output/feed_review_2026-10-27.json",
+      "from_data_date": "2026-10-28",
+      "ref": "output/feed_review_2026-10-28.json",
       "exists": true,
       "gap_days": 1,
       "stale": false,
       "bias": "中性",
       "bias_score": 1,
       "t1_focus": [
-        "跟踪金钻起涨 4 只回踩确认"
+        "跟踪金钻起涨 5 只回踩确认"
       ],
       "risks": [],
       "headline": ""
     },
     "layers": {
-      "base": "2026-10-27 A股收盘（基准层）",
-      "overnight": "美东 2026-10-27 收盘（北京 2026-10-28 早间到达）",
-      "premarket": "2026-10-28 今早日韩实时 + 盘前新闻/投喂增量"
+      "base": "2026-10-28 A股收盘（基准层）",
+      "overnight": "美东 2026-10-28 收盘（北京 2026-10-29 早间到达）",
+      "premarket": "2026-10-29 今早日韩实时 + 盘前新闻/投喂增量"
     },
     "market_state": {
-      "date": "2026-10-27",
+      "date": "2026-10-28",
       "run_date": "2026-10-28",
-      "preopen_partial": true,
+      "preopen_partial": null,
       "us_kline": true,
       "asia": true
     },
     "covered": [
       {
-        "date": "2026-10-27",
-        "weekday": "周二",
-        "is_trading_day": true,
-        "news": 303,
-        "feeds": 0,
-        "reports": 1423,
-        "macro": true
-      },
-      {
         "date": "2026-10-28",
         "weekday": "周三",
         "is_trading_day": true,
-        "news": 290,
+        "news": 304,
         "feeds": 0,
-        "reports": 53,
+        "reports": 1468,
         "macro": true
+      },
+      {
+        "date": "2026-10-29",
+        "weekday": "周四",
+        "is_trading_day": true,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
       }
     ],
     "totals": {
-      "news": 593,
+      "news": 304,
       "feeds": 0,
-      "reports": 1476,
+      "reports": 1468,
       "covered_days": 2
     },
-    "missing": []
+    "missing": [
+      "market_thermometer.json 数据日 2026-10-27 落后于基准日 2026-10-28"
+    ]
   },
   "index_context": {
     "上证指数": {
-      "close": "3648.30",
-      "chg_pct": "-1.33"
+      "close": "3681.47",
+      "chg_pct": "0.91"
     },
     "深证成指": {
-      "close": "11245.73",
-      "chg_pct": "-2.50"
+      "close": "11473.18",
+      "chg_pct": "2.02"
     },
     "创业板指": {
-      "close": "2548.15",
-      "chg_pct": "-3.41"
+      "close": "2634.76",
+      "chg_pct": "3.40"
     },
     "科创50": {
-      "close": "1252.28",
-      "chg_pct": "-4.81"
+      "close": "1282.93",
+      "chg_pct": "2.45"
     }
   },
   "summary": {
-    "共振": 3,
-    "背离": 4,
-    "暗线": 9,
-    "双冷": 15
+    "共振": 2,
+    "背离": 0,
+    "暗线": 10,
+    "双冷": 19
   },
   "items": [
     {
       "sector": "电子",
-      "news_count": 47,
-      "news_per_day": 23.5,
+      "news_count": 22,
+      "news_per_day": 11.0,
       "flow_yi": 149.86,
       "verdict": "共振",
       "verdict_raw": "真共振",
@@ -122,29 +124,29 @@
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
         "天孚通信：预计CPO产品自2027年起逐步提量",
-        "美股存储概念股普涨，SK海力士绩后大涨近10%，公司Q3营收、营业利润超预期",
-        "费城半导体指数涨1%"
+        "费城半导体指数涨1%",
+        "恩智浦半导体跌超6%"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 23,
-      "news_per_day": 11.5,
+      "news_count": 15,
+      "news_per_day": 7.5,
       "flow_yi": 80.2,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
+        "西班牙交通部长：列车控制系统因计算机通信问题发生故障。",
         "天孚通信：预计CPO产品自2027年起逐步提量",
-        "美股开盘，道指平开，标普500指数涨0.19%，纳指涨0.28%。希捷科技(",
         "天孚通信：从三季度情况来看 核心物料供应紧张局面已较此前明显缓解"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 12,
-      "news_per_day": 6.0,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": 36.81,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -158,8 +160,8 @@
     },
     {
       "sector": "汽车",
-      "news_count": 14,
-      "news_per_day": 7.0,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": 26.59,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -167,29 +169,27 @@
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
         "美股开盘：美股三大指数集体高开",
-        "美股开市：纳指涨0.24%，AMD涨超2%",
-        "理想汽车：2026款理想i6定价249,800元"
+        "理想汽车：2026款理想i6定价249,800元",
+        "特斯拉拟启用Optimus人形机器人为Robotaxi插枪充电"
       ]
     },
     {
       "sector": "电力设备",
-      "news_count": 10,
-      "news_per_day": 5.0,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": -18.88,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "新型电网加快建设 为高质量发展提供坚实支撑",
-        "我国风电光伏累计装机容量突破20亿千瓦",
-        "阳光电源：目前没有生产半固态电池计划"
+        "新型电网加快建设 为高质量发展提供坚实支撑"
       ]
     },
     {
       "sector": "非银金融",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": -13.62,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -203,53 +203,51 @@
     },
     {
       "sector": "计算机",
-      "news_count": 22,
-      "news_per_day": 11.0,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": -10.24,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
         "2030年我国产业基础自主可控能力全面提升",
-        "工业绣花针打开百亿大市场 PCB钻针需求大爆发",
-        "日德首脑一致同意创设AI高级别对话"
+        "西班牙交通部长：列车控制系统因计算机通信问题发生故障。",
+        "工业绣花针打开百亿大市场 PCB钻针需求大爆发"
       ]
     },
     {
       "sector": "基础化工",
-      "news_count": 5,
-      "news_per_day": 2.5,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": 9.42,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "世界银行：受尿素价格飙升影响，2026年化肥价格预计将上涨14%，并于202",
-        "国内商品期货夜盘开盘 主力合约多数上涨",
-        "欧洲化肥需求疲软，农作物产量面临下滑风险"
+        "国内商品期货夜盘开盘 主力合约多数上涨"
       ]
     },
     {
       "sector": "有色金属",
-      "news_count": 21,
-      "news_per_day": 10.5,
+      "news_count": 10,
+      "news_per_day": 5.0,
       "flow_yi": -8.59,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "世界银行：由于避险资产需求上升，贵金属价格预计在2026年上涨40%，202",
-        "世界银行预计2026年大宗商品价格上涨23%",
-        "世界银行：预计2026年金属价格将上涨25%，达到新高，其中铝、铜和锡均将创"
+        "世界银行预计，2026年金属价格将上涨25%",
+        "LME铝主力合约跌超1%",
+        "覆铜板、PCB向少布、无布升级？多家电子布上市公司回应"
       ]
     },
     {
       "sector": "传媒",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": 8.5,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -257,14 +255,13 @@
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
         "英国将游戏机税率从20%上调至25%",
-        "东方财富财经早餐 10月27日周二",
-        "龙版传媒：第三季度归母净利润1.87亿元 同比增长7.18%"
+        "东方财富财经早餐 10月27日周二"
       ]
     },
     {
       "sector": "食品饮料",
-      "news_count": 13,
-      "news_per_day": 6.5,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": -8.43,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -289,23 +286,23 @@
     },
     {
       "sector": "国防军工",
-      "news_count": 17,
-      "news_per_day": 8.5,
+      "news_count": 8,
+      "news_per_day": 4.0,
       "flow_yi": -7.9,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
         "中国持续扩大进口 与世界共享发展机遇",
-        "捷蓝航空股价在前一交易日上涨近 19% 后下跌 1%。",
-        "土耳其警告俄乌不要进一步袭击黑海船只"
+        "BAE系统公司拓展商用航空售后市场产品与服务，以满足不断增长的机队需求。",
+        "北约秘书长吕特表示，英国预算标志着“好消息”，在国防方面做出了强有力的承诺。"
       ]
     },
     {
       "sector": "银行",
-      "news_count": 35,
-      "news_per_day": 17.5,
+      "news_count": 18,
+      "news_per_day": 9.0,
       "flow_yi": 7.81,
       "verdict": "共振",
       "verdict_raw": "真共振",
@@ -313,8 +310,8 @@
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
         "财政金融促内需“组合拳”政策效能加速释放",
-        "世界银行：不利情景下，能源和食品大宗商品价格可能飙升，推动全球通胀走高。",
-        "世界银行：受尿素价格飙升影响，2026年化肥价格预计将上涨14%，并于202"
+        "美联储10月利率决议预判 金融机构预计：美联储或在12月加息25个基点",
+        "世界银行：预计2026年整体大宗商品价格将飙升23%"
       ]
     },
     {
@@ -330,23 +327,23 @@
     },
     {
       "sector": "医药生物",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": 6.48,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "恒瑞医药：子公司获HRS-2189片临床试验批准通知书",
-        "GIC Private Limited在恒瑞医药H股的持股比例于10月23日",
-        "艾迪药业：ACC085片获药物临床试验批准通知书"
+        "【北京先通国际医药科技股份有限公司 - B通过港交所上市聆讯】据港交所文件：",
+        "北京先通国际医药科技股份有限公司 - B通过港交所上市聆讯",
+        "恒瑞医药：子公司获HRS-2189片临床试验批准通知书"
       ]
     },
     {
       "sector": "公用事业",
-      "news_count": 3,
-      "news_per_day": 1.5,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -4.65,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -354,14 +351,13 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "国家发展改革委办公厅、国家能源局综合司同意南方区域电力市场转入正式运行",
-        "国投电力：第三季度归母净利润25.36亿元 同比下降6.86%",
-        "神雾节能：控股子公司联合体中标7.17亿元储能电站EPC项目"
+        "国投电力：第三季度归母净利润25.36亿元 同比下降6.86%"
       ]
     },
     {
       "sector": "农林牧渔",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -3.81,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -369,8 +365,7 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "国内联播快讯",
-        "世界银行预计2026年大宗商品价格上涨23%",
-        "世界银行：预计受粮食运输中断和极端天气影响，2026年食品大宗商品价格将上涨"
+        "CBOT玉米主力合约涨超1%"
       ]
     },
     {
@@ -476,23 +471,22 @@
     },
     {
       "sector": "综合",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -1.1,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "道琼斯指数10月28日（周三）开盘上涨41.97点，涨幅0.08%，报524",
         "美股三大指数集体高开 SK海力士涨超8%",
         "国家发展改革委办公厅、国家能源局综合司同意南方区域电力市场转入正式运行"
       ]
     },
     {
       "sector": "房地产",
-      "news_count": 3,
-      "news_per_day": 1.5,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -0.93,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -500,23 +494,22 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "央行：2026年三季度末人民币房地产贷款余额同比下降5.2%",
-        "东方财富财经早餐 10月26日周一",
-        "美国新房销售因抵押贷款利率飙升而下滑"
+        "东方财富财经早餐 10月26日周一"
       ]
     },
     {
       "sector": "石油石化",
-      "news_count": 20,
-      "news_per_day": 10.0,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": -0.75,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "加拿大央行货币政策报告假设布伦特原油价格在第四季度平均约为 100 美元，然",
-        "世界银行：中东冲突的任何升级以及俄罗斯石油基础设施持续受损，都可能进一步推高",
-        "世界银行预计2026年大宗商品价格上涨23%"
+        "期市夜盘开盘，国内期货主力合约多数上涨",
+        "国内商品期货夜盘开盘 主力合约多数上涨",
+        "石化油服：第三季度归母净利润2.01亿元 同比增长13.9%"
       ]
     },
     {
