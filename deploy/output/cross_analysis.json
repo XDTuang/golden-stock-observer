@@ -1,7 +1,7 @@
 {
-  "date": "2026-10-28",
+  "date": "2026-10-29",
   "data_date": "2026-10-28",
-  "generated_at": "2026-10-28 22:02",
+  "generated_at": "2026-10-29 08:54",
   "news_date": "",
   "news_window": [
     "2026-10-28",
@@ -15,8 +15,8 @@
   "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-10-28 22:02",
-    "session": "close",
+    "generated_at": "2026-10-29 08:33",
+    "session": "preopen",
     "data_date": "2026-10-28",
     "for_date": "2026-10-29",
     "data_date_note": "",
@@ -53,8 +53,8 @@
     },
     "market_state": {
       "date": "2026-10-28",
-      "run_date": "2026-10-28",
-      "preopen_partial": null,
+      "run_date": "2026-10-29",
+      "preopen_partial": true,
       "us_kline": true,
       "asia": true
     },
@@ -63,30 +63,28 @@
         "date": "2026-10-28",
         "weekday": "周三",
         "is_trading_day": true,
-        "news": 304,
+        "news": 300,
         "feeds": 0,
-        "reports": 1468,
+        "reports": 1807,
         "macro": true
       },
       {
         "date": "2026-10-29",
         "weekday": "周四",
         "is_trading_day": true,
-        "news": 0,
+        "news": 285,
         "feeds": 0,
-        "reports": 0,
-        "macro": false
+        "reports": 88,
+        "macro": true
       }
     ],
     "totals": {
-      "news": 304,
+      "news": 585,
       "feeds": 0,
-      "reports": 1468,
+      "reports": 1895,
       "covered_days": 2
     },
-    "missing": [
-      "market_thermometer.json 数据日 2026-10-27 落后于基准日 2026-10-28"
-    ]
+    "missing": []
   },
   "index_context": {
     "上证指数": {
@@ -107,170 +105,175 @@
     }
   },
   "summary": {
-    "共振": 2,
-    "背离": 0,
-    "暗线": 10,
-    "双冷": 19
+    "共振": 4,
+    "背离": 6,
+    "暗线": 8,
+    "双冷": 13
   },
   "items": [
     {
       "sector": "电子",
-      "news_count": 22,
-      "news_per_day": 11.0,
+      "news_count": 48,
+      "news_per_day": 24.0,
       "flow_yi": 149.86,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "天孚通信：预计CPO产品自2027年起逐步提量",
-        "费城半导体指数涨1%",
-        "恩智浦半导体跌超6%"
+        "韩国KOSPI指数日内涨幅达1% SK海力士涨逾4%",
+        "美司法部据悉就英伟达收购Hugging Face一事展开问询",
+        "【美司法部据悉就英伟达收购Hugging Face一事展开问询】据报道，美国"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 15,
-      "news_per_day": 7.5,
+      "news_count": 21,
+      "news_per_day": 10.5,
       "flow_yi": 80.2,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "西班牙交通部长：列车控制系统因计算机通信问题发生故障。",
-        "天孚通信：预计CPO产品自2027年起逐步提量",
-        "天孚通信：从三季度情况来看 核心物料供应紧张局面已较此前明显缓解"
+        "AR眼镜XREAL AURA正式开售",
+        "燃料涨价+资本扩张+需求增长 核电产业链有望迎来三重共振",
+        "光互联并购升温！光模块景气延续 融资客逆势加仓多股(名单)"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 10,
+      "news_per_day": 5.0,
       "flow_yi": 36.81,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "物理AI引爆！机器人再掀涨停潮",
-        "特斯拉拟启用Optimus人形机器人为Robotaxi插枪充电",
-        "北京商报侃股：主线题材仍需甄别个股"
+        "宇树科技股价7天涨超65% 第三季度猛投研发 利润下滑",
+        "进一步深化国资国企改革 国有经济布局优化“加速跑”",
+        "具身智能投资走向理性 真实订单成资本最大考量"
       ]
     },
     {
       "sector": "汽车",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 15,
+      "news_per_day": 7.5,
       "flow_yi": 26.59,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "美股开盘：美股三大指数集体高开",
-        "理想汽车：2026款理想i6定价249,800元",
-        "特斯拉拟启用Optimus人形机器人为Robotaxi插枪充电"
+        "【比亚迪空头撤退 公司净利润料实现反弹】随着比亚迪业绩发布在即，空头减少对这",
+        "福特汽车三季度总营收495.3亿美元，同比减少1.9%",
+        "【长安汽车与中国地图出版社集团签署战略合作框架协议】10月28日，重庆长安汽"
       ]
     },
     {
       "sector": "电力设备",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 5,
+      "news_per_day": 2.5,
       "flow_yi": -18.88,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "新型电网加快建设 为高质量发展提供坚实支撑"
+        "【银行业据悉搁置与Anthropic相关的美国得州数据中心债券发行】据报道，",
+        "锂电产业链公司盈利整体提升",
+        "银行业据悉搁置与Anthropic相关的美国得州数据中心债券发行"
       ]
     },
     {
       "sector": "非银金融",
-      "news_count": 3,
-      "news_per_day": 1.5,
+      "news_count": 17,
+      "news_per_day": 8.5,
       "flow_yi": -13.62,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "覆铜板、PCB向少布、无布升级？多家电子布上市公司回应",
-        "工业绣花针打开百亿大市场 PCB钻针需求大爆发",
-        "东方财富财经早餐 10月27日周二"
+        "澳大利亚企业监管机构：正与Firmus公司的50亿美元IPO失败事件的联席主",
+        "澳大利亚企业监管机构：正在调查AI数据中心公司Firmus的50亿美元IPO",
+        "中信证券：关注运价再次上行，回调即布局机会"
       ]
     },
     {
       "sector": "计算机",
-      "news_count": 12,
-      "news_per_day": 6.0,
+      "news_count": 49,
+      "news_per_day": 24.5,
       "flow_yi": -10.24,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "2030年我国产业基础自主可控能力全面提升",
-        "西班牙交通部长：列车控制系统因计算机通信问题发生故障。",
-        "工业绣花针打开百亿大市场 PCB钻针需求大爆发"
+        "中信证券：AIGC创作平台赛道具备千亿美元市场空间",
+        "【中信证券：AIGC创作平台赛道具备千亿美元市场空间】中信证券研报称，AIG",
+        "美司法部据悉就英伟达收购Hugging Face一事展开问询"
       ]
     },
     {
       "sector": "基础化工",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": 9.42,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "国内商品期货夜盘开盘 主力合约多数上涨"
+        "期市夜盘收盘，国内期货主力合约多数上涨",
+        "国内部分商品期货夜盘收盘 主力合约多数上涨",
+        "国产膜装备取得新进展：白马湖实验室双极膜电渗析装置通过72小时连续稳定运行测"
       ]
     },
     {
       "sector": "有色金属",
-      "news_count": 10,
-      "news_per_day": 5.0,
+      "news_count": 18,
+      "news_per_day": 9.0,
       "flow_yi": -8.59,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "世界银行预计，2026年金属价格将上涨25%",
-        "LME铝主力合约跌超1%",
-        "覆铜板、PCB向少布、无布升级？多家电子布上市公司回应"
+        "【全球最大的黄金ETF SPDR Gold Trust持仓较前日增加1.71",
+        "现货黄金失守4040美元/盎司，日内跌0.67%。",
+        "现货黄金失守4040美元/盎司"
       ]
     },
     {
       "sector": "传媒",
-      "news_count": 2,
-      "news_per_day": 1.0,
+      "news_count": 17,
+      "news_per_day": 8.5,
       "flow_yi": 8.5,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "英国将游戏机税率从20%上调至25%",
-        "东方财富财经早餐 10月27日周二"
+        "中信证券：AIGC创作平台赛道具备千亿美元市场空间",
+        "【中信证券：AIGC创作平台赛道具备千亿美元市场空间】中信证券研报称，AIG",
+        "日经225指数上涨0.6%，报64,354.90点，人工智能相关股的涨势帮助"
       ]
     },
     {
       "sector": "食品饮料",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 17,
+      "news_per_day": 8.5,
       "flow_yi": -8.43,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "财政金融促内需“组合拳”政策效能加速释放",
-        "国内联播快讯",
-        "加拿大央行行长麦克勒姆：消费者支出一直保持稳健。"
+        "【中信证券：当前白酒板块处于周期磨底后期、出清尾声阶段】中信证券研报称，当前",
+        "中信证券：当前白酒板块处于周期磨底后期、出清尾声阶段",
+        "和黄医药：索乐匹尼布获美国FDA孤儿药资格认定，用于治疗原发免疫性血小板减少"
       ]
     },
     {
@@ -286,32 +289,32 @@
     },
     {
       "sector": "国防军工",
-      "news_count": 8,
-      "news_per_day": 4.0,
+      "news_count": 18,
+      "news_per_day": 9.0,
       "flow_yi": -7.9,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "中国持续扩大进口 与世界共享发展机遇",
-        "BAE系统公司拓展商用航空售后市场产品与服务，以满足不断增长的机队需求。",
-        "北约秘书长吕特表示，英国预算标志着“好消息”，在国防方面做出了强有力的承诺。"
+        "美国总统特朗普：（谈伊朗）他们现在制造无人机遇到了困难，因为他们已经无法获得",
+        "荷兰将向乌克兰提供5亿欧元军事援助",
+        "霍尼韦尔航空航天第三季度调整后息税前利润为11.6亿美元 高于预估的10.7"
       ]
     },
     {
       "sector": "银行",
-      "news_count": 18,
-      "news_per_day": 9.0,
+      "news_count": 26,
+      "news_per_day": 13.0,
       "flow_yi": 7.81,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "财政金融促内需“组合拳”政策效能加速释放",
-        "美联储10月利率决议预判 金融机构预计：美联储或在12月加息25个基点",
-        "世界银行：预计2026年整体大宗商品价格将飙升23%"
+        "【华泰证券：预计美联储12月会议将再次加息25bp】华泰证券研报表示，10月",
+        "【银行业据悉搁置与Anthropic相关的美国得州数据中心债券发行】据报道，",
+        "中信证券：仍预计美联储12月再加息25bp"
       ]
     },
     {
@@ -327,31 +330,32 @@
     },
     {
       "sector": "医药生物",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 7,
+      "news_per_day": 3.5,
       "flow_yi": 6.48,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "【北京先通国际医药科技股份有限公司 - B通过港交所上市聆讯】据港交所文件：",
-        "北京先通国际医药科技股份有限公司 - B通过港交所上市聆讯",
-        "恒瑞医药：子公司获HRS-2189片临床试验批准通知书"
+        "和黄医药：索乐匹尼布获美国FDA孤儿药资格认定，用于治疗原发免疫性血小板减少",
+        "【国金证券：AI制药有望显著压缩研发周期与开支】国金证券研报指出，传统药物研",
+        "公募三季度减TMT、增医药 高低切换暗藏哪些信号"
       ]
     },
     {
       "sector": "公用事业",
-      "news_count": 2,
-      "news_per_day": 1.0,
+      "news_count": 5,
+      "news_per_day": 2.5,
       "flow_yi": -4.65,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "国家发展改革委办公厅、国家能源局综合司同意南方区域电力市场转入正式运行",
-        "国投电力：第三季度归母净利润25.36亿元 同比下降6.86%"
+        "美国总统特朗普：（谈伊朗）他们现在制造无人机遇到了困难，因为他们已经无法获得",
+        "不要误读居民用电负增长",
+        "英国政府与罗尔斯-罗伊斯拟联合投入25亿英镑研发新一代航空发动机"
       ]
     },
     {
@@ -381,14 +385,15 @@
     },
     {
       "sector": "煤炭",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -2.95,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
+        "国内部分商品期货夜盘收盘 主力合约多数上涨",
         "山西焦煤：第三季度归母净利润7.83亿元 同比增长86.41%"
       ]
     },
@@ -427,25 +432,29 @@
     },
     {
       "sector": "钢铁",
-      "news_count": 0,
-      "news_per_day": 0.0,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": -1.74,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": []
+      "sample_titles": [
+        "国内部分商品期货夜盘收盘 主力合约多数上涨"
+      ]
     },
     {
       "sector": "环保",
-      "news_count": 0,
-      "news_per_day": 0.0,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": -1.56,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": []
+      "sample_titles": [
+        "国产膜装备取得新进展：白马湖实验室双极膜电渗析装置通过72小时连续稳定运行测"
+      ]
     },
     {
       "sector": "轻工制造",
@@ -471,45 +480,47 @@
     },
     {
       "sector": "综合",
-      "news_count": 2,
-      "news_per_day": 1.0,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": -1.1,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
+        "美联储维持利率不变后 美国股市略微走低",
         "美股三大指数集体高开 SK海力士涨超8%",
         "国家发展改革委办公厅、国家能源局综合司同意南方区域电力市场转入正式运行"
       ]
     },
     {
       "sector": "房地产",
-      "news_count": 2,
-      "news_per_day": 1.0,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": -0.93,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "央行：2026年三季度末人民币房地产贷款余额同比下降5.2%",
-        "东方财富财经早餐 10月26日周一"
+        "雷军“卖房”不是跨界地产 而是一场人才安居实践",
+        "楼市“金九银十”成色如何",
+        "“原拆原建”蹚出城市更新之路"
       ]
     },
     {
       "sector": "石油石化",
-      "news_count": 9,
-      "news_per_day": 4.5,
+      "news_count": 25,
+      "news_per_day": 12.5,
       "flow_yi": -0.75,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "期市夜盘开盘，国内期货主力合约多数上涨",
-        "国内商品期货夜盘开盘 主力合约多数上涨",
-        "石化油服：第三季度归母净利润2.01亿元 同比增长13.9%"
+        "中信证券：关注运价再次上行，回调即布局机会",
+        "布伦特原油失守111美元/桶",
+        "中国石油前三季度业绩创历史同期最好水平"
       ]
     },
     {
