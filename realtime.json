@@ -1,6 +1,6 @@
 {
  "meta": {
-  "updated_at": "2026-10-29 09:15:24",
+  "updated_at": "2026-10-29 09:45:23",
   "data_date": "2026-10-29",
   "market_status": "trading",
   "algorithm": "1.0.0",
@@ -11,97 +11,97 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3681.46,
-    "chg_pct": -0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3655.65,
+    "chg_pct": -0.7,
+    "turnover_yi": 1527.5,
+    "high": 3676.77,
+    "low": 3653.89
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 11473.18,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 11257.63,
+    "chg_pct": -1.88,
+    "turnover_yi": 1940.2,
+    "high": 11379.0,
+    "low": 11251.38
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 2634.76,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 2558.09,
+    "chg_pct": -2.91,
+    "turnover_yi": 987.3,
+    "high": 2597.45,
+    "low": 2555.29
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1282.93,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 1244.43,
+    "chg_pct": -3.0,
+    "turnover_yi": 156.0,
+    "high": 1271.81,
+    "low": 1242.12
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4083.87,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 4043.15,
+    "chg_pct": -1.0,
+    "turnover_yi": 766.2,
+    "high": 4075.47,
+    "low": 4041.94
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 6640.82,
-    "chg_pct": -0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 6528.18,
+    "chg_pct": -1.7,
+    "turnover_yi": 581.6,
+    "high": 6604.65,
+    "low": 6520.84
    }
   ],
   "breadth": {
-   "up": 1497,
-   "down": 1785,
-   "flat": 1323,
-   "ratio": 0.84,
-   "limit_up": 79,
-   "limit_down": 81,
-   "main_net_yi": 0.0,
-   "turnover_yi": 0.0,
+   "up": 902,
+   "down": 3567,
+   "flat": 136,
+   "ratio": 0.25,
+   "limit_up": 25,
+   "limit_down": 5,
+   "main_net_yi": -160.37,
+   "turnover_yi": 2967.8,
    "total": 4605
   }
  },
  "L1": {
   "sentiment": {
-   "score": 43,
-   "S1": 21,
-   "S2": 66,
-   "S3": 40,
-   "S4": 50,
+   "score": 13,
+   "S1": 6,
+   "S2": 21,
+   "S3": 3,
+   "S4": 23,
    "inputs": {
-    "ratio": 0.84,
-    "limit_up": 79,
-    "avg_idx_pct": 0.0,
-    "main_net_yi": 0
+    "ratio": 0.25,
+    "limit_up": 25,
+    "avg_idx_pct": -1.86,
+    "main_net_yi": -160.37
    }
   },
   "state": {
-   "state": "oscillation",
-   "label": "震荡分化",
-   "note": "降低频率，控制单票仓位，等待主线明朗",
-   "score": 43
+   "state": "panic",
+   "label": "恐慌下跌",
+   "note": "空仓或极轻仓观望，不抄底，等企稳信号",
+   "score": 13
   }
  },
  "L2": {
   "range": [
-   40,
-   60
+   0,
+   20
   ],
-  "note": "震荡分化，控制总仓与单票上限",
+  "note": "恐慌下跌，空仓或极轻仓等待企稳",
   "rules": [
    "单票仓位 ≤ 10%",
    "单一板块集中度 ≤ 30%",
@@ -110,12 +110,209 @@
   ]
  },
  "L3": {
-  "sectors": [],
-  "mainline": "数据不可用",
-  "resonance": []
+  "sectors": [
+   {
+    "name": "银行",
+    "net_yi": 4.7,
+    "jumbo_yi": 5.3,
+    "block_yi": -0.6,
+    "pct": 8.09
+   },
+   {
+    "name": "银行Ⅱ",
+    "net_yi": 4.7,
+    "jumbo_yi": 5.3,
+    "block_yi": -0.6,
+    "pct": 8.06
+   },
+   {
+    "name": "国有大型银行Ⅲ",
+    "net_yi": 3.05,
+    "jumbo_yi": 3.04,
+    "block_yi": 0.01,
+    "pct": 14.67
+   },
+   {
+    "name": "铁路公路",
+    "net_yi": 1.92,
+    "jumbo_yi": 2.51,
+    "block_yi": -0.59,
+    "pct": 15.07
+   },
+   {
+    "name": "交通运输",
+    "net_yi": 1.75,
+    "jumbo_yi": 2.85,
+    "block_yi": -1.1,
+    "pct": 3.9
+   },
+   {
+    "name": "计算机设备",
+    "net_yi": 1.47,
+    "jumbo_yi": 2.15,
+    "block_yi": -0.68,
+    "pct": 2.48
+   },
+   {
+    "name": "股份制银行Ⅲ",
+    "net_yi": 1.28,
+    "jumbo_yi": 2.03,
+    "block_yi": -0.75,
+    "pct": 8.59
+   },
+   {
+    "name": "医院",
+    "net_yi": 1.19,
+    "jumbo_yi": 1.1,
+    "block_yi": 0.09,
+    "pct": 9.88
+   },
+   {
+    "name": "高速公路",
+    "net_yi": 1.18,
+    "jumbo_yi": 1.49,
+    "block_yi": -0.32,
+    "pct": 18.93
+   },
+   {
+    "name": "其他计算机设备",
+    "net_yi": 1.11,
+    "jumbo_yi": 1.65,
+    "block_yi": -0.54,
+    "pct": 2.14
+   },
+   {
+    "name": "医疗服务",
+    "net_yi": 1.0,
+    "jumbo_yi": 1.19,
+    "block_yi": -0.2,
+    "pct": 1.67
+   },
+   {
+    "name": "铁路运输",
+    "net_yi": 0.74,
+    "jumbo_yi": 1.0,
+    "block_yi": -0.26,
+    "pct": 12.49
+   },
+   {
+    "name": "培训教育",
+    "net_yi": 0.67,
+    "jumbo_yi": 0.55,
+    "block_yi": 0.12,
+    "pct": 15.27
+   },
+   {
+    "name": "磨具磨料",
+    "net_yi": 0.66,
+    "jumbo_yi": 0.72,
+    "block_yi": -0.06,
+    "pct": 2.33
+   },
+   {
+    "name": "纸包装",
+    "net_yi": 0.63,
+    "jumbo_yi": 0.31,
+    "block_yi": 0.32,
+    "pct": 8.72
+   },
+   {
+    "name": "照明设备Ⅲ",
+    "net_yi": 0.56,
+    "jumbo_yi": 0.32,
+    "block_yi": 0.24,
+    "pct": 8.0
+   },
+   {
+    "name": "照明设备Ⅱ",
+    "net_yi": 0.56,
+    "jumbo_yi": 0.32,
+    "block_yi": 0.24,
+    "pct": 8.0
+   },
+   {
+    "name": "城商行Ⅲ",
+    "net_yi": 0.54,
+    "jumbo_yi": 0.25,
+    "block_yi": 0.29,
+    "pct": 2.88
+   },
+   {
+    "name": "贸易Ⅲ",
+    "net_yi": 0.52,
+    "jumbo_yi": 0.46,
+    "block_yi": 0.06,
+    "pct": 12.56
+   },
+   {
+    "name": "贸易Ⅱ",
+    "net_yi": 0.52,
+    "jumbo_yi": 0.46,
+    "block_yi": 0.06,
+    "pct": 12.56
+   }
+  ],
+  "mainline": "银行(+4.7亿) → 银行Ⅱ(+4.7亿) → 国有大型银行Ⅲ(+3.05亿)",
+  "resonance": [
+   "全市场涨停 25 只，情绪有温度"
+  ],
+  "conc": {
+   "lead": "银行",
+   "ratio": 1.0,
+   "alert": false
+  }
  },
  "L4": {
-  "candidates": [],
+  "candidates": [
+   {
+    "code": "sz000977",
+    "name": "浪潮信息",
+    "zdf": 2.28,
+    "zljlr": 2.08,
+    "lb": 8.56,
+    "hsl": 1.55,
+    "turnover_yi": 13.12,
+    "price": 57.31,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sh601398",
+    "name": "工商银行",
+    "zdf": 1.17,
+    "zljlr": 1.55,
+    "lb": 2.78,
+    "hsl": 0.03,
+    "turnover_yi": 7.8,
+    "price": 8.66,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz000530",
+    "name": "冰山冷热",
+    "zdf": 3.21,
+    "zljlr": 1.03,
+    "lb": 7.55,
+    "hsl": 19.27,
+    "turnover_yi": 9.07,
+    "price": 7.72,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz002421",
+    "name": "达实智能",
+    "zdf": 7.06,
+    "zljlr": 1.03,
+    "lb": 6.27,
+    "hsl": 8.32,
+    "turnover_yi": 5.74,
+    "price": 3.49,
+    "stype": "GP-A",
+    "type": "中继观察"
+   }
+  ],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
