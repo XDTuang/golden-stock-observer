@@ -1,24 +1,24 @@
 {
-  "generated_at": "2026-10-29 08:33",
-  "session": "preopen",
-  "data_date": "2026-10-28",
-  "for_date": "2026-10-29",
+  "generated_at": "2026-10-29 22:02",
+  "session": "close",
+  "data_date": "2026-10-29",
+  "for_date": "2026-10-30",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-10-29"
+    "2026-10-30"
   ],
   "span_days": 1,
   "display_days": [
-    "2026-10-28",
-    "2026-10-29"
+    "2026-10-29",
+    "2026-10-30"
   ],
-  "display_text": "10/28 + 10/29",
+  "display_text": "10/29 + 10/30",
   "span_is_weekend_cross": false,
-  "span_text": "10/29",
+  "span_text": "10/30",
   "carry": {
-    "from_data_date": "2026-10-28",
-    "ref": "output/feed_review_2026-10-28.json",
+    "from_data_date": "2026-10-29",
+    "ref": "output/feed_review_2026-10-29.json",
     "exists": true,
     "gap_days": 1,
     "stale": false,
@@ -31,42 +31,44 @@
     "headline": ""
   },
   "layers": {
-    "base": "2026-10-28 A股收盘（基准层）",
-    "overnight": "美东 2026-10-28 收盘（北京 2026-10-29 早间到达）",
-    "premarket": "2026-10-29 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-10-29 A股收盘（基准层）",
+    "overnight": "美东 2026-10-29 收盘（北京 2026-10-30 早间到达）",
+    "premarket": "2026-10-30 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-10-28",
+    "date": "2026-10-29",
     "run_date": "2026-10-29",
-    "preopen_partial": true,
+    "preopen_partial": null,
     "us_kline": true,
     "asia": true
   },
   "covered": [
-    {
-      "date": "2026-10-28",
-      "weekday": "周三",
-      "is_trading_day": true,
-      "news": 300,
-      "feeds": 0,
-      "reports": 1807,
-      "macro": true
-    },
     {
       "date": "2026-10-29",
       "weekday": "周四",
       "is_trading_day": true,
       "news": 285,
       "feeds": 0,
-      "reports": 88,
+      "reports": 1498,
       "macro": true
+    },
+    {
+      "date": "2026-10-30",
+      "weekday": "周五",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
     }
   ],
   "totals": {
-    "news": 585,
+    "news": 285,
     "feeds": 0,
-    "reports": 1895,
+    "reports": 1498,
     "covered_days": 2
   },
-  "missing": []
+  "missing": [
+    "market_thermometer.json 数据日 2026-10-28 落后于基准日 2026-10-29"
+  ]
 }
