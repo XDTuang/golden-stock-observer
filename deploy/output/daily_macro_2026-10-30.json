@@ -1,0 +1,312 @@
+{
+  "date": "2026-10-30",
+  "generated_at": "2026-10-30 08:31",
+  "china": {
+    "pmi": {
+      "latest": {
+        "月份": "2026年09月份",
+        "制造业-指数": 50.1,
+        "制造业-同比增长": 0.60240964,
+        "非制造业-指数": 50.2,
+        "非制造业-同比增长": 0.4
+      },
+      "rows": 225
+    },
+    "gdp": {
+      "latest": {
+        "季度": "2026年第1-3季度",
+        "国内生产总值-绝对值": 1071071.2,
+        "国内生产总值-同比增长": 4.6,
+        "第一产业-绝对值": 58993.9,
+        "第一产业-同比增长": 3.7,
+        "第二产业-绝对值": 383822.3,
+        "第二产业-同比增长": 3.8,
+        "第三产业-绝对值": 628255.0,
+        "第三产业-同比增长": 5.2
+      },
+      "rows": 83
+    },
+    "cpi": {
+      "latest": {
+        "月份": "2026年09月份",
+        "全国-当月": 100.9,
+        "全国-同比增长": 0.9,
+        "全国-环比增长": 0.2,
+        "全国-累计": 100.9,
+        "城市-当月": 100.9,
+        "城市-同比增长": 0.9,
+        "城市-环比增长": 0.2,
+        "城市-累计": 100.9,
+        "农村-当月": 100.8,
+        "农村-同比增长": 0.8,
+        "农村-环比增长": 0.4,
+        "农村-累计": 100.7
+      },
+      "rows": 225
+    },
+    "lpr": {
+      "latest": {
+        "TRADE_DATE": "2026-10-20",
+        "LPR1Y": 3.0,
+        "LPR5Y": 3.5,
+        "RATE_1": 4.35,
+        "RATE_2": 4.9
+      },
+      "rows": 1577
+    }
+  },
+  "us": {
+    "note": "主源=百度经济日历(带公布日/预期/前值)；兜底=新闻抽取(近 7 日)",
+    "calendar": {
+      "source": "百度经济日历 news_economic_baidu",
+      "window_days": 7,
+      "lookback_days": 45,
+      "lookback_used_to": "2026-10-02",
+      "days_fetched": 29,
+      "as_of": "2026-10-30 08:31",
+      "indicators": {
+        "CPI 同比": [
+          {
+            "event": "美国9月CPI年率未季调(%)",
+            "value": "3.7",
+            "forecast": "3.6",
+            "previous": "3.4",
+            "importance": 2,
+            "release_date": "2026-10-14",
+            "release_time": "20:30",
+            "days_ago": 16,
+            "is_fresh": false
+          }
+        ],
+        "核心 CPI": [
+          {
+            "event": "美国9月核心CPI年率未季调(%)",
+            "value": "2.6",
+            "forecast": "2.5",
+            "previous": "2.4",
+            "importance": 2,
+            "release_date": "2026-10-14",
+            "release_time": "20:30",
+            "days_ago": 16,
+            "is_fresh": false
+          }
+        ],
+        "CPI 月率": [
+          {
+            "event": "美国9月CPI月率季调后(%)",
+            "value": "0.6",
+            "forecast": "0.6",
+            "previous": "0.4",
+            "importance": 1,
+            "release_date": "2026-10-14",
+            "release_time": "20:30",
+            "days_ago": 16,
+            "is_fresh": false
+          }
+        ],
+        "核心CPI月率": [
+          {
+            "event": "美国9月核心CPI月率季调后(%)",
+            "value": "0.3",
+            "forecast": "0.2",
+            "previous": "0.3",
+            "importance": 1,
+            "release_date": "2026-10-14",
+            "release_time": "20:30",
+            "days_ago": 16,
+            "is_fresh": false
+          }
+        ],
+        "非农": [
+          {
+            "event": "美国9月非农就业人口变动季调后(万)",
+            "value": "2.9",
+            "forecast": "9.0",
+            "previous": "13.3",
+            "importance": 2,
+            "release_date": "2026-10-02",
+            "release_time": "20:30",
+            "days_ago": 28,
+            "is_fresh": false
+          }
+        ],
+        "失业率": [
+          {
+            "event": "美国9月失业率(%)",
+            "value": "4.2",
+            "forecast": "4.1",
+            "previous": "4.1",
+            "importance": 2,
+            "release_date": "2026-10-02",
+            "release_time": "20:30",
+            "days_ago": 28,
+            "is_fresh": false
+          }
+        ],
+        "ADP 就业": [
+          {
+            "event": "美国截至10月10日当周ADP就业周度发布变动(万人)",
+            "value": "1.68",
+            "forecast": "",
+            "previous": "1.85",
+            "importance": 2,
+            "release_date": "2026-10-27",
+            "release_time": "20:15",
+            "days_ago": 3,
+            "is_fresh": true
+          }
+        ],
+        "核心 PCE": [
+          {
+            "event": "美国第三季度核心PCE物价指数年化季率初值(%)",
+            "value": "2.5",
+            "forecast": "2.4",
+            "previous": "3.3",
+            "importance": 2,
+            "release_date": "2026-10-29",
+            "release_time": "20:30",
+            "days_ago": 1,
+            "is_fresh": true
+          },
+          {
+            "event": "美国9月核心PCE物价指数年率(%)",
+            "value": "3.1",
+            "forecast": "3.1",
+            "previous": "3.0",
+            "importance": 2,
+            "release_date": "2026-10-29",
+            "release_time": "20:30",
+            "days_ago": 1,
+            "is_fresh": true
+          }
+        ],
+        "初请失业金": [
+          {
+            "event": "美国截至10月24日当周初请失业金人数(万)",
+            "value": "19.4",
+            "forecast": "19.9",
+            "previous": "19.4",
+            "importance": 2,
+            "release_date": "2026-10-29",
+            "release_time": "20:30",
+            "days_ago": 1,
+            "is_fresh": true
+          }
+        ],
+        "GDP": [
+          {
+            "event": "美国第三季度GDP隐性平减指数季率-季调后初值(%)",
+            "value": "2.1",
+            "forecast": "3.5",
+            "previous": "6.1",
+            "importance": 2,
+            "release_date": "2026-10-29",
+            "release_time": "20:30",
+            "days_ago": 1,
+            "is_fresh": true
+          },
+          {
+            "event": "美国第三季度GDP价格指数季率初值(%)",
+            "value": "2.3",
+            "forecast": "3.5",
+            "previous": "6.1",
+            "importance": 2,
+            "release_date": "2026-10-29",
+            "release_time": "20:30",
+            "days_ago": 1,
+            "is_fresh": true
+          }
+        ]
+      }
+    },
+    "indicators": {
+      "核心PCE": [
+        {
+          "title": "东方财富财经早餐 10月30日周五",
+          "evidence": [
+            "2、美国9月核心PCE同比上涨3.1%，美联储12月或加息25个基点"
+          ],
+          "date": "2026-10-30",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-30 06:00:18",
+          "source": "财经早餐"
+        }
+      ],
+      "整体PCE": [
+        {
+          "title": "美联储等来的仍是“热数据”：美国9月关键通胀指标升温",
+          "evidence": [
+            "美联储等来的仍是“热数据”：美国9月关键通胀指标升温 【美联储等来的仍是“热数据”：美国9月关键通胀指标升温】美联储决定维持利率不变次日公布的数据显示，该行最青睐的通胀指标——个人"
+          ],
+          "date": "2026-10-30",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-30 02:52:23",
+          "source": "东财全球"
+        }
+      ],
+      "CPI": [
+        {
+          "title": "日本10月东京核心CPI同比上升2.6% 预期2.60%",
+          "evidence": [
+            "日本10月东京核心CPI同比上升2.6% 预期2.60% 日本10月东京核心CPI同比上升2.6%，预期2.60%，前值2.70%"
+          ],
+          "date": "2026-10-30",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-30 07:31:11",
+          "source": "东财全球"
+        }
+      ],
+      "美联储/利率": [
+        {
+          "title": "美联储等来的仍是“热数据”：美国9月关键通胀指标升温",
+          "evidence": [
+            "美联储等来的仍是“热数据”：美国9月关键通胀指标升温 【美联储等来的仍是“热数据”：美国9月关键通胀指标升温】美联储决定维持利率不变次日公布的数据显示，该行最青睐的通胀指标——个人"
+          ],
+          "date": "2026-10-30",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-30 02:52:23",
+          "source": "东财全球"
+        },
+        {
+          "title": "东方财富财经早餐 10月30日周五",
+          "evidence": [
+            "2、美国9月核心PCE同比上涨3.1%，美联储12月或加息25个基点"
+          ],
+          "date": "2026-10-30",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-10-30 06:00:18",
+          "source": "财经早餐"
+        },
+        {
+          "title": "东方财富财经早餐 10月29日周四",
+          "evidence": [
+            "东方财富财经早餐 10月29日周四 【东方财富财经早餐 10月29日周四】1、美联储维持基准利率不变，美联储主席沃什宣布明年起减少议息频次"
+          ],
+          "date": "2026-10-29",
+          "days_ago": 1,
+          "is_fresh": true,
+          "time": "2026-10-29 06:00:54",
+          "source": "财经早餐"
+        }
+      ]
+    },
+    "stale": [
+      "非农",
+      "初请失业金",
+      "耐用品订单",
+      "美国GDP",
+      "美债收益率"
+    ],
+    "log": [
+      "日历 2026-10-30 失败: HTTPError",
+      "日历 2026-10-21 失败: HTTPError",
+      "日历 2026-10-15 失败: HTTPError",
+      "新闻池 600 条 → 窗口内(7日) 206 条；命中 4 指标"
+    ]
+  }
+}
