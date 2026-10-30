@@ -1,34 +1,38 @@
 {
   "date": "",
-  "generated_at": "2026-10-30 21:48",
-  "pool_generated_at": "2026-10-30 21:48",
+  "generated_at": "2026-10-30 22:17",
+  "pool_generated_at": "2026-10-30 22:02",
   "pool_source": "daily_news_window.json（N 日滚动池）",
   "sources": {},
-  "pool_total": 4118,
-  "total": 593,
+  "pool_total": 4120,
+  "total": 307,
   "window": {
-    "generated_at": "2026-10-30 08:33",
-    "session": "preopen",
-    "data_date": "2026-10-29",
-    "for_date": "2026-10-30",
+    "generated_at": "2026-10-30 22:02",
+    "session": "close",
+    "data_date": "2026-10-30",
+    "for_date": "2026-11-02",
     "data_date_note": "",
     "warnings": [],
     "span": [
-      "2026-10-30"
+      "2026-10-31",
+      "2026-11-01",
+      "2026-11-02"
     ],
-    "span_days": 1,
+    "span_days": 3,
     "display_days": [
-      "2026-10-29",
-      "2026-10-30"
+      "2026-10-30",
+      "2026-10-31",
+      "2026-11-01",
+      "2026-11-02"
     ],
-    "display_text": "10/29 + 10/30",
-    "span_is_weekend_cross": false,
-    "span_text": "10/30",
+    "display_text": "10/30–11/02",
+    "span_is_weekend_cross": true,
+    "span_text": "10/31–11/02",
     "carry": {
-      "from_data_date": "2026-10-29",
-      "ref": "output/feed_review_2026-10-29.json",
+      "from_data_date": "2026-10-30",
+      "ref": "output/feed_review_2026-10-30.json",
       "exists": true,
-      "gap_days": 1,
+      "gap_days": 3,
       "stale": false,
       "bias": "中性",
       "bias_score": 1,
@@ -39,55 +43,77 @@
       "headline": ""
     },
     "layers": {
-      "base": "2026-10-29 A股收盘（基准层）",
-      "overnight": "美东 2026-10-29 收盘（北京 2026-10-30 早间到达）",
-      "premarket": "2026-10-30 今早日韩实时 + 盘前新闻/投喂增量"
+      "base": "2026-10-30 A股收盘（基准层）",
+      "overnight": "美东 2026-10-30 收盘（北京 2026-10-31 早间到达）",
+      "premarket": "2026-11-02 今早日韩实时 + 盘前新闻/投喂增量"
     },
     "market_state": {
-      "date": "2026-10-29",
+      "date": "2026-10-30",
       "run_date": "2026-10-30",
-      "preopen_partial": true,
+      "preopen_partial": null,
       "us_kline": true,
       "asia": true
     },
     "covered": [
-      {
-        "date": "2026-10-29",
-        "weekday": "周四",
-        "is_trading_day": true,
-        "news": 293,
-        "feeds": 0,
-        "reports": 1851,
-        "macro": true
-      },
       {
         "date": "2026-10-30",
         "weekday": "周五",
         "is_trading_day": true,
         "news": 289,
         "feeds": 0,
-        "reports": 57,
+        "reports": 1041,
         "macro": true
+      },
+      {
+        "date": "2026-10-31",
+        "weekday": "周六",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-11-01",
+        "weekday": "周日",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-11-02",
+        "weekday": "周一",
+        "is_trading_day": true,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
       }
     ],
     "totals": {
-      "news": 582,
+      "news": 289,
       "feeds": 0,
-      "reports": 1908,
-      "covered_days": 2
+      "reports": 1041,
+      "covered_days": 4
     },
     "missing": [
-      "market_thermometer.json 数据日 2026-10-28 落后于基准日 2026-10-29"
+      "market_thermometer.json 数据日 2026-10-29 落后于基准日 2026-10-30"
     ]
   },
   "span": [
-    "2026-10-30"
+    "2026-10-31",
+    "2026-11-01",
+    "2026-11-02"
   ],
   "display_days": [
-    "2026-10-29",
-    "2026-10-30"
+    "2026-10-30",
+    "2026-10-31",
+    "2026-11-01",
+    "2026-11-02"
   ],
-  "window_is_cross": false,
+  "window_is_cross": true,
   "show_n": 6,
   "top_per_tag": 12,
   "by_day": [
@@ -95,14 +121,14 @@
       "date": "2026-10-30",
       "weekday": "周五",
       "is_trading_day": true,
-      "count": 306,
+      "count": 307,
       "show_n": 6,
       "tag_stats": {
-        "宏观": 37,
-        "政策": 40,
+        "宏观": 32,
+        "政策": 38,
         "科技": 37,
-        "产业": 35,
-        "美股映射": 13,
+        "产业": 41,
+        "美股映射": 16,
         "持仓": 3
       },
       "items": [
@@ -266,6 +292,437 @@
           "collected_date": "2026-10-30"
         },
         {
+          "title": "现货白银大跌5%",
+          "summary": "现货白银大跌5%，现报49.31美元/盎司。",
+          "time": "10/30 22:01",
+          "source": "同花顺全球",
+          "url": "https://news.10jqka.com.cn/20261030/c681314967.shtml",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "NYMEX汽油主力合约涨超2%",
+          "summary": "NYMEX汽油主力合约涨超2%，现报3.16美元/加仑。",
+          "time": "10/30 22:00",
+          "source": "同花顺全球",
+          "url": "https://news.10jqka.com.cn/20261030/c681314950.shtml",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "【商务部新闻发言人就美国联邦通信委员会投票通过检测实验室限制措施事答记者问】问：",
+          "summary": "【商务部新闻发言人就美国联邦通信委员会投票通过检测实验室限制措施事答记者问】问：美东时间10月29日，美国联邦通信委员会（FCC）投票通过检测实验室限制措施，自2028年12月1日…",
+          "time": "10/30 22:00",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "商务部新闻发言人就美国联邦通信委员会投票通过检测实验室限制措施事答记者问",
+          "summary": "商务部新闻发言人就美国联邦通信委员会投票通过检测实验室限制措施事答记者问。我们注意到有关情况。一段时间以来，美国联邦通信委员会罔顾中方反复交涉，违背两国元首达成的重要共识，频频出台…",
+          "time": "10/30 22:00",
+          "source": "同花顺全球",
+          "url": "https://news.10jqka.com.cn/20261030/c681314943.shtml",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "埃克森美孚预计，Golden Pass液化天然气项目2号生产线将于12月基本完工",
+          "summary": "埃克森美孚预计，Golden Pass液化天然气项目2号生产线将于12月基本完工后开始调试。",
+          "time": "10/30 21:59",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "沙特阿美在遭到也门胡塞武装打击后，关闭了拉斯坦努拉炼油厂的原油蒸馏装置。",
+          "summary": "沙特阿美在遭到也门胡塞武装打击后，关闭了拉斯坦努拉炼油厂的原油蒸馏装置。",
+          "time": "10/30 21:59",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "欧洲央行管委科赫尔：如果形势不能迅速好转，就有必要采取行动",
+          "summary": "欧洲央行管委科赫尔表示，如果形势不能迅速好转，就有必要采取行动。",
+          "time": "10/30 21:59",
+          "source": "同花顺全球",
+          "url": "https://news.10jqka.com.cn/20261030/c681314930.shtml",
+          "tags": [
+            "宏观",
+            "政策"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "埃克森美孚首席执行官表示，公司预计将在2027年年中实现Golden Pass液",
+          "summary": "埃克森美孚首席执行官表示，公司预计将在2027年年中实现Golden Pass液化天然气项目第三条生产线的机械竣工。",
+          "time": "10/30 21:59",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "金价降了水贝卖爆了 水贝黄金门店销量翻番",
+          "summary": "【金价降了水贝卖爆了 水贝黄金门店销量翻番】下午3点，记者在水贝黄金市场看到，虽然是工作日，各大黄金柜台前依然人头攒动。金价下跌，激发了消费热情，不少店铺黄金饰品的销售额都出现了明…",
+          "time": "10/30 21:58",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917176327.html",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "国际航空运输协会：9月全球航空客运需求下降，但较8月有所改善",
+          "summary": "国际航空运输协会（IATA）数据显示，受中东和北美地区需求下滑拖累，9月全球航空客运需求下降0.5%，而非洲、拉丁美洲和加勒比地区则实现增长。以收入客公里（RPK）衡量，中东地区航…",
+          "time": "10/30 21:58",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002946613/international-air-transport-association-global-air-passenger-demand-declined-in",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "埃克森美孚石油(XOM.N)CEO：霍尔木兹海峡必须重新开放。",
+          "summary": "埃克森美孚石油(XOM.N)CEO：霍尔木兹海峡必须重新开放。",
+          "time": "10/30 21:58",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002946592/exxon-mobil-xomn-ceo-the-strait-of-hormuz-must-be",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "埃克森美孚石油(XOM.N)CEO：没有关于卡塔尔液化天然气的最新消息。",
+          "summary": "埃克森美孚石油(XOM.N)CEO：没有关于卡塔尔液化天然气的最新消息。",
+          "time": "10/30 21:56",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002946440/exxon-mobil-xomn-ceo-no-latest-updates-on-qatar-lng",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "埃克森美孚首席执行官：公司计划扩大天然气业务组合",
+          "summary": "埃克森美孚首席执行官表示，公司计划扩大天然气业务组合，并寻找更多机会。",
+          "time": "10/30 21:56",
+          "source": "同花顺全球",
+          "url": "https://news.10jqka.com.cn/20261030/c681314899.shtml",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "俄罗斯计划延长柴油出口禁令，同时保留部分豁免",
+          "summary": "俄罗斯计划将大部分柴油出口禁令延长至2027年1月，但根据总统普京与美国总统特朗普达成的协议，仍将允许部分柴油流向国际市场。俄罗斯塔斯社援引副总理诺瓦克的说法报道称，政府目前正在起…",
+          "time": "10/30 21:56",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002946429/russia-plans-to-extend-the-diesel-export-ban-while-maintaining",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "【金价降了水贝卖爆了 水贝黄金门店销量翻番】下午3点，记者在水贝黄金市场看到，虽",
+          "summary": "【金价降了水贝卖爆了 水贝黄金门店销量翻番】下午3点，记者在水贝黄金市场看到，虽然是工作日，各大黄金柜台前依然人头攒动。 金价下跌，激发了消费热情，不少店铺黄金饰品的销售额都出现了…",
+          "time": "10/30 21:56",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "英特尔跌30% 市值蒸发近1500亿美元 四季度盈利指引不及预期",
+          "summary": "【英特尔跌30% 市值蒸发近1500亿美元 四季度盈利指引不及预期】英特尔美股开盘后持续走低，现跌超30%，报64.400美元/股，总市值报3420亿美元，总市值蒸发近1500亿美…",
+          "time": "10/30 21:55",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917171060.html",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "埃克森美孚首席执行官表示，公司计划扩大天然气业务组合，并寻找更多机会。",
+          "summary": "埃克森美孚首席执行官表示，公司计划扩大天然气业务组合，并寻找更多机会。",
+          "time": "10/30 21:55",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "【商务部国际司负责人解读中国—瑞士自由贸易协定升级议定书】《议定书》对原自贸协定",
+          "summary": "【商务部国际司负责人解读中国—瑞士自由贸易协定升级议定书】《议定书》对原自贸协定进行升级，进一步完善了货物贸易、原产地规则和实施程序、海关程序与贸易便利化、技术性贸易壁垒、服务贸易…",
+          "time": "10/30 21:55",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [
+            "宏观"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "中国与瑞士签署自贸协定升级议定书",
+          "summary": "【中国与瑞士签署自贸协定升级议定书】10月30日，在习近平主席和瑞士联邦主席帕姆兰的共同见证下，商务部部长王文涛与瑞士联邦经济、教研部国务秘书兼经济总局局长布德里格在京签署中瑞自贸…",
+          "time": "10/30 21:55",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917170451.html",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "英特尔(INTC.O)跌幅扩大至30%，或将创下有记录以来最大单日跌幅。",
+          "summary": "英特尔(INTC.O)跌幅扩大至30%，或将创下有记录以来最大单日跌幅。",
+          "time": "10/30 21:55",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002946203/intel-s-intco-decline-widened-to-30-potentially-marking-its",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "美股英特尔盘中跌超30% 或将创下有记录以来最大单日跌幅",
+          "summary": "美股英特尔盘中跌超30.01%，现报64.44美元，总市值为3421.76亿美元，或将创下有记录以来最大单日跌幅。",
+          "time": "10/30 21:55",
+          "source": "同花顺全球",
+          "url": "https://news.10jqka.com.cn/20261030/c681314877.shtml",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "沥青连续主力合约日内涨4%，现报5413.00元。",
+          "summary": "沥青连续主力合约日内涨4%，现报5413.00元。",
+          "time": "10/30 21:55",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "利比亚国家石油公司表示，武装团体关闭了哈马达与扎维耶炼油厂之间输油管道上的阀门。",
+          "summary": "利比亚国家石油公司表示，武装团体关闭了哈马达与扎维耶炼油厂之间输油管道上的阀门。",
+          "time": "10/30 21:54",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002946173/the-national-oil-corporation-of-libya-stated-that-armed-groups",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "利比亚国家石油公司发表声明称，一武装团体关闭了哈马达与扎维耶炼油厂之间输油管道上",
+          "summary": "利比亚国家石油公司发表声明称，一武装团体关闭了哈马达与扎维耶炼油厂之间输油管道上的阀门。",
+          "time": "10/30 21:54",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "雪佛龙(CVX.N)CEO：我们正寻求通过液化天然气及其他类型的能源供应，满足欧",
+          "summary": "雪佛龙(CVX.N)CEO：我们正寻求通过液化天然气及其他类型的能源供应，满足欧洲的进口需求。",
+          "time": "10/30 21:53",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002946079/chevron-cvxn-ceo-we-are-seeking-to-meet-europe-s",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "克里姆林宫称炼油厂遇袭不会阻碍俄美乌三方会谈",
+          "summary": "克里姆林宫称，炼油厂遇袭不会阻碍俄美乌三方会谈。",
+          "time": "10/30 21:53",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917171648.html",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "美国疾病控制与预防中心（CDC）：截至2026年10月29日，美国已确诊4852",
+          "summary": "美国疾病控制与预防中心（CDC）：截至2026年10月29日，美国已确诊4852例麻疹病例。",
+          "time": "10/30 21:53",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "美元指数突破102关口，日内涨0.12%。",
+          "summary": "美元指数突破102关口，日内涨0.12%。",
+          "time": "10/30 21:53",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "【中国与瑞士签署自贸协定升级议定书】10月30日，在习近平主席和瑞士联邦主席帕姆",
+          "summary": "【中国与瑞士签署自贸协定升级议定书】10月30日，在习近平主席和瑞士联邦主席帕姆兰的共同见证下，商务部部长王文涛与瑞士联邦经济、教研部国务秘书兼经济总局局长布德里格在京签署中瑞自贸…",
+          "time": "10/30 21:53",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "纳斯达克中国金龙指数涨近0.5%，名创优品(MNSO.N)涨4.3%，Boss直",
+          "summary": "纳斯达克中国金龙指数涨近0.5%，名创优品(MNSO.N)涨4.3%，Boss直聘(BZ.N)涨3.5%，叮咚买菜(DDL.N)涨2.6%。",
+          "time": "10/30 21:51",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002945935/the-nasdaq-golden-dragon-china-index-rose-nearly-0-5",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "雪佛龙首席执行官：预计全球原油和成品油价格都将维持高位",
+          "summary": "雪佛龙首席执行官表示，预计全球原油和成品油价格都将维持高位。",
+          "time": "10/30 21:51",
+          "source": "同花顺全球",
+          "url": "https://news.10jqka.com.cn/20261030/c681314807.shtml",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "【火山引擎重心全面转向商业化，MaaS上半年毛利率超55%】字节跳动旗下云服务平",
+          "summary": "【火山引擎重心全面转向商业化，MaaS上半年毛利率超55%】字节跳动旗下云服务平台火山引擎的MaaS（模型即服务）业务收入达到48亿元，毛利率超过55%，这也是字节跳动当前收入规模…",
+          "time": "10/30 21:50",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [
+            "宏观"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "现货黄金失守3920美元/盎司",
+          "summary": "现货黄金失守3920美元/盎司，日内跌2.51%。同花顺黄金现货价格报841.53元/克，现跌2.53%。",
+          "time": "10/30 21:50",
+          "source": "同花顺全球",
+          "url": "https://news.10jqka.com.cn/20261030/c681314800.shtml",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "现货黄金失守3920美元/盎司，日内跌2.54%。",
+          "summary": "现货黄金失守3920美元/盎司，日内跌2.54%。",
+          "time": "10/30 21:50",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "美股费城半导体指数跌幅扩大至6%",
+          "summary": "美股费城半导体指数跌幅扩大至6%。英伟达股价下跌3.24%，台积电股价下跌3.83%，博通股价下跌5.04%，美光科技股价下跌4.46%，超威半导体股价下跌9.48%，英特尔股价下…",
+          "time": "10/30 21:50",
+          "source": "同花顺全球",
+          "url": "https://news.10jqka.com.cn/20261030/c681314792.shtml",
+          "tags": [
+            "科技",
+            "美股映射"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "英特尔业绩引发科技股普跌，半导体板块集体走低",
+          "summary": "英特尔业绩不及预期且前景展望疲弱，加上亚马逊业绩未达预期，重新引发市场对人工智能投资交易的担忧，半导体股随之普遍下跌。跌势蔓延至整个半导体行业，芯片设备制造商、晶圆代工厂和模拟芯片…",
+          "time": "10/30 21:50",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002945419/intel-s-earnings-trigger-broad-decline-in-tech-stocks-semiconductor",
+          "tags": [
+            "科技",
+            "美股映射"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "纽约期金失守3930美元/盎司，日内跌2.52%。",
+          "summary": "纽约期金失守3930美元/盎司，日内跌2.52%。",
+          "time": "10/30 21:50",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "雪佛龙首席执行官迈克·沃斯表示，预计全球原油和成品油价格都将维持高位。",
+          "summary": "雪佛龙首席执行官迈克·沃斯表示，预计全球原油和成品油价格都将维持高位。",
+          "time": "10/30 21:50",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "雪佛龙(CVX.N)CEO：乐观认为公司将成功结束与伊拉克方面的谈判，并最早于明",
+          "summary": "雪佛龙(CVX.N)CEO：乐观认为公司将成功结束与伊拉克方面的谈判，并最早于明年开展业务。",
+          "time": "10/30 21:50",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002945390/chevron-cvxn-ceo-optimistic-that-the-company-will-successfully-conclude",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "星巴克(SBUX.O)CEO：多品牌模式存在可能。",
+          "summary": "星巴克(SBUX.O)CEO：多品牌模式存在可能。",
+          "time": "10/30 21:49",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002945308/starbucks-sbuxo-ceo-a-multi-brand-model-is-a-possibility",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "费城半导体指数跌幅扩大至6%",
+          "summary": "【费城半导体指数跌幅扩大至6%】费城半导体指数跌幅扩大至6%。英伟达股价下跌3.24%，台积电股价下跌3.83%，博通股价下跌5.04%，美光科技股价下跌4.46%，超威半导体股价…",
+          "time": "10/30 21:49",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917148614.html",
+          "tags": [
+            "科技",
+            "美股映射"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "美国总统特朗普将于本周日分别在爱荷华州和堪萨斯州举行集会。",
+          "summary": "美国总统特朗普将于本周日分别在爱荷华州和堪萨斯州举行集会。",
+          "time": "10/30 21:48",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002945282/us-president-trump-will-hold-rallies-in-iowa-and-kansas",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "【费城半导体指数日内跌6%】费城半导体指数日内跌6.00%，现报10826.61",
+          "summary": "【费城半导体指数日内跌6%】费城半导体指数日内跌6.00%，现报10826.61点。英伟达跌3.35%，博通跌5.02%，美光跌4.49%，英特尔跌29.43%，AMD跌9.54%…",
+          "time": "10/30 21:48",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [
+            "科技",
+            "美股映射"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "雪佛龙首席执行官迈克·沃斯：乐观地认为公司将成功结束伊拉克谈判，并最早于明年建立",
+          "summary": "雪佛龙首席执行官迈克·沃斯：乐观地认为公司将成功结束伊拉克谈判，并最早于明年建立业务。",
+          "time": "10/30 21:48",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
           "title": "匈牙利石油和天然气有限公司：多瑙河炼油厂的AV3蒸馏装置已恢复满负荷运行。",
           "summary": "匈牙利石油和天然气有限公司：多瑙河炼油厂的AV3蒸馏装置已恢复满负荷运行。",
           "time": "10/30 21:47",
@@ -297,12 +754,34 @@
           "collected_date": "2026-10-30"
         },
         {
+          "title": "美国10月芝加哥PMI为55.3 预期56.1",
+          "summary": "美国10月芝加哥PMI为55.3，预期56.1，前值58.8。",
+          "time": "10/30 21:46",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917145642.html",
+          "tags": [
+            "宏观"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
           "title": "纳斯达克中国金龙指数涨超0.5%，高途涨5.07%，名创优品涨4.61%，BOS",
           "summary": "纳斯达克中国金龙指数涨超0.5%，高途涨5.07%，名创优品涨4.61%，BOSS直聘涨3.56%，叮咚买菜涨2.85%，百胜中国涨2.88%。",
           "time": "10/30 21:46",
           "source": "新浪全球",
           "url": "",
           "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "国际油价走高带动能源股集体上涨 埃克森美孚、雪佛龙等创历史新高",
+          "summary": "【国际油价走高带动能源股集体上涨 埃克森美孚、雪佛龙等创历史新高】美股能源板块逆势走强，埃克森美孚涨2.18%，报187.29美元，盘中最高触及187.93美元；雪佛龙涨1.67%…",
+          "time": "10/30 21:46",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917147124.html",
+          "tags": [
+            "产业"
+          ],
           "collected_date": "2026-10-30"
         },
         {
@@ -317,6 +796,29 @@
           "collected_date": "2026-10-30"
         },
         {
+          "title": "美国10月芝加哥PMI 55.3，预期56.1，前值58.8。",
+          "summary": "美国10月芝加哥PMI 55.3，预期56.1，前值58.8。",
+          "time": "10/30 21:45",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002944851/the-us-chicago-pmi-for-october-stood-at-55-3",
+          "tags": [
+            "宏观"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "美股光通信板块普跌",
+          "summary": "【美股光通信板块普跌】美股光通信板块普跌，Coherent跌8.2%，Lumentum跌7.7%，迈威尔科技跌7%，康宁跌2%。",
+          "time": "10/30 21:45",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917142628.html",
+          "tags": [
+            "科技",
+            "美股映射"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
           "title": "【奥精医疗：收到上交所无法按期披露三季报监管工作函】奥精医疗公告称，公司于202",
           "summary": "【奥精医疗：收到上交所无法按期披露三季报监管工作函】奥精医疗公告称，公司于2026年10月30日收到上海证券交易所下发的《关于公司无法按期披露2026年第三季度报告的监管工作函》。…",
           "time": "10/30 21:45",
@@ -324,26 +826,6 @@
           "url": "",
           "tags": [
             "政策"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "【ST标准：拟以4924.05万元收购昊友航材51%股权】ST标准公告，公司拟以",
-          "summary": "【ST标准：拟以4924.05万元收购昊友航材51%股权】ST标准公告，公司拟以现金方式收购肖志超、胡百纯、任鹏刚持有的西安昊友航天复合材料有限公司51%股权，交易对价4924.0…",
-          "time": "10/30 21:45",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "美国10月芝加哥PMI 55.3，预期 56.1，前值 58.8。",
-          "summary": "美国10月芝加哥PMI 55.3，预期 56.1，前值 58.8。",
-          "time": "10/30 21:45",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [
-            "宏观"
           ],
           "collected_date": "2026-10-30"
         },
@@ -365,24 +847,6 @@
           "tags": [
             "产业"
           ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "Brightspring Health股价创三个多月新高，最新上涨12%，此前第",
-          "summary": "Brightspring Health股价创三个多月新高，最新上涨12%，此前第三季度营收超预期并上调全年业绩指引。",
-          "time": "10/30 21:43",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "里士满联储主席巴金表示，接下来一段时间将看到能了解到什么情况。",
-          "summary": "里士满联储主席巴金表示，接下来一段时间将看到能了解到什么情况。",
-          "time": "10/30 21:43",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
           "collected_date": "2026-10-30"
         },
         {
@@ -435,15 +899,6 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "里士满联储主席巴金：企业表示成本压力是普遍性的。",
-          "summary": "里士满联储主席巴金：企业表示成本压力是普遍性的。",
-          "time": "10/30 21:42",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
           "title": "美联储巴尔金：企业正计划将这些成本转嫁给客户。",
           "summary": "美联储巴尔金：企业正计划将这些成本转嫁给客户。",
           "time": "10/30 21:42",
@@ -455,42 +910,6 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "通用动力公司高管表示，湾流公司计划到2030年每年交付约200架飞机。",
-          "summary": "通用动力公司高管表示，湾流公司计划到2030年每年交付约200架飞机。",
-          "time": "10/30 21:42",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "联邦快递货运公司公布第四季度盈利预测高于预期，股价上涨14%。",
-          "summary": "联邦快递货运公司公布第四季度盈利预测高于预期，股价上涨14%。",
-          "time": "10/30 21:42",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "里士满联储主席巴金：企业主表示需求仍然稳健，仅非营利组织和住房领域表现疲软。",
-          "summary": "里士满联储主席巴金：企业主表示需求仍然稳健，仅非营利组织和住房领域表现疲软。",
-          "time": "10/30 21:42",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "美国银行全球研究将英特尔评级从买入下调至中性，目标价从145美元下调至100美元",
-          "summary": "美国银行全球研究将英特尔评级从买入下调至中性，目标价从145美元下调至100美元。",
-          "time": "10/30 21:42",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
           "title": "现货金银持续扩大跌幅",
           "summary": "【现货金银持续扩大跌幅】现货黄金向下触及3930美元/盎司，日内跌2.29%。现货白银日内大跌5%，现报49.50美元/盎司。",
           "time": "10/30 21:41",
@@ -499,38 +918,6 @@
           "tags": [
             "产业"
           ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "英特尔业绩预测不及预期，美国芯片股下跌，超威半导体下跌8.4%，英伟达下跌3.2",
-          "summary": "英特尔业绩预测不及预期，美国芯片股下跌，超威半导体下跌8.4%，英伟达下跌3.2%，美光科技下跌4%，安谋控股下跌9.7%。",
-          "time": "10/30 21:41",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [
-            "科技",
-            "美股映射"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "高通下跌6.4%，博通下跌4.2%，iShares半导体ETF下跌6.2%。",
-          "summary": "高通下跌6.4%，博通下跌4.2%，iShares半导体ETF下跌6.2%。",
-          "time": "10/30 21:41",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "Illumina股价跌至逾五周低点，最新下跌14%，此前第三季度营收不及预期。",
-          "summary": "Illumina股价跌至逾五周低点，最新下跌14%，此前第三季度营收不及预期。",
-          "time": "10/30 21:41",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
           "collected_date": "2026-10-30"
         },
         {
@@ -579,15 +966,6 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "戴尔下跌 7.8%，惠普下跌 5.5%，超微电脑下跌 5.2%。",
-          "summary": "戴尔下跌 7.8%，惠普下跌 5.5%，超微电脑下跌 5.2%。",
-          "time": "10/30 21:39",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
           "title": "英伟达股价下跌3.3% 总市值跌破5万亿美元",
           "summary": "【英伟达股价下跌3.3% 总市值跌破5万亿美元】英伟达股价下跌3.3%，报206.610美元/股，总市值报4.98万亿美元。月初以来，英伟达股价累计下跌超9%。",
           "time": "10/30 21:39",
@@ -595,26 +973,6 @@
           "url": "https://finance.eastmoney.com/a/202610303917120779.html",
           "tags": [
             "科技"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "阿斯利康首席执行官：在全球药品定价方面，我们尤其在日本取得了非常好的进展。",
-          "summary": "阿斯利康首席执行官：在全球药品定价方面，我们尤其在日本取得了非常好的进展。",
-          "time": "10/30 21:39",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "里士满联储主席巴金：人工智能投资正导致需求侧通胀，而这类通胀正是美联储可以加以抑",
-          "summary": "里士满联储主席巴金：人工智能投资正导致需求侧通胀，而这类通胀正是美联储可以加以抑制的。",
-          "time": "10/30 21:39",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [
-            "宏观"
           ],
           "collected_date": "2026-10-30"
         },
@@ -627,26 +985,6 @@
           "tags": [
             "宏观",
             "政策"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "亚马逊公布季度业绩后，美国服务器制造商股价下跌。",
-          "summary": "亚马逊公布季度业绩后，美国服务器制造商股价下跌。",
-          "time": "10/30 21:39",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "里士满联储主席巴金：人工智能投资激增给供应链带来压力，这具有通胀效应。",
-          "summary": "里士满联储主席巴金：人工智能投资激增给供应链带来压力，这具有通胀效应。",
-          "time": "10/30 21:38",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [
-            "宏观"
           ],
           "collected_date": "2026-10-30"
         },
@@ -671,15 +1009,6 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "Alphabet股价在前一交易日创下单日最大百分比跌幅后，下跌0.8%。",
-          "summary": "Alphabet股价在前一交易日创下单日最大百分比跌幅后，下跌0.8%。",
-          "time": "10/30 21:38",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
           "title": "闪迪(SNDK.O)第一财季业绩公布后下跌7%。",
           "summary": "闪迪(SNDK.O)第一财季业绩公布后下跌7%。",
           "time": "10/30 21:38",
@@ -698,18 +1027,6 @@
           "url": "https://news.futunn.com/flash/1002943247/federal-reserve-s-barkin-given-relatively-flat-income-the-resilience",
           "tags": [
             "宏观"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "美股半导体、存储、光通信股集体下跌，英特尔跌超28%，AMD、ARM跌超10%，",
-          "summary": "美股半导体、存储、光通信股集体下跌，英特尔跌超28%，AMD、ARM跌超10%，闪迪、AAOI跌超8%，迈威尔科技、Lumentum跌超7%，SK海力士跌近7%，美光科技跌超5%，…",
-          "time": "10/30 21:36",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002943191/us-semiconductor-memory-and-optical-communications-stocks-all-fell-collectively",
-          "tags": [
-            "科技",
-            "美股映射"
           ],
           "collected_date": "2026-10-30"
         },
@@ -749,6 +1066,18 @@
           "source": "东财全球",
           "url": "https://finance.eastmoney.com/a/202610303917097624.html",
           "tags": [],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "美股半导体、存储、光通信股集体下跌，英特尔跌超28%，AMD、ARM跌超10%，",
+          "summary": "美股半导体、存储、光通信股集体下跌，英特尔跌超28%，AMD、ARM跌超10%，闪迪、AAOI跌超8%，迈威尔科技、Lumentum跌超7%，SK海力士跌近7%，美光科技跌超5%，…",
+          "time": "10/30 21:36",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002943191/us-semiconductor-memory-and-optical-communications-stocks-all-fell-collectively",
+          "tags": [
+            "科技",
+            "美股映射"
+          ],
           "collected_date": "2026-10-30"
         },
         {
@@ -865,15 +1194,6 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "亚马逊美股开盘后跌近5%",
-          "summary": "亚马逊美股开盘后跌近5%。公司第三季度营收2019亿美元，同比增长12%；AWS营收460亿美元，同比增长39%。不过，公司预计2026年全年资本开支约2200亿美元，市场关注AI…",
-          "time": "10/30 21:31",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261030/c681314323.shtml",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
           "title": "盘中期权异动：CoreWeave盘中下跌8.0%，现最高成交额的看跌期权涨跌幅为+23%，成交量达到40张",
           "summary": "受大型科技公司财报引发AI资本开支回报担忧影响，$CoreWeave(CRWV.US)$盘中下跌8.0%。现最高成交额的看跌期权涨跌幅为+23%，成交量达到40张，详情可参考期权页…",
           "time": "10/30 21:31",
@@ -891,19 +1211,6 @@
           "source": "东财全球",
           "url": "https://finance.eastmoney.com/a/202610303917069194.html",
           "tags": [
-            "科技",
-            "美股映射"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "闪迪美股开盘后跌超8.8%",
-          "summary": "闪迪美股开盘后跌超8.8%。公司第一财季营收110.31亿美元，同比增长378%；非GAAP每股收益49.51美元，毛利率达到85%。公司预计第二财季营收122亿至126亿美元，但…",
-          "time": "10/30 21:31",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261030/c681314303.shtml",
-          "tags": [
-            "宏观",
             "科技",
             "美股映射"
           ],
@@ -931,32 +1238,11 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "美股开盘：美股三大指数集体低开",
-          "summary": "美股三大指数集体低开，标普500指数跌1.17%，道指跌0.28%，纳指跌2.24%。大型科技股方面，Meta跌1.06%，微软跌1.28%，英伟达跌2.54%，特斯拉跌2.68%…",
-          "time": "10/30 21:30",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261030/c681314300.shtml",
-          "tags": [
-            "科技",
-            "产业"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
           "title": "航行警告！南海海域军事训练",
           "summary": "据中国海事局网站消息，三亚海事局发布航行警告，10月31日至11月5日，南海部分海域进行军事训练，禁止驶入。（央视军事）",
           "time": "10/30 21:30",
           "source": "富途全球",
           "url": "https://news.futunn.com/flash/1002942138/navigation-warning-military-exercises-in-the-south-china-sea",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "乌恢复袭击俄炼油厂",
-          "summary": "俄罗斯副总理诺瓦克对媒体证实，乌克兰今天（10月30日）发射无人机袭击了3座俄罗斯炼油厂和1座天然气化工综合体。有视频显示，俄罗斯萨马拉州新古比雪夫斯克的大型炼油厂今天冒起滚滚黑烟…",
-          "time": "10/30 21:30",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261030/c681314293.shtml",
           "tags": [],
           "collected_date": "2026-10-30"
         },
@@ -1030,17 +1316,6 @@
           "url": "https://news.futunn.com/flash/1002941819/institution-bank-of-england-may-decide-to-raise-interest-rates",
           "tags": [
             "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "沪港金融合作第十次工作会议在上海举行",
-          "summary": "记者获悉，沪港金融合作第十次工作会议10月30日在上海举行，中共上海市委金融委员会办公室常务副主任李俊杰、香港特别行政区政府财经事务及库务局局长许正宇，以及来自沪港两地金融监管部门…",
-          "time": "10/30 21:27",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261030/c681314261.shtml",
-          "tags": [
             "政策"
           ],
           "collected_date": "2026-10-30"
@@ -1127,47 +1402,11 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "瑞银将英特尔公司目标价从100美元下调至80美元",
-          "summary": "瑞银将英特尔公司目标价从100美元下调至80美元。",
-          "time": "10/30 21:18",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261030/c681314056.shtml",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "瑞银：将亚马逊(AMZN.O)目标价从348美元上调至352美元。",
-          "summary": "瑞银：将亚马逊(AMZN.O)目标价从348美元上调至352美元。",
-          "time": "10/30 21:17",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002940688/ubs-group-raised-the-target-price-for-amazon-amzno-from",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
           "title": "宝钢股份：将综合考虑市场环境等因素动态开展股票回购",
           "summary": "【宝钢股份：将综合考虑市场环境等因素动态开展股票回购】宝钢股份10月30日在互动平台表示，公司会综合考虑市场环境、资本市场的需求，以及公司的现金流状况、未来的发展计划、股东利益等因…",
           "time": "10/30 21:17",
           "source": "东财全球",
           "url": "https://finance.eastmoney.com/a/202610303917022360.html",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "沙特民防部门称，吉赞省的危险已解除。",
-          "summary": "沙特民防部门称，吉赞省的危险已解除。",
-          "time": "10/30 21:16",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002940549/the-saudi-civil-defense-announced-that-the-threat-in-jizan",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "基辅市长：自11月2日周一起，基辅将开始为居民楼接入供暖系统。我们是乌克兰首个于",
-          "summary": "基辅市长：自11月2日周一起，基辅将开始为居民楼接入供暖系统。我们是乌克兰首个于10月16日启动供暖季的城市。",
-          "time": "10/30 21:16",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002940542/kyiv-mayor-starting-monday-november-2-kyiv-will-begin-connecting",
           "tags": [],
           "collected_date": "2026-10-30"
         },
@@ -1186,15 +1425,6 @@
           "time": "10/30 21:15",
           "source": "东财全球",
           "url": "https://finance.eastmoney.com/a/202610303917014285.html",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "千里科技：2026年第三季度净利润亏损178.32万元，同比由盈转亏",
-          "summary": "千里科技公告，2026年第三季度营业收入25.91亿元，同比下降6.20%；净利润亏损178.32万元，同比由盈转亏；扣非净利润亏损4890.7万元。2026年前三季度营业收入77…",
-          "time": "10/30 21:15",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261030/c681313988.shtml",
           "tags": [],
           "collected_date": "2026-10-30"
         },
@@ -1226,81 +1456,12 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "维维股份：子公司拟投3.21亿元建植物基生物智造工厂",
-          "summary": "维维股份公告，公司全资子公司徐州维维食品生物科技有限公司拟投资建设植物基生物智造工厂项目，项目分两期建设，本次一期投资约3.21亿元，规划用地面积46626.90m2，一期建设总建…",
-          "time": "10/30 21:13",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261030/c681313963.shtml",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "维维股份：2026年前三季度固体饮料收入增长8.17%",
-          "summary": "维维股份公告，公司2026年前三季度固体饮料类产品销售收入13.6亿元，较2025年1-9月增长8.17%；动植物蛋白饮料类产品销售收入2.71亿元，较2025年1-9月增长2.6…",
-          "time": "10/30 21:13",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261030/c681313958.shtml",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "美国财政部本周国债拍卖融资规模达8390亿美元，创历史新高",
-          "summary": "本周，美国政府通过发行国库券和国债筹集了8390亿美元，创下历史最高纪录。此举既是为了偿还到期债务，也是为了筹集联邦赤字融资所需的额外资金。本周举行的国库券、浮动利率票据，以及2年…",
-          "time": "10/30 21:13",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002940248/us-treasury-securities-auctions-raised-839-billion-this-week-marking",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "巴西基准股指Bovespa下跌1.1%。",
-          "summary": "巴西基准股指Bovespa下跌1.1%。",
-          "time": "10/30 21:11",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002940122/brazil-s-benchmark-bovespa-index-fell-1-1",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "沙特民防部门就吉赞省可能存在的危险发布警报。",
-          "summary": "沙特民防部门就吉赞省可能存在的危险发布警报。",
-          "time": "10/30 21:11",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002940007/the-saudi-civil-defense-issued-an-alert-regarding-potential-hazards",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "世界数据组织航运贸易数字化专业委员会在沪成立",
-          "summary": "在10月30日开幕的2026全球数商大会上，世界数据组织（WDO）航运贸易数字化专业委员会在上海正式成立。据介绍，当前全球航运贸易数字化进入加速发展期，跨境数据有序流动、电子单证跨…",
-          "time": "10/30 21:11",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002939835/the-shipping-and-trade-digitalization-professional-committee-of-the-world",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
           "title": "锦江酒店：第三季度归母净利润5.1亿元 同比增长35.88%",
           "summary": "【锦江酒店：第三季度归母净利润5.1亿元 同比增长35.88%】锦江酒店10月30日公告，2026年第三季度实现营业收入38.78亿元，同比增长4.39%；归母净利润5.1亿元，同…",
           "time": "10/30 21:09",
           "source": "东财全球",
           "url": "https://finance.eastmoney.com/a/202610303916999782.html",
           "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "英国石油公司CEO否认公司拆分传闻",
-          "summary": "英国石油公司（BP）首席执行官梅格·奥尼尔周五明确否认，公司内部曾就拆分事宜展开讨论。此前，媒体Semafor本周援引知情人士报道称，部分BP董事会成员支持拆分公司。奥尼尔表示，她…",
-          "time": "10/30 21:09",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002939537/bp-plc-ceo-denies-rumors-of-company-breakup",
-          "tags": [
-            "产业"
-          ],
           "collected_date": "2026-10-30"
         },
         {
@@ -1375,15 +1536,6 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "国家税务总局：扎实稳妥推进税务合规管理 坚定不移深化税收征管改革",
-          "summary": "国家税务总局党委书记、局长胡静林10月30日主持召开党委（扩大）会议。会议要求，各级税务机关要持之以恒贯通推进全面从严治党与全面从严治税，依法依规征税收费，牢牢守住不收“过头税费”…",
-          "time": "10/30 21:00",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002938324/state-taxation-administration-steadily-and-prudently-advance-tax-compliance-management",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
           "title": "中指研究院：前10月100家房企拿地总额6465亿元",
           "summary": "【中指研究院：前10月100家房企拿地总额6465亿元】中指研究院最新发布《2026年1—10月中国房企投资拿地榜》显示，前10月100家房企拿地总额6465亿元，同比下降17.5…",
           "time": "10/30 21:00",
@@ -1402,45 +1554,12 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "德国10月调和CPI年率初值 2.8%，预期3.1%，前值3.30%。",
-          "summary": "德国10月调和CPI年率初值 2.8%，预期3.1%，前值3.30%。",
-          "time": "10/30 21:00",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002938247/germany-s-preliminary-annual-harmonized-consumer-price-index-hicp-for",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "德国10月调和CPI月率初值 -0.1%，预期0.1%，前值0.60%。",
-          "summary": "德国10月调和CPI月率初值 -0.1%，预期0.1%，前值0.60%。",
-          "time": "10/30 21:00",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002938246/germany-s-preliminary-hicp-monthly-rate-for-october-came-in",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
           "title": "国内商品期货夜盘开盘 主力合约涨多跌少",
           "summary": "国内商品期货夜盘开盘，主力合约涨多跌少。涨幅方面，原油涨超3%，纯苯、对二甲苯、苯乙烯、沥青、丁二烯胶涨超2%，瓶片涨近2%，乙二醇、PTA、低硫燃油、短纤、豆油等涨超1%；跌幅方…",
           "time": "10/30 21:00",
           "source": "东财全球",
           "url": "https://finance.eastmoney.com/a/202610303916971293.html",
           "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "2026年中越边境地区地面无线电业务频率协调会谈在昆明举行",
-          "summary": "2026年10月27日至29日，中越边境地区地面无线电业务频率协调会谈在云南省昆明市举行。会谈期间，双方本着友好协商、互利共赢的原则，就中越边境地区4G/5G公众移动通信系统相关频…",
-          "time": "10/30 20:59",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002938183/the-2026-consultations-on-frequency-coordination-for-terrestrial-radio-services",
-          "tags": [
-            "政策"
-          ],
           "collected_date": "2026-10-30"
         },
         {
@@ -3014,87 +3133,6 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "沪硅产业：第三季度净利润2.37亿元 同比扭亏为盈",
-          "summary": "【沪硅产业：第三季度净利润2.37亿元 同比扭亏为盈】沪硅产业(688126.SH)公告称，前三季度实现营业收入36.37亿元，同比增长37.69%；归属于上市公司股东的净利润为亏…",
-          "time": "10/30 17:42",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303916641159.html",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "上期所：调整燃料油、石油沥青期货相关合约涨跌停板幅度和交易保证金比例",
-          "summary": "【上期所：调整燃料油、石油沥青期货相关合约涨跌停板幅度和交易保证金比例】燃料油期货FU2612、FU2701合约的涨跌停板幅度为18%，套保持仓交易保证金比例为19%，一般持仓交易…",
-          "time": "10/30 17:42",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303916652019.html",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "证监会对清越科技欺诈发行及信息披露违法案作出处罚 4名责任人合计罚款2800万元",
-          "summary": "【证监会对清越科技欺诈发行及信息披露违法案作出处罚 4名责任人合计罚款2800万元】证监会发布行政处罚决定书，证监会决定对高裕弟、穆欣炬、张小波、吴磊分别处以900万元、900万元…",
-          "time": "10/30 17:42",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303916649986.html",
-          "tags": [
-            "政策"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "金禄电子：公司及下属子公司今年已扩充的PCB月产能为7.5万平米",
-          "summary": "【金禄电子：公司及下属子公司今年已扩充的PCB月产能为7.5万平米】金禄电子在投资者关系活动中表示，根据公司披露的定期报告，公司及下属子公司今年已扩充的PCB月产能为7.5万平米，…",
-          "time": "10/30 17:42",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303916649425.html",
-          "tags": [
-            "宏观",
-            "科技"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "香港金管局：9月底外汇基金总资产为43084亿港元",
-          "summary": "【香港金管局：9月底外汇基金总资产为43084亿港元】10月30日，香港金融管理局公布，截至2026年9月30日，外汇基金总资产为43,084亿港元，较2026年8月底减少270亿…",
-          "time": "10/30 17:40",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303916636549.html",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "澳门前三季度GDP初步数值为3161.3亿澳门元",
-          "summary": "【澳门前三季度GDP初步数值为3161.3亿澳门元】澳门统计暨普查局今日（30日）公布的资料显示，今年前三季度澳门经济延续平稳发展态势，本地生产总值的初步数值为3161.3亿澳门元…",
-          "time": "10/30 17:40",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303916635443.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "长江电力：第三季度净利润同比下降23.44%",
-          "summary": "【长江电力：第三季度净利润同比下降23.44%】长江电力(600900.SH)公告称，前三季度实现营业收入630.56亿元，同比下降4.08%；归属于上市公司股东的净利润263.4…",
-          "time": "10/30 17:39",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303916638918.html",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "阿里Qoder上线桌面端互联功能",
-          "summary": "【阿里Qoder上线桌面端互联功能】10月30日，阿里Qoder上线桌面端互联功能。用户可以在常用的Qoder桌面客户端中，连接另一台设备的Qoder桌面端，并发起任务、跟进进度、…",
-          "time": "10/30 17:38",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303916622636.html",
-          "tags": [],
-          "collected_date": "2026-10-30"
-        },
-        {
           "title": "东方财富财经早餐 10月30日周五",
           "summary": "【东方财富财经早餐 10月30日周五】1、商务部：如欧方对中国产品采取歧视性限制措施，中方必将采取一切必要措施。2、美国9月核心PCE同比上涨3.1%，美联储12月或加息25个基点…",
           "time": "10/30 06:00",
@@ -3160,2815 +3198,65 @@
           "collected_date": "2026-10-30"
         }
       ]
-    },
-    {
-      "date": "2026-10-29",
-      "weekday": "周四",
-      "is_trading_day": true,
-      "count": 287,
-      "show_n": 6,
-      "tag_stats": {
-        "宏观": 42,
-        "政策": 24,
-        "科技": 26,
-        "产业": 11,
-        "美股映射": 2,
-        "持仓": 2
-      },
-      "items": [
-        {
-          "title": "中国共产党第二十届中央委员会第五次全体会议公报",
-          "summary": "中国共产党第二十届中央委员会第五次全体会议公报（2026年10月29日中国共产党第二十届中央委员会第五次全体会议通过）中国共产党第二十届中央委员会第五次全体会议，于2026年10月…",
-          "time": "20261029",
-          "source": "央视联播",
-          "url": "",
-          "tags": [
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "张升民同志简历",
-          "summary": "现在播送张升民同志简历。张升民，男，汉族，1958年8月生，陕西武功人，1978年2月入伍，1979年7月加入中国共产党，中央党校研究生学历。现任中央政治局委员，中共中央军事委员会…",
-          "time": "20261029",
-          "source": "央视联播",
-          "url": "",
-          "tags": [
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "习近平就西班牙高速列车追尾脱轨事故向西班牙国王致慰问电 李强向西班牙首相致慰问电",
-          "summary": "10月29日，国家主席习近平就西班牙高速列车追尾脱轨事故向西班牙国王费利佩六世致慰问电。习近平表示，惊悉西班牙托莱多省不幸发生高速列车追尾脱轨事故，造成重大人员伤亡。我谨代表中国政…",
-          "time": "20261029",
-          "source": "央视联播",
-          "url": "",
-          "tags": [
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "【学习贯彻党的二十届五中全会精神】不断开创新时代管党治党、兴党强党新局面",
-          "summary": "党的二十届五中全会审议通过了《中共中央关于持之以恒推进全面从严治党若干重大问题的决定》，对于巩固党的执政地位、实现党的使命任务意义重大。与会同志们表示，全会对持之以恒推进全面从严治…",
-          "time": "20261029",
-          "source": "央视联播",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "人民日报社论：把我们党建设得更好、更强",
-          "summary": "本台消息：明天（10月30日）出版的《人民日报》将发表社论，题目是《把我们党建设得更好、更强》。",
-          "time": "20261029",
-          "source": "央视联播",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "三季度末科技型中小企业贷款余额同比增长20.1%",
-          "summary": "中国人民银行数据显示，前三季度人民币贷款增加11.52万亿元。三季度末，科技型中小企业贷款余额4.27万亿元，同比增长20.1%，增速比各项贷款高15.4个百分点。有超过一半的高新…",
-          "time": "20261029",
-          "source": "央视联播",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "今年以来以旧换新带动相关品类销售额超2万亿元",
-          "summary": "商务部最新数据显示，截至10月28日，2026年以旧换新政策累计带动相关商品销售额超2万亿元，惠及超2.57亿人次，以旧换新政策多重成效持续显现。在拉动消费方面，享受以旧换新补贴的…",
-          "time": "20261029",
-          "source": "央视联播",
-          "url": "",
-          "tags": [
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "切尼尔能源首席商务官：欧洲今年冬季将需要额外6900万公吨液化天然气，必须从亚洲",
-          "summary": "切尼尔能源首席商务官：欧洲今年冬季将需要额外6900万公吨液化天然气，必须从亚洲抽调货源。",
-          "time": "10/29 23:22",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "切尼尔能源：欧洲今年冬季将需要额外6900万吨液化天然气，且必须从亚洲抽调货源。",
-          "summary": "切尼尔能源：欧洲今年冬季将需要额外6900万吨液化天然气，且必须从亚洲抽调货源。",
-          "time": "10/29 23:21",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002782957/cheniere-energy-europe-will-require-an-additional-69-million-metric",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "阿迪达斯首席执行官：在欧洲，我希望品牌能从快时尚中汲取一些经验。",
-          "summary": "阿迪达斯首席执行官：在欧洲，我希望品牌能从快时尚中汲取一些经验。",
-          "time": "10/29 23:20",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002782745/adidas-ceo-in-europe-i-hope-the-brand-can-draw",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "阿迪达斯首席执行官：在欧洲，我希望品牌能从快时尚中有所借鉴。",
-          "summary": "阿迪达斯首席执行官：在欧洲，我希望品牌能从快时尚中有所借鉴。",
-          "time": "10/29 23:20",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "惠誉评级：2026年第三季度美国私募信贷违约率仍处高位。",
-          "summary": "惠誉评级：2026年第三季度美国私募信贷违约率仍处高位。",
-          "time": "10/29 23:20",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "【波动行情冲击热门交易 美国银行宏观交易员收缩风险敞口】在全球一些最热门的交易经",
-          "summary": "【波动行情冲击热门交易 美国银行宏观交易员收缩风险敞口】在全球一些最热门的交易经历了剧烈动荡之后，美国银行的宏观交易员在接近年底之际正在限制风险敞口。美国银行全球固定收益、外汇及大…",
-          "time": "10/29 23:19",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "谷歌债务风险指标攀升，财报再度引发AI债务担忧",
-          "summary": "周四，谷歌母公司Alphabet股价大幅下挫，与此同时，其债务违约保险成本也随之上升。此前公布的财报表现令人失望，加剧了市场担忧：即该公司通过举债进行大规模人工智能投入，最终可能无…",
-          "time": "10/29 23:19",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002782606/google-s-debt-risk-indicators-rise-as-earnings-reignite-ai",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "  荷兰向市场投放最后 70 万桶成品油。",
-          "summary": "荷兰向市场投放最后 70 万桶成品油。",
-          "time": "10/29 23:19",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国食品药品监督管理局（FDA）将于11月2日在《联邦公报》上发布关于婴儿配方奶",
-          "summary": "美国食品药品监督管理局（FDA）将于11月2日在《联邦公报》上发布关于婴儿配方奶粉营养素要求的拟议规则。",
-          "time": "10/29 23:18",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002782553/the-us-food-and-drug-administration-fda-will-publish-a",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "委内瑞拉临时总统罗德里格斯确认委内瑞拉将举行选举。",
-          "summary": "委内瑞拉临时总统罗德里格斯确认委内瑞拉将举行选举。",
-          "time": "10/29 23:18",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "新易盛：公司已对明年核心原材料进行充分储备 具体量级暂无法公开披露",
-          "summary": "【新易盛：公司已对明年核心原材料进行充分储备 具体量级暂无法公开披露】新易盛发布投资者关系活动记录表，其中提到，三季度原材料端的紧张造成了一定的影响。公司已对明年核心原材料进行充分…",
-          "time": "10/29 23:18",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293915013112.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席执行官：我们不会允许自身在结构上将股东回报降至运营现金流的30%。",
-          "summary": "壳牌首席执行官：我们不会允许自身在结构上将股东回报降至运营现金流的30%。",
-          "time": "10/29 23:17",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002782485/shell-ceo-we-will-not-allow-shareholder-returns-to-structurally",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国起诉谷歌，指其未在一名前员工因军事部署离岗后让其恢复类似职位。",
-          "summary": "美国起诉谷歌，指其未在一名前员工因军事部署离岗后让其恢复类似职位。",
-          "time": "10/29 23:17",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "新易盛：Q3原材料端的紧张造成了一定的影响 已做好充分准备预计Q4产能及产量环比将呈大幅增长",
-          "summary": "【新易盛：Q3原材料端的紧张造成了一定的影响 已做好充分准备预计Q4产能及产量环比将呈大幅增长】新易盛(300502.SZ)发布投资者关系活动记录表公告，今年原材料供应整体偏紧，随…",
-          "time": "10/29 23:17",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293915013632.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "委内瑞拉临时总统罗德里格斯：国有资产可能归还给原所有者。",
-          "summary": "委内瑞拉临时总统罗德里格斯：国有资产可能归还给原所有者。",
-          "time": "10/29 23:15",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002782247/venezuelan-interim-president-rodriguez-state-owned-assets-may-be-returned",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "委内瑞拉代总统罗德里格斯：预计2027年将进行四次薪资上调。",
-          "summary": "委内瑞拉代总统罗德里格斯：预计2027年将进行四次薪资上调。",
-          "time": "10/29 23:15",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "委内瑞拉临时总统罗德里格斯：预计2027年将进行四次工资上调。",
-          "summary": "委内瑞拉临时总统罗德里格斯：预计2027年将进行四次工资上调。",
-          "time": "10/29 23:14",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002782226/venezuela-s-interim-president-rodriguez-four-wage-increases-are-expected",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "委内瑞拉代总统罗德里格斯：政府名下持有的国有资产将向私营部门以及资产原所有者开放",
-          "summary": "委内瑞拉代总统罗德里格斯：政府名下持有的国有资产将向私营部门以及资产原所有者开放。",
-          "time": "10/29 23:14",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席财务官：加拿大LNG项目二期承包商报价竞争性增强。",
-          "summary": "壳牌首席财务官：加拿大LNG项目二期承包商报价竞争性增强。",
-          "time": "10/29 23:14",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002782207/shell-cfo-bids-from-contractors-for-phase-ii-of-the",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "委内瑞拉临时总统罗德里格斯：国有资产可能归还给原所有者。未经法院命令，任何人不得",
-          "summary": "委内瑞拉临时总统罗德里格斯：国有资产可能归还给原所有者。未经法院命令，任何人不得被拘留。",
-          "time": "10/29 23:14",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "新易盛：正在推进NPO产品开发 预计2027年实现批量出货",
-          "summary": "新易盛10月29日在电话会议上表示，公司正在顺利推进NPO产品开发，预计2027年实现批量出货，2028年有望进入大规模出货。产能及材料端正与客户紧密配合，并提前规划产能，NPO起…",
-          "time": "10/29 23:13",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261029/c681262032.shtml",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "【新易盛：正在推进NPO产品开发 预计2027年实现批量出货】新易盛(30050",
-          "summary": "【新易盛：正在推进NPO产品开发 预计2027年实现批量出货】新易盛(300502)10月29日在电话会议上表示，公司正在顺利推进NPO产品开发，预计2027年实现批量出货，202…",
-          "time": "10/29 23:13",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席财务官：加拿大液化天然气（LNG Canada）二期项目的承包商报价竞争",
-          "summary": "壳牌首席财务官：加拿大液化天然气（LNG Canada）二期项目的承包商报价竞争优势有所增强。",
-          "time": "10/29 23:12",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "委内瑞拉临时总统罗德里格斯：未经法院命令，任何人不得被拘留。",
-          "summary": "委内瑞拉临时总统罗德里格斯：未经法院命令，任何人不得被拘留。",
-          "time": "10/29 23:11",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002781667/venezuelan-interim-president-rodriguez-no-one-shall-be-detained-without",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "新易盛：今年订单交付需求相对集中在下半年尤其Q4 公司已对Q4及明年订单交付做好充分准备 有信心满足大幅增长的交付需求",
-          "summary": "【新易盛：今年订单交付需求相对集中在下半年尤其Q4 公司已对Q4及明年订单交付做好充分准备 有信心满足大幅增长的交付需求】新易盛发布投资者关系活动记录表，其中提到，今年原材料供应整…",
-          "time": "10/29 23:10",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293915007610.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "【遥望科技：三季度减亏57.48% 主业质量持续改善】10月29日，遥望科技发布",
-          "summary": "【遥望科技：三季度减亏57.48% 主业质量持续改善】10月29日，遥望科技发布2026年第三季度报告。报告期内，公司实现营业收入6.15亿元，同比下降14.15%；归母净利润-6…",
-          "time": "10/29 23:10",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席财务官：尽管珍珠天然气制油（Pearl GTL）装置已部分重启，但现阶段",
-          "summary": "壳牌首席财务官：尽管珍珠天然气制油（Pearl GTL）装置已部分重启，但现阶段企业在补库，因此不要预期它会带来可观现金流。",
-          "time": "10/29 23:09",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "云南白药：前三季度营收利润创历史同期新高",
-          "summary": "【云南白药：前三季度营收利润创历史同期新高】10月29日晚间，云南白药发布2026年三季报。前三季度公司营业收入322.57亿元，同比增长5.23%，创下历史同期新高；归母净利润4…",
-          "time": "10/29 23:09",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293915006383.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席财务官：无法将天然气运出卡塔尔的情况也将影响第四季度业绩。",
-          "summary": "壳牌首席财务官：无法将天然气运出卡塔尔的情况也将影响第四季度业绩。",
-          "time": "10/29 23:07",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002781337/shell-cfo-inability-to-export-natural-gas-from-qatar-will",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席执行官：卡塔尔天然气外运受阻的影响也将波及第四季度。与依赖单一供应来源相",
-          "summary": "壳牌首席执行官：卡塔尔天然气外运受阻的影响也将波及第四季度。与依赖单一供应来源相比，如今供应来源多元化会带来溢价。",
-          "time": "10/29 23:07",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国际货币基金组织：与埃及的讨论重点是维持紧缩货币政策及财政整顿计划。",
-          "summary": "国际货币基金组织：与埃及的讨论重点是维持紧缩货币政策及财政整顿计划。",
-          "time": "10/29 23:07",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002781315/international-monetary-fund-discussions-with-egypt-focused-on-maintaining-a",
-          "tags": [
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国际货币基金组织表示，与埃及的讨论重点是维持紧缩货币政策及财政整顿计划。",
-          "summary": "国际货币基金组织表示，与埃及的讨论重点是维持紧缩货币政策及财政整顿计划。",
-          "time": "10/29 23:07",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "Polymarket调查以色列选举可疑交易",
-          "summary": "预测市场平台Polymarket正在调查本周以色列选举期间一系列时机精准、获利丰厚的交易。这是近期又一起引发外界担忧的事件，凸显预测市场可能存在内幕交易风险。根据对Polymark…",
-          "time": "10/29 23:06",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002781275/polymarket-investigates-suspicious-trades-during-israeli-elections",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "微软(MSFT.O)股价盘中反转，最新跌逾1%。",
-          "summary": "微软(MSFT.O)股价盘中反转，最新跌逾1%。",
-          "time": "10/29 23:05",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002781232/microsoft-msfto-shares-reversed-course-during-trading-with-the-latest",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "俄罗斯国防部：一艘向敖德萨港运送军事及军民两用货物的干货船在海上航行时遭袭。",
-          "summary": "俄罗斯国防部：一艘向敖德萨港运送军事及军民两用货物的干货船在海上航行时遭袭。",
-          "time": "10/29 23:05",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002781187/russian-ministry-of-defense-a-dry-cargo-vessel-transporting-military",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "委内瑞拉代总统罗德里格斯向全国发表讲话。",
-          "summary": "委内瑞拉代总统罗德里格斯向全国发表讲话。",
-          "time": "10/29 23:05",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "武契奇：塞尔维亚前进党将启动改革计划",
-          "summary": "【武契奇：塞尔维亚前进党将启动改革计划】塞尔维亚前总统武契奇29日在首都贝尔格莱德表示，其领导的塞尔维亚前进党近日将启动党内改革，选举新的领导层。武契奇当天在位于贝尔格莱德的塞尔维…",
-          "time": "10/29 23:04",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293915003234.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "雷神科技：前三季度扣非净利润同比增长38.66% AI算力全栈方案加速落地",
-          "summary": "【雷神科技：前三季度扣非净利润同比增长38.66% AI算力全栈方案加速落地】10月29日，雷神科技（920190.BJ）发布2026年三季报。报告显示，前三季度，公司实现营业收入…",
-          "time": "10/29 23:04",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293915005171.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席执行官：与依赖单一供应来源相比，如今供应来源多元化会带来溢价。",
-          "summary": "壳牌首席执行官：与依赖单一供应来源相比，如今供应来源多元化会带来溢价。",
-          "time": "10/29 23:04",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002781080/shell-ceo-diversifying-supply-sources-now-commands-a-premium-compared",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "俄罗斯称击中一艘驶往乌克兰敖德萨的货船。",
-          "summary": "俄罗斯称击中一艘驶往乌克兰敖德萨的货船。",
-          "time": "10/29 23:04",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国联邦通信委员会投票推进新一轮无线频谱拍卖，以促进“直连设备”服务。",
-          "summary": "美国联邦通信委员会投票推进新一轮无线频谱拍卖，以促进“直连设备”服务。",
-          "time": "10/29 23:04",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "【武契奇：塞尔维亚前进党将启动改革计划】塞尔维亚前总统武契奇29日在首都贝尔格莱",
-          "summary": "【武契奇：塞尔维亚前进党将启动改革计划】塞尔维亚前总统武契奇29日在首都贝尔格莱德表示，其领导的塞尔维亚前进党近日将启动党内改革，选举新的领导层。武契奇当天在位于贝尔格莱德的塞尔维…",
-          "time": "10/29 23:03",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "装运计划显示，支撑即期布伦特基准的五个北海原油品种12月供应量预计平均为47.5",
-          "summary": "装运计划显示，支撑即期布伦特基准的五个北海原油品种12月供应量预计平均为47.5万桶/日（11月为51.4万桶/日）。",
-          "time": "10/29 23:03",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780983/shipping-schedules-indicate-that-december-supplies-of-the-five-north",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国际货币基金组织：过去三年美国经济增长持续受到强劲生产率增长的支撑。",
-          "summary": "国际货币基金组织：过去三年美国经济增长持续受到强劲生产率增长的支撑。",
-          "time": "10/29 23:02",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780984/international-monetary-fund-us-economic-growth-over-the-past-three",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国际货币基金组织：代表团正在埃及讨论最终计划审查。",
-          "summary": "国际货币基金组织：代表团正在埃及讨论最终计划审查。",
-          "time": "10/29 23:02",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780937/imf-mission-in-egypt-to-discuss-final-program-review",
-          "tags": [
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国际货币基金组织：预计将在未来几周内开始与乌克兰就第二轮和第三轮合并审查展开讨论",
-          "summary": "国际货币基金组织：预计将在未来几周内开始与乌克兰就第二轮和第三轮合并审查展开讨论。",
-          "time": "10/29 23:01",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780669/international-monetary-fund-discussions-with-ukraine-on-the-combined-second",
-          "tags": [
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国际货币基金组织：们完全支持美联储主席沃什关于聚焦物价稳定的表态；美联储密切关注",
-          "summary": "国际货币基金组织：们完全支持美联储主席沃什关于聚焦物价稳定的表态；美联储密切关注数据是恰当之举。",
-          "time": "10/29 23:01",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780575/international-monetary-fund-we-fully-support-federal-reserve-chair-walsh",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国际货币基金组织：美联储和欧洲央行均在高度不确定的环境下采取行动，未来需密切关注",
-          "summary": "国际货币基金组织：美联储和欧洲央行均在高度不确定的环境下采取行动，未来需密切关注数据。",
-          "time": "10/29 23:01",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780526/international-monetary-fund-the-federal-reserve-and-the-european-central",
-          "tags": [
-            "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国际货币基金组织：尽管油价和通胀上升，但在私人消费和投资的推动下，美国经济增长迄",
-          "summary": "国际货币基金组织：尽管油价和通胀上升，但在私人消费和投资的推动下，美国经济增长迄今仍具韧性。",
-          "time": "10/29 23:01",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780494/international-monetary-fund-despite-rising-oil-prices-and-inflation-us",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国际货币基金组织：美国应继续扩大技术收益的共享范围，这一点很重要。",
-          "summary": "国际货币基金组织：美国应继续扩大技术收益的共享范围，这一点很重要。",
-          "time": "10/29 23:01",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780495/international-monetary-fund-it-is-important-that-the-united-states",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国际货币基金组织：正致力于加强与伊拉克的伙伴关系，预计伊拉克2026年GDP将大",
-          "summary": "国际货币基金组织：正致力于加强与伊拉克的伙伴关系，预计伊拉克2026年GDP将大幅萎缩，并于明年回升。",
-          "time": "10/29 23:00",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780413/international-monetary-fund-working-to-strengthen-its-partnership-with-iraq",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "期市夜盘收盘，国内期货主力合约多数下跌",
-          "summary": "期市夜盘收盘，国内期货主力合约多数下跌。跌幅方面，燃油、PTA、低硫燃油、对二甲苯跌超2%，焦炭、短纤、焦煤跌超1%。涨幅方面，烧碱涨超2%，纸浆、玻璃涨超1%。",
-          "time": "10/29 23:00",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261029/c681261912.shtml",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国内部分商品期货夜盘收盘 主力合约多数下跌",
-          "summary": "【国内部分商品期货夜盘收盘 主力合约多数下跌】截至23:00，国内部分商品期货夜盘收盘，主力合约多数下跌。跌幅方面，对二甲苯、低硫燃油、PTA、燃油跌超2%，焦煤、短纤、焦炭跌超1…",
-          "time": "10/29 23:00",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293915000052.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席执行官：我们的柴油产量创下历史新高。",
-          "summary": "壳牌首席执行官：我们的柴油产量创下历史新高。",
-          "time": "10/29 22:59",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780284/shell-ceo-our-diesel-production-has-hit-a-record-high",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席执行官：关于化工资产，一种选择是合并投资组合，在其它项目中持有少数股权，",
-          "summary": "壳牌首席执行官：关于化工资产，一种选择是合并投资组合，在其它项目中持有少数股权，直到我们认为合适的变现时机到来。",
-          "time": "10/29 22:58",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780228/shell-ceo-regarding-chemical-assets-one-option-is-to-consolidate",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "荷兰政府：最终释放批次中约一半为柴油。",
-          "summary": "荷兰政府：最终释放批次中约一半为柴油。",
-          "time": "10/29 22:58",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780221/dutch-government-approximately-half-of-the-final-release-batch-consists",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "预测市场Polymarket正就以色列选举相关的可疑交易展开调查。",
-          "summary": "预测市场Polymarket正就以色列选举相关的可疑交易展开调查。",
-          "time": "10/29 22:58",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780222/prediction-market-polymarket-is-investigating-suspicious-transactions-related-to-the",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "新易盛：公司已对Q4及明年订单交付做好充分准备，有信心满足大幅增长的交付需求",
-          "summary": "新易盛发布投资者关系活动记录表，其中提到，今年原材料供应整体偏紧，且不局限于单一物料。随着行业交付体量的快速增长，核心原材料备货周期进一步拉长，需充分做好提前规划。公司已对Q4及明…",
-          "time": "10/29 22:58",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261029/c681261895.shtml",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席执行官：我们正就化工资产出售进行深入磋商。",
-          "summary": "壳牌首席执行官：我们正就化工资产出售进行深入磋商。",
-          "time": "10/29 22:58",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780202/shell-ceo-we-are-engaged-in-in-depth-discussions-regarding",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "芯源微Q3营收环比降22.76% 净利环比转亏",
-          "summary": "【芯源微Q3营收环比降22.76% 净利环比转亏】芯源微发布2026年第三季度财报。公告显示，芯源微2026年第三季度营业收入4.37亿元，同比增长55.56%；归属于上市公司股东…",
-          "time": "10/29 22:58",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914999953.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "据以色列媒体报道：第26届国会选举的投票结果已完成计票，最终结果将很快公布。",
-          "summary": "据以色列媒体报道：第26届国会选举的投票结果已完成计票，最终结果将很快公布。",
-          "time": "10/29 22:57",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780172/according-to-israeli-media-reports-vote-counting-for-the-26th",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "巴勒斯坦总统：希望以色列新政府为重启和谈创造条件",
-          "summary": "【巴勒斯坦总统：希望以色列新政府为重启和谈创造条件】巴勒斯坦通讯社29日报道，巴勒斯坦总统阿巴斯表示，希望以色列新一届政府的组建能够为重启巴以政治谈判创造条件。据报道，阿巴斯当天与…",
-          "time": "10/29 22:57",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914997634.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "卡塔尔据称向伊朗提交结束战事草案",
-          "summary": "【卡塔尔据称向伊朗提交结束战事草案】综合美国阿克西奥斯新闻网站和路透社报道，卡塔尔10月25日向伊朗提交了一份旨在结束伊朗与美国、以色列之间战事的新协议草案。与伊朗9月底提出的“七…",
-          "time": "10/29 22:56",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914995195.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "Blue Owl联席CEO：像SpaceX这样的芯片交易需要更多资本支持。",
-          "summary": "Blue Owl联席CEO：像SpaceX这样的芯片交易需要更多资本支持。",
-          "time": "10/29 22:55",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002780055/blue-owl-co-ceo-chip-deals-like-spacex-require-more",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "山子高科：前三季度净亏损1.26亿元",
-          "summary": "【山子高科：前三季度净亏损1.26亿元】山子高科(000981.SZ)公告称，第三季度营业收入为7.19亿元，同比增长4.93%；净利润为-1.57亿元。前三季度营业收入为20.9…",
-          "time": "10/29 22:55",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914997777.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "硫磺年内价格涨了近一倍",
-          "summary": "【硫磺年内价格涨了近一倍】记者了解到，今年以来，国内硫磺价格一度大幅上涨，最高时达到每吨11600元，最大涨幅超210%，目前虽有回落，但年内涨幅依然有近一倍。我国是硫磺进口大国，…",
-          "time": "10/29 22:55",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914997141.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "再升科技前三季度净利润同比下降近两成 募投项目再度延期",
-          "summary": "【再升科技前三季度净利润同比下降近两成 募投项目再度延期】受产品综合毛利率下滑以及信用减值损失增加等因素影响，再升科技（603601.SH）前三季度归母净利润同比下降近两成。公司前…",
-          "time": "10/29 22:54",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914995557.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "欧盟与加拿大拟深化合作，“准成员国”构想暂被搁置",
-          "summary": "欧盟委员会主席冯德莱恩周四表示，欧盟与加拿大计划深化在人工智能、气候、能源和安全领域的合作，同时探讨加拿大成为欧盟首个“准成员国”的可能性。这一称谓遭到许多欧盟国家反对，而且不具有…",
-          "time": "10/29 22:53",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002779879/eu-and-canada-plan-to-deepen-cooperation-quasi-member-proposal",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "银轮股份三季报“增收不增利” 具身智能热管理产品顺利量产",
-          "summary": "【银轮股份三季报“增收不增利” 具身智能热管理产品顺利量产】银轮股份（002126.SZ）于今日晚间发布2026年三季报，前三季度业绩呈现“增收不增利”态势，不过，扣非归母净利润同…",
-          "time": "10/29 22:53",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914995336.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "阿迪达斯首席执行官称：将第四季度营收指引维持在9%至10% 但可能存在上行空间",
-          "summary": "阿迪达斯首席执行官称，将第四季度营收指引维持在9%至10%，但可能存在上行空间。",
-          "time": "10/29 22:53",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914992798.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "埃及央行加息100个基点，将贷款利率从20%上调至21%。",
-          "summary": "埃及央行加息100个基点，将贷款利率从20%上调至21%。",
-          "time": "10/29 22:53",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002779839/the-central-bank-of-egypt-raised-interest-rates-by-100",
-          "tags": [
-            "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席财务官：拥有规模最大的船队之一是在获取船舶方面的一项优势。",
-          "summary": "壳牌首席财务官：拥有规模最大的船队之一是在获取船舶方面的一项优势。",
-          "time": "10/29 22:52",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002779832/shell-cfo-having-one-of-the-largest-fleets-is-an",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "阳光诺和：前三季度实现营业收入6.45亿元 研发投入增长",
-          "summary": "【阳光诺和：前三季度实现营业收入6.45亿元 研发投入增长】阳光诺和10月29日发布2026年三季报，公司前三季度实现营业总收入6.45亿元。前三季度研发投入1.30亿元，同比增长…",
-          "time": "10/29 22:52",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914992070.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "埃及中央银行将基准利率上调至20% 市场预计为19.00%",
-          "summary": "埃及中央银行将基准利率上调至20%，市场预计为19.00%。",
-          "time": "10/29 22:51",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914991478.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席财务官：当前航运的关键在于能否获得船舶。",
-          "summary": "壳牌首席财务官：当前航运的关键在于能否获得船舶。",
-          "time": "10/29 22:51",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002779518/shell-cfo-the-key-to-current-shipping-operations-lies-in",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "阿迪达斯首席执行官：我们将第四季度营收指引维持在9%至10%，但可能存在上行空间",
-          "summary": "阿迪达斯首席执行官：我们将第四季度营收指引维持在9%至10%，但可能存在上行空间。",
-          "time": "10/29 22:51",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002779466/adidas-ceo-we-are-maintaining-our-q4-revenue-guidance-at",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "长安汽车与伊利集团签署业务合作框架协议",
-          "summary": "【长安汽车与伊利集团签署业务合作框架协议】10月29日，长安汽车与伊利集团在伊利现代智慧健康谷成功举行业务合作框架协议签约仪式。后续，双方将建立常态化沟通机制，组建专项对接小组，深…",
-          "time": "10/29 22:50",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914990118.html",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席执行官：补充库存尚需时日。",
-          "summary": "壳牌首席执行官：补充库存尚需时日。",
-          "time": "10/29 22:49",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002779142/shell-ceo-it-will-take-time-to-replenish-inventories",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "公司互动丨这些公司披露在通信等方面最新情况",
-          "summary": "【公司互动丨这些公司披露在通信等方面最新情况】10月29日，多家上市公司通过互动平台、披露投资者关系活动记录表等渠道披露公司在通信等方面最新情况。",
-          "time": "10/29 22:49",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914989914.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "希腊总理米佐塔基斯：针对民用商业航运的袭击不可接受，全球海上停火亟需实现。",
-          "summary": "希腊总理米佐塔基斯：针对民用商业航运的袭击不可接受，全球海上停火亟需实现。",
-          "time": "10/29 22:49",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002779135/greek-prime-minister-mitsotakis-attacks-on-civilian-commercial-shipping-are",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席财务官：我们对增加股息并不持谨慎态度。",
-          "summary": "壳牌首席财务官：我们对增加股息并不持谨慎态度。",
-          "time": "10/29 22:49",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002779136/shell-cfo-we-are-not-cautious-about-increasing-dividends",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "德国发布针对叙利亚的旅行警告。",
-          "summary": "德国发布针对叙利亚的旅行警告。",
-          "time": "10/29 22:48",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002779123/germany-has-issued-a-travel-warning-for-syria",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席财务官：我们仍认为股票回购是良好机会。",
-          "summary": "壳牌首席财务官：我们仍认为股票回购是良好机会。",
-          "time": "10/29 22:48",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002779124/shell-cfo-we-still-view-share-buybacks-as-a-good",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席执行官：六个月前预计油价出现暂时性飙升。",
-          "summary": "壳牌首席执行官：六个月前预计油价出现暂时性飙升。",
-          "time": "10/29 22:48",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002779109/shell-ceo-six-months-ago-a-temporary-surge-in-oil",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壳牌首席执行官：认为目前油价将在更高水平上保持结构性稳定。",
-          "summary": "壳牌首席执行官：认为目前油价将在更高水平上保持结构性稳定。",
-          "time": "10/29 22:47",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002779037/shell-ceo-believes-that-current-oil-prices-will-maintain-structural",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "NYMEX天然气主力合约跌超4%",
-          "summary": "NYMEX天然气主力合约跌超4%，现报2.9美元/百万英热。",
-          "time": "10/29 22:47",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261029/c681261743.shtml",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "白宫经济顾问哈塞特表示：10月份CPI和PCE数据应该能明确美联储应采取什么行动",
-          "summary": "白宫经济顾问哈塞特表示，10月份CPI和PCE数据应该能明确美联储应采取什么行动。",
-          "time": "10/29 22:46",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914986792.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国白宫国家经济委员会主任哈塞特：10月份的CPI和PCE数据应能明确美联储应采",
-          "summary": "美国白宫国家经济委员会主任哈塞特：10月份的CPI和PCE数据应能明确美联储应采取的行动。",
-          "time": "10/29 22:45",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002778769/hassett-director-of-the-national-economic-council-at-the-white",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国白宫国家经济委员会主任哈塞特：美联储主席沃什在允许美联储出现“正常”异议方面",
-          "summary": "美国白宫国家经济委员会主任哈塞特：美联储主席沃什在允许美联储出现“正常”异议方面做得很好。",
-          "time": "10/29 22:43",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002778653/hassett-director-of-the-white-house-national-economic-council-federal",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "乌克兰经济自战争爆发以来将首次出现萎缩",
-          "summary": "乌克兰央行表示，随着俄罗斯加大空袭力度，乌克兰经济今年将出现全面战争爆发以来的首次萎缩。乌克兰国家银行周四公布的最新经济预测显示，乌克兰国内生产总值（GDP）2026年将萎缩0.4…",
-          "time": "10/29 22:43",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002778586/ukraine-s-economy-is-set-to-contract-for-the-first",
-          "tags": [
-            "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "奥美森：每10股派6元 股权登记日为待定",
-          "summary": "【奥美森：每10股派6元 股权登记日为待定】南财智讯10月29日电，奥美森发布2026年三季度权益分派预案公告，公司拟向全体股东每10股派发现金红利6元（含税），预计派发现金红利总…",
-          "time": "10/29 22:43",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914983393.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "据伊朗塔斯尼姆通讯社：伊朗尚未回复美国副总统万斯的信函。德黑兰坚持要求美国满足其",
-          "summary": "据伊朗塔斯尼姆通讯社：伊朗尚未回复美国副总统万斯的信函。德黑兰坚持要求美国满足其七项条件，任何与这一框架相矛盾的立场都是不可接受的。",
-          "time": "10/29 22:42",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002778535/according-to-iran-s-tasnim-news-agency-iran-has-not",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国天然气跌3.00% 报3.366美元/百万英热 此前美国能源信息署（EIA）公布的库存增幅高于预期",
-          "summary": "美国天然气跌3.00%，报3.366美元/百万英热。此前美国能源信息署（EIA）公布的库存增幅高于预期。",
-          "time": "10/29 22:41",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914980877.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国总统特朗普再次批评巴西选举。",
-          "summary": "美国总统特朗普再次批评巴西选举。",
-          "time": "10/29 22:41",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002778174/us-president-trump-has-once-again-criticized-brazil-s-election",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "拉加德：若市场波动扰乱货币政策传导 欧洲央行将动用相关工具应对",
-          "summary": "【拉加德：若市场波动扰乱货币政策传导，欧洲央行将动用相关工具应对】10月29日，欧洲央行行长克里斯蒂娜·拉加德表示，若市场走势威胁货币政策的顺畅传导，包括出现不合理且无序的市场波动…",
-          "time": "10/29 22:40",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914979517.html",
-          "tags": [
-            "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "硫磺价格狂飙 年内价格涨了近一倍",
-          "summary": "记者了解到，今年以来，国内硫磺价格一度大幅上涨，最高时达到每吨11600元，最大涨幅超210%，目前虽有回落，但年内涨幅依然有近一倍。我国是硫磺进口大国，受国际局势影响，今年我国硫…",
-          "time": "10/29 22:40",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261029/c681261494.shtml",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "白宫经济顾问哈塞特表示：面对10月高通胀数据 美联储大概率将采取适当行动",
-          "summary": "白宫经济顾问哈塞特表示，面对10月高通胀数据，美联储大概率将采取适当行动。",
-          "time": "10/29 22:39",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914977864.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "华储网：11月2日中央储备冻猪肉继续轮换出库竞价交易1200吨",
-          "summary": "华储网公告，2026年11月2日中央储备冻猪肉继续轮换出库竞价交易1200吨。",
-          "time": "10/29 22:36",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261029/c681261442.shtml",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "江波龙：存储产业供需关系仍将维持偏紧态势",
-          "summary": "【江波龙：存储产业供需关系仍将维持偏紧态势】江波龙(301308)10月27日接受机构调研时表示，结合第三方机构发布的信息来看，AI大模型在云端与端侧的落地应用已成为较为明确的产业…",
-          "time": "10/29 22:35",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914978814.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国与芬兰10月29日签署科技合作谅解备忘录",
-          "summary": "美国与芬兰10月29日签署科技合作谅解备忘录。",
-          "time": "10/29 22:34",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914971355.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "欧洲央行维持欧元区三大关键利率不变",
-          "summary": "【欧洲央行维持欧元区三大关键利率不变】欧洲央行发布新闻公告称，欧洲央行管理委员会今日决定维持三大关键利率不变，存款机制利率、主要再融资利率和边际借贷利率分别为2.50%、2.65%…",
-          "time": "10/29 22:32",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914968727.html",
-          "tags": [
-            "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国至10月23日当周EIA天然气库存增加800亿立方英尺",
-          "summary": "【美国至10月23日当周EIA天然气库存增加800亿立方英尺】美国至10月23日当周EIA天然气库存增加800亿立方英尺，预期690亿立方英尺，前值770亿立方英尺。",
-          "time": "10/29 22:30",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914969295.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "智利复活节岛东南海域发生6.3级地震",
-          "summary": "【智利复活节岛东南海域发生6.3级地震】据智利国家地震中心监测，当地时间10月29日4时49分，南太平洋海域发生6.3级地震，震中位于智利复活节岛东南方向约1480公里处。",
-          "time": "10/29 22:27",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914962676.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "法德10年期国债收益率差扩大至157个基点",
-          "summary": "法德10年期国债收益率差扩大至157个基点。",
-          "time": "10/29 22:20",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261029/c681261273.shtml",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "拉加德：除非出现意外情况 否则欧洲央行的行动走向相当明确",
-          "summary": "【拉加德：除非出现意外情况 否则欧洲央行的行动走向相当明确】拉加德称，除非出现意外情况，否则欧洲央行的行动走向相当明确。欧洲央行的业务连续性从未中断，相信这一状态将持续下去。并表示…",
-          "time": "10/29 22:20",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914957275.html",
-          "tags": [
-            "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "道达尔能源首席执行官：过去两个月通过霍尔木兹海峡的石油量约为战前水平的25%",
-          "summary": "【道达尔能源首席执行官：过去两个月通过霍尔木兹海峡的石油量约为战前水平的25%】道达尔能源首席执行官称，过去两个月通过霍尔木兹海峡的石油量约为战前水平的25%。",
-          "time": "10/29 22:19",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914956564.html",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "莫斯科周边大量无人机被拦截 乌克兰多地遭空袭",
-          "summary": "【莫斯科周边大量无人机被拦截 乌克兰多地遭空袭】俄罗斯首都莫斯科市市长索比亚宁29日在社交媒体上说，当地时间28日夜间至29日早晨，大量乌军无人机在靠近莫斯科市时被拦截摧毁。同日，…",
-          "time": "10/29 22:17",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914951842.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "CBOT豆粕主力合约跌超2%",
-          "summary": "CBOT豆粕主力合约跌超2%，现报329.0美元/短吨。",
-          "time": "10/29 22:15",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261029/c681261108.shtml",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "NYMEX铂金主力合约跌超4%",
-          "summary": "NYMEX铂金主力合约跌超4%，现报1477.5美元/盎司。",
-          "time": "10/29 22:10",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261029/c681261040.shtml",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "法国2年期国债收益率下跌10.5个基点",
-          "summary": "法国2年期国债收益率下跌10.5个基点，至3.618%。",
-          "time": "10/29 22:04",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261029/c681260993.shtml",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "拉加德：目前未看到第二轮效应的实质性风险",
-          "summary": "【拉加德：目前未看到第二轮效应的实质性风险】拉加德称，目前未看到第二轮效应的实质性风险，并表示，委员会讨论了加息这个选项是否适宜；自9月份以来，长期融资的成本已经上涨。",
-          "time": "10/29 22:04",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914932995.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "嘉元科技：RTF1铜箔产品已小批量出货",
-          "summary": "【嘉元科技：RTF1铜箔产品已小批量出货】嘉元科技总工程师王俊锋今日在2026年三季报业绩说明会上称，公司RTF铜箔、载体铜箔等高性能产品完成技术突破、具备量产能力；RTF1铜箔产…",
-          "time": "10/29 22:04",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914921519.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "顺络电子：拟不低于12亿元投建顺络电子斗门工厂项目",
-          "summary": "【顺络电子：拟不低于12亿元投建顺络电子斗门工厂项目】顺络电子(002138)10月29日公告，拟通过全资子公司珠海顺络电子有限公司在广东省珠海市斗门区富山工业园投资建设“顺络电子…",
-          "time": "10/29 22:03",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914932436.html",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "纳斯达克中国金龙指数转涨",
-          "summary": "纳斯达克中国金龙指数转涨。",
-          "time": "10/29 22:01",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914915351.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "全球基金29日净卖出94.4亿印度卢比的印度股票",
-          "summary": "全球基金29日净卖出94.4亿印度卢比的印度股票。",
-          "time": "10/29 22:00",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261029/c681260859.shtml",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "王毅同冰岛外长贡纳尔斯多蒂尔会谈",
-          "summary": "2026年10月29日，中共中央政治局委员、外交部长王毅在北京同冰岛外长贡纳尔斯多蒂尔举行会谈。王毅表示，中冰关系发展的成功经验是坚持大小国家一律平等，尊重彼此自主选择的发展道路，…",
-          "time": "10/29 21:59",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261029/c681260848.shtml",
-          "tags": [
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "拉加德：增长面临下行风险",
-          "summary": "【拉加德：增长面临下行风险】拉加德表示，增长面临下行风险，未来几个季度通胀率将远高于目标水平。",
-          "time": "10/29 21:58",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914904685.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "万事达卡股价上涨5%",
-          "summary": "万事达卡股价上涨5%，创4月以来最大盘中涨幅。",
-          "time": "10/29 21:57",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914904417.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "现货白银失守52美元/盎司",
-          "summary": "现货白银失守52美元/盎司，日内跌3.60%。",
-          "time": "10/29 21:56",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914902711.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "拉加德：能源价格涨幅已超出基线水平",
-          "summary": "【拉加德：能源价格涨幅已超出基线水平】欧洲央行行长拉加德表示，能源价格涨幅已超出基线水平。从中期来看，能源将进一步推高通胀。",
-          "time": "10/29 21:55",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914904521.html",
-          "tags": [
-            "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "标普500通信服务板块指数创14个月新低",
-          "summary": "【标普500通信服务板块指数创14个月新低】标普500通信服务板块指数创14个月新低，最新下跌6.9%。",
-          "time": "10/29 21:52",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914901652.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "白宫国家经济委员会主任哈塞特：特朗普尊重美联储的独立性 认为利率可以更低",
-          "summary": "白宫国家经济委员会主任哈塞特表示，特朗普尊重美联储的独立性，认为利率可以更低。",
-          "time": "10/29 21:52",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914897227.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "欧洲央行行长拉加德：数据显示第三季度经济继续扩张",
-          "summary": "【欧洲央行行长拉加德：数据显示第三季度经济继续扩张】欧洲央行行长拉加德表示，数据显示第三季度经济继续扩张。人工智能投资与公共支出将支撑增长。",
-          "time": "10/29 21:51",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914901434.html",
-          "tags": [
-            "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "礼来股价涨幅扩大至8.3%",
-          "summary": "礼来股价涨幅扩大至8.3%，报1395.420美元/股，总市值报1.31万亿美元，续刷记录新高。",
-          "time": "10/29 21:49",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914892631.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "白宫国家经济委员会主任哈塞特：通胀基本符合预期 美国经济有望实现4%的增长",
-          "summary": "白宫国家经济委员会主任哈塞特表示，通胀基本符合预期，美国经济有望实现4%的增长。",
-          "time": "10/29 21:48",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914892314.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "谷歌股价跌幅扩大至13.7%",
-          "summary": "谷歌股价跌幅扩大至13.7%，创最大跌幅纪录。",
-          "time": "10/29 21:42",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914887071.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中国能建：第三季度归母净利润3.37亿元 同比下降4.88%",
-          "summary": "【中国能建：第三季度归母净利润3.37亿元 同比下降4.88%】中国能建10月29日公告，2026年第三季度实现营业收入1009.25亿元，同比下降9.45%；归母净利润3.37亿…",
-          "time": "10/29 21:41",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914888273.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "报道：奥迪已获得关税减免计划的保证",
-          "summary": "【报道：奥迪已获得关税减免计划的保证】据报道，奥迪已获得关税减免计划的保证，美国官员仍在敲定方案细节。",
-          "time": "10/29 21:39",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914887198.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "卡特彼勒股价开盘下跌12%",
-          "summary": "卡特彼勒股价开盘下跌12%，较6月份的历史最高纪录下跌40%。",
-          "time": "10/29 21:37",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914868535.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美股存储股盘初走低 希捷跌3%",
-          "summary": "【美股存储股盘初走低 希捷跌3%】美股存储股盘初走低，希捷跌3%、西部数据跌1.8%、闪迪跌3.2%。",
-          "time": "10/29 21:35",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914860336.html",
-          "tags": [
-            "科技",
-            "美股映射"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "谷歌盘初大跌超13% 创其历史上最大单日跌幅 总市值蒸发5000亿美元",
-          "summary": "【谷歌盘初大跌超13% 创其历史上最大单日跌幅 总市值蒸发5000亿美元】谷歌母公司Alphabet美股开盘大跌，现将跌幅扩大至13%，创其历史上最大单日跌幅，报283美元，市值较…",
-          "time": "10/29 21:33",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914856184.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "ServiceNow股价下跌22%",
-          "summary": "ServiceNow股价下跌22%，创2016年以来最大盘中跌幅。",
-          "time": "10/29 21:32",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914854696.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "费城半导体指数开盘下跌1.50%",
-          "summary": "费城半导体指数开盘下跌1.50%，现报11507.54点。",
-          "time": "10/29 21:31",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914854127.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美股三大指数集体低开 谷歌跌逾11%、市值蒸发超4000亿美元",
-          "summary": "【美股三大指数集体低开 谷歌跌逾11%、市值蒸发超4000亿美元】道琼斯指数跌0.65%，标普500指数跌0.53%，纳斯达克综合指数跌1.32%。谷歌跌逾11%，市值蒸发超400…",
-          "time": "10/29 21:30",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914853635.html",
-          "tags": [
-            "科技",
-            "美股映射"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "斯托克欧洲600指数涨幅扩大至1%",
-          "summary": "斯托克欧洲600指数涨幅扩大至1%，触及日内高点。",
-          "time": "10/29 21:21",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914842898.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "布伦特原油期货跌幅扩大至2%",
-          "summary": "【布伦特原油期货跌幅扩大至2%】布伦特原油期货跌幅扩大至2%，报109.322美元/桶。WTI原油期货价格跌2.34%，报100.378美元/桶。",
-          "time": "10/29 21:21",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914846048.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "市场削减对欧洲央行的加息押注",
-          "summary": "【市场削减对欧洲央行的加息押注】市场削减对欧洲央行的加息押注，预计到2027年底将累计加息68个基点。",
-          "time": "10/29 21:20",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914845679.html",
-          "tags": [
-            "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "欧洲央行：货币政策将继续依赖数据 不预先承诺利率路径",
-          "summary": "【欧洲央行：货币政策将继续依赖数据 不预先承诺利率路径】欧洲央行表示，未来利率决策将依据最新经济和金融数据、通胀前景及相关风险、潜在通胀变化和货币政策传导效果作出，并继续采取逐次会…",
-          "time": "10/29 21:20",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914843339.html",
-          "tags": [
-            "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "欧洲央行继续缩减资产购买组合 到期债券本金不再再投资",
-          "summary": "【欧洲央行继续缩减资产购买组合 到期债券本金不再再投资】欧洲央行表示，资产购买计划（APP）和疫情紧急购买计划（PEPP）项下资产组合将继续以可控、可预期的速度下降，欧元体系不再对…",
-          "time": "10/29 21:20",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914843517.html",
-          "tags": [
-            "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "锦江航运：第三季度归母净利润4.75亿元 同比增长21.8%",
-          "summary": "【锦江航运：第三季度归母净利润4.75亿元 同比增长21.8%】锦江航运10月29日公告，2026年第三季度实现营业收入20.87亿元，同比增长16.12%；归母净利润4.75亿元…",
-          "time": "10/29 21:17",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914841183.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "欧洲央行承诺将通胀率稳定在2%的中期目标水平",
-          "summary": "【欧洲央行承诺将通胀率稳定在2%的中期目标水平】欧洲央行承诺将通胀率稳定在2%的中期目标水平，会随时准备调整所有工具。",
-          "time": "10/29 21:16",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914840696.html",
-          "tags": [
-            "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "小鹏MONA首款大五座SUV正式上市",
-          "summary": "【小鹏MONA首款大五座SUV正式上市】10月29日晚，小鹏MONA首款大五座SUVMONAL05正式上市，包括纯电和超级增程双动力共6款车型，限时价13.98万元起。",
-          "time": "10/29 21:16",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914841653.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "欧元兑英镑跌至2025年4月以来最低水平",
-          "summary": "欧元兑英镑跌至2025年4月以来最低水平。",
-          "time": "10/29 21:15",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914840351.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "欧洲央行维持三大关键利率不变 符合市场预期",
-          "summary": "【欧洲央行维持三大关键利率不变 符合市场预期】欧洲央行分别将存款机制利率、主要再融资利率、边际贷款利率维持在2.50%、2.65%、2.90%不变，符合市场预期。",
-          "time": "10/29 21:15",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914836746.html",
-          "tags": [
-            "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "顺丰控股：拟收购顺丰房托旗下物流资产",
-          "summary": "【顺丰控股：拟收购顺丰房托旗下物流资产】顺丰控股(002352.SZ)公告称，公司通过境外全资子公司与顺丰房托签订买卖协议，拟收购顺丰物流全部已发行股份及公司间应收款项，总对价约2…",
-          "time": "10/29 21:11",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914828629.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "五粮液：控股股东一致行动人增持触及1%整数倍",
-          "summary": "【五粮液：控股股东一致行动人增持触及1%整数倍】五粮液(000858.SZ)公告称，公司控股股东五粮液集团于2026年5月7日至10月29日期间，通过集中竞价方式累计增持公司股份3…",
-          "time": "10/29 21:08",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914812923.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "天津出台新房购置新规",
-          "summary": "【天津出台新房购置新规】据“天津发布”，日前，天津市住房城乡建设委、天津市规划资源局、天津市城市管理委、天津市水务局和国网天津市电力公司联合印发《天津市新房购置“一件事”实施方案》…",
-          "time": "10/29 21:03",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914797392.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "“新美联储通讯社”：若核心商品价格持续上涨 服务价格须更明显放缓",
-          "summary": "【“新美联储通讯社”：若核心商品价格持续上涨 服务价格须更明显放缓】“新美联储通讯社”NickTimiraos：9月核心PCE服务价格（不含住房）上涨0.37%，推动12个月同比涨…",
-          "time": "10/29 21:01",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914786485.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "波罗的海干散货运价指数涨2.26%",
-          "summary": "波罗的海干散货运价指数涨2.26%，报2712点。",
-          "time": "10/29 21:00",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914785374.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "奥本海默下调谷歌母公司Alphabet目标价",
-          "summary": "【奥本海默下调谷歌母公司Alphabet目标价】奥本海默将谷歌母公司Alphabet目标价从440美元下调至355美元。",
-          "time": "10/29 21:00",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914796721.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "现货白银日内下跌3%",
-          "summary": "现货白银日内下跌3%，现报52.32美元/盎司。",
-          "time": "10/29 21:00",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914784412.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国内商品期货夜盘开盘 主力合约多数下跌",
-          "summary": "国内商品期货夜盘开盘，主力合约多数下跌。跌幅方面，沪银跌近3%，纯苯、苯乙烯、低硫燃油、对二甲苯、焦炭等跌超1%；涨幅方面，纸浆涨超1%，玻璃、烧碱、LPG、纯碱、铁矿石等小幅上涨…",
-          "time": "10/29 21:00",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914784283.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国邦医药：拟1亿元—2亿元回购公司股份",
-          "summary": "【国邦医药：拟1亿元—2亿元回购公司股份】国邦医药(605507)10月29日公告，拟1亿元—2亿元回购公司股份，用于维护公司价值及股东权益，回购价格不超过23元/股（含）。",
-          "time": "10/29 20:54",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914783764.html",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "华联股份：拟斥1亿-1.5亿元回购公司股份",
-          "summary": "【华联股份：拟斥1亿-1.5亿元回购公司股份】华联股份公告称，拟斥1亿-1.5亿元回购公司股份，回购股份价格不超2.26元/股。",
-          "time": "10/29 20:51",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914780896.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "东方证券：发行股份及支付现金购买上海证券100%股权获上交所审核通过",
-          "summary": "【东方证券：发行股份及支付现金购买上海证券100%股权获上交所审核通过】东方证券(600958)10月29日公告，公司拟通过发行A股股份及支付现金的方式购买上海证券有限责任公司10…",
-          "time": "10/29 20:51",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914780648.html",
-          "tags": [
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "一加Ace 7系列发布",
-          "summary": "【一加Ace 7系列发布】10月29日晚，一加Ace 7系列正式发布，含一加Ace 7和一加Ace 7 Pro两款机型。其中，一加Ace7 Pro搭载自研“电竞三芯”，以及京东方1…",
-          "time": "10/29 20:50",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914780529.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "环旭电子：股东提议以5000万-1亿元回购公司股份",
-          "summary": "【环旭电子：股东提议以5000万-1亿元回购公司股份】环旭电子公告称，股东提议以5000万-1亿元回购公司股份",
-          "time": "10/29 20:46",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914769568.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "大洋电机：因离婚纠纷 实控人鲁楚平所持4.15亿股被司法冻结",
-          "summary": "【大洋电机：因离婚纠纷 实控人鲁楚平所持4.15亿股被司法冻结】大洋电机(002249.SZ)公告称，公司收到广东省中山市第一人民法院《协助执行通知书》，因彭惠与鲁楚平离婚纠纷，法…",
-          "time": "10/29 20:44",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914769779.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中创新航：2027年出货量预计倍数级增长",
-          "summary": "【中创新航：2027年出货量预计倍数级增长】10月29日，中创新航董事长刘静瑜在2026年全球生态合作伙伴大会上表示，预计2026年产品交付规模再次大幅增长，2027年伴随产能缺口…",
-          "time": "10/29 20:38",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914750441.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国9月核心PCE同比上涨3.1% 美联储12月或加息25个基点",
-          "summary": "【美国9月核心PCE同比上涨3.1% 美联储12月或加息25个基点】美国商务部公布的数据显示，9月美国个人消费支出价格指数同比上涨3.6%，剔除食品和能源价格后的核心个人消费支出价…",
-          "time": "10/29 20:37",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914735690.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国30年期国债收益率下跌1.08个基点，报5.352%",
-          "summary": "【美国30年期国债收益率下跌1.08个基点，报5.352%】美国30年期国债收益率下跌1.08个基点，报5.352%；2年期收益率最新下跌2.51个基点，报4.71%。",
-          "time": "10/29 20:35",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914738344.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美债在PCE物价、GDP预估及初请数据公布后走势持稳",
-          "summary": "美债在PCE物价、GDP预估及初请数据公布后走势持稳。",
-          "time": "10/29 20:33",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914736669.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "ST万邦：子公司渐冻症新药WP205获FDA认可支持III期临床",
-          "summary": "【ST万邦：子公司渐冻症新药WP205获FDA认可支持III期临床】ST万邦(002082.SZ)公告称，公司全资子公司万邦德制药集团收到美国FDA针对渐冻症新药WP205(甲钴胺…",
-          "time": "10/29 20:31",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914720884.html",
-          "tags": [
-            "持仓"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国第三季度GDP季调后环比折年率初值为3.4% 预估为3.2%",
-          "summary": "美国第三季度GDP季调后环比折年率初值为3.4%，预估为3.2%。",
-          "time": "10/29 20:31",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914707332.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "TCL中环：前三季度净亏损45.56亿元",
-          "summary": "【TCL中环：前三季度净亏损45.56亿元】TCL中环(002129.SZ)公告称，第三季度营业收入为91.99亿元，同比增长12.55%；归属于上市公司股东的净利润为-13.52…",
-          "time": "10/29 20:31",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914719418.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国9月PCE物价指数环比上涨0.5% 同比上涨3.6%",
-          "summary": "美国9月PCE物价指数环比上涨0.5%，同比上涨3.6%，均符合预期。",
-          "time": "10/29 20:31",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914717038.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国9月个人支出环比增长0.5% 预估为0.6%",
-          "summary": "【美国9月个人支出环比增长0.5% 预估为0.6%】美国9月个人支出环比增长0.5%，预估为0.6%，前值为0.9%。",
-          "time": "10/29 20:30",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914714629.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国9月核心PCE价格指数环比增长0.3% 符合市场预期",
-          "summary": "【美国9月核心PCE价格指数环比增长0.3% 符合市场预期】美国9月核心个人消费支出价格指数环比增长0.3%，预估为0.3%，前值为0.2%。同比增长3.1%，预估3.1%。",
-          "time": "10/29 20:30",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914713614.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国上周首次申领失业救济人数为19.4万人 低于市场预期",
-          "summary": "【美国上周首次申领失业救济人数为19.4万人 低于市场预期】美国上周首次申领失业救济人数为19.4万人，预估为19.8万人，前值为19.4万人。",
-          "time": "10/29 20:30",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914711615.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "巨人网络：前三季度净利润28.86亿元 同比增长103.73%",
-          "summary": "【巨人网络：前三季度净利润28.86亿元 同比增长103.73%】巨人网络发布三季报，前三季度营业总收入66.85亿元，同比增长98.45%；归属于母公司所有者的净利润28.86亿…",
-          "time": "10/29 20:28",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914703067.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "亚马逊推出五款新一代Alexa设备 涵盖智能音箱、闹钟及智能显示屏",
-          "summary": "【亚马逊推出五款新一代Alexa设备 涵盖智能音箱、闹钟及智能显示屏】当地时间10月28日，亚马逊发布五款新一代Alexa设备，包括Echo Dot、搭载家庭摄像头的Echo St…",
-          "time": "10/29 20:27",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914704598.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "湘财股份：前三季度净利润2.75亿元 同比减少37.71%",
-          "summary": "【湘财股份：前三季度净利润2.75亿元 同比减少37.71%】湘财股份发布三季报，前三季度营业总收入17.32亿元，同比减少3.73%；归属于母公司所有者的净利润2.75亿元，同比…",
-          "time": "10/29 20:26",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914694719.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "心脉医疗：第三季度归母净利润1.26亿元 同比增长10.31%",
-          "summary": "【心脉医疗：第三季度归母净利润1.26亿元 同比增长10.31%】心脉医疗10月29日公告，2026年第三季度实现营业收入3.25亿元，同比增长8.2%；归母净利润1.26亿元，同…",
-          "time": "10/29 20:25",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914696520.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "远东传动：第三季度归母净利润5682.51万元 同比增长39.79%",
-          "summary": "【远东传动：第三季度归母净利润5682.51万元 同比增长39.79%】远东传动10月29日公告，2026年第三季度实现营业收入4.37亿元，同比增长21.8%；归母净利润5682…",
-          "time": "10/29 20:25",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914695959.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "立讯精密：预计2026年净利润同比增长15%-20%",
-          "summary": "【立讯精密：预计2026年净利润同比增长15%-20%】立讯精密(002475.SZ)公告称，预计2026年归属于上市公司股东的净利润为190.90亿元-199.20亿元，同比增长…",
-          "time": "10/29 20:25",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914687269.html",
-          "tags": [
-            "科技",
-            "产业"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "立讯精密：第三季度归母净利润52.14亿元 同比增长6.98%",
-          "summary": "【立讯精密：第三季度归母净利润52.14亿元 同比增长6.98%】立讯精密10月29日公告，2026年第三季度实现营业收入1105.07亿元，同比增长14.62%；归母净利润52.…",
-          "time": "10/29 20:23",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914686574.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "厦门象屿：前三季度净利润16.63亿元 同比增长1.79%",
-          "summary": "【厦门象屿：前三季度净利润16.63亿元 同比增长1.79%】厦门象屿发布三季报，前三季度营业总收入3262.52亿元，同比增长2.96%；归属于母公司所有者的净利润16.63亿元…",
-          "time": "10/29 20:22",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914682434.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "第一创业：前三季度净利润7.88亿元 同比增长2.27%",
-          "summary": "【第一创业：前三季度净利润7.88亿元 同比增长2.27%】第一创业发布三季报，前三季度营业总收入28.5亿元，同比减少4.52%；归属于母公司所有者的净利润7.88亿元，同比增长…",
-          "time": "10/29 20:22",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914682813.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "奥飞数据：前三季度净利润2.25亿元 同比增长54.46%",
-          "summary": "【奥飞数据：前三季度净利润2.25亿元 同比增长54.46%】奥飞数据发布三季报，前三季度营业总收入22.81亿元，同比增长25.07%；归属于母公司所有者的净利润2.25亿元，同…",
-          "time": "10/29 20:22",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914681540.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中粮资本：前三季度净利润12.12亿元 同比增长18.18%",
-          "summary": "【中粮资本：前三季度净利润12.12亿元 同比增长18.18%】中粮资本发布三季报，前三季度营业总收入76.37亿元，同比增长6.54%；归属于母公司所有者的净利润12.12亿元，…",
-          "time": "10/29 20:22",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914681285.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中国宝安：前三季度净亏损7537.05万元 同比由盈转亏",
-          "summary": "【中国宝安：前三季度净亏损7537.05万元 同比由盈转亏】中国宝安发布三季报，前三季度营业总收入220.09亿元，同比增长30.91%；归属于母公司所有者的净亏损7537.05万…",
-          "time": "10/29 20:12",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914663054.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "央行上海总部：上海市前三季度社会融资规模增加9693亿元",
-          "summary": "【央行上海总部：上海市前三季度社会融资规模增加9693亿元】10月29日，人民银行上海总部召开2026年第四季度新闻发布会暨上海金融“五篇大文章”专场发布会。据披露，前三季度，上海…",
-          "time": "10/29 20:12",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914669622.html",
-          "tags": [
-            "宏观",
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "生益电子：第三季度净利润同比增长37.10% 环比增长20%",
-          "summary": "【生益电子：第三季度净利润同比增长37.10% 环比增长20%】生益电子(688183.SH)公告称，第三季度营业收入为37.64亿元，同比增长23.00%；归属于上市公司股东的净…",
-          "time": "10/29 20:10",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914657975.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "伯特利：第三季度归母净利润3.88亿元 同比增长5.17%",
-          "summary": "【伯特利：第三季度归母净利润3.88亿元 同比增长5.17%】伯特利10月29日公告，2026年第三季度实现营业收入42.75亿元，同比增长33.86%；归母净利润3.88亿元，同…",
-          "time": "10/29 20:09",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914662454.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "乌克兰人道主义救援行动代表团启程前往奥列什基",
-          "summary": "【乌克兰人道主义救援行动代表团启程前往奥列什基】乌克兰停火谈判首席代表、乌最高拉达（议会）人权事务专员德米特罗·卢比涅茨29日上午在社交媒体发文称，他率领的乌方人道主义救援行动代表…",
-          "time": "10/29 20:08",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914656255.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "A股上市公司2026年前三季度认购理财规模突破8520亿元",
-          "summary": "【A股上市公司2026年前三季度认购理财规模突破8520亿元】近日，记者统计梳理，2026年前三季度，已有1141家A股上市公司发布认购各类理财产品公告（含存款），累计认购规模突破…",
-          "time": "10/29 20:08",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914663976.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "万科A：前三季度净亏损239.44亿元",
-          "summary": "【万科A：前三季度净亏损239.44亿元】万科A(000002.SZ)公告称，第三季度实现营业收入348.3亿元，同比下降37.88%；归属于上市公司股东的净亏损89.93亿元。前…",
-          "time": "10/29 20:05",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914656074.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中电联：到2026年底全国发电装机容量将达到43亿千瓦左右",
-          "summary": "【中电联：到2026年底全国发电装机容量将达到43亿千瓦左右】中国电力企业联合会对外发布《2026年三季度全国电力供需形势分析预测报告》。预计2026年全年新增发电装机有望超过3.…",
-          "time": "10/29 20:00",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914655620.html",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "总投资480亿 天马厦门柔性OLED项目获批",
-          "summary": "【总投资480亿 天马厦门柔性OLED项目获批】厦门市生态环境局正式批复《厦门天马显示科技有限公司第6代柔性AMOLED生产线项目生态环境影响报告表》。此次批复意味着天马显示在厦门…",
-          "time": "10/29 20:00",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914653181.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "光智科技：前三季度净利润8426.76万元 同比扭亏为盈",
-          "summary": "【光智科技：前三季度净利润8426.76万元 同比扭亏为盈】光智科技(300489.SZ)公告称，前三季度实现营业收入20.93亿元，同比增长45.04%；归属于上市公司股东的净利…",
-          "time": "10/29 19:55",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914648325.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "*ST闻泰：与荷兰安世半导体管理人就谈判事项已达成保密安排",
-          "summary": "【*ST闻泰：与荷兰安世半导体管理人就谈判事项已达成保密安排】*ST闻泰在互动平台表示，公司与荷兰安世半导体管理人就谈判事项已达成保密安排，双方在具体谈判过程中需严格遵守。",
-          "time": "10/29 19:55",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914648150.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美的集团：第三季度归母净利润149.47亿元 同比增长25.93%",
-          "summary": "【美的集团：第三季度归母净利润149.47亿元 同比增长25.93%】美的集团10月29日公告，2026年第三季度实现营业收入1073.22亿元，同比下降4.12%；归母净利润14…",
-          "time": "10/29 19:54",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914647511.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "龙源电力：第三季度归母净利润4.42亿元 同比下降57.84%",
-          "summary": "【龙源电力：第三季度归母净利润4.42亿元 同比下降57.84%】龙源电力10月29日公告，2026年第三季度实现营业收入64.4亿元，同比下降4.58%；归母净利润4.42亿元，…",
-          "time": "10/29 19:52",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914643231.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "微软计划通过美国债券发行至少筹资250亿美元",
-          "summary": "微软计划通过美国债券发行至少筹资250亿美元。",
-          "time": "10/29 19:52",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914647627.html",
-          "tags": [
-            "宏观",
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "上纬新材：前三季度亏损4.22亿元",
-          "summary": "【上纬新材：前三季度亏损4.22亿元】上纬新材(688585)10月29日披露2026年三季报，公司第三季度营业收入4.06亿元，同比下降18.04%；归属于上市公司股东的净利润亏…",
-          "time": "10/29 19:51",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914644542.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国海证券：第三季度归母净利润7447.22万元 同比下降77.81%",
-          "summary": "【国海证券：第三季度归母净利润7447.22万元 同比下降77.81%】国海证券10月29日公告，2026年第三季度实现营业收入6.62亿元，同比下降35.73%；归母净利润744…",
-          "time": "10/29 19:48",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914639983.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中信银行：第三季度归母净利润176.91亿元 同比增长4.6%",
-          "summary": "【中信银行：第三季度归母净利润176.91亿元 同比增长4.6%】中信银行10月29日公告，2026年第三季度实现营业收入532.33亿元，同比增长3.9%；归母净利润176.91…",
-          "time": "10/29 19:48",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914639720.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "九安医疗：第三季度归母净利润21.35亿元 同比增长219.21%",
-          "summary": "【九安医疗：第三季度归母净利润21.35亿元 同比增长219.21%】九安医疗10月29日公告，2026年第三季度实现营业收入2.74亿元，同比下降9.8%；归母净利润21.35亿…",
-          "time": "10/29 19:46",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914639469.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "欣旺达：第三季度归母净利润1056.71万元 同比下降98.08%",
-          "summary": "【欣旺达：第三季度归母净利润1056.71万元 同比下降98.08%】欣旺达10月29日公告，2026年第三季度实现营业收入252.84亿元，同比增长52.78%；归母净利润105…",
-          "time": "10/29 19:46",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914639516.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "江波龙：第三季度净利润同比增长437% 环比下降44%",
-          "summary": "【江波龙：第三季度净利润同比增长437%】江波龙(301308.SZ)公告称，第三季度营业收入为146.30亿元，同比增长123.74%；归属于上市公司股东的净利润为37.45亿元…",
-          "time": "10/29 19:45",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914629776.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "机构：预计2026年全球智能手机出货量将降12%",
-          "summary": "【机构：预计2026年全球智能手机出货量将降12%】根据Omdia的数据，2026年第三季度全球智能手机出货量同比降20%至2.547亿部，创2013年来新低。价格上涨抑制消费者需…",
-          "time": "10/29 19:43",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914629311.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "本周电池片库存延续去化 组件价格仍有小幅下跌",
-          "summary": "【本周电池片库存延续去化 组件价格仍有小幅下跌】本周电池片库存延续去化。厂家出货节奏稳定，其中210N库存已处于十分紧张状态，为价格连续上调提供了现实基础；210R外销出货顺畅，1…",
-          "time": "10/29 19:41",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914623172.html",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中国诚通控股集团有限公司新进成为华大九天第八大股东",
-          "summary": "【中国诚通控股集团有限公司新进成为华大九天第八大股东】据华大九天三季报显示，中国诚通控股集团有限公司新进成为第八大股东，持有1020万股，占总股本比例1.86%。",
-          "time": "10/29 19:37",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914634775.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "京投发展：前三季度净亏损4.42亿元",
-          "summary": "【京投发展：前三季度净亏损4.42亿元】京投发展(600683.SH)公告称，第三季度营业收入为5.32亿元，同比增长276.51%；归属于上市公司股东的净利润为-1.29亿元。前…",
-          "time": "10/29 19:33",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914605241.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "微软启动10批次美元高等级债券发行 为2017年以来首次",
-          "summary": "【微软启动10批次美元高等级债券发行 为2017年以来首次】微软启动10批次美元高等级债券发行，为2017年以来首次。微软盘前涨幅收窄至1%，此前一度涨超4%。",
-          "time": "10/29 19:31",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914604033.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "好想你：前三季度归母净利润11.7亿元 同比增长24939.49%",
-          "summary": "【好想你：前三季度归母净利润11.7亿元 同比增长24939.49%】好想你10月29日公告，2026年第三季度实现营业收入3.18亿元，同比下降14.8%；归母净利润4.25亿元…",
-          "time": "10/29 19:31",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914594914.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "回天新材：拟1亿元—2亿元回购公司股份",
-          "summary": "【回天新材：拟1亿元—2亿元回购公司股份】回天新材(300041)10月29日公告，拟1亿元—2亿元回购公司股份，用于股权激励或员工持股计划，回购股份价格不超过15元/股。",
-          "time": "10/29 19:29",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914593959.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "晶盛机电：前三季度净利润同比下降68.65% Q3净利润环比下降61%",
-          "summary": "【晶盛机电：前三季度净利润同比下降68.65% Q3净利润环比下降61%】晶盛机电(300316.SZ)公告称，第三季度营业收入为19.62亿元，同比下降20.70%；归属于上市公…",
-          "time": "10/29 19:28",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914594180.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "众生药业：第三季度归母净利润6515.7万元 同比增长3.95%",
-          "summary": "【众生药业：第三季度归母净利润6515.7万元 同比增长3.95%】众生药业10月29日公告，2026年第三季度实现营业收入4.68亿元，同比下降20.62%；归母净利润6515.…",
-          "time": "10/29 19:27",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914592466.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "胜宏科技：第三季度净利润同比下降52% 环比下降66%",
-          "summary": "【胜宏科技：第三季度净利润同比下降52% 环比下降66%】胜宏科技(300476.SZ)公告称，前三季度实现营业收入184.61亿元，同比增长30.77%；归属于上市公司股东的净利…",
-          "time": "10/29 19:27",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914590037.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "顺络电子：第三季度归母净利润3.51亿元 同比增长23.97%",
-          "summary": "【顺络电子：第三季度归母净利润3.51亿元 同比增长23.97%】顺络电子10月29日公告，2026年第三季度实现营业收入24.76亿元，同比增长36.94%；归母净利润3.51亿…",
-          "time": "10/29 19:26",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914590648.html",
-          "tags": [
-            "科技",
-            "产业"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "四维图新：前三季度净亏损8.16亿元",
-          "summary": "【四维图新：前三季度净亏损8.16亿元】四维图新(002405.SZ)公告称，第三季度营收为12.01亿元，同比增长33.62%；净利润为-3.27亿元。前三季度营收为29.68亿…",
-          "time": "10/29 19:22",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914590797.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "苏宁易购：不超过1亿元回购公司股份",
-          "summary": "【苏宁易购：不超过1亿元回购公司股份】苏宁易购10月29日公告称，公司拟使用自有资金以集中竞价交易方式回购公司股票，回购资金总额不低于5,000万元且不超过1亿元，回购股份价格不超…",
-          "time": "10/29 19:20",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914584481.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "首创证券：Q3净利润环比下降68%",
-          "summary": "【首创证券：Q3净利润环比下降68%】首创证券(601136.SH)公告称，第三季度营业收入为4.25亿元，同比下降41.83%；归属于上市公司股东的净利润为1.48亿元，同比下降…",
-          "time": "10/29 19:19",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914583820.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "IBM用四根超导线缆实现芯片级协同 打破量子比特拥挤魔咒",
-          "summary": "【IBM用四根超导线缆实现芯片级协同 打破量子比特拥挤魔咒】来自IBM的科学家刚刚用四根长达80厘米的铝制线缆，将两块大型超导量子芯片连接在了一起，创下了平均99%的量子态传输保真…",
-          "time": "10/29 19:18",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914584224.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "通用股份：拟投资20.03亿元建设埃及轮胎生产基地",
-          "summary": "【通用股份：拟投资20.03亿元建设埃及轮胎生产基地】通用股份(601500.SH)公告称，公司拟在埃及苏伊士运河经济区苏赫纳工业区投资建设年产80万条全钢、600万条半钢子午线轮…",
-          "time": "10/29 19:17",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914585029.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "固德威：前三季度净利润同比增长431.48%",
-          "summary": "【固德威：前三季度净利润同比增长431.48%】固德威(688390.SH)公告称，第三季度营业收入为32.49亿元，同比增长54.07%；归属于上市公司股东的净利润为1.45亿元…",
-          "time": "10/29 19:17",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914585783.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "德意志银行下调谷歌母公司Alphabet目标价",
-          "summary": "【德意志银行下调谷歌母公司Alphabet目标价】德意志银行将谷歌母公司Alphabet目标价从430美元下调至390美元。",
-          "time": "10/29 19:14",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914579674.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "伊朗称捕获一架美间谍无人机",
-          "summary": "【伊朗称捕获一架美间谍无人机】伊朗伊斯兰革命卫队29日发布声明称，其海军在霍尔木兹海峡以西地区开展了一次进攻性电子战行动，成功控制一架美军间谍无人机，并使其安全降落。",
-          "time": "10/29 19:14",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914577037.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中远海控第七大股东国新宏盛投资(北京)有限公司三季度增仓3233.47万股",
-          "summary": "【中远海控第七大股东国新宏盛投资(北京)有限公司三季度增仓3233.47万股】中远海控(601919.SH)发布2026年三季报显示，与2026年半年报相比，第七大股东国新宏盛投资…",
-          "time": "10/29 19:13",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914576339.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "蒙特利尔银行上调微软目标价",
-          "summary": "【蒙特利尔银行上调微软目标价】蒙特利尔银行将微软目标价从600美元上调至610美元。",
-          "time": "10/29 19:11",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914571597.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "招商证券：第三季度归母净利润66.58亿元 同比增长80.65%",
-          "summary": "【招商证券：第三季度归母净利润66.58亿元，同比增长80.65%】招商证券10月29日公告，2026年第三季度实现营业收入122.11亿元，同比增长58.1%；归母净利润66.5…",
-          "time": "10/29 19:11",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914569475.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "白银有色：前三季度净利润为7.17亿元 同比扭亏为盈",
-          "summary": "【白银有色：前三季度净利润为7.17亿元 同比扭亏为盈】白银有色(601212.SH)公告称，第三季度营业收入为314亿元，同比增长11.80%；归属于上市公司股东的净利润为6.3…",
-          "time": "10/29 19:10",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914571114.html",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中国中铁：前三季度净利润同比下降28.97%",
-          "summary": "【中国中铁：前三季度净利润同比下降28.97%】中国中铁(601390.SH)公告称，第三季度营业收入为2433.92亿元，同比下降7.36%；归属于上市公司股东的净利润为37.6…",
-          "time": "10/29 19:10",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914561947.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "卡特彼勒美股盘前跌超10%",
-          "summary": "卡特彼勒美股盘前跌超10%。",
-          "time": "10/29 19:08",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914570293.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中国铝业：拟投资18.35亿元建设青海10万吨电解铝绿电直连项目",
-          "summary": "【中国铝业：拟投资18.35亿元建设青海10万吨电解铝绿电直连项目】中国铝业(601600.SH)公告称，拟投资建设青海分公司10万吨电解铝绿电直连项目，预计项目总投资约18.35…",
-          "time": "10/29 19:08",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914570048.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中国电信星辰AI助手将在三星Bixby中上线",
-          "summary": "【中国电信星辰AI助手将在三星Bixby中上线】记者从中国电信获悉，中国电信推出的星辰AI助手，后续会在三星智能语音助手Bixby中上线。支持深度研究和定时任务，用户只需一句话指令…",
-          "time": "10/29 19:08",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914569663.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "旭光电子：子公司拟1.8亿元投建氮化铝粉体技改扩产项目",
-          "summary": "【旭光电子：子公司拟1.8亿元投建氮化铝粉体技改扩产项目】旭光电子(600353.SH)公告称，公司子公司宁夏北瓷拟实施氮化铝粉体生产工艺提质技改扩产项目，项目总投资估算1.8亿元…",
-          "time": "10/29 19:07",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914562147.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "卓胜微：拟5000万元—1亿元回购公司股份",
-          "summary": "【卓胜微：拟5000万元—1亿元回购公司股份】卓胜微(300782)10月29日公告，拟5000万元—1亿元回购公司股份，用于实施员工持股计划或股权激励，回购股份价格不超过99.6…",
-          "time": "10/29 19:07",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914564430.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "银轮股份：拟5000万元—1亿元回购公司股份",
-          "summary": "【银轮股份：拟5000万元—1亿元回购公司股份】银轮股份(002126)10月29日公告，拟5000万元—1亿元回购公司股份，用于股权激励或员工持股计划，回购股份价格不超过50元/…",
-          "time": "10/29 19:07",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914563461.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中国铝业：前三季度净利润同比增长64.83%",
-          "summary": "【中国铝业：前三季度净利润同比增长64.83%】中国铝业(601600.SH)公告称，第三季度营业收入为611.81亿元，同比增长1.74%；归属于上市公司股东的净利润为60.44…",
-          "time": "10/29 19:06",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914560892.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "壹石通：前三季度净利润2245.97万元 同比扭亏",
-          "summary": "【壹石通：前三季度净利润2245.97万元 同比扭亏】壹石通(688733)10月29日披露2026年三季报，公司前三季度实现营收6.59亿元，同比增长51.63%；归母净利润22…",
-          "time": "10/29 19:06",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914567147.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "领益智造：实控人曾芳勤拟增持公司H股股份不低于1亿元且不超过2亿元",
-          "summary": "【领益智造：实控人曾芳勤拟增持公司H股股份不低于1亿元且不超过2亿元】领益智造(002600.SZ)公告称，公司实际控制人、董事长兼总经理曾芳勤计划自公告披露之日起12个月内，通过…",
-          "time": "10/29 19:04",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914548468.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "映翰通：第三季度归母净利润1042.92万元 同比下降70.36%",
-          "summary": "【映翰通：第三季度归母净利润1042.92万元 同比下降70.36%】映翰通10月29日公告，2026年第三季度实现营业收入1.43亿元，同比下降28.07%；归母净利润1042.…",
-          "time": "10/29 19:02",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914541791.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中集集团：前三季度净利润14.48亿元 同比下降7.53%",
-          "summary": "【中集集团：前三季度净利润14.48亿元 同比下降7.53%】中集集团(000039)10月29日披露2026年三季报，2026年第三季度营业收入478.98亿元，同比增长16.9…",
-          "time": "10/29 19:02",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914543725.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "普冉股份：前三季度净利润同比增长2533%",
-          "summary": "【普冉股份：前三季度净利润同比增长2533%】普冉股份(688766.SH)公告称，第三季度实现营业收入30.50亿元，同比增长479.25%；归属于上市公司股东的净利润7.28亿…",
-          "time": "10/29 19:00",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914540824.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中国国航：前三季度净亏损20.15亿元",
-          "summary": "【中国国航：前三季度净亏损20.15亿元】中国国航(601111.SH)公告称，第三季度营业收入为516.95亿元，同比增长5.35%；归属于上市公司股东的净利润为2.71亿元，同…",
-          "time": "10/29 18:58",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914535722.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "苹果压价闪存供应商 iPhone 17 Pro容量升级单档毛利或达185美元",
-          "summary": "【苹果压价闪存供应商 iPhone 17 Pro容量升级单档毛利或达185美元】据测算，去年消费者购买苹果iPhone17Pro时，将存储容量从256GB升级至512GB，需要多付…",
-          "time": "10/29 18:56",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914534481.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "越秀资本：第三季度归母净利润6.12亿元 同比下降57.83%",
-          "summary": "【越秀资本：第三季度归母净利润6.12亿元 同比下降57.83%】越秀资本10月29日公告，2026年第三季度实现营业总收入21.03亿元，同比下降4.79%；归母净利润6.12亿…",
-          "time": "10/29 18:56",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914536919.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "道琼斯指数期货瞬时回吐0.6%的涨幅",
-          "summary": "道琼斯指数期货瞬时回吐0.6%的涨幅，因卡特彼勒业绩不佳盘前大跌超8%。",
-          "time": "10/29 18:56",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914535477.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "华熙生物：前三季度净利润1.86亿元 同比下降26.27%",
-          "summary": "【华熙生物：前三季度净利润1.86亿元 同比下降26.27%】华熙生物(688363)10月29日发布2026年三季报，前三季度营业收入25.96亿元，同比下降17.94%；归属于…",
-          "time": "10/29 18:56",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914534753.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "瑞穗银行上调微软目标价",
-          "summary": "【瑞穗银行上调微软目标价】瑞穗银行将微软目标价从600美元上调至625美元。",
-          "time": "10/29 18:54",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914533735.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "山推股份：前三季度净利润10.11亿元 同比增长19.24%",
-          "summary": "【山推股份：前三季度净利润10.11亿元 同比增长19.24%】山推股份(000680)10月29日披露2026年三季报，前三季度实现营业收入123.62亿元，同比增长17.87%…",
-          "time": "10/29 18:54",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914534941.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "伯恩斯坦下调波音目标价",
-          "summary": "【伯恩斯坦下调波音目标价】伯恩斯坦将波音目标价从278美元下调至223美元。",
-          "time": "10/29 18:53",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914533256.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "圣邦股份：前三季度净利润同比增长115.28%",
-          "summary": "【圣邦股份：前三季度净利润同比增长115.28%】圣邦股份(300661.SZ)公告称，第三季度营收为17.09亿元，同比增长74.05%；净利润为3.19亿元，同比增长123.7…",
-          "time": "10/29 18:53",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914531254.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "伊利股份：前三季度净利润同比下降15.56%",
-          "summary": "【伊利股份：前三季度净利润同比下降15.56%】伊利股份(600887.SH)公告称，第三季度营业收入为292.51亿元，同比增长2.40%；归属于上市公司股东的净利润为30.45…",
-          "time": "10/29 18:53",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914533675.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "金证股份与海光信息达成战略合作",
-          "summary": "【金证股份与海光信息达成战略合作】据海光信息消息，近日，金证股份与海光信息在2026星海峰会期间达成战略合作，并发布金证FS2.5证券业务综合服务平台解决方案。双方围绕金证FS2.…",
-          "time": "10/29 18:52",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914532215.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "富国银行上调微软目标价",
-          "summary": "【富国银行上调微软目标价】富国银行将微软目标价从725美元上调至750美元。",
-          "time": "10/29 18:51",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914528742.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "博盈特焊：拟收购苏州罗克莱55%股份 股票明起复牌",
-          "summary": "【博盈特焊：拟收购苏州罗克莱55%股份 股票明起复牌】博盈特焊(301468.SZ)公告称，拟收购苏州罗克莱海洋装备股份有限公司55%股份，交易价格暂估为4.95亿元。本次交易预计…",
-          "time": "10/29 18:51",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914527033.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "伯恩斯坦上调微软目标价",
-          "summary": "【伯恩斯坦上调微软目标价】伯恩斯坦将微软目标价从662美元上调至722美元。",
-          "time": "10/29 18:50",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914528541.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "生益科技：前三季度净利润同比增长175.36% Q3净利润环比增长61%",
-          "summary": "【生益科技：前三季度净利润同比增长175.36% Q3净利润环比增长61%】生益科技(600183.SH)公告称，第三季度营业收入为141.82亿元，同比增长78.76%；归属于上…",
-          "time": "10/29 18:50",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914526186.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "礼来第三季度Mounjaro销售额增长65% Zepbound增长49%",
-          "summary": "【礼来第三季度Mounjaro销售额增长65% Zepbound增长49%】礼来第三季度糖尿病药物Mounjaro全球销售额107.23亿美元，同比增长65%；减肥药Zepboun…",
-          "time": "10/29 18:50",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914520434.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "礼来上调全年营收指引至最高920亿美元 调整后每股收益指引下调",
-          "summary": "【礼来上调全年营收指引至最高920亿美元 调整后每股收益指引下调】礼来将2026年全年营收指引从此前的850亿至870亿美元上调至910亿至920亿美元，并将业绩利润率指引从49%…",
-          "time": "10/29 18:49",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914519736.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "国新宏盛投资(北京)有限公司新进成为中国联通第九大股东",
-          "summary": "【国新宏盛投资(北京)有限公司新进成为中国联通第九大股东】据中国联通2026年三季报显示，国新宏盛投资(北京)有限公司新进成为第九大股东，持有15632.16万股，占总股本比例0.…",
-          "time": "10/29 18:47",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914517119.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中际旭创：拟变更50亿元已回购股份用途为注销 将注销565.31万股A股",
-          "summary": "【中际旭创：拟变更50亿元已回购股份用途为注销 将注销565.31万股A股】10月29日，中际旭创(300308.SZ)公告称，公司董事会审议通过议案，拟将回购专用证券账户中持有的…",
-          "time": "10/29 18:46",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914537961.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美国银行全球研究上调微软目标价",
-          "summary": "【美国银行全球研究上调微软目标价】美国银行全球研究将微软公司的目标价从600美元上调至630美元。",
-          "time": "10/29 18:46",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914521661.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "礼来第三季度营收同比增长39%至244亿美元 上调全年营收指引",
-          "summary": "【礼来第三季度营收同比增长39%至244亿美元 上调全年营收指引】礼来第三季度营收243.97亿美元，同比增长39%；净利润64.51亿美元，同比增长16%；调整后每股收益7.48…",
-          "time": "10/29 18:46",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914513666.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中航成飞：第三季度归母净利润1.65亿元 同比下降86.83%",
-          "summary": "【中航成飞：第三季度归母净利润1.65亿元 同比下降86.83%】中航成飞10月29日公告，2026年第三季度实现营业收入82.7亿元，同比下降70.02%；归母净利润1.65亿元…",
-          "time": "10/29 18:46",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914517910.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "卡特彼勒第三季度电力与能源业务营收增长18% 发电业务销售额增长30%",
-          "summary": "【卡特彼勒第三季度电力与能源业务营收增长18% 发电业务销售额增长30%】卡特彼勒第三季度电力与能源业务营收87.84亿美元，同比增长18%；分部利润21.43亿美元，同比增长31…",
-          "time": "10/29 18:44",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914515439.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "大普微：前三季度净利润为25.43亿元 同比扭亏为盈",
-          "summary": "【大普微：前三季度净利润为25.43亿元 同比扭亏为盈】大普微(301666.SZ)公告称，前三季度实现营业收入98.35亿元，同比增长678.13%；归属于上市公司股东的净利润2…",
-          "time": "10/29 18:44",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914505394.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "华工科技：第三季度归母净利润4.8亿元 同比增长17.03%",
-          "summary": "【华工科技：第三季度归母净利润4.8亿元 同比增长17.03%】华工科技10月29日公告，2026年第三季度实现营业收入48.32亿元，同比增长41.75%；归母净利润4.8亿元，…",
-          "time": "10/29 18:42",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914493228.html",
-          "tags": [
-            "持仓"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "广发证券：第三季度归母净利润43.76亿元 同比下降1.99%",
-          "summary": "【广发证券：第三季度归母净利润43.76亿元 同比下降1.99%】广发证券10月29日公告，2026年第三季度实现营业总收入101.73亿元，同比下降5.51%；归母净利润43.7…",
-          "time": "10/29 18:42",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914491674.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中际旭创：Q3净利润同比增长173% 环比增长8%",
-          "summary": "【中际旭创：Q3净利润同比增长174% 环比增长8%】中际旭创(300308.SZ)公告称，第三季度营业收入为277.69亿元，同比增长171.83%；归属于上市公司股东的净利润为…",
-          "time": "10/29 18:40",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914483756.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "雅化集团：前三季度净利润14.90亿元 同比增长346.01%",
-          "summary": "【雅化集团：前三季度净利润14.90亿元 同比增长346.01%】雅化集团(002497)10月29日披露2026年三季报，公司前三季度实现营收107.12亿元，同比增长77.15…",
-          "time": "10/29 18:39",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914492525.html",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "欣旺达：终止发行H股股票并在香港联交所主板上市",
-          "summary": "【欣旺达：终止发行H股股票并在香港联交所主板上市】欣旺达(300207.SZ)公告称，公司基于市场环境与自身变化及发展规划的综合考量，经审慎分析后决定终止发行H股股票并在香港联交所…",
-          "time": "10/29 18:37",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914478945.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "迈赫股份：前三季度净利润6308.11万元 同比下降35.9%",
-          "summary": "【迈赫股份：前三季度净利润6308.11万元 同比下降35.9%】迈赫股份发布2026年三季报，前三季度营业收入7.95亿元，同比减少7.19%；归母净利润6308.11万元，同比…",
-          "time": "10/29 18:35",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914465691.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "投行Melius Research上调微软目标价",
-          "summary": "【投行Melius Research上调微软目标价】投行MeliusResearch将微软目标价从665美元上调至705美元。",
-          "time": "10/29 18:34",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914466519.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中国卫通第五大股东国新宏盛投资(北京)有限公司三季度增仓1450.85万股",
-          "summary": "【中国卫通第五大股东国新宏盛投资(北京)有限公司三季度增仓1450.85万股】中国卫通(601698.SH)发布2026年三季报显示，与2026年半年报相比，第五大股东国新宏盛投资…",
-          "time": "10/29 18:33",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914463739.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "卡特彼勒第三季度调整后每股收益7.20美元 高于市场预期",
-          "summary": "【卡特彼勒第三季度调整后每股收益7.20美元 高于市场预期】卡特彼勒第三季度调整后每股收益7.20美元，高于市场预期的7.10美元，上年同期为4.95美元；营收206.8亿美元，同…",
-          "time": "10/29 18:32",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914462777.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "美银全球研究预计美联储将在2026年12月和2027年3月各加息25个基点",
-          "summary": "美银全球研究预计，美联储将在2026年12月和2027年3月各加息25个基点。",
-          "time": "10/29 18:32",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914467543.html",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "合盛硅业：第三季度归母净利润1.1亿元 同比增长45.36%",
-          "summary": "【合盛硅业：第三季度归母净利润1.1亿元 同比增长45.36%】合盛硅业10月29日公告，2026年第三季度实现营业收入45.57亿元，同比下降16.09%；归母净利润1.1亿元，…",
-          "time": "10/29 18:32",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914470183.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "英国海上贸易行动办公室：霍尔木兹海峡一船只起火",
-          "summary": "【英国海上贸易行动办公室：霍尔木兹海峡一船只起火】英国海上贸易行动办公室10月29日通报，一艘第三方船只的船长当天报告称，目击到阿曼海塞卜以北9海里处霍尔木兹海峡一船只起火。",
-          "time": "10/29 18:29",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914449714.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "天赐材料：第三季度净利润同比增长582% 环比下降13%",
-          "summary": "【天赐材料：第三季度净利润同比增长582% 环比下降13%】天赐材料(002709.SZ)公告称，第三季度营业收入为88.32亿元，同比增长131.58%；归属于上市公司股东的净利…",
-          "time": "10/29 18:28",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914457029.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "伊朗称摧毁4个与美以有关联的恐怖组织小组",
-          "summary": "【伊朗称摧毁4个与美以有关联的恐怖组织小组】当地时间29日，伊朗情报部宣布，其与安全部队合作，在该国锡斯坦-俾路支斯坦省成功识别4个与美以有关联的恐怖组织行动小组，逮捕了16名恐怖…",
-          "time": "10/29 18:28",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914447531.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "三季度投资浮亏千亿 险资也“麻”了",
-          "summary": "【三季度投资浮亏千亿 险资也“麻”了】中国平安、中国太保近日披露三季报。中国平安第三季度归母净利润40.6亿元，同比下降93.7%；中国太保56.3亿元，同比下降68.4%。",
-          "time": "10/29 18:27",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914452326.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "旷达科技：拟5.01亿元投建电子玻纤材料一期项目 规划高性能电子布年产能3500万米",
-          "summary": "【旷达科技：拟5.01亿元投建电子玻纤材料一期项目 规划高性能电子布年产能3500万米】旷达科技(002516.SZ)公告称，公司全资子公司常州市旷达电子材料有限公司拟投资建设高性…",
-          "time": "10/29 18:26",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914452580.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "中国交建：第三季度归母净利润23.03亿元 同比下降43.53%",
-          "summary": "【中国交建：第三季度归母净利润23.03亿元 同比下降43.53%】中国交建10月29日公告，2026年第三季度实现营业收入1696.54亿元，同比下降4.07%；归母净利润23.…",
-          "time": "10/29 18:25",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914447020.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "潍柴动力：第三季度归母净利润29.57亿元 同比下降8.56%",
-          "summary": "【潍柴动力：第三季度归母净利润29.57亿元 同比下降8.56%】潍柴动力10月29日公告，2026年第三季度实现营业收入580.08亿元，同比增长1.03%；归母净利润29.57…",
-          "time": "10/29 18:24",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914443182.html",
-          "tags": [],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "德科立：拟12亿元投建AI算力及数据中心光连接高端产品项目",
-          "summary": "【德科立：拟12亿元投建AI算力及数据中心光连接高端产品项目】德科立(688205.SH)公告称，公司拟投资建设“AI算力及数据中心光连接高端产品产业化能力提升项目”，计划总投资约…",
-          "time": "10/29 18:22",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914443412.html",
-          "tags": [
-            "科技"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "东方财富财经早餐 10月22日周四",
-          "summary": "【东方财富财经早餐 10月22日周四】1、中办、国办发布《关于推动科技创新和产业创新深度融合的意见》。2、日本关键稀土元素储备即将耗尽，外交部：中方依法依规对日实施出口管制。3、上…",
-          "time": "10/22 06:00",
-          "source": "财经早餐",
-          "url": "http://finance.eastmoney.com/a/202610213903007269.html",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-29"
-        }
-      ]
     }
   ],
   "groups": {
     "宏观": {
       "label": "宏观",
       "cls": "t-macro",
-      "count": 79,
+      "count": 32,
       "items": [
         {
-          "title": "美国10月芝加哥PMI 55.3，预期 56.1，前值 58.8。",
-          "summary": "美国10月芝加哥PMI 55.3，预期 56.1，前值 58.8。",
-          "time": "10/30 21:45",
+          "title": "欧洲央行管委科赫尔：如果形势不能迅速好转，就有必要采取行动",
+          "summary": "欧洲央行管委科赫尔表示，如果形势不能迅速好转，就有必要采取行动。",
+          "time": "10/30 21:59",
+          "source": "同花顺全球",
+          "url": "https://news.10jqka.com.cn/20261030/c681314930.shtml",
+          "tags": [
+            "宏观",
+            "政策"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "【商务部国际司负责人解读中国—瑞士自由贸易协定升级议定书】《议定书》对原自贸协定",
+          "summary": "【商务部国际司负责人解读中国—瑞士自由贸易协定升级议定书】《议定书》对原自贸协定进行升级，进一步完善了货物贸易、原产地规则和实施程序、海关程序与贸易便利化、技术性贸易壁垒、服务贸易…",
+          "time": "10/30 21:55",
           "source": "新浪全球",
           "url": "",
+          "tags": [
+            "宏观"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "【火山引擎重心全面转向商业化，MaaS上半年毛利率超55%】字节跳动旗下云服务平",
+          "summary": "【火山引擎重心全面转向商业化，MaaS上半年毛利率超55%】字节跳动旗下云服务平台火山引擎的MaaS（模型即服务）业务收入达到48亿元，毛利率超过55%，这也是字节跳动当前收入规模…",
+          "time": "10/30 21:50",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [
+            "宏观"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "美国10月芝加哥PMI为55.3 预期56.1",
+          "summary": "美国10月芝加哥PMI为55.3，预期56.1，前值58.8。",
+          "time": "10/30 21:46",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917145642.html",
+          "tags": [
+            "宏观"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "美国10月芝加哥PMI 55.3，预期56.1，前值58.8。",
+          "summary": "美国10月芝加哥PMI 55.3，预期56.1，前值58.8。",
+          "time": "10/30 21:45",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002944851/the-us-chicago-pmi-for-october-stood-at-55-3",
           "tags": [
             "宏观"
           ],
@@ -6030,17 +3318,6 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "里士满联储主席巴金：人工智能投资正导致需求侧通胀，而这类通胀正是美联储可以加以抑",
-          "summary": "里士满联储主席巴金：人工智能投资正导致需求侧通胀，而这类通胀正是美联储可以加以抑制的。",
-          "time": "10/30 21:39",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
           "title": "机构：加拿大央行或无视GDP疲软，12月仍可能加息",
           "summary": "尽管GDP数据表现不佳，德斯雅丹集团仍预计加拿大央行将在12月再次加息。加拿大统计局最新数据显示，8月按行业划分的GDP环比停滞不前，未能如市场预期增长0.2%；初步数据则显示，9…",
           "time": "10/30 21:39",
@@ -6049,17 +3326,6 @@
           "tags": [
             "宏观",
             "政策"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "里士满联储主席巴金：人工智能投资激增给供应链带来压力，这具有通胀效应。",
-          "summary": "里士满联储主席巴金：人工智能投资激增给供应链带来压力，这具有通胀效应。",
-          "time": "10/30 21:38",
-          "source": "新浪全球",
-          "url": "",
-          "tags": [
-            "宏观"
           ],
           "collected_date": "2026-10-30"
         },
@@ -6073,35 +3339,13 @@
             "宏观"
           ],
           "collected_date": "2026-10-30"
-        },
-        {
-          "title": "美联储巴尔金：鉴于收入相对持平，消费者支出的韧性令人意外。",
-          "summary": "美联储巴尔金：鉴于收入相对持平，消费者支出的韧性令人意外。",
-          "time": "10/30 21:37",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002943247/federal-reserve-s-barkin-given-relatively-flat-income-the-resilience",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "美联储巴尔金：逐步调整利率是可行的做法。",
-          "summary": "美联储巴尔金：逐步调整利率是可行的做法。",
-          "time": "10/30 21:35",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002942874/fed-s-barkin-gradual-adjustment-of-interest-rates-is-a",
-          "tags": [
-            "宏观"
-          ],
-          "collected_date": "2026-10-30"
         }
       ]
     },
     "政策": {
       "label": "政策",
       "cls": "t-policy",
-      "count": 64,
+      "count": 38,
       "items": [
         {
           "title": "习近平举行仪式欢迎德国总统访华",
@@ -6182,48 +3426,16 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "中国共产党第二十届中央委员会第五次全体会议公报",
-          "summary": "中国共产党第二十届中央委员会第五次全体会议公报（2026年10月29日中国共产党第二十届中央委员会第五次全体会议通过）中国共产党第二十届中央委员会第五次全体会议，于2026年10月…",
-          "time": "20261029",
-          "source": "央视联播",
-          "url": "",
+          "title": "欧洲央行管委科赫尔：如果形势不能迅速好转，就有必要采取行动",
+          "summary": "欧洲央行管委科赫尔表示，如果形势不能迅速好转，就有必要采取行动。",
+          "time": "10/30 21:59",
+          "source": "同花顺全球",
+          "url": "https://news.10jqka.com.cn/20261030/c681314930.shtml",
           "tags": [
+            "宏观",
             "政策"
           ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "张升民同志简历",
-          "summary": "现在播送张升民同志简历。张升民，男，汉族，1958年8月生，陕西武功人，1978年2月入伍，1979年7月加入中国共产党，中央党校研究生学历。现任中央政治局委员，中共中央军事委员会…",
-          "time": "20261029",
-          "source": "央视联播",
-          "url": "",
-          "tags": [
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "习近平就西班牙高速列车追尾脱轨事故向西班牙国王致慰问电 李强向西班牙首相致慰问电",
-          "summary": "10月29日，国家主席习近平就西班牙高速列车追尾脱轨事故向西班牙国王费利佩六世致慰问电。习近平表示，惊悉西班牙托莱多省不幸发生高速列车追尾脱轨事故，造成重大人员伤亡。我谨代表中国政…",
-          "time": "20261029",
-          "source": "央视联播",
-          "url": "",
-          "tags": [
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "今年以来以旧换新带动相关品类销售额超2万亿元",
-          "summary": "商务部最新数据显示，截至10月28日，2026年以旧换新政策累计带动相关商品销售额超2万亿元，惠及超2.57亿人次，以旧换新政策多重成效持续显现。在拉动消费方面，享受以旧换新补贴的…",
-          "time": "20261029",
-          "source": "央视联播",
-          "url": "",
-          "tags": [
-            "政策"
-          ],
-          "collected_date": "2026-10-29"
+          "collected_date": "2026-10-30"
         },
         {
           "title": "【奥精医疗：收到上交所无法按期披露三季报监管工作函】奥精医疗公告称，公司于202",
@@ -6235,18 +3447,90 @@
             "政策"
           ],
           "collected_date": "2026-10-30"
+        },
+        {
+          "title": "机构：加拿大央行或无视GDP疲软，12月仍可能加息",
+          "summary": "尽管GDP数据表现不佳，德斯雅丹集团仍预计加拿大央行将在12月再次加息。加拿大统计局最新数据显示，8月按行业划分的GDP环比停滞不前，未能如市场预期增长0.2%；初步数据则显示，9…",
+          "time": "10/30 21:39",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002943597/institution-bank-of-canada-may-ignore-weak-gdp-and-still",
+          "tags": [
+            "宏观",
+            "政策"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "美联储巴尔金：美联储的政策方向“明确”，问题在于节奏。",
+          "summary": "美联储巴尔金：美联储的政策方向“明确”，问题在于节奏。",
+          "time": "10/30 21:34",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002942789/federal-reserve-s-barkin-the-fed-s-policy-direction-is",
+          "tags": [
+            "宏观",
+            "政策"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "国家药监局副局长杨胜在广东调研大湾区药物创新研发工作",
+          "summary": "【国家药监局副局长杨胜在广东调研大湾区药物创新研发工作】近日，国家药监局党组成员、副局长杨胜带队赴广东，调研部分药物研发企业和国家药监局药品大湾区分中心、医疗器械大湾区分中心，并召…",
+          "time": "10/30 21:34",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917099062.html",
+          "tags": [
+            "政策",
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
         }
       ]
     },
     "科技": {
       "label": "科技",
       "cls": "t-tech",
-      "count": 63,
+      "count": 37,
       "items": [
         {
-          "title": "英特尔业绩预测不及预期，美国芯片股下跌，超威半导体下跌8.4%，英伟达下跌3.2",
-          "summary": "英特尔业绩预测不及预期，美国芯片股下跌，超威半导体下跌8.4%，英伟达下跌3.2%，美光科技下跌4%，安谋控股下跌9.7%。",
-          "time": "10/30 21:41",
+          "title": "美股费城半导体指数跌幅扩大至6%",
+          "summary": "美股费城半导体指数跌幅扩大至6%。英伟达股价下跌3.24%，台积电股价下跌3.83%，博通股价下跌5.04%，美光科技股价下跌4.46%，超威半导体股价下跌9.48%，英特尔股价下…",
+          "time": "10/30 21:50",
+          "source": "同花顺全球",
+          "url": "https://news.10jqka.com.cn/20261030/c681314792.shtml",
+          "tags": [
+            "科技",
+            "美股映射"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "英特尔业绩引发科技股普跌，半导体板块集体走低",
+          "summary": "英特尔业绩不及预期且前景展望疲弱，加上亚马逊业绩未达预期，重新引发市场对人工智能投资交易的担忧，半导体股随之普遍下跌。跌势蔓延至整个半导体行业，芯片设备制造商、晶圆代工厂和模拟芯片…",
+          "time": "10/30 21:50",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002945419/intel-s-earnings-trigger-broad-decline-in-tech-stocks-semiconductor",
+          "tags": [
+            "科技",
+            "美股映射"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "费城半导体指数跌幅扩大至6%",
+          "summary": "【费城半导体指数跌幅扩大至6%】费城半导体指数跌幅扩大至6%。英伟达股价下跌3.24%，台积电股价下跌3.83%，博通股价下跌5.04%，美光科技股价下跌4.46%，超威半导体股价…",
+          "time": "10/30 21:49",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917148614.html",
+          "tags": [
+            "科技",
+            "美股映射"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "【费城半导体指数日内跌6%】费城半导体指数日内跌6.00%，现报10826.61",
+          "summary": "【费城半导体指数日内跌6%】费城半导体指数日内跌6.00%，现报10826.61点。英伟达跌3.35%，博通跌5.02%，美光跌4.49%，英特尔跌29.43%，AMD跌9.54%…",
+          "time": "10/30 21:48",
           "source": "新浪全球",
           "url": "",
           "tags": [
@@ -6256,13 +3540,14 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "高通下跌6.4%，博通下跌4.2%，iShares半导体ETF下跌6.2%。",
-          "summary": "高通下跌6.4%，博通下跌4.2%，iShares半导体ETF下跌6.2%。",
-          "time": "10/30 21:41",
-          "source": "新浪全球",
-          "url": "",
+          "title": "美股光通信板块普跌",
+          "summary": "【美股光通信板块普跌】美股光通信板块普跌，Coherent跌8.2%，Lumentum跌7.7%，迈威尔科技跌7%，康宁跌2%。",
+          "time": "10/30 21:45",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917142628.html",
           "tags": [
-            "科技"
+            "科技",
+            "美股映射"
           ],
           "collected_date": "2026-10-30"
         },
@@ -6290,6 +3575,17 @@
           "collected_date": "2026-10-30"
         },
         {
+          "title": "盘中期权异动：NEBIUS盘中下跌8.7%，现最高成交额的看跌期权涨跌幅为+114%，成交量达到898张",
+          "summary": "受大型科技公司财报引发AI基础设施巨额投入及回报担忧影响，$NEBIUS(NBIS.US)$盘中下跌8.7%。现最高成交额的看跌期权涨跌幅为+114%，成交量达到898张，详情可参…",
+          "time": "10/30 21:36",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002943223/unusual-options-activity-nebius-down-8-7-the-most-active",
+          "tags": [
+            "科技"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
           "title": "美股半导体、存储、光通信股集体下跌，英特尔跌超28%，AMD、ARM跌超10%，",
           "summary": "美股半导体、存储、光通信股集体下跌，英特尔跌超28%，AMD、ARM跌超10%，闪迪、AAOI跌超8%，迈威尔科技、Lumentum跌超7%，SK海力士跌近7%，美光科技跌超5%，…",
           "time": "10/30 21:36",
@@ -6298,17 +3594,6 @@
           "tags": [
             "科技",
             "美股映射"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "盘中期权异动：NEBIUS盘中下跌8.7%，现最高成交额的看跌期权涨跌幅为+114%，成交量达到898张",
-          "summary": "受大型科技公司财报引发AI基础设施巨额投入及回报担忧影响，$NEBIUS(NBIS.US)$盘中下跌8.7%。现最高成交额的看跌期权涨跌幅为+114%，成交量达到898张，详情可参…",
-          "time": "10/30 21:36",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002943223/unusual-options-activity-nebius-down-8-7-the-most-active",
-          "tags": [
-            "科技"
           ],
           "collected_date": "2026-10-30"
         },
@@ -6345,50 +3630,13 @@
             "美股映射"
           ],
           "collected_date": "2026-10-30"
-        },
-        {
-          "title": "闪迪美股开盘后跌超8.8%",
-          "summary": "闪迪美股开盘后跌超8.8%。公司第一财季营收110.31亿美元，同比增长378%；非GAAP每股收益49.51美元，毛利率达到85%。公司预计第二财季营收122亿至126亿美元，但…",
-          "time": "10/30 21:31",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261030/c681314303.shtml",
-          "tags": [
-            "宏观",
-            "科技",
-            "美股映射"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "美股三大指数集体低开 英特尔跌超25%",
-          "summary": "【美股三大指数集体低开 英特尔跌超25%】美股三大指数集体低开，道琼斯指数跌0.27%，标普500指数跌1.17%，纳斯达克综合指数跌2.24%。英特尔跌超25%，闪迪跌超8%，亚…",
-          "time": "10/30 21:31",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303917053069.html",
-          "tags": [
-            "科技",
-            "美股映射"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "美股开盘：美股三大指数集体低开",
-          "summary": "美股三大指数集体低开，标普500指数跌1.17%，道指跌0.28%，纳指跌2.24%。大型科技股方面，Meta跌1.06%，微软跌1.28%，英伟达跌2.54%，特斯拉跌2.68%…",
-          "time": "10/30 21:30",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261030/c681314300.shtml",
-          "tags": [
-            "科技",
-            "产业"
-          ],
-          "collected_date": "2026-10-30"
         }
       ]
     },
     "产业": {
       "label": "产业",
       "cls": "t-ind",
-      "count": 46,
+      "count": 41,
       "items": [
         {
           "title": "李强会见德国总统",
@@ -6398,6 +3646,94 @@
           "url": "",
           "tags": [
             "政策",
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "金价降了水贝卖爆了 水贝黄金门店销量翻番",
+          "summary": "【金价降了水贝卖爆了 水贝黄金门店销量翻番】下午3点，记者在水贝黄金市场看到，虽然是工作日，各大黄金柜台前依然人头攒动。金价下跌，激发了消费热情，不少店铺黄金饰品的销售额都出现了明…",
+          "time": "10/30 21:58",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917176327.html",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "埃克森美孚石油(XOM.N)CEO：霍尔木兹海峡必须重新开放。",
+          "summary": "埃克森美孚石油(XOM.N)CEO：霍尔木兹海峡必须重新开放。",
+          "time": "10/30 21:58",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002946592/exxon-mobil-xomn-ceo-the-strait-of-hormuz-must-be",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "埃克森美孚石油(XOM.N)CEO：没有关于卡塔尔液化天然气的最新消息。",
+          "summary": "埃克森美孚石油(XOM.N)CEO：没有关于卡塔尔液化天然气的最新消息。",
+          "time": "10/30 21:56",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002946440/exxon-mobil-xomn-ceo-no-latest-updates-on-qatar-lng",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "【金价降了水贝卖爆了 水贝黄金门店销量翻番】下午3点，记者在水贝黄金市场看到，虽",
+          "summary": "【金价降了水贝卖爆了 水贝黄金门店销量翻番】下午3点，记者在水贝黄金市场看到，虽然是工作日，各大黄金柜台前依然人头攒动。 金价下跌，激发了消费热情，不少店铺黄金饰品的销售额都出现了…",
+          "time": "10/30 21:56",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "利比亚国家石油公司表示，武装团体关闭了哈马达与扎维耶炼油厂之间输油管道上的阀门。",
+          "summary": "利比亚国家石油公司表示，武装团体关闭了哈马达与扎维耶炼油厂之间输油管道上的阀门。",
+          "time": "10/30 21:54",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002946173/the-national-oil-corporation-of-libya-stated-that-armed-groups",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "利比亚国家石油公司发表声明称，一武装团体关闭了哈马达与扎维耶炼油厂之间输油管道上",
+          "summary": "利比亚国家石油公司发表声明称，一武装团体关闭了哈马达与扎维耶炼油厂之间输油管道上的阀门。",
+          "time": "10/30 21:54",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "现货黄金失守3920美元/盎司",
+          "summary": "现货黄金失守3920美元/盎司，日内跌2.51%。同花顺黄金现货价格报841.53元/克，现跌2.53%。",
+          "time": "10/30 21:50",
+          "source": "同花顺全球",
+          "url": "https://news.10jqka.com.cn/20261030/c681314800.shtml",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "现货黄金失守3920美元/盎司，日内跌2.54%。",
+          "summary": "现货黄金失守3920美元/盎司，日内跌2.54%。",
+          "time": "10/30 21:50",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [
             "产业"
           ],
           "collected_date": "2026-10-30"
@@ -6414,112 +3750,22 @@
           "collected_date": "2026-10-30"
         },
         {
+          "title": "国际油价走高带动能源股集体上涨 埃克森美孚、雪佛龙等创历史新高",
+          "summary": "【国际油价走高带动能源股集体上涨 埃克森美孚、雪佛龙等创历史新高】美股能源板块逆势走强，埃克森美孚涨2.18%，报187.29美元，盘中最高触及187.93美元；雪佛龙涨1.67%…",
+          "time": "10/30 21:46",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917147124.html",
+          "tags": [
+            "产业"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
           "title": "美股医药股续涨，礼来、吉利德科学等股再创新高",
           "summary": "美股医药股续涨，阿斯利康绩后涨超6%，Q3利润超预期；礼来、吉利德科学涨超4%，安进涨近3%，强生涨近2%，盘中股价均创历史新高。",
           "time": "10/30 21:45",
           "source": "同花顺全球",
           "url": "https://news.10jqka.com.cn/20261030/c681314742.shtml",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "美股医药股续涨 阿斯利康绩后涨超6%",
-          "summary": "【美股医药股续涨 阿斯利康绩后涨超6%】美股医药股续涨，阿斯利康绩后涨超6%，Q3利润超预期；礼来、吉利德科学涨超4%，安进涨近3%，强生涨近2%，盘中股价均创历史新高。",
-          "time": "10/30 21:45",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303917137043.html",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "现货金银持续扩大跌幅",
-          "summary": "【现货金银持续扩大跌幅】现货黄金向下触及3930美元/盎司，日内跌2.29%。现货白银日内大跌5%，现报49.50美元/盎司。",
-          "time": "10/30 21:41",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303917129946.html",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "美股医药股续涨，阿斯利康绩后涨超6%，Q3利润超预期；礼来、吉利德科学涨超4%，",
-          "summary": "美股医药股续涨，阿斯利康绩后涨超6%，Q3利润超预期；礼来、吉利德科学涨超4%，安进涨近3%，强生涨近2%，盘中股价均创历史新高。",
-          "time": "10/30 21:41",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002944160/us-pharmaceutical-stocks-continued-to-rise-with-astrazeneca-surging-more",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "埃克森美孚计划到2030年投入1000亿美元资本支出",
-          "summary": "埃克森美孚石油(XOM.N)CEO达伦·伍兹表示，公司计划未来几年投资逾1000亿美元，以增加全球能源供应。此前，这家石油巨头刚刚公布了表现强劲的季度业绩。此举或许旨在提前应对可能…",
-          "time": "10/30 21:34",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002942715/exxon-mobil-plans-to-allocate-100-billion-in-capital-expenditures",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "国家药监局副局长杨胜在广东调研大湾区药物创新研发工作",
-          "summary": "【国家药监局副局长杨胜在广东调研大湾区药物创新研发工作】近日，国家药监局党组成员、副局长杨胜带队赴广东，调研部分药物研发企业和国家药监局药品大湾区分中心、医疗器械大湾区分中心，并召…",
-          "time": "10/30 21:34",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303917099062.html",
-          "tags": [
-            "政策",
-            "产业"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "美股开盘：美股三大指数集体低开",
-          "summary": "美股三大指数集体低开，标普500指数跌1.17%，道指跌0.28%，纳指跌2.24%。大型科技股方面，Meta跌1.06%，微软跌1.28%，英伟达跌2.54%，特斯拉跌2.68%…",
-          "time": "10/30 21:30",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261030/c681314300.shtml",
-          "tags": [
-            "科技",
-            "产业"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "印度石油公司：第二季度毛炼油利润率为每桶18.52美元，高于上一季度的每桶15.",
-          "summary": "印度石油公司：第二季度毛炼油利润率为每桶18.52美元，高于上一季度的每桶15.59美元。",
-          "time": "10/30 21:21",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002941262/indian-oil-corporation-the-gross-refining-margin-for-the-second",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "英国石油公司CEO否认公司拆分传闻",
-          "summary": "英国石油公司（BP）首席执行官梅格·奥尼尔周五明确否认，公司内部曾就拆分事宜展开讨论。此前，媒体Semafor本周援引知情人士报道称，部分BP董事会成员支持拆分公司。奥尼尔表示，她…",
-          "time": "10/30 21:09",
-          "source": "富途全球",
-          "url": "https://news.futunn.com/flash/1002939537/bp-plc-ceo-denies-rumors-of-company-breakup",
-          "tags": [
-            "产业"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "中稀有色：Q3净利润同比增长532%环比增长49% 稀土产品业绩稳步提升",
-          "summary": "【中稀有色：Q3净利润同比增长532%环比增长49% 稀土产品业绩稳步提升】中稀有色(600259.SH)公告称，前三季度实现营业收入36.85亿元，同比下降20.47%；归属于上…",
-          "time": "10/30 21:06",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303916997341.html",
           "tags": [
             "产业"
           ],
@@ -6530,8 +3776,56 @@
     "美股映射": {
       "label": "美股映射",
       "cls": "t-us",
-      "count": 15,
+      "count": 16,
       "items": [
+        {
+          "title": "美股费城半导体指数跌幅扩大至6%",
+          "summary": "美股费城半导体指数跌幅扩大至6%。英伟达股价下跌3.24%，台积电股价下跌3.83%，博通股价下跌5.04%，美光科技股价下跌4.46%，超威半导体股价下跌9.48%，英特尔股价下…",
+          "time": "10/30 21:50",
+          "source": "同花顺全球",
+          "url": "https://news.10jqka.com.cn/20261030/c681314792.shtml",
+          "tags": [
+            "科技",
+            "美股映射"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "英特尔业绩引发科技股普跌，半导体板块集体走低",
+          "summary": "英特尔业绩不及预期且前景展望疲弱，加上亚马逊业绩未达预期，重新引发市场对人工智能投资交易的担忧，半导体股随之普遍下跌。跌势蔓延至整个半导体行业，芯片设备制造商、晶圆代工厂和模拟芯片…",
+          "time": "10/30 21:50",
+          "source": "富途全球",
+          "url": "https://news.futunn.com/flash/1002945419/intel-s-earnings-trigger-broad-decline-in-tech-stocks-semiconductor",
+          "tags": [
+            "科技",
+            "美股映射"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "费城半导体指数跌幅扩大至6%",
+          "summary": "【费城半导体指数跌幅扩大至6%】费城半导体指数跌幅扩大至6%。英伟达股价下跌3.24%，台积电股价下跌3.83%，博通股价下跌5.04%，美光科技股价下跌4.46%，超威半导体股价…",
+          "time": "10/30 21:49",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917148614.html",
+          "tags": [
+            "科技",
+            "美股映射"
+          ],
+          "collected_date": "2026-10-30"
+        },
+        {
+          "title": "【费城半导体指数日内跌6%】费城半导体指数日内跌6.00%，现报10826.61",
+          "summary": "【费城半导体指数日内跌6%】费城半导体指数日内跌6.00%，现报10826.61点。英伟达跌3.35%，博通跌5.02%，美光跌4.49%，英特尔跌29.43%，AMD跌9.54%…",
+          "time": "10/30 21:48",
+          "source": "新浪全球",
+          "url": "",
+          "tags": [
+            "科技",
+            "美股映射"
+          ],
+          "collected_date": "2026-10-30"
+        },
         {
           "title": "盘中期权异动：Lumentum盘中下跌8.7%，现最高成交额的看跌期权涨跌幅为+103%，成交量达到130张",
           "summary": "受英特尔疲弱业绩展望引发AI硬件板块抛售影响，$Lumentum(LITE.US)$盘中下跌8.7%。现最高成交额的看跌期权涨跌幅为+103%，成交量达到130张，详情可参考期权页…",
@@ -6544,11 +3838,11 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "英特尔业绩预测不及预期，美国芯片股下跌，超威半导体下跌8.4%，英伟达下跌3.2",
-          "summary": "英特尔业绩预测不及预期，美国芯片股下跌，超威半导体下跌8.4%，英伟达下跌3.2%，美光科技下跌4%，安谋控股下跌9.7%。",
-          "time": "10/30 21:41",
-          "source": "新浪全球",
-          "url": "",
+          "title": "美股光通信板块普跌",
+          "summary": "【美股光通信板块普跌】美股光通信板块普跌，Coherent跌8.2%，Lumentum跌7.7%，迈威尔科技跌7%，康宁跌2%。",
+          "time": "10/30 21:45",
+          "source": "东财全球",
+          "url": "https://finance.eastmoney.com/a/202610303917142628.html",
           "tags": [
             "科技",
             "美股映射"
@@ -6603,19 +3897,6 @@
           "collected_date": "2026-10-30"
         },
         {
-          "title": "闪迪美股开盘后跌超8.8%",
-          "summary": "闪迪美股开盘后跌超8.8%。公司第一财季营收110.31亿美元，同比增长378%；非GAAP每股收益49.51美元，毛利率达到85%。公司预计第二财季营收122亿至126亿美元，但…",
-          "time": "10/30 21:31",
-          "source": "同花顺全球",
-          "url": "https://news.10jqka.com.cn/20261030/c681314303.shtml",
-          "tags": [
-            "宏观",
-            "科技",
-            "美股映射"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
           "title": "美股三大指数集体低开 英特尔跌超25%",
           "summary": "【美股三大指数集体低开 英特尔跌超25%】美股三大指数集体低开，道琼斯指数跌0.27%，标普500指数跌1.17%，纳斯达克综合指数跌2.24%。英特尔跌超25%，闪迪跌超8%，亚…",
           "time": "10/30 21:31",
@@ -6639,47 +3920,13 @@
             "美股映射"
           ],
           "collected_date": "2026-10-30"
-        },
-        {
-          "title": "富国银行下调多家美股科技公司目标价 闪迪、英特尔降幅居前",
-          "summary": "【富国银行下调多家美股科技公司目标价 闪迪、英特尔降幅居前】富国银行将闪迪目标价从1550美元下调至1300美元；将亚马逊目标价从329美元下调至326美元；将英特尔目标价从120…",
-          "time": "10/30 20:01",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303916910194.html",
-          "tags": [
-            "美股映射"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "瑞穗下调闪迪目标价",
-          "summary": "【瑞穗下调闪迪目标价】瑞穗将闪迪目标价从2050美元下调至1900美元。",
-          "time": "10/30 19:24",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303916849234.html",
-          "tags": [
-            "美股映射"
-          ],
-          "collected_date": "2026-10-30"
-        },
-        {
-          "title": "美股存储芯片股盘前集体下挫 闪迪跌近10%",
-          "summary": "【美股存储芯片股盘前集体下挫 闪迪跌近10%】美股盘前，存储芯片及硬盘股普遍走低。闪迪跌9.70%，西部数据跌8.07%，SK海力士跌7.90%，希捷科技跌7.35%，美光科技跌5…",
-          "time": "10/30 19:07",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610303916814620.html",
-          "tags": [
-            "科技",
-            "美股映射"
-          ],
-          "collected_date": "2026-10-30"
         }
       ]
     },
     "持仓": {
       "label": "持仓",
       "cls": "t-hold",
-      "count": 5,
+      "count": 3,
       "items": [
         {
           "title": "长鑫科技：前三季度净利润1320.4亿元 拟10亿元至20亿元回购股份",
@@ -6714,28 +3961,6 @@
             "持仓"
           ],
           "collected_date": "2026-10-30"
-        },
-        {
-          "title": "ST万邦：子公司渐冻症新药WP205获FDA认可支持III期临床",
-          "summary": "【ST万邦：子公司渐冻症新药WP205获FDA认可支持III期临床】ST万邦(002082.SZ)公告称，公司全资子公司万邦德制药集团收到美国FDA针对渐冻症新药WP205(甲钴胺…",
-          "time": "10/29 20:31",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914720884.html",
-          "tags": [
-            "持仓"
-          ],
-          "collected_date": "2026-10-29"
-        },
-        {
-          "title": "华工科技：第三季度归母净利润4.8亿元 同比增长17.03%",
-          "summary": "【华工科技：第三季度归母净利润4.8亿元 同比增长17.03%】华工科技10月29日公告，2026年第三季度实现营业收入48.32亿元，同比增长41.75%；归母净利润4.8亿元，…",
-          "time": "10/29 18:42",
-          "source": "东财全球",
-          "url": "https://finance.eastmoney.com/a/202610293914493228.html",
-          "tags": [
-            "持仓"
-          ],
-          "collected_date": "2026-10-29"
         }
       ]
     }
