@@ -1,6 +1,6 @@
 {
  "meta": {
-  "updated_at": "2026-10-30 10:15:18",
+  "updated_at": "2026-10-30 10:45:23",
   "data_date": "2026-10-30",
   "market_status": "trading",
   "algorithm": "1.0.0",
@@ -11,97 +11,97 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3626.39,
-    "chg_pct": -0.69,
-    "turnover_yi": 3050.1,
-    "high": 3628.69,
+    "price": 3612.37,
+    "chg_pct": -1.07,
+    "turnover_yi": 3799.7,
+    "high": 3631.91,
     "low": 3595.26
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 11035.26,
-    "chg_pct": -0.92,
-    "turnover_yi": 3781.0,
-    "high": 11040.13,
+    "price": 10952.56,
+    "chg_pct": -1.67,
+    "turnover_yi": 4699.7,
+    "high": 11064.74,
     "low": 10853.6
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 2479.97,
-    "chg_pct": -1.49,
-    "turnover_yi": 1882.5,
-    "high": 2481.36,
+    "price": 2457.02,
+    "chg_pct": -2.41,
+    "turnover_yi": 2353.1,
+    "high": 2491.75,
     "low": 2427.24
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1201.58,
-    "chg_pct": -2.16,
-    "turnover_yi": 267.5,
-    "high": 1206.1,
+    "price": 1188.92,
+    "chg_pct": -3.19,
+    "turnover_yi": 333.3,
+    "high": 1208.25,
     "low": 1178.39
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4014.26,
-    "chg_pct": -0.68,
-    "turnover_yi": 1713.6,
-    "high": 4015.48,
+    "price": 3998.41,
+    "chg_pct": -1.07,
+    "turnover_yi": 2129.0,
+    "high": 4019.05,
     "low": 3968.86
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 6386.79,
-    "chg_pct": -1.04,
-    "turnover_yi": 1130.7,
-    "high": 6391.82,
+    "price": 6338.14,
+    "chg_pct": -1.79,
+    "turnover_yi": 1417.0,
+    "high": 6406.97,
     "low": 6303.82
    }
   ],
   "breadth": {
-   "up": 1995,
-   "down": 2403,
-   "flat": 207,
-   "ratio": 0.83,
-   "limit_up": 41,
-   "limit_down": 20,
-   "main_net_yi": -110.43,
-   "turnover_yi": 5861.4,
+   "up": 989,
+   "down": 3472,
+   "flat": 144,
+   "ratio": 0.28,
+   "limit_up": 37,
+   "limit_down": 34,
+   "main_net_yi": -129.59,
+   "turnover_yi": 7291.1,
    "total": 4605
   }
  },
  "L1": {
   "sentiment": {
-   "score": 26,
-   "S1": 21,
-   "S2": 34,
-   "S3": 17,
-   "S4": 32,
+   "score": 17,
+   "S1": 7,
+   "S2": 31,
+   "S3": 3,
+   "S4": 28,
    "inputs": {
-    "ratio": 0.83,
-    "limit_up": 41,
-    "avg_idx_pct": -1.16,
-    "main_net_yi": -110.43
+    "ratio": 0.28,
+    "limit_up": 37,
+    "avg_idx_pct": -1.87,
+    "main_net_yi": -129.59
    }
   },
   "state": {
-   "state": "weak",
-   "label": "弱势回调",
-   "note": "防守为主，仅小仓低吸，严格止损",
-   "score": 26
+   "state": "panic",
+   "label": "恐慌下跌",
+   "note": "空仓或极轻仓观望，不抄底，等企稳信号",
+   "score": 17
   }
  },
  "L2": {
   "range": [
-   25,
-   40
+   0,
+   20
   ],
-  "note": "弱势回调，防守为主，严格止损",
+  "note": "恐慌下跌，空仓或极轻仓等待企稳",
   "rules": [
    "单票仓位 ≤ 10%",
    "单一板块集中度 ≤ 30%",
@@ -113,152 +113,152 @@
   "sectors": [
    {
     "name": "食品饮料",
-    "net_yi": 16.12,
-    "jumbo_yi": 10.53,
-    "block_yi": 5.59,
-    "pct": 8.21
+    "net_yi": 15.23,
+    "jumbo_yi": 10.13,
+    "block_yi": 5.11,
+    "pct": 6.4
    },
    {
     "name": "白酒Ⅲ",
-    "net_yi": 13.83,
-    "jumbo_yi": 9.0,
-    "block_yi": 4.83,
-    "pct": 13.55
+    "net_yi": 12.61,
+    "jumbo_yi": 8.11,
+    "block_yi": 4.5,
+    "pct": 10.45
    },
    {
     "name": "白酒Ⅱ",
-    "net_yi": 13.83,
-    "jumbo_yi": 9.0,
-    "block_yi": 4.83,
-    "pct": 13.55
+    "net_yi": 12.61,
+    "jumbo_yi": 8.11,
+    "block_yi": 4.5,
+    "pct": 10.45
+   },
+   {
+    "name": "医药生物",
+    "net_yi": 6.99,
+    "jumbo_yi": 4.21,
+    "block_yi": 2.78,
+    "pct": 1.26
    },
    {
     "name": "机器人",
-    "net_yi": 5.35,
-    "jumbo_yi": 5.51,
-    "block_yi": -0.16,
-    "pct": 6.37
+    "net_yi": 4.49,
+    "jumbo_yi": 4.8,
+    "block_yi": -0.31,
+    "pct": 4.78
    },
    {
     "name": "锂电池",
-    "net_yi": 3.62,
-    "jumbo_yi": -0.1,
-    "block_yi": 3.71,
-    "pct": 3.96
-   },
-   {
-    "name": "电池",
-    "net_yi": 2.87,
-    "jumbo_yi": -0.92,
-    "block_yi": 3.79,
-    "pct": 1.67
+    "net_yi": 3.8,
+    "jumbo_yi": -0.15,
+    "block_yi": 3.95,
+    "pct": 3.38
    },
    {
     "name": "白色家电",
-    "net_yi": 2.73,
-    "jumbo_yi": 1.59,
-    "block_yi": 1.14,
-    "pct": 10.26
+    "net_yi": 2.77,
+    "jumbo_yi": 1.38,
+    "block_yi": 1.39,
+    "pct": 8.63
    },
    {
     "name": "其他塑料制品",
-    "net_yi": 2.45,
-    "jumbo_yi": 3.28,
-    "block_yi": -0.82,
-    "pct": 8.96
+    "net_yi": 2.68,
+    "jumbo_yi": 3.57,
+    "block_yi": -0.89,
+    "pct": 8.25
    },
    {
-    "name": "其他专用设备",
-    "net_yi": 2.28,
-    "jumbo_yi": 5.61,
-    "block_yi": -3.33,
-    "pct": 2.29
-   },
-   {
-    "name": "专用设备",
-    "net_yi": 2.24,
-    "jumbo_yi": 6.33,
-    "block_yi": -4.09,
-    "pct": 1.31
+    "name": "医疗研发外包",
+    "net_yi": 2.66,
+    "jumbo_yi": 0.71,
+    "block_yi": 1.95,
+    "pct": 2.55
    },
    {
     "name": "航运港口",
-    "net_yi": 2.14,
-    "jumbo_yi": 0.12,
-    "block_yi": 2.02,
-    "pct": 4.01
+    "net_yi": 2.64,
+    "jumbo_yi": 0.53,
+    "block_yi": 2.11,
+    "pct": 3.86
    },
    {
-    "name": "其他小金属",
-    "net_yi": 1.95,
-    "jumbo_yi": 1.44,
-    "block_yi": 0.51,
-    "pct": 3.81
+    "name": "电池",
+    "net_yi": 2.24,
+    "jumbo_yi": -1.36,
+    "block_yi": 3.6,
+    "pct": 1.06
    },
    {
     "name": "航运",
-    "net_yi": 1.85,
-    "jumbo_yi": 0.16,
-    "block_yi": 1.69,
-    "pct": 4.28
+    "net_yi": 2.24,
+    "jumbo_yi": 0.41,
+    "block_yi": 1.83,
+    "pct": 4.05
    },
    {
     "name": "零食",
-    "net_yi": 1.8,
-    "jumbo_yi": 1.42,
-    "block_yi": 0.38,
-    "pct": 18.55
+    "net_yi": 2.21,
+    "jumbo_yi": 1.96,
+    "block_yi": 0.25,
+    "pct": 18.46
    },
    {
-    "name": "石油石化",
-    "net_yi": 1.72,
-    "jumbo_yi": 1.43,
-    "block_yi": 0.29,
-    "pct": 2.42
+    "name": "其他专用设备",
+    "net_yi": 2.17,
+    "jumbo_yi": 5.66,
+    "block_yi": -3.5,
+    "pct": 1.86
    },
    {
     "name": "休闲食品",
-    "net_yi": 1.59,
-    "jumbo_yi": 0.76,
-    "block_yi": 0.83,
-    "pct": 6.94
+    "net_yi": 2.04,
+    "jumbo_yi": 1.34,
+    "block_yi": 0.7,
+    "pct": 7.73
    },
    {
-    "name": "冰洗",
-    "net_yi": 1.55,
-    "jumbo_yi": 1.0,
-    "block_yi": 0.55,
-    "pct": 18.18
+    "name": "其他小金属",
+    "net_yi": 2.0,
+    "jumbo_yi": 1.39,
+    "block_yi": 0.6,
+    "pct": 3.19
    },
    {
-    "name": "家用电器",
-    "net_yi": 1.27,
-    "jumbo_yi": 1.01,
-    "block_yi": 0.26,
-    "pct": 1.15
+    "name": "石油石化",
+    "net_yi": 1.91,
+    "jumbo_yi": 1.55,
+    "block_yi": 0.36,
+    "pct": 2.24
    },
    {
-    "name": "机床工具",
-    "net_yi": 1.21,
-    "jumbo_yi": 0.92,
-    "block_yi": 0.3,
-    "pct": 6.32
+    "name": "生物制品",
+    "net_yi": 1.76,
+    "jumbo_yi": 0.97,
+    "block_yi": 0.79,
+    "pct": 2.3
    },
    {
-    "name": "炼油化工",
-    "net_yi": 1.2,
-    "jumbo_yi": 1.12,
-    "block_yi": 0.08,
-    "pct": 3.51
+    "name": "其他生物制品",
+    "net_yi": 1.73,
+    "jumbo_yi": 1.28,
+    "block_yi": 0.45,
+    "pct": 2.85
+   },
+   {
+    "name": "专用设备",
+    "net_yi": 1.67,
+    "jumbo_yi": 6.01,
+    "block_yi": -4.34,
+    "pct": 0.82
    }
   ],
-  "mainline": "食品饮料(+16.12亿) → 白酒Ⅲ(+13.83亿) → 白酒Ⅱ(+13.83亿)",
+  "mainline": "食品饮料(+15.23亿) → 白酒Ⅲ(+12.61亿) → 白酒Ⅱ(+12.61亿)",
   "resonance": [
-   "全市场涨停 41 只，情绪有温度"
+   "全市场涨停 37 只，情绪有温度"
   ],
   "conc": {
    "lead": "食品饮料",
-   "ratio": 1.17,
+   "ratio": 1.21,
    "alert": false
   }
  },
@@ -267,120 +267,120 @@
    {
     "code": "sz002747",
     "name": "埃斯顿",
-    "zdf": 5.99,
-    "zljlr": 5.65,
-    "lb": 4.06,
-    "hsl": 9.38,
-    "turnover_yi": 22.17,
-    "price": 30.1,
+    "zdf": 5.85,
+    "zljlr": 5.61,
+    "lb": 2.65,
+    "hsl": 10.13,
+    "turnover_yi": 23.94,
+    "price": 30.06,
     "stype": "GP-A",
     "type": "中继观察"
    },
    {
     "code": "sz300750",
     "name": "宁德时代",
-    "zdf": 2.05,
-    "zljlr": 5.1,
-    "lb": 1.4,
-    "hsl": 0.37,
-    "turnover_yi": 36.55,
-    "price": 233.77,
+    "zdf": 1.43,
+    "zljlr": 5.5,
+    "lb": 1.02,
+    "hsl": 0.44,
+    "turnover_yi": 43.99,
+    "price": 232.34,
     "stype": "GP-A-CYB",
     "type": "低吸候选"
    },
    {
     "code": "sz002031",
     "name": "巨轮智能",
-    "zdf": 5.92,
-    "zljlr": 3.35,
-    "lb": 5.85,
-    "hsl": 7.42,
-    "turnover_yi": 8.93,
-    "price": 5.37,
+    "zdf": 5.52,
+    "zljlr": 3.31,
+    "lb": 3.83,
+    "hsl": 8.04,
+    "turnover_yi": 9.66,
+    "price": 5.35,
     "stype": "GP-A",
     "type": "中继观察"
    },
    {
     "code": "sz000858",
     "name": "五 粮 液",
-    "zdf": 1.63,
-    "zljlr": 3.06,
-    "lb": 2.8,
-    "hsl": 0.61,
-    "turnover_yi": 17.34,
-    "price": 73.46,
+    "zdf": 1.18,
+    "zljlr": 2.95,
+    "lb": 1.93,
+    "hsl": 0.69,
+    "turnover_yi": 19.75,
+    "price": 73.13,
     "stype": "GP-A",
     "type": "低吸候选"
    },
    {
     "code": "sz002009",
     "name": "天奇股份",
-    "zdf": 6.2,
-    "zljlr": 2.56,
-    "lb": 4.36,
-    "hsl": 15.05,
-    "turnover_yi": 9.51,
-    "price": 17.63,
+    "zdf": 5.6,
+    "zljlr": 2.6,
+    "lb": 2.82,
+    "hsl": 16.08,
+    "turnover_yi": 10.15,
+    "price": 17.53,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz002149",
+    "name": "西部材料",
+    "zdf": 6.9,
+    "zljlr": 2.48,
+    "lb": 8.25,
+    "hsl": 14.16,
+    "turnover_yi": 23.75,
+    "price": 34.54,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz000568",
+    "name": "泸州老窖",
+    "zdf": 7.96,
+    "zljlr": 2.16,
+    "lb": 5.49,
+    "hsl": 1.73,
+    "turnover_yi": 19.0,
+    "price": 75.64,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz300223",
+    "name": "君正股份",
+    "zdf": 0.74,
+    "zljlr": 1.78,
+    "lb": 2.7,
+    "hsl": 7.72,
+    "turnover_yi": 36.89,
+    "price": 112.48,
+    "stype": "GP-A-CYB",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sh600690",
+    "name": "海尔智家",
+    "zdf": 4.08,
+    "zljlr": 1.55,
+    "lb": 3.64,
+    "hsl": 0.69,
+    "turnover_yi": 8.59,
+    "price": 20.43,
     "stype": "GP-A",
     "type": "中继观察"
    },
    {
     "code": "sh600519",
     "name": "贵州茅台",
-    "zdf": 1.19,
-    "zljlr": 2.12,
-    "lb": 2.3,
-    "hsl": 0.16,
-    "turnover_yi": 26.5,
-    "price": 1370.05,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sh600690",
-    "name": "海尔智家",
-    "zdf": 3.87,
-    "zljlr": 1.51,
-    "lb": 5.16,
-    "hsl": 0.59,
-    "turnover_yi": 7.36,
-    "price": 20.39,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh601091",
-    "name": "沈鼓集团",
-    "zdf": 4.79,
-    "zljlr": 1.24,
-    "lb": 3.01,
-    "hsl": 14.76,
-    "turnover_yi": 5.57,
-    "price": 17.93,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh600809",
-    "name": "山西汾酒",
-    "zdf": 3.95,
-    "zljlr": 1.21,
-    "lb": 4.36,
-    "hsl": 0.62,
-    "turnover_yi": 9.1,
-    "price": 121.81,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sz002185",
-    "name": "华天科技",
-    "zdf": 2.5,
-    "zljlr": 1.18,
-    "lb": 1.66,
-    "hsl": 3.11,
-    "turnover_yi": 15.6,
-    "price": 15.55,
+    "zdf": 1.04,
+    "zljlr": 1.34,
+    "lb": 1.63,
+    "hsl": 0.18,
+    "turnover_yi": 31.03,
+    "price": 1368.03,
     "stype": "GP-A",
     "type": "低吸候选"
    }
