@@ -1,42 +1,48 @@
 {
   "date": "2026-10-30",
-  "data_date": "2026-10-29",
-  "generated_at": "2026-10-30 21:48",
+  "data_date": "2026-10-30",
+  "generated_at": "2026-10-30 22:03",
   "news_date": "",
   "news_window": [
-    "2026-10-29",
-    "2026-10-30"
+    "2026-10-30",
+    "2026-10-31",
+    "2026-11-01",
+    "2026-11-02"
   ],
-  "news_window_days": 2,
+  "news_window_days": 4,
   "flow_date": "2026-10-30",
   "flow_raw_latest": "2026-10-30",
   "flow_is_weekend_copy": false,
   "hot_per_day": 8,
-  "hot_threshold": 16,
+  "hot_threshold": 32,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-10-30 08:33",
-    "session": "preopen",
-    "data_date": "2026-10-29",
-    "for_date": "2026-10-30",
+    "generated_at": "2026-10-30 22:02",
+    "session": "close",
+    "data_date": "2026-10-30",
+    "for_date": "2026-11-02",
     "data_date_note": "",
     "warnings": [],
     "span": [
-      "2026-10-30"
+      "2026-10-31",
+      "2026-11-01",
+      "2026-11-02"
     ],
-    "span_days": 1,
+    "span_days": 3,
     "display_days": [
-      "2026-10-29",
-      "2026-10-30"
+      "2026-10-30",
+      "2026-10-31",
+      "2026-11-01",
+      "2026-11-02"
     ],
-    "display_text": "10/29 + 10/30",
-    "span_is_weekend_cross": false,
-    "span_text": "10/30",
+    "display_text": "10/30–11/02",
+    "span_is_weekend_cross": true,
+    "span_text": "10/31–11/02",
     "carry": {
-      "from_data_date": "2026-10-29",
-      "ref": "output/feed_review_2026-10-29.json",
+      "from_data_date": "2026-10-30",
+      "ref": "output/feed_review_2026-10-30.json",
       "exists": true,
-      "gap_days": 1,
+      "gap_days": 3,
       "stale": false,
       "bias": "中性",
       "bias_score": 1,
@@ -47,136 +53,154 @@
       "headline": ""
     },
     "layers": {
-      "base": "2026-10-29 A股收盘（基准层）",
-      "overnight": "美东 2026-10-29 收盘（北京 2026-10-30 早间到达）",
-      "premarket": "2026-10-30 今早日韩实时 + 盘前新闻/投喂增量"
+      "base": "2026-10-30 A股收盘（基准层）",
+      "overnight": "美东 2026-10-30 收盘（北京 2026-10-31 早间到达）",
+      "premarket": "2026-11-02 今早日韩实时 + 盘前新闻/投喂增量"
     },
     "market_state": {
-      "date": "2026-10-29",
+      "date": "2026-10-30",
       "run_date": "2026-10-30",
-      "preopen_partial": true,
+      "preopen_partial": null,
       "us_kline": true,
       "asia": true
     },
     "covered": [
-      {
-        "date": "2026-10-29",
-        "weekday": "周四",
-        "is_trading_day": true,
-        "news": 293,
-        "feeds": 0,
-        "reports": 1851,
-        "macro": true
-      },
       {
         "date": "2026-10-30",
         "weekday": "周五",
         "is_trading_day": true,
         "news": 289,
         "feeds": 0,
-        "reports": 57,
+        "reports": 1041,
         "macro": true
+      },
+      {
+        "date": "2026-10-31",
+        "weekday": "周六",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-11-01",
+        "weekday": "周日",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-11-02",
+        "weekday": "周一",
+        "is_trading_day": true,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
       }
     ],
     "totals": {
-      "news": 582,
+      "news": 289,
       "feeds": 0,
-      "reports": 1908,
-      "covered_days": 2
+      "reports": 1041,
+      "covered_days": 4
     },
     "missing": [
-      "market_thermometer.json 数据日 2026-10-28 落后于基准日 2026-10-29"
+      "market_thermometer.json 数据日 2026-10-29 落后于基准日 2026-10-30"
     ]
   },
   "index_context": {
     "上证指数": {
-      "close": "3651.43",
-      "chg_pct": "-0.82"
+      "close": "3599.02",
+      "chg_pct": "-1.44"
     },
     "深证成指": {
-      "close": "11138.20",
-      "chg_pct": "-2.92"
+      "close": "10833.78",
+      "chg_pct": "-2.73"
     },
     "创业板指": {
-      "close": "2517.59",
-      "chg_pct": "-4.45"
+      "close": "2413.63",
+      "chg_pct": "-4.13"
     },
     "科创50": {
-      "close": "1228.09",
-      "chg_pct": "-4.27"
+      "close": "1160.84",
+      "chg_pct": "-5.48"
     }
   },
   "summary": {
     "共振": 0,
-    "背离": 4,
+    "背离": 0,
     "暗线": 5,
-    "双冷": 22
+    "双冷": 26
   },
   "items": [
     {
       "sector": "电子",
-      "news_count": 49,
-      "news_per_day": 24.5,
+      "news_count": 29,
+      "news_per_day": 7.25,
       "flow_yi": -112.43,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "英特尔业绩预测不及预期，美国芯片股下跌，超威半导体下跌8.4%，英伟达下跌3",
-        "高通下跌6.4%，博通下跌4.2%，iShares半导体ETF下跌6.2%。",
-        "费城半导体指数跌5.7%，AMD(AMD.O)跌10%，Arm(ARM.O)"
+        "【商务部新闻发言人就美国联邦通信委员会投票通过检测实验室限制措施事答记者问】",
+        "美股费城半导体指数跌幅扩大至6%",
+        "英特尔业绩引发科技股普跌，半导体板块集体走低"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 9,
-      "news_per_day": 4.5,
+      "news_count": 6,
+      "news_per_day": 1.5,
       "flow_yi": -58.76,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "美股半导体、存储、光通信股集体下跌，英特尔跌超28%，AMD、ARM跌超10",
-        "2026年中越边境地区地面无线电业务频率协调会谈在昆明举行",
-        "长飞光纤：第三季度净利润同比增长1742% 环比增长31%"
+        "【商务部新闻发言人就美国联邦通信委员会投票通过检测实验室限制措施事答记者问】",
+        "商务部新闻发言人就美国联邦通信委员会投票通过检测实验室限制措施事答记者问",
+        "英特尔业绩引发科技股普跌，半导体板块集体走低"
       ]
     },
     {
       "sector": "计算机",
-      "news_count": 26,
-      "news_per_day": 13.0,
+      "news_count": 19,
+      "news_per_day": 4.75,
       "flow_yi": -47.32,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
         "联播快讯",
-        "盘中期权异动：Lumentum盘中下跌8.7%，现最高成交额的看跌期权涨跌幅",
-        "盘中期权异动：NEBIUS盘中下跌8.7%，现最高成交额的看跌期权涨跌幅为+"
+        "【火山引擎重心全面转向商业化，MaaS上半年毛利率超55%】字节跳动旗下云服",
+        "盘中期权异动：Lumentum盘中下跌8.7%，现最高成交额的看跌期权涨跌幅"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 6,
+      "news_per_day": 1.5,
       "flow_yi": -38.61,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
+        "埃克森美孚首席执行官表示，公司预计将在2027年年中实现Golden Pas",
         "隧道股份：合计出资49.96亿元买入徐工机械和同济科技A股股票",
-        "京东双十一机械臂、灵巧手等机器人趋势品类成交额同比增长超10倍",
-        "地瓜机器人与宇树科技达成深度合作 联合推出具身智能教育方案"
+        "京东双十一机械臂、灵巧手等机器人趋势品类成交额同比增长超10倍"
       ]
     },
     {
       "sector": "传媒",
-      "news_count": 11,
-      "news_per_day": 5.5,
+      "news_count": 9,
+      "news_per_day": 2.25,
       "flow_yi": -32.97,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -190,38 +214,38 @@
     },
     {
       "sector": "食品饮料",
-      "news_count": 15,
-      "news_per_day": 7.5,
+      "news_count": 8,
+      "news_per_day": 2.0,
       "flow_yi": 30.05,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "美联储巴尔金：鉴于收入相对持平，消费者支出的韧性令人意外。",
-        "雅诗兰黛(EL.N)与微软(MSFT.O)宣布建立新的战略合作伙伴关系，以提",
-        "德国恢复燃油税减免，通胀明显放缓"
+        "【商务部新闻发言人就美国联邦通信委员会投票通过检测实验室限制措施事答记者问】",
+        "金价降了水贝卖爆了 水贝黄金门店销量翻番",
+        "【金价降了水贝卖爆了 水贝黄金门店销量翻番】下午3点，记者在水贝黄金市场看到"
       ]
     },
     {
       "sector": "国防军工",
-      "news_count": 8,
-      "news_per_day": 4.0,
+      "news_count": 4,
+      "news_per_day": 1.0,
       "flow_yi": -26.65,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "乌恢复袭击俄炼油厂",
+        "国际航空运输协会：9月全球航空客运需求下降，但较8月有所改善",
         "五角大楼被曝要求欧洲盟友降低对俄强硬言论调门",
         "上海机场：前三季度净利润18.64亿元 同比增长14.06%"
       ]
     },
     {
       "sector": "医药生物",
-      "news_count": 8,
-      "news_per_day": 4.0,
+      "news_count": 6,
+      "news_per_day": 1.5,
       "flow_yi": 26.49,
       "verdict": "暗线",
       "verdict_raw": "暗线",
@@ -235,8 +259,8 @@
     },
     {
       "sector": "电力设备",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 4,
+      "news_per_day": 1.0,
       "flow_yi": -23.54,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -250,23 +274,23 @@
     },
     {
       "sector": "有色金属",
-      "news_count": 22,
-      "news_per_day": 11.0,
+      "news_count": 15,
+      "news_per_day": 3.75,
       "flow_yi": -21.27,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "现货金银持续扩大跌幅",
-        "中稀有色：Q3净利润同比增长532%环比增长49% 稀土产品业绩稳步提升",
-        "现货黄金跌破3950美元"
+        "现货白银大跌5%",
+        "金价降了水贝卖爆了 水贝黄金门店销量翻番",
+        "【金价降了水贝卖爆了 水贝黄金门店销量翻番】下午3点，记者在水贝黄金市场看到"
       ]
     },
     {
       "sector": "汽车",
-      "news_count": 10,
-      "news_per_day": 5.0,
+      "news_count": 6,
+      "news_per_day": 1.5,
       "flow_yi": -20.05,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -274,14 +298,14 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "李强会见德国总统",
-        "美股开盘：美股三大指数集体低开",
-        "中德人士共话汽车产业转型下合作新机遇"
+        "中德人士共话汽车产业转型下合作新机遇",
+        "长城汽车：2026年前三季度净利润同比下降55.69%"
       ]
     },
     {
       "sector": "非银金融",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 5,
+      "news_per_day": 1.25,
       "flow_yi": -14.78,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -295,8 +319,8 @@
     },
     {
       "sector": "公用事业",
-      "news_count": 8,
-      "news_per_day": 4.0,
+      "news_count": 3,
+      "news_per_day": 0.75,
       "flow_yi": -12.94,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -310,8 +334,8 @@
     },
     {
       "sector": "基础化工",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 2,
+      "news_per_day": 0.5,
       "flow_yi": -12.37,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -319,7 +343,6 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "李强会见德国总统",
-        "乌恢复袭击俄炼油厂",
         "国内商品期货夜盘开盘 主力合约涨多跌少"
       ]
     },
@@ -347,23 +370,23 @@
     },
     {
       "sector": "石油石化",
-      "news_count": 13,
-      "news_per_day": 6.5,
+      "news_count": 15,
+      "news_per_day": 3.75,
       "flow_yi": 5.51,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "匈牙利石油和天然气有限公司：多瑙河炼油厂的AV3蒸馏装置已恢复满负荷运行。",
-        "埃克森美孚计划到2030年投入1000亿美元资本支出",
-        "印度石油公司：第二季度毛炼油利润率为每桶18.52美元，高于上一季度的每桶1"
+        "沙特阿美在遭到也门胡塞武装打击后，关闭了拉斯坦努拉炼油厂的原油蒸馏装置。",
+        "埃克森美孚石油(XOM.N)CEO：霍尔木兹海峡必须重新开放。",
+        "埃克森美孚石油(XOM.N)CEO：没有关于卡塔尔液化天然气的最新消息。"
       ]
     },
     {
       "sector": "交通运输",
       "news_count": 1,
-      "news_per_day": 0.5,
+      "news_per_day": 0.25,
       "flow_yi": -4.68,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -375,21 +398,19 @@
     },
     {
       "sector": "农林牧渔",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -4.58,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "乌克兰经济自战争爆发以来将首次出现萎缩"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "房地产",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 4,
+      "news_per_day": 1.0,
       "flow_yi": -3.79,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -397,8 +418,8 @@
       "desc": "无题材无资金，回避",
       "sample_titles": [
         "美联储巴尔金：企业主表示需求依然稳健，仅非营利组织和住房领域表现疲软。",
-        "里士满联储主席巴金：企业主表示需求仍然稳健，仅非营利组织和住房领域表现疲软。",
-        "中指研究院：前10月100家房企拿地总额6465亿元"
+        "中指研究院：前10月100家房企拿地总额6465亿元",
+        "央行：2026年第三季度全国新发放商业性个人住房贷款加权平均利率为3.05%"
       ]
     },
     {
@@ -414,16 +435,14 @@
     },
     {
       "sector": "钢铁",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -1.91,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "国内商品期货夜盘开盘 主力合约多数下跌"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "美容护理",
@@ -438,17 +457,15 @@
     },
     {
       "sector": "煤炭",
-      "news_count": 3,
-      "news_per_day": 1.5,
+      "news_count": 1,
+      "news_per_day": 0.25,
       "flow_yi": -1.29,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "国家能源局：积极采取煤炭增产保供措施 出台煤炭稳产政策",
-        "期市夜盘收盘，国内期货主力合约多数下跌",
-        "国内部分商品期货夜盘收盘 主力合约多数下跌"
+        "国家能源局：积极采取煤炭增产保供措施 出台煤炭稳产政策"
       ]
     },
     {
@@ -486,23 +503,23 @@
     },
     {
       "sector": "银行",
-      "news_count": 29,
-      "news_per_day": 14.5,
+      "news_count": 13,
+      "news_per_day": 3.25,
       "flow_yi": -1.04,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "美国银行全球研究将英特尔评级从买入下调至中性，目标价从145美元下调至100",
         "机构：英国央行11月或以7比2的投票结果决定加息",
-        "美银警告：iPhone错峰上市致华尔街“建模错误” 苹果Q4业绩恐被高估"
+        "美银警告：iPhone错峰上市致华尔街“建模错误” 苹果Q4业绩恐被高估",
+        "民生银行：第三季度归母净利润47.86亿元 同比下降33.18%"
       ]
     },
     {
       "sector": "环保",
       "news_count": 1,
-      "news_per_day": 0.5,
+      "news_per_day": 0.25,
       "flow_yi": -0.63,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -514,8 +531,8 @@
     },
     {
       "sector": "综合",
-      "news_count": 11,
-      "news_per_day": 5.5,
+      "news_count": 5,
+      "news_per_day": 1.25,
       "flow_yi": -0.42,
       "verdict": "双冷",
       "verdict_raw": "双冷",
@@ -524,7 +541,7 @@
       "sample_titles": [
         "道琼斯指数10月30日（周五）开盘下跌149.38点，跌幅0.29%，报52",
         "美股三大指数集体低开 英特尔跌超25%",
-        "乌恢复袭击俄炼油厂"
+        "宝钢股份：将综合考虑市场环境等因素动态开展股票回购"
       ]
     },
     {
