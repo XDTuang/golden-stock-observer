@@ -1,7 +1,7 @@
 {
  "meta": {
-  "updated_at": "2026-10-29 14:45:22",
-  "data_date": "2026-10-29",
+  "updated_at": "2026-10-30 09:15:23",
+  "data_date": "2026-10-30",
   "market_status": "trading",
   "algorithm": "1.0.0",
   "next_hint": "每 30 分钟自动刷新（交易日 9:30-15:00，GitHub Actions 驱动）"
@@ -11,97 +11,97 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3650.88,
-    "chg_pct": -0.83,
-    "turnover_yi": 6579.0,
-    "high": 3678.46,
-    "low": 3647.12
+    "price": 3651.41,
+    "chg_pct": -0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 11158.36,
-    "chg_pct": -2.74,
-    "turnover_yi": 7761.8,
-    "high": 11379.0,
-    "low": 11146.12
+    "price": 11138.2,
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 2524.63,
-    "chg_pct": -4.18,
-    "turnover_yi": 3874.1,
-    "high": 2597.45,
-    "low": 2522.8
+    "price": 2517.59,
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1228.35,
-    "chg_pct": -4.25,
-    "turnover_yi": 652.5,
-    "high": 1271.81,
-    "low": 1223.62
+    "price": 1228.09,
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4038.17,
-    "chg_pct": -1.12,
-    "turnover_yi": 3733.7,
-    "high": 4075.47,
-    "low": 4030.23
+    "price": 4041.47,
+    "chg_pct": -0.01,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 6469.4,
-    "chg_pct": -2.58,
-    "turnover_yi": 2510.9,
-    "high": 6604.65,
-    "low": 6459.72
+    "price": 6453.47,
+    "chg_pct": -0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    }
   ],
   "breadth": {
-   "up": 741,
-   "down": 3808,
-   "flat": 56,
-   "ratio": 0.19,
-   "limit_up": 40,
-   "limit_down": 71,
-   "main_net_yi": -520.89,
-   "turnover_yi": 12230.4,
+   "up": 899,
+   "down": 2718,
+   "flat": 988,
+   "ratio": 0.33,
+   "limit_up": 75,
+   "limit_down": 188,
+   "main_net_yi": 0.0,
+   "turnover_yi": 0.0,
    "total": 4605
   }
  },
  "L1": {
   "sentiment": {
-   "score": 10,
-   "S1": 5,
-   "S2": 33,
-   "S3": 0,
-   "S4": 0,
+   "score": 38,
+   "S1": 8,
+   "S2": 62,
+   "S3": 40,
+   "S4": 50,
    "inputs": {
-    "ratio": 0.19,
-    "limit_up": 40,
-    "avg_idx_pct": -2.62,
-    "main_net_yi": -520.89
+    "ratio": 0.33,
+    "limit_up": 75,
+    "avg_idx_pct": -0.0,
+    "main_net_yi": 0
    }
   },
   "state": {
-   "state": "panic",
-   "label": "恐慌下跌",
-   "note": "空仓或极轻仓观望，不抄底，等企稳信号",
-   "score": 10
+   "state": "weak",
+   "label": "弱势回调",
+   "note": "防守为主，仅小仓低吸，严格止损",
+   "score": 38
   }
  },
  "L2": {
   "range": [
-   0,
-   20
+   25,
+   40
   ],
-  "note": "恐慌下跌，空仓或极轻仓等待企稳",
+  "note": "弱势回调，防守为主，严格止损",
   "rules": [
    "单票仓位 ≤ 10%",
    "单一板块集中度 ≤ 30%",
@@ -110,281 +110,12 @@
   ]
  },
  "L3": {
-  "sectors": [
-   {
-    "name": "国防军工",
-    "net_yi": 10.09,
-    "jumbo_yi": 8.83,
-    "block_yi": 1.26,
-    "pct": 1.93
-   },
-   {
-    "name": "航天装备Ⅲ",
-    "net_yi": 9.67,
-    "jumbo_yi": 7.88,
-    "block_yi": 1.79,
-    "pct": 10.09
-   },
-   {
-    "name": "航天装备Ⅱ",
-    "net_yi": 9.67,
-    "jumbo_yi": 7.88,
-    "block_yi": 1.79,
-    "pct": 10.09
-   },
-   {
-    "name": "风电设备",
-    "net_yi": 8.51,
-    "jumbo_yi": 4.88,
-    "block_yi": 3.63,
-    "pct": 8.24
-   },
-   {
-    "name": "风电零部件",
-    "net_yi": 7.18,
-    "jumbo_yi": 4.03,
-    "block_yi": 3.15,
-    "pct": 9.54
-   },
-   {
-    "name": "军工电子Ⅲ",
-    "net_yi": 5.51,
-    "jumbo_yi": 4.13,
-    "block_yi": 1.38,
-    "pct": 2.66
-   },
-   {
-    "name": "军工电子Ⅱ",
-    "net_yi": 5.51,
-    "jumbo_yi": 4.13,
-    "block_yi": 1.38,
-    "pct": 2.66
-   },
-   {
-    "name": "国有大型银行Ⅲ",
-    "net_yi": 4.36,
-    "jumbo_yi": 2.65,
-    "block_yi": 1.72,
-    "pct": 3.78
-   },
-   {
-    "name": "保险Ⅲ",
-    "net_yi": 3.8,
-    "jumbo_yi": 0.41,
-    "block_yi": 3.39,
-    "pct": 4.47
-   },
-   {
-    "name": "保险Ⅱ",
-    "net_yi": 3.8,
-    "jumbo_yi": 0.41,
-    "block_yi": 3.39,
-    "pct": 4.47
-   },
-   {
-    "name": "铁路公路",
-    "net_yi": 3.6,
-    "jumbo_yi": 6.62,
-    "block_yi": -3.02,
-    "pct": 6.47
-   },
-   {
-    "name": "乳品",
-    "net_yi": 3.25,
-    "jumbo_yi": 1.79,
-    "block_yi": 1.46,
-    "pct": 7.61
-   },
-   {
-    "name": "饮料乳品",
-    "net_yi": 3.14,
-    "jumbo_yi": 1.56,
-    "block_yi": 1.58,
-    "pct": 5.81
-   },
-   {
-    "name": "食品饮料",
-    "net_yi": 3.1,
-    "jumbo_yi": -0.58,
-    "block_yi": 3.67,
-    "pct": 1.14
-   },
-   {
-    "name": "炼油化工",
-    "net_yi": 3.05,
-    "jumbo_yi": -0.31,
-    "block_yi": 3.35,
-    "pct": 4.93
-   },
-   {
-    "name": "石油石化",
-    "net_yi": 3.02,
-    "jumbo_yi": 0.61,
-    "block_yi": 2.4,
-    "pct": 2.38
-   },
-   {
-    "name": "制冷空调设备",
-    "net_yi": 2.81,
-    "jumbo_yi": 3.68,
-    "block_yi": -0.87,
-    "pct": 4.18
-   },
-   {
-    "name": "光伏电池组件",
-    "net_yi": 2.7,
-    "jumbo_yi": 2.74,
-    "block_yi": -0.04,
-    "pct": 7.37
-   },
-   {
-    "name": "白酒Ⅲ",
-    "net_yi": 2.64,
-    "jumbo_yi": -0.38,
-    "block_yi": 3.01,
-    "pct": 2.29
-   },
-   {
-    "name": "白酒Ⅱ",
-    "net_yi": 2.64,
-    "jumbo_yi": -0.38,
-    "block_yi": 3.01,
-    "pct": 2.29
-   }
-  ],
-  "mainline": "国防军工(+10.09亿) → 航天装备Ⅲ(+9.67亿) → 航天装备Ⅱ(+9.67亿)",
-  "resonance": [
-   "全市场涨停 40 只，情绪有温度"
-  ],
-  "conc": {
-   "lead": "国防军工",
-   "ratio": 1.04,
-   "alert": false
-  }
+  "sectors": [],
+  "mainline": "数据不可用",
+  "resonance": []
  },
  "L4": {
-  "candidates": [
-   {
-    "code": "sh601318",
-    "name": "中国平安",
-    "zdf": 1.28,
-    "zljlr": 3.16,
-    "lb": 1.19,
-    "hsl": 0.83,
-    "turnover_yi": 46.71,
-    "price": 52.98,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz003006",
-    "name": "百亚股份",
-    "zdf": -3.25,
-    "zljlr": 2.8,
-    "lb": 0.79,
-    "hsl": 8.55,
-    "turnover_yi": 8.3,
-    "price": 22.34,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sh601398",
-    "name": "工商银行",
-    "zdf": 2.34,
-    "zljlr": 2.68,
-    "lb": 0.77,
-    "hsl": 0.13,
-    "turnover_yi": 30.85,
-    "price": 8.76,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sh601288",
-    "name": "农业银行",
-    "zdf": 1.35,
-    "zljlr": 2.36,
-    "lb": 0.69,
-    "hsl": 0.09,
-    "turnover_yi": 20.65,
-    "price": 7.53,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz000977",
-    "name": "浪潮信息",
-    "zdf": 0.66,
-    "zljlr": 2.24,
-    "lb": 1.48,
-    "hsl": 3.77,
-    "turnover_yi": 31.76,
-    "price": 56.4,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz300136",
-    "name": "信维通信",
-    "zdf": 4.87,
-    "zljlr": 1.99,
-    "lb": 2.82,
-    "hsl": 11.34,
-    "turnover_yi": 44.24,
-    "price": 47.59,
-    "stype": "GP-A-CYB",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh601857",
-    "name": "中国石油",
-    "zdf": 2.79,
-    "zljlr": 1.98,
-    "lb": 0.94,
-    "hsl": 0.1,
-    "turnover_yi": 21.1,
-    "price": 13.63,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz002434",
-    "name": "万里扬",
-    "zdf": 4.57,
-    "zljlr": 1.93,
-    "lb": 3.18,
-    "hsl": 11.29,
-    "turnover_yi": 10.84,
-    "price": 7.1,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh601899",
-    "name": "紫金矿业",
-    "zdf": -0.18,
-    "zljlr": 1.84,
-    "lb": 0.49,
-    "hsl": 0.52,
-    "turnover_yi": 30.09,
-    "price": 27.9,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sh605179",
-    "name": "一鸣食品",
-    "zdf": 7.91,
-    "zljlr": 1.78,
-    "lb": 2.03,
-    "hsl": 9.35,
-    "turnover_yi": 8.55,
-    "price": 23.32,
-    "stype": "GP-A",
-    "type": "中继观察"
-   }
-  ],
+  "candidates": [],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
