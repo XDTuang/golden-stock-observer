@@ -1,357 +1,292 @@
 {
   "date": "2026-11-02",
-  "data_date": "2026-10-30",
-  "generated_at": "2026-11-02 09:56",
+  "data_date": "2026-11-02",
+  "generated_at": "2026-11-02 22:02",
   "news_date": "",
   "news_window": [
-    "2026-10-30",
-    "2026-10-31",
-    "2026-11-01",
-    "2026-11-02"
+    "2026-11-02",
+    "2026-11-03"
   ],
-  "news_window_days": 4,
-  "flow_date": "2026-10-30",
-  "flow_raw_latest": "2026-10-30",
+  "news_window_days": 2,
+  "flow_date": "2026-11-02",
+  "flow_raw_latest": "2026-11-02",
   "flow_is_weekend_copy": false,
   "hot_per_day": 8,
-  "hot_threshold": 32,
+  "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-11-02 08:36",
-    "session": "preopen",
-    "data_date": "2026-10-30",
-    "for_date": "2026-11-02",
+    "generated_at": "2026-11-02 22:02",
+    "session": "close",
+    "data_date": "2026-11-02",
+    "for_date": "2026-11-03",
     "data_date_note": "",
     "warnings": [],
     "span": [
-      "2026-10-31",
-      "2026-11-01",
-      "2026-11-02"
+      "2026-11-03"
     ],
-    "span_days": 3,
+    "span_days": 1,
     "display_days": [
-      "2026-10-30",
-      "2026-10-31",
-      "2026-11-01",
-      "2026-11-02"
+      "2026-11-02",
+      "2026-11-03"
     ],
-    "display_text": "10/30–11/02",
-    "span_is_weekend_cross": true,
-    "span_text": "10/31–11/02",
+    "display_text": "11/02 + 11/03",
+    "span_is_weekend_cross": false,
+    "span_text": "11/03",
     "carry": {
-      "from_data_date": "2026-10-30",
-      "ref": "output/feed_review_2026-10-30.json",
+      "from_data_date": "2026-11-02",
+      "ref": "output/feed_review_2026-11-02.json",
       "exists": true,
-      "gap_days": 3,
+      "gap_days": 1,
       "stale": false,
       "bias": "中性",
       "bias_score": 1,
       "t1_focus": [
-        "跟踪金钻起涨 5 只回踩确认"
+        "跟踪金钻起涨 6 只回踩确认"
       ],
       "risks": [],
       "headline": ""
     },
     "layers": {
-      "base": "2026-10-30 A股收盘（基准层）",
-      "overnight": "美东 2026-10-30 收盘（北京 2026-10-31 早间到达）",
-      "premarket": "2026-11-02 今早日韩实时 + 盘前新闻/投喂增量"
+      "base": "2026-11-02 A股收盘（基准层）",
+      "overnight": "美东 2026-11-02 收盘（北京 2026-11-03 早间到达）",
+      "premarket": "2026-11-03 今早日韩实时 + 盘前新闻/投喂增量"
     },
     "market_state": {
-      "date": "2026-10-30",
+      "date": "2026-11-02",
       "run_date": "2026-11-02",
-      "preopen_partial": true,
+      "preopen_partial": null,
       "us_kline": true,
       "asia": true
     },
     "covered": [
-      {
-        "date": "2026-10-30",
-        "weekday": "周五",
-        "is_trading_day": true,
-        "news": 310,
-        "feeds": 0,
-        "reports": 2259,
-        "macro": true
-      },
-      {
-        "date": "2026-10-31",
-        "weekday": "周六",
-        "is_trading_day": false,
-        "news": 0,
-        "feeds": 0,
-        "reports": 549,
-        "macro": false
-      },
-      {
-        "date": "2026-11-01",
-        "weekday": "周日",
-        "is_trading_day": false,
-        "news": 0,
-        "feeds": 0,
-        "reports": 1040,
-        "macro": false
-      },
       {
         "date": "2026-11-02",
         "weekday": "周一",
         "is_trading_day": true,
         "news": 286,
         "feeds": 0,
-        "reports": 61,
+        "reports": 1245,
         "macro": true
+      },
+      {
+        "date": "2026-11-03",
+        "weekday": "周二",
+        "is_trading_day": true,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
       }
     ],
     "totals": {
-      "news": 596,
+      "news": 286,
       "feeds": 0,
-      "reports": 3909,
-      "covered_days": 4
+      "reports": 1245,
+      "covered_days": 2
     },
     "missing": [
-      "窗口内非交易日（10-31、11-01）新闻池全为 0 → 疑整池被覆盖，跨周末信息可能丢失"
+      "market_thermometer.json 数据日 2026-10-30 落后于基准日 2026-11-02"
     ]
   },
   "index_context": {
     "上证指数": {
-      "close": "3599.02",
-      "chg_pct": "-1.44"
+      "close": "3638.03",
+      "chg_pct": "1.08"
     },
     "深证成指": {
-      "close": "10833.78",
-      "chg_pct": "-2.73"
+      "close": "11010.68",
+      "chg_pct": "1.63"
     },
     "创业板指": {
-      "close": "2413.63",
-      "chg_pct": "-4.13"
+      "close": "2458.70",
+      "chg_pct": "1.87"
     },
     "科创50": {
-      "close": "1160.84",
-      "chg_pct": "-5.48"
+      "close": "1196.94",
+      "chg_pct": "3.11"
     }
   },
   "summary": {
-    "共振": 0,
-    "背离": 4,
-    "暗线": 5,
-    "双冷": 22
+    "共振": 1,
+    "背离": 1,
+    "暗线": 13,
+    "双冷": 16
   },
   "items": [
     {
-      "sector": "电子",
-      "news_count": 67,
-      "news_per_day": 16.75,
-      "flow_yi": -112.43,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "【李在明呼吁加大对AI投资 韩国2027预算支出大增超一成】韩国总统李在明总",
-        "【芯联动力完成近20亿元C轮融资】近日，芯联集成旗下控股公司芯联动力完成近2",
-        "【互联网金融板块拉升，银之杰逼近涨停】互联网金融板块拉升，银之杰逼近涨停，太"
-      ]
-    },
-    {
-      "sector": "通信",
-      "news_count": 16,
-      "news_per_day": 4.0,
-      "flow_yi": -58.76,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "【芯联动力完成近20亿元C轮融资】近日，芯联集成旗下控股公司芯联动力完成近2",
-        "港股光通信股走强 东山精密涨近8%",
-        "港股AI硬件股盘初走高，东山精密升逾7%，长飞光纤光缆、剑桥科技升逾5%，兆"
-      ]
-    },
-    {
-      "sector": "计算机",
-      "news_count": 54,
-      "news_per_day": 13.5,
-      "flow_yi": -47.32,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "【李在明呼吁加大对AI投资 韩国2027预算支出大增超一成】韩国总统李在明总",
-        "【芯联动力完成近20亿元C轮融资】近日，芯联集成旗下控股公司芯联动力完成近2",
-        "港股AI硬件股盘初走高，东山精密升逾7%，长飞光纤光缆、剑桥科技升逾5%，兆"
-      ]
-    },
-    {
-      "sector": "机械设备",
-      "news_count": 21,
-      "news_per_day": 5.25,
-      "flow_yi": -38.61,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "人形机器人板块持续下挫，宇树科技跌超10%",
-        "人形机器人概念盘初走弱 宇树科技跌超10%",
-        "港股开市：恒指开盘涨0.03%，恒科指涨0.55%"
-      ]
-    },
-    {
       "sector": "传媒",
-      "news_count": 22,
-      "news_per_day": 5.5,
-      "flow_yi": -32.97,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "游戏概念表现活跃 电魂网络触及涨停",
-        "【文化传媒板块拉升，龙版传媒触及涨停】文化传媒板块拉升，龙版传媒触及涨停，山",
-        "文化传媒板块拉升，龙版传媒触及涨停"
-      ]
-    },
-    {
-      "sector": "食品饮料",
-      "news_count": 21,
-      "news_per_day": 5.25,
-      "flow_yi": 30.05,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": [
-        "【乳业板块异动走高，青岛食品涨停】乳业板块异动走高，青岛食品涨停，一鸣食品、",
-        "乳业板块异动走高，青岛食品涨停",
-        "【可再生能源法修订草案提请审议】11月2日，可再生能源法修订草案提请十四届全"
-      ]
-    },
-    {
-      "sector": "国防军工",
-      "news_count": 13,
-      "news_per_day": 3.25,
-      "flow_yi": -26.65,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "韩国总统李在明称明年国防预算将同比增8.2%。",
-        "千亿级股票回购增持专项贷款来了 这些公司三季度获国新、诚通加仓",
-        "一线调研：向天向海向AI 商业卫星重构空天信息应用版图"
-      ]
-    },
-    {
-      "sector": "医药生物",
-      "news_count": 12,
-      "news_per_day": 3.0,
-      "flow_yi": 26.49,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": [
-        "和黄医药宣布沃瑞沙联合泰瑞沙联合疗法在欧洲和日本的监管注册申请已获受理",
-        "港股开盘：恒生科技指数涨0.55% 恒生指数涨0.03%",
-        "华大基因在天津成立生物科技新公司"
-      ]
-    },
-    {
-      "sector": "电力设备",
       "news_count": 10,
-      "news_per_day": 2.5,
-      "flow_yi": -23.54,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "news_per_day": 5.0,
+      "flow_yi": 55.49,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "【芯联动力完成近20亿元C轮融资】近日，芯联集成旗下控股公司芯联动力完成近2",
-        "湖南裕能：预计2027年高端磷酸铁锂仍将处于供应偏紧的状态",
-        "从戈壁风光到绿色算力 新疆探索算电协同发展新路径"
+        "党的二十届五中全会精神学习辅导材料出版发行",
+        "人民日报评论员文章：坚持问题导向，解决突出问题——论学习贯彻党的二十届五中全",
+        "曦智科技：拟启动A股IPO进程"
       ]
     },
     {
-      "sector": "有色金属",
-      "news_count": 35,
-      "news_per_day": 8.75,
-      "flow_yi": -21.27,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sector": "电子",
+      "news_count": 15,
+      "news_per_day": 7.5,
+      "flow_yi": 53.19,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "花旗：消费者推迟采购，锂价前景转弱",
-        "数据中心投资热潮提振需求预期，铜价上涨",
-        "湖南裕能：预计2027年高端磷酸铁锂仍将处于供应偏紧的状态"
-      ]
-    },
-    {
-      "sector": "汽车",
-      "news_count": 14,
-      "news_per_day": 3.5,
-      "flow_yi": -20.05,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "【芯联动力完成近20亿元C轮融资】近日，芯联集成旗下控股公司芯联动力完成近2",
-        "港股开盘，恒指开涨0.03%，科指开涨0.55%，汽车股部分造好，比亚迪股份",
-        "港股开市：恒指开盘涨0.03%，恒科指涨0.55%"
+        "东山精密：1.6T产品四季度起进入相对批量出货",
+        "迈威尔科技CEO：与Lumentum合并后的公司预计将跻身全球五大AI基础设",
+        "迈威尔与Lumentum整合AI光互连技术 布局从芯片到数据中心的连接方案"
       ]
     },
     {
       "sector": "非银金融",
-      "news_count": 28,
-      "news_per_day": 7.0,
-      "flow_yi": -14.78,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "news_count": 12,
+      "news_per_day": 6.0,
+      "flow_yi": 31.61,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "金融监管部门将召开座谈会 港股保险、券商等大金融股全线拉升",
-        "单季浮亏超3500亿 险资难当剩余两月反攻主力",
-        "国盛宏观：稳A股，会有新一轮“924”吗？"
+        "国内联播快讯",
+        "英国银行存款争夺战升温 传统银行面临资金流失压力",
+        "曦智科技：拟启动A股IPO进程"
+      ]
+    },
+    {
+      "sector": "计算机",
+      "news_count": 24,
+      "news_per_day": 12.0,
+      "flow_yi": 23.65,
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
+      "sample_titles": [
+        "SYNDIGO：与微软达成多年战略合作伙伴关系，共同开发并联合销售AI驱动的",
+        "【高盛限制交易员与投行员工使用部分 AI 工具】高盛集团在评估效率、风险隐患",
+        "【OpenAI承诺：极端天气下 旗下美国数据中心可削减用电负荷】OpenAI"
+      ]
+    },
+    {
+      "sector": "银行",
+      "news_count": 24,
+      "news_per_day": 12.0,
+      "flow_yi": -19.49,
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "sample_titles": [
+        "国内联播快讯",
+        " 富国银行将艾伯维目标价从300.00美元上调至340.00美元。",
+        "高盛限制交易员们和银行家们使用某些AI工具。"
+      ]
+    },
+    {
+      "sector": "通信",
+      "news_count": 4,
+      "news_per_day": 2.0,
+      "flow_yi": 12.59,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": [
+        "东山精密：1.6T产品四季度起进入相对批量出货",
+        "国家发展改革委与阿曼有关部门签署北斗卫星等合作文件",
+        "南向资金净卖近45亿港元 净买入中国海洋石油近9亿港元"
       ]
     },
     {
       "sector": "公用事业",
-      "news_count": 5,
-      "news_per_day": 1.25,
-      "flow_yi": -12.94,
+      "news_count": 2,
+      "news_per_day": 1.0,
+      "flow_yi": -12.56,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "千亿级股票回购增持专项贷款来了 这些公司三季度获国新、诚通加仓",
-        "从戈壁风光到绿色算力 新疆探索算电协同发展新路径",
-        "戈壁“向日葵”上新，新疆阜康10万千瓦熔盐塔式光热发电项目并网"
+        "燃料成本上涨 日本东京等地电价创4年来新高",
+        "电投水电：实控人国家电投集团拟增持2亿至3亿元股份"
       ]
     },
     {
-      "sector": "基础化工",
-      "news_count": 3,
-      "news_per_day": 0.75,
-      "flow_yi": -12.37,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "sector": "电力设备",
+      "news_count": 4,
+      "news_per_day": 2.0,
+      "flow_yi": 11.28,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "上游硫磺价格近乎翻倍 三季度磷肥板块盈利承压",
-        "李强会见德国总统",
-        "国内商品期货夜盘开盘 主力合约涨多跌少"
+        "【OpenAI承诺：极端天气下 旗下美国数据中心可削减用电负荷】OpenAI",
+        "光伏六巨头前三季度亏损250亿元",
+        "远东股份：10月中标/签约千万元以上合同订单合计14.98亿元"
       ]
     },
     {
-      "sector": "轻工制造",
+      "sector": "商贸零售",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": -7.22,
+      "flow_yi": 9.89,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": []
+    },
+    {
+      "sector": "交通运输",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -7.77,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
+    },
+    {
+      "sector": "煤炭",
+      "news_count": 1,
+      "news_per_day": 0.5,
+      "flow_yi": -6.21,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "国内商品期货夜盘开盘 主力合约多数下跌"
+      ]
+    },
+    {
+      "sector": "国防军工",
+      "news_count": 7,
+      "news_per_day": 3.5,
+      "flow_yi": -6.03,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "习近平举行仪式欢迎阿曼苏丹国苏丹访华",
+        "波音与冰岛航空租赁公司签署协议，最多采购三架767-300波音改装货机。",
+        "匈牙利威兹航空一客机遭炸弹威胁 战机护送降落"
+      ]
+    },
+    {
+      "sector": "家用电器",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -5.3,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
@@ -362,7 +297,7 @@
       "sector": "建筑装饰",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": -6.8,
+      "flow_yi": -4.75,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
@@ -370,95 +305,134 @@
       "sample_titles": []
     },
     {
-      "sector": "石油石化",
-      "news_count": 25,
-      "news_per_day": 6.25,
-      "flow_yi": 5.51,
+      "sector": "建筑材料",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": 4.7,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": []
+    },
+    {
+      "sector": "食品饮料",
+      "news_count": 4,
+      "news_per_day": 2.0,
+      "flow_yi": -3.94,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "【芯联动力完成近20亿元C轮融资】近日，芯联集成旗下控股公司芯联动力完成近2",
-        "恒指持续走强，盘初涨逾1%，中国人寿(02628.HK)、中国石油股份(00",
-        "沙特阿美入股AI公司 石油巨头布局算力"
+        "中银国际：比亚迪电子消费电子低谷与AI基建放量标志良好入场点 重申“买入”评",
+        "卡塔尔8月消费者价格指数同比上涨4.09%",
+        "6连板青岛食品：控制权变更存不确定性"
       ]
     },
     {
-      "sector": "交通运输",
+      "sector": "机械设备",
+      "news_count": 5,
+      "news_per_day": 2.5,
+      "flow_yi": -3.93,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "2连板沈阳机床：不从事设计、生产、制造具身智能机器人及配套零部件",
+        "宇树机器狗“登泰山”斩获1金2银 官方未派出人形机器人参赛",
+        "首届CMG世界机器人登泰山大赛收官 宇树科技斩获1金2银"
+      ]
+    },
+    {
+      "sector": "石油石化",
+      "news_count": 12,
+      "news_per_day": 6.0,
+      "flow_yi": -3.25,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "乌拉尔原油油轮追踪：10月石油流量稳定在每日223万桶。上个月，俄罗斯三大西",
+        "国际油价大幅跳水，布伦特原油失守106美元/桶",
+        "据伊通社（IRNA）报道，伊朗最高领袖已授权政府进行谈判。美股三大股指期货扩"
+      ]
+    },
+    {
+      "sector": "基础化工",
       "news_count": 1,
-      "news_per_day": 0.25,
-      "flow_yi": -4.68,
+      "news_per_day": 0.5,
+      "flow_yi": -3.06,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "无需签证、行程灵活 华南首个“邮轮无目的地海上游”航次启航"
+        "ST诺泰：氟维司群注射液获美国FDA上市许可"
       ]
     },
     {
-      "sector": "农林牧渔",
-      "news_count": 7,
-      "news_per_day": 1.75,
-      "flow_yi": -4.58,
+      "sector": "有色金属",
+      "news_count": 12,
+      "news_per_day": 6.0,
+      "flow_yi": -3.02,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "我国将对设施农用地实行差异化管理",
-        "自然资源部等三部门联合印发《关于完善设施农用地管理的通知》",
-        "好空气卖出好价钱"
+        "现货黄金日内涨1.89%",
+        "现货黄金站上3950美元/盎司",
+        "现货白银涨超3%"
       ]
     },
     {
       "sector": "房地产",
-      "news_count": 8,
-      "news_per_day": 2.0,
-      "flow_yi": -3.79,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "【应对中期选举后国会“变天”：特朗普团队被曝已筹备数月，拟绕开国会强推议程】",
-        "南京：积极推动商品住房现房销售",
-        "中信证券：消费板块当前更具左侧配置价值 短期优先布局周期反转方向"
-      ]
-    },
-    {
-      "sector": "建筑材料",
-      "news_count": 1,
-      "news_per_day": 0.25,
-      "flow_yi": -3.23,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "美股能源储运与建筑材料方向表现亮眼，哪些A股有望共享景气传导？丨隔岸观涨"
-      ]
-    },
-    {
-      "sector": "钢铁",
       "news_count": 2,
-      "news_per_day": 0.5,
-      "flow_yi": -1.91,
+      "news_per_day": 1.0,
+      "flow_yi": -2.65,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "券商三季度合计新进持有85只重仓股 钢铁板块受到较高关注",
-        "淡水河谷高管表示，公司认为，应退出市场的铁矿石产能大多来自边缘生产商。"
+        "10月北京新建商品住宅成交0.48万套 同比增长40.8%",
+        "东方财富财经早餐 10月26日周一"
       ]
+    },
+    {
+      "sector": "农林牧渔",
+      "news_count": 3,
+      "news_per_day": 1.5,
+      "flow_yi": -2.53,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "张柱会见印度尼西亚农业部长苏莱曼",
+        "茅台重回1400元！3万户股民抄底白酒股",
+        "10月第5周生猪和猪肉价格有所下跌"
+      ]
+    },
+    {
+      "sector": "轻工制造",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": 2.49,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": []
     },
     {
       "sector": "美容护理",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": 1.63,
+      "flow_yi": 2.26,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
@@ -466,97 +440,87 @@
       "sample_titles": []
     },
     {
-      "sector": "煤炭",
+      "sector": "环保",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": -1.29,
+      "flow_yi": -2.06,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": []
+    },
+    {
+      "sector": "钢铁",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -1.71,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
+    },
+    {
+      "sector": "汽车",
+      "news_count": 8,
+      "news_per_day": 4.0,
+      "flow_yi": 0.57,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": [
+        "英国天空新闻：巴克莱银行将于本周启动汽车金融业务相关赔付。",
+        "小鹏汽车(XPEV.N)盘前涨超5%。",
+        "西班牙汽车工业协会ANFAC：10月西班牙特斯拉新车注册量同比增长271.2"
+      ]
+    },
+    {
+      "sector": "综合",
+      "news_count": 3,
+      "news_per_day": 1.5,
+      "flow_yi": -0.51,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "哈塞特：AI融资生态系统资金充足 不存在全面抛售风险",
+        "中上协：年初以来 中长期资金合计净买入A股超6000亿元",
+        "福建省：到2030年 全省中药材种植面积达120万亩"
+      ]
     },
     {
       "sector": "纺织服饰",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": -1.27,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "flow_yi": 0.26,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": []
     },
     {
-      "sector": "商贸零售",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": -1.11,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": []
+      "sector": "医药生物",
+      "news_count": 2,
+      "news_per_day": 1.0,
+      "flow_yi": 0.24,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": [
+        "福建省：到2030年 全省中药材种植面积达120万亩",
+        "科创50ETF华夏规模突破1200亿元 创历史新高"
+      ]
     },
     {
       "sector": "社会服务",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": -1.05,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": []
-    },
-    {
-      "sector": "银行",
-      "news_count": 33,
-      "news_per_day": 8.25,
-      "flow_yi": -1.04,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "【工商银行股价创历史新高】工商银行盘中股价创历史新高，现涨1.03%，报8.",
-        "工商银行股价创历史新高",
-        "港股内银板块持续走强，哈尔滨银行(06138.HK)涨超10%，工商银行(0"
-      ]
-    },
-    {
-      "sector": "环保",
-      "news_count": 1,
-      "news_per_day": 0.25,
-      "flow_yi": -0.63,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "3天2板金安国纪：未与英伟达、华为有过接触 也未与其直接开展任何形式的业务合"
-      ]
-    },
-    {
-      "sector": "综合",
-      "news_count": 10,
-      "news_per_day": 2.5,
-      "flow_yi": -0.42,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "韩股盘中低开高走，韩国综合指数升1.5%，SK海力士升逾3%，盘初一度跌逾2",
-        "人工智能“闯祸” 保险赔吗",
-        "好空气卖出好价钱"
-      ]
-    },
-    {
-      "sector": "家用电器",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": 0.38,
+      "flow_yi": 0.12,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
