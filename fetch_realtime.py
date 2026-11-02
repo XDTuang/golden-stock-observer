@@ -285,7 +285,10 @@ def fetch_etf_flow() -> list:
     out = []
     try:
         for code in etfs:
-            r = requests.get(SINA_ETF_URL, params={"page": 1, "num": 1, "sort": "netamount",
+            # 🔴 sort=opendate（按数据日倒序）取「最新一天」；勿用 sort=netamount——
+            #    那会按净流入额排序、num=1 取「历史峰值那天」⇒ 宽基 ETF 资金流长期冻结在
+            #    历史最大净流入日（2026-11-02 排查：sh510300 恒显示 10-16 的 56.95 亿）。
+            r = requests.get(SINA_ETF_URL, params={"page": 1, "num": 1, "sort": "opendate",
                                                    "asc": 0, "daima": code},
                              headers={"Referer": "https://finance.sina.com.cn/"}, timeout=10)
             arr = r.json()
