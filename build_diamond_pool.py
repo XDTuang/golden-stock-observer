@@ -206,6 +206,14 @@ def main():
     data_date = gd.get("data_date")
     updated_at = gd.get("updated_at")
 
+    # 🔴 2026-11-02 修：kline 精简到最近 120 根（缠论多层枢轴 + 四量图 EMA55 收敛均够用）
+    #   250 根 → golden_pool_meta 6.57MB（all_a+sector 含 kline），慢链路 ~5KB/s 下不完 → 兜宝金钻卡死。
+    #   精简后 meta gzip 1.32MB→~800KB。注意：kline 不可整段剔除（早期剔除致点开个股空白，见文件头注释）。
+    _KLINE_MAX = 120
+    for _s in list(stocks) + (list(sector_obj["stocks"]) if sector_obj else []) + (list(all_a_obj["stocks"]) if all_a_obj else []):
+        if isinstance(_s.get("kline"), list) and len(_s["kline"]) > _KLINE_MAX:
+            _s["kline"] = _s["kline"][-_KLINE_MAX:]
+
     # 估算体积决定分片数
     total_kb = len(json.dumps(stocks, ensure_ascii=False)) / 1024
     n_parts = max(1, int(total_kb / MAX_PART_KB) + (1 if total_kb % MAX_PART_KB else 0))
