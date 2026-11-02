@@ -16,7 +16,7 @@
             L2 仓位引擎    : 状态 → 仓位区间（固定映射表）
             L3 主线与板块  : 板块主力净流入 TOP + 集中度/共振判断
             L4 标的与执行  : 主力净流入 TOP 过滤（非ST/非高位/净流入>1亿）
-            L5 风险闭环    : 4 类固定风险信号（情绪过热/资金背离/集中度/追高风险）
+            L5 风险闭环    : 5 类固定风险信号（情绪过热/资金背离/集中度/追高/国家队ETF净流出）
 
 用法: python fetch_realtime.py [--out realtime/realtime.json] [--debug]
 """
@@ -45,7 +45,8 @@ except Exception:                                    # 模块缺失时不阻断�
     class _EMUnavailable(RuntimeError):
         pass
 
-ALGO_VERSION = "1.0.0"
+ALGO_VERSION = "1.1.0"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # ───────────────────────── 0. 常量与交易日历 ─────────────────────────
 TZ_NAME = "Asia/Shanghai"
@@ -300,6 +301,29 @@ def fetch_etf_flow() -> list:
         return []
 
 
+def _load_national_team_trend() -> dict:
+    """读取国家队ETF资金流（output/national_team_etf.json · 日更），
+    返回 {trend_5d_yi, trend_10d_yi, total_yi}（单位：亿元）或 None。失败/缺失不阻塞。"""
+    p = os.path.join(SCRIPT_DIR, "output", "national_team_etf.json")
+    if not os.path.exists(p):
+        return None
+    try:
+        with open(p, encoding="utf-8") as f:
+            d = json.load(f)
+        hist = d.get("history") or {}
+        last = max(hist.keys()) if hist else None
+        r = hist.get(last) if last else None
+        if not r:
+            return None
+        s = r.get("summary") or {}
+        return {"trend_5d_yi": round((s.get("trend_5d") or 0) / 1e8, 2),
+                "trend_10d_yi": round((s.get("trend_10d") or 0) / 1e8, 2),
+                "total_yi": round((s.get("total_main_net_flow") or 0) / 1e8, 2)}
+    except Exception as e:
+        print(f"  ⚠️ 国家队ETF读取失败: {e}", file=sys.stderr)
+        return None
+
+
 # ───────────────────────── 2. 固定化五层算法 ─────────────────────────
 def _norm(v, lo, hi, v_lo, v_hi):
     """把 v 从 [lo,hi] 线性映射到 [v_lo,v_hi]，越界截断"""
@@ -407,8 +431,8 @@ def calc_l4_candidates(breadth: dict) -> dict:
             "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"}
 
 
-def calc_l5_risk(idx: list, breadth: dict, sent: dict, l3: dict) -> list:
-    """风险雷达（固定 4 信号）→ [{level, type, msg}]"""
+def calc_l5_risk(idx: list, breadth: dict, sent: dict, l3: dict, nt: dict = None) -> list:
+    """风险雷达（固定 5 信号：情绪过热/资金背离/集中度/追高/国家队ETF净流出）→ [{level, type, msg}]"""
     alerts = []
     score = sent["score"]
     ratio = breadth.get("ratio") or 0
@@ -434,6 +458,10 @@ def calc_l5_risk(idx: list, breadth: dict, sent: dict, l3: dict) -> list:
     if ratio >= 3.5:
         alerts.append({"level": "yellow", "type": "普涨过热",
                        "msg": f"涨跌比 {ratio} 接近极端，次日分歧概率上升，留意兑现"})
+    # R5 国家队ETF持续净流出（资金维背离·政策托底减弱；回测：5日净流出<-50亿→次日偏弱概率略升，弱信号，仅作参考）
+    if nt and nt.get("trend_5d_yi") is not None and nt["trend_5d_yi"] < -50:
+        alerts.append({"level": "yellow", "type": "国家队撤出",
+                       "msg": f"国家队 ETF 5 日累计净流出 {nt['trend_5d_yi']:.0f} 亿（< -50 亿），政策托底减弱，次日偏弱概率略升（弱信号，参考）"})
     if not alerts:
         alerts.append({"level": "green", "type": "正常",
                        "msg": "未触发预警信号，按状态机规则执行即可"})
@@ -478,7 +506,8 @@ def main():
     l2 = calc_l2_position(l1["state"])
     l3 = calc_l3_mainline(sectors, breadth)
     l4 = calc_l4_candidates(breadth)
-    l5 = calc_l5_risk(idx, breadth, sent, l3)
+    nt = _load_national_team_trend()
+    l5 = calc_l5_risk(idx, breadth, sent, l3, nt)
 
     payload = {
         "meta": {"updated_at": now.strftime("%Y-%m-%d %H:%M:%S"),
