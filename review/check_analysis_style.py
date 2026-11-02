@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""投喂推演 → analysis.html 回填内容版式自检（2026-09-02 立 · 12 项）
+"""投喂推演 → analysis.html 回填内容版式自检（2026-09-02 立 · 13 项）
    跑法：python3 review/check_analysis_style.py
    期望：全部通过；任何失败=推演版式污染，必须修
    第 5 项专门防御"td 长内容撑破右侧屏幕"重复 bug（9/1 / 9/2 多次踩坑，9/2 治本）
@@ -11,7 +11,9 @@
    第 11 项（2026-09-11 增）防御"7.x 段落顺序错 + 裸段号硬编码"复发 bug（用户报「7 段排在 7.4 后、7.3 未见」；
        顺序自 e545530 起 7 个版本一直是 7.2→7.4→7.3；段号硬编码曾在 229a20a 修过又被 0070ddd 静默回退）
    第 12 项（2026-09-15 增）防御"静态容器无 loader"空转静默失效（实测段 6 #drNewsPool「新闻池自动加载中…」、
-       段 8 #drSelfCheck「自检扫描中…」两例恒显占位，而段内说明自称由 JS 自动生成）——与第 10 项互为反向"""
+       段 8 #drSelfCheck「自检扫描中…」两例恒显占位，而段内说明自称由 JS 自动生成）——与第 10 项互为反向
+   第 13 项（2026-11-02 增）防御"R5 国家队撤出→7.3 段漏挂"：national_team_etf 最新日 trend_5d < -50 亿时，
+       7.3 段必须同时出现「国家队」与「流出/撤出」（与 fetch_realtime.py R5 同源联动）"""
 import re, io, sys, subprocess, glob
 from collections import Counter
 
@@ -380,7 +382,51 @@ except Exception as _e:
 print(f"{'✅' if ok12 else '❌'} [12/12] 静态容器 loader 守卫（容器有引用 + 已挂载渲染链）：{'通过' if ok12 else '未通过'}")
 for n in note12: print(f"      {n}")
 
+# 13) [13/13] 🔴 R5 国家队撤出 → 7.3 段反向依据联动（2026-11-02 新增）
+#     R5 = fetch_realtime.py 机械算的资金维风险信号：output/national_team_etf.json 最新日
+#     trend_5d < -50 亿（净流出）即触发（实时盯盘 L5 风险雷达自动显示）。
+#     本条防「复盘页漏挂」：R5 触发时，analysis.html 7.3 段必须同时出现「国家队」与「流出/撤出」，
+#     否则=次日开盘指引漏了资金维反向风险（与正向依据③「国家队托底」不对称）。
+ok13 = True
+note13 = []
+try:
+    import os, json
+    _nt_13 = None
+    _p13 = os.path.join('output', 'national_team_etf.json')
+    if os.path.exists(_p13):
+        try:
+            _d13 = json.load(io.open(_p13, encoding='utf-8'))
+            _h13 = _d13.get('history') or {}
+            _k13 = max(_h13.keys()) if _h13 else None
+            _r13 = _h13.get(_k13) if _k13 else None
+            _sum13 = (_r13 or {}).get('summary') or {}
+            _t5_13 = _sum13.get('trend_5d')
+            if isinstance(_t5_13, (int, float)):
+                _nt_13 = _t5_13 / 1e8  # 元 → 亿元
+        except Exception:
+            pass
+    if _nt_13 is not None and _nt_13 < -50:
+        _m13 = re.search(r'<!-- 7\.3[^>]*>.*?(?=<!-- 7\.4|\Z)', s, re.S)
+        _seg13 = _m13.group(0) if _m13 else ''
+        _has_nt = '国家队' in _seg13
+        _has_out = ('流出' in _seg13) or ('撤出' in _seg13)
+        if not (_has_nt and _has_out):
+            note13.append(f'⚠️ R5「国家队撤出」已触发（national_team_etf 最新日 trend_5d = {_nt_13:.0f} 亿 < -50 亿），'
+                          f'但 7.3 段未挂「国家队 + 流出/撤出」反向风险（国家队={_has_nt}，流出/撤出={_has_out}）')
+            note13.append('   → 修法：7.3 段反向依据补「国家队 ETF 5 日累计净流出 N 亿 → 政策托底减弱 → 次日偏弱概率略升（弱信号）」；'
+                          '1 段国家队 ETF 资金流描述同步如实写净流出')
+            ok13 = False
+        else:
+            print(f'      R5 触发（trend_5d = {_nt_13:.0f} 亿）且 7.3 段已挂国家队撤出反向风险 ✓')
+    else:
+        print(f'      R5 未触发（trend_5d = {_nt_13 if _nt_13 is not None else "N/A"} 亿）→ 跳过 7.3 联动校验 ✓')
+except Exception as _e:
+    note13.append(f'⚠️ 检查异常：{_e}')
+    ok13 = False
+print(f"{'✅' if ok13 else '❌'} [13/13] R5 国家队撤出→7.3 联动守卫：{'通过' if ok13 else '未通过'}")
+for n in note13: print(f"      {n}")
+
 # 总结
-all_ok = (ok0 and ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12)
+all_ok = (ok0 and ok1 and ok2 and ok3 and ok4 and ok5 and ok6 and ok7 and ok8 and ok9 and ok10 and ok11 and ok12 and ok13)
 print(f"\n{'✅ 全部通过' if all_ok else '❌ 存在版式问题，请修复'}")
 sys.exit(0 if all_ok else 1)
