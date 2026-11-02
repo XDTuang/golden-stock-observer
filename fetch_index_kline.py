@@ -22,8 +22,13 @@ except ImportError:
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, "output")
 
-# 腾讯 fqkline 接口（proxy.finance.qq.com 与 web.ifzq.gtimg.cn 同源，均全球可达）
-KLINE_URL = "https://proxy.finance.qq.com/ifzqgtimg/appstock/app/fqkline/get"
+# 腾讯 fqkline 接口（双域名容错：proxy.finance.qq.com 主 + web.ifzq.gtimg.cn 备，均全球可达）
+# 🔴 2026-11-02 修：单域名 proxy 从 10-20 起对云端 runner 间歇失败，且被 update_data.sh 的
+#    2>/dev/null 静默吞掉 ⇒ 指数K线停在 10-19 两周无人察觉。改为双域名轮换 + 失败显式告警。
+KLINE_URLS = [
+    "https://proxy.finance.qq.com/ifzqgtimg/appstock/app/fqkline/get",
+    "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get",
+]
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; GoldenStockObserver/1.0)"}
 
 INDICES = {
@@ -46,8 +51,9 @@ def fetch_index_kline(code: str) -> list:
 
     params = {"param": f"{code},day,,,{KLINE_COUNT},qfq"}
     for attempt in range(3):
+        url = KLINE_URLS[1] if attempt == 2 else KLINE_URLS[0]
         try:
-            r = requests.get(KLINE_URL, params=params, headers=HEADERS, timeout=15)
+            r = requests.get(url, params=params, headers=HEADERS, timeout=15)
             r.raise_for_status()
             data = r.json()
             node = data.get("data", {}).get(code, {})
@@ -78,7 +84,7 @@ def fetch_index_kline(code: str) -> list:
             return bars
         except Exception as e:
             if attempt == 2:
-                print(f"  ⚠️ 拉取失败: {type(e).__name__}: {str(e)[:100]}", file=sys.stderr)
+                print(f"  ⚠️ 拉取失败(双域名均已试): {type(e).__name__}: {str(e)[:100]}", file=sys.stderr)
                 return []
             time.sleep(1 + attempt)
 

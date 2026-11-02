@@ -1306,7 +1306,7 @@ function loadBacktest() {
 function selfCheck() {
   const SRC = [
     ['行情 market.json', '../data/daily_review/market.json', (d) => d.date + ' · ' + (d.source || '')],
-    ['金钻门控 gate_data', '../output/gate_data.json', (d) => d.data_date],
+    ['金钻门控 gate_data', '../output/gate_data_lite.json', (d) => d.data_date],
     ['TOP10 历史', '../output/top10_history.json', (d) => {
       const k = Object.keys(d || {}).sort().pop() || '—';
       // fetch_pool 太重（数十分钟）本地未补跑，标"昨日 备查"避免误读为缺数据
