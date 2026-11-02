@@ -1,499 +1,492 @@
 {
- "data_date": "2026-10-30",
- "for_date": "2026-11-02",
- "generated_at": "2026-11-02 08:52（盘前档 · preopen）",
- "source": "local-preopen",
- "window": {
-  "generated_at": "2026-11-02 08:36",
-  "session": "preopen",
   "data_date": "2026-10-30",
   "for_date": "2026-11-02",
-  "data_date_note": "",
-  "warnings": [],
-  "span": [
-   "2026-10-31",
-   "2026-11-01",
-   "2026-11-02"
+  "generated_at": "2026-11-02 14:37",
+  "source": "cloud",
+  "window": {
+    "generated_at": "2026-11-02 08:36",
+    "session": "preopen",
+    "data_date": "2026-10-30",
+    "for_date": "2026-11-02",
+    "data_date_note": "",
+    "warnings": [],
+    "span": [
+      "2026-10-31",
+      "2026-11-01",
+      "2026-11-02"
+    ],
+    "span_days": 3,
+    "display_days": [
+      "2026-10-30",
+      "2026-10-31",
+      "2026-11-01",
+      "2026-11-02"
+    ],
+    "display_text": "10/30–11/02",
+    "span_is_weekend_cross": true,
+    "span_text": "10/31–11/02",
+    "carry": {
+      "from_data_date": "2026-10-30",
+      "ref": "output/feed_review_2026-10-30.json",
+      "exists": true,
+      "gap_days": 3,
+      "stale": false,
+      "bias": "中性",
+      "bias_score": 1,
+      "t1_focus": [
+        "跟踪金钻起涨 5 只回踩确认"
+      ],
+      "risks": [],
+      "headline": ""
+    },
+    "layers": {
+      "base": "2026-10-30 A股收盘（基准层）",
+      "overnight": "美东 2026-10-30 收盘（北京 2026-10-31 早间到达）",
+      "premarket": "2026-11-02 今早日韩实时 + 盘前新闻/投喂增量"
+    },
+    "market_state": {
+      "date": "2026-10-30",
+      "run_date": "2026-11-02",
+      "preopen_partial": true,
+      "us_kline": true,
+      "asia": true
+    },
+    "covered": [
+      {
+        "date": "2026-10-30",
+        "weekday": "周五",
+        "is_trading_day": true,
+        "news": 310,
+        "feeds": 0,
+        "reports": 2259,
+        "macro": true
+      },
+      {
+        "date": "2026-10-31",
+        "weekday": "周六",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 549,
+        "macro": false
+      },
+      {
+        "date": "2026-11-01",
+        "weekday": "周日",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 1040,
+        "macro": false
+      },
+      {
+        "date": "2026-11-02",
+        "weekday": "周一",
+        "is_trading_day": true,
+        "news": 286,
+        "feeds": 0,
+        "reports": 61,
+        "macro": true
+      }
+    ],
+    "totals": {
+      "news": 596,
+      "feeds": 0,
+      "reports": 3909,
+      "covered_days": 4
+    },
+    "missing": [
+      "窗口内非交易日（10-31、11-01）新闻池全为 0 → 疑整池被覆盖，跨周末信息可能丢失"
+    ]
+  },
+  "feeds_days": [
+    "2026-10-30",
+    "2026-10-31",
+    "2026-11-01",
+    "2026-11-02"
   ],
-  "span_days": 3,
-  "display_days": [
-   "2026-10-30",
-   "2026-10-31",
-   "2026-11-01",
-   "2026-11-02"
-  ],
-  "display_text": "10/30–11/02",
-  "span_is_weekend_cross": true,
-  "span_text": "10/31–11/02",
-  "carry": {
-   "from_data_date": "2026-10-30",
-   "ref": "output/feed_review_2026-10-30.json",
-   "exists": true,
-   "gap_days": 3,
-   "stale": false,
-   "bias": "中性",
-   "bias_score": 1,
-   "t1_focus": [
-    "跟踪金钻起涨 5 只回踩确认"
-   ],
-   "risks": [],
-   "headline": ""
-  },
-  "layers": {
-   "base": "2026-10-30 A股收盘（基准层）",
-   "overnight": "美东 2026-10-30 收盘（北京 2026-10-31 早间到达）",
-   "premarket": "2026-11-02 今早日韩实时 + 盘前新闻/投喂增量"
-  },
-  "market_state": {
-   "date": "2026-10-30",
-   "run_date": "2026-11-02",
-   "preopen_partial": true,
-   "us_kline": true,
-   "asia": true
-  },
-  "covered": [
-   {
-    "date": "2026-10-30",
-    "weekday": "周五",
-    "is_trading_day": true,
-    "news": 310,
-    "feeds": 0,
-    "reports": 2259,
-    "macro": true
-   },
-   {
-    "date": "2026-10-31",
-    "weekday": "周六",
-    "is_trading_day": false,
-    "news": 0,
-    "feeds": 0,
-    "reports": 549,
-    "macro": false
-   },
-   {
-    "date": "2026-11-01",
-    "weekday": "周日",
-    "is_trading_day": false,
-    "news": 0,
-    "feeds": 0,
-    "reports": 1040,
-    "macro": false
-   },
-   {
-    "date": "2026-11-02",
-    "weekday": "周一",
-    "is_trading_day": true,
-    "news": 286,
-    "feeds": 0,
-    "reports": 61,
-    "macro": true
-   }
-  ],
-  "totals": {
-   "news": 596,
-   "feeds": 0,
-   "reports": 3909,
-   "covered_days": 4
-  },
-  "missing": [
-   "窗口内非交易日（10-31、11-01）新闻池全为 0 → 疑整池被覆盖，跨周末信息可能丢失"
-  ]
- },
- "feeds_days": [
-  "2026-10-30",
-  "2026-10-31",
-  "2026-11-01",
-  "2026-11-02"
- ],
- "feeds": [],
- "feed_count": 0,
- "feeds_recent": [],
- "market": {
-  "signals": {
-   "data_date": "2026-10-30",
-   "total": 798,
-   "ema_strong": 88,
-   "ema_perfect": 40,
-   "grades": {
-    "四喜临门": 0,
-    "三线共振": 31,
-    "双线": 28,
-    "单信号": 20
-   }
-  },
-  "top10": [
-   {
-    "code": "sz301529",
-    "name": "福赛科技",
-    "market": "创业板",
-    "ema_score": 7,
-    "close": 165.03,
-    "change_pct": -3.54,
-    "total_score": 63,
-    "grade": "🏆 三线共振 (EMA完美)",
-    "signals": [
-     "机构变红",
-     "上涨趋势",
-     "强势股"
+  "feeds": [],
+  "feed_count": 0,
+  "feeds_recent": [],
+  "market": {
+    "signals": {
+      "data_date": "2026-10-30",
+      "total": 798,
+      "ema_strong": 88,
+      "ema_perfect": 40,
+      "grades": {
+        "四喜临门": 0,
+        "三线共振": 31,
+        "双线": 28,
+        "单信号": 20
+      }
+    },
+    "top10": [
+      {
+        "code": "sz301529",
+        "name": "福赛科技",
+        "market": "创业板",
+        "ema_score": 7,
+        "close": 165.03,
+        "change_pct": -3.54,
+        "total_score": 63,
+        "grade": "🏆 三线共振 (EMA完美)",
+        "signals": [
+          "机构变红",
+          "上涨趋势",
+          "强势股"
+        ],
+        "signal_count": 3,
+        "industry": {
+          "level1": "汽车零部件",
+          "level2": "汽车零部件",
+          "level3": "制造业-汽车制造业"
+        }
+      },
+      {
+        "code": "sz002172",
+        "name": "澳洋健康",
+        "market": "主板",
+        "ema_score": 7,
+        "close": 5.91,
+        "change_pct": 10.06,
+        "total_score": 61,
+        "grade": "🏆 三线共振 (EMA完美)",
+        "signals": [
+          "红区黄柱连续3日",
+          "机构变红",
+          "强势股"
+        ],
+        "signal_count": 3,
+        "industry": {
+          "level1": "",
+          "level2": "",
+          "level3": ""
+        }
+      },
+      {
+        "code": "sh600036",
+        "name": "招商银行",
+        "market": "主板",
+        "ema_score": 7,
+        "close": 43.55,
+        "change_pct": 1.42,
+        "total_score": 60,
+        "grade": "🏆 三线共振 (EMA完美)",
+        "signals": [
+          "机构变红",
+          "上涨趋势",
+          "强势股"
+        ],
+        "signal_count": 3,
+        "industry": {
+          "level1": "银行",
+          "level2": "银行Ⅱ",
+          "level3": "金融业-货币金融服务"
+        }
+      },
+      {
+        "code": "sh601398",
+        "name": "工商银行",
+        "market": "主板",
+        "ema_score": 7,
+        "close": 8.75,
+        "change_pct": -0.34,
+        "total_score": 60,
+        "grade": "🏆 三线共振 (EMA完美)",
+        "signals": [
+          "机构变红",
+          "上涨趋势",
+          "强势股"
+        ],
+        "signal_count": 3,
+        "industry": {
+          "level1": "银行",
+          "level2": "银行Ⅱ",
+          "level3": "金融业-货币金融服务"
+        }
+      },
+      {
+        "code": "sh600900",
+        "name": "长江电力",
+        "market": "主板",
+        "ema_score": 7,
+        "close": 29.74,
+        "change_pct": -0.83,
+        "total_score": 60,
+        "grade": "🏆 三线共振 (EMA完美)",
+        "signals": [
+          "机构变红",
+          "上涨趋势",
+          "强势股"
+        ],
+        "signal_count": 3,
+        "industry": {
+          "level1": "电力行业",
+          "level2": "电力",
+          "level3": "电力、热力、燃气及水生产和供应业-电力、热力生产和供应业"
+        }
+      }
     ],
-    "signal_count": 3,
-    "industry": {
-     "level1": "汽车零部件",
-     "level2": "汽车零部件",
-     "level3": "制造业-汽车制造业"
+    "golden": {
+      "data_date": "2026-10-30",
+      "total": 41,
+      "up": 5,
+      "buy": 27,
+      "hz": 9
     }
-   },
-   {
-    "code": "sz002172",
-    "name": "澳洋健康",
-    "market": "主板",
-    "ema_score": 7,
-    "close": 5.91,
-    "change_pct": 10.06,
-    "total_score": 61,
-    "grade": "🏆 三线共振 (EMA完美)",
-    "signals": [
-     "红区黄柱连续3日",
-     "机构变红",
-     "强势股"
+  },
+  "cross_analysis": [],
+  "prediction": {
+    "bias": "中性",
+    "bias_score": 1,
+    "reasons": [
+      "金钻起涨 5 只，启动信号活跃",
+      "金钻命中 41 只，信号面正常"
     ],
-    "signal_count": 3,
-    "industry": {
-     "level1": "",
-     "level2": "",
-     "level3": ""
-    }
-   },
-   {
-    "code": "sh600036",
-    "name": "招商银行",
-    "market": "主板",
-    "ema_score": 7,
-    "close": 43.55,
-    "change_pct": 1.42,
-    "total_score": 60,
-    "grade": "🏆 三线共振 (EMA完美)",
-    "signals": [
-     "机构变红",
-     "上涨趋势",
-     "强势股"
+    "t1_focus": [
+      "跟踪金钻起涨 5 只回踩确认"
     ],
-    "signal_count": 3,
-    "industry": {
-     "level1": "银行",
-     "level2": "银行Ⅱ",
-     "level3": "金融业-货币金融服务"
-    }
-   },
-   {
-    "code": "sh601398",
-    "name": "工商银行",
-    "market": "主板",
-    "ema_score": 7,
-    "close": 8.75,
-    "change_pct": -0.34,
-    "total_score": 60,
-    "grade": "🏆 三线共振 (EMA完美)",
-    "signals": [
-     "机构变红",
-     "上涨趋势",
-     "强势股"
+    "risks": [],
+    "pending_ai": true
+  },
+  "ai_synthesis": {
+    "conclusion_first": [
+      "【11/02 开盘倾向】倾向 <b class=\"dk-caution\">低开反弹</b>，预计开在 <b class=\"dk-caution\">-0.4%~-1.0%（3,563–3,584）</b>；方向 <b class=\"dk-caution\">中性偏空</b>（由「偏空」上调一档）、置信度 <b class=\"dk-data\">中高</b>（由「中」上调一档）、风险 <b class=\"dk-risk\">高</b>、仓位 <b class=\"dk-risk\">0%–20%</b>（panic [0,20] ∩ R22 退潮档 ≤40% 取严，实操 ≤10%）。<b class=\"dk-risk\">可执行 = 0，连续第五版</b>。<b class=\"dk-caution\">方向与置信度上调的唯一来源是「今晨亚太不再跟跌」与「周末千亿级回购增持专项贷款」两项，仓位不上调，因情绪档仍处 panic 且国内 PMI 双降收缩。方向上调 ≠ 仓位上调，是本版最重要的纪律。</b>",
+      "【一句话定性】<b class=\"dk-caution\">外部补跌已至，但杀跌动能衰减</b>。10/30 A股 已先跌（上证 <b>3,599.02</b> <span class=\"dk-dn\">-1.44%</span>、创业板 <span class=\"dk-dn\">-4.13%</span>、科创50 <span class=\"dk-dn\">-5.48%</span>、跌停 <b class=\"dk-dn\">122</b>、情绪 <b class=\"dk-dn\">12</b>），而北京 10/31 早间到达的美股 10/30 <b>完整收盘更弱</b>（纳指 <span class=\"dk-dn\">-2.86%</span>、存储四线均值 <span class=\"dk-dn\">-8.53%</span>、光模块三线均值 <span class=\"dk-dn\">-10.90%</span>、MRVL <span class=\"dk-dn\">-10.05%</span>），<b>这部分是 11/02 必须承接的新增负面</b>；但今晨亚太以「浅跌」回应（日经 <span class=\"dk-caution\">-0.32%</span> / KOSPI <span class=\"dk-up\">+0.70%</span> / <b class=\"dk-up\">SK하이닉스 +1.41%</b>），说明同一件事在亚洲已于 10/30 完成定价。",
+      "【三条硬证据】① <b class=\"dk-up\">存储的 ADR 与本体出现 8.23pct 方向背离</b>：SK하이닉스 ADR 10/30 <span class=\"dk-dn\">-7.95%</span>，而韩股本体今晨 <b class=\"dk-up\">+0.28%</b>；KOSPI 由开盘 <span class=\"dk-dn\">-1.62%</span> 收窄至 <span class=\"dk-caution\">-0.20%</span> —— 这是全市场唯一的价格层面反向信号。② <b class=\"dk-up\">政策给出可入市资金</b>：国有大行向国新、诚通各新增 <b>千亿级股票回购增持专项贷款</b>额度，叠加国家队 ETF 5 日累计 <span class=\"dk-up\">+113.63 亿</span>（10/30 单日 <span class=\"dk-up\">+22.39 亿</span>）。③ <b class=\"dk-data\">四象限 0 / 4 / 5 / 22 属纯语料侧迁移</b>：<b>flow_yi 31/31 逐项零变化</b>，窗口语料由 307 条扩至 591 条，有色（27→34）、非银（11→32）越线升为背离 —— 只说明叙事热度回升，<b class=\"dk-risk\">不说明资金改善，不得据此上调仓位</b>。",
+      "【必须显式撤回的一条】<b class=\"dk-risk\">医药的跨市场支撑在 24 小时内消失</b>。上一版据 10/29 美股医药走强（CXO 组 10 只均值 <span class=\"dk-up\">+1.37%</span>、8/10 上涨）推断 A股 医药链具备外因支撑；实际 10/30 该组均值 <span class=\"dk-dn\">-2.25%</span>、<b>仅 LLY 一只上涨（<span class=\"dk-up\">+3.19%</span>）</b>、最弱 RGEN <span class=\"dk-dn\">-6.20%</span>。<b class=\"dk-caution\">⇒ 医药生物（资金 <span class=\"dk-up\">+26.49 亿</span>、区间位置 12.3、EMA 0/7）由「资金先至 + 外因支撑」降级为「资金先至、外因消失」的纯左侧，本版只观察不介入。</b>",
+      "【仓位与基本面纪律】情绪分 <b class=\"dk-dn\">12</b>「恐慌下跌」（<b>state = panic</b>）⇒ 仓位区间 <b class=\"dk-data\">[0, 20]</b>，叠 R22 退潮档 ≤40% 取严 ⇒ <b class=\"dk-risk\">0%–20%</b>。基本面双弱：<b class=\"dk-risk\">中国 10 月制造业 PMI 49.3 / 非制造业 49.7（10-31，双双收缩）</b> + 美国 CPI <b>3.7%</b> / 核心 PCE <b>3.1%</b> / 非农 <b>+2.9 万</b>，<b>美联储 12 月加息概率 72%</b>、10Y 美债 <b>4.98%</b> 距 5.1% 一票否决线 12bp。<b class=\"dk-caution\">⇒ 反弹只能是「跌幅修复」，不是「趋势反转」；本版不因任何卖方「利空出尽 / 选后反弹」观点而放宽仓位。</b>",
+      "【关键位与证伪】<b>3,595.26</b>（10/30 最低）= 第一道支撑 · <b>3,584 / 3,563</b> = 预判低开上下沿 · <b>3,599.02</b>（10/30 收盘）= 翻红分界 · <b>3,600</b> 整数关收复是转平前提 · <b>3,605.65</b>（10/30 开盘）= 第一压力 · <b>3,645.26</b> = 10/29 最低（已转压力）。<b class=\"dk-risk\">证伪：① 若开盘高于 3,584（跌幅小于 -0.4%）⇒「承接美股」前提不成立，权威下调整；② 若开盘 30 分钟内跌破 3,595.26 ⇒ 恐慌二次释放，仓位归零、取消全部有条件项。</b>"
     ],
-    "signal_count": 3,
-    "industry": {
-     "level1": "银行",
-     "level2": "银行Ⅱ",
-     "level3": "金融业-货币金融服务"
-    }
-   },
-   {
-    "code": "sh600900",
-    "name": "长江电力",
-    "market": "主板",
-    "ema_score": 7,
-    "close": 29.74,
-    "change_pct": -0.83,
-    "total_score": 60,
-    "grade": "🏆 三线共振 (EMA完美)",
-    "signals": [
-     "机构变红",
-     "上涨趋势",
-     "强势股"
+    "theme_resonance": [
+      {
+        "theme": "电子（背离 B · 60 日新低 · 无支撑 · 最大风险敞口）",
+        "name": "电子（背离 B · 60 日新低 · 无支撑 · 最大风险敞口）",
+        "weight": "高",
+        "desc": "资金 <b class=\"dk-risk\">-112.43 亿</b>（分位 0.0 · <b class=\"dk-data\">flow_streak = 0</b> · 31 板块流出第一）；技术 <b>downtrend · EMA 0/7 · 区间位置 0.0 · 距 60 日高 <span class=\"dk-dn\">-35.7%</span> · <b class=\"dk-risk\">支撑列表为空</b></b>；语料 <b>54 条</b>（越 32 条门槛 ⇒ 正式计入背离 B）。<b class=\"dk-risk\">外因：美股存储四线 0/4（均值 <span class=\"dk-dn\">-8.53%</span>）、SNDK <span class=\"dk-dn\">-13.47%</span>、MRVL <span class=\"dk-dn\">-10.05%</span>、铠侠 <span class=\"dk-dn\">-14%</span>（新闻侧）。</b><b class=\"dk-risk\">⇒ 资金、价格、技术、语料四项同时恶化，本版最大风险敞口。</b>",
+        "related_stocks": [
+          "长鑫科技",
+          "昊华科技",
+          "澳弘电子",
+          "崇达技术",
+          "满坤科技",
+          "光智科技"
+        ],
+        "evidence": [
+          "cross_analysis: 电子 背离 · news 54 · flow -112.43",
+          "sector_tech: 电子 range_pos 0.0 · dd_from_hi60 -35.7 · support 空",
+          "us_kline 10/30: MU -5.30 / SNDK -13.47 / WDC -7.41"
+        ]
+      },
+      {
+        "theme": "石油石化（L3 · 唯一 uptrend + EMA 7/7 + 商品支撑）",
+        "name": "石油石化（L3 · 唯一 uptrend + EMA 7/7 + 商品支撑）",
+        "weight": "高",
+        "desc": "资金 <b class=\"dk-up\">+5.51 亿</b>（分位 93.3 · 连续 2 日）；技术 <b>L3 · uptrend · EMA 7/7（31 板块仅 2 席）· 区间位置 60.5 · 距 60 日高 -4.8%</b>；外因 <b class=\"dk-up\">WTI 104.13 <span class=\"dk-up\">+2.09%</span> / 布伦特 113.49 <span class=\"dk-up\">+2.43%</span></b>、俄罗斯延长柴油出口禁令至 1 月底、中信证券「原油低库存 + 高扰动、易涨难跌」。<b class=\"dk-caution\">约束：绝对量级仅 5.51 亿（属守不属攻），语料 25 条距门槛 7 条。</b>",
+        "related_stocks": [
+          "中国海油",
+          "中国神华",
+          "永鼎股份"
+        ],
+        "evidence": [
+          "sector_tech: 石油石化 L3 · uptrend · EMA 7/7 · flow_pct 93.3",
+          "market.json comm: WTI +2.09% / 布伦特 +2.43%",
+          "news: 俄罗斯柴油出口禁令延至 1 月底"
+        ]
+      },
+      {
+        "theme": "食品饮料（L3 · 资金分位 100 · 连续 2 日 · 需低开承接）",
+        "name": "食品饮料（L3 · 资金分位 100 · 连续 2 日 · 需低开承接）",
+        "weight": "中高",
+        "desc": "资金 <b class=\"dk-up\">+30.05 亿</b>（分位 <b>100.0</b> · 连续 2 日 · jumbo +20.28 亿 / block +9.77 亿）；技术 <b>L3 · downtrend_rebound · EMA 2/7 · 区间位置 75.4 · 距 60 日高仅 -2.2%</b>；10/30 涨幅 31 板块第一。<b class=\"dk-risk\">风控：中期趋势未反转（反弹非反转）、单日涨幅接近极限、语料 16 条未越门槛。</b><b class=\"dk-caution\">⇒ 须 11/02 低开被承接才成立；若低开后 30 分钟内再跌 2% 以上，判定一日游。</b>",
+        "related_stocks": [
+          "美的集团",
+          "招商银行",
+          "江苏银行"
+        ],
+        "evidence": [
+          "cross_analysis: 食品饮料 暗线 · news 16 · flow +30.05",
+          "sector_tech: 食品饮料 L3 · downtrend_rebound · range_pos 75.4",
+          "realtime L3: 白酒 +10.21% / 白色家电 +6.98%"
+        ]
+      },
+      {
+        "theme": "医药生物（资金 +26.49 亿 · 外因已消失 · 纯左侧）",
+        "name": "医药生物（资金 +26.49 亿 · 外因已消失 · 纯左侧）",
+        "weight": "中",
+        "desc": "资金 <b class=\"dk-up\">+26.49 亿</b>（分位 96.7 · 全市场流入第二）；技术 <b>downtrend · EMA 0/7 · 区间位置 12.3 · 距 60 日高 -13.1%</b>；<b class=\"dk-risk\">外因反转：美股医疗 10 只 10/29 均值 +1.37%（8/10 涨）→ 10/30 <span class=\"dk-dn\">-2.25%</span>（1/10 涨）、最弱 RGEN <span class=\"dk-dn\">-6.20%</span></b>。<b class=\"dk-caution\">⇒ 「钱到价未到 + 外部支撑消失」，左侧属性不变但支撑强度下降一档；若今日资金转流出，暗线 C 五席减一。</b>",
+        "related_stocks": [
+          "近岸蛋白",
+          "华大九天",
+          "泰格医药"
+        ],
+        "evidence": [
+          "cross_analysis: 医药生物 暗线 · news 11 · flow +26.49",
+          "us_kline 10/30: CRL -4.44 / MEDP -3.77 / RGEN -6.20 / LLY +3.19",
+          "sector_tech: 医药生物 range_pos 12.3 · EMA 0/7"
+        ]
+      },
+      {
+        "theme": "银行（指数缓冲项 · 资金转负 · 语料距门槛 1 条）",
+        "name": "银行（指数缓冲项 · 资金转负 · 语料距门槛 1 条）",
+        "weight": "中",
+        "desc": "资金 <b class=\"dk-risk\">-1.04 亿</b>（由 +1.11 亿转负 · 连续净流入中断）；技术 <b>uptrend · EMA 7/7 · 区间位置 100.0（创 60 日新高）</b>；语料 <b>31 条</b>（距 32 条门槛仅 1 条）。<b class=\"dk-caution\">⇒ 形态全市场最强而资金转负、卖方集体推荐（中泰 / 净息差回升），属「叙事热、资金走」的背离；10/30 银行涨而指数跌 1.44% 已证伪「银行决定方向」，本版只作指数斜率参考。</b>",
+        "related_stocks": [
+          "招商银行",
+          "工商银行",
+          "江苏银行"
+        ],
+        "evidence": [
+          "cross_analysis: 银行 双冷 · news 31 · flow -1.04",
+          "sector_tech: 银行 uptrend · EMA 7/7 · range_pos 100.0",
+          "top10 10/30: 招行/工行/江苏银行 3 席"
+        ]
+      }
     ],
-    "signal_count": 3,
-    "industry": {
-     "level1": "电力行业",
-     "level2": "电力",
-     "level3": "电力、热力、燃气及水生产和供应业-电力、热力生产和供应业"
-    }
-   }
-  ],
-  "golden": {
-   "data_date": "2026-10-30",
-   "total": 41,
-   "up": 5,
-   "buy": 27,
-   "hz": 9
+    "holding_map": {
+      "note": "持仓段 = 其他专家持股参考（非本人），仅列客观技术读数，不给加减仓建议。以下「主线契合 / 需谨慎」由页面按 obs_panel.json（32 只观测池 · 数据日 2026-10-30）自动派生，不在此重复。",
+      "theme_aligned": [
+        "石油石化：L3 · 唯一 uptrend + EMA 7/7 · 资金 +5.51 亿 · flow_streak = 2 · WTI +2.09%（31 板块唯一四项齐备）",
+        "食品饮料：L3 · 资金 +30.05 亿（分位 100）· 连续 2 日 · 区间位置 75.4 · 距 60 日高 -2.2%",
+        "银行：uptrend + EMA 7/7 + 区间位置 100.0（创 60 日新高），但资金由 +1.11 亿转为 -1.04 亿 ⇒ 仅作指数缓冲项"
+      ],
+      "caution": [
+        "电子 / 通信 / 计算机：全部处于 60 日区间下沿（range_pos 0.0），电子 <b class=\"dk-risk\">support 列表为空</b>，且美股 10/30 同链再跌 5%~13.5% ⇒ 本版最大风险敞口",
+        "医药生物：资金 +26.49 亿但美股同组 10/30 转跌 -2.25%（仅 1/10 上涨）⇒ 外因消失，降级为纯左侧",
+        "PCB（澳弘电子 / 崇达技术 / 满坤科技）：金钻起涨命中但所属电子创 60 日新低 ⇒ <b class=\"dk-risk\">本版不作为可执行项</b>",
+        "消费链：10/30 单日涨幅接近极限（白酒 +10.21% / 白色家电 +6.98%），11/02 低开后的首波拉升可能是获利盘出货窗口，不宜追高"
+      ],
+      "us": "美股 10/30 完整收盘（结算价）：道 <span class=\"dk-dn\">-1.09%</span> / 标普 <span class=\"dk-dn\">-1.82%</span> / 纳指 <span class=\"dk-dn\">-2.86%</span>；存储四线 0/4（MU -5.30 / SNDK -13.47 / WDC -7.41 / MRVL -10.05，均值 -8.53%）、光模块三线 0/3（LITE -8.57 / COHR -11.34 / AAOI -12.80，均值 -10.90%）；<b class=\"dk-risk\">医疗 10 只均值 -2.25%、仅 LLY +3.19% 上涨、最弱 RGEN -6.20%</b>；SKHY ADR -7.95% 而韩股本体今晨 +0.28%（8.23pct 方向背离）。"
+    },
+    "t1_radar": [
+      {
+        "time": "09:15–09:25（集合竞价）",
+        "impact": "极高",
+        "event": "看上证竞价落点：<b class=\"dk-caution\">开在 -0.4%~-1.0%（3,563–3,584）</b> ⇒ 本版「低开反弹」成立；<b class=\"dk-up\">高于 3,584（跌幅小于 -0.4%）⇒ 证伪条件①，说明外部被亚太与政策完全对冲，方向维持中性偏空但置信度下调至「中」</b>；<b class=\"dk-risk\">低于 3,563（跌幅超 -1.0%）⇒ 低开超预期，须把 C 档（仓位归零）前置判断，等 3,550 反应</b>。"
+      },
+      {
+        "time": "09:30–10:00（首半小时）",
+        "impact": "极高",
+        "event": "看 <b>3,595.26（10/30 最低）</b> 是否失守：<b class=\"dk-risk\">30 分钟内跌破 ⇒ 证伪条件②触发，判定「恐慌二次释放」，仓位强制 0%、取消石油石化与食品饮料全部有条件项</b>；<b class=\"dk-up\">守住且放量站上 3,600 整数关 ⇒ 转平前提成立，再看 3,605.65</b>。"
+      },
+      {
+        "time": "09:30–10:30（消费承接检验）",
+        "impact": "高",
+        "event": "看食品饮料能否承接 10/30 的 +30.05 亿：<b class=\"dk-risk\">低开后 30 分钟内再跌 2% 以上 ⇒ 证伪条件④触发，判定「10/30 消费属一日游」</b>；<b class=\"dk-up\">低开高走并放量 ⇒ flow_streak 有望至 3，资金避风港假设成立（仓位仍不得超 20%）</b>。"
+      },
+      {
+        "time": "10:00–11:30（科技止跌检验）",
+        "impact": "高",
+        "event": "看电子能否守住 <b>6,110.21（10/30 收盘 = 60 日最低）</b>：<b class=\"dk-risk\">再跌 3% 以上 ⇒ 60 日新低被再次确认，通信 / 计算机同步失守，「亚太抗跌」传导失效</b>；<b class=\"dk-up\">横盘缩量且长鑫科技类存储样本转红 ⇒ 与韩股本体 +0.28% 形成共振，可作为下一版方向上调的候选</b>。"
+      },
+      {
+        "time": "14:30–15:00（收盘定调）",
+        "impact": "中高",
+        "event": "看收盘能否站上 <b>3,599.02（10/30 收盘）</b>：<b class=\"dk-up\">站上 ⇒ 「低开反弹」兑现，情绪分有望由 12 回升至 20–30</b>；<b class=\"dk-risk\">收在 3,595.26 下方 ⇒ 弱势收盘延续，11/03 盘前须重新下调方向</b>。另注：<b>今日 23:00 美国 10 月 ISM 制造业 PMI（预期 54.6）</b>与 <b>11/03 美国中期选举</b> 为盘后 / 次日变量，不影响当日 A股。"
+      }
+    ],
+    "risks": [
+      {
+        "name": "美股半导体二次杀跌（存储四线 0/4、均值 -8.53%）",
+        "prob": "高",
+        "impact": "高",
+        "desc": "10/30 美股存储四线全跌（MU <span class=\"dk-dn\">-5.30%</span> / SNDK <span class=\"dk-dn\">-13.47%</span> / WDC <span class=\"dk-dn\">-7.41%</span> / MRVL <span class=\"dk-dn\">-10.05%</span>）、光模块三线均值 <span class=\"dk-dn\">-10.90%</span>、英特尔 <span class=\"dk-dn\">-28%</span>（新闻侧）、铠侠 <span class=\"dk-dn\">-14%</span>。<b class=\"dk-risk\">A股 电子 10/30 已创 60 日新低且 support 列表为空，11/02 面临「无支撑 + 海外同杀」双重压力，是本版方向无法上调至「中性」的第一约束。</b>"
+      },
+      {
+        "name": "医药外因消失（美股医疗 10/30 转跌 -2.25%）",
+        "prob": "已发生",
+        "impact": "中高",
+        "desc": "美股医疗 10 只 10/29 均值 <span class=\"dk-up\">+1.37%</span>（8/10 上涨）→ 10/30 <span class=\"dk-dn\">-2.25%</span>（<b>仅 LLY +3.19%</b>）、最弱 RGEN <span class=\"dk-dn\">-6.20%</span>。<b class=\"dk-caution\">A股 医药生物的资金实证（+26.49 亿）失去外部支撑，若今日资金转流出，暗线 C 五席将减一，须即时改写 §0.5。</b>"
+      },
+      {
+        "name": "消费单日透支（食品饮料需低开承接）",
+        "prob": "中高",
+        "impact": "中高",
+        "desc": "食品饮料资金 <span class=\"dk-up\">+30.05 亿</span>（分位 100 · 连续 2 日）、10/30 涨幅 31 板块第一，但技术档为 <b>downtrend_rebound</b>（反弹非反转）、语料 16 条未越门槛。<b class=\"dk-risk\">若 11/02 低开后 30 分钟内再跌 2% 以上，则 10/30 的消费行情属一日游，本版唯一多头线索失效。</b>"
+      },
+      {
+        "name": "国内基本面双降收缩（PMI 49.3 / 49.7）",
+        "prob": "已发生",
+        "impact": "中高",
+        "desc": "10 月制造业 PMI <b>49.3</b>、非制造业 <b>49.7</b>（10-31 公布），双双落回 50 下方；同期亚洲制造业同步走弱（韩国 51.3 前值 53.9、澳大利亚 49.6、越南 52.3）。<b class=\"dk-caution\">数据弱 → 政策托（千亿回购贷款）的组合决定「下跌空间被压缩、反弹缺基本面驱动」，这是仓位不上调的根本原因。</b>"
+      },
+      {
+        "name": "紧缩预期未止（12 月加息概率 72%）",
+        "prob": "高",
+        "impact": "中",
+        "desc": "新闻侧「美联储 12 月加息的概率为 72%」、中信证券「欧央行 12 月或再加息 25bps」；10Y 美债 <b>4.98%</b>（10-29）距 5.1% 一票否决线仅 <b>12bp</b>。<b class=\"dk-risk\">长端易上难下 → 高 PE 的科创 / 计算机估值分母无改善，成长股反弹高度受限。</b>"
+      },
+      {
+        "name": "事件风险（11/03 中期选举 + 今日 23:00 ISM）",
+        "prob": "中",
+        "impact": "中",
+        "desc": "11/03 美国中期选举（大摩「三大利空逐步出清」vs 中信建投「关注选举不确定性」）；今日 23:00 美国 10 月 ISM 制造业 PMI（预期 54.6 / 前值 54.5）。<b class=\"dk-caution\">两者均为盘后 / 次日变量，不影响 11/02 当日 A股，但决定 11/03 盘前的外部权重；本版不押注选举结果。</b>"
+      }
+    ],
+    "meta": {
+      "mode": "preopen",
+      "direction": "中性偏空",
+      "direction_confidence": "中高",
+      "open_call": "低开反弹",
+      "sh_index_close": 3599.02,
+      "turnover_yi": 14384.2,
+      "main_net_yi": -313.5,
+      "sentiment_score": 12,
+      "sentiment_state": "恐慌下跌",
+      "position_range": "0%–20%（panic [0,20] ∩ R22 退潮档 ≤40% 取严；实操 ≤10%）",
+      "limit_up": 50,
+      "limit_down": 122,
+      "up_down_ratio": 0.21,
+      "up_count": 794,
+      "down_count": 3736,
+      "flat_count": 75,
+      "quadrant": {
+        "resonance": 0,
+        "divergence": 4,
+        "darkline": 5,
+        "dualcold": 22
+      },
+      "quadrants": {
+        "resonance": 0,
+        "divergence": 4,
+        "hidden": 5,
+        "cold": 22
+      },
+      "risk_level": "高",
+      "us_cpi_yoy": 3.7,
+      "us_core_cpi_yoy": 2.6,
+      "us_core_pce_yoy": 3.1,
+      "us_nonfarm_wan": 2.9,
+      "us_unemployment": 4.2,
+      "us_jobless_wan": 19.4,
+      "us10y": 4.98,
+      "us30y": 5.32,
+      "vix": 19.42,
+      "vix_date": "2026-10-30",
+      "us_close_date": "2026-10-30",
+      "us_session": "10/30 完整收盘（结算价）· 道 -1.09% / 标普 -1.82% / 纳指 -2.86%",
+      "us_medical_mean_pct": -2.25,
+      "us_medical_up_count": 1,
+      "asia_fetch": "2026-11-02 08:52（Step5 条件复取）· 日经 -0.32% / KOSPI +0.70% / SK하이닉스 +1.41%",
+      "china_pmi_manufacturing": 49.3,
+      "china_pmi_nonmanufacturing": 49.7,
+      "feed_count": 0,
+      "news_count": 286,
+      "news_window_count": 591,
+      "executable_count": 0
+    },
+    "disclaimer": "个人学习用途，不构成投资建议；持仓段为其他专家持股参考（非本人），仅列客观读数、不给加减仓建议。投喂语料中出现「表现为持仓」的内容一律视为投喂语料·非本人持仓。本版 mode = preopen（盘前档 · 08:40）、data_date = 2026-10-30、for_date = 2026-11-02；口径 = A股 10/30 完整收盘（结算价）+ 美股 10/30 完整收盘（结算价）+ 日韩 11/02 早盘实时（08:52 复取）+ 港股 10/30 收盘 + 商品汇率 10/30 + 美债 10/29。四象限 = 共振 0 / 背离 4 / 暗线 5 / 双冷 22（cross_analysis 11-02 08:44 盘前重算、flow_date 2026-10-30、4 日新闻窗 591 条、门槛 32 条）；本次迁移为纯语料侧（flow_yi 31/31 零变化），不读作资金改善，亦不得据此上调仓位。"
+  },
+  "synthesis_sources": {
+    "market": "data/daily_review/market.json（2026-10-30 · updated_at 2026-11-02 08:30:55 · preopen_partial=true）",
+    "realtime": "realtime.json（2026-10-30 22:16 · market_status=closed）",
+    "cross_analysis": "output/cross_analysis.json（2026-11-02 08:44 盘前重算 · flow_date 2026-10-30 · 窗口 591 条 · 门槛 32）",
+    "sector_tech": "output/sector_tech.json（data_date 2026-10-30 · L4 0 / L3 2 / L2 3 / L1 26）",
+    "us_kline": "market.json.us_kline（latest 2026-10-30 完整收盘 / prev 2026-10-29）",
+    "asia": "market.json.asia（2026-11-02 08:31 实时 · 日经 / KOSPI / kr_stocks）",
+    "macro": "output/daily_macro_latest.json（as_of 2026-11-02 08:31 · 日历轨）",
+    "news": "output/daily_news_2026-11-02.json（286 条 · covered_days 2026-11-02）",
+    "feed": "feed/archive/2026-10-30/_index.json（feed_count 0 · 如实为空）"
   }
- },
- "cross_analysis": [],
- "prediction": {
-  "bias": "中性",
-  "bias_score": 1,
-  "reasons": [
-   "金钻起涨 5 只（其中 3 只 PCB 与板块环境背离）",
-   "金钻命中 41 只，信号面正常",
-   "情绪 12 panic，广度极弱"
-  ],
-  "t1_focus": [
-   "11/02 低开是否落在 -0.4%~-1.0%（3,563–3,584）",
-   "3,595.26（10/30 最低）能否守住",
-   "电子能否守住 6,110.21（60 日最低）"
-  ],
-  "risks": [
-   "美股半导体二次杀（存储 -8.53% / 光模块 -10.90%）",
-   "医药外因消失（美股医疗 -2.25%）",
-   "消费单日透支"
-  ],
-  "pending_ai": false
- },
- "ai_synthesis": {
-  "conclusion_first": [
-   "【11/02 开盘倾向】倾向 <b class=\"dk-caution\">低开反弹</b>，预计开在 <b class=\"dk-caution\">-0.4%~-1.0%（3,563–3,584）</b>；方向 <b class=\"dk-caution\">中性偏空</b>（由「偏空」上调一档）、置信度 <b class=\"dk-data\">中高</b>（由「中」上调一档）、风险 <b class=\"dk-risk\">高</b>、仓位 <b class=\"dk-risk\">0%–20%</b>（panic [0,20] ∩ R22 退潮档 ≤40% 取严，实操 ≤10%）。<b class=\"dk-risk\">可执行 = 0，连续第五版</b>。<b class=\"dk-caution\">方向与置信度上调的唯一来源是「今晨亚太不再跟跌」与「周末千亿级回购增持专项贷款」两项，仓位不上调，因情绪档仍处 panic 且国内 PMI 双降收缩。方向上调 ≠ 仓位上调，是本版最重要的纪律。</b>",
-   "【一句话定性】<b class=\"dk-caution\">外部补跌已至，但杀跌动能衰减</b>。10/30 A股 已先跌（上证 <b>3,599.02</b> <span class=\"dk-dn\">-1.44%</span>、创业板 <span class=\"dk-dn\">-4.13%</span>、科创50 <span class=\"dk-dn\">-5.48%</span>、跌停 <b class=\"dk-dn\">122</b>、情绪 <b class=\"dk-dn\">12</b>），而北京 10/31 早间到达的美股 10/30 <b>完整收盘更弱</b>（纳指 <span class=\"dk-dn\">-2.86%</span>、存储四线均值 <span class=\"dk-dn\">-8.53%</span>、光模块三线均值 <span class=\"dk-dn\">-10.90%</span>、MRVL <span class=\"dk-dn\">-10.05%</span>），<b>这部分是 11/02 必须承接的新增负面</b>；但今晨亚太以「浅跌」回应（日经 <span class=\"dk-caution\">-0.32%</span> / KOSPI <span class=\"dk-up\">+0.70%</span> / <b class=\"dk-up\">SK하이닉스 +1.41%</b>），说明同一件事在亚洲已于 10/30 完成定价。",
-   "【三条硬证据】① <b class=\"dk-up\">存储的 ADR 与本体出现 8.23pct 方向背离</b>：SK하이닉스 ADR 10/30 <span class=\"dk-dn\">-7.95%</span>，而韩股本体今晨 <b class=\"dk-up\">+0.28%</b>；KOSPI 由开盘 <span class=\"dk-dn\">-1.62%</span> 收窄至 <span class=\"dk-caution\">-0.20%</span> —— 这是全市场唯一的价格层面反向信号。② <b class=\"dk-up\">政策给出可入市资金</b>：国有大行向国新、诚通各新增 <b>千亿级股票回购增持专项贷款</b>额度，叠加国家队 ETF 5 日累计 <span class=\"dk-up\">+113.63 亿</span>（10/30 单日 <span class=\"dk-up\">+22.39 亿</span>）。③ <b class=\"dk-data\">四象限 0 / 4 / 5 / 22 属纯语料侧迁移</b>：<b>flow_yi 31/31 逐项零变化</b>，窗口语料由 307 条扩至 591 条，有色（27→34）、非银（11→32）越线升为背离 —— 只说明叙事热度回升，<b class=\"dk-risk\">不说明资金改善，不得据此上调仓位</b>。",
-   "【必须显式撤回的一条】<b class=\"dk-risk\">医药的跨市场支撑在 24 小时内消失</b>。上一版据 10/29 美股医药走强（CXO 组 10 只均值 <span class=\"dk-up\">+1.37%</span>、8/10 上涨）推断 A股 医药链具备外因支撑；实际 10/30 该组均值 <span class=\"dk-dn\">-2.25%</span>、<b>仅 LLY 一只上涨（<span class=\"dk-up\">+3.19%</span>）</b>、最弱 RGEN <span class=\"dk-dn\">-6.20%</span>。<b class=\"dk-caution\">⇒ 医药生物（资金 <span class=\"dk-up\">+26.49 亿</span>、区间位置 12.3、EMA 0/7）由「资金先至 + 外因支撑」降级为「资金先至、外因消失」的纯左侧，本版只观察不介入。</b>",
-   "【仓位与基本面纪律】情绪分 <b class=\"dk-dn\">12</b>「恐慌下跌」（<b>state = panic</b>）⇒ 仓位区间 <b class=\"dk-data\">[0, 20]</b>，叠 R22 退潮档 ≤40% 取严 ⇒ <b class=\"dk-risk\">0%–20%</b>。基本面双弱：<b class=\"dk-risk\">中国 10 月制造业 PMI 49.3 / 非制造业 49.7（10-31，双双收缩）</b> + 美国 CPI <b>3.7%</b> / 核心 PCE <b>3.1%</b> / 非农 <b>+2.9 万</b>，<b>美联储 12 月加息概率 72%</b>、10Y 美债 <b>4.98%</b> 距 5.1% 一票否决线 12bp。<b class=\"dk-caution\">⇒ 反弹只能是「跌幅修复」，不是「趋势反转」；本版不因任何卖方「利空出尽 / 选后反弹」观点而放宽仓位。</b>",
-   "【关键位与证伪】<b>3,595.26</b>（10/30 最低）= 第一道支撑 · <b>3,584 / 3,563</b> = 预判低开上下沿 · <b>3,599.02</b>（10/30 收盘）= 翻红分界 · <b>3,600</b> 整数关收复是转平前提 · <b>3,605.65</b>（10/30 开盘）= 第一压力 · <b>3,645.26</b> = 10/29 最低（已转压力）。<b class=\"dk-risk\">证伪：① 若开盘高于 3,584（跌幅小于 -0.4%）⇒「承接美股」前提不成立，权威下调整；② 若开盘 30 分钟内跌破 3,595.26 ⇒ 恐慌二次释放，仓位归零、取消全部有条件项。</b>"
-  ],
-  "theme_resonance": [
-   {
-    "theme": "电子（背离 B · 60 日新低 · 无支撑 · 最大风险敞口）",
-    "name": "电子（背离 B · 60 日新低 · 无支撑 · 最大风险敞口）",
-    "weight": "高",
-    "desc": "资金 <b class=\"dk-risk\">-112.43 亿</b>（分位 0.0 · <b class=\"dk-data\">flow_streak = 0</b> · 31 板块流出第一）；技术 <b>downtrend · EMA 0/7 · 区间位置 0.0 · 距 60 日高 <span class=\"dk-dn\">-35.7%</span> · <b class=\"dk-risk\">支撑列表为空</b></b>；语料 <b>54 条</b>（越 32 条门槛 ⇒ 正式计入背离 B）。<b class=\"dk-risk\">外因：美股存储四线 0/4（均值 <span class=\"dk-dn\">-8.53%</span>）、SNDK <span class=\"dk-dn\">-13.47%</span>、MRVL <span class=\"dk-dn\">-10.05%</span>、铠侠 <span class=\"dk-dn\">-14%</span>（新闻侧）。</b><b class=\"dk-risk\">⇒ 资金、价格、技术、语料四项同时恶化，本版最大风险敞口。</b>",
-    "related_stocks": [
-     "长鑫科技",
-     "昊华科技",
-     "澳弘电子",
-     "崇达技术",
-     "满坤科技",
-     "光智科技"
-    ],
-    "evidence": [
-     "cross_analysis: 电子 背离 · news 54 · flow -112.43",
-     "sector_tech: 电子 range_pos 0.0 · dd_from_hi60 -35.7 · support 空",
-     "us_kline 10/30: MU -5.30 / SNDK -13.47 / WDC -7.41"
-    ]
-   },
-   {
-    "theme": "石油石化（L3 · 唯一 uptrend + EMA 7/7 + 商品支撑）",
-    "name": "石油石化（L3 · 唯一 uptrend + EMA 7/7 + 商品支撑）",
-    "weight": "高",
-    "desc": "资金 <b class=\"dk-up\">+5.51 亿</b>（分位 93.3 · 连续 2 日）；技术 <b>L3 · uptrend · EMA 7/7（31 板块仅 2 席）· 区间位置 60.5 · 距 60 日高 -4.8%</b>；外因 <b class=\"dk-up\">WTI 104.13 <span class=\"dk-up\">+2.09%</span> / 布伦特 113.49 <span class=\"dk-up\">+2.43%</span></b>、俄罗斯延长柴油出口禁令至 1 月底、中信证券「原油低库存 + 高扰动、易涨难跌」。<b class=\"dk-caution\">约束：绝对量级仅 5.51 亿（属守不属攻），语料 25 条距门槛 7 条。</b>",
-    "related_stocks": [
-     "中国海油",
-     "中国神华",
-     "永鼎股份"
-    ],
-    "evidence": [
-     "sector_tech: 石油石化 L3 · uptrend · EMA 7/7 · flow_pct 93.3",
-     "market.json comm: WTI +2.09% / 布伦特 +2.43%",
-     "news: 俄罗斯柴油出口禁令延至 1 月底"
-    ]
-   },
-   {
-    "theme": "食品饮料（L3 · 资金分位 100 · 连续 2 日 · 需低开承接）",
-    "name": "食品饮料（L3 · 资金分位 100 · 连续 2 日 · 需低开承接）",
-    "weight": "中高",
-    "desc": "资金 <b class=\"dk-up\">+30.05 亿</b>（分位 <b>100.0</b> · 连续 2 日 · jumbo +20.28 亿 / block +9.77 亿）；技术 <b>L3 · downtrend_rebound · EMA 2/7 · 区间位置 75.4 · 距 60 日高仅 -2.2%</b>；10/30 涨幅 31 板块第一。<b class=\"dk-risk\">风控：中期趋势未反转（反弹非反转）、单日涨幅接近极限、语料 16 条未越门槛。</b><b class=\"dk-caution\">⇒ 须 11/02 低开被承接才成立；若低开后 30 分钟内再跌 2% 以上，判定一日游。</b>",
-    "related_stocks": [
-     "美的集团",
-     "招商银行",
-     "江苏银行"
-    ],
-    "evidence": [
-     "cross_analysis: 食品饮料 暗线 · news 16 · flow +30.05",
-     "sector_tech: 食品饮料 L3 · downtrend_rebound · range_pos 75.4",
-     "realtime L3: 白酒 +10.21% / 白色家电 +6.98%"
-    ]
-   },
-   {
-    "theme": "医药生物（资金 +26.49 亿 · 外因已消失 · 纯左侧）",
-    "name": "医药生物（资金 +26.49 亿 · 外因已消失 · 纯左侧）",
-    "weight": "中",
-    "desc": "资金 <b class=\"dk-up\">+26.49 亿</b>（分位 96.7 · 全市场流入第二）；技术 <b>downtrend · EMA 0/7 · 区间位置 12.3 · 距 60 日高 -13.1%</b>；<b class=\"dk-risk\">外因反转：美股医疗 10 只 10/29 均值 +1.37%（8/10 涨）→ 10/30 <span class=\"dk-dn\">-2.25%</span>（1/10 涨）、最弱 RGEN <span class=\"dk-dn\">-6.20%</span></b>。<b class=\"dk-caution\">⇒ 「钱到价未到 + 外部支撑消失」，左侧属性不变但支撑强度下降一档；若今日资金转流出，暗线 C 五席减一。</b>",
-    "related_stocks": [
-     "近岸蛋白",
-     "华大九天",
-     "泰格医药"
-    ],
-    "evidence": [
-     "cross_analysis: 医药生物 暗线 · news 11 · flow +26.49",
-     "us_kline 10/30: CRL -4.44 / MEDP -3.77 / RGEN -6.20 / LLY +3.19",
-     "sector_tech: 医药生物 range_pos 12.3 · EMA 0/7"
-    ]
-   },
-   {
-    "theme": "银行（指数缓冲项 · 资金转负 · 语料距门槛 1 条）",
-    "name": "银行（指数缓冲项 · 资金转负 · 语料距门槛 1 条）",
-    "weight": "中",
-    "desc": "资金 <b class=\"dk-risk\">-1.04 亿</b>（由 +1.11 亿转负 · 连续净流入中断）；技术 <b>uptrend · EMA 7/7 · 区间位置 100.0（创 60 日新高）</b>；语料 <b>31 条</b>（距 32 条门槛仅 1 条）。<b class=\"dk-caution\">⇒ 形态全市场最强而资金转负、卖方集体推荐（中泰 / 净息差回升），属「叙事热、资金走」的背离；10/30 银行涨而指数跌 1.44% 已证伪「银行决定方向」，本版只作指数斜率参考。</b>",
-    "related_stocks": [
-     "招商银行",
-     "工商银行",
-     "江苏银行"
-    ],
-    "evidence": [
-     "cross_analysis: 银行 双冷 · news 31 · flow -1.04",
-     "sector_tech: 银行 uptrend · EMA 7/7 · range_pos 100.0",
-     "top10 10/30: 招行/工行/江苏银行 3 席"
-    ]
-   }
-  ],
-  "holding_map": {
-   "note": "持仓段 = 其他专家持股参考（非本人），仅列客观技术读数，不给加减仓建议。以下「主线契合 / 需谨慎」由页面按 obs_panel.json（32 只观测池 · 数据日 2026-10-30）自动派生，不在此重复。",
-   "theme_aligned": [
-    "石油石化：L3 · 唯一 uptrend + EMA 7/7 · 资金 +5.51 亿 · flow_streak = 2 · WTI +2.09%（31 板块唯一四项齐备）",
-    "食品饮料：L3 · 资金 +30.05 亿（分位 100）· 连续 2 日 · 区间位置 75.4 · 距 60 日高 -2.2%",
-    "银行：uptrend + EMA 7/7 + 区间位置 100.0（创 60 日新高），但资金由 +1.11 亿转为 -1.04 亿 ⇒ 仅作指数缓冲项"
-   ],
-   "caution": [
-    "电子 / 通信 / 计算机：全部处于 60 日区间下沿（range_pos 0.0），电子 <b class=\"dk-risk\">support 列表为空</b>，且美股 10/30 同链再跌 5%~13.5% ⇒ 本版最大风险敞口",
-    "医药生物：资金 +26.49 亿但美股同组 10/30 转跌 -2.25%（仅 1/10 上涨）⇒ 外因消失，降级为纯左侧",
-    "PCB（澳弘电子 / 崇达技术 / 满坤科技）：金钻起涨命中但所属电子创 60 日新低 ⇒ <b class=\"dk-risk\">本版不作为可执行项</b>",
-    "消费链：10/30 单日涨幅接近极限（白酒 +10.21% / 白色家电 +6.98%），11/02 低开后的首波拉升可能是获利盘出货窗口，不宜追高"
-   ],
-   "us": "美股 10/30 完整收盘（结算价）：道 <span class=\"dk-dn\">-1.09%</span> / 标普 <span class=\"dk-dn\">-1.82%</span> / 纳指 <span class=\"dk-dn\">-2.86%</span>；存储四线 0/4（MU -5.30 / SNDK -13.47 / WDC -7.41 / MRVL -10.05，均值 -8.53%）、光模块三线 0/3（LITE -8.57 / COHR -11.34 / AAOI -12.80，均值 -10.90%）；<b class=\"dk-risk\">医疗 10 只均值 -2.25%、仅 LLY +3.19% 上涨、最弱 RGEN -6.20%</b>；SKHY ADR -7.95% 而韩股本体今晨 +0.28%（8.23pct 方向背离）。"
-  },
-  "t1_radar": [
-   {
-    "time": "09:15–09:25（集合竞价）",
-    "impact": "极高",
-    "event": "看上证竞价落点：<b class=\"dk-caution\">开在 -0.4%~-1.0%（3,563–3,584）</b> ⇒ 本版「低开反弹」成立；<b class=\"dk-up\">高于 3,584（跌幅小于 -0.4%）⇒ 证伪条件①，说明外部被亚太与政策完全对冲，方向维持中性偏空但置信度下调至「中」</b>；<b class=\"dk-risk\">低于 3,563（跌幅超 -1.0%）⇒ 低开超预期，须把 C 档（仓位归零）前置判断，等 3,550 反应</b>。"
-   },
-   {
-    "time": "09:30–10:00（首半小时）",
-    "impact": "极高",
-    "event": "看 <b>3,595.26（10/30 最低）</b> 是否失守：<b class=\"dk-risk\">30 分钟内跌破 ⇒ 证伪条件②触发，判定「恐慌二次释放」，仓位强制 0%、取消石油石化与食品饮料全部有条件项</b>；<b class=\"dk-up\">守住且放量站上 3,600 整数关 ⇒ 转平前提成立，再看 3,605.65</b>。"
-   },
-   {
-    "time": "09:30–10:30（消费承接检验）",
-    "impact": "高",
-    "event": "看食品饮料能否承接 10/30 的 +30.05 亿：<b class=\"dk-risk\">低开后 30 分钟内再跌 2% 以上 ⇒ 证伪条件④触发，判定「10/30 消费属一日游」</b>；<b class=\"dk-up\">低开高走并放量 ⇒ flow_streak 有望至 3，资金避风港假设成立（仓位仍不得超 20%）</b>。"
-   },
-   {
-    "time": "10:00–11:30（科技止跌检验）",
-    "impact": "高",
-    "event": "看电子能否守住 <b>6,110.21（10/30 收盘 = 60 日最低）</b>：<b class=\"dk-risk\">再跌 3% 以上 ⇒ 60 日新低被再次确认，通信 / 计算机同步失守，「亚太抗跌」传导失效</b>；<b class=\"dk-up\">横盘缩量且长鑫科技类存储样本转红 ⇒ 与韩股本体 +0.28% 形成共振，可作为下一版方向上调的候选</b>。"
-   },
-   {
-    "time": "14:30–15:00（收盘定调）",
-    "impact": "中高",
-    "event": "看收盘能否站上 <b>3,599.02（10/30 收盘）</b>：<b class=\"dk-up\">站上 ⇒ 「低开反弹」兑现，情绪分有望由 12 回升至 20–30</b>；<b class=\"dk-risk\">收在 3,595.26 下方 ⇒ 弱势收盘延续，11/03 盘前须重新下调方向</b>。另注：<b>今日 23:00 美国 10 月 ISM 制造业 PMI（预期 54.6）</b>与 <b>11/03 美国中期选举</b> 为盘后 / 次日变量，不影响当日 A股。"
-   }
-  ],
-  "risks": [
-   {
-    "name": "美股半导体二次杀跌（存储四线 0/4、均值 -8.53%）",
-    "prob": "高",
-    "impact": "高",
-    "desc": "10/30 美股存储四线全跌（MU <span class=\"dk-dn\">-5.30%</span> / SNDK <span class=\"dk-dn\">-13.47%</span> / WDC <span class=\"dk-dn\">-7.41%</span> / MRVL <span class=\"dk-dn\">-10.05%</span>）、光模块三线均值 <span class=\"dk-dn\">-10.90%</span>、英特尔 <span class=\"dk-dn\">-28%</span>（新闻侧）、铠侠 <span class=\"dk-dn\">-14%</span>。<b class=\"dk-risk\">A股 电子 10/30 已创 60 日新低且 support 列表为空，11/02 面临「无支撑 + 海外同杀」双重压力，是本版方向无法上调至「中性」的第一约束。</b>"
-   },
-   {
-    "name": "医药外因消失（美股医疗 10/30 转跌 -2.25%）",
-    "prob": "已发生",
-    "impact": "中高",
-    "desc": "美股医疗 10 只 10/29 均值 <span class=\"dk-up\">+1.37%</span>（8/10 上涨）→ 10/30 <span class=\"dk-dn\">-2.25%</span>（<b>仅 LLY +3.19%</b>）、最弱 RGEN <span class=\"dk-dn\">-6.20%</span>。<b class=\"dk-caution\">A股 医药生物的资金实证（+26.49 亿）失去外部支撑，若今日资金转流出，暗线 C 五席将减一，须即时改写 §0.5。</b>"
-   },
-   {
-    "name": "消费单日透支（食品饮料需低开承接）",
-    "prob": "中高",
-    "impact": "中高",
-    "desc": "食品饮料资金 <span class=\"dk-up\">+30.05 亿</span>（分位 100 · 连续 2 日）、10/30 涨幅 31 板块第一，但技术档为 <b>downtrend_rebound</b>（反弹非反转）、语料 16 条未越门槛。<b class=\"dk-risk\">若 11/02 低开后 30 分钟内再跌 2% 以上，则 10/30 的消费行情属一日游，本版唯一多头线索失效。</b>"
-   },
-   {
-    "name": "国内基本面双降收缩（PMI 49.3 / 49.7）",
-    "prob": "已发生",
-    "impact": "中高",
-    "desc": "10 月制造业 PMI <b>49.3</b>、非制造业 <b>49.7</b>（10-31 公布），双双落回 50 下方；同期亚洲制造业同步走弱（韩国 51.3 前值 53.9、澳大利亚 49.6、越南 52.3）。<b class=\"dk-caution\">数据弱 → 政策托（千亿回购贷款）的组合决定「下跌空间被压缩、反弹缺基本面驱动」，这是仓位不上调的根本原因。</b>"
-   },
-   {
-    "name": "紧缩预期未止（12 月加息概率 72%）",
-    "prob": "高",
-    "impact": "中",
-    "desc": "新闻侧「美联储 12 月加息的概率为 72%」、中信证券「欧央行 12 月或再加息 25bps」；10Y 美债 <b>4.98%</b>（10-29）距 5.1% 一票否决线仅 <b>12bp</b>。<b class=\"dk-risk\">长端易上难下 → 高 PE 的科创 / 计算机估值分母无改善，成长股反弹高度受限。</b>"
-   },
-   {
-    "name": "事件风险（11/03 中期选举 + 今日 23:00 ISM）",
-    "prob": "中",
-    "impact": "中",
-    "desc": "11/03 美国中期选举（大摩「三大利空逐步出清」vs 中信建投「关注选举不确定性」）；今日 23:00 美国 10 月 ISM 制造业 PMI（预期 54.6 / 前值 54.5）。<b class=\"dk-caution\">两者均为盘后 / 次日变量，不影响 11/02 当日 A股，但决定 11/03 盘前的外部权重；本版不押注选举结果。</b>"
-   }
-  ],
-  "meta": {
-   "mode": "preopen",
-   "direction": "中性偏空",
-   "direction_confidence": "中高",
-   "open_call": "低开反弹",
-   "sh_index_close": 3599.02,
-   "turnover_yi": 14384.2,
-   "main_net_yi": -313.5,
-   "sentiment_score": 12,
-   "sentiment_state": "恐慌下跌",
-   "position_range": "0%–20%（panic [0,20] ∩ R22 退潮档 ≤40% 取严；实操 ≤10%）",
-   "limit_up": 50,
-   "limit_down": 122,
-   "up_down_ratio": 0.21,
-   "up_count": 794,
-   "down_count": 3736,
-   "flat_count": 75,
-   "quadrant": {
-    "resonance": 0,
-    "divergence": 4,
-    "darkline": 5,
-    "dualcold": 22
-   },
-   "quadrants": {
-    "resonance": 0,
-    "divergence": 4,
-    "hidden": 5,
-    "cold": 22
-   },
-   "risk_level": "高",
-   "us_cpi_yoy": 3.7,
-   "us_core_cpi_yoy": 2.6,
-   "us_core_pce_yoy": 3.1,
-   "us_nonfarm_wan": 2.9,
-   "us_unemployment": 4.2,
-   "us_jobless_wan": 19.4,
-   "us10y": 4.98,
-   "us30y": 5.32,
-   "vix": 19.42,
-   "vix_date": "2026-10-30",
-   "us_close_date": "2026-10-30",
-   "us_session": "10/30 完整收盘（结算价）· 道 -1.09% / 标普 -1.82% / 纳指 -2.86%",
-   "us_medical_mean_pct": -2.25,
-   "us_medical_up_count": 1,
-   "asia_fetch": "2026-11-02 08:52（Step5 条件复取）· 日经 -0.32% / KOSPI +0.70% / SK하이닉스 +1.41%",
-   "china_pmi_manufacturing": 49.3,
-   "china_pmi_nonmanufacturing": 49.7,
-   "feed_count": 0,
-   "news_count": 286,
-   "news_window_count": 591,
-   "executable_count": 0
-  },
-  "disclaimer": "个人学习用途，不构成投资建议；持仓段为其他专家持股参考（非本人），仅列客观读数、不给加减仓建议。投喂语料中出现「表现为持仓」的内容一律视为投喂语料·非本人持仓。本版 mode = preopen（盘前档 · 08:40）、data_date = 2026-10-30、for_date = 2026-11-02；口径 = A股 10/30 完整收盘（结算价）+ 美股 10/30 完整收盘（结算价）+ 日韩 11/02 早盘实时（08:52 复取）+ 港股 10/30 收盘 + 商品汇率 10/30 + 美债 10/29。四象限 = 共振 0 / 背离 4 / 暗线 5 / 双冷 22（cross_analysis 11-02 08:44 盘前重算、flow_date 2026-10-30、4 日新闻窗 591 条、门槛 32 条）；本次迁移为纯语料侧（flow_yi 31/31 零变化），不读作资金改善，亦不得据此上调仓位。"
- },
- "synthesis_sources": {
-  "market": "data/daily_review/market.json（2026-10-30 · updated_at 2026-11-02 08:30:55 · preopen_partial=true）",
-  "realtime": "realtime.json（2026-10-30 22:16 · market_status=closed）",
-  "cross_analysis": "output/cross_analysis.json（2026-11-02 08:44 盘前重算 · flow_date 2026-10-30 · 窗口 591 条 · 门槛 32）",
-  "sector_tech": "output/sector_tech.json（data_date 2026-10-30 · L4 0 / L3 2 / L2 3 / L1 26）",
-  "us_kline": "market.json.us_kline（latest 2026-10-30 完整收盘 / prev 2026-10-29）",
-  "asia": "market.json.asia（2026-11-02 08:31 实时 · 日经 / KOSPI / kr_stocks）",
-  "macro": "output/daily_macro_latest.json（as_of 2026-11-02 08:31 · 日历轨）",
-  "news": "output/daily_news_2026-11-02.json（286 条 · covered_days 2026-11-02）",
-  "feed": "feed/archive/2026-10-30/_index.json（feed_count 0 · 如实为空）"
- }
 }
