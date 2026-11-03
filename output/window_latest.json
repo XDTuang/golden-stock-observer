@@ -1,72 +1,76 @@
 {
-  "generated_at": "2026-11-03 08:51",
-  "session": "preopen",
-  "data_date": "2026-11-02",
-  "for_date": "2026-11-03",
+  "generated_at": "2026-11-03 22:03",
+  "session": "close",
+  "data_date": "2026-11-03",
+  "for_date": "2026-11-04",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-11-03"
+    "2026-11-04"
   ],
   "span_days": 1,
   "display_days": [
-    "2026-11-02",
-    "2026-11-03"
+    "2026-11-03",
+    "2026-11-04"
   ],
-  "display_text": "11/02 + 11/03",
+  "display_text": "11/03 + 11/04",
   "span_is_weekend_cross": false,
-  "span_text": "11/03",
+  "span_text": "11/04",
   "carry": {
-    "from_data_date": "2026-11-02",
-    "ref": "output/feed_review_2026-11-02.json",
+    "from_data_date": "2026-11-03",
+    "ref": "output/feed_review_2026-11-03.json",
     "exists": true,
     "gap_days": 1,
     "stale": false,
     "bias": "中性",
-    "bias_score": 1,
+    "bias_score": 0,
     "t1_focus": [
-      "跟踪金钻起涨 6 只回踩确认"
+      "跟踪金钻起涨 5 只回踩确认"
     ],
-    "risks": [],
+    "risks": [
+      "投喂语料含负面信息，注意相关个股避险"
+    ],
     "headline": ""
   },
   "layers": {
-    "base": "2026-11-02 A股收盘（基准层）",
-    "overnight": "美东 2026-11-02 收盘（北京 2026-11-03 早间到达）",
-    "premarket": "2026-11-03 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-11-03 A股收盘（基准层）",
+    "overnight": "美东 2026-11-03 收盘（北京 2026-11-04 早间到达）",
+    "premarket": "2026-11-04 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-11-02",
+    "date": "2026-11-03",
     "run_date": "2026-11-03",
-    "preopen_partial": true,
+    "preopen_partial": null,
     "us_kline": true,
     "asia": true
   },
   "covered": [
     {
-      "date": "2026-11-02",
-      "weekday": "周一",
-      "is_trading_day": true,
-      "news": 312,
-      "feeds": 0,
-      "reports": 2030,
-      "macro": true
-    },
-    {
       "date": "2026-11-03",
       "weekday": "周二",
       "is_trading_day": true,
-      "news": 287,
+      "news": 300,
       "feeds": 5,
-      "reports": 103,
+      "reports": 1096,
       "macro": true
+    },
+    {
+      "date": "2026-11-04",
+      "weekday": "周三",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
     }
   ],
   "totals": {
-    "news": 599,
+    "news": 300,
     "feeds": 5,
-    "reports": 2133,
+    "reports": 1096,
     "covered_days": 2
   },
-  "missing": []
+  "missing": [
+    "market_thermometer.json 数据日 2026-11-02 落后于基准日 2026-11-03"
+  ]
 }

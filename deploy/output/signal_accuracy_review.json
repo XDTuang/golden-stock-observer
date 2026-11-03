@@ -1,36 +1,36 @@
 {
- "data_date": "2026-10-30",
- "generated_at": "2026-10-30 19:10:54",
+ "data_date": "2026-11-03",
+ "generated_at": "2026-11-03 19:10:45",
  "source": "golden_diamond.json + review_price_pool.json(tencent_qfq) + review_index_pool.json",
- "total_hits": 10,
- "total_hits_raw": 41,
+ "total_hits": 8,
+ "total_hits_raw": 77,
  "excluded_signals": {
   "signals": [
    "买入"
   ],
   "reason": "用户 2026-10-26 授权出参考池（8/8 数据日胜率低于全池、外部基准 3 日全负）",
   "excluded_hits": {
-   "买入": 27
+   "买入": 64
   }
  },
  "state_tag_hits": {
-  "红区黄柱连续3天": 4
+  "红区黄柱连续3天": 5
  },
- "state_tag_hits_total": 4,
+ "state_tag_hits_total": 5,
  "valid_samples": 8,
- "state_tag_samples": 4,
- "excluded_samples": 2,
- "baseline_mean_pct": 0.066,
+ "state_tag_samples": 5,
+ "excluded_samples": 0,
+ "baseline_mean_pct": 0.1558,
  "baseline_median_pct": 0.0,
  "baseline_win_rate_pct": 12.5,
  "baseline_scope": "活跃池（已排除买入与状态标记）",
  "cohort_baseline": {
   "method": "同日期 × 同前20日涨幅分桶（-999~-18/-18~-12/-12~-6/-6~0/0~999）的池内其它标的超额均值",
   "min_n": 20,
-  "cells": 11406,
-  "baseline_mean_pct": -4.1981,
-  "baseline_median_pct": -4.1981,
-  "n": 2,
+  "cells": 11540,
+  "baseline_mean_pct": null,
+  "baseline_median_pct": null,
+  "n": 0,
   "rationale": "R-20：沪深300 会混入风格/市值 beta，同类配对才是主判据"
  },
  "external_baseline": {
@@ -39,24 +39,24 @@
   "rationale": "参考口径（非主判据）：R-20 后降为对照",
   "pool_baseline": {
    "n": 8,
-   "mean_pct": -0.0769,
+   "mean_pct": 0.2329,
    "median_pct": 0.0,
    "win_rate_pct": 12.5
   }
  },
  "by_signal": {
   "金钻起涨": {
-   "n": 3,
+   "n": 5,
    "win_rate_pct": 0.0,
    "mean_pct": 0.0,
    "median_pct": 0.0,
-   "excess_vs_baseline_pct": -0.066,
+   "excess_vs_baseline_pct": -0.1558,
    "excess_vs_baseline_median_pct": 0.0,
    "excess_vs_hs300_mean_pct": 0.0,
    "excess_vs_hs300_median_pct": 0.0,
    "excess_vs_hs300_win_rate_pct": 0.0,
    "verdict_vs_hs300": "跑输",
-   "sample_sufficiency": "样本不足以下结论(n=3)",
+   "sample_sufficiency": "样本不足以下结论(n=5)",
    "role": "entry_signal",
    "excess_vs_cohort_mean_pct": null,
    "excess_vs_cohort_median_pct": null,
@@ -66,36 +66,36 @@
    "primary_verdict_basis": "excess_vs_cohort_mean_pct"
   },
   "红区黄柱连续5天": {
-   "n": 3,
-   "win_rate_pct": 33.3333,
-   "mean_pct": 0.1759,
-   "median_pct": -4.1127,
-   "excess_vs_baseline_pct": 0.1099,
-   "excess_vs_baseline_median_pct": -4.1127,
-   "excess_vs_hs300_mean_pct": -0.205,
-   "excess_vs_hs300_median_pct": -4.0691,
-   "excess_vs_hs300_win_rate_pct": 33.3333,
-   "verdict_vs_hs300": "跑输",
-   "sample_sufficiency": "样本不足以下结论(n=3)",
-   "role": "entry_signal",
-   "excess_vs_cohort_mean_pct": -4.1981,
-   "excess_vs_cohort_median_pct": -4.1981,
-   "excess_vs_cohort_t_stat": null,
-   "excess_vs_cohort_significant": null,
-   "cohort_n": 2,
-   "primary_verdict_basis": "excess_vs_cohort_mean_pct"
-  },
-  "红区黄柱连续4天": {
-   "n": 2,
+   "n": 1,
    "win_rate_pct": 0.0,
    "mean_pct": 0.0,
    "median_pct": 0.0,
-   "excess_vs_baseline_pct": -0.066,
+   "excess_vs_baseline_pct": -0.1558,
    "excess_vs_baseline_median_pct": 0.0,
    "excess_vs_hs300_mean_pct": 0.0,
    "excess_vs_hs300_median_pct": 0.0,
    "excess_vs_hs300_win_rate_pct": 0.0,
    "verdict_vs_hs300": "跑输",
+   "sample_sufficiency": "样本不足以下结论(n=1)",
+   "role": "entry_signal",
+   "excess_vs_cohort_mean_pct": null,
+   "excess_vs_cohort_median_pct": null,
+   "excess_vs_cohort_t_stat": null,
+   "excess_vs_cohort_significant": null,
+   "cohort_n": 0,
+   "primary_verdict_basis": "excess_vs_cohort_mean_pct"
+  },
+  "红区黄柱连续4天": {
+   "n": 2,
+   "win_rate_pct": 50.0,
+   "mean_pct": 0.6233,
+   "median_pct": 0.6233,
+   "excess_vs_baseline_pct": 0.4675,
+   "excess_vs_baseline_median_pct": 0.6233,
+   "excess_vs_hs300_mean_pct": 0.9316,
+   "excess_vs_hs300_median_pct": 0.9316,
+   "excess_vs_hs300_win_rate_pct": 50.0,
+   "verdict_vs_hs300": "跑赢",
    "sample_sufficiency": "样本不足以下结论(n=2)",
    "role": "entry_signal",
    "excess_vs_cohort_mean_pct": null,
@@ -111,12 +111,12 @@
    "role": "state_descriptor",
    "display_name": "趋势线下方状态（原「红区黄柱连续3天」）",
    "semantics": "中期趋势仍多头（金钻趋势 > 金牛2），但价格已连续 ≥3 个交易日收于趋势线下方 2.5% 以上 ⇒ **破位 / 超跌状态**，不是蓄势。机制上「黄柱」判的是趋势线高于当日最低价，属滞后指标在下跌中被动翻亮。",
-   "hits_today": 4,
-   "n": 4,
-   "win_rate_pct": 25.0,
-   "mean_pct": 0.9062,
-   "median_pct": 0.0,
-   "excess_vs_hs300_mean_pct": 1.5084,
+   "hits_today": 5,
+   "n": 5,
+   "win_rate_pct": 20.0,
+   "mean_pct": -2.1959,
+   "median_pct": -2.9735,
+   "excess_vs_hs300_mean_pct": -2.665,
    "excess_vs_cohort_mean_pct": null,
    "excess_vs_cohort_median_pct": null,
    "excess_vs_cohort_t_stat": null,
@@ -198,13 +198,13 @@
  "internal_discrimination": {
   "rationale": "R-14：各类型均值极差 <0.5pp ⇒ 内部全池基准无区分力，禁作有效性证据",
   "threshold_pp": 0.5,
-  "signal_mean_spread_pp": 0.1759,
+  "signal_mean_spread_pp": 0.6233,
   "signal_means": {
    "金钻起涨": 0.0,
-   "红区黄柱连续5天": 0.1759,
-   "红区黄柱连续4天": 0.0
+   "红区黄柱连续5天": 0.0,
+   "红区黄柱连续4天": 0.6233
   },
-  "verdict": "无区分力（噪声级）"
+  "verdict": "可区分"
  },
  "streak_reconstruction": {
   "rationale": "红区类型的 signals[0].date 恒等于报告日 ⇒ 旧口径下结构性零有效样本",
@@ -216,11 +216,20 @@
   ],
   "detail": [
    {
-    "code": "sh601086",
-    "name": "国芳集团",
+    "code": "sh603236",
+    "name": "移远通信",
     "primary": "金钻起涨",
-    "report_date": "2026-10-26",
-    "signal_date": "2026-10-26",
+    "report_date": "2026-11-02",
+    "signal_date": "2026-11-02",
+    "streak": null,
+    "derived_by": "signals[0].date"
+   },
+   {
+    "code": "sh603466",
+    "name": "风语筑",
+    "primary": "金钻起涨",
+    "report_date": "2026-11-02",
+    "signal_date": "2026-11-02",
     "streak": null,
     "derived_by": "signals[0].date"
    },
@@ -234,20 +243,11 @@
     "derived_by": "signals[0].date"
    },
    {
-    "code": "sz000560",
-    "name": "我爱我家",
-    "primary": "金钻起涨",
-    "report_date": "2026-10-26",
-    "signal_date": "2026-10-26",
-    "streak": null,
-    "derived_by": "signals[0].date"
-   },
-   {
     "code": "sz002815",
     "name": "崇达技术",
     "primary": "金钻起涨",
-    "report_date": "2026-10-27",
-    "signal_date": "2026-10-27",
+    "report_date": "2026-10-28",
+    "signal_date": "2026-10-28",
     "streak": null,
     "derived_by": "signals[0].date"
    },
@@ -261,85 +261,76 @@
     "derived_by": "signals[0].date"
    },
    {
-    "code": "sh600127",
-    "name": "金健米业",
-    "primary": "红区黄柱连续3天",
-    "report_date": "2026-10-28",
+    "code": "sh600241",
+    "name": "时代万恒",
+    "primary": "红区黄柱连续5天",
+    "report_date": "2026-11-03",
     "signal_date": "2026-10-28",
-    "streak": null,
-    "derived_by": "signals[0].date"
-   },
-   {
-    "code": "sh600593",
-    "name": "大连圣亚",
-    "primary": "红区黄柱连续3天",
-    "report_date": "2026-10-28",
-    "signal_date": "2026-10-28",
-    "streak": null,
-    "derived_by": "signals[0].date"
-   },
-   {
-    "code": "sh600641",
-    "name": "先导基电",
-    "primary": "红区黄柱连续5天",
-    "report_date": "2026-10-30",
-    "signal_date": "2026-10-23",
-    "streak": 6,
-    "derived_by": "streak=6 反推"
-   },
-   {
-    "code": "sh601579",
-    "name": "会稽山",
-    "primary": "红区黄柱连续5天",
-    "report_date": "2026-10-30",
-    "signal_date": "2026-10-22",
-    "streak": 7,
-    "derived_by": "streak=7 反推"
-   },
-   {
-    "code": "sh605577",
-    "name": "龙版传媒",
-    "primary": "红区黄柱连续5天",
-    "report_date": "2026-10-30",
-    "signal_date": "2026-10-26",
     "streak": 5,
     "derived_by": "streak=5 反推"
    },
    {
-    "code": "sz000993",
-    "name": "闽东电力",
-    "primary": "红区黄柱连续4天",
-    "report_date": "2026-10-29",
-    "signal_date": "2026-10-29",
-    "streak": null,
-    "derived_by": "signals[0].date"
-   },
-   {
-    "code": "sz002172",
-    "name": "澳洋健康",
+    "code": "sh601811",
+    "name": "新华文轩",
     "primary": "红区黄柱连续3天",
-    "report_date": "2026-10-28",
-    "signal_date": "2026-10-28",
+    "report_date": "2026-11-02",
+    "signal_date": "2026-11-02",
     "streak": null,
     "derived_by": "signals[0].date"
    },
    {
-    "code": "sz301080",
-    "name": "百普赛斯",
+    "code": "sh601858",
+    "name": "中国科传",
     "primary": "红区黄柱连续3天",
-    "report_date": "2026-10-28",
-    "signal_date": "2026-10-28",
+    "report_date": "2026-11-03",
+    "signal_date": "2026-10-30",
+    "streak": 3,
+    "derived_by": "streak=3 反推"
+   },
+   {
+    "code": "sz000002",
+    "name": "万  科Ａ",
+    "primary": "红区黄柱连续3天",
+    "report_date": "2026-11-03",
+    "signal_date": "2026-10-30",
+    "streak": 3,
+    "derived_by": "streak=3 反推"
+   },
+   {
+    "code": "sz000823",
+    "name": "超声电子",
+    "primary": "红区黄柱连续4天",
+    "report_date": "2026-11-02",
+    "signal_date": "2026-11-02",
     "streak": null,
     "derived_by": "signals[0].date"
    },
    {
-    "code": "sz301251",
-    "name": "威尔高",
+    "code": "sz001216",
+    "name": "华瓷股份",
     "primary": "红区黄柱连续4天",
-    "report_date": "2026-10-29",
+    "report_date": "2026-11-03",
     "signal_date": "2026-10-29",
-    "streak": null,
-    "derived_by": "signals[0].date"
+    "streak": 4,
+    "derived_by": "streak=4 反推"
+   },
+   {
+    "code": "sz300199",
+    "name": "翰宇药业",
+    "primary": "红区黄柱连续3天",
+    "report_date": "2026-11-03",
+    "signal_date": "2026-10-30",
+    "streak": 3,
+    "derived_by": "streak=3 反推"
+   },
+   {
+    "code": "sz301190",
+    "name": "善水科技",
+    "primary": "红区黄柱连续3天",
+    "report_date": "2026-11-03",
+    "signal_date": "2026-10-30",
+    "streak": 3,
+    "derived_by": "streak=3 反推"
    }
   ]
  },
@@ -348,8 +339,8 @@
   "derivation": "见 external_baseline"
  },
  "anomalies": [
-  "金钻起涨：有效样本 n=3 < 20，禁定论",
-  "红区黄柱连续5天：有效样本 n=3 < 20，禁定论",
+  "金钻起涨：有效样本 n=5 < 20，禁定论",
+  "红区黄柱连续5天：有效样本 n=1 < 20，禁定论",
   "红区黄柱连续4天：有效样本 n=2 < 20，禁定论"
  ],
  "note": "口径改造版 v2（2026-10-26）：① 买入出参考池（用户授权）；② 「红区黄柱连续3天」重定义为状态标记，不计入命中、不判有效性（signal_roles.py）；③ 主判据改为**同类配对基准**（同日×同前期涨幅分桶），沪深300 降为参考；④ 累计台账 T+1/3/5/10 同步输出同类超额。未调整任何信号阈值，未改动信号计算链路（golden_diamond.json 未变）。"
