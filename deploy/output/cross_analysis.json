@@ -1,7 +1,7 @@
 {
-  "date": "2026-11-04",
+  "date": "2026-11-05",
   "data_date": "2026-11-04",
-  "generated_at": "2026-11-04 23:02",
+  "generated_at": "2026-11-05 08:59",
   "news_date": "",
   "news_window": [
     "2026-11-04",
@@ -15,8 +15,8 @@
   "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-11-04 22:01",
-    "session": "close",
+    "generated_at": "2026-11-05 08:49",
+    "session": "preopen",
     "data_date": "2026-11-04",
     "for_date": "2026-11-05",
     "data_date_note": "",
@@ -53,8 +53,8 @@
     },
     "market_state": {
       "date": "2026-11-04",
-      "run_date": "2026-11-04",
-      "preopen_partial": null,
+      "run_date": "2026-11-05",
+      "preopen_partial": true,
       "us_kline": true,
       "asia": true
     },
@@ -63,30 +63,28 @@
         "date": "2026-11-04",
         "weekday": "周三",
         "is_trading_day": true,
-        "news": 281,
+        "news": 308,
         "feeds": 0,
-        "reports": 1162,
+        "reports": 1392,
         "macro": true
       },
       {
         "date": "2026-11-05",
         "weekday": "周四",
         "is_trading_day": true,
-        "news": 0,
+        "news": 285,
         "feeds": 0,
-        "reports": 0,
-        "macro": false
+        "reports": 102,
+        "macro": true
       }
     ],
     "totals": {
-      "news": 281,
+      "news": 593,
       "feeds": 0,
-      "reports": 1162,
+      "reports": 1494,
       "covered_days": 2
     },
-    "missing": [
-      "market_thermometer.json 数据日 2026-11-03 落后于基准日 2026-11-04"
-    ]
+    "missing": []
   },
   "index_context": {
     "上证指数": {
@@ -107,130 +105,130 @@
     }
   },
   "summary": {
-    "共振": 3,
-    "背离": 0,
-    "暗线": 12,
-    "双冷": 16
+    "共振": 7,
+    "背离": 3,
+    "暗线": 8,
+    "双冷": 13
   },
   "items": [
     {
       "sector": "电子",
-      "news_count": 27,
-      "news_per_day": 13.5,
+      "news_count": 49,
+      "news_per_day": 24.5,
       "flow_yi": 312.63,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "第140届广交会今天闭幕",
-        "道指、纳指均涨超2% 苹果、微软、亚马逊至少涨5%-7%",
-        "美股明星科技股表现分化，亚马逊(AMZN.O)涨6%、阿里巴巴(BABA.N"
+        "【中信证券：存储供不应求延续，继续关注长协及股东回报】中信证券研报表示，存储",
+        "韩国综指跌幅扩大至3%",
+        "【韩国综指跌幅扩大至3%】韩国综指跌幅扩大至3%，现报5512.09点。个股"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 11,
-      "news_per_day": 5.5,
+      "news_count": 23,
+      "news_per_day": 11.5,
       "flow_yi": 75.86,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "美国健康保险公司和医院运营商的股价上涨，Molina Healthcare上",
-        "SpaceX选用高通平台建设星链移动美国全国5G网络 计划2027年启动部署",
-        "高通股价盘前上涨4%"
+        "伯克希尔连续3天增持Sirius XM 总耗资约2689万美元",
+        "【伯克希尔连续3天增持Sirius XM 总耗资约2689万美元】最新披露的",
+        "【澳大利亚数据中心运营商NEXTDC股价大涨】澳大利亚数据中心运营商NEXT"
       ]
     },
     {
       "sector": "有色金属",
-      "news_count": 8,
-      "news_per_day": 4.0,
+      "news_count": 22,
+      "news_per_day": 11.0,
       "flow_yi": 73.45,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "现货白银日内涨幅扩大至5% 报52.26美元/盎司",
-        "花旗对黄金给出0-3个月目标价4,500美元/盎司",
-        "现货黄金向上触及4050美元/盎司"
+        "珀斯铸币厂10月份白银销量与上月持平，为605,408盎司。",
+        "澳大利亚珀斯铸币厂10月份黄金销量降至32,933盎司。",
+        "现货黄金突破4090美元/盎司，日内涨0.80%。"
       ]
     },
     {
       "sector": "电力设备",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": 45.56,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "第140届广交会今天闭幕",
-        "民主党掌控参议院 美联储独立性或获更强制度保障",
-        "武汉天源：签订36.4亿元储能项目合同"
+        "中信证券：民主党中期选举“蓝潮”影响几何",
+        "新疆新型储能装机规模同比大增九成 储能龙头享受需求增长红利",
+        "高端磷酸铁锂供应偏紧 上市公司积极扩产"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": 44.86,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "第140届广交会今天闭幕",
-        "国内联播快讯",
-        "王兴兴最新发声！机器人概念集体走强"
+        "【乐动机器人：11月25日起每手买卖单位将更改为100股H股】乐动机器人11",
+        "我国实现世界首次舱外激光“微创”试验",
+        "首程控股：旗下基金投资简智 布局物理AI数据基础设施"
       ]
     },
     {
       "sector": "计算机",
-      "news_count": 23,
-      "news_per_day": 11.5,
+      "news_count": 56,
+      "news_per_day": 28.0,
       "flow_yi": 22.32,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "第140届广交会今天闭幕",
-        "国内联播快讯",
-        "xAI总裁Michael Nicolls：很高兴与Qualcomm 一起打造"
+        "从美国到欧洲 AI融资热下暗藏“债券过剩”风险？",
+        "中信证券：民主党中期选举“蓝潮”影响几何",
+        "“蓝色浪潮”下美科技巨头股价狂飙 华尔街：凸显自由现金流重要性"
       ]
     },
     {
       "sector": "食品饮料",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": -21.6,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "10月物流业景气指数处于扩张区间 预期向好",
-        "美国众议院少数党领袖杰弗瑞斯：在我看来，这次选举主要围绕三个议题——全面的生",
-        "经济学家：美国四季度经济开局强劲 GDP年化增速或超4%"
+        "多省份发文推进落实带薪休假",
+        "【百济神州：美国FDA授予百悦泽®联合方案优先审评认定，拟用于套细胞淋巴瘤一",
+        "百济神州：美国FDA授予百悦泽联合方案优先审评认定，拟用于套细胞淋巴瘤一线治"
       ]
     },
     {
       "sector": "银行",
-      "news_count": 15,
-      "news_per_day": 7.5,
+      "news_count": 23,
+      "news_per_day": 11.5,
       "flow_yi": -15.33,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "中国人民银行加力实施股票回购增持再贷款政策",
-        "【摩根大通和汇丰银行表示，中东动荡后的石油供应正在恢复】摩根大通表示，在经历",
-        "民主党掌控参议院 美联储独立性或获更强制度保障"
+        "华泰证券：业绩韧性较为突出 银行板块仍具稳健配置价值",
+        "欧盟等多方在布鲁塞尔讨论乌克兰战后重建问题",
+        "两日申报超2000亿元 股票回购增持再贷款加码稳市场"
       ]
     },
     {
@@ -257,77 +255,77 @@
     },
     {
       "sector": "石油石化",
-      "news_count": 15,
-      "news_per_day": 7.5,
+      "news_count": 17,
+      "news_per_day": 8.5,
       "flow_yi": -11.53,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "【夜盘期货收盘】燃料油连续跌6.33%，低硫燃料油连续跌4.94%，沥青连续",
-        "【摩根大通和汇丰银行表示，中东动荡后的石油供应正在恢复】摩根大通表示，在经历",
-        "阿联酋否认拟建第三条绕开霍尔木兹海峡的输油管道"
+        "杰瑞股份收到三份项目授标函 总金额达181亿元",
+        "国际油价4日大幅下跌",
+        "上期所原油期货2612合约夜盘收跌7.07%"
       ]
     },
     {
       "sector": "公用事业",
-      "news_count": 3,
-      "news_per_day": 1.5,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": -10.51,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "五部门：鼓励金融机构通过绿色信贷、绿色债券等金融工具加强对资源节约相关项目的",
-        "海兴电力：拟1.5亿元—3亿元回购公司股份",
-        "武汉天源：签订36.4亿元储能项目合同"
+        "中信证券：民主党中期选举“蓝潮”影响几何",
+        "新疆新型储能装机规模同比大增九成 储能龙头享受需求增长红利",
+        "国家能源局赴山西督导煤企复工 多部门打出保供“组合拳”"
       ]
     },
     {
       "sector": "传媒",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 13,
+      "news_per_day": 6.5,
       "flow_yi": 7.65,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "人民日报评论员文章：历史昭示未来，奋斗成就伟业——论学习贯彻党的二十届五中全",
-        "IPO要暂停了？一线求证：并非“一刀切”",
-        "长期依赖数码产品或得数码痴呆症 专家称熬夜刷手机可能诱发脑梗"
+        "【芯原股份推出面向可穿戴设备的新一代GCNanoOptimaV 2.5D G",
+        "芯原股份推出面向可穿戴设备的新一代GCNanoOptimaV 2.5D GP",
+        "“奶茶千金”回家上班：二代IP不是老品牌的解药 业务底盘才是"
       ]
     },
     {
       "sector": "煤炭",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 5,
+      "news_per_day": 2.5,
       "flow_yi": -6.85,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "期市夜盘收盘，国内期货主力合约多数下跌",
-        "国内商品期货夜盘开盘 主力合约跌多涨少",
-        "印尼将继续严格控制采矿生产"
+        "煤炭大省如何降碳？山西：建设9家零碳园区 产业高载能堵点待解",
+        "国家能源局赴山西督导煤企复工 多部门打出保供“组合拳”",
+        "国内商品期货夜盘开盘 主力合约跌多涨少"
       ]
     },
     {
       "sector": "非银金融",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 16,
+      "news_per_day": 8.0,
       "flow_yi": -6.82,
-      "verdict": "双冷",
-      "verdict_raw": "双冷",
-      "level": "mute",
-      "desc": "无题材无资金，回避",
+      "verdict": "背离",
+      "verdict_raw": "背离",
+      "level": "warn",
+      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "美国健康保险公司和医院运营商的股价上涨，Molina Healthcare上",
-        "IPO要暂停了？一线求证：并非“一刀切”",
-        "利好来了！多家券商官宣！近600亿资金已到位"
+        "太保系举牌中国神华H股，持股比例为5.15%",
+        "华泰证券：2027年建议把握券商板块战略配置机会",
+        "近20家机构入局 险企争锋家族办公室"
       ]
     },
     {
@@ -340,34 +338,36 @@
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "美国众议院少数党领袖杰弗瑞斯：在我看来，这次选举主要围绕三个议题——全面的生",
+        "美国密西西比州一化工厂发生爆炸",
         "云南白药集团氟比洛芬凝胶贴膏注册上市许可申请获受理",
         "五部门：推进算力、通信基站和机房等基础设施节能降碳改造 优化用能结构"
       ]
     },
     {
       "sector": "纺织服饰",
-      "news_count": 0,
-      "news_per_day": 0.0,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": -5.46,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": []
+      "sample_titles": [
+        "传统和新兴两手抓 消费基金持仓积极“拓圈”"
+      ]
     },
     {
       "sector": "农林牧渔",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": -4.69,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
+        "太保系举牌中国神华H股，持股比例为5.15%",
         "前三季度农业农村发展保持良好势头",
-        "美国商品期货交易委员会（CFTC）与美国农业部（USDA）签署谅解备忘录，旨",
         "中国一摩尔多瓦政府间经贸合作委员会第九次会议在上海召开"
       ]
     },
@@ -384,17 +384,17 @@
     },
     {
       "sector": "国防军工",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 20,
+      "news_per_day": 10.0,
       "flow_yi": 4.21,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "第140届广交会今天闭幕",
-        "消息人士称，印度靛蓝航空正与巴西航空工业公司洽谈购买100架飞机。",
-        "从债务上限到贸易协议 民主党掌控国会或为美两党合作创造空间"
+        "伯克希尔连续3天增持Sirius XM 总耗资约2689万美元",
+        "【伯克希尔连续3天增持Sirius XM 总耗资约2689万美元】最新披露的",
+        "市场消息：美国众议院最快可能在下周就对国防部长皮特·赫格塞思进行弹劾表决。美"
       ]
     },
     {
@@ -432,17 +432,17 @@
     },
     {
       "sector": "房地产",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 8,
+      "news_per_day": 4.0,
       "flow_yi": -2.12,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "绍兴落地现房销售细则 抵押房未解押不得网签",
-        "浙江绍兴落地现房销售细则 抵押房未解押不得网签",
-        "德明利：拟每10股派现6元合计派现1.91亿元 控股股东承诺延长一年不减持公"
+        "【澳大利亚数据中心运营商NEXTDC股价大涨】澳大利亚数据中心运营商NEXT",
+        "最高让利超百万 广州多家房企“以价换量”促销",
+        "房地产融资逻辑正转向“项目信用”"
       ]
     },
     {
@@ -458,40 +458,43 @@
     },
     {
       "sector": "环保",
-      "news_count": 0,
-      "news_per_day": 0.0,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": -1.78,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": []
+      "sample_titles": [
+        "36.4亿元大单来了！武汉天源联合体拿下宁夏灵武共享储能项目"
+      ]
     },
     {
       "sector": "医药生物",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 8,
+      "news_per_day": 4.0,
       "flow_yi": -1.51,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "时隔8年 我国罕见病目录制订工作程序迎来修订",
-        "长春高新：子公司GenSci117吸入用粉末境内生产药品注册临床试验申请获得",
-        "奥赛康：奥美妥塔单抗上市许可申请获得受理"
+        "海创药业与Evommune达成VAV1分子胶降解剂海外授权合作",
+        "传统和新兴两手抓 消费基金持仓积极“拓圈”",
+        "10月份私募机构调研超5300次 电子等四大行业关注度居前"
       ]
     },
     {
       "sector": "钢铁",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -0.55,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
+        "中泰证券3.52亿股暂缓解禁 回购动作亦在同步进行",
         "五部门：推进算力、通信基站和机房等基础设施节能降碳改造 优化用能结构"
       ]
     },
@@ -508,32 +511,32 @@
     },
     {
       "sector": "综合",
-      "news_count": 10,
-      "news_per_day": 5.0,
+      "news_count": 16,
+      "news_per_day": 8.0,
       "flow_yi": 0.49,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "verdict": "共振",
+      "verdict_raw": "真共振",
+      "level": "ok",
+      "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "道指、纳指均涨超2% 苹果、微软、亚马逊至少涨5%-7%",
-        "道琼斯指数11月4日（周三）开盘上涨994.95点，涨幅1.92%，报527",
-        "美股三大指数集体高开"
+        "日本10月服务业PMI终值51.7 前值52",
+        "煤炭大省如何降碳？山西：建设9家零碳园区 产业高载能堵点待解",
+        "国金证券：AI眼镜全彩化与AI交互共振 镜片与渠道有望提前受益"
       ]
     },
     {
       "sector": "汽车",
-      "news_count": 17,
-      "news_per_day": 8.5,
+      "news_count": 23,
+      "news_per_day": 11.5,
       "flow_yi": 0.48,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "市场消息：英国10月份新车注册中，电动汽车占比达31.8%。英国2026年1",
-        "纳斯达克中国金龙指数指数涨超3%",
-        "美股明星科技股盘初涨跌不一，亚马逊涨近7%，微软涨近5%，苹果涨超4%，谷歌"
+        "空气悬架价格下探，新技术迎规模化应用",
+        "丰田汽车上涨高达8.5% 创2025年7月以来最大涨幅",
+        "日股爱德万测试跌6.8%，丰田汽车涨逾7%。"
       ]
     }
   ]
