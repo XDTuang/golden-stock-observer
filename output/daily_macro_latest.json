@@ -1,6 +1,6 @@
 {
-  "date": "2026-11-05",
-  "generated_at": "2026-11-05 22:27",
+  "date": "2026-11-06",
+  "generated_at": "2026-11-06 00:38",
   "china": {
     "pmi": {
       "latest": {
@@ -13,7 +13,18 @@
       "rows": 226
     },
     "gdp": {
-      "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+      "latest": {
+        "季度": "2026年第1-3季度",
+        "国内生产总值-绝对值": 1071071.2,
+        "国内生产总值-同比增长": 4.6,
+        "第一产业-绝对值": 58993.9,
+        "第一产业-同比增长": 3.7,
+        "第二产业-绝对值": 383822.3,
+        "第二产业-同比增长": 3.8,
+        "第三产业-绝对值": 628255.0,
+        "第三产业-同比增长": 5.2
+      },
+      "rows": 83
     },
     "cpi": {
       "latest": {
@@ -50,9 +61,9 @@
       "source": "百度经济日历 news_economic_baidu",
       "window_days": 7,
       "lookback_days": 45,
-      "lookback_used_to": "2026-10-02",
-      "days_fetched": 35,
-      "as_of": "2026-11-05 22:27",
+      "lookback_used_to": "2026-10-14",
+      "days_fetched": 24,
+      "as_of": "2026-11-06 00:38",
       "indicators": {
         "CPI 同比": [
           {
@@ -63,7 +74,7 @@
             "importance": 2,
             "release_date": "2026-10-14",
             "release_time": "20:30",
-            "days_ago": 22,
+            "days_ago": 23,
             "is_fresh": false
           }
         ],
@@ -76,7 +87,7 @@
             "importance": 2,
             "release_date": "2026-10-14",
             "release_time": "20:30",
-            "days_ago": 22,
+            "days_ago": 23,
             "is_fresh": false
           }
         ],
@@ -89,7 +100,7 @@
             "importance": 1,
             "release_date": "2026-10-14",
             "release_time": "20:30",
-            "days_ago": 22,
+            "days_ago": 23,
             "is_fresh": false
           }
         ],
@@ -102,34 +113,34 @@
             "importance": 1,
             "release_date": "2026-10-14",
             "release_time": "20:30",
-            "days_ago": 22,
+            "days_ago": 23,
             "is_fresh": false
           }
         ],
         "非农": [
           {
-            "event": "美国9月非农就业人口变动季调后(万)",
-            "value": "2.9",
-            "forecast": "9.0",
-            "previous": "13.3",
+            "event": "美国10月非农就业人口变动季调后(万)",
+            "value": "",
+            "forecast": "6.5",
+            "previous": "2.9",
             "importance": 2,
-            "release_date": "2026-10-02",
-            "release_time": "20:30",
-            "days_ago": 34,
-            "is_fresh": false
+            "release_date": "2026-11-06",
+            "release_time": "21:30",
+            "days_ago": 0,
+            "is_fresh": true
           }
         ],
         "失业率": [
           {
-            "event": "美国9月失业率(%)",
-            "value": "4.2",
-            "forecast": "4.1",
-            "previous": "4.1",
+            "event": "美国10月失业率(%)",
+            "value": "",
+            "forecast": "4.2",
+            "previous": "4.2",
             "importance": 2,
-            "release_date": "2026-10-02",
-            "release_time": "20:30",
-            "days_ago": 34,
-            "is_fresh": false
+            "release_date": "2026-11-06",
+            "release_time": "21:30",
+            "days_ago": 0,
+            "is_fresh": true
           }
         ],
         "ADP 就业": [
@@ -141,7 +152,7 @@
             "importance": 2,
             "release_date": "2026-11-04",
             "release_time": "21:15",
-            "days_ago": 1,
+            "days_ago": 2,
             "is_fresh": true
           }
         ],
@@ -154,7 +165,7 @@
             "importance": 2,
             "release_date": "2026-10-29",
             "release_time": "20:30",
-            "days_ago": 7,
+            "days_ago": 8,
             "is_fresh": true
           },
           {
@@ -165,7 +176,7 @@
             "importance": 2,
             "release_date": "2026-10-29",
             "release_time": "20:30",
-            "days_ago": 7,
+            "days_ago": 8,
             "is_fresh": true
           }
         ],
@@ -178,7 +189,7 @@
             "importance": 2,
             "release_date": "2026-11-05",
             "release_time": "21:30",
-            "days_ago": 0,
+            "days_ago": 1,
             "is_fresh": true
           }
         ],
@@ -191,7 +202,7 @@
             "importance": 2,
             "release_date": "2026-10-29",
             "release_time": "20:30",
-            "days_ago": 7,
+            "days_ago": 8,
             "is_fresh": true
           },
           {
@@ -202,32 +213,8 @@
             "importance": 2,
             "release_date": "2026-10-29",
             "release_time": "20:30",
-            "days_ago": 7,
+            "days_ago": 8,
             "is_fresh": true
-          }
-        ],
-        "零售销售": [
-          {
-            "event": "美国9月零售销售月率(%)",
-            "value": "0.8",
-            "forecast": "0.3",
-            "previous": "1.3",
-            "importance": 2,
-            "release_date": "2026-10-15",
-            "release_time": "20:30",
-            "days_ago": 21,
-            "is_fresh": false
-          },
-          {
-            "event": "美国9月核心零售销售月率(%)",
-            "value": "0.9",
-            "forecast": "0.5",
-            "previous": "1.4",
-            "importance": 2,
-            "release_date": "2026-10-15",
-            "release_time": "20:30",
-            "days_ago": 21,
-            "is_fresh": false
           }
         ],
         "ISM 制造业": [
@@ -239,7 +226,7 @@
             "importance": 2,
             "release_date": "2026-11-02",
             "release_time": "23:00",
-            "days_ago": 3,
+            "days_ago": 4,
             "is_fresh": true
           }
         ]
@@ -253,7 +240,7 @@
             "2、美国9月核心PCE同比上涨3.1%，美联储12月或加息25个基点"
           ],
           "date": "2026-10-30",
-          "days_ago": 6,
+          "days_ago": 7,
           "is_fresh": true,
           "time": "2026-10-30 06:00:18",
           "source": "财经早餐"
@@ -267,7 +254,7 @@
             "哈马克还表示，美联储独立性对于实现2%的通胀目标至关重要，美元仍是全球主要储备货币，其地位得益于美国的制度和法律体系"
           ],
           "date": "2026-11-05",
-          "days_ago": 0,
+          "days_ago": 1,
           "is_fresh": true,
           "time": "2026-11-05 21:52:29",
           "source": "东财全球"
@@ -278,7 +265,7 @@
             "英国央行Mann投反对票 主张加息50个基点至4.25% 英国央行Mann投反对票，主张加息50个基点至4.25%"
           ],
           "date": "2026-11-05",
-          "days_ago": 0,
+          "days_ago": 1,
           "is_fresh": true,
           "time": "2026-11-05 20:08:32",
           "source": "东财全球"
@@ -289,7 +276,7 @@
             "交易员加大了对英国央行加息的押注 交易员加大了对英国央行加息的押注，认为12月加息的可能性为35%"
           ],
           "date": "2026-11-05",
-          "days_ago": 0,
+          "days_ago": 1,
           "is_fresh": true,
           "time": "2026-11-05 20:05:00",
           "source": "东财全球"
@@ -306,8 +293,9 @@
       "美债收益率"
     ],
     "log": [
-      "日历 2026-10-26 失败: RuntimeError",
-      "新闻池 600 条 → 窗口内(7日) 206 条；命中 2 指标"
+      "日历 2026-10-30 失败: HTTPError",
+      "日历 2026-10-15 失败: HTTPError",
+      "新闻池 600 条 → 窗口内(7日) 205 条；命中 2 指标"
     ]
   }
 }
