@@ -1550,10 +1550,14 @@ html #drAnalysis {
 .dr-badge{font-size:10.5px;padding:0 6px;border:1px solid;border-radius:9px;display:inline-block;margin:1px 2px}
 .dr-b3{color:var(--gold);border-color:var(--gold)}.dr-b2{color:var(--blue);border-color:var(--blue)}.dr-b1{color:var(--purple);border-color:var(--purple)}
 tr.dr-hl3 td{background:rgba(212,175,55,.08)}
-/* 12 列表格在带侧边栏的主站宽度下会被挤压 → 横向滚动 + 禁止折行（2026-09-10） */
+/* 2026-11-05 治本：取消 880px 强制宽度 + td 换行 → 表格自适应容器，不再需横向拖拉。
+   原 09-10 的 min-width:880px+nowrap 是为适配「body 980px 压出的 824px」、避免 12 列折行；
+   宽度污染已由 drScopeInjectedStyles 作用域化修好，09-10 记录原文即写「宽度修好后 12 列可能无需滚动」。
+   改此段须同步 6 文件：index×3 + analysis×2 + inject_daily_review_tab.py（否则 rebuild 回退）。 */
 .dr-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:6px 0}
-.dr-scroll table.dr-tbl{min-width:880px}
-.dr-scroll td,.dr-scroll th{white-space:nowrap}
+.dr-scroll table.dr-tbl{width:100%;min-width:0;table-layout:auto}
+.dr-scroll td{white-space:normal;word-break:break-word;overflow-wrap:anywhere;min-width:0}
+.dr-scroll th{white-space:nowrap}
 .dr-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:12px 0}
 /* ═══ DK-SEMANTIC-CSS v1（review/patch_dk_css.py 维护 · 勿手改）═══ */
 /* 语义色（A 股涨红跌绿）；冲突方（如 V3 .dr-note b）已加 :not([class*=dk-]) 守卫 */

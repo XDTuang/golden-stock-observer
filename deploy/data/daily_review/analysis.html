@@ -47,10 +47,14 @@ h2,h3,h4{color:var(--text)}
 code{background:var(--bg-subtle);padding:1px 4px;border-radius:3px;font-size:12px}
 b,strong{font-weight:700;color:var(--text)}
 br+br{margin-top:4px}
-/* 2026-09-10：1.2 当日金钻 12 列表格需横向滚动 + 禁止折行（本 style 注入晚于 index.html，故必须在此重申，否则被 .dr-tbl td 的 white-space:normal 覆盖） */
+/* 2026-11-05 治本：取消 880px 强制宽度 + td 换行 → 表格自适应容器，不再需横向拖拉。
+   原 09-10 的 min-width:880px+nowrap 是为适配「body 980px 压出的 824px」、避免 12 列折行；
+   宽度污染已由 drScopeInjectedStyles 作用域化修好，09-10 记录原文即写「宽度修好后 12 列可能无需滚动」。
+   改此段须同步 6 文件：index×3 + analysis×2 + inject_daily_review_tab.py（否则 rebuild 回退）。 */
 .dr-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:6px 0}
-.dr-scroll table.dr-tbl{min-width:880px}
-.dr-scroll td,.dr-scroll th{white-space:nowrap}
+.dr-scroll table.dr-tbl{width:100%;min-width:0;table-layout:auto}
+.dr-scroll td{white-space:normal;word-break:break-word;overflow-wrap:anywhere;min-width:0}
+.dr-scroll th{white-space:nowrap}
 
 /* OBS-FOLD-CSS v1 · 7.2 段可折叠卡片（纯 CSS，不依赖 JS） */
 .obs-sec{font-size:12.5px;font-weight:600;color:var(--text-secondary);margin:14px 0 6px;
