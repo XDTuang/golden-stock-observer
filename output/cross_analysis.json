@@ -1,316 +1,382 @@
 {
   "date": "2026-11-06",
-  "data_date": "2026-11-05",
-  "generated_at": "2026-11-06 10:55",
+  "data_date": "2026-11-06",
+  "generated_at": "2026-11-06 22:02",
   "news_date": "",
   "news_window": [
-    "2026-11-05",
-    "2026-11-06"
+    "2026-11-06",
+    "2026-11-07",
+    "2026-11-08",
+    "2026-11-09"
   ],
-  "news_window_days": 2,
-  "flow_date": "2026-11-05",
-  "flow_raw_latest": "2026-11-05",
+  "news_window_days": 4,
+  "flow_date": "2026-11-06",
+  "flow_raw_latest": "2026-11-06",
   "flow_is_weekend_copy": false,
   "hot_per_day": 8,
-  "hot_threshold": 16,
+  "hot_threshold": 32,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-11-06 08:42",
-    "session": "preopen",
-    "data_date": "2026-11-05",
-    "for_date": "2026-11-06",
+    "generated_at": "2026-11-06 22:02",
+    "session": "close",
+    "data_date": "2026-11-06",
+    "for_date": "2026-11-09",
     "data_date_note": "",
     "warnings": [],
     "span": [
-      "2026-11-06"
+      "2026-11-07",
+      "2026-11-08",
+      "2026-11-09"
     ],
-    "span_days": 1,
+    "span_days": 3,
     "display_days": [
-      "2026-11-05",
-      "2026-11-06"
+      "2026-11-06",
+      "2026-11-07",
+      "2026-11-08",
+      "2026-11-09"
     ],
-    "display_text": "11/05 + 11/06",
-    "span_is_weekend_cross": false,
-    "span_text": "11/06",
+    "display_text": "11/06–11/09",
+    "span_is_weekend_cross": true,
+    "span_text": "11/07–11/09",
     "carry": {
-      "from_data_date": "2026-11-05",
-      "ref": "output/feed_review_2026-11-05.json",
+      "from_data_date": "2026-11-06",
+      "ref": "output/feed_review_2026-11-06.json",
       "exists": true,
-      "gap_days": 1,
+      "gap_days": 3,
       "stale": false,
       "bias": "中性",
       "bias_score": 1,
       "t1_focus": [
-        "跟踪金钻起涨 6 只回踩确认"
+        "跟踪金钻起涨 4 只回踩确认"
       ],
       "risks": [],
       "headline": ""
     },
     "layers": {
-      "base": "2026-11-05 A股收盘（基准层）",
-      "overnight": "美东 2026-11-05 收盘（北京 2026-11-06 早间到达）",
-      "premarket": "2026-11-06 今早日韩实时 + 盘前新闻/投喂增量"
+      "base": "2026-11-06 A股收盘（基准层）",
+      "overnight": "美东 2026-11-06 收盘（北京 2026-11-07 早间到达）",
+      "premarket": "2026-11-09 今早日韩实时 + 盘前新闻/投喂增量"
     },
     "market_state": {
-      "date": "2026-11-05",
+      "date": "2026-11-06",
       "run_date": "2026-11-06",
-      "preopen_partial": true,
+      "preopen_partial": null,
       "us_kline": true,
       "asia": true
     },
     "covered": [
-      {
-        "date": "2026-11-05",
-        "weekday": "周四",
-        "is_trading_day": true,
-        "news": 303,
-        "feeds": 0,
-        "reports": 1442,
-        "macro": true
-      },
       {
         "date": "2026-11-06",
         "weekday": "周五",
         "is_trading_day": true,
         "news": 291,
         "feeds": 0,
-        "reports": 105,
+        "reports": 1098,
         "macro": true
+      },
+      {
+        "date": "2026-11-07",
+        "weekday": "周六",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-11-08",
+        "weekday": "周日",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-11-09",
+        "weekday": "周一",
+        "is_trading_day": true,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
       }
     ],
     "totals": {
-      "news": 594,
+      "news": 291,
       "feeds": 0,
-      "reports": 1547,
-      "covered_days": 2
+      "reports": 1098,
+      "covered_days": 4
     },
-    "missing": []
+    "missing": [
+      "market_thermometer.json 数据日 2026-11-05 落后于基准日 2026-11-06"
+    ]
   },
   "index_context": {
     "上证指数": {
-      "close": "3689.91",
-      "chg_pct": "0.10"
+      "close": "3649.18",
+      "chg_pct": "-1.10"
     },
     "深证成指": {
-      "close": "11471.09",
-      "chg_pct": "1.19"
+      "close": "11175.78",
+      "chg_pct": "-2.57"
     },
     "创业板指": {
-      "close": "2566.80",
-      "chg_pct": "0.87"
+      "close": "2465.23",
+      "chg_pct": "-3.96"
     },
     "科创50": {
-      "close": "1286.68",
-      "chg_pct": "1.68"
+      "close": "1253.20",
+      "chg_pct": "-2.60"
     }
   },
   "summary": {
-    "共振": 7,
-    "背离": 4,
-    "暗线": 12,
-    "双冷": 8
+    "共振": 0,
+    "背离": 0,
+    "暗线": 6,
+    "双冷": 25
   },
   "items": [
     {
-      "sector": "电力设备",
-      "news_count": 23,
-      "news_per_day": 11.5,
-      "flow_yi": 63.1,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
+      "sector": "电子",
+      "news_count": 31,
+      "news_per_day": 7.75,
+      "flow_yi": -138.64,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "国家能源局：“十五五”时期，推动2030年虚拟电厂调节能力达到5000万千瓦",
-        "【国家能源局：“十五五”时期，推动2030年虚拟电厂调节能力达到5000万千",
-        "【美加宇航员太空行走完成国际空间站电力系统升级】美国航空航天局5日发布消息说"
-      ]
-    },
-    {
-      "sector": "通信",
-      "news_count": 16,
-      "news_per_day": 8.0,
-      "flow_yi": -47.11,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "纵横通信新设子公司，含电子元器件业务",
-        "美股科技股回调 中际旭创、新易盛回应：经营正常 订单与交付节奏未变",
-        "2026年6G发展大会将于11月24日至25日举行"
-      ]
-    },
-    {
-      "sector": "传媒",
-      "news_count": 24,
-      "news_per_day": 12.0,
-      "flow_yi": 34.92,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
-      "sample_titles": [
-        "TVB联手腾讯视频布局“横屏短剧”新赛道",
-        "【TVB联手腾讯视频布局“横屏短剧”新赛道】无线集团有限公司（TVB）11月",
-        "巨星传奇发布UNI-DOGGIE机器狗 已获经销商1000台采购订单"
-      ]
-    },
-    {
-      "sector": "有色金属",
-      "news_count": 21,
-      "news_per_day": 10.5,
-      "flow_yi": 18.62,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
-      "sample_titles": [
-        "TVB联手腾讯视频布局“横屏短剧”新赛道",
-        "【TVB联手腾讯视频布局“横屏短剧”新赛道】无线集团有限公司（TVB）11月",
-        "光大期货：非农定价窗口开启，现货黄金考验4100美元关口"
+        "【美国制造业就业重回 “解放日” 关税前水平】美国制造业就业人数已经反弹，超",
+        "郑栅洁主持召开民营企业座谈会 围绕抓好年内经济工作落实、研究明年政策举措听取",
+        "【郑栅洁主任主持召开民营企业座谈会 围绕抓好年内经济工作落实、研究明年政策举"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 17,
-      "news_per_day": 8.5,
-      "flow_yi": 18.35,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
-      "sample_titles": [
-        "人形机器人概念表现活跃 兆丰股份逼近20CM涨停",
-        "三星SDS龟尾AI数据中心动工",
-        "东方日升：能够为人形机器人电力结构提供相关配件"
-      ]
-    },
-    {
-      "sector": "非银金融",
-      "news_count": 11,
-      "news_per_day": 5.5,
-      "flow_yi": -14.28,
+      "news_count": 3,
+      "news_per_day": 0.75,
+      "flow_yi": -58.57,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "报道称部分投资者对Anthropic能否按计划于下周开展路演、赶在11月上市",
-        "超聚变、龙行天下等4家公司IPO即将上会",
-        "上海首单能源类公募REITs获批"
+        "【美国制造业就业重回 “解放日” 关税前水平】美国制造业就业人数已经反弹，超",
+        "云深处发布四足机器人绝影X50：负载50公斤可连续跑超2公里",
+        "中国石油集团旗下公司与宇树科技拟牵手 欲发力工业具身智能"
+      ]
+    },
+    {
+      "sector": "电力设备",
+      "news_count": 2,
+      "news_per_day": 0.5,
+      "flow_yi": -50.06,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "智光电气：控股子公司签订1.14亿元储能系统设备买卖合同",
+        "通合科技：拟投资10.03亿元建设算力储能一体化智能成套电源装备产业化项目"
+      ]
+    },
+    {
+      "sector": "通信",
+      "news_count": 6,
+      "news_per_day": 1.5,
+      "flow_yi": -45.42,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "AST SpaceMobile：将使用Firefly Aerospace的M",
+        "深南电路：当前公司算力相关业务需求持续向好 光模块及处理器类载板等产品订单饱",
+        "中国代表团完成国际电信联盟第609号决议第23次磋商会议参会任务"
+      ]
+    },
+    {
+      "sector": "医药生物",
+      "news_count": 3,
+      "news_per_day": 0.75,
+      "flow_yi": -40.99,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "美迪西：实验用猴价格上行供应偏紧 已采取灵活报价策略",
+        "福元医药：乌帕替尼缓释片获药品注册证书",
+        "摩根大通在恒瑞医药H股的持股比例于11月3日从10.43%降至9.47%"
+      ]
+    },
+    {
+      "sector": "有色金属",
+      "news_count": 18,
+      "news_per_day": 4.5,
+      "flow_yi": -40.15,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "中铝国际：九冶拟以人民币1亿元转让九冶三维60%股权",
+        "中铝国际：拟签约65.56亿元几内亚氧化铝项目EPC合同，尚需股东会批准",
+        "【中铝国际：完成回购注销91.83万股限制性股票】中铝国际公告称，2026年"
       ]
     },
     {
       "sector": "计算机",
-      "news_count": 57,
-      "news_per_day": 28.5,
-      "flow_yi": 13.99,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
-      "sample_titles": [
-        "国家能源局：“十五五”时期，我国用电需求预计年均增量达到约6000亿度",
-        "【国家能源局：“十五五”时期，我国用电需求预计年均增量达到约6000亿度】1",
-        "【京东健康CEO：将和辉瑞、默克、诺和等超20家全球医药健康品牌签约】京东健"
-      ]
-    },
-    {
-      "sector": "煤炭",
-      "news_count": 3,
-      "news_per_day": 1.5,
-      "flow_yi": -12.25,
+      "news_count": 19,
+      "news_per_day": 4.75,
+      "flow_yi": -39.04,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "国家发展改革委：今冬供暖季能源供应总体能够满足需求",
-        "国内商品期货早盘开盘 主力合约跌多涨少",
-        "国内商品期货夜盘开盘 主力合约多数上涨"
+        "摩尔线程完成3万亿级参数Kimi-K3.1 Pro适配 支持文本与图片推理",
+        "刹车踏板风波一个月后，尊界V800重启宣传",
+        "报道：软银正就向OpenAI投资数亿美元进行洽谈"
       ]
     },
     {
-      "sector": "电子",
-      "news_count": 56,
-      "news_per_day": 28.0,
-      "flow_yi": 12.05,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
+      "sector": "传媒",
+      "news_count": 7,
+      "news_per_day": 1.75,
+      "flow_yi": -24.42,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "【中荷出口管制对话机制会议在深圳举行】2026年11月5日，中荷出口管制对话",
-        "中荷出口管制对话机制会议在深圳举行",
-        "国家能源局：“十五五”时期，我国用电需求预计年均增量达到约6000亿度"
+        "纽氏达特创业板IPO定于11月13日上会",
+        "广电总局部署开展新一轮微短剧专项治理工作",
+        "顶配价格超11万元 苹果首款触控版MacBook Pro开售即“破发”"
+      ]
+    },
+    {
+      "sector": "基础化工",
+      "news_count": 4,
+      "news_per_day": 1.0,
+      "flow_yi": -24.41,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "郑栅洁主持召开民营企业座谈会 围绕抓好年内经济工作落实、研究明年政策举措听取",
+        "【郑栅洁主任主持召开民营企业座谈会 围绕抓好年内经济工作落实、研究明年政策举",
+        "国内商品期货夜盘开盘 主力合约多数下跌"
+      ]
+    },
+    {
+      "sector": "国防军工",
+      "news_count": 7,
+      "news_per_day": 1.75,
+      "flow_yi": -15.32,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "伊朗媒体Fars News：伊朗革命卫队称在格什姆岛上空击落了一架美国MQ-",
+        "沙特联军在麦加地区拦截一架无人机 胡塞武装袭击持续",
+        "又一荷兰客机遭炸弹威胁 未发现爆炸物"
+      ]
+    },
+    {
+      "sector": "非银金融",
+      "news_count": 9,
+      "news_per_day": 2.25,
+      "flow_yi": -12.98,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "纽氏达特创业板IPO定于11月13日上会",
+        "招商证券落地第三批互换便利业务首批股票投资",
+        "已买入股票！中信、国泰海通、中金、银河、招商正式官宣！"
+      ]
+    },
+    {
+      "sector": "食品饮料",
+      "news_count": 10,
+      "news_per_day": 2.5,
+      "flow_yi": -12.31,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "【工资数据对股票的支撑作用有限】10 月份的招聘人数超出预期，这印证了经济和",
+        "存储芯片涨价潮分化 产能扩张难解近渴",
+        "美国10月非农大超预期 市场加大美联储12月加息押注"
       ]
     },
     {
       "sector": "汽车",
-      "news_count": 16,
-      "news_per_day": 8.0,
-      "flow_yi": 11.17,
-      "verdict": "共振",
-      "verdict_raw": "真共振",
-      "level": "ok",
-      "desc": "语料与资金同向，主线成立",
+      "news_count": 7,
+      "news_per_day": 1.75,
+      "flow_yi": -12.23,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "国家能源局：“十五五”时期，推动2030年虚拟电厂调节能力达到5000万千瓦",
-        "【国家能源局：“十五五”时期，推动2030年虚拟电厂调节能力达到5000万千",
-        "本田汽车：对巴西马瑙斯工厂的投资旨在满足日益增长的需求。"
+        "【马斯克长期投资方套现特斯拉，并减持SpaceX仓位】一家重要早期投资方已经",
+        "刹车踏板风波一个月后，尊界V800重启宣传",
+        "特斯拉将Cybertruck Cyberbeast在美国价格上调至102,4"
       ]
     },
     {
-      "sector": "银行",
-      "news_count": 13,
-      "news_per_day": 6.5,
-      "flow_yi": 8.51,
+      "sector": "公用事业",
+      "news_count": 4,
+      "news_per_day": 1.0,
+      "flow_yi": 9.59,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "沙特下调12月亚洲原油售价至六年来最低水平",
-        "盛宝银行：民主党并非要终结AI热潮，恐慌性抛售放大市场跌幅",
-        "当科技巨头成为“影子银行”：AI繁荣下的信用隐忧"
+        "“十五五”能源安全底座怎么筑？国家发改委划出重点",
+        "云深处发布四足机器人绝影X50：负载50公斤可连续跑超2公里",
+        "英伟达“盯上”电信老机房 拟打造1吉瓦的AI推理网络"
       ]
     },
     {
-      "sector": "国防军工",
-      "news_count": 18,
-      "news_per_day": 9.0,
-      "flow_yi": -8.18,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "【美加宇航员太空行走完成国际空间站电力系统升级】美国航空航天局5日发布消息说",
-        "美加宇航员太空行走完成国际空间站电力系统升级",
-        "贝索斯旗下蓝色起源将关键火箭发射推迟至明年1月"
-      ]
-    },
-    {
-      "sector": "石油石化",
-      "news_count": 12,
-      "news_per_day": 6.0,
-      "flow_yi": -8.14,
+      "sector": "建筑材料",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -8.84,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
+      "sample_titles": []
+    },
+    {
+      "sector": "银行",
+      "news_count": 10,
+      "news_per_day": 2.5,
+      "flow_yi": 8.53,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "国家能源局：“十五五”时期 将进一步做大油气合作“朋友圈”",
-        "国家能源局：“十五五”时期，将进一步做大油气合作“朋友圈”",
-        "布伦特原油期货向上触及100美元/桶"
+        "【法国外贸银行： 薪资难推升通胀】法国外贸银行的克里斯托弗・霍奇对时薪上涨释",
+        "广电总局部署开展新一轮微短剧专项治理工作",
+        "富国银行下调康菲石油目标价"
       ]
     },
     {
-      "sector": "交通运输",
+      "sector": "轻工制造",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": -7.72,
+      "flow_yi": -4.34,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
@@ -321,74 +387,18 @@
       "sector": "商贸零售",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": 7.69,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": []
-    },
-    {
-      "sector": "医药生物",
-      "news_count": 7,
-      "news_per_day": 3.5,
-      "flow_yi": 5.71,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": [
-        "【京东健康CEO：将和辉瑞、默克、诺和等超20家全球医药健康品牌签约】京东健",
-        "京东健康CEO：将和辉瑞、默克、诺和等超20家全球医药健康品牌签约",
-        "国家中医药管理局原党组书记、局长余艳红被查"
-      ]
-    },
-    {
-      "sector": "建筑材料",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": -4.62,
+      "flow_yi": -4.25,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": []
-    },
-    {
-      "sector": "食品饮料",
-      "news_count": 18,
-      "news_per_day": 9.0,
-      "flow_yi": -4.4,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "【北京：落实全会精神 筑牢首都市场安全防线 推动平台经济“破卷向善”】近日，",
-        "无印良品：中国消费者信息确认安全，与此次日本的事件无关",
-        "安徽省人民政府驻广州办事处党组书记、主任周志扬：安徽大力推动科技赋能文旅 欢"
-      ]
-    },
-    {
-      "sector": "公用事业",
-      "news_count": 17,
-      "news_per_day": 8.5,
-      "flow_yi": -4.24,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
-      "sample_titles": [
-        "国家能源局：“十五五”时期，推动2030年虚拟电厂调节能力达到5000万千瓦",
-        "【国家能源局：“十五五”时期，推动2030年虚拟电厂调节能力达到5000万千",
-        "国家能源局：“十五五”时期，我国用电需求预计年均增量达到约6000亿度"
-      ]
     },
     {
       "sector": "建筑装饰",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": -3.61,
+      "flow_yi": -3.72,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
@@ -396,47 +406,25 @@
       "sample_titles": []
     },
     {
-      "sector": "美容护理",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": 3.12,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": []
-    },
-    {
       "sector": "房地产",
-      "news_count": 3,
+      "news_count": 6,
       "news_per_day": 1.5,
-      "flow_yi": 2.69,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "flow_yi": -3.55,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "海南出台商品住房销售新政",
-        "所有类型的抵押房法拍都必须优先偿还银行债务？法院判决“定了”",
-        "河南：健全住房公积金异地协同机制 推动住房公积金省内互认互贷"
+        "加拿大10月失业率升至六个月高位，就业人数意外减少4700人",
+        "北京：到2030年城镇住房总量保持稳定 供给结构与需求变化更加适配",
+        "北京：“十五五”期间继续推进2000年底前建成、居民改造意愿强烈的老旧小区改"
       ]
-    },
-    {
-      "sector": "社会服务",
-      "news_count": 0,
-      "news_per_day": 0.0,
-      "flow_yi": 2.51,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": []
     },
     {
       "sector": "家用电器",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": -1.54,
+      "flow_yi": -2.93,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
@@ -444,53 +432,60 @@
       "sample_titles": []
     },
     {
-      "sector": "环保",
-      "news_count": 1,
-      "news_per_day": 0.5,
-      "flow_yi": 1.22,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": [
-        "伟明环保：国内垃圾焚烧市场仍存在结构性机会"
-      ]
-    },
-    {
-      "sector": "基础化工",
-      "news_count": 5,
-      "news_per_day": 2.5,
-      "flow_yi": 1.13,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": [
-        "【广信股份：目前农药市场处于底部调整期】广信股份(603599)在2026年",
-        "“新材料之王”提价3000元/吨 碳纤维新兴应用领域崛起",
-        "华泰证券：供给优化与全球补库共振，大宗化工品景气有望逐步回升"
-      ]
+      "sector": "社会服务",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -2.91,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": []
     },
     {
       "sector": "农林牧渔",
-      "news_count": 11,
-      "news_per_day": 5.5,
-      "flow_yi": 1.03,
+      "news_count": 6,
+      "news_per_day": 1.5,
+      "flow_yi": 2.18,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "全国已累计收购秋粮1亿吨",
-        "【全国已累计收购秋粮1亿吨】从国家发展改革委新闻发布会上获悉，秋粮收购开局平",
-        "国家发改委：预计今年供暖季全国最高用电负荷将达15.2亿千瓦左右"
+        "十四届全国人大常委会第二十五次会议在京闭幕",
+        "郑栅洁主持召开民营企业座谈会 围绕抓好年内经济工作落实、研究明年政策举措听取",
+        "【郑栅洁主任主持召开民营企业座谈会 围绕抓好年内经济工作落实、研究明年政策举"
       ]
     },
     {
-      "sector": "轻工制造",
+      "sector": "美容护理",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": -0.94,
+      "flow_yi": 2.17,
+      "verdict": "暗线",
+      "verdict_raw": "暗线",
+      "level": "info",
+      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sample_titles": []
+    },
+    {
+      "sector": "环保",
+      "news_count": 1,
+      "news_per_day": 0.25,
+      "flow_yi": -1.97,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "中国能建与中国黄金集团签署战略合作协议"
+      ]
+    },
+    {
+      "sector": "交通运输",
+      "news_count": 0,
+      "news_per_day": 0.0,
+      "flow_yi": -1.88,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
@@ -499,9 +494,37 @@
     },
     {
       "sector": "钢铁",
+      "news_count": 1,
+      "news_per_day": 0.25,
+      "flow_yi": -1.25,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "国内商品期货夜盘开盘 主力合约多数下跌"
+      ]
+    },
+    {
+      "sector": "综合",
+      "news_count": 3,
+      "news_per_day": 0.75,
+      "flow_yi": -1.21,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
+      "sample_titles": [
+        "【郑栅洁主任主持召开民营企业座谈会 围绕抓好年内经济工作落实、研究明年政策举",
+        "深南电路：当前公司算力相关业务需求持续向好 光模块及处理器类载板等产品订单饱",
+        "北京：“十五五”期间继续推进2000年底前建成、居民改造意愿强烈的老旧小区改"
+      ]
+    },
+    {
+      "sector": "煤炭",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": 0.85,
+      "flow_yi": 0.81,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
@@ -509,25 +532,25 @@
       "sample_titles": []
     },
     {
-      "sector": "综合",
-      "news_count": 10,
-      "news_per_day": 5.0,
-      "flow_yi": 0.43,
-      "verdict": "暗线",
-      "verdict_raw": "暗线",
-      "level": "info",
-      "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
+      "sector": "石油石化",
+      "news_count": 8,
+      "news_per_day": 2.0,
+      "flow_yi": -0.56,
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "光大期货：非农定价窗口开启，现货黄金考验4100美元关口",
-        "全国已累计收购秋粮1亿吨",
-        "【全国已累计收购秋粮1亿吨】从国家发展改革委新闻发布会上获悉，秋粮收购开局平"
+        "郑栅洁主持召开民营企业座谈会 围绕抓好年内经济工作落实、研究明年政策举措听取",
+        "【郑栅洁主任主持召开民营企业座谈会 围绕抓好年内经济工作落实、研究明年政策举",
+        "“三桶油”进博会累计签约超700亿美元"
       ]
     },
     {
       "sector": "纺织服饰",
       "news_count": 0,
       "news_per_day": 0.0,
-      "flow_yi": 0.17,
+      "flow_yi": 0.16,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
