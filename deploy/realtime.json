@@ -1,8 +1,8 @@
 {
  "meta": {
-  "updated_at": "2026-11-06 22:16:20",
-  "data_date": "2026-11-06",
-  "market_status": "closed",
+  "updated_at": "2026-11-09 09:15:21",
+  "data_date": "2026-11-09",
+  "market_status": "trading",
   "algorithm": "1.1.0",
   "next_hint": "每 30 分钟自动刷新（交易日 9:30-15:00，GitHub Actions 驱动）"
  },
@@ -11,97 +11,97 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3649.18,
-    "chg_pct": -1.1,
-    "turnover_yi": 7726.3,
-    "high": 3660.49,
-    "low": 3610.2
+    "price": 3649.16,
+    "chg_pct": -0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "399001",
     "name": "深证成指",
     "price": 11175.78,
-    "chg_pct": -2.57,
-    "turnover_yi": 8851.6,
-    "high": 11303.22,
-    "low": 11044.56
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "399006",
     "name": "创业板指",
     "price": 2465.23,
-    "chg_pct": -3.96,
-    "turnover_yi": 4410.7,
-    "high": 2506.97,
-    "low": 2438.72
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000688",
     "name": "科创50",
     "price": 1253.2,
-    "chg_pct": -2.6,
-    "turnover_yi": 896.3,
-    "high": 1288.38,
-    "low": 1219.53
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4054.28,
-    "chg_pct": -1.44,
-    "turnover_yi": 4788.4,
-    "high": 4069.07,
-    "low": 4013.79
+    "price": 4054.14,
+    "chg_pct": -0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    },
    {
     "code": "000905",
     "name": "中证500",
     "price": 6597.35,
-    "chg_pct": -2.13,
-    "turnover_yi": 2913.9,
-    "high": 6692.45,
-    "low": 6512.13
+    "chg_pct": 0.0,
+    "turnover_yi": 0.0,
+    "high": 0.0,
+    "low": 0.0
    }
   ],
   "breadth": {
-   "up": 670,
-   "down": 3863,
-   "flat": 73,
-   "ratio": 0.17,
-   "limit_up": 37,
-   "limit_down": 18,
-   "main_net_yi": -475.6,
-   "turnover_yi": 13997.9,
+   "up": 2315,
+   "down": 1011,
+   "flat": 1280,
+   "ratio": 2.29,
+   "limit_up": 135,
+   "limit_down": 30,
+   "main_net_yi": 0.0,
+   "turnover_yi": 0.0,
    "total": 4606
   }
  },
  "L1": {
   "sentiment": {
-   "score": 9,
-   "S1": 4,
-   "S2": 31,
-   "S3": 0,
-   "S4": 0,
+   "score": 63,
+   "S1": 57,
+   "S2": 100,
+   "S3": 40,
+   "S4": 50,
    "inputs": {
-    "ratio": 0.17,
-    "limit_up": 37,
-    "avg_idx_pct": -2.3,
-    "main_net_yi": -475.6
+    "ratio": 2.29,
+    "limit_up": 135,
+    "avg_idx_pct": 0.0,
+    "main_net_yi": 0
    }
   },
   "state": {
-   "state": "panic",
-   "label": "恐慌下跌",
-   "note": "空仓或极轻仓观望，不抄底，等企稳信号",
-   "score": 9
+   "state": "overheat",
+   "label": "情绪过热预警",
+   "note": "情绪分极高/涨停过多，禁止追高，仓位收敛至上限以内",
+   "score": 63
   }
  },
  "L2": {
   "range": [
-   0,
-   20
+   30,
+   50
   ],
-  "note": "恐慌下跌，空仓或极轻仓等待企稳",
+  "note": "过热收敛，上限 50%，禁止新增追板仓位",
   "rules": [
    "单票仓位 ≤ 10%",
    "单一板块集中度 ≤ 30%",
@@ -110,290 +110,21 @@
   ]
  },
  "L3": {
-  "sectors": [
-   {
-    "name": "公用事业",
-    "net_yi": 9.59,
-    "jumbo_yi": 8.07,
-    "block_yi": 1.53,
-    "pct": 2.54
-   },
-   {
-    "name": "电力",
-    "net_yi": 9.4,
-    "jumbo_yi": 7.89,
-    "block_yi": 1.52,
-    "pct": 2.69
-   },
-   {
-    "name": "银行",
-    "net_yi": 8.53,
-    "jumbo_yi": -1.78,
-    "block_yi": 10.31,
-    "pct": 2.41
-   },
-   {
-    "name": "银行Ⅱ",
-    "net_yi": 8.53,
-    "jumbo_yi": -1.78,
-    "block_yi": 10.31,
-    "pct": 2.41
-   },
-   {
-    "name": "半导体设备",
-    "net_yi": 7.4,
-    "jumbo_yi": 1.16,
-    "block_yi": 6.24,
-    "pct": 1.54
-   },
-   {
-    "name": "水力发电",
-    "net_yi": 6.33,
-    "jumbo_yi": 3.16,
-    "block_yi": 3.17,
-    "pct": 6.97
-   },
-   {
-    "name": "国有大型银行Ⅲ",
-    "net_yi": 5.09,
-    "jumbo_yi": 2.09,
-    "block_yi": 3.0,
-    "pct": 3.77
-   },
-   {
-    "name": "集成电路制造",
-    "net_yi": 4.97,
-    "jumbo_yi": 4.67,
-    "block_yi": 0.31,
-    "pct": 3.27
-   },
-   {
-    "name": "铁路公路",
-    "net_yi": 4.81,
-    "jumbo_yi": 5.52,
-    "block_yi": -0.72,
-    "pct": 8.24
-   },
-   {
-    "name": "电信运营商",
-    "net_yi": 4.05,
-    "jumbo_yi": 0.99,
-    "block_yi": 3.06,
-    "pct": 11.12
-   },
-   {
-    "name": "高速公路",
-    "net_yi": 3.99,
-    "jumbo_yi": 4.29,
-    "block_yi": -0.31,
-    "pct": 14.53
-   },
-   {
-    "name": "城商行Ⅲ",
-    "net_yi": 3.65,
-    "jumbo_yi": 0.4,
-    "block_yi": 3.25,
-    "pct": 4.27
-   },
-   {
-    "name": "种植业",
-    "net_yi": 3.23,
-    "jumbo_yi": 2.4,
-    "block_yi": 0.83,
-    "pct": 4.07
-   },
-   {
-    "name": "个护用品",
-    "net_yi": 3.19,
-    "jumbo_yi": -0.12,
-    "block_yi": 3.31,
-    "pct": 17.81
-   },
-   {
-    "name": "生活用纸",
-    "net_yi": 3.17,
-    "jumbo_yi": -0.13,
-    "block_yi": 3.3,
-    "pct": 20.28
-   },
-   {
-    "name": "种子",
-    "net_yi": 2.84,
-    "jumbo_yi": 2.12,
-    "block_yi": 0.72,
-    "pct": 5.56
-   },
-   {
-    "name": "农林牧渔",
-    "net_yi": 2.18,
-    "jumbo_yi": 4.05,
-    "block_yi": -1.87,
-    "pct": 0.81
-   },
-   {
-    "name": "美容护理",
-    "net_yi": 2.17,
-    "jumbo_yi": -0.32,
-    "block_yi": 2.49,
-    "pct": 5.24
-   },
-   {
-    "name": "通信服务",
-    "net_yi": 2.17,
-    "jumbo_yi": 1.74,
-    "block_yi": 0.43,
-    "pct": 1.73
-   },
-   {
-    "name": "轨交设备Ⅲ",
-    "net_yi": 1.98,
-    "jumbo_yi": -0.47,
-    "block_yi": 2.44,
-    "pct": 5.27
-   }
-  ],
-  "mainline": "公用事业(+9.59亿) → 电力(+9.4亿) → 银行(+8.53亿)",
-  "resonance": [
-   "全市场涨停 37 只，情绪有温度"
-  ],
-  "conc": {
-   "lead": "公用事业",
-   "ratio": 1.02,
-   "alert": false
-  }
+  "sectors": [],
+  "mainline": "数据不可用",
+  "resonance": []
  },
  "L4": {
-  "candidates": [
-   {
-    "code": "sz002371",
-    "name": "北方华创",
-    "zdf": -0.18,
-    "zljlr": 6.19,
-    "lb": 1.1,
-    "hsl": 1.91,
-    "turnover_yi": 76.94,
-    "price": 560.0,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sh600900",
-    "name": "长江电力",
-    "zdf": 2.15,
-    "zljlr": 5.14,
-    "lb": 1.15,
-    "hsl": 0.69,
-    "turnover_yi": 50.41,
-    "price": 29.91,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz003006",
-    "name": "百亚股份",
-    "zdf": -1.07,
-    "zljlr": 3.4,
-    "lb": 0.96,
-    "hsl": 10.95,
-    "turnover_yi": 10.94,
-    "price": 23.09,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sz002300",
-    "name": "太阳电缆",
-    "zdf": 3.02,
-    "zljlr": 2.77,
-    "lb": 1.76,
-    "hsl": 21.96,
-    "turnover_yi": 14.01,
-    "price": 8.53,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh600410",
-    "name": "华胜天成",
-    "zdf": 5.32,
-    "zljlr": 2.48,
-    "lb": 2.56,
-    "hsl": 11.43,
-    "turnover_yi": 15.86,
-    "price": 12.68,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh601328",
-    "name": "交通银行",
-    "zdf": 1.22,
-    "zljlr": 2.09,
-    "lb": 0.71,
-    "hsl": 0.82,
-    "turnover_yi": 17.51,
-    "price": 8.3,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sh601766",
-    "name": "中国中车",
-    "zdf": 2.66,
-    "zljlr": 1.88,
-    "lb": 1.02,
-    "hsl": 0.99,
-    "turnover_yi": 15.75,
-    "price": 6.55,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sh601988",
-    "name": "中国银行",
-    "zdf": 1.18,
-    "zljlr": 1.77,
-    "lb": 0.82,
-    "hsl": 0.15,
-    "turnover_yi": 21.53,
-    "price": 6.85,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sh600641",
-    "name": "先导基电",
-    "zdf": 1.23,
-    "zljlr": 1.73,
-    "lb": 2.78,
-    "hsl": 17.98,
-    "turnover_yi": 52.49,
-    "price": 31.4,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   },
-   {
-    "code": "sh600028",
-    "name": "中国石化",
-    "zdf": 1.75,
-    "zljlr": 1.7,
-    "lb": 0.83,
-    "hsl": 0.31,
-    "turnover_yi": 16.54,
-    "price": 5.8,
-    "stype": "GP-A",
-    "type": "低吸候选"
-   }
-  ],
+  "candidates": [],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
  "L5": {
   "alerts": [
    {
-    "level": "green",
-    "type": "正常",
-    "msg": "未触发预警信号，按状态机规则执行即可"
+    "level": "red",
+    "type": "情绪过热",
+    "msg": "情绪分 63 / 涨停 135 只 / 涨跌比 2.29，短线过热，禁止追高"
    }
   ]
  },
