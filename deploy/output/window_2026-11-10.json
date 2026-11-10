@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-09 22:05",
-  "session": "close",
+  "generated_at": "2026-11-10 08:41",
+  "session": "preopen",
   "data_date": "2026-11-09",
   "for_date": "2026-11-10",
   "data_date_note": "",
@@ -25,9 +25,17 @@
     "bias": "中性",
     "bias_score": 0,
     "t1_focus": [
-      "无新增共振，维持既有持仓观察"
+      "电子 / 通信资金能否连续第 2 日为正（本档唯一共振 A 的全部依据）",
+      "3,653.05（11/09 低点）的承接；破位且 11:00 前不收回则缩量下跌确认",
+      "银行能否维持趋势向上 + 资金为正 + L3 三确认",
+      "美股 11/09 收盘（北京 11/10 04:00 后）须由明日盘前版重做映射"
     ],
-    "risks": [],
+    "risks": [
+      "把指数翻红误读为市场转强（涨跌比仅 0.66）",
+      "把 11/06 美股修复当作今夜延续（今夜 11/09 尚未开盘）",
+      "缩量修复演变为缩量下跌（成交连续第 2 日缩量 10.6%）",
+      "11/12–11/14 美国 10 月 CPI 的事件风险"
+    ],
     "headline": ""
   },
   "layers": {
@@ -37,8 +45,8 @@
   },
   "market_state": {
     "date": "2026-11-09",
-    "run_date": "2026-11-09",
-    "preopen_partial": null,
+    "run_date": "2026-11-10",
+    "preopen_partial": true,
     "us_kline": true,
     "asia": true
   },
@@ -49,23 +57,23 @@
       "is_trading_day": true,
       "news": 299,
       "feeds": 0,
-      "reports": 1304,
+      "reports": 1494,
       "macro": true
     },
     {
       "date": "2026-11-10",
       "weekday": "周二",
       "is_trading_day": true,
-      "news": 0,
+      "news": 285,
       "feeds": 0,
-      "reports": 0,
-      "macro": false
+      "reports": 127,
+      "macro": true
     }
   ],
   "totals": {
-    "news": 299,
+    "news": 584,
     "feeds": 0,
-    "reports": 1304,
+    "reports": 1621,
     "covered_days": 2
   },
   "missing": []
