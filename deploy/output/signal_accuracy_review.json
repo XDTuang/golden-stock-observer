@@ -1,24 +1,22 @@
 {
- "data_date": "2026-11-09",
- "generated_at": "2026-11-09 19:21:22",
+ "data_date": "2026-11-11",
+ "generated_at": "2026-11-11 19:11:10",
  "source": "golden_diamond.json + review_price_pool.json(tencent_qfq) + review_index_pool.json",
  "total_hits": 0,
- "total_hits_raw": 8,
+ "total_hits_raw": 6,
  "excluded_signals": {
   "signals": [
    "买入"
   ],
   "reason": "用户 2026-10-26 授权出参考池（8/8 数据日胜率低于全池、外部基准 3 日全负）",
   "excluded_hits": {
-   "买入": 7
+   "买入": 6
   }
  },
- "state_tag_hits": {
-  "红区黄柱连续3天": 1
- },
- "state_tag_hits_total": 1,
+ "state_tag_hits": {},
+ "state_tag_hits_total": 0,
  "valid_samples": 0,
- "state_tag_samples": 1,
+ "state_tag_samples": 0,
  "excluded_samples": 0,
  "baseline_mean_pct": null,
  "baseline_median_pct": null,
@@ -27,7 +25,7 @@
  "cohort_baseline": {
   "method": "同日期 × 同前20日涨幅分桶（-999~-18/-18~-12/-12~-6/-6~0/0~999）的池内其它标的超额均值",
   "min_n": 20,
-  "cells": 11605,
+  "cells": 11608,
   "baseline_mean_pct": null,
   "baseline_median_pct": null,
   "n": 0,
@@ -45,24 +43,7 @@
   }
  },
  "by_signal": {},
- "state_tags": {
-  "红区黄柱连续3天": {
-   "role": "state_descriptor",
-   "display_name": "趋势线下方状态（原「红区黄柱连续3天」）",
-   "semantics": "中期趋势仍多头（金钻趋势 > 金牛2），但价格已连续 ≥3 个交易日收于趋势线下方 2.5% 以上 ⇒ **破位 / 超跌状态**，不是蓄势。机制上「黄柱」判的是趋势线高于当日最低价，属滞后指标在下跌中被动翻亮。",
-   "hits_today": 1,
-   "n": 1,
-   "win_rate_pct": 0.0,
-   "mean_pct": 0.0,
-   "median_pct": 0.0,
-   "excess_vs_hs300_mean_pct": 0.0,
-   "excess_vs_cohort_mean_pct": null,
-   "excess_vs_cohort_median_pct": null,
-   "excess_vs_cohort_t_stat": null,
-   "judge": "不参与有效性判读（角色=state_descriptor）：同类超额 None，|t|=NA <2 ⇒ 无增量区分力",
-   "upgrade_gate": "与正向信号共现样本累积至 n≥20，且相对同类超额方向一致（|t|≥2），才复核是否升级为 veto（否决条件）或回正为入场信号。"
-  }
- },
+ "state_tags": {},
  "signal_roles": {
   "generated_for": "金钻信号准确率复盘",
   "roles": {
@@ -149,17 +130,7 @@
    "红区黄柱连续4天",
    "红区黄柱连续5天"
   ],
-  "detail": [
-   {
-    "code": "sh600938",
-    "name": "中国海油",
-    "primary": "红区黄柱连续3天",
-    "report_date": "2026-11-09",
-    "signal_date": "2026-11-05",
-    "streak": 3,
-    "derived_by": "streak=3 反推"
-   }
-  ]
+  "detail": []
  },
  "market_env": {
   "hs300_day_pct": null,
