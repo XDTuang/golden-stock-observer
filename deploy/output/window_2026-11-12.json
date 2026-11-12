@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-11 22:03",
-  "session": "close",
+  "generated_at": "2026-11-12 08:47",
+  "session": "preopen",
   "data_date": "2026-11-11",
   "for_date": "2026-11-12",
   "data_date_note": "",
@@ -22,12 +22,20 @@
     "exists": true,
     "gap_days": 1,
     "stale": false,
-    "bias": "中性",
-    "bias_score": 0,
+    "bias": "中性偏多",
+    "bias_score": 1,
     "t1_focus": [
-      "无新增共振，维持既有持仓观察"
+      "高开 3,695–3,717 属基准；高开 >1.2% 不建仓、只减持",
+      "PCB / 元件能否连续第 2 日资金为正且合计 ≥50 亿（单链 → 硬件群 的唯一判据）",
+      "新易盛是否出现放量长上影（链内兑现信号，持仓同步减半）",
+      "收盘与 EMA20 3,692.60 的关系：站上 = B 成立；收在 3,663.72 下方 = C 成立"
     ],
-    "risks": [],
+    "risks": [
+      "两席抽干全市场，涨跌比由 3.54 降至 1.97（参与面收敛）",
+      "A股 大涨而港股下跌（恒生 -0.98% / 恒科 -1.41%），离岸未参与",
+      "光模块第三日加速且无新事件，新易盛距 MA5 +15.28% 极端偏离",
+      "美债 10Y 4.98% 距 5% 仅 2bp，久期最长的 AI 硬件首当其冲"
+    ],
     "headline": ""
   },
   "layers": {
@@ -37,8 +45,8 @@
   },
   "market_state": {
     "date": "2026-11-11",
-    "run_date": "2026-11-11",
-    "preopen_partial": null,
+    "run_date": "2026-11-12",
+    "preopen_partial": true,
     "us_kline": true,
     "asia": true
   },
@@ -47,28 +55,26 @@
       "date": "2026-11-11",
       "weekday": "周三",
       "is_trading_day": true,
-      "news": 289,
-      "feeds": 0,
-      "reports": 1323,
+      "news": 299,
+      "feeds": 1,
+      "reports": 1472,
       "macro": true
     },
     {
       "date": "2026-11-12",
       "weekday": "周四",
       "is_trading_day": true,
-      "news": 0,
+      "news": 287,
       "feeds": 0,
-      "reports": 0,
-      "macro": false
+      "reports": 121,
+      "macro": true
     }
   ],
   "totals": {
-    "news": 289,
-    "feeds": 0,
-    "reports": 1323,
+    "news": 586,
+    "feeds": 1,
+    "reports": 1593,
     "covered_days": 2
   },
-  "missing": [
-    "market_thermometer.json 数据日 2026-11-10 落后于基准日 2026-11-11"
-  ]
+  "missing": []
 }
