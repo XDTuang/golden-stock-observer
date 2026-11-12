@@ -6,6 +6,7 @@
 # 做什么：
 #   1) git pull 拉取仓库最新（拿到浏览器/手机端投喂与推演请求）
 #   2) 归档 feed/inbox/ 新投喂（feed_archive.py → feed/archive/）
+#   2.5) 脱敏守卫 check_feed_desensitize.py（红灯自动 --fix 掩码，复扫确认）
 #   3) 读取 commands/pending/ 的推演请求（打印出来给 agent 看），归档到 done/
 # 不做什么：不做系统通知、不自动 git push（推演流程末尾统一提交）
 # 用法：bash review/sync_feed_before_review.sh
@@ -25,6 +26,22 @@ fi
 
 echo "─── 2/3 归档投喂 inbox ───"
 "$PY" feed/feed_archive.py 2>&1 | grep -v "跳过附件副本" | tail -8
+
+echo "─── 2.5 脱敏守卫（私域人物名称 / 微信ID / 本机路径 / 手机号 / 个人邮箱）───"
+# 2026-11-12 用户拍板：私域聊天归档中一切可识别人物的信息一律脱敏；存量发现即清理。
+if "$PY" review/check_feed_desensitize.py >/tmp/feed_desens_scan.txt 2>&1; then
+  echo "✅ 归档件已脱敏（6 类检查全绿）"
+else
+  echo "⚠️ 检出未脱敏残留 → 自动掩码（root+deploy 双写）"
+  tail -12 /tmp/feed_desens_scan.txt
+  "$PY" review/check_feed_desensitize.py --fix 2>&1 | tail -3
+  if "$PY" review/check_feed_desensitize.py >/tmp/feed_desens_scan2.txt 2>&1; then
+    echo "✅ 掩码后复扫全绿"
+  else
+    echo "❌ 仍有残留，需人工判断后再入库："
+    tail -10 /tmp/feed_desens_scan2.txt
+  fi
+fi
 
 echo "─── 3/3 读取推演请求 ───"
 shopt -s nullglob
