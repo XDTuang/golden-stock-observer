@@ -1,6 +1,6 @@
 {
  "meta": {
-  "updated_at": "2026-11-13 09:45:17",
+  "updated_at": "2026-11-13 10:15:17",
   "data_date": "2026-11-13",
   "market_status": "trading",
   "algorithm": "1.1.0",
@@ -11,97 +11,97 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3661.93,
+    "price": 3662.17,
     "chg_pct": 0.17,
-    "turnover_yi": 1690.9,
-    "high": 3663.2,
+    "turnover_yi": 3001.3,
+    "high": 3668.97,
     "low": 3652.28
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 11139.73,
-    "chg_pct": -0.52,
-    "turnover_yi": 2051.9,
+    "price": 11182.11,
+    "chg_pct": -0.14,
+    "turnover_yi": 3603.3,
     "high": 11253.31,
     "low": 11114.98
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 2478.08,
-    "chg_pct": -1.25,
-    "turnover_yi": 1056.7,
+    "price": 2492.57,
+    "chg_pct": -0.67,
+    "turnover_yi": 1841.6,
     "high": 2528.99,
     "low": 2470.91
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1324.71,
-    "chg_pct": 1.14,
-    "turnover_yi": 259.6,
-    "high": 1339.83,
+    "price": 1320.42,
+    "chg_pct": 0.81,
+    "turnover_yi": 464.1,
+    "high": 1342.13,
     "low": 1311.61
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4039.69,
-    "chg_pct": -0.1,
-    "turnover_yi": 952.7,
-    "high": 4051.35,
+    "price": 4042.08,
+    "chg_pct": -0.05,
+    "turnover_yi": 1691.2,
+    "high": 4052.06,
     "low": 4028.56
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 6591.85,
-    "chg_pct": -0.19,
-    "turnover_yi": 596.1,
-    "high": 6643.46,
+    "price": 6614.12,
+    "chg_pct": 0.15,
+    "turnover_yi": 1094.0,
+    "high": 6645.62,
     "low": 6572.63
    }
   ],
   "breadth": {
-   "up": 1515,
-   "down": 2813,
-   "flat": 277,
-   "ratio": 0.54,
-   "limit_up": 24,
+   "up": 1928,
+   "down": 2435,
+   "flat": 242,
+   "ratio": 0.79,
+   "limit_up": 29,
    "limit_down": 10,
-   "main_net_yi": -168.09,
-   "turnover_yi": 3118.7,
+   "main_net_yi": -169.65,
+   "turnover_yi": 5457.5,
    "total": 4605
   }
  },
  "L1": {
   "sentiment": {
-   "score": 22,
-   "S1": 14,
-   "S2": 20,
-   "S3": 38,
+   "score": 26,
+   "S1": 20,
+   "S2": 24,
+   "S3": 41,
    "S4": 22,
    "inputs": {
-    "ratio": 0.54,
-    "limit_up": 24,
-    "avg_idx_pct": -0.13,
-    "main_net_yi": -168.09
+    "ratio": 0.79,
+    "limit_up": 29,
+    "avg_idx_pct": 0.05,
+    "main_net_yi": -169.65
    }
   },
   "state": {
-   "state": "panic",
-   "label": "恐慌下跌",
-   "note": "空仓或极轻仓观望，不抄底，等企稳信号",
-   "score": 22
+   "state": "weak",
+   "label": "弱势回调",
+   "note": "防守为主，仅小仓低吸，严格止损",
+   "score": 26
   }
  },
  "L2": {
   "range": [
-   0,
-   20
+   25,
+   40
   ],
-  "note": "恐慌下跌，空仓或极轻仓等待企稳",
+  "note": "弱势回调，防守为主，严格止损",
   "rules": [
    "单票仓位 ≤ 10%",
    "单一板块集中度 ≤ 30%",
@@ -112,153 +112,153 @@
  "L3": {
   "sectors": [
    {
+    "name": "半导体",
+    "net_yi": 10.37,
+    "jumbo_yi": 9.63,
+    "block_yi": 0.73,
+    "pct": 1.08
+   },
+   {
     "name": "半导体设备",
-    "net_yi": 4.47,
-    "jumbo_yi": 1.31,
-    "block_yi": 3.16,
-    "pct": 5.34
+    "net_yi": 9.66,
+    "jumbo_yi": 4.62,
+    "block_yi": 5.04,
+    "pct": 6.4
+   },
+   {
+    "name": "计算机",
+    "net_yi": 6.9,
+    "jumbo_yi": 7.28,
+    "block_yi": -0.38,
+    "pct": 2.07
    },
    {
     "name": "集成电路制造",
-    "net_yi": 4.1,
-    "jumbo_yi": 3.43,
-    "block_yi": 0.67,
-    "pct": 7.17
+    "net_yi": 6.67,
+    "jumbo_yi": 4.26,
+    "block_yi": 2.4,
+    "pct": 7.37
    },
    {
-    "name": "游戏Ⅱ",
-    "net_yi": 4.1,
-    "jumbo_yi": 5.38,
-    "block_yi": -1.27,
-    "pct": 11.63
+    "name": "国防军工",
+    "net_yi": 6.65,
+    "jumbo_yi": 2.45,
+    "block_yi": 4.2,
+    "pct": 3.79
+   },
+   {
+    "name": "IT服务Ⅱ",
+    "net_yi": 5.06,
+    "jumbo_yi": 5.08,
+    "block_yi": -0.02,
+    "pct": 3.47
+   },
+   {
+    "name": "IT服务Ⅲ",
+    "net_yi": 4.91,
+    "jumbo_yi": 4.81,
+    "block_yi": 0.1,
+    "pct": 3.43
    },
    {
     "name": "游戏Ⅲ",
-    "net_yi": 4.08,
-    "jumbo_yi": 5.39,
-    "block_yi": -1.31,
-    "pct": 11.42
-   },
-   {
-    "name": "国有大型银行Ⅲ",
-    "net_yi": 2.27,
-    "jumbo_yi": 1.86,
-    "block_yi": 0.42,
-    "pct": 12.14
-   },
-   {
-    "name": "银行",
-    "net_yi": 2.1,
-    "jumbo_yi": 1.72,
-    "block_yi": 0.38,
-    "pct": 4.9
-   },
-   {
-    "name": "银行Ⅱ",
-    "net_yi": 2.08,
-    "jumbo_yi": 1.71,
-    "block_yi": 0.36,
-    "pct": 4.87
-   },
-   {
-    "name": "通信服务",
-    "net_yi": 1.79,
-    "jumbo_yi": 1.76,
-    "block_yi": 0.03,
-    "pct": 7.41
-   },
-   {
-    "name": "通信应用增值服务",
-    "net_yi": 1.79,
-    "jumbo_yi": 1.77,
-    "block_yi": 0.02,
-    "pct": 13.73
-   },
-   {
-    "name": "锂",
-    "net_yi": 1.2,
-    "jumbo_yi": 0.43,
-    "block_yi": 0.77,
-    "pct": 7.81
-   },
-   {
-    "name": "能源金属",
-    "net_yi": 1.16,
-    "jumbo_yi": 0.54,
-    "block_yi": 0.62,
-    "pct": 6.37
-   },
-   {
-    "name": "院线",
-    "net_yi": 1.15,
-    "jumbo_yi": 0.15,
-    "block_yi": 1.0,
-    "pct": 16.02
+    "net_yi": 4.14,
+    "jumbo_yi": 5.9,
+    "block_yi": -1.76,
+    "pct": 8.17
    },
    {
     "name": "军工电子Ⅲ",
-    "net_yi": 1.07,
-    "jumbo_yi": 0.27,
-    "block_yi": 0.8,
-    "pct": 2.95
+    "net_yi": 3.9,
+    "jumbo_yi": 1.63,
+    "block_yi": 2.26,
+    "pct": 5.31
    },
    {
     "name": "军工电子Ⅱ",
-    "net_yi": 1.07,
-    "jumbo_yi": 0.27,
-    "block_yi": 0.8,
-    "pct": 2.95
+    "net_yi": 3.9,
+    "jumbo_yi": 1.63,
+    "block_yi": 2.26,
+    "pct": 5.31
+   },
+   {
+    "name": "游戏Ⅱ",
+    "net_yi": 3.85,
+    "jumbo_yi": 5.62,
+    "block_yi": -1.77,
+    "pct": 7.53
+   },
+   {
+    "name": "其他计算机设备",
+    "net_yi": 3.67,
+    "jumbo_yi": 3.08,
+    "block_yi": 0.59,
+    "pct": 4.74
+   },
+   {
+    "name": "计算机设备",
+    "net_yi": 3.52,
+    "jumbo_yi": 3.09,
+    "block_yi": 0.43,
+    "pct": 3.88
+   },
+   {
+    "name": "通信应用增值服务",
+    "net_yi": 2.89,
+    "jumbo_yi": 2.44,
+    "block_yi": 0.45,
+    "pct": 11.69
+   },
+   {
+    "name": "通信服务",
+    "net_yi": 2.8,
+    "jumbo_yi": 2.67,
+    "block_yi": 0.12,
+    "pct": 6.34
+   },
+   {
+    "name": "锂",
+    "net_yi": 2.53,
+    "jumbo_yi": 0.96,
+    "block_yi": 1.57,
+    "pct": 12.11
    },
    {
     "name": "影视院线",
-    "net_yi": 0.99,
-    "jumbo_yi": 0.35,
-    "block_yi": 0.64,
-    "pct": 1.75
+    "net_yi": 1.95,
+    "jumbo_yi": 0.54,
+    "block_yi": 1.41,
+    "pct": 2.15
    },
    {
-    "name": "光伏加工设备",
-    "net_yi": 0.88,
-    "jumbo_yi": 1.69,
-    "block_yi": -0.81,
-    "pct": 6.25
-   },
-   {
-    "name": "石油石化",
-    "net_yi": 0.87,
-    "jumbo_yi": 0.6,
-    "block_yi": 0.27,
-    "pct": 3.74
-   },
-   {
-    "name": "纸包装",
-    "net_yi": 0.85,
-    "jumbo_yi": 1.14,
-    "block_yi": -0.29,
-    "pct": 7.62
-   },
-   {
-    "name": "个护用品",
-    "net_yi": 0.82,
-    "jumbo_yi": -0.02,
-    "block_yi": 0.83,
-    "pct": 25.01
+    "name": "院线",
+    "net_yi": 1.92,
+    "jumbo_yi": 0.51,
+    "block_yi": 1.41,
+    "pct": 13.76
    },
    {
     "name": "生活用纸",
-    "net_yi": 0.82,
-    "jumbo_yi": -0.03,
-    "block_yi": 0.85,
-    "pct": 28.27
+    "net_yi": 1.87,
+    "jumbo_yi": 0.08,
+    "block_yi": 1.79,
+    "pct": 32.62
+   },
+   {
+    "name": "能源金属",
+    "net_yi": 1.85,
+    "jumbo_yi": 0.82,
+    "block_yi": 1.03,
+    "pct": 6.53
    }
   ],
-  "mainline": "半导体设备(+4.47亿) → 集成电路制造(+4.1亿) → 游戏Ⅱ(+4.1亿)",
+  "mainline": "半导体(+10.37亿) → 半导体设备(+9.66亿) → 计算机(+6.9亿)",
   "resonance": [
-   "全市场涨停 24 只，情绪有温度"
+   "全市场涨停 29 只，情绪有温度"
   ],
   "conc": {
-   "lead": "半导体设备",
-   "ratio": 1.09,
+   "lead": "半导体",
+   "ratio": 1.07,
    "alert": false
   }
  },
@@ -267,26 +267,122 @@
    {
     "code": "sz300604",
     "name": "长川科技",
-    "zdf": 3.26,
-    "zljlr": 1.91,
-    "lb": 4.74,
-    "hsl": 1.36,
-    "turnover_yi": 13.61,
-    "price": 201.74,
+    "zdf": 2.52,
+    "zljlr": 3.87,
+    "lb": 2.86,
+    "hsl": 2.36,
+    "turnover_yi": 23.63,
+    "price": 200.31,
     "stype": "GP-A-CYB",
-    "type": "中继观察"
+    "type": "低吸候选"
    },
    {
     "code": "sz002371",
     "name": "北方华创",
-    "zdf": 2.97,
-    "zljlr": 1.78,
-    "lb": 3.54,
-    "hsl": 0.33,
-    "turnover_yi": 13.81,
-    "price": 575.41,
+    "zdf": 3.07,
+    "zljlr": 3.0,
+    "lb": 2.45,
+    "hsl": 0.66,
+    "turnover_yi": 27.71,
+    "price": 575.95,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sh603019",
+    "name": "中科曙光",
+    "zdf": 3.17,
+    "zljlr": 2.52,
+    "lb": 4.57,
+    "hsl": 1.36,
+    "turnover_yi": 16.4,
+    "price": 82.56,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sh603118",
+    "name": "共进股份",
+    "zdf": 6.54,
+    "zljlr": 1.91,
+    "lb": 9.87,
+    "hsl": 9.04,
+    "turnover_yi": 9.6,
+    "price": 13.53,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz301165",
+    "name": "锐捷网络",
+    "zdf": 6.7,
+    "zljlr": 1.59,
+    "lb": 4.99,
+    "hsl": 1.32,
+    "turnover_yi": 12.49,
+    "price": 86.69,
+    "stype": "GP-A-CYB",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz300442",
+    "name": "润泽科技",
+    "zdf": 4.68,
+    "zljlr": 1.57,
+    "lb": 5.06,
+    "hsl": 1.31,
+    "turnover_yi": 12.53,
+    "price": 58.63,
+    "stype": "GP-A-CYB",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz002739",
+    "name": "儒意电影",
+    "zdf": 7.88,
+    "zljlr": 1.4,
+    "lb": 8.08,
+    "hsl": 3.73,
+    "turnover_yi": 7.53,
+    "price": 9.86,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz300251",
+    "name": "光线传媒",
+    "zdf": 4.75,
+    "zljlr": 1.32,
+    "lb": 3.66,
+    "hsl": 2.85,
+    "turnover_yi": 10.11,
+    "price": 13.02,
+    "stype": "GP-A-CYB",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz002050",
+    "name": "三花智控",
+    "zdf": 3.0,
+    "zljlr": 1.31,
+    "lb": 1.66,
+    "hsl": 0.69,
+    "turnover_yi": 8.96,
+    "price": 35.65,
     "stype": "GP-A",
     "type": "低吸候选"
+   },
+   {
+    "code": "sz002222",
+    "name": "福晶科技",
+    "zdf": 3.8,
+    "zljlr": 1.19,
+    "lb": 3.74,
+    "hsl": 3.37,
+    "turnover_yi": 8.4,
+    "price": 53.21,
+    "stype": "GP-A",
+    "type": "中继观察"
    }
   ],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
