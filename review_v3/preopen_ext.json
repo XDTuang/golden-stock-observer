@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-11-13 09:23:52",
- "mode": "preopen",
- "mode_note": "盘前窗口：隔夜美股收盘 + 日韩开盘",
+ "generated_at": "2026-11-13 22:02:35",
+ "mode": "close_transition",
+ "mode_note": "收盘过渡版：A股收盘全量，美股未开盘沿用隔夜",
  "us_dst": false,
  "us_open_bj": "22:30",
  "us": {
@@ -233,32 +233,30 @@
  "asia": {
   "nikkei": {
    "name": "日经225",
-   "close": 61868.94,
-   "chg_pct": 1.73,
+   "close": 61142.13,
+   "chg_pct": 0.53,
    "date": "2026-11-13"
   },
   "kospi": {
    "name": "首尔综合指数",
-   "close": 5478.55,
-   "chg_pct": 2.54,
+   "close": 5290.53,
+   "chg_pct": -0.98,
    "date": "2026-11-13"
   }
  },
  "vix": {
-  "date": "2026-11-12",
+  "date": "11/12/2026",
   "close": 18.7,
-  "chg_pct": 6.92,
-  "note": "CBOE 结算值（11-12 16:15 ET），取自 output/vix_panel.json；脚本原生 CSV 仅到 11/11，已按面板口径覆盖",
-  "prev": 17.49
+  "note": "CBOE 日频·前一交易日收盘值"
  },
  "global_ext": {
   "date": "2026-11-13",
   "items": {
    "btc": {
     "name": "BTC 比特币（现货）",
-    "price": 71042.654,
+    "price": 69398.1481,
     "prev_close": 71380.9524,
-    "chg_pct": -0.47,
+    "chg_pct": -2.78,
     "src_date": "2026-11-13",
     "source": "新浪 fx_sbtcusd",
     "proxy": false
@@ -274,9 +272,9 @@
    },
    "dxy": {
     "name": "美元指数 DXY",
-    "price": 103.1526,
+    "price": 103.2221,
     "prev_close": 103.1677,
-    "chg_pct": -0.01,
+    "chg_pct": 0.05,
     "src_date": "2026-11-13",
     "source": "新浪 DINIW",
     "proxy": false

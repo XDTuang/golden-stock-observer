@@ -1,26 +1,30 @@
 {
-  "generated_at": "2026-11-13 08:48",
-  "session": "preopen",
-  "data_date": "2026-11-12",
-  "for_date": "2026-11-13",
+  "generated_at": "2026-11-13 22:01",
+  "session": "close",
+  "data_date": "2026-11-13",
+  "for_date": "2026-11-16",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-11-13"
+    "2026-11-14",
+    "2026-11-15",
+    "2026-11-16"
   ],
-  "span_days": 1,
+  "span_days": 3,
   "display_days": [
-    "2026-11-12",
-    "2026-11-13"
+    "2026-11-13",
+    "2026-11-14",
+    "2026-11-15",
+    "2026-11-16"
   ],
-  "display_text": "11/12 + 11/13",
-  "span_is_weekend_cross": false,
-  "span_text": "11/13",
+  "display_text": "11/13–11/16",
+  "span_is_weekend_cross": true,
+  "span_text": "11/14–11/16",
   "carry": {
-    "from_data_date": "2026-11-12",
-    "ref": "output/feed_review_2026-11-12.json",
+    "from_data_date": "2026-11-13",
+    "ref": "output/feed_review_2026-11-13.json",
     "exists": true,
-    "gap_days": 1,
+    "gap_days": 3,
     "stale": false,
     "bias": "中性",
     "bias_score": 0,
@@ -31,42 +35,62 @@
     "headline": ""
   },
   "layers": {
-    "base": "2026-11-12 A股收盘（基准层）",
-    "overnight": "美东 2026-11-12 收盘（北京 2026-11-13 早间到达）",
-    "premarket": "2026-11-13 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-11-13 A股收盘（基准层）",
+    "overnight": "美东 2026-11-13 收盘（北京 2026-11-14 早间到达）",
+    "premarket": "2026-11-16 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-11-12",
+    "date": "2026-11-13",
     "run_date": "2026-11-13",
-    "preopen_partial": true,
+    "preopen_partial": null,
     "us_kline": true,
     "asia": true
   },
   "covered": [
-    {
-      "date": "2026-11-12",
-      "weekday": "周四",
-      "is_trading_day": true,
-      "news": 298,
-      "feeds": 0,
-      "reports": 1750,
-      "macro": true
-    },
     {
       "date": "2026-11-13",
       "weekday": "周五",
       "is_trading_day": true,
       "news": 287,
       "feeds": 0,
-      "reports": 94,
+      "reports": 1207,
       "macro": true
+    },
+    {
+      "date": "2026-11-14",
+      "weekday": "周六",
+      "is_trading_day": false,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    },
+    {
+      "date": "2026-11-15",
+      "weekday": "周日",
+      "is_trading_day": false,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    },
+    {
+      "date": "2026-11-16",
+      "weekday": "周一",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
     }
   ],
   "totals": {
-    "news": 585,
+    "news": 287,
     "feeds": 0,
-    "reports": 1844,
-    "covered_days": 2
+    "reports": 1207,
+    "covered_days": 4
   },
-  "missing": []
+  "missing": [
+    "market_thermometer.json 数据日 2026-11-12 落后于基准日 2026-11-13"
+  ]
 }
