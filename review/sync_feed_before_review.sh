@@ -43,6 +43,10 @@ else
   fi
 fi
 
+echo "─── 2.6 mahoro 私有库体检（digest 预算 / 三方条数）───"
+# 2026-11-13：正文入本机私有库后，归档入口顺带体检；红灯只告警，不阻断投喂归档。
+"$PY" review/check_mahoro_store.py --quick 2>&1 | tail -6 || echo "  ⚠️ mahoro 守卫红灯（不阻断归档，需人工看一眼）"
+
 echo "─── 3/3 读取推演请求 ───"
 shopt -s nullglob
 PENDING=(commands/pending/*.md)

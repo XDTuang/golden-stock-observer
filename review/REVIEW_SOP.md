@@ -45,6 +45,34 @@ python3 review/build_window.py --at "2026-09-21 08:50" --dry-run   # 模拟跨�
 
 > 🔴 `for_date` / `span` **一律由脚本产出，禁手写**；缺口（`missing`）非空时必须可见（页面「信息窗口」卡片），禁静默。
 
+## 步骤 0.7 · mahoro 信息流（**2026-11-13 改造 · 正文入私有库 + digest 供推演**）
+
+**红线分层（替代原「原文一律不入库」）**
+
+| 层 | 内容 | 落点 | 能否上 public |
+|---|---|---|---|
+| L0 | 聚合读数（篇数 / 字数 / 源分布 / 板块命中计数） | `analysis.html` 现有段落 | ✅ 可以 |
+| L1 | 标题 / 机器标签 / 改写提要 | **仅本地 digest** | ❌ 不可（标题即可反查原文） |
+| L2 | 正文 / 附件解析 / author / url | **仅本地 sqlite** | ❌ 绝对不可 |
+| L3 | 冷备 | **private 仓（只收 slices gz + manifest）** | ❌ 私有仓，非 Pages |
+
+**每日链路（顺序即依赖；ingest/digest 必须放在 recheck 之前）**
+```bash
+python3 feed/mahoro_ingest.py                    # 增量入库（默认最近 2 日；~30s）
+python3 feed/build_mahoro_digest.py --session preopen           # ≤60KB → digest/latest_preopen.md
+python3 feed/build_mahoro_digest.py --session close --compact    # ≤28KB → latest_close.md
+python3 feed/mahoro_backup.py --push             # slices+manifest → private 仓
+python3 review/check_mahoro_store.py --quick     # C2 预算 / C3 三方条数
+```
+
+**推演读取契约（硬约束）**
+- 只读 `~/Library/Application Support/goldenstock/mahoro_store/digest/latest_{preopen|close}.md`；
+- **禁整篇读 `feed_mahoro/` 原文、禁把 digest 复制进 `analysis.html` / `output/` / `deploy/`**（会变成公开）；
+- 需细节 → `python3 feed/mahoro_query.py --id <iid> --bytes 2400`（单篇 ≤3KB 片段），**一次不超过 3 篇**；
+- 全量正文**禁止**进推演上下文（实测 1,224 篇 = 1.14M token = 窗口 380%）。
+
+**判据**：`check_mahoro_store.py --quick` exit 0；`--isolation` 四检 0 命中；`--isolation --selftest` **必须报红**（防守卫恒真）。
+
 ## 步骤 1 · 抓数据
 
 | 推演类型 | 抓什么 | 注意 |

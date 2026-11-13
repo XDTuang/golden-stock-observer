@@ -186,6 +186,9 @@ def collect_covered(days, data_date: _dt.date):
     # mahoro 索引结构随版本变化：**只认显式 `date` 日字段**（2026-09-16 收紧 ——
     # 回退到 published_at/collected_date 会把历史条目也计入，实测虚高到 918 条/日）
     if isinstance(mah, dict):
+        # 2026-11-13 修：索引历史上有 43% 重复行（seen_ids 淘汰 + next_fid 撞号所致），
+        # 直接计数会把 reports 虚高 2–3.6 倍（实测 11-12 报 1750 / 实际 1224）→ 按 file 去重。
+        _seen_files = set()
         for k in ("items", "reports", "entries"):
             arr = mah.get(k)
             if isinstance(arr, list):
@@ -194,6 +197,11 @@ def collect_covered(days, data_date: _dt.date):
                         continue
                     d = str(it.get("date") or "")[:10]
                     if re.match(r"^\d{4}-\d{2}-\d{2}$", d):
+                        _f = it.get("file")
+                        if _f:
+                            if _f in _seen_files:
+                                continue
+                            _seen_files.add(_f)
                         maha_by_day.setdefault(d, []).append(it)
 
     covered = []
