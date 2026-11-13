@@ -31,7 +31,7 @@
 
 退出码：0 成功 / 2 认证失败 / 3 配额耗尽 / 4 网络或服务端错误
 """
-import os, sys, re, json, time, argparse, datetime, urllib.request, urllib.parse, urllib.error
+import os, sys, re, json, time, argparse, datetime, hashlib, urllib.request, urllib.parse, urllib.error
 
 BASE = "https://data.mahoro.cn"
 TOKEN_FILE = os.path.expanduser("~/.config/mahoro/token")
@@ -39,6 +39,7 @@ DATA_ROOT = os.path.expanduser("~/Library/Application Support/goldenstock/feed_m
 STATE_FILE = os.path.join(DATA_ROOT, "_state", "mahoro_state.json")
 INDEX_FILE = os.path.join(DATA_ROOT, "index.json")
 RUNS_LOG = os.path.join(DATA_ROOT, "_state", "runs.log")
+SIDECAR_DIR = os.path.join(DATA_ROOT, "_state", "api_items")
 
 # 仓库内 inbox（仅 --emit-inbox 时使用）
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -116,11 +117,24 @@ def load_state() -> dict:
     return {"watermark": "", "seen_ids": [], "runs": 0, "total_items": 0}
 
 
+def _atomic_write_json(path: str, obj):
+    """原子写：写 .tmp + os.replace。防同窗口双触发把 40MB 索引写坏（2026-11-13）"""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(obj, f, ensure_ascii=False, indent=2)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, path)
+
+
 def save_state(st: dict):
-    st["seen_ids"] = st.get("seen_ids", [])[-30000:]  # 有上限，防无限膨胀
-    os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
+    # 2026-11-13 修：原 [-30000:] + 末尾 sorted() 截断的是「字典序末尾」而非「最旧」，
+    # 老 id 被淘汰后重抓 → 索引大量重复行。改为保序保留最近 20 万条（约 5 个月），
+    # 并新增 index.iid 一级判重（持久、不受上限影响）。
+    st["seen_ids"] = st.get("seen_ids", [])[-200000:]
     st["updated_at"] = datetime.datetime.now().strftime(FMT)
-    json.dump(st, open(STATE_FILE, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    _atomic_write_json(STATE_FILE, st)
 
 
 def load_index() -> dict:
@@ -133,15 +147,32 @@ def load_index() -> dict:
 
 
 def save_index(idx: dict):
-    os.makedirs(os.path.dirname(INDEX_FILE), exist_ok=True)
     idx["updated_at"] = datetime.datetime.now().strftime(FMT)
-    json.dump(idx, open(INDEX_FILE, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    _atomic_write_json(INDEX_FILE, idx)
 
 
 def log_run(line: str):
     os.makedirs(os.path.dirname(RUNS_LOG), exist_ok=True)
     with open(RUNS_LOG, "a", encoding="utf-8") as f:
         f.write(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {line}\n")
+
+
+def _write_sidecar(date: str, it: dict, fid: str):
+    """API 元数据旁车（url/author/category/media…），仅本机。
+
+    🔴 author 只落此处与私有库：不进 txt 头、不进 index.json、不进 manifest、不进 digest、不进 public。
+    """
+    try:
+        os.makedirs(SIDECAR_DIR, exist_ok=True)
+        meta = {k: it.get(k) for k in ("id", "source", "source_label", "published_at",
+                                       "category", "title", "url", "author",
+                                       "media", "attachments", "files", "images")
+                if it.get(k) is not None}
+        meta["_fid"] = fid
+        with open(os.path.join(SIDECAR_DIR, date + ".jsonl"), "a", encoding="utf-8") as f:
+            f.write(json.dumps(meta, ensure_ascii=False) + "\n")
+    except Exception as e:
+        print(f"  ⚠️ sidecar 写入失败（不阻塞主流程）: {e}", file=sys.stderr)
 
 
 def safe_title(t: str, maxlen: int = 60) -> str:
@@ -153,17 +184,29 @@ def safe_title(t: str, maxlen: int = 60) -> str:
     return t or "untitled"
 
 
-def next_fid(idx: dict, date: str) -> str:
-    """F{YYYYMMDD}-{当日序号:03d}，与 feed_archive.py 编号体系一致"""
-    ymd = date.replace("-", "")
-    seq = 0
-    for e in idx["entries"]:
-        if str(e.get("date", ""))[:10] != date:
-            continue
-        m = re.match(r"F\d{8}-(\d{3})$", str(e.get("id", "")))
+def build_seq_index(idx: dict) -> dict:
+    """一次性建 {yyyymmdd: 当日最大序号}，取代 next_fid 里对 9 万行逐篇全表扫（O(n²) 根因）。
+
+    2026-11-13 修：原正则 r"F\\d{8}-(\\d{3})$" 只认 3 位 → 单日序号 >999 后全部返回 1000，
+    实测 29 个日期撞号、29 组「同 id 多 file」。
+    """
+    out = {}
+    pat = re.compile(r"^F(\d{8})-(\d+)$")
+    for e in idx.get("entries", []):
+        m = pat.match(str(e.get("id", "")))
         if m:
-            seq = max(seq, int(m.group(1)))
-    return f"F{ymd}-{seq + 1:03d}"
+            ymd, seq = m.group(1), int(m.group(2))
+            if seq > out.get(ymd, 0):
+                out[ymd] = seq
+    return out
+
+
+def next_fid(seq_index: dict, date: str) -> str:
+    """F{YYYYMMDD}-{当日序号:03d}；≥1000 时 :03d 自然输出 4 位，不产生位数并存"""
+    ymd = date.replace("-", "")
+    seq = seq_index.get(ymd, 0) + 1
+    seq_index[ymd] = seq
+    return f"F{ymd}-{seq:03d}"
 
 
 def shift(wm: str, seconds: int) -> str:
@@ -284,6 +327,25 @@ def main():
     st = load_state()
     idx = load_index()
 
+    # ── 运行锁（2026-11-13）：防同窗口二次触发把 40MB 索引写坏；PID 存活则本轮直接退出 ──
+    _lock = os.path.join(DATA_ROOT, "_state", "fetch.lock")
+    _lock_owned = False
+    if not args.dry_run:
+        os.makedirs(os.path.dirname(_lock), exist_ok=True)
+        if os.path.exists(_lock):
+            try:
+                _pid = int(open(_lock, encoding="utf-8").read().split()[0])
+                os.kill(_pid, 0)
+                print(f"⏸  上一轮抓取仍在运行（PID {_pid}），本轮退出（避免索引并发写）")
+                return
+            except (ValueError, OSError, IndexError):
+                pass  # 僵死锁 → 抢占
+        open(_lock, "w", encoding="utf-8").write(
+            f"{os.getpid()} {datetime.datetime.now().strftime(FMT)}\n")
+        _lock_owned = True
+        import atexit
+        atexit.register(lambda: _lock_owned and os.path.exists(_lock) and os.remove(_lock))
+
     # 起点：显式 --since > 水位线（回退 60 秒重叠）
     if args.since:
         since = args.since.replace(" ", "T")
@@ -343,6 +405,9 @@ def main():
         print(f"   取回 {len(items)} 条（{pages} 页 / {calls} 次请求）")
 
     seen = set(st.get("seen_ids", []))
+    seen_order = [x for x in st.get("seen_ids", [])]          # 保序，供尾部截断
+    known_iids = {e.get("iid") for e in idx.get("entries", []) if e.get("iid")}
+    seq_idx = build_seq_index(idx)                            # 一次建索引，取代逐篇全表扫
     written, skipped_dup, skipped_short = 0, 0, 0
 
     for it in items:
@@ -356,17 +421,18 @@ def main():
         # 去重唯一键 = 条目 id。⚠️ 绝不可用 (日期+源+标题)：
         # 实测 zsxq_logic 存在「#📚行业研报✅」这类合集标题，同一标题下挂着 25 篇完全不同的研报，
         # 按标题去重会静默误杀最值钱的内容（2026-09-09 首次回填即踩此坑，误杀 36 组）。
-        if iid and iid in seen:
+        if iid and (iid in seen or iid in known_iids):
             skipped_dup += 1
             continue
         if args.min_chars and len(text) < args.min_chars:
             skipped_short += 1
-            seen.add(iid)
+            if iid:
+                seen.add(iid); known_iids.add(iid); seen_order.append(iid)
             continue
 
         label = LABELS.get(src, src or "未知源")
         clean = safe_title(title)
-        fid = next_fid(idx, date)
+        fid = next_fid(seq_idx, date)
         day_dir = os.path.join(DATA_ROOT, date)
         # 文件名附 id 短码：同标题不同内容（合集类帖子）不会互相覆盖
         short = re.sub(r"\W", "", iid)[-8:] or ("%08d" % (written + 1))
@@ -397,6 +463,7 @@ def main():
                 with open(os.path.join(INBOX_DIR, inbox_name), "w", encoding="utf-8") as f:
                     f.write(body)
 
+        _now = datetime.datetime.now().strftime(FMT)
         idx["entries"].append({
             "id": fid,
             "date": date,
@@ -406,9 +473,17 @@ def main():
             "chars": len(text),
             "file": os.path.join(date, fname),
             "published_at": pub,
-            "fetched_at": datetime.datetime.now().strftime(FMT),
+            "fetched_at": _now,
+            # ── v2（2026-11-13）：落盘层幂等键 + 可回溯字段 ──
+            "iid": iid,
+            "url": it.get("url") or "",
+            "category": it.get("category") or "",
+            "bytes": len(body.encode("utf-8")),
+            "sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
         })
-        seen.add(iid)
+        _write_sidecar(date, it, fid)
+        if iid:
+            seen.add(iid); known_iids.add(iid); seen_order.append(iid)
         written += 1
 
     # 水位线推进：本次最大 published_at（asc 顺序）
@@ -417,7 +492,7 @@ def main():
         if last_pub and (not st.get("watermark") or last_pub > st["watermark"]):
             st["watermark"] = last_pub
 
-    st["seen_ids"] = sorted(seen)
+    st["seen_ids"] = seen_order[-200000:]   # 保序截断（原 sorted() 会淘汰最近值）
     st["runs"] = st.get("runs", 0) + 1
     st["total_items"] = st.get("total_items", 0) + written
     st["last_run"] = datetime.datetime.now().strftime(FMT)
