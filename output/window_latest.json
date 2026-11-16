@@ -1,103 +1,74 @@
 {
-  "generated_at": "2026-11-16 08:50",
-  "session": "preopen",
-  "data_date": "2026-11-13",
-  "for_date": "2026-11-16",
+  "generated_at": "2026-11-16 22:01",
+  "session": "close",
+  "data_date": "2026-11-16",
+  "for_date": "2026-11-17",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-11-14",
-    "2026-11-15",
-    "2026-11-16"
+    "2026-11-17"
   ],
-  "span_days": 3,
+  "span_days": 1,
   "display_days": [
-    "2026-11-13",
-    "2026-11-14",
-    "2026-11-15",
-    "2026-11-16"
+    "2026-11-16",
+    "2026-11-17"
   ],
-  "display_text": "11/13–11/16",
-  "span_is_weekend_cross": true,
-  "span_text": "11/14–11/16",
+  "display_text": "11/16 + 11/17",
+  "span_is_weekend_cross": false,
+  "span_text": "11/17",
   "carry": {
-    "from_data_date": "2026-11-13",
-    "ref": "output/feed_review_2026-11-13.json",
+    "from_data_date": "2026-11-16",
+    "ref": "output/feed_review_2026-11-16.json",
     "exists": true,
-    "gap_days": 3,
+    "gap_days": 1,
     "stale": false,
-    "bias": "中性偏空",
-    "bias_score": -1,
+    "bias": "中性",
+    "bias_score": 0,
     "t1_focus": [
-      "10:00 国新办发布会（10 月国民经济运行情况）+ 央行 2,000 亿买断式逆回购",
-      "站上 MA10 3,656.67 且跌停家数 ≤20 家 → 修复成立；否则维持 20% 仓位",
-      "电子主力是否收窄至 -100 亿内、通信是否收窄至 -50 亿内"
+      "无新增共振，维持既有持仓观察"
     ],
-    "risks": [
-      "把「跌得多」当成「跌到位」（缩量误读为缩量止跌）",
-      "长端利率继续上行（分母端）",
-      "存储 / 光模块的「诱多 — 再杀」循环",
-      "四象限「擦线分类」造成的误读",
-      "国家队「头部申购 vs 广谱赎回」的口径错配",
-      "周一「三重事件叠加」造成的开盘价噪声"
-    ],
+    "risks": [],
     "headline": ""
   },
   "layers": {
-    "base": "2026-11-13 A股收盘（基准层）",
-    "overnight": "美东 2026-11-13 收盘（北京 2026-11-14 早间到达）",
-    "premarket": "2026-11-16 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-11-16 A股收盘（基准层）",
+    "overnight": "美东 2026-11-16 收盘（北京 2026-11-17 早间到达）",
+    "premarket": "2026-11-17 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-11-13",
+    "date": "2026-11-16",
     "run_date": "2026-11-16",
-    "preopen_partial": true,
+    "preopen_partial": null,
     "us_kline": true,
     "asia": true
   },
   "covered": [
-    {
-      "date": "2026-11-13",
-      "weekday": "周五",
-      "is_trading_day": true,
-      "news": 303,
-      "feeds": 0,
-      "reports": 789,
-      "macro": true
-    },
-    {
-      "date": "2026-11-14",
-      "weekday": "周六",
-      "is_trading_day": false,
-      "news": 287,
-      "feeds": 0,
-      "reports": 275,
-      "macro": true
-    },
-    {
-      "date": "2026-11-15",
-      "weekday": "周日",
-      "is_trading_day": false,
-      "news": 0,
-      "feeds": 0,
-      "reports": 841,
-      "macro": false
-    },
     {
       "date": "2026-11-16",
       "weekday": "周一",
       "is_trading_day": true,
       "news": 285,
       "feeds": 0,
-      "reports": 94,
+      "reports": 889,
       "macro": true
+    },
+    {
+      "date": "2026-11-17",
+      "weekday": "周二",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
     }
   ],
   "totals": {
-    "news": 875,
+    "news": 285,
     "feeds": 0,
-    "reports": 1999,
-    "covered_days": 4
+    "reports": 889,
+    "covered_days": 2
   },
-  "missing": []
+  "missing": [
+    "market_thermometer.json 数据日 2026-11-13 落后于基准日 2026-11-16"
+  ]
 }
