@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-13 22:01",
-  "session": "close",
+  "generated_at": "2026-11-16 08:50",
+  "session": "preopen",
   "data_date": "2026-11-13",
   "for_date": "2026-11-16",
   "data_date_note": "",
@@ -26,12 +26,21 @@
     "exists": true,
     "gap_days": 3,
     "stale": false,
-    "bias": "中性",
-    "bias_score": 0,
+    "bias": "中性偏空",
+    "bias_score": -1,
     "t1_focus": [
-      "无新增共振，维持既有持仓观察"
+      "10:00 国新办发布会（10 月国民经济运行情况）+ 央行 2,000 亿买断式逆回购",
+      "站上 MA10 3,656.67 且跌停家数 ≤20 家 → 修复成立；否则维持 20% 仓位",
+      "电子主力是否收窄至 -100 亿内、通信是否收窄至 -50 亿内"
     ],
-    "risks": [],
+    "risks": [
+      "把「跌得多」当成「跌到位」（缩量误读为缩量止跌）",
+      "长端利率继续上行（分母端）",
+      "存储 / 光模块的「诱多 — 再杀」循环",
+      "四象限「擦线分类」造成的误读",
+      "国家队「头部申购 vs 广谱赎回」的口径错配",
+      "周一「三重事件叠加」造成的开盘价噪声"
+    ],
     "headline": ""
   },
   "layers": {
@@ -41,8 +50,8 @@
   },
   "market_state": {
     "date": "2026-11-13",
-    "run_date": "2026-11-13",
-    "preopen_partial": null,
+    "run_date": "2026-11-16",
+    "preopen_partial": true,
     "us_kline": true,
     "asia": true
   },
@@ -51,19 +60,19 @@
       "date": "2026-11-13",
       "weekday": "周五",
       "is_trading_day": true,
-      "news": 287,
+      "news": 303,
       "feeds": 0,
-      "reports": 1207,
+      "reports": 789,
       "macro": true
     },
     {
       "date": "2026-11-14",
       "weekday": "周六",
       "is_trading_day": false,
-      "news": 0,
+      "news": 287,
       "feeds": 0,
-      "reports": 0,
-      "macro": false
+      "reports": 275,
+      "macro": true
     },
     {
       "date": "2026-11-15",
@@ -71,26 +80,24 @@
       "is_trading_day": false,
       "news": 0,
       "feeds": 0,
-      "reports": 0,
+      "reports": 841,
       "macro": false
     },
     {
       "date": "2026-11-16",
       "weekday": "周一",
       "is_trading_day": true,
-      "news": 0,
+      "news": 285,
       "feeds": 0,
-      "reports": 0,
-      "macro": false
+      "reports": 94,
+      "macro": true
     }
   ],
   "totals": {
-    "news": 287,
+    "news": 875,
     "feeds": 0,
-    "reports": 1207,
+    "reports": 1999,
     "covered_days": 4
   },
-  "missing": [
-    "market_thermometer.json 数据日 2026-11-12 落后于基准日 2026-11-13"
-  ]
+  "missing": []
 }
