@@ -1,6 +1,6 @@
 {
  "meta": {
-  "updated_at": "2026-11-16 09:15:16",
+  "updated_at": "2026-11-16 09:45:25",
   "data_date": "2026-11-16",
   "market_status": "trading",
   "algorithm": "1.1.0",
@@ -11,97 +11,97 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3634.27,
-    "chg_pct": -0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3600.93,
+    "chg_pct": -0.92,
+    "turnover_yi": 1526.1,
+    "high": 3611.97,
+    "low": 3593.45
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 10968.79,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 10796.0,
+    "chg_pct": -1.58,
+    "turnover_yi": 1821.2,
+    "high": 10881.91,
+    "low": 10770.41
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 2426.08,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 2365.23,
+    "chg_pct": -2.51,
+    "turnover_yi": 836.1,
+    "high": 2398.19,
+    "low": 2358.1
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1279.61,
-    "chg_pct": -0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 1239.83,
+    "chg_pct": -3.11,
+    "turnover_yi": 185.3,
+    "high": 1266.61,
+    "low": 1235.3
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 4016.23,
-    "chg_pct": -0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3976.98,
+    "chg_pct": -0.98,
+    "turnover_yi": 812.4,
+    "high": 3986.49,
+    "low": 3969.56
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 6465.41,
-    "chg_pct": -0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 6368.23,
+    "chg_pct": -1.5,
+    "turnover_yi": 548.1,
+    "high": 6424.17,
+    "low": 6351.26
    }
   ],
   "breadth": {
-   "up": 1282,
-   "down": 1858,
-   "flat": 1465,
-   "ratio": 0.69,
-   "limit_up": 66,
-   "limit_down": 56,
-   "main_net_yi": 0.0,
-   "turnover_yi": 0.0,
+   "up": 694,
+   "down": 3768,
+   "flat": 143,
+   "ratio": 0.18,
+   "limit_up": 20,
+   "limit_down": 23,
+   "main_net_yi": -156.09,
+   "turnover_yi": 2853.9,
    "total": 4605
   }
  },
  "L1": {
   "sentiment": {
-   "score": 39,
-   "S1": 17,
-   "S2": 55,
-   "S3": 40,
-   "S4": 50,
+   "score": 12,
+   "S1": 4,
+   "S2": 17,
+   "S3": 5,
+   "S4": 24,
    "inputs": {
-    "ratio": 0.69,
-    "limit_up": 66,
-    "avg_idx_pct": 0.0,
-    "main_net_yi": 0
+    "ratio": 0.18,
+    "limit_up": 20,
+    "avg_idx_pct": -1.77,
+    "main_net_yi": -156.09
    }
   },
   "state": {
-   "state": "weak",
-   "label": "弱势回调",
-   "note": "防守为主，仅小仓低吸，严格止损",
-   "score": 39
+   "state": "panic",
+   "label": "恐慌下跌",
+   "note": "空仓或极轻仓观望，不抄底，等企稳信号",
+   "score": 12
   }
  },
  "L2": {
   "range": [
-   25,
-   40
+   0,
+   20
   ],
-  "note": "弱势回调，防守为主，严格止损",
+  "note": "恐慌下跌，空仓或极轻仓等待企稳",
   "rules": [
    "单票仓位 ≤ 10%",
    "单一板块集中度 ≤ 30%",
@@ -110,12 +110,173 @@
   ]
  },
  "L3": {
-  "sectors": [],
-  "mainline": "数据不可用",
-  "resonance": []
+  "sectors": [
+   {
+    "name": "银行",
+    "net_yi": 2.6,
+    "jumbo_yi": 1.36,
+    "block_yi": 1.24,
+    "pct": 5.02
+   },
+   {
+    "name": "高速公路",
+    "net_yi": 2.56,
+    "jumbo_yi": 2.76,
+    "block_yi": -0.19,
+    "pct": 26.95
+   },
+   {
+    "name": "银行Ⅱ",
+    "net_yi": 2.48,
+    "jumbo_yi": 1.22,
+    "block_yi": 1.26,
+    "pct": 5.55
+   },
+   {
+    "name": "厨房小家电",
+    "net_yi": 2.45,
+    "jumbo_yi": 3.51,
+    "block_yi": -1.05,
+    "pct": 11.11
+   },
+   {
+    "name": "小家电",
+    "net_yi": 2.31,
+    "jumbo_yi": 3.46,
+    "block_yi": -1.14,
+    "pct": 9.14
+   },
+   {
+    "name": "铁路公路",
+    "net_yi": 2.3,
+    "jumbo_yi": 2.46,
+    "block_yi": -0.16,
+    "pct": 19.65
+   },
+   {
+    "name": "交通运输",
+    "net_yi": 2.02,
+    "jumbo_yi": 2.04,
+    "block_yi": -0.02,
+    "pct": 7.19
+   },
+   {
+    "name": "家用电器",
+    "net_yi": 1.71,
+    "jumbo_yi": 3.23,
+    "block_yi": -1.51,
+    "pct": 2.44
+   },
+   {
+    "name": "电信运营商",
+    "net_yi": 1.13,
+    "jumbo_yi": 0.72,
+    "block_yi": 0.4,
+    "pct": 14.32
+   },
+   {
+    "name": "股份制银行Ⅲ",
+    "net_yi": 1.11,
+    "jumbo_yi": 0.62,
+    "block_yi": 0.49,
+    "pct": 7.17
+   },
+   {
+    "name": "国有大型银行Ⅲ",
+    "net_yi": 0.83,
+    "jumbo_yi": 0.18,
+    "block_yi": 0.65,
+    "pct": 5.57
+   },
+   {
+    "name": "建筑装饰",
+    "net_yi": 0.77,
+    "jumbo_yi": 0.9,
+    "block_yi": -0.12,
+    "pct": 1.88
+   },
+   {
+    "name": "一般零售",
+    "net_yi": 0.68,
+    "jumbo_yi": 0.42,
+    "block_yi": 0.26,
+    "pct": 2.18
+   },
+   {
+    "name": "通信终端及配件",
+    "net_yi": 0.65,
+    "jumbo_yi": 1.19,
+    "block_yi": -0.54,
+    "pct": 2.24
+   },
+   {
+    "name": "城商行Ⅲ",
+    "net_yi": 0.62,
+    "jumbo_yi": 0.51,
+    "block_yi": 0.11,
+    "pct": 4.55
+   },
+   {
+    "name": "乳品",
+    "net_yi": 0.54,
+    "jumbo_yi": 0.37,
+    "block_yi": 0.17,
+    "pct": 6.81
+   },
+   {
+    "name": "院线",
+    "net_yi": 0.5,
+    "jumbo_yi": 0.35,
+    "block_yi": 0.15,
+    "pct": 3.22
+   },
+   {
+    "name": "半导体设备",
+    "net_yi": 0.46,
+    "jumbo_yi": -0.63,
+    "block_yi": 1.1,
+    "pct": 0.82
+   },
+   {
+    "name": "安防设备",
+    "net_yi": 0.46,
+    "jumbo_yi": 0.49,
+    "block_yi": -0.03,
+    "pct": 5.56
+   },
+   {
+    "name": "白色家电",
+    "net_yi": 0.44,
+    "jumbo_yi": -0.18,
+    "block_yi": 0.62,
+    "pct": 4.32
+   }
+  ],
+  "mainline": "银行(+2.6亿) → 高速公路(+2.56亿) → 银行Ⅱ(+2.48亿)",
+  "resonance": [
+   "全市场涨停 20 只，情绪有温度"
+  ],
+  "conc": {
+   "lead": "银行",
+   "ratio": 1.02,
+   "alert": false
+  }
  },
  "L4": {
-  "candidates": [],
+  "candidates": [
+   {
+    "code": "sz002371",
+    "name": "北方华创",
+    "zdf": -0.42,
+    "zljlr": 1.03,
+    "lb": 3.3,
+    "hsl": 0.29,
+    "turnover_yi": 11.66,
+    "price": 550.68,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   }
+  ],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
@@ -129,6 +290,43 @@
   ]
  },
  "ETF": {
-  "flows": []
+  "flows": [
+   {
+    "code": "sh510300",
+    "opendate": "2026-11-13",
+    "net_yi": -1.42,
+    "chg_pct": -0.7
+   },
+   {
+    "code": "sh510050",
+    "opendate": "2026-11-13",
+    "net_yi": -5.4,
+    "chg_pct": 0.17
+   },
+   {
+    "code": "sh588000",
+    "opendate": "2026-11-13",
+    "net_yi": 7.37,
+    "chg_pct": -1.96
+   },
+   {
+    "code": "sz159915",
+    "opendate": "2026-11-13",
+    "net_yi": 4.99,
+    "chg_pct": -3.25
+   },
+   {
+    "code": "sh510500",
+    "opendate": "2026-11-13",
+    "net_yi": 1.27,
+    "chg_pct": -1.98
+   },
+   {
+    "code": "sz159949",
+    "opendate": "2026-11-13",
+    "net_yi": 3.7,
+    "chg_pct": -3.8
+   }
+  ]
  }
 }
