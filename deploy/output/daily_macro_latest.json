@@ -1,6 +1,6 @@
 {
-  "date": "2026-11-16",
-  "generated_at": "2026-11-16 22:02",
+  "date": "2026-11-17",
+  "generated_at": "2026-11-17 08:44",
   "china": {
     "pmi": {
       "latest": {
@@ -62,8 +62,8 @@
       "window_days": 7,
       "lookback_days": 45,
       "lookback_used_to": "2026-11-06",
-      "days_fetched": 11,
-      "as_of": "2026-11-16 22:02",
+      "days_fetched": 12,
+      "as_of": "2026-11-17 08:44",
       "indicators": {
         "CPI 同比": [
           {
@@ -74,7 +74,7 @@
             "importance": 0,
             "release_date": "2026-11-10",
             "release_time": "21:30",
-            "days_ago": 6,
+            "days_ago": 7,
             "is_fresh": true
           }
         ],
@@ -87,7 +87,7 @@
             "importance": 0,
             "release_date": "2026-11-10",
             "release_time": "21:30",
-            "days_ago": 6,
+            "days_ago": 7,
             "is_fresh": true
           }
         ],
@@ -100,7 +100,7 @@
             "importance": 1,
             "release_date": "2026-11-10",
             "release_time": "21:30",
-            "days_ago": 6,
+            "days_ago": 7,
             "is_fresh": true
           }
         ],
@@ -113,7 +113,7 @@
             "importance": 1,
             "release_date": "2026-11-10",
             "release_time": "21:30",
-            "days_ago": 6,
+            "days_ago": 7,
             "is_fresh": true
           }
         ],
@@ -126,8 +126,8 @@
             "importance": 2,
             "release_date": "2026-11-06",
             "release_time": "21:30",
-            "days_ago": 10,
-            "is_fresh": true
+            "days_ago": 11,
+            "is_fresh": false
           }
         ],
         "失业率": [
@@ -139,20 +139,20 @@
             "importance": 2,
             "release_date": "2026-11-06",
             "release_time": "21:30",
-            "days_ago": 10,
-            "is_fresh": true
+            "days_ago": 11,
+            "is_fresh": false
           }
         ],
         "ADP 就业": [
           {
-            "event": "美国截至10月24日当周ADP就业周度发布变动(万人)",
-            "value": "1.98",
+            "event": "美国截至10月31日当周ADP就业周度发布变动(万人)",
+            "value": "",
             "forecast": "",
-            "previous": "1.68",
+            "previous": "1.98",
             "importance": 2,
-            "release_date": "2026-11-10",
+            "release_date": "2026-11-17",
             "release_time": "21:15",
-            "days_ago": 6,
+            "days_ago": 0,
             "is_fresh": true
           }
         ],
@@ -165,7 +165,44 @@
             "importance": 2,
             "release_date": "2026-11-12",
             "release_time": "21:30",
-            "days_ago": 4,
+            "days_ago": 5,
+            "is_fresh": true
+          }
+        ],
+        "GDP": [
+          {
+            "event": "美国10月关联GDP的零售额控制组月率-季调后(%)",
+            "value": "",
+            "forecast": "0.4",
+            "previous": "0.1",
+            "importance": 2,
+            "release_date": "2026-11-17",
+            "release_time": "21:30",
+            "days_ago": 0,
+            "is_fresh": true
+          }
+        ],
+        "零售销售": [
+          {
+            "event": "美国10月零售销售月率(%)",
+            "value": "",
+            "forecast": "0.2",
+            "previous": "0.8",
+            "importance": 2,
+            "release_date": "2026-11-17",
+            "release_time": "21:30",
+            "days_ago": 0,
+            "is_fresh": true
+          },
+          {
+            "event": "美国10月核心零售销售月率(%)",
+            "value": "",
+            "forecast": "0.4",
+            "previous": "0.9",
+            "importance": 2,
+            "release_date": "2026-11-17",
+            "release_time": "21:30",
+            "days_ago": 0,
             "is_fresh": true
           }
         ]
@@ -174,23 +211,12 @@
     "indicators": {
       "CPI": [
         {
-          "title": "加拿大10月CPI同比增长3.1% 预期为3.2%",
-          "evidence": [
-            "加拿大10月CPI同比增长3.1% 预期为3.2% 加拿大10月CPI同比增长3.1%，预期为3.2%"
-          ],
-          "date": "2026-11-16",
-          "days_ago": 0,
-          "is_fresh": true,
-          "time": "2026-11-16 21:30:41",
-          "source": "东财全球"
-        },
-        {
           "title": "东方财富财经早餐 11月11日周三",
           "evidence": [
             "东方财富财经早餐 11月11日周三 【东方财富财经早餐 11月11日周三】1、美国10月CPI环比增长0.4%，高于市场预期，12月加息概率仍维持在100%"
           ],
           "date": "2026-11-11",
-          "days_ago": 5,
+          "days_ago": 6,
           "is_fresh": true,
           "time": "2026-11-11 06:00:38",
           "source": "财经早餐"
@@ -198,14 +224,25 @@
       ],
       "美联储/利率": [
         {
-          "title": "欧洲央行副行长Vujcic：市场押注欧洲央行明年加息似乎并非不合理",
+          "title": "美联储加息新信号",
           "evidence": [
-            "欧洲央行副行长Vujcic：市场押注欧洲央行明年加息似乎并非不合理 【欧洲央行副行长Vujcic：市场押注欧洲央行明年加息似乎并非不合理】欧洲央行副行长Boris Vujcic表示"
+            "美联储加息新信号 【美联储加息新信号】当地时间11月16日，美联储主席凯文·沃什发表主题为科技对生产力和就业影响的演讲"
           ],
-          "date": "2026-11-16",
+          "date": "2026-11-17",
           "days_ago": 0,
           "is_fresh": true,
-          "time": "2026-11-16 18:22:49",
+          "time": "2026-11-17 07:40:38",
+          "source": "东财全球"
+        },
+        {
+          "title": "高盛：在各国央行持续购金推动下 金价到2027年底或升至4,650美元/盎司",
+          "evidence": [
+            "一旦美联储开始降息，金价到2028年底有望上涨至每盎司5,600美元"
+          ],
+          "date": "2026-11-17",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-11-17 03:09:23",
           "source": "东财全球"
         },
         {
@@ -214,7 +251,7 @@
             "东方财富财经早餐 11月11日周三 【东方财富财经早餐 11月11日周三】1、美国10月CPI环比增长0.4%，高于市场预期，12月加息概率仍维持在100%"
           ],
           "date": "2026-11-11",
-          "days_ago": 5,
+          "days_ago": 6,
           "is_fresh": true,
           "time": "2026-11-11 06:00:38",
           "source": "财经早餐"

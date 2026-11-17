@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-16 22:01",
-  "session": "close",
+  "generated_at": "2026-11-17 08:46",
+  "session": "preopen",
   "data_date": "2026-11-16",
   "for_date": "2026-11-17",
   "data_date_note": "",
@@ -22,12 +22,20 @@
     "exists": true,
     "gap_days": 1,
     "stale": false,
-    "bias": "中性",
-    "bias_score": 0,
+    "bias": "偏空",
+    "bias_score": -1,
     "t1_focus": [
-      "无新增共振，维持既有持仓观察"
+      "跌停家数能否由 106 收敛至 60 家内（第一顺位）",
+      "国家队 ETF 申购是否连续第二日为正",
+      "美东 11/16 收盘存储四线 / 光通信三线是否止跌",
+      "上证 3,586.57 与 3,574.27 两道硬线的得失"
     ],
-    "risks": [],
+    "risks": [
+      "存储 / 光模块链继续补跌",
+      "跌停潮自我强化致个股流动性枯竭",
+      "国家队买入不持续（5 日累计仍 -15.98 亿）",
+      "美东 11/16 盘 VIX 跳升"
+    ],
     "headline": ""
   },
   "layers": {
@@ -37,8 +45,8 @@
   },
   "market_state": {
     "date": "2026-11-16",
-    "run_date": "2026-11-16",
-    "preopen_partial": null,
+    "run_date": "2026-11-17",
+    "preopen_partial": true,
     "us_kline": true,
     "asia": true
   },
@@ -47,28 +55,26 @@
       "date": "2026-11-16",
       "weekday": "周一",
       "is_trading_day": true,
-      "news": 285,
+      "news": 302,
       "feeds": 0,
-      "reports": 889,
+      "reports": 1164,
       "macro": true
     },
     {
       "date": "2026-11-17",
       "weekday": "周二",
       "is_trading_day": true,
-      "news": 0,
+      "news": 287,
       "feeds": 0,
-      "reports": 0,
-      "macro": false
+      "reports": 114,
+      "macro": true
     }
   ],
   "totals": {
-    "news": 285,
+    "news": 589,
     "feeds": 0,
-    "reports": 889,
+    "reports": 1278,
     "covered_days": 2
   },
-  "missing": [
-    "market_thermometer.json 数据日 2026-11-13 落后于基准日 2026-11-16"
-  ]
+  "missing": []
 }
