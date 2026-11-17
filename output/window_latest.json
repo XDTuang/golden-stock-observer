@@ -1,80 +1,74 @@
 {
-  "generated_at": "2026-11-17 08:46",
-  "session": "preopen",
-  "data_date": "2026-11-16",
-  "for_date": "2026-11-17",
+  "generated_at": "2026-11-17 22:01",
+  "session": "close",
+  "data_date": "2026-11-17",
+  "for_date": "2026-11-18",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-11-17"
+    "2026-11-18"
   ],
   "span_days": 1,
   "display_days": [
-    "2026-11-16",
-    "2026-11-17"
+    "2026-11-17",
+    "2026-11-18"
   ],
-  "display_text": "11/16 + 11/17",
+  "display_text": "11/17 + 11/18",
   "span_is_weekend_cross": false,
-  "span_text": "11/17",
+  "span_text": "11/18",
   "carry": {
-    "from_data_date": "2026-11-16",
-    "ref": "output/feed_review_2026-11-16.json",
+    "from_data_date": "2026-11-17",
+    "ref": "output/feed_review_2026-11-17.json",
     "exists": true,
     "gap_days": 1,
     "stale": false,
-    "bias": "偏空",
-    "bias_score": -1,
+    "bias": "中性",
+    "bias_score": 0,
     "t1_focus": [
-      "跌停家数能否由 106 收敛至 60 家内（第一顺位）",
-      "国家队 ETF 申购是否连续第二日为正",
-      "美东 11/16 收盘存储四线 / 光通信三线是否止跌",
-      "上证 3,586.57 与 3,574.27 两道硬线的得失"
+      "无新增共振，维持既有持仓观察"
     ],
-    "risks": [
-      "存储 / 光模块链继续补跌",
-      "跌停潮自我强化致个股流动性枯竭",
-      "国家队买入不持续（5 日累计仍 -15.98 亿）",
-      "美东 11/16 盘 VIX 跳升"
-    ],
+    "risks": [],
     "headline": ""
   },
   "layers": {
-    "base": "2026-11-16 A股收盘（基准层）",
-    "overnight": "美东 2026-11-16 收盘（北京 2026-11-17 早间到达）",
-    "premarket": "2026-11-17 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-11-17 A股收盘（基准层）",
+    "overnight": "美东 2026-11-17 收盘（北京 2026-11-18 早间到达）",
+    "premarket": "2026-11-18 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-11-16",
+    "date": "2026-11-17",
     "run_date": "2026-11-17",
-    "preopen_partial": true,
+    "preopen_partial": null,
     "us_kline": true,
     "asia": true
   },
   "covered": [
-    {
-      "date": "2026-11-16",
-      "weekday": "周一",
-      "is_trading_day": true,
-      "news": 302,
-      "feeds": 0,
-      "reports": 1164,
-      "macro": true
-    },
     {
       "date": "2026-11-17",
       "weekday": "周二",
       "is_trading_day": true,
       "news": 287,
       "feeds": 0,
-      "reports": 114,
+      "reports": 833,
       "macro": true
+    },
+    {
+      "date": "2026-11-18",
+      "weekday": "周三",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
     }
   ],
   "totals": {
-    "news": 589,
+    "news": 287,
     "feeds": 0,
-    "reports": 1278,
+    "reports": 833,
     "covered_days": 2
   },
-  "missing": []
+  "missing": [
+    "market_thermometer.json 数据日 2026-11-16 落后于基准日 2026-11-17"
+  ]
 }
