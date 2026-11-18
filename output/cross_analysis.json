@@ -1,7 +1,7 @@
 {
   "date": "2026-11-18",
   "data_date": "2026-11-17",
-  "generated_at": "2026-11-18 08:34",
+  "generated_at": "2026-11-18 11:55",
   "news_date": "",
   "news_window": [
     "2026-11-17",
@@ -15,7 +15,7 @@
   "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-11-18 08:32",
+    "generated_at": "2026-11-18 08:35",
     "session": "preopen",
     "data_date": "2026-11-17",
     "for_date": "2026-11-18",
@@ -62,8 +62,8 @@
     "market_state": {
       "date": "2026-11-17",
       "run_date": "2026-11-18",
-      "preopen_partial": null,
-      "us_kline": false,
+      "preopen_partial": true,
+      "us_kline": true,
       "asia": true
     },
     "covered": [
@@ -73,29 +73,26 @@
         "is_trading_day": true,
         "news": 301,
         "feeds": 0,
-        "reports": 1054,
+        "reports": 1077,
         "macro": true
       },
       {
         "date": "2026-11-18",
         "weekday": "周三",
         "is_trading_day": true,
-        "news": 0,
+        "news": 289,
         "feeds": 0,
         "reports": 77,
         "macro": true
       }
     ],
     "totals": {
-      "news": 301,
+      "news": 590,
       "feeds": 0,
-      "reports": 1131,
+      "reports": 1154,
       "covered_days": 2
     },
-    "missing": [
-      "market_thermometer.json 数据日 2026-11-16 落后于基准日 2026-11-17",
-      "2026-11-18（周三·交易日）新闻池 0 条"
-    ]
+    "missing": []
   },
   "index_context": {
     "上证指数": {
@@ -117,174 +114,174 @@
   },
   "summary": {
     "共振": 1,
-    "背离": 7,
+    "背离": 2,
     "暗线": 3,
-    "双冷": 20
+    "双冷": 25
   },
   "items": [
     {
       "sector": "传媒",
-      "news_count": 23,
-      "news_per_day": 11.5,
+      "news_count": 13,
+      "news_per_day": 6.5,
       "flow_yi": -55.31,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "机构看涨存储芯片价格 绩优存储器概念股出炉",
-        "Anthropic IPO遭疯抢！硅谷投资大佬透露：超额认购10至20倍",
-        "Anthropic IPO获现有投资者追投 数十亿美元认购计划浮现"
+        "市场消息：Anthropic将于当地时间周二下午4点在纽约停止接受IPO认购",
+        "Anthropic将IPO定价指引至区间上限或更高水平\n",
+        "Anthropic IPO据称将于周二下午4点在纽约停止接受订单。"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 13,
-      "news_per_day": 6.5,
+      "news_count": 8,
+      "news_per_day": 4.0,
       "flow_yi": -27.82,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "《数字广东建设“十五五”规划》发布 半导体行业迎本土替代加速窗口期",
-        "科技板块估值跌至低位 二十四家公司股息率高",
-        "6亿元项目折戟 通光线缆终止与长飞光纤合资事项"
+        "联播快讯",
+        "英伟达高管：芯片从出厂至系统出货周期可由五周缩至两周 正围绕CPO技术构建新",
+        "富国银行上调美国可选消费和通信服务板块至增持 上调能源板块至标配"
       ]
     },
     {
       "sector": "机械设备",
-      "news_count": 14,
-      "news_per_day": 7.0,
+      "news_count": 12,
+      "news_per_day": 6.0,
       "flow_yi": -25.97,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "通用机器人公司Genesis完成5亿美元A轮融资，估值35亿美元",
-        "据报道 在黄仁勋辞职后 英伟达联系了其投资的3家机器人初创公司",
-        "机器人初创公司Genesis AI融资5亿美元。"
+        "机器人初创公司Genesis AI融资5亿美元。",
+        "雷军APEC谈AI：下一步是走进物理世界，小米机器人已完成连续8小时作业",
+        "王兴兴：今年机器人相关技术已看到突破的临界点"
       ]
     },
     {
       "sector": "医药生物",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": -22.81,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "【和铂医药：CRHX-101项目分拆至Adrenyx，后者预期2027年上半",
-        "和铂医药：CRHX-101项目分拆至Adrenyx，后者预期2027年上半年",
-        "和铂医药－Ｂ：合作伙伴将CRHX-101项目分拆至新公司Adrenyx"
+        "中金公司：当前至12月A股有望迎来修复行情",
+        "北京：到2030年力争培育建设100家北京市零碳工厂",
+        "智飞生物：冻干重组RSV疫苗临床试验申请获受理"
       ]
     },
     {
       "sector": "电力设备",
-      "news_count": 15,
-      "news_per_day": 7.5,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": -20.62,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "【从航班停飞到银行交易延误 技术故障接连瘫痪美国关键系统】从航空出行和银行交",
-        "商务部等9部门加强废旧动力电池回收处理 电池回收行业迎政策东风",
-        "债基年内暴跌36%！超六成仓位是可转债 股债同踩科技赛道"
+        "我国将加快推进再生资源回收体系建设",
+        "日本电动汽车购车补贴预计本月底提前结束",
+        "畅通回收再利用全链条 稳妥应对“新三样”固废退役高峰期"
       ]
     },
     {
       "sector": "汽车",
-      "news_count": 24,
-      "news_per_day": 12.0,
+      "news_count": 16,
+      "news_per_day": 8.0,
       "flow_yi": -19.78,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "摩根士丹利因盈利韧性上调小米目标价",
-        "【摩根士丹利因盈利韧性上调小米目标价】摩根士丹利上调了小米的目标价，预计这家",
-        "商务部等9部门加强废旧动力电池回收处理 电池回收行业迎政策东风"
+        "我国将加快推进再生资源回收体系建设",
+        "岚图汽车：获得道路机动车辆独立生产资质",
+        "美国10月份零售销售额增速放缓"
       ]
     },
     {
       "sector": "银行",
-      "news_count": 19,
-      "news_per_day": 9.5,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": -13.54,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "乐天银行股价下跌12%；乐天证券之前称客户数据可能被泄露。",
-        "【从航班停飞到银行交易延误 技术故障接连瘫痪美国关键系统】从航空出行和银行交",
-        "【阿波罗CEO警告：新云公司融资渠道或\"消失\"】阿波罗全球管理CEO马克·罗"
+        "瑞穗银行对贝莱德启动覆盖研究",
+        "德商银行预计明年铝价将在每吨3000美元左右",
+        "富国银行下调美国必需消费品板块评级至减持 下调金融和工业板块至中性"
       ]
     },
     {
       "sector": "公用事业",
-      "news_count": 6,
-      "news_per_day": 3.0,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": -10.73,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "微软CEO盛赞黄仁勋，回应大规模服务中断和员工买断计划",
-        "【微软CEO盛赞黄仁勋，回应大规模服务中断和员工买断计划】微软CEO萨蒂亚·",
-        "压缩空气储能有新催化 超20家上市公司布局相关业务"
+        "亚马逊：在印度新增四个公用事业规模的风能和太阳能项目",
+        "三超新材：全资子公司2.43亿元竞得无锡尚德P3工厂相关资产",
+        "亚马逊称目标到2030年将其每单位电力消耗的碳排放减少65%"
       ]
     },
     {
       "sector": "电子",
-      "news_count": 147,
-      "news_per_day": 73.5,
+      "news_count": 32,
+      "news_per_day": 16.0,
       "flow_yi": 9.62,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "【三星电机因英伟达宣布新供应协议股价大涨8%】三星电机在首尔市场的股价盘中最",
-        "摩根士丹利因盈利韧性上调小米目标价",
-        "【摩根士丹利因盈利韧性上调小米目标价】摩根士丹利上调了小米的目标价，预计这家"
+        "京东CEO许冉：收购CECONOMY后将聚焦供应链、履约、技术三大协同方向",
+        "英伟达高管：芯片从出厂至系统出货周期可由五周缩至两周 正围绕CPO技术构建新",
+        "三星电子Q3存储器价格较去年上涨270%"
       ]
     },
     {
       "sector": "计算机",
-      "news_count": 73,
-      "news_per_day": 36.5,
+      "news_count": 27,
+      "news_per_day": 13.5,
       "flow_yi": -8.54,
       "verdict": "背离",
       "verdict_raw": "背离",
       "level": "warn",
       "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
       "sample_titles": [
-        "11月18日投资避雷针：6天4板人气股提示风险 智能眼镜相关收入占比不足1%",
-        "国金证券：优先看好国内存储市场的渗透容量",
-        "微软CEO盛赞黄仁勋，回应大规模服务中断和员工买断计划"
+        "市场消息：高通(QCOM.O)与Cirrascale合作，共同推进新一代节能",
+        "机器人初创公司Genesis AI融资5亿美元。",
+        "美国国土安全部长：微软、摩根大通和美联航出现的问题，都与在旧计算机系统上叠加"
       ]
     },
     {
       "sector": "有色金属",
-      "news_count": 16,
-      "news_per_day": 8.0,
+      "news_count": 10,
+      "news_per_day": 5.0,
       "flow_yi": -8.54,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "现货黄金失守3830美元/盎司，日内跌0.51%。",
-        "中信证券：稀土行业供需向好 关注板块配置价值",
-        "债基年内暴跌36%！超六成仓位是可转债 股债同踩科技赛道"
+        "现货黄金失守3840美元/盎司",
+        "LME铝主力合约跌超2%",
+        "国内商品期货夜盘开盘 主力合约多数下跌"
       ]
     },
     {
@@ -335,17 +332,17 @@
     },
     {
       "sector": "非银金融",
-      "news_count": 20,
-      "news_per_day": 10.0,
+      "news_count": 10,
+      "news_per_day": 5.0,
       "flow_yi": -5.39,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "Anthropic IPO遭疯抢！硅谷投资大佬透露：超额认购10至20倍",
-        "Anthropic IPO获现有投资者追投 数十亿美元认购计划浮现",
-        "市场消息：Anthropic投资方红杉资本、ICONIQ等合计计划在Anth"
+        "市场消息：Anthropic将于当地时间周二下午4点在纽约停止接受IPO认购",
+        "Anthropic将IPO定价指引至区间上限或更高水平\n",
+        "Anthropic IPO据称将于周二下午4点在纽约停止接受订单。"
       ]
     },
     {
@@ -364,17 +361,17 @@
     },
     {
       "sector": "国防军工",
-      "news_count": 17,
-      "news_per_day": 8.5,
+      "news_count": 10,
+      "news_per_day": 5.0,
       "flow_yi": -5.21,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "英国宣布向乌克兰提供千余枚防空导弹",
-        "【从航班停飞到银行交易延误 技术故障接连瘫痪美国关键系统】从航空出行和银行交",
-        "青岛胶东国际机场成为国内首家实施目视起落双跑道机场"
+        "联播快讯",
+        "乌克兰国防部长：乌克兰军方在过去几个月内击中了14个俄罗斯弹道导弹发射装置。",
+        "乌克兰国防部长称，乌军在过去两个月内打击了14个俄罗斯弹道导弹发射器。"
       ]
     },
     {
@@ -390,17 +387,17 @@
     },
     {
       "sector": "石油石化",
-      "news_count": 12,
-      "news_per_day": 6.0,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": -5.04,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "日本10月贸易逆差收窄 油价上涨推高进口额",
-        "美国上周API原油库存 527.8万桶",
-        "WTI原油期货结算价为每桶86.01美元"
+        "乌克兰无人机袭击俄罗斯境内的两家炼油厂",
+        "四巨头中标印度LPG大单 2027年拟进口275万公吨的美国液化石油气",
+        "布伦特原油期货涨幅扩大至1%"
       ]
     },
     {
@@ -419,16 +416,14 @@
     },
     {
       "sector": "环保",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -3.3,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "上市公司掘金“新三样”回收拆解"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "轻工制造",
@@ -511,32 +506,30 @@
     },
     {
       "sector": "食品饮料",
-      "news_count": 12,
-      "news_per_day": 6.0,
+      "news_count": 5,
+      "news_per_day": 2.5,
       "flow_yi": -0.85,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "特朗普政府撤回FDA新局长提名 机构领导层再陷动荡",
-        "【从航班停飞到银行交易延误 技术故障接连瘫痪美国关键系统】从航空出行和银行交",
-        "日本10月贸易逆差收窄 油价上涨推高进口额"
+        "京东CEO许冉：收购CECONOMY后将聚焦供应链、履约、技术三大协同方向",
+        "Gucci在法国也降价了 一款经典手袋价格下调约7700元！分析称中等收入消",
+        "富国银行下调美国必需消费品板块评级至减持 下调金融和工业板块至中性"
       ]
     },
     {
       "sector": "综合",
-      "news_count": 5,
-      "news_per_day": 2.5,
+      "news_count": 1,
+      "news_per_day": 0.5,
       "flow_yi": 0.11,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "【从航班停飞到银行交易延误 技术故障接连瘫痪美国关键系统】从航空出行和银行交",
-        "周三你需要知道的隔夜全球要闻：标普500指数创9月以来最长连跌；英伟达业绩和",
-        "美三大股指集体收跌 光通信股逆势上扬"
+        "北京：鼓励工厂（算力设施）探索在运输、工业、储能和供能等领域开展氢能示范应用"
       ]
     }
   ]
