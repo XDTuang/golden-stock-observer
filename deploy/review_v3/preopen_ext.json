@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-11-18 08:56:02",
- "mode": "preopen",
- "mode_note": "盘前窗口：隔夜美股收盘 + 日韩开盘",
+ "generated_at": "2026-11-18 22:02:48",
+ "mode": "close_transition",
+ "mode_note": "收盘过渡版：A股收盘全量，美股未开盘沿用隔夜",
  "us_dst": false,
  "us_open_bj": "22:30",
  "us": {
@@ -233,55 +233,48 @@
  "asia": {
   "nikkei": {
    "name": "日经225",
-   "close": 59417.75,
-   "chg_pct": 0.95,
+   "close": 59024.06,
+   "chg_pct": 0.28,
    "date": "2026-11-18"
   },
   "kospi": {
    "name": "首尔综合指数",
-   "close": 5110.89,
-   "chg_pct": 2.87,
+   "close": 5067.44,
+   "chg_pct": 1.99,
    "date": "2026-11-18"
   }
  },
  "vix": {
-  "date": "2026-11-17",
+  "date": "11/17/2026",
   "close": 25.46,
-  "chg_pct": 11.13,
-  "note": "校正：CBOE 11-17 已结算 25.46（+11.13%），fetch_preopen 取到的是 11-16 的 22.91（跨零点时序）→ 以 vix_panel.cboe_vix 为准双写",
-  "source": "vix_panel.cboe_vix",
-  "superseded": {
-   "date": "11/16/2026",
-   "close": 22.91,
-   "note": "CBOE 日频·前一交易日收盘值"
-  }
+  "note": "CBOE 日频·前一交易日收盘值"
  },
  "global_ext": {
   "date": "2026-11-18",
   "items": {
    "btc": {
     "name": "BTC 比特币（现货）",
-    "price": 64655.1724,
+    "price": 63829.7872,
     "prev_close": 64377.6824,
-    "chg_pct": 0.43,
+    "chg_pct": -0.85,
     "src_date": "2026-11-18",
     "source": "新浪 fx_sbtcusd",
     "proxy": false
    },
    "usdjpy": {
     "name": "USD/JPY 美元日元",
-    "price": 159.55,
+    "price": 159.36,
     "prev_close": 159.36,
-    "chg_pct": 0.12,
+    "chg_pct": 0.0,
     "src_date": "2026-11-18",
     "source": "新浪 fx_susdjpy",
     "proxy": false
    },
    "dxy": {
     "name": "美元指数 DXY",
-    "price": 103.6796,
+    "price": 103.7917,
     "prev_close": 103.5632,
-    "chg_pct": 0.11,
+    "chg_pct": 0.22,
     "src_date": "2026-11-18",
     "source": "新浪 DINIW",
     "proxy": false
