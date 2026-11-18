@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-17 22:01",
-  "session": "close",
+  "generated_at": "2026-11-18 08:35",
+  "session": "preopen",
   "data_date": "2026-11-17",
   "for_date": "2026-11-18",
   "data_date_note": "",
@@ -22,12 +22,20 @@
     "exists": true,
     "gap_days": 1,
     "stale": false,
-    "bias": "中性",
-    "bias_score": 0,
+    "bias": "偏空",
+    "bias_score": -1,
     "t1_focus": [
-      "无新增共振，维持既有持仓观察"
+      "跌停家数能否从 113 收敛到 80 以下",
+      "电子板块能否守住 6,040",
+      "家电连续第 4 日净流入是否延续"
     ],
-    "risks": [],
+    "risks": [
+      "广度二次恶化（跌停破 150 家）",
+      "分母端再收紧压缩成长估值",
+      "「国产替代独立定价」被证伪",
+      "地缘溢价快速回吐（油运 / 能源）",
+      "新闻热度维口径失真"
+    ],
     "headline": ""
   },
   "layers": {
@@ -37,8 +45,8 @@
   },
   "market_state": {
     "date": "2026-11-17",
-    "run_date": "2026-11-17",
-    "preopen_partial": null,
+    "run_date": "2026-11-18",
+    "preopen_partial": true,
     "us_kline": true,
     "asia": true
   },
@@ -47,28 +55,26 @@
       "date": "2026-11-17",
       "weekday": "周二",
       "is_trading_day": true,
-      "news": 287,
+      "news": 301,
       "feeds": 0,
-      "reports": 833,
+      "reports": 1077,
       "macro": true
     },
     {
       "date": "2026-11-18",
       "weekday": "周三",
       "is_trading_day": true,
-      "news": 0,
+      "news": 289,
       "feeds": 0,
-      "reports": 0,
-      "macro": false
+      "reports": 77,
+      "macro": true
     }
   ],
   "totals": {
-    "news": 287,
+    "news": 590,
     "feeds": 0,
-    "reports": 833,
+    "reports": 1154,
     "covered_days": 2
   },
-  "missing": [
-    "market_thermometer.json 数据日 2026-11-16 落后于基准日 2026-11-17"
-  ]
+  "missing": []
 }
