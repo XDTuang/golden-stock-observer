@@ -1,6 +1,6 @@
 {
  "meta": {
-  "updated_at": "2026-11-19 09:15:21",
+  "updated_at": "2026-11-19 09:45:23",
   "data_date": "2026-11-19",
   "market_status": "trading",
   "algorithm": "1.1.0",
@@ -11,97 +11,97 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3587.8,
-    "chg_pct": -0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3562.15,
+    "chg_pct": -0.72,
+    "turnover_yi": 1286.8,
+    "high": 3583.12,
+    "low": 3558.92
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 10659.41,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 10552.14,
+    "chg_pct": -1.01,
+    "turnover_yi": 1433.0,
+    "high": 10591.75,
+    "low": 10541.68
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 2311.62,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 2277.22,
+    "chg_pct": -1.49,
+    "turnover_yi": 635.0,
+    "high": 2290.21,
+    "low": 2274.16
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1247.99,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 1228.49,
+    "chg_pct": -1.56,
+    "turnover_yi": 239.0,
+    "high": 1242.28,
+    "low": 1221.6
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 3983.77,
-    "chg_pct": 0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 3943.88,
+    "chg_pct": -1.0,
+    "turnover_yi": 731.3,
+    "high": 3972.43,
+    "low": 3942.33
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 6281.94,
-    "chg_pct": -0.0,
-    "turnover_yi": 0.0,
-    "high": 0.0,
-    "low": 0.0
+    "price": 6246.18,
+    "chg_pct": -0.57,
+    "turnover_yi": 429.9,
+    "high": 6263.35,
+    "low": 6227.24
    }
   ],
   "breadth": {
-   "up": 1352,
-   "down": 1814,
-   "flat": 1439,
-   "ratio": 0.75,
-   "limit_up": 75,
-   "limit_down": 90,
-   "main_net_yi": 0.0,
-   "turnover_yi": 0.0,
+   "up": 731,
+   "down": 3705,
+   "flat": 169,
+   "ratio": 0.2,
+   "limit_up": 21,
+   "limit_down": 25,
+   "main_net_yi": -96.86,
+   "turnover_yi": 2259.8,
    "total": 4605
   }
  },
  "L1": {
   "sentiment": {
-   "score": 42,
-   "S1": 19,
-   "S2": 62,
-   "S3": 40,
-   "S4": 50,
+   "score": 18,
+   "S1": 5,
+   "S2": 18,
+   "S3": 19,
+   "S4": 34,
    "inputs": {
-    "ratio": 0.75,
-    "limit_up": 75,
-    "avg_idx_pct": 0.0,
-    "main_net_yi": 0
+    "ratio": 0.2,
+    "limit_up": 21,
+    "avg_idx_pct": -1.06,
+    "main_net_yi": -96.86
    }
   },
   "state": {
-   "state": "oscillation",
-   "label": "震荡分化",
-   "note": "降低频率，控制单票仓位，等待主线明朗",
-   "score": 42
+   "state": "panic",
+   "label": "恐慌下跌",
+   "note": "空仓或极轻仓观望，不抄底，等企稳信号",
+   "score": 18
   }
  },
  "L2": {
   "range": [
-   40,
-   60
+   0,
+   20
   ],
-  "note": "震荡分化，控制总仓与单票上限",
+  "note": "恐慌下跌，空仓或极轻仓等待企稳",
   "rules": [
    "单票仓位 ≤ 10%",
    "单一板块集中度 ≤ 30%",
@@ -115,7 +115,44 @@
   "resonance": []
  },
  "L4": {
-  "candidates": [],
+  "candidates": [
+   {
+    "code": "sh601689",
+    "name": "拓普集团",
+    "zdf": 5.32,
+    "zljlr": 1.43,
+    "lb": 8.58,
+    "hsl": 1.04,
+    "turnover_yi": 9.01,
+    "price": 50.67,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sh600584",
+    "name": "长电科技",
+    "zdf": 1.72,
+    "zljlr": 1.42,
+    "lb": 4.09,
+    "hsl": 1.16,
+    "turnover_yi": 11.11,
+    "price": 53.87,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz002086",
+    "name": "东方海洋",
+    "zdf": -9.38,
+    "zljlr": 1.1,
+    "lb": 5.97,
+    "hsl": 13.29,
+    "turnover_yi": 7.07,
+    "price": 3.38,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   }
+  ],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
   "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
  },
