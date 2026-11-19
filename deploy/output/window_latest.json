@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-18 22:01",
-  "session": "close",
+  "generated_at": "2026-11-19 08:33",
+  "session": "preopen",
   "data_date": "2026-11-18",
   "for_date": "2026-11-19",
   "data_date_note": "",
@@ -25,9 +25,17 @@
     "bias": "中性",
     "bias_score": 0,
     "t1_focus": [
-      "无新增共振，维持既有持仓观察"
+      "跌停能否从 62 收敛至 40 家以下",
+      "成交能否从 13,697 亿回到 14,500 亿以上",
+      "有色开盘承接 LME 铜 -4.2% 的幅度"
     ],
-    "risks": [],
+    "risks": [
+      "量能不继（缩量修复难持续）",
+      "资源链补跌拖累指数",
+      "外部锚反转（半导体跟涨被证伪）",
+      "加息预期再升温（分母端）",
+      "新闻热度维口径失真（连续第二日）"
+    ],
     "headline": ""
   },
   "layers": {
@@ -37,8 +45,8 @@
   },
   "market_state": {
     "date": "2026-11-18",
-    "run_date": "2026-11-18",
-    "preopen_partial": null,
+    "run_date": "2026-11-19",
+    "preopen_partial": true,
     "us_kline": true,
     "asia": true
   },
@@ -47,28 +55,26 @@
       "date": "2026-11-18",
       "weekday": "周三",
       "is_trading_day": true,
-      "news": 289,
+      "news": 298,
       "feeds": 0,
-      "reports": 882,
+      "reports": 1114,
       "macro": true
     },
     {
       "date": "2026-11-19",
       "weekday": "周四",
       "is_trading_day": true,
-      "news": 0,
+      "news": 285,
       "feeds": 0,
-      "reports": 0,
-      "macro": false
+      "reports": 42,
+      "macro": true
     }
   ],
   "totals": {
-    "news": 289,
+    "news": 583,
     "feeds": 0,
-    "reports": 882,
+    "reports": 1156,
     "covered_days": 2
   },
-  "missing": [
-    "market_thermometer.json 数据日 2026-11-17 落后于基准日 2026-11-18"
-  ]
+  "missing": []
 }
