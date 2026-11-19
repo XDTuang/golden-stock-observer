@@ -1,7 +1,7 @@
 {
   "date": "2026-11-19",
   "data_date": "2026-11-18",
-  "generated_at": "2026-11-19 08:33",
+  "generated_at": "2026-11-19 11:53",
   "news_date": "",
   "news_window": [
     "2026-11-18",
@@ -15,7 +15,7 @@
   "hot_threshold": 16,
   "hot_mode": "per_day",
   "window": {
-    "generated_at": "2026-11-19 08:31",
+    "generated_at": "2026-11-19 08:33",
     "session": "preopen",
     "data_date": "2026-11-18",
     "for_date": "2026-11-19",
@@ -62,8 +62,8 @@
     "market_state": {
       "date": "2026-11-18",
       "run_date": "2026-11-19",
-      "preopen_partial": null,
-      "us_kline": false,
+      "preopen_partial": true,
+      "us_kline": true,
       "asia": true
     },
     "covered": [
@@ -73,29 +73,26 @@
         "is_trading_day": true,
         "news": 298,
         "feeds": 0,
-        "reports": 882,
+        "reports": 1114,
         "macro": true
       },
       {
         "date": "2026-11-19",
         "weekday": "周四",
         "is_trading_day": true,
-        "news": 0,
+        "news": 285,
         "feeds": 0,
-        "reports": 0,
+        "reports": 42,
         "macro": true
       }
     ],
     "totals": {
-      "news": 298,
+      "news": 583,
       "feeds": 0,
-      "reports": 882,
+      "reports": 1156,
       "covered_days": 2
     },
-    "missing": [
-      "market_thermometer.json 数据日 2026-11-17 落后于基准日 2026-11-18",
-      "2026-11-19（周四·交易日）新闻池 0 条"
-    ]
+    "missing": []
   },
   "index_context": {
     "上证指数": {
@@ -117,144 +114,144 @@
   },
   "summary": {
     "共振": 2,
-    "背离": 6,
+    "背离": 0,
     "暗线": 3,
-    "双冷": 20
+    "双冷": 26
   },
   "items": [
     {
       "sector": "电子",
-      "news_count": 74,
-      "news_per_day": 37.0,
+      "news_count": 32,
+      "news_per_day": 16.0,
       "flow_yi": 99.84,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "中金公司：展望27年东南亚宏观经济 重点关注以下三个方面",
-        "【中金公司：展望27年东南亚宏观经济，重点关注以下三个方面】中金公司研报表示",
-        "【英伟达风波引发日本AI股票估值重估 “AI溢价”或转为折价】曾因人工智能("
+        "美参议员：黄仁勋与卢特尼克将赴参议院作证，目标圣诞节前完成",
+        "腾讯：可能需要更长时间才能推出下一个版本模型",
+        "腾讯高管：预计2028年AI投入产出效率改善 得益于基础设施复用、硬件降价与"
       ]
     },
     {
       "sector": "有色金属",
-      "news_count": 30,
-      "news_per_day": 15.0,
+      "news_count": 15,
+      "news_per_day": 7.5,
       "flow_yi": -39.76,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "COMEX白银期货涨超1%",
-        "成本端价格回调叠加出口增长 家电企业盈利有望进一步改善",
-        "美联储鹰派言论推高加息预期，金价徘徊于14个月低点附近"
+        "LME铜价一度下跌4.2%",
+        "LME铜价一度下跌4.2%，创3月以来最大跌幅。",
+        "LME铜主力合约跌超4%"
       ]
     },
     {
       "sector": "通信",
-      "news_count": 12,
-      "news_per_day": 6.0,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": 35.37,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
       "sample_titles": [
-        "我国成功发射实践二十四号卫星",
-        "美国家安全局大范围IT故障波及中东关键情报设施",
-        "王福军任航天通信党委副书记"
+        "八省（市）将开展6G创新发展部省协同试点",
+        "中国—新加坡人工智能治理交流会议在京举行",
+        "江苏：持续完善全省一体化算力监测调度平台功能 强化长三角算力枢纽节点功能"
       ]
     },
     {
       "sector": "医药生物",
-      "news_count": 10,
-      "news_per_day": 5.0,
+      "news_count": 5,
+      "news_per_day": 2.5,
       "flow_yi": -33.78,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "和铂医药：LET003用于治疗超重或肥胖症的IND申请获国家药监局受理",
-        "瑞康医药：将适时开展并购，并购标的主要聚焦于中医药、康养、抗衰等方向",
-        "月内652家私募机构调研A股公司 五大行业热度较高"
+        "【刘非调研中医药高质量发展工作并主持召开座谈会】18日下午，浙江省委常委、杭",
+        "罗氏上海生物制药生产基地竣工",
+        "今冬明春多种呼吸道病原体交替叠加 流感是主要威胁"
       ]
     },
     {
       "sector": "银行",
-      "news_count": 20,
-      "news_per_day": 10.0,
+      "news_count": 15,
+      "news_per_day": 7.5,
       "flow_yi": -26.33,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "不能正常履职上市公司董事长 金融老将翁振杰动向引关注",
-        "市场消息：意大利裕信银行与德国就收购德国商业银行达成广泛共识，裕信银行同意让",
-        "科学家利用量子纠缠特性首次完成位置验证"
+        "【丹斯克银行上调美联储加息预期至三次，预计2027年3月利率达4.50%–4",
+        "【利率上升威胁信贷市场，私募信贷需求攀升】高管们表示，借贷成本的上升可能会将",
+        "美参议员：黄仁勋与卢特尼克将赴参议院作证，目标圣诞节前完成"
       ]
     },
     {
       "sector": "传媒",
-      "news_count": 29,
-      "news_per_day": 14.5,
+      "news_count": 7,
+      "news_per_day": 3.5,
       "flow_yi": -23.44,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "【华泰证券：Anthropic上市后将成为观察美股盈利的重要窗口】华泰证券研",
-        "华泰证券：Anthropic上市后将成为观察美股盈利的重要窗口",
-        "【Anthropic IPO日本部分筹资30亿美元 居区间下限】根据周四公布"
+        "Anthropic据悉引导将IPO定价定在区间上方。",
+        "Anthropic据悉将IPO定价指引至高于发行区间",
+        "Anthropic冲刺史上最大IPO 据悉获近七倍超额认购"
       ]
     },
     {
       "sector": "计算机",
-      "news_count": 71,
-      "news_per_day": 35.5,
+      "news_count": 29,
+      "news_per_day": 14.5,
       "flow_yi": 19.74,
       "verdict": "共振",
       "verdict_raw": "真共振",
       "level": "ok",
       "desc": "语料与资金同向，主线成立",
       "sample_titles": [
-        "【OpenAI首款AI硬件或于年底启动出货，立讯精密等中国供应商参与】11月",
-        "OpenAI首款AI硬件或于年底启动出货 立讯精密等中国供应商参与",
-        "奥特曼：必须平衡AI安全与发展 没法让所有人满意"
+        "波士顿咨询集团与微软将在联合AI交付模式中嵌入Teams。",
+        "调查：工作没找到先背两万网贷 AI培训套路盯上应届毕业生",
+        "【腾讯刘炽平谈“小微”：日活突破3000万，未来会和Muse一样强大】11月"
       ]
     },
     {
       "sector": "电力设备",
-      "news_count": 15,
-      "news_per_day": 7.5,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": -16.59,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "中信证券：持续看好国内储能装机需求增长及头部企业的发展机会",
-        "月内652家私募机构调研A股公司 五大行业热度较高",
-        "关于车网互动，专家最新研判"
+        "【通威刘汉元谈光伏破局：先控住硅料，不要简单出清】11月18日，2026第九",
+        "科技部原副部长李萌：光伏产业部分环节的量价背离格局需扭转",
+        "国家电网公司董事长张智刚会见中电控股有限公司董事会副主席斐历·嘉道理"
       ]
     },
     {
       "sector": "国防军工",
-      "news_count": 22,
-      "news_per_day": 11.0,
+      "news_count": 9,
+      "news_per_day": 4.5,
       "flow_yi": -15.29,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "美国总统特朗普：（谈及航空系统故障）安装新设备时总会出点状况，这些都是孤立事",
-        "特朗普：我想升级整个联邦航空管理局系统，而不是零散部件。",
-        "美媒：“华盛顿”号航空母舰离开中东地区"
+        "八省（市）将开展6G创新发展部省协同试点",
+        "巴基斯坦成功试射“法塔赫-3”超音速巡航导弹",
+        "巴基斯坦成功试射“法塔赫－3”超音速巡航导弹"
       ]
     },
     {
@@ -285,75 +282,73 @@
     },
     {
       "sector": "非银金融",
-      "news_count": 31,
-      "news_per_day": 15.5,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": -11.33,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "【华泰证券：Anthropic上市后将成为观察美股盈利的重要窗口】华泰证券研",
-        "华泰证券：Anthropic上市后将成为观察美股盈利的重要窗口",
-        "【Anthropic IPO日本部分筹资30亿美元 居区间下限】根据周四公布"
+        "Anthropic据悉引导将IPO定价定在区间上方。",
+        "Anthropic据悉将IPO定价指引至高于发行区间",
+        "Anthropic冲刺史上最大IPO 据悉获近七倍超额认购"
       ]
     },
     {
       "sector": "食品饮料",
-      "news_count": 10,
-      "news_per_day": 5.0,
+      "news_count": 4,
+      "news_per_day": 2.0,
       "flow_yi": -9.46,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "【OpenAI首款AI硬件或于年底启动出货，立讯精密等中国供应商参与】11月",
-        "消息称三星电子计划在CES 2027发布两款人形机器人",
-        "AI家电要凭实用功能撬动换新需求"
+        "调查：工作没找到先背两万网贷 AI培训套路盯上应届毕业生",
+        "【伊朗10月天然气用量创历史新高】伊朗国家天然气公司供气协调经理表示，10月",
+        "美联储沃勒：若不释放1月加息信号，则12月应加息50个基点"
       ]
     },
     {
       "sector": "汽车",
-      "news_count": 16,
-      "news_per_day": 8.0,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": -7.5,
-      "verdict": "背离",
-      "verdict_raw": "背离",
-      "level": "warn",
-      "desc": "语料热但资金撤，警惕高位分歧 / 利好出尽",
+      "verdict": "双冷",
+      "verdict_raw": "双冷",
+      "level": "mute",
+      "desc": "无题材无资金，回避",
       "sample_titles": [
-        "马斯克：特斯拉将在未来两个月内进行Optimus机器人演示",
-        "从APEC礼宾用车看中国汽车的进阶路",
-        "关于车网互动，专家最新研判"
+        "中汽协付炳锋：充电基础设施行业正处于加速整合期",
+        "天成自控：子公司获国内某知名汽车企业乘用车座椅骨架项目定点",
+        "贝莱德在比亚迪股份H股的持股比例于11月13日从6.91%升至7.61%"
       ]
     },
     {
       "sector": "交通运输",
-      "news_count": 1,
-      "news_per_day": 0.5,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": 6.97,
       "verdict": "暗线",
       "verdict_raw": "暗线",
       "level": "info",
       "desc": "主力提前布局，语料尚未发酵（潜伏观察）",
-      "sample_titles": [
-        "微软CEO警告网络故障或成新常态"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "农林牧渔",
-      "news_count": 7,
-      "news_per_day": 3.5,
+      "news_count": 3,
+      "news_per_day": 1.5,
       "flow_yi": -6.87,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "中金公司：展望27年东南亚宏观经济 重点关注以下三个方面",
-        "【中金公司：展望27年东南亚宏观经济，重点关注以下三个方面】中金公司研报表示",
-        "高端农机驶向全链自主可控"
+        "【黑海运输中断或致乌克兰玉米种植面积减半，农业部长称】乌克兰农业部长塔拉斯·",
+        "国内商品期货夜盘开盘 主力合约大面积飘绿",
+        "广电运通：中标约3亿元农业银行超级柜台入围项目"
       ]
     },
     {
@@ -369,17 +364,16 @@
     },
     {
       "sector": "机械设备",
-      "news_count": 12,
-      "news_per_day": 6.0,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -4.17,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "消息称三星电子计划在CES 2027发布两款人形机器人",
-        "【Anthropic IPO日本部分筹资30亿美元 居区间下限】根据周四公布",
-        "马斯克：特斯拉将在未来两个月内进行Optimus机器人演示"
+        "八省（市）将开展6G创新发展部省协同试点",
+        "FIRST与高通技术公司推出下一代K-8机器人教育项目。"
       ]
     },
     {
@@ -395,17 +389,16 @@
     },
     {
       "sector": "公用事业",
-      "news_count": 4,
-      "news_per_day": 2.0,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -3.5,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "红利资产缘何成为香饽饽",
-        "月内652家私募机构调研A股公司 五大行业热度较高",
-        "国家电网公司董事长张智刚会见中电控股有限公司董事会副主席斐历·嘉道理"
+        "国家电网公司董事长张智刚会见中电控股有限公司董事会副主席斐历·嘉道理",
+        "民主党筹备数据中心电力改革方案 运营商10年内或需多付350亿美元"
       ]
     },
     {
@@ -491,46 +484,42 @@
     },
     {
       "sector": "房地产",
-      "news_count": 2,
-      "news_per_day": 1.0,
+      "news_count": 0,
+      "news_per_day": 0.0,
       "flow_yi": -0.32,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
-      "sample_titles": [
-        "当地产高管上恋综 个人能力正重新定价",
-        "股价下挫拉响多家房企退市警报 “护盘”行动已经开启"
-      ]
+      "sample_titles": []
     },
     {
       "sector": "综合",
-      "news_count": 5,
-      "news_per_day": 2.5,
+      "news_count": 2,
+      "news_per_day": 1.0,
       "flow_yi": -0.18,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "【中金公司：展望27年东南亚宏观经济，重点关注以下三个方面】中金公司研报表示",
-        "国家数据局组织开展第二批可信数据空间创新发展试点工作",
-        "纳指收涨0.42% 芯片股表现分化"
+        "雅高集团将在广州落地莱佛士品牌",
+        "三年打造超100家新质出海先锋企业 北京经开区“出海方案”正式印发"
       ]
     },
     {
       "sector": "石油石化",
-      "news_count": 9,
-      "news_per_day": 4.5,
+      "news_count": 6,
+      "news_per_day": 3.0,
       "flow_yi": -0.1,
       "verdict": "双冷",
       "verdict_raw": "双冷",
       "level": "mute",
       "desc": "无题材无资金，回避",
       "sample_titles": [
-        "WTI原油期货结算价报每桶83.26美元",
-        "WTI原油失守82美元",
-        "EIA：美国上周原油库存增加338.0万桶 市场预估为增加5.8万桶"
+        "西方官员：沙特预计与胡塞武装的冲突将持续至明年",
+        "美联储沃勒：若不释放1月加息信号，则12月应加息50个基点",
+        "国家能源局：积极有序推动流域水风光与绿色氢氨醇耦合集成 促进高载能产业低碳转"
       ]
     },
     {
