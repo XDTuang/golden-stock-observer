@@ -1,80 +1,74 @@
 {
-  "generated_at": "2026-11-19 08:33",
-  "session": "preopen",
-  "data_date": "2026-11-18",
-  "for_date": "2026-11-19",
+  "generated_at": "2026-11-19 22:01",
+  "session": "close",
+  "data_date": "2026-11-19",
+  "for_date": "2026-11-20",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-11-19"
+    "2026-11-20"
   ],
   "span_days": 1,
   "display_days": [
-    "2026-11-18",
-    "2026-11-19"
+    "2026-11-19",
+    "2026-11-20"
   ],
-  "display_text": "11/18 + 11/19",
+  "display_text": "11/19 + 11/20",
   "span_is_weekend_cross": false,
-  "span_text": "11/19",
+  "span_text": "11/20",
   "carry": {
-    "from_data_date": "2026-11-18",
-    "ref": "output/feed_review_2026-11-18.json",
+    "from_data_date": "2026-11-19",
+    "ref": "output/feed_review_2026-11-19.json",
     "exists": true,
     "gap_days": 1,
     "stale": false,
     "bias": "中性",
     "bias_score": 0,
     "t1_focus": [
-      "跌停能否从 62 收敛至 40 家以下",
-      "成交能否从 13,697 亿回到 14,500 亿以上",
-      "有色开盘承接 LME 铜 -4.2% 的幅度"
+      "无新增共振，维持既有持仓观察"
     ],
-    "risks": [
-      "量能不继（缩量修复难持续）",
-      "资源链补跌拖累指数",
-      "外部锚反转（半导体跟涨被证伪）",
-      "加息预期再升温（分母端）",
-      "新闻热度维口径失真（连续第二日）"
-    ],
+    "risks": [],
     "headline": ""
   },
   "layers": {
-    "base": "2026-11-18 A股收盘（基准层）",
-    "overnight": "美东 2026-11-18 收盘（北京 2026-11-19 早间到达）",
-    "premarket": "2026-11-19 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-11-19 A股收盘（基准层）",
+    "overnight": "美东 2026-11-19 收盘（北京 2026-11-20 早间到达）",
+    "premarket": "2026-11-20 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "run_date": "2026-11-19",
-    "preopen_partial": true,
+    "preopen_partial": null,
     "us_kline": true,
     "asia": true
   },
   "covered": [
-    {
-      "date": "2026-11-18",
-      "weekday": "周三",
-      "is_trading_day": true,
-      "news": 298,
-      "feeds": 0,
-      "reports": 1114,
-      "macro": true
-    },
     {
       "date": "2026-11-19",
       "weekday": "周四",
       "is_trading_day": true,
       "news": 285,
       "feeds": 0,
-      "reports": 42,
+      "reports": 759,
       "macro": true
+    },
+    {
+      "date": "2026-11-20",
+      "weekday": "周五",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
     }
   ],
   "totals": {
-    "news": 583,
+    "news": 285,
     "feeds": 0,
-    "reports": 1156,
+    "reports": 759,
     "covered_days": 2
   },
-  "missing": []
+  "missing": [
+    "market_thermometer.json 数据日 2026-11-18 落后于基准日 2026-11-19"
+  ]
 }

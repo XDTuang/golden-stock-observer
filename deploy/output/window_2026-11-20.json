@@ -1,0 +1,74 @@
+{
+  "generated_at": "2026-11-19 22:01",
+  "session": "close",
+  "data_date": "2026-11-19",
+  "for_date": "2026-11-20",
+  "data_date_note": "",
+  "warnings": [],
+  "span": [
+    "2026-11-20"
+  ],
+  "span_days": 1,
+  "display_days": [
+    "2026-11-19",
+    "2026-11-20"
+  ],
+  "display_text": "11/19 + 11/20",
+  "span_is_weekend_cross": false,
+  "span_text": "11/20",
+  "carry": {
+    "from_data_date": "2026-11-19",
+    "ref": "output/feed_review_2026-11-19.json",
+    "exists": true,
+    "gap_days": 1,
+    "stale": false,
+    "bias": "中性",
+    "bias_score": 0,
+    "t1_focus": [
+      "无新增共振，维持既有持仓观察"
+    ],
+    "risks": [],
+    "headline": ""
+  },
+  "layers": {
+    "base": "2026-11-19 A股收盘（基准层）",
+    "overnight": "美东 2026-11-19 收盘（北京 2026-11-20 早间到达）",
+    "premarket": "2026-11-20 今早日韩实时 + 盘前新闻/投喂增量"
+  },
+  "market_state": {
+    "date": "2026-11-19",
+    "run_date": "2026-11-19",
+    "preopen_partial": null,
+    "us_kline": true,
+    "asia": true
+  },
+  "covered": [
+    {
+      "date": "2026-11-19",
+      "weekday": "周四",
+      "is_trading_day": true,
+      "news": 285,
+      "feeds": 0,
+      "reports": 759,
+      "macro": true
+    },
+    {
+      "date": "2026-11-20",
+      "weekday": "周五",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": false
+    }
+  ],
+  "totals": {
+    "news": 285,
+    "feeds": 0,
+    "reports": 759,
+    "covered_days": 2
+  },
+  "missing": [
+    "market_thermometer.json 数据日 2026-11-18 落后于基准日 2026-11-19"
+  ]
+}
