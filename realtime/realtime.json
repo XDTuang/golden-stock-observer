@@ -1,7 +1,7 @@
 {
  "meta": {
-  "updated_at": "2026-11-19 22:18:16",
-  "data_date": "2026-11-19",
+  "updated_at": "2026-11-20 22:18:58",
+  "data_date": "2026-11-20",
   "market_status": "closed",
   "algorithm": "1.1.0",
   "next_hint": "每 30 分钟自动刷新（交易日 9:30-15:00，GitHub Actions 驱动）"
@@ -11,89 +11,89 @@
    {
     "code": "000001",
     "name": "上证指数",
-    "price": 3577.62,
-    "chg_pct": -0.28,
-    "turnover_yi": 6369.1,
-    "high": 3584.28,
-    "low": 3547.94
+    "price": 3533.79,
+    "chg_pct": -1.23,
+    "turnover_yi": 7025.7,
+    "high": 3538.27,
+    "low": 3500.83
    },
    {
     "code": "399001",
     "name": "深证成指",
-    "price": 10583.2,
-    "chg_pct": -0.71,
-    "turnover_yi": 6682.4,
-    "high": 10664.29,
-    "low": 10505.84
+    "price": 10256.39,
+    "chg_pct": -3.09,
+    "turnover_yi": 7196.3,
+    "high": 10436.04,
+    "low": 10256.39
    },
    {
     "code": "399006",
     "name": "创业板指",
-    "price": 2293.34,
-    "chg_pct": -0.79,
-    "turnover_yi": 3101.2,
-    "high": 2315.78,
-    "low": 2271.99
+    "price": 2212.13,
+    "chg_pct": -3.54,
+    "turnover_yi": 3349.8,
+    "high": 2263.3,
+    "low": 2212.13
    },
    {
     "code": "000688",
     "name": "科创50",
-    "price": 1270.78,
-    "chg_pct": 1.83,
-    "turnover_yi": 1101.2,
-    "high": 1276.78,
-    "low": 1220.38
+    "price": 1231.09,
+    "chg_pct": -3.12,
+    "turnover_yi": 919.4,
+    "high": 1254.6,
+    "low": 1219.37
    },
    {
     "code": "000300",
     "name": "沪深300",
-    "price": 3984.84,
-    "chg_pct": 0.03,
-    "turnover_yi": 3954.4,
-    "high": 3995.55,
-    "low": 3937.75
+    "price": 3954.57,
+    "chg_pct": -0.76,
+    "turnover_yi": 4411.1,
+    "high": 3961.07,
+    "low": 3894.47
    },
    {
     "code": "000905",
     "name": "中证500",
-    "price": 6251.96,
-    "chg_pct": -0.48,
-    "turnover_yi": 2242.9,
-    "high": 6321.4,
-    "low": 6200.92
+    "price": 6006.08,
+    "chg_pct": -3.93,
+    "turnover_yi": 2329.8,
+    "high": 6175.38,
+    "low": 6006.08
    }
   ],
   "breadth": {
-   "up": 538,
-   "down": 4020,
-   "flat": 47,
-   "ratio": 0.13,
-   "limit_up": 31,
-   "limit_down": 105,
-   "main_net_yi": -309.69,
-   "turnover_yi": 10770.2,
+   "up": 283,
+   "down": 4295,
+   "flat": 27,
+   "ratio": 0.07,
+   "limit_up": 36,
+   "limit_down": 110,
+   "main_net_yi": -421.12,
+   "turnover_yi": 12037.4,
    "total": 4605
   }
  },
  "L1": {
   "sentiment": {
-   "score": 15,
-   "S1": 3,
-   "S2": 26,
-   "S3": 39,
+   "score": 8,
+   "S1": 2,
+   "S2": 30,
+   "S3": 0,
    "S4": 0,
    "inputs": {
-    "ratio": 0.13,
-    "limit_up": 31,
-    "avg_idx_pct": -0.07,
-    "main_net_yi": -309.69
+    "ratio": 0.07,
+    "limit_up": 36,
+    "avg_idx_pct": -2.61,
+    "main_net_yi": -421.12
    }
   },
   "state": {
    "state": "panic",
    "label": "恐慌下跌",
    "note": "空仓或极轻仓观望，不抄底，等企稳信号",
-   "score": 15
+   "score": 8
   }
  },
  "L2": {
@@ -112,153 +112,153 @@
  "L3": {
   "sectors": [
    {
-    "name": "半导体",
-    "net_yi": 30.51,
-    "jumbo_yi": 10.0,
-    "block_yi": 20.52,
-    "pct": 1.42
-   },
-   {
-    "name": "集成电路制造",
-    "net_yi": 24.23,
-    "jumbo_yi": 13.53,
-    "block_yi": 10.7,
-    "pct": 8.11
-   },
-   {
-    "name": "半导体设备",
-    "net_yi": 18.55,
-    "jumbo_yi": 1.26,
-    "block_yi": 17.29,
-    "pct": 4.55
-   },
-   {
-    "name": "电子",
-    "net_yi": 17.5,
-    "jumbo_yi": 4.24,
-    "block_yi": 13.26,
-    "pct": 0.49
-   },
-   {
-    "name": "集成电路封测",
-    "net_yi": 14.94,
-    "jumbo_yi": 12.2,
-    "block_yi": 2.74,
-    "pct": 7.63
-   },
-   {
-    "name": "通信网络设备及器件",
-    "net_yi": 13.39,
-    "jumbo_yi": 16.03,
-    "block_yi": -2.64,
-    "pct": 2.37
-   },
-   {
     "name": "印制电路板",
-    "net_yi": 4.36,
-    "jumbo_yi": 4.16,
-    "block_yi": 0.2,
-    "pct": 0.88
-   },
-   {
-    "name": "家电零部件Ⅲ",
-    "net_yi": 3.76,
-    "jumbo_yi": 5.23,
-    "block_yi": -1.47,
-    "pct": 5.96
-   },
-   {
-    "name": "家电零部件Ⅱ",
-    "net_yi": 3.76,
-    "jumbo_yi": 5.23,
-    "block_yi": -1.47,
-    "pct": 5.96
-   },
-   {
-    "name": "电子化学品Ⅲ",
-    "net_yi": 3.76,
-    "jumbo_yi": 2.62,
-    "block_yi": 1.14,
-    "pct": 2.05
-   },
-   {
-    "name": "电子化学品Ⅱ",
-    "net_yi": 3.76,
-    "jumbo_yi": 2.62,
-    "block_yi": 1.14,
-    "pct": 2.05
-   },
-   {
-    "name": "底盘与发动机系统",
-    "net_yi": 3.72,
-    "jumbo_yi": 5.66,
-    "block_yi": -1.94,
-    "pct": 1.85
-   },
-   {
-    "name": "小家电",
-    "net_yi": 3.06,
-    "jumbo_yi": 4.65,
-    "block_yi": -1.6,
-    "pct": 3.09
-   },
-   {
-    "name": "特种纸",
-    "net_yi": 2.86,
-    "jumbo_yi": 2.5,
-    "block_yi": 0.36,
-    "pct": 12.7
-   },
-   {
-    "name": "厨房小家电",
-    "net_yi": 2.86,
-    "jumbo_yi": 4.25,
-    "block_yi": -1.39,
-    "pct": 3.9
-   },
-   {
-    "name": "造纸",
-    "net_yi": 2.82,
-    "jumbo_yi": 2.56,
-    "block_yi": 0.26,
-    "pct": 9.28
+    "net_yi": 20.39,
+    "jumbo_yi": 18.99,
+    "block_yi": 1.4,
+    "pct": 3.47
    },
    {
     "name": "元件",
-    "net_yi": 2.82,
-    "jumbo_yi": 3.58,
-    "block_yi": -0.76,
-    "pct": 0.5
+    "net_yi": 18.72,
+    "jumbo_yi": 18.62,
+    "block_yi": 0.1,
+    "pct": 2.82
+   },
+   {
+    "name": "制冷空调设备",
+    "net_yi": 7.08,
+    "jumbo_yi": 8.87,
+    "block_yi": -1.79,
+    "pct": 10.82
+   },
+   {
+    "name": "其他数字媒体",
+    "net_yi": 5.08,
+    "jumbo_yi": 5.01,
+    "block_yi": 0.07,
+    "pct": 18.84
+   },
+   {
+    "name": "其他农产品加工",
+    "net_yi": 5.02,
+    "jumbo_yi": 5.11,
+    "block_yi": -0.09,
+    "pct": 23.83
+   },
+   {
+    "name": "白酒Ⅲ",
+    "net_yi": 4.88,
+    "jumbo_yi": -1.31,
+    "block_yi": 6.19,
+    "pct": 2.93
+   },
+   {
+    "name": "白酒Ⅱ",
+    "net_yi": 4.88,
+    "jumbo_yi": -1.31,
+    "block_yi": 6.19,
+    "pct": 2.93
+   },
+   {
+    "name": "农产品加工",
+    "net_yi": 4.36,
+    "jumbo_yi": 5.03,
+    "block_yi": -0.68,
+    "pct": 11.18
+   },
+   {
+    "name": "水力发电",
+    "net_yi": 4.02,
+    "jumbo_yi": -2.48,
+    "block_yi": 6.5,
+    "pct": 4.5
    },
    {
     "name": "生活用纸",
-    "net_yi": 2.46,
-    "jumbo_yi": 0.59,
-    "block_yi": 1.87,
-    "pct": 22.23
+    "net_yi": 3.08,
+    "jumbo_yi": 0.58,
+    "block_yi": 2.5,
+    "pct": 23.4
+   },
+   {
+    "name": "数字媒体",
+    "net_yi": 3.06,
+    "jumbo_yi": 3.31,
+    "block_yi": -0.25,
+    "pct": 2.46
+   },
+   {
+    "name": "炼油化工",
+    "net_yi": 3.04,
+    "jumbo_yi": 1.34,
+    "block_yi": 1.7,
+    "pct": 5.04
    },
    {
     "name": "个护用品",
-    "net_yi": 2.43,
-    "jumbo_yi": 0.6,
-    "block_yi": 1.83,
-    "pct": 18.51
+    "net_yi": 3.01,
+    "jumbo_yi": 0.58,
+    "block_yi": 2.44,
+    "pct": 19.68
    },
    {
-    "name": "美容护理",
-    "net_yi": 1.92,
-    "jumbo_yi": 0.56,
-    "block_yi": 1.36,
-    "pct": 6.85
+    "name": "保险Ⅲ",
+    "net_yi": 2.75,
+    "jumbo_yi": -1.57,
+    "block_yi": 4.33,
+    "pct": 2.83
+   },
+   {
+    "name": "保险Ⅱ",
+    "net_yi": 2.75,
+    "jumbo_yi": -1.57,
+    "block_yi": 4.33,
+    "pct": 2.83
+   },
+   {
+    "name": "国有大型银行Ⅲ",
+    "net_yi": 2.73,
+    "jumbo_yi": 2.62,
+    "block_yi": 0.11,
+    "pct": 1.71
+   },
+   {
+    "name": "百货",
+    "net_yi": 2.69,
+    "jumbo_yi": 3.16,
+    "block_yi": -0.48,
+    "pct": 6.13
+   },
+   {
+    "name": "农林牧渔",
+    "net_yi": 2.29,
+    "jumbo_yi": 5.53,
+    "block_yi": -3.24,
+    "pct": 1.29
+   },
+   {
+    "name": "铜",
+    "net_yi": 2.1,
+    "jumbo_yi": 3.99,
+    "block_yi": -1.89,
+    "pct": 1.1
+   },
+   {
+    "name": "炼化及贸易",
+    "net_yi": 2.08,
+    "jumbo_yi": 0.77,
+    "block_yi": 1.31,
+    "pct": 2.5
    }
   ],
-  "mainline": "半导体(+30.51亿) → 集成电路制造(+24.23亿) → 半导体设备(+18.55亿)",
+  "mainline": "印制电路板(+20.39亿) → 元件(+18.72亿) → 制冷空调设备(+7.08亿)",
   "resonance": [
-   "全市场涨停 31 只，情绪有温度"
+   "全市场涨停 36 只，情绪有温度"
   ],
   "conc": {
-   "lead": "半导体",
-   "ratio": 1.26,
+   "lead": "印制电路板",
+   "ratio": 1.09,
    "alert": false
   }
  },
@@ -267,122 +267,122 @@
    {
     "code": "sz300502",
     "name": "新易盛",
-    "zdf": 5.59,
-    "zljlr": 13.64,
-    "lb": 0.94,
-    "hsl": 7.19,
-    "turnover_yi": 146.3,
-    "price": 167.06,
+    "zdf": -1.23,
+    "zljlr": 8.36,
+    "lb": 0.99,
+    "hsl": 7.1,
+    "turnover_yi": 147.41,
+    "price": 165.0,
     "stype": "GP-A-CYB",
-    "type": "中继观察"
+    "type": "低吸候选"
    },
    {
-    "code": "sz300308",
-    "name": "中际旭创",
-    "zdf": 3.05,
-    "zljlr": 10.5,
-    "lb": 0.79,
-    "hsl": 3.75,
-    "turnover_yi": 166.08,
-    "price": 408.4,
-    "stype": "GP-A-CYB",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh600584",
-    "name": "长电科技",
-    "zdf": 4.74,
-    "zljlr": 6.68,
-    "lb": 1.41,
-    "hsl": 6.0,
-    "turnover_yi": 58.42,
-    "price": 55.47,
+    "code": "sh601899",
+    "name": "紫金矿业",
+    "zdf": -0.63,
+    "zljlr": 8.15,
+    "lb": 1.67,
+    "hsl": 2.14,
+    "turnover_yi": 101.88,
+    "price": 23.73,
     "stype": "GP-A",
-    "type": "中继观察"
+    "type": "低吸候选"
    },
    {
-    "code": "sz300604",
-    "name": "长川科技",
-    "zdf": 1.93,
-    "zljlr": 5.18,
-    "lb": 1.06,
-    "hsl": 6.19,
-    "turnover_yi": 58.68,
-    "price": 192.84,
-    "stype": "GP-A-CYB",
+    "code": "sh600519",
+    "name": "贵州茅台",
+    "zdf": 1.75,
+    "zljlr": 7.88,
+    "lb": 1.77,
+    "hsl": 0.54,
+    "turnover_yi": 97.96,
+    "price": 1485.75,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sh600900",
+    "name": "长江电力",
+    "zdf": 2.4,
+    "zljlr": 4.66,
+    "lb": 1.88,
+    "hsl": 0.79,
+    "turnover_yi": 60.53,
+    "price": 31.62,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sh601318",
+    "name": "中国平安",
+    "zdf": 1.46,
+    "zljlr": 4.53,
+    "lb": 2.21,
+    "hsl": 1.11,
+    "turnover_yi": 64.56,
+    "price": 55.46,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz003006",
+    "name": "百亚股份",
+    "zdf": -4.05,
+    "zljlr": 3.53,
+    "lb": 0.93,
+    "hsl": 9.42,
+    "turnover_yi": 8.31,
+    "price": 20.15,
+    "stype": "GP-A",
     "type": "低吸候选"
    },
    {
     "code": "sz002916",
     "name": "深南电路",
-    "zdf": 5.0,
-    "zljlr": 4.91,
-    "lb": 1.25,
-    "hsl": 2.82,
-    "turnover_yi": 38.93,
-    "price": 211.24,
+    "zdf": -0.59,
+    "zljlr": 3.37,
+    "lb": 1.3,
+    "hsl": 2.96,
+    "turnover_yi": 41.74,
+    "price": 210.0,
     "stype": "GP-A",
-    "type": "中继观察"
+    "type": "低吸候选"
    },
    {
-    "code": "sh603629",
-    "name": "利通电子",
-    "zdf": 4.09,
-    "zljlr": 3.42,
-    "lb": 2.27,
-    "hsl": 17.68,
-    "turnover_yi": 41.62,
-    "price": 63.42,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sh600103",
-    "name": "青山纸业",
-    "zdf": 7.01,
-    "zljlr": 3.3,
-    "lb": 1.46,
-    "hsl": 22.86,
-    "turnover_yi": 16.66,
-    "price": 3.36,
-    "stype": "GP-A",
-    "type": "中继观察"
-   },
-   {
-    "code": "sz002185",
-    "name": "华天科技",
-    "zdf": 3.59,
-    "zljlr": 3.26,
-    "lb": 1.48,
-    "hsl": 6.32,
-    "turnover_yi": 30.73,
-    "price": 14.73,
+    "code": "sh600410",
+    "name": "华胜天成",
+    "zdf": 3.71,
+    "zljlr": 3.35,
+    "lb": 1.5,
+    "hsl": 28.0,
+    "turnover_yi": 53.7,
+    "price": 17.32,
     "stype": "GP-A",
     "type": "中继观察"
    },
    {
     "code": "sz002463",
     "name": "沪电股份",
-    "zdf": 1.13,
-    "zljlr": 2.99,
-    "lb": 0.89,
-    "hsl": 4.1,
-    "turnover_yi": 63.4,
-    "price": 81.1,
+    "zdf": -0.96,
+    "zljlr": 3.28,
+    "lb": 0.92,
+    "hsl": 4.14,
+    "turnover_yi": 64.84,
+    "price": 80.32,
     "stype": "GP-A",
     "type": "低吸候选"
    },
    {
-    "code": "sz002371",
-    "name": "北方华创",
-    "zdf": 3.13,
-    "zljlr": 2.73,
-    "lb": 1.1,
-    "hsl": 1.72,
-    "turnover_yi": 73.53,
-    "price": 592.02,
+    "code": "sh600715",
+    "name": "文投控股",
+    "zdf": 0.37,
+    "zljlr": 2.68,
+    "lb": 2.28,
+    "hsl": 33.96,
+    "turnover_yi": 25.41,
+    "price": 2.74,
     "stype": "GP-A",
-    "type": "中继观察"
+    "type": "低吸候选"
    }
   ],
   "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
@@ -401,39 +401,39 @@
   "flows": [
    {
     "code": "sh510300",
-    "opendate": "2026-11-19",
-    "net_yi": 18.89,
-    "chg_pct": 0.1
+    "opendate": "2026-11-20",
+    "net_yi": 9.86,
+    "chg_pct": -1.06
    },
    {
     "code": "sh510050",
-    "opendate": "2026-11-19",
-    "net_yi": -1.99,
-    "chg_pct": 0.03
+    "opendate": "2026-11-20",
+    "net_yi": 61.97,
+    "chg_pct": 0.59
    },
    {
     "code": "sh588000",
-    "opendate": "2026-11-19",
-    "net_yi": 3.11,
-    "chg_pct": 1.66
+    "opendate": "2026-11-20",
+    "net_yi": 5.24,
+    "chg_pct": -3.27
    },
    {
     "code": "sz159915",
-    "opendate": "2026-11-19",
-    "net_yi": 14.13,
-    "chg_pct": -0.82
+    "opendate": "2026-11-20",
+    "net_yi": 15.23,
+    "chg_pct": -3.38
    },
    {
     "code": "sh510500",
-    "opendate": "2026-11-19",
-    "net_yi": 7.64,
-    "chg_pct": -0.36
+    "opendate": "2026-11-20",
+    "net_yi": 12.17,
+    "chg_pct": -3.69
    },
    {
     "code": "sz159949",
-    "opendate": "2026-11-19",
-    "net_yi": 1.69,
-    "chg_pct": -0.58
+    "opendate": "2026-11-20",
+    "net_yi": 1.44,
+    "chg_pct": -3.23
    }
   ]
  }
