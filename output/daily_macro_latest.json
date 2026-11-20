@@ -1,6 +1,6 @@
 {
-  "date": "2026-11-20",
-  "generated_at": "2026-11-20 22:04",
+  "date": "2026-11-21",
+  "generated_at": "2026-11-21 01:05",
   "china": {
     "pmi": {
       "latest": {
@@ -45,14 +45,7 @@
       "rows": 226
     },
     "lpr": {
-      "latest": {
-        "TRADE_DATE": "2026-11-20",
-        "LPR1Y": 3.0,
-        "LPR5Y": 3.5,
-        "RATE_1": 4.35,
-        "RATE_2": 4.9
-      },
-      "rows": 1578
+      "error": "macro_china_lpr 已在 1.20.48 更名为 interest_rate_lpr_em，请改用 ak.interest_rate_lpr_em；参数与返回的列也可能有调整，用 ak.i"
     }
   },
   "us": {
@@ -61,241 +54,12 @@
       "source": "百度经济日历 news_economic_baidu",
       "window_days": 7,
       "lookback_days": 45,
-      "lookback_used_to": "2026-10-14",
-      "days_fetched": 38,
-      "as_of": "2026-11-20 22:04",
-      "indicators": {
-        "CPI 同比": [
-          {
-            "event": "美国9月CPI年率未季调(%)",
-            "value": "3.7",
-            "forecast": "3.6",
-            "previous": "3.4",
-            "importance": 2,
-            "release_date": "2026-10-14",
-            "release_time": "20:30",
-            "days_ago": 37,
-            "is_fresh": false
-          }
-        ],
-        "核心 CPI": [
-          {
-            "event": "美国9月核心CPI年率未季调(%)",
-            "value": "2.6",
-            "forecast": "2.5",
-            "previous": "2.4",
-            "importance": 2,
-            "release_date": "2026-10-14",
-            "release_time": "20:30",
-            "days_ago": 37,
-            "is_fresh": false
-          }
-        ],
-        "CPI 月率": [
-          {
-            "event": "美国9月CPI月率季调后(%)",
-            "value": "0.6",
-            "forecast": "0.6",
-            "previous": "0.4",
-            "importance": 1,
-            "release_date": "2026-10-14",
-            "release_time": "20:30",
-            "days_ago": 37,
-            "is_fresh": false
-          }
-        ],
-        "核心CPI月率": [
-          {
-            "event": "美国9月核心CPI月率季调后(%)",
-            "value": "0.3",
-            "forecast": "0.2",
-            "previous": "0.3",
-            "importance": 1,
-            "release_date": "2026-10-14",
-            "release_time": "20:30",
-            "days_ago": 37,
-            "is_fresh": false
-          }
-        ],
-        "非农": [
-          {
-            "event": "美国10月非农就业人口变动季调后(万)",
-            "value": "16.5",
-            "forecast": "6.5",
-            "previous": "6.0",
-            "importance": 2,
-            "release_date": "2026-11-06",
-            "release_time": "21:30",
-            "days_ago": 14,
-            "is_fresh": false
-          }
-        ],
-        "失业率": [
-          {
-            "event": "美国10月失业率(%)",
-            "value": "4.1",
-            "forecast": "4.2",
-            "previous": "4.2",
-            "importance": 2,
-            "release_date": "2026-11-06",
-            "release_time": "21:30",
-            "days_ago": 14,
-            "is_fresh": false
-          }
-        ],
-        "ADP 就业": [
-          {
-            "event": "美国截至10月31日当周ADP就业周度发布变动(万人)",
-            "value": "2.38",
-            "forecast": "",
-            "previous": "1.98",
-            "importance": 2,
-            "release_date": "2026-11-17",
-            "release_time": "21:15",
-            "days_ago": 3,
-            "is_fresh": true
-          }
-        ],
-        "核心 PCE": [
-          {
-            "event": "美国第三季度核心PCE物价指数年化季率初值(%)",
-            "value": "2.5",
-            "forecast": "2.4",
-            "previous": "3.3",
-            "importance": 2,
-            "release_date": "2026-10-29",
-            "release_time": "20:30",
-            "days_ago": 22,
-            "is_fresh": false
-          },
-          {
-            "event": "美国9月核心PCE物价指数年率(%)",
-            "value": "3.1",
-            "forecast": "3.1",
-            "previous": "3.0",
-            "importance": 2,
-            "release_date": "2026-10-29",
-            "release_time": "20:30",
-            "days_ago": 22,
-            "is_fresh": false
-          }
-        ],
-        "初请失业金": [
-          {
-            "event": "美国截至11月14日当周初请失业金人数(万)",
-            "value": "20.3",
-            "forecast": "19.7",
-            "previous": "20.0",
-            "importance": 2,
-            "release_date": "2026-11-19",
-            "release_time": "21:30",
-            "days_ago": 1,
-            "is_fresh": true
-          }
-        ],
-        "GDP": [
-          {
-            "event": "美国10月关联GDP的零售额控制组月率-季调后(%)",
-            "value": "0.6",
-            "forecast": "0.4",
-            "previous": "0.1",
-            "importance": 2,
-            "release_date": "2026-11-17",
-            "release_time": "21:30",
-            "days_ago": 3,
-            "is_fresh": true
-          }
-        ],
-        "零售销售": [
-          {
-            "event": "美国10月零售销售月率(%)",
-            "value": "0.2",
-            "forecast": "0.2",
-            "previous": "0.8",
-            "importance": 2,
-            "release_date": "2026-11-17",
-            "release_time": "21:30",
-            "days_ago": 3,
-            "is_fresh": true
-          },
-          {
-            "event": "美国10月核心零售销售月率(%)",
-            "value": "0.6",
-            "forecast": "0.4",
-            "previous": "0.9",
-            "importance": 2,
-            "release_date": "2026-11-17",
-            "release_time": "21:30",
-            "days_ago": 3,
-            "is_fresh": true
-          }
-        ],
-        "ISM 制造业": [
-          {
-            "event": "美国10月ISM制造业PMI",
-            "value": "55.5",
-            "forecast": "54.6",
-            "previous": "54.5",
-            "importance": 2,
-            "release_date": "2026-11-02",
-            "release_time": "23:00",
-            "days_ago": 18,
-            "is_fresh": false
-          }
-        ]
-      }
+      "lookback_used_to": null,
+      "days_fetched": 45,
+      "as_of": "2026-11-21 01:05",
+      "indicators": {}
     },
-    "indicators": {
-      "美国GDP": [
-        {
-          "title": "法兴银行预计2027年美联储将再加息两次 每次25个基点",
-          "evidence": [
-            "法兴银行预计2027年美联储将再加息两次 每次25个基点 【法兴银行预计2027年美联储将再加息两次 每次25个基点】法兴银行预计2027年美国GDP增速为1.7%"
-          ],
-          "date": "2026-11-20",
-          "days_ago": 0,
-          "is_fresh": true,
-          "time": "2026-11-20 19:47:08",
-          "source": "东财全球"
-        }
-      ],
-      "美联储/利率": [
-        {
-          "title": "法兴银行预计2027年美联储将再加息两次 每次25个基点",
-          "evidence": [
-            "法兴银行预计2027年美联储将再加息两次 每次25个基点 【法兴银行预计2027年美联储将再加息两次 每次25个基点】法兴银行预计2027年美国GDP增速为1.7%",
-            "预计2027年美联储将再加息两次，每次25个基点"
-          ],
-          "date": "2026-11-20",
-          "days_ago": 0,
-          "is_fresh": true,
-          "time": "2026-11-20 19:47:08",
-          "source": "东财全球"
-        },
-        {
-          "title": "欧洲短债延续涨势 市场下调欧洲央行加息押注",
-          "evidence": [
-            "掉期市场目前隐含到2027年12月前加息两次，为11月10日以来首次"
-          ],
-          "date": "2026-11-20",
-          "days_ago": 0,
-          "is_fresh": true,
-          "time": "2026-11-20 19:42:40",
-          "source": "东财全球"
-        },
-        {
-          "title": "交易员削减欧洲央行加息押注",
-          "evidence": [
-            "交易员削减欧洲央行加息押注 【交易员削减欧洲央行加息押注】交易员削减欧洲央行加息押注，倾向于认为到2027年底前仅加息两次"
-          ],
-          "date": "2026-11-20",
-          "days_ago": 0,
-          "is_fresh": true,
-          "time": "2026-11-20 18:24:56",
-          "source": "东财全球"
-        }
-      ]
-    },
+    "indicators": {},
     "stale": [
       "核心PCE",
       "整体PCE",
@@ -303,16 +67,57 @@
       "非农",
       "初请失业金",
       "耐用品订单",
+      "美国GDP",
+      "美联储/利率",
       "美债收益率"
     ],
     "log": [
-      "日历 2026-11-18 失败: HTTPError",
-      "日历 2026-11-13 失败: HTTPError",
-      "日历 2026-11-10 失败: HTTPError",
-      "日历 2026-10-30 失败: HTTPError",
-      "日历 2026-10-21 失败: HTTPError",
-      "日历 2026-10-15 失败: HTTPError",
-      "新闻池 600 条 → 窗口内(7日) 206 条；命中 2 指标"
+      "日历 2026-11-21 失败: AttributeError",
+      "日历 2026-11-20 失败: AttributeError",
+      "日历 2026-11-19 失败: AttributeError",
+      "日历 2026-11-18 失败: AttributeError",
+      "日历 2026-11-17 失败: AttributeError",
+      "日历 2026-11-16 失败: AttributeError",
+      "日历 2026-11-15 失败: AttributeError",
+      "日历 2026-11-14 失败: AttributeError",
+      "日历 2026-11-13 失败: AttributeError",
+      "日历 2026-11-12 失败: AttributeError",
+      "日历 2026-11-11 失败: AttributeError",
+      "日历 2026-11-10 失败: AttributeError",
+      "日历 2026-11-09 失败: AttributeError",
+      "日历 2026-11-08 失败: AttributeError",
+      "日历 2026-11-07 失败: AttributeError",
+      "日历 2026-11-06 失败: AttributeError",
+      "日历 2026-11-05 失败: AttributeError",
+      "日历 2026-11-04 失败: AttributeError",
+      "日历 2026-11-03 失败: AttributeError",
+      "日历 2026-11-02 失败: AttributeError",
+      "日历 2026-11-01 失败: AttributeError",
+      "日历 2026-10-31 失败: AttributeError",
+      "日历 2026-10-30 失败: AttributeError",
+      "日历 2026-10-29 失败: AttributeError",
+      "日历 2026-10-28 失败: AttributeError",
+      "日历 2026-10-27 失败: AttributeError",
+      "日历 2026-10-26 失败: AttributeError",
+      "日历 2026-10-25 失败: AttributeError",
+      "日历 2026-10-24 失败: AttributeError",
+      "日历 2026-10-23 失败: AttributeError",
+      "日历 2026-10-22 失败: AttributeError",
+      "日历 2026-10-21 失败: AttributeError",
+      "日历 2026-10-20 失败: AttributeError",
+      "日历 2026-10-19 失败: AttributeError",
+      "日历 2026-10-18 失败: AttributeError",
+      "日历 2026-10-17 失败: AttributeError",
+      "日历 2026-10-16 失败: AttributeError",
+      "日历 2026-10-15 失败: AttributeError",
+      "日历 2026-10-14 失败: AttributeError",
+      "日历 2026-10-13 失败: AttributeError",
+      "日历 2026-10-12 失败: AttributeError",
+      "日历 2026-10-11 失败: AttributeError",
+      "日历 2026-10-10 失败: AttributeError",
+      "日历 2026-10-09 失败: AttributeError",
+      "日历 2026-10-08 失败: AttributeError",
+      "新闻池 0 条 → 窗口内(7日) 0 条；命中 0 指标"
     ]
   }
 }
