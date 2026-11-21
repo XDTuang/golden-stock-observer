@@ -1,12 +1,19 @@
 {
-  "preferred": "push2.eastmoney.com",
-  "updated_at": "2026-11-20T08:47:21",
-  "ok_hosts": {
-    "push2test.eastmoney.com": {
-      "ok_at": "2026-11-19T22:18:22"
-    },
-    "push2.eastmoney.com": {
-      "ok_at": "2026-11-20T08:47:21"
-    }
+ "preferred": "push2test.eastmoney.com",
+ "updated_at": "2026-11-20T22:19:10",
+ "ok_hosts": {
+  "push2test.eastmoney.com": {
+   "ok_at": "2026-11-20T22:19:10"
+  },
+  "push2.eastmoney.com": {
+   "ok_at": "2026-11-20T08:47:21"
   }
+ },
+ "fail_hosts": {
+  "push2.eastmoney.com": {
+   "count": 1,
+   "last_detail": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without",
+   "last_fail_at": "2026-11-20T22:19:09"
+  }
+ }
 }
