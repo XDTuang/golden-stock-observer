@@ -1,13 +1,13 @@
 {
   "date": "",
-  "generated_at": "2026-11-21 11:35",
-  "pool_generated_at": "2026-11-21 11:35",
+  "generated_at": "2026-11-21 23:04",
+  "pool_generated_at": "2026-11-21 23:04",
   "pool_source": "daily_news_window.json（N 日滚动池）",
   "sources": {},
   "pool_total": 3612,
   "total": 303,
   "window": {
-    "generated_at": "2026-11-20 22:04",
+    "generated_at": "2026-11-21 22:05",
     "session": "close",
     "data_date": "2026-11-20",
     "for_date": "2026-11-23",
@@ -34,10 +34,14 @@
       "exists": true,
       "gap_days": 3,
       "stale": false,
-      "bias": "中性",
-      "bias_score": 1,
+      "bias": "偏空",
+      "bias_score": -2,
       "t1_focus": [
-        "跟踪金钻起涨 3 只回踩确认"
+        "上证低开后 10:30 前能否回到 3,533.79（11/20 收盘）上方",
+        "跌停能否从 110 降到 60 家以内",
+        "上证 3,500.83（11/20 日内低 + 整数关）是否失守",
+        "上证50 2,709.06（11/20 日内低）—— 权重托底这条腿是否断",
+        "周末美股 11/20 收盘与 Anthropic 首日定价（北京 11/21 05:00）"
       ],
       "risks": [],
       "headline": ""
@@ -49,7 +53,7 @@
     },
     "market_state": {
       "date": "2026-11-20",
-      "run_date": "2026-11-20",
+      "run_date": "2026-11-21",
       "preopen_partial": null,
       "us_kline": true,
       "asia": true
@@ -59,19 +63,19 @@
         "date": "2026-11-20",
         "weekday": "周五",
         "is_trading_day": true,
-        "news": 285,
+        "news": 303,
         "feeds": 0,
-        "reports": 488,
+        "reports": 565,
         "macro": true
       },
       {
         "date": "2026-11-21",
         "weekday": "周六",
         "is_trading_day": false,
-        "news": 0,
+        "news": 289,
         "feeds": 0,
-        "reports": 0,
-        "macro": false
+        "reports": 188,
+        "macro": true
       },
       {
         "date": "2026-11-22",
@@ -93,14 +97,12 @@
       }
     ],
     "totals": {
-      "news": 285,
+      "news": 592,
       "feeds": 0,
-      "reports": 488,
+      "reports": 753,
       "covered_days": 4
     },
-    "missing": [
-      "market_thermometer.json 数据日 2026-11-19 落后于基准日 2026-11-20"
-    ]
+    "missing": []
   },
   "span": [
     "2026-11-21",
