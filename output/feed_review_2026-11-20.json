@@ -1,10 +1,10 @@
 {
   "data_date": "2026-11-20",
   "for_date": "2026-11-23",
-  "generated_at": "2026-11-20 22:52",
-  "source": "local",
+  "generated_at": "2026-11-23 16:00",
+  "source": "cloud",
   "window": {
-    "generated_at": "2026-11-20 22:04",
+    "generated_at": "2026-11-21 22:05",
     "session": "close",
     "data_date": "2026-11-20",
     "for_date": "2026-11-23",
@@ -31,14 +31,75 @@
       "exists": true,
       "gap_days": 3,
       "stale": false,
-      "bias": "中性",
-      "bias_score": 1,
+      "bias": "偏空",
+      "bias_score": -2,
       "t1_focus": [
-        "跟踪金钻起涨 3 只回踩确认"
+        "上证低开后 10:30 前能否回到 3,533.79（11/20 收盘）上方",
+        "跌停能否从 110 降到 60 家以内",
+        "上证 3,500.83（11/20 日内低 + 整数关）是否失守",
+        "上证50 2,709.06（11/20 日内低）—— 权重托底这条腿是否断",
+        "周末美股 11/20 收盘与 Anthropic 首日定价（北京 11/21 05:00）"
       ],
       "risks": [],
       "headline": ""
-    }
+    },
+    "layers": {
+      "base": "2026-11-20 A股收盘（基准层）",
+      "overnight": "美东 2026-11-20 收盘（北京 2026-11-21 早间到达）",
+      "premarket": "2026-11-23 今早日韩实时 + 盘前新闻/投喂增量"
+    },
+    "market_state": {
+      "date": "2026-11-20",
+      "run_date": "2026-11-21",
+      "preopen_partial": null,
+      "us_kline": true,
+      "asia": true
+    },
+    "covered": [
+      {
+        "date": "2026-11-20",
+        "weekday": "周五",
+        "is_trading_day": true,
+        "news": 303,
+        "feeds": 0,
+        "reports": 565,
+        "macro": true
+      },
+      {
+        "date": "2026-11-21",
+        "weekday": "周六",
+        "is_trading_day": false,
+        "news": 289,
+        "feeds": 0,
+        "reports": 188,
+        "macro": true
+      },
+      {
+        "date": "2026-11-22",
+        "weekday": "周日",
+        "is_trading_day": false,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      },
+      {
+        "date": "2026-11-23",
+        "weekday": "周一",
+        "is_trading_day": true,
+        "news": 0,
+        "feeds": 0,
+        "reports": 0,
+        "macro": false
+      }
+    ],
+    "totals": {
+      "news": 592,
+      "feeds": 0,
+      "reports": 753,
+      "covered_days": 4
+    },
+    "missing": []
   },
   "feeds_days": [
     "2026-11-20",
@@ -1495,40 +1556,19 @@
       "hz": 18
     }
   },
-  "cross_analysis": {
-    "quadrant": "0 / 0 / 3 / 28",
-    "summary": {
-      "共振": 0,
-      "背离": 0,
-      "暗线": 3,
-      "双冷": 28
-    },
-    "news_window": [
-      "2026-11-20",
-      "2026-11-21",
-      "2026-11-22",
-      "2026-11-23"
-    ],
-    "flow_date": "2026-11-20",
-    "generated_at": "2026-11-20 22:04",
-    "data_date": "2026-11-20"
-  },
+  "cross_analysis": [],
   "prediction": {
-    "bias": "偏空",
-    "bias_score": -2,
+    "bias": "中性",
+    "bias_score": 1,
     "reasons": [
-      "市值分层极端：上证50 +0.45% 与中证1000 -4.89% 同日出现（首尾差 5.34pct），指数方向被撕裂",
-      "放量出清而非承接：成交 14,222.0 亿（+32.1%）但跌停 110 家、涨跌比 0.07、情绪 8、主力 -421.12 亿",
-      "外部当晚仍在恶化：纳指100 期货 -2%、VIX 破 31、Anthropic 盘前 -14%、日韩当日 -5%",
-      "托底资金由「救成长」转「守权重」：上证50 +61.77 亿，科创50 缩 78%、沪深300 缩 79%"
+      "金钻起涨 3 只，启动信号活跃",
+      "金钻命中 57 只，信号面正常"
     ],
     "t1_focus": [
-      "上证低开后 10:30 前能否回到 3,533.79（11/20 收盘）上方",
-      "跌停能否从 110 降到 60 家以内",
-      "上证 3,500.83（11/20 日内低 + 整数关）是否失守",
-      "上证50 2,709.06（11/20 日内低）—— 权重托底这条腿是否断",
-      "周末美股 11/20 收盘与 Anthropic 首日定价（北京 11/21 05:00）"
-    ]
+      "跟踪金钻起涨 3 只回踩确认"
+    ],
+    "risks": [],
+    "pending_ai": true
   },
   "ai_synthesis": {
     "conclusion_first": [
