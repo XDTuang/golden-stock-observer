@@ -118,6 +118,30 @@ def enc_path(rel: str) -> str:
     return os.path.join(DEPLOY, rel + ENC_SUFFIX)
 
 
+def resolve_expected() -> list[str]:
+    """应受保护的完整清单：deploy 下存在**明文或密文**即计入。
+
+    与 resolve() 的区别：resolve() 只返回「当前有明文的」（加密源）；
+    本函数用于清单与校验，**口径只增不减**——否则一旦明文被 purge，
+    清单就会缩水，--check 的检查面静默变小（静默失效家族）。
+    """
+    out = []
+    for rel in PROTECTED:
+        if os.path.exists(os.path.join(DEPLOY, rel)) or os.path.exists(enc_path(rel)):
+            out.append(rel)
+    odir = os.path.join(DEPLOY, "output")
+    if os.path.isdir(odir):
+        for name in sorted(os.listdir(odir)):
+            base = name[:-len(ENC_SUFFIX)] if name.endswith(ENC_SUFFIX) else name
+            if not base.endswith(".json"):
+                continue
+            if any(base.startswith(p) for p in PATTERNS):
+                rel = f"output/{base}"
+                if rel not in out:
+                    out.append(rel)
+    return out
+
+
 def seal(key: bytes, data: bytes) -> bytes:
     nonce = os.urandom(12)
     return nonce + AESGCM(key).encrypt(nonce, data, None)
@@ -161,12 +185,16 @@ def cmd_encrypt(purge: bool) -> int:
         print(f"  🔒 {rel} → {rel}{ENC_SUFFIX} ({len(blob)} B)"
               + ("  明文已删" if purge else ""))
     # 落清单：既是 --check 的权威依据，也让「今天该有哪些文件」可审计
+    # 口径用 resolve_expected()（明文或密文皆计）——只增不减，避免 purge 后清单缩水
+    expected = resolve_expected() or files
     os.makedirs(os.path.dirname(MANIFEST), exist_ok=True)
     with open(MANIFEST, "w", encoding="utf-8") as f:
-        json.dump({"v": 1, "count": len(files), "files": files}, f,
+        json.dump({"v": 1, "count": len(expected), "files": expected}, f,
                   indent=2, ensure_ascii=False)
         f.write("\n")
-    print(f"🧾 受保护清单 → {os.path.relpath(MANIFEST, BASE)}（{len(files)} 条）")
+    print(f"🧾 受保护清单 → {os.path.relpath(MANIFEST, BASE)}（{len(expected)} 条）")
+    if len(expected) < len(files):
+        print(f"   ⚠️  清单 {len(expected)} 条 < 本次加密 {len(files)} 条，请检查 resolve_expected()")
     print(f"\n✅ 已加密 {n_enc} 个文件" + ("，明文已移除" if purge else "（明文保留）"))
     return 0
 
@@ -294,6 +322,9 @@ def cmd_check() -> int:
             listed = json.load(f).get("files", [])
     if not listed:
         bad.append("受保护清单缺失或为空（未执行过 --encrypt，或清单被删）")
+
+    # 清单可能因历史原因缩水 → 与 expected 合并后再校验，保证检查面不被缩小
+    listed = sorted(set(listed) | set(resolve_expected()))
 
     for rel in listed:
         if not os.path.exists(enc_path(rel)):

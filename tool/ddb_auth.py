@@ -24,6 +24,8 @@
 
 密钥存放：.secret/keys.json（已 gitignore，**绝不入库**）
 """
+from __future__ import annotations  # 兼容系统自带 python 3.9（`str | None` 注解）
+
 import argparse
 import base64
 import json
@@ -32,7 +34,11 @@ import secrets
 import sys
 from datetime import datetime, timezone, timedelta
 
-from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+try:
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+except ImportError:
+    # 惰性降级：print-env / set-exp 等子命令只读写 JSON，不需要加密库
+    AESGCM = None
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 凭据必须位于站点根（GitHub Pages 根 = deploy/）才能被前端 fetch
@@ -48,6 +54,16 @@ CST = timezone(timedelta(hours=8))
 WEAK_LEN = 8
 
 
+def _need_crypto() -> None:
+    """仅在真正需要加解密时才要求 cryptography（print-env 不需要）"""
+    if AESGCM is None:
+        sys.exit(
+            "✗ 当前 python 缺少 cryptography，本命令无法执行。改用：\n"
+            "   ~/.workbuddy/binaries/python/envs/default/bin/python tool/ddb_auth.py …\n"
+            "   或安装：python3 -m pip install --user cryptography"
+        )
+
+
 # ── 基础工具 ────────────────────────────────────────────────
 def b64e(b: bytes) -> str:
     return base64.b64encode(b).decode()
@@ -58,6 +74,7 @@ def b64d(s: str) -> bytes:
 
 
 def derive_kek(password: str, salt: bytes, iterations: int) -> bytes:
+    _need_crypto()
     from cryptography.hazmat.primitives import hashes
     from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
     kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt,
@@ -67,11 +84,13 @@ def derive_kek(password: str, salt: bytes, iterations: int) -> bytes:
 
 def seal(key: bytes, plaintext: bytes) -> str:
     """AES-GCM 封装，输出 b64(nonce12 || ciphertext||tag)"""
+    _need_crypto()
     nonce = secrets.token_bytes(12)
     return b64e(nonce + AESGCM(key).encrypt(nonce, plaintext, None))
 
 
 def unseal(key: bytes, blob: str) -> bytes:
+    _need_crypto()
     raw = b64d(blob)
     return AESGCM(key).decrypt(raw[:12], raw[12:], None)
 
