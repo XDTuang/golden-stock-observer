@@ -437,6 +437,26 @@ def main():
     else:
         print("  ⚠️ inject_feed_review.py 执行异常（不影响主流程）")
 
+    # 4.4 归一化 dk-* 语义色（铁律 27 的必做补步）。
+    #     inject_daily_review_tab.py 会整段替换 "<!-- Tab: 每日复盘" ~ "<!-- Tab: 实时盯盘 -->"，
+    #     DK-SEMANTIC-CSS v1 块正落在其中（约 1561 行）→ 每次重建都被连根吞掉，
+    #     7 类语义色（dk-main/dk-caution/dk-risk/dk-data/dk-neutral/dk-up/dk-dn）全部失效，
+    #     且**不报错不空白**（只是颜色退化成正文色）。故必须紧接补回。
+    ret = os.system(f'cd "{BASE}" && "{PYTHON_BIN}" review/patch_dk_css.py')
+    if ret == 0:
+        print("  ✅ dk-* 语义色已归一化（DK-SEMANTIC-CSS v1 已补回）")
+    else:
+        print("  ⚠️ review/patch_dk_css.py 执行异常，请人工复核语义色")
+
+    # 4.5 🔴 发布前硬闸门：鉴权注入块必须存在且在 <head> 内。
+    #     2026-11-24 事故：块原在「实时盯盘→短线信号」区间内，被 inject_realtime_tab.py
+    #     整段替换（-298 行）连根删掉，页面照常打开 ⇒ 无登录门槛、数据全空，**不报错**。
+    #     迁入 <head> 后注入器不再触碰；此处 fail-fast 防再次静默丢失。
+    if os.system(f'cd "{BASE}" && "{PYTHON_BIN}" tool/patch_auth_block.py --check') != 0:
+        print("  ❌ 鉴权注入块缺失或不在 <head> 内 → 中止发布（否则线上无登录门槛）")
+        sys.exit(1)
+    print("  ✅ 鉴权注入块校验通过（三处均在 <head> 内）")
+
     # 5. 确保 .nojekyll + 构建清单
     print("\n[5/5] .nojekyll + 构建清单...")
     nojekyll = os.path.join(DEPLOY, ".nojekyll")

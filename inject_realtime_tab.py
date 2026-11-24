@@ -51,6 +51,15 @@ for tname in TARGETS:
         if start_marker in idx and anchor in idx:
             s = idx.index(start_marker)
             e = idx.index(anchor)
+            # 🔴 2026-11-24 事故守卫：本替换是「整段删除 [实时盯盘, 短线信号)」，
+            #    任何误插进该区间的受保护块都会**静默消失**（页面照常打开）。
+            #    实测曾把 298 行 DDB-AUTH-V1 鉴权块连根删掉 ⇒ 线上无登录门槛。
+            region = idx[s:e]
+            guarded = [m for m in ("DDB-AUTH-V1", "DDB-ADMIN-V1", "DK-SEMANTIC-CSS") if m in region]
+            if guarded:
+                print(f"❌ {tname}: 替换区间内含受保护块 {guarded} → 已跳过（继续会删掉它们）")
+                print("   → 把该块移到 <head>（tool/patch_auth_block.py）或区间外后重跑")
+                continue
             idx = idx[:s] + _block() + idx[e:]
             changed = True
             print(f"✅ {tname}: 已用最新 snippet 更新 tab 内容区")

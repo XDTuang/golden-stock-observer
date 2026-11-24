@@ -18,6 +18,8 @@
 import json
 import os
 import re
+import subprocess
+import sys
 from datetime import datetime
 
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -52,17 +54,42 @@ today = datetime.now().strftime('%Y-%m-%d')
 #    仅当它缺失/无 data_date 时才回退 output/signals.json，最后才回退生成日。
 try:
     _dd = ""
-    for _cand, _label in ((os.path.join(BASE, "signals.json"), "root 发布版"),
-                          (os.path.join(BASE, "output", "signals.json"), "output 全量中转")):
+
+    # 🔴 2026-11-24 补丁（真鉴权加密后信号池主源变密文）：
+    #    signals.json / output/signals.json 已下线为 .enc，上面两个候选源在发布态**必然缺失**，
+    #    于是标题只能回退「生成日」→ 盘前跑（08:30 前）会把标题写成当天，
+    #    而数据日其实还是上一交易日 ⇒ 未来日/错日（铁律 9「有值但永远旧/错」同族）。
+    #    改为：先尝试解开 signals.json.enc 取 data_date（失败静默回退下一源）。
+    def _sealed_data_date() -> str:
         try:
-            _sg = json.load(open(_cand, encoding="utf-8"))
-            _v = str(_sg.get("data_date") or "")[:10]
-            if len(_v) == 10 and _v[4] == "-":
-                _dd = _v
-                break
-            print(f"  ⚠️  {_label} 的 data_date 非法（{_sg.get('data_date')!r}），继续回退下一源")
-        except Exception as _e2:
-            print(f"  ⚠️  {_label} 读取失败：{_e2}")
+            out = subprocess.run(
+                [sys.executable, os.path.join(BASE, "tool", "protect_assets.py"),
+                 "--cat", "signals.json"],
+                capture_output=True, text=True, timeout=180, cwd=BASE,
+            )
+            if out.returncode != 0:
+                return ""
+            v = str(json.loads(out.stdout).get("data_date") or "")[:10]
+            return v if len(v) == 10 and v[4] == "-" else ""
+        except Exception:
+            return ""
+
+    _sd = _sealed_data_date()
+    if _sd:
+        _dd = _sd
+        print(f"  ✔ 标题数据日取自 signals.json.enc（解密）= {_sd}")
+    else:
+        for _cand, _label in ((os.path.join(BASE, "signals.json"), "root 发布版"),
+                              (os.path.join(BASE, "output", "signals.json"), "output 全量中转")):
+            try:
+                _sg = json.load(open(_cand, encoding="utf-8"))
+                _v = str(_sg.get("data_date") or "")[:10]
+                if len(_v) == 10 and _v[4] == "-":
+                    _dd = _v
+                    break
+                print(f"  ⚠️  {_label} 的 data_date 非法（{_sg.get('data_date')!r}），继续回退下一源")
+            except Exception as _e2:
+                print(f"  ⚠️  {_label} 读取失败：{_e2}")
     if _dd:
         if _dd != today:
             print(f"  ℹ️  标题版本号锚定数据日 {_dd}（生成日 {today}）")
