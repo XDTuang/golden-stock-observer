@@ -27,7 +27,7 @@ jobs:
           python-version: '3.13'
 
       - name: Install deps
-        run: pip install akshare pandas requests cryptography --quiet
+        run: pip install akshare pandas requests cryptography --quiet && python -c "import cryptography; print('cryptography', cryptography.__version__)"
 
       - name: Fetch institutional flow (quarterly report periods)
         run: |

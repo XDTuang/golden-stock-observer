@@ -27,7 +27,7 @@ jobs:
           python-version: '3.13'
 
       - name: Install deps
-        run: pip install akshare pandas requests cryptography --quiet   # us_kline(双日)/comm(商品利率) 依赖 akshare；cryptography 为 protect_assets 加密所需
+        run: pip install akshare pandas requests cryptography --quiet   # us_kline(双日)/comm(商品利率) 依赖 akshare；cryptography 为 protect_assets 加密所需 && python -c "import cryptography; print('cryptography', cryptography.__version__)"
 
       - name: Fetch daily review market quotes (Tencent public API, no key)
         # 主行情脚本：不用 || echo 吞错误码 —— fetch 失败必须让 workflow 标红，

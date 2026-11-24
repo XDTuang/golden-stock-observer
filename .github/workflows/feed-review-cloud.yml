@@ -31,7 +31,7 @@ jobs:
 
       - name: Install deps
         # 🔴 tool/protect_assets.py 依赖 cryptography；本 workflow 原先没有任何 pip 安装步骤
-        run: pip install cryptography --quiet
+        run: pip install cryptography --quiet && python -c "import cryptography; print('cryptography', cryptography.__version__)"
 
       - name: Run feed review (no feeds, market data only)
         # 云端无投喂箱：--no-feed 模式生成盘面复盘，source=cloud
