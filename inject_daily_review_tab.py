@@ -60,6 +60,20 @@ tr.dr-hl3 td{background:rgba(212,175,55,.08)}
   </div>
   <p class="dr-note" id="drFeedReviewBody">投喂复盘加载中…</p>
 </div>
+<!-- Tab: 自动宏观日历 + 自动新闻池 + 推演回测（2026-08-28 新增 · 只读 · 独立于 agent 手写区） -->
+<div class="dr-card" id="drAutoBacktest">
+  <div class="dr-h">🎯 推演回测（昨日推演 vs 实际）<span class="dr-tag" id="drBacktestDate"></span></div>
+  <p class="dr-note" id="drBacktestBody">回测加载中…</p>
+</div>
+<div class="dr-card" id="drAutoMacro">
+  <div class="dr-h">📊 自动宏观日历 <span class="dr-tag" id="drMacroDate"></span></div>
+  <p class="dr-note" id="drMacroBody">宏观数据加载中…</p>
+</div>
+<div class="dr-card" id="drAutoNews">
+  <div class="dr-h">📰 自动新闻池 <span class="dr-tag" id="drNewsDate"></span></div>
+  <p class="dr-note" id="drNewsBody">新闻池加载中…</p>
+</div>
+
 
 </div>
 '''

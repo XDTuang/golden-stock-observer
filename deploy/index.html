@@ -1124,6 +1124,9 @@ td { border-color: var(--border-light); }
 .login-pf{height:100%;background:linear-gradient(90deg,#6366f1,#a78bfa);border-radius:2px;animation:loginPg 1.8s ease-in-out infinite}
 @keyframes loginPg{0%{width:0}50%{width:65%}100%{width:100%}}
 @keyframes loginShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
+/* DR-TAG-FIX v1 (2026-11-24) · 表格单元格上的 .dr-tag 强制 table-cell，防列宽崩溃/重叠 */
+.dr-tbl td.dr-tag{display:table-cell;background:none;border-radius:0;padding:5px 9px;margin:0;font-size:12.5px}
 </style>
 
 <style>
@@ -1535,12 +1538,6 @@ html #drAnalysis {
 .dr-tbl td{padding:5px 9px;border-bottom:1px solid var(--border);text-align:right;white-space:normal;word-break:break-word;overflow-wrap:anywhere;min-width:0}
 .dr-tbl th:first-child,.dr-tbl td:first-child{text-align:left}
 .dr-tbl th{color:var(--text-muted);font-weight:600}
-/* 2026-09-18 防御：禁止 <td> 被 .dr-tag 的 display:inline-block 影响 ——
-   analysis.html 注入的 .dr-tag{display:inline-block} 会让 td 脱离表格布局，
-   实测导致列宽崩溃（判定列 40px、含义列与判定列 left 重叠）。 */
-.dr-tbl td.dr-tag{display:table-cell;background:none;border-radius:0;padding:5px 9px;margin:0;font-size:12.5px}
-.dr-up{color:var(--red)}.dr-dn{color:var(--green)}
-.dr-tag{font-size:11px;color:var(--text-muted)}
 .dr-up{color:var(--red)}.dr-dn{color:var(--green)}
 .dr-tag{font-size:11px;color:var(--text-muted)}
 /* 2026-09-16 新闻池「更多」按钮（按日分组 · 每天收敛展示 DR_NEWS_SHOW_N 条后递增展开） */
