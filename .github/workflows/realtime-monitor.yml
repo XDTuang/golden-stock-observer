@@ -98,6 +98,8 @@ jobs:
           if git diff --cached --quiet; then
             echo "ℹ️ 数据无变化，跳过推送"
           else
+            DDB_DATA_KEY="${{ secrets.DDB_DATA_KEY }}" python tool/protect_assets.py --encrypt --purge
+            bash tool/ci_restage.sh
             git commit -m "实时盯盘数据: $(date '+%Y-%m-%d %H:%M')"
             # 防冲突：本机兜底/其它 workflow 并发提交。
             # ⚠️ 原写法 `git pull --rebase origin main || true` 会把 rebase 失败静默吞掉，

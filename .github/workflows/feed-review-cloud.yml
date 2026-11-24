@@ -43,6 +43,8 @@ jobs:
           # 线上 fetch 路径为根目录 output/feed_review_latest.json（/output/ 与 /deploy/ 均被 gitignore，需 -f）
           cp output/feed_review_latest.json deploy/output/feed_review_latest.json
           git add -f output/feed_review_latest.json output/feed_review_*.json
+          DDB_DATA_KEY="${{ secrets.DDB_DATA_KEY }}" python tool/protect_assets.py --encrypt --purge
+          bash tool/ci_restage.sh
           git diff --cached --quiet || git commit -m "chore(feed): 云端投喂复盘补跑 $(date +%F)"
           # 防冲突：本机兜底/其它 workflow 并发提交时避免 push 失败
           git pull --rebase origin main || true

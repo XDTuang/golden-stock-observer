@@ -71,6 +71,8 @@ jobs:
           git add -f output/daily_review_news.json output/cross_analysis.json
           git add -f deploy/output/daily_review_news.json deploy/output/cross_analysis.json
           if ! git diff --cached --quiet; then
+            DDB_DATA_KEY="${{ secrets.DDB_DATA_KEY }}" python tool/protect_assets.py --encrypt --purge
+            bash tool/ci_restage.sh
             git commit -m "daily-review: 6段新闻整合 + cross_analysis 自动更新 $(date +%F' '%H:%M)"
             # 防冲突：本机兜底/其它 workflow 并发提交时避免 push 失败
             git pull --rebase origin main || true

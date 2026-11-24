@@ -41,6 +41,8 @@ jobs:
           if git diff --cached --quiet; then
             echo "无新数据，跳过提交"
           else
+            DDB_DATA_KEY="${{ secrets.DDB_DATA_KEY }}" python tool/protect_assets.py --encrypt --purge
+            bash tool/ci_restage.sh
             git commit -m "chore: 回购隐含收益每日更新 $(date +%F)"
             # 防冲突：本机兜底/其它 workflow 并发提交时避免 push 失败
             git pull --rebase origin main || true

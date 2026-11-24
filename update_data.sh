@@ -159,7 +159,14 @@ echo "🧹 Step 4: 精简数据 + 生成 fetch 版页面（单一构建路径）
 "$PYTHON" slim_signals.py
 
 echo ""
+echo "🔐 Step 5: 核心资产加密（真鉴权 · AES-256-GCM）"
+DDB_DATA_KEY="" "$PYTHON" tool/protect_assets.py --encrypt --purge \
+  && "$PYTHON" tool/protect_assets.py --check \
+  || { echo "  ❌ 加密失败：deploy/ 下仍有明文，禁止发布"; exit 1; }
+
+echo ""
 echo "═══ 更新完成 ═══"
-echo "📁 产出: index.html（fetch 版） + deploy/（精简版，可直接发布）"
-echo "💡 本地预览: 浏览器打开 index.html"
+echo "📁 产出: index.html + deploy/（数据已加密为 *.enc，明文不对外）"
+echo "💡 本地预览: 以 deploy/ 为根起服务（python3 -m http.server 8081 -d deploy），"
+echo "             打开 http://127.0.0.1:8081/index.html，用管理员/VIP 密码登录后解密"
 echo "💡 发布上线: bash github_pages_deploy.sh"

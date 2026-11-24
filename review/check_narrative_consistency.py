@@ -56,12 +56,60 @@
 import argparse
 import json
 import os
+import base64
+import tempfile
 import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ANALYSIS = os.path.join(ROOT, "data", "daily_review", "analysis.html")
 DEPLOY_ANALYSIS = os.path.join(ROOT, "deploy", "data", "daily_review", "analysis.html")
+
+# ── 明文下线适配（真鉴权）：deploy 侧受保护文件已改为 *.enc，
+#    门禁需要能读到时先解密到临时副本，避免 purge 后误报「副本不一致」。
+_ENC_TMP = os.path.join(tempfile.gettempdir(), "ddb_gate_plain")
+
+
+def _load_data_key():
+    env = os.environ.get("DDB_DATA_KEY", "").strip()
+    if env:
+        try:
+            k = base64.b64decode(env)
+            return k if len(k) == 32 else None
+        except Exception:
+            return None
+    kp = os.path.join(ROOT, ".secret", "keys.json")
+    if os.path.exists(kp):
+        try:
+            return base64.b64decode(json.load(open(kp, encoding="utf-8"))["data_key"])
+        except Exception:
+            return None
+    return None
+
+
+def _materialize(path):
+    """返回可读路径：明文优先；否则用 <path>.enc 解密到临时副本；都无则 None"""
+    if os.path.exists(path):
+        return path
+    enc = path + ".enc"
+    if not os.path.exists(enc):
+        return None
+    key = _load_data_key()
+    if not key:
+        return None
+    try:
+        from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+        blob = open(enc, "rb").read()
+        plain = AESGCM(key).decrypt(blob[:12], blob[12:], None)
+        os.makedirs(_ENC_TMP, exist_ok=True)
+        out = os.path.join(_ENC_TMP, os.path.basename(path))
+        with open(out, "wb") as f:
+            f.write(plain)
+        return out
+    except Exception:
+        return None
+
+
 CROSS = os.path.join(ROOT, "output", "cross_analysis.json")
 DEPLOY_CROSS = os.path.join(ROOT, "deploy", "output", "cross_analysis.json")
 
@@ -354,16 +402,18 @@ def main():
     # ── BOM 与副本 ───────────────────────────────────────
     if not bom_ok:
         problems.append("analysis.html 缺少 UTF-8 BOM")
-    if os.path.exists(DEPLOY_ANALYSIS):
-        dtext = open(DEPLOY_ANALYSIS, encoding="utf-8").read()
+    _dAna = _materialize(DEPLOY_ANALYSIS)
+    if _dAna:
+        dtext = open(_dAna, encoding="utf-8").read()
         if dtext != text:
             problems.append("root ↔ deploy 的 analysis.html 内容不一致")
             print(c("r", "      ❌ root ↔ deploy 的 analysis.html 不一致"))
         else:
             print(c("g", "      ✅ root ↔ deploy 的 analysis.html 一致"))
-    if os.path.exists(DEPLOY_CROSS):
+    _dCross = _materialize(DEPLOY_CROSS)
+    if _dCross:
         try:
-            dq, _ = quadrant_true(DEPLOY_CROSS)
+            dq, _ = quadrant_true(_dCross)
             if dq != true_q:
                 problems.append(f"root ↔ deploy 的 cross_analysis 象限不一致（{true_q} vs {dq}）")
                 print(c("r", f"      ❌ root↔deploy cross_analysis 象限不一致：{true_q} vs {dq}"))

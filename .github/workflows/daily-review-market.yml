@@ -69,6 +69,8 @@ jobs:
             echo "no changes (market.json unchanged)"
             exit 0
           fi
+          DDB_DATA_KEY="${{ secrets.DDB_DATA_KEY }}" python tool/protect_assets.py --encrypt --purge
+          bash tool/ci_restage.sh
           git commit -m "daily-review: update market quotes + 三星/海力士收盘 $(date +%F)"
           for i in 1 2 3 4 5; do
             if git pull --rebase origin main; then break; fi
