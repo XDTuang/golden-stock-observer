@@ -160,9 +160,18 @@ echo "🧹 Step 4: 精简数据 + 生成 fetch 版页面（单一构建路径）
 
 echo ""
 echo "🔐 Step 5: 核心资产加密（真鉴权 · AES-256-GCM）"
-DDB_DATA_KEY="" "$PYTHON" tool/protect_assets.py --encrypt --purge \
-  && "$PYTHON" tool/protect_assets.py --check \
-  || { echo "  ❌ 加密失败：deploy/ 下仍有明文，禁止发布"; exit 1; }
+# 🔴 2026-11-24：只在**有本地密钥**时加密。
+#   CI 里没有 .secret/keys.json（gitignore），强制加密会让整个 update_data.sh
+#   以「✗ 未找到密钥」退出 → 数据主链当班全红。CI 侧由 workflow 的
+#   「Sync Deploy to Root and Push」在推送前用 secrets.DDB_DATA_KEY 统一加密。
+if [ -f .secret/keys.json ]; then
+  DDB_DATA_KEY="" "$PYTHON" tool/protect_assets.py --encrypt --purge \
+    && "$PYTHON" tool/protect_assets.py --check \
+    || { echo "  ❌ 加密失败：deploy/ 下仍有明文，禁止发布"; exit 1; }
+else
+  echo "  ⏭️  无本地密钥（.secret/keys.json 缺失）→ 跳过加密"
+  echo "      CI 环境由 workflow 推送步骤统一加密（secrets.DDB_DATA_KEY）"
+fi
 
 echo ""
 echo "═══ 更新完成 ═══"
