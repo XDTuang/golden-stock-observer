@@ -45,7 +45,7 @@ jobs:
           python-version: '3.13'
 
       - name: Install deps
-        run: pip install akshare pandas requests --quiet
+        run: pip install akshare pandas requests cryptography --quiet
 
       - name: ① 抓取公开新闻源（东财/财经早餐/新浪/同花顺/富途/央视联播）
         # 单源失败由脚本内部容错（_ak 返回 None + 告警）；整体失败则标红暴露问题

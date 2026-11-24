@@ -27,7 +27,7 @@ jobs:
           python-version: '3.11'
 
       - name: 安装依赖
-        run: pip install requests
+        run: pip install requests cryptography
 
       - name: 运行每日更新脚本
         working-directory: repurchase-yield

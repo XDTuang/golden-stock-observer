@@ -35,7 +35,7 @@ jobs:
           python-version: '3.13'
 
       - name: Install deps
-        run: pip install akshare pandas requests --quiet
+        run: pip install akshare pandas requests cryptography --quiet
 
       - name: Refresh daily review market quotes (T 日收盘)
         # 主行情：不吞错误码，失败必须标红（避免"假成功 + 静默跳过提交"）

@@ -55,7 +55,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install Dependencies
-        run: pip install requests
+        run: pip install requests cryptography
 
       - name: 抓取实时数据并计算五层信号
         run: |

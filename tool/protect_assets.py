@@ -307,6 +307,28 @@ def cmd_unstage_plain() -> int:
     return 0
 
 
+def cmd_cat(rel: str) -> int:
+    """把单个受保护文件的内容写到 stdout（明文优先，否则解 .enc）。
+
+    用途：门禁 / CI 判断类步骤需要读产物里的字段（如 signals.json 的
+    freshness.latest_data_date），而明文已下线。**只读、不落盘**，
+    避免为了读一个日期把整份明文重新展开（静默失效面最小化）。
+    """
+    cand = [os.path.join(DEPLOY, rel), os.path.join(BASE, rel)]
+    for p in cand:
+        if os.path.exists(p):
+            with open(p, "rb") as f:
+                sys.stdout.buffer.write(f.read())
+            return 0
+    for p in [c + ENC_SUFFIX for c in cand]:
+        if os.path.exists(p):
+            with open(p, "rb") as f:
+                sys.stdout.buffer.write(unseal(load_key(), f.read()))
+            return 0
+    print(f"✗ 找不到 {rel} 的明文或密文", file=sys.stderr)
+    return 1
+
+
 def cmd_check() -> int:
     """校验（不可空转）：
       ① 清单内每个文件必须存在 .enc
@@ -457,6 +479,7 @@ def main() -> None:
     g.add_argument("--list", action="store_true")
     g.add_argument("--encrypt", action="store_true")
     g.add_argument("--check", action="store_true")
+    g.add_argument("--cat", metavar="REL", help="输出单个受保护文件内容（明文优先，否则解 .enc）")
     g.add_argument("--decrypt", metavar="DIR")
     g.add_argument("--sync-root", dest="sync_root", action="store_true")
     g.add_argument("--stage-plain", dest="stage_plain", action="store_true")
@@ -474,6 +497,8 @@ def main() -> None:
         sys.exit(cmd_encrypt(a.purge))
     if a.check:
         sys.exit(cmd_check())
+    if a.cat:
+        sys.exit(cmd_cat(a.cat))
     if a.decrypt:
         sys.exit(cmd_decrypt(a.decrypt))
     if a.sync_root:

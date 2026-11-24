@@ -51,20 +51,39 @@ jobs:
           cache: 'pip'
 
       - name: Install Dependencies
-        run: pip install pandas numpy requests akshare
+        # 🔴 cryptography 是 tool/protect_assets.py（真鉴权 AES-GCM）的硬依赖
+        #    setup-python 的 toolcache 环境不含它，akshare 也不依赖它（已核 PyPI 元数据）
+        #    漏装 → 推送步骤必 ImportError，整条链跑完却一行数据也发不出去
+        run: |
+          pip install pandas numpy requests akshare cryptography
+          python -c "import cryptography; print('cryptography', cryptography.__version__)"
 
       # 冗余 cron 会一日多次触发；若今日数据已落库则直接跳过，避免重复消耗配额/分钟数
       - name: 幂等闸门（今日已完成则跳过）
         id: gate
+        env:
+          DDB_DATA_KEY: ${{ secrets.DDB_DATA_KEY }}
         run: |
           TODAY=$(date +%F)
+          # 🔴 明文已下线（真鉴权加密）：signals.json 不在仓库里，直接 open 必失败 →
+          #    LATEST 恒为空 → 闸门失效 → 四条 cron 各跑一遍全量（配额×4 + 推送撞车）。
+          #    改为「明文优先，否则解 signals.json.enc」。任何一步失败都退化为「需要更新」（失败开放），
+          #    宁可多跑一次，不可漏更新。
           LATEST=$(python3 - <<'PY' || true
-          import json
+          import json, subprocess
+          d = {}
           try:
-              d=json.load(open('signals.json',encoding='utf-8'))
-              print(d.get('freshness',{}).get('latest_data_date','') or '')
+              d = json.load(open('signals.json', encoding='utf-8'))
           except Exception:
-              print('')
+              pass
+          if not d:
+              out = subprocess.run(['python3', 'tool/protect_assets.py', '--cat', 'signals.json'],
+                                   capture_output=True, text=True)
+              try:
+                  d = json.loads(out.stdout)
+              except Exception:
+                  d = {}
+          print(d.get('freshness', {}).get('latest_data_date', '') or '')
           PY
           )
           echo "今日=$TODAY  仓库已落库最新数据日期=$LATEST"
