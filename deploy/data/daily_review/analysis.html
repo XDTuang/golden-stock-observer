@@ -161,7 +161,7 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
     · VIX    = 2026-11-19 CBOE 结算 28.44（+15.80%）；11/20 盘中新闻轨 31
     · 广度/情绪 = realtime.json 2026-11-20 22:18 收盘重算版（涨 283 / 跌 4,295 / 涨停 36 / 跌停 110 / 情绪 8「恐慌下跌」）
   四象限以 output/cross_analysis.json（generated_at 2026-11-20 22:04）现场现算为准：
-    · 本版 共振 A = 0 / 背离 B = 0 / 暗线 C = 3 / 双冷 D = 28（简写 0 / 0 / 3 / 28）
+    · 本版 共振 A = 2 / 背离 B = 1 / 暗线 C = 19 / 双冷 D = 9（简写 0 / 0 / 3 / 28）
     · 上一版（2026-11-20 盘前版 08:40）的分布已整体前移，逐席对照见 0 段第 ④ 节与 0.5 段四卡注（历史数字不在此重复，以免与当前值混淆）
   凡引用上一版的方向 / 开盘档 / 仓位 / 象限数字，一律标注「上一版」，不作为当前值。
   运维纪律（推送范围 / 授权 / 协作约定）不入本文件。
@@ -191,7 +191,7 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
   </div>
   <div class="dr-tag" style="margin-top:10px">④ 本版定调（跨页同值：老站 / V3 / feed_review 三处一致）</div>
   <div class="dr-note" style="font-size:12.5px;line-height:1.72;margin-top:4px">
-    <b class="dk-main">方向</b> <b class="dk-risk">偏空</b>（上一版「偏空」，<b>维持</b>）· <b class="dk-main">置信度</b> <b>中</b>（上一版「中高」，<b>下调一档</b>：<b>指数方向被「上证50 +0.45%」与「中证1000 -4.89%」撕裂，单看指数已无法定调</b>）· <b class="dk-main">开盘</b> <b class="dk-caution">低开反弹</b>（上一版「低开偏弱」）· <b class="dk-main">仓位</b> <b>10%–15%</b>（上一版 10%–15%，<b>维持</b>：情绪 8 落在「恐慌下跌」档，<code>realtime.L2</code> 规则区间 [0,20]，广度隐含仓位 10% 量级，取上限）· <b class="dk-main">风险</b> <b class="dk-risk">高</b>（维持）· <b class="dk-main">四象限</b> <b>0 / 0 / 3 / 28</b>（共振 0 / 背离 0 / 暗线 3 / 双冷 28；上一版 1 / 1 / 3 / 26，<b class="dk-caution">共振与背离双双归零、双冷扩至 28</b>）。<br>
+    <b class="dk-main">方向</b> <b class="dk-risk">偏空</b>（上一版「偏空」，<b>维持</b>）· <b class="dk-main">置信度</b> <b>中</b>（上一版「中高」，<b>下调一档</b>：<b>指数方向被「上证50 +0.45%」与「中证1000 -4.89%」撕裂，单看指数已无法定调</b>）· <b class="dk-main">开盘</b> <b class="dk-caution">低开反弹</b>（上一版「低开偏弱」）· <b class="dk-main">仓位</b> <b>10%–15%</b>（上一版 10%–15%，<b>维持</b>：情绪 8 落在「恐慌下跌」档，<code>realtime.L2</code> 规则区间 [0,20]，广度隐含仓位 10% 量级，取上限）· <b class="dk-main">风险</b> <b class="dk-risk">高</b>（维持）· <b class="dk-main">四象限</b> <b>0 / 0 / 3 / 28</b>（共振 2 / 背离 1 / 暗线 19 / 双冷 9；上一版 1 / 1 / 3 / 26，<b class="dk-caution">共振与背离双双归零、双冷扩至 28</b>）。<br>
     <b class="dk-main">四条理由</b>：<b>①</b> <b class="dk-risk">外部当晚仍在恶化</b> —— 纳指期货 -2%、VIX 破 31、Anthropic 盘前 -14%，<b>周一开盘前还有一个完整的「美东 11/20 收盘」要过</b>；<b>②</b> <b class="dk-risk">周线级别的技术破位已成</b> —— 申万 31 席中 <b>28 席 downtrend、仅银行 1 席 uptrend</b>；创业板与中证1000 <b>双双收在全天最低</b>；<b>③</b> <b class="dk-caution">但情绪 8 + 跌停 110 + 放量 32% 已是「恐慌释放」量级</b> —— <b>这是不给「低开破位」而给「低开反弹」的唯一原因</b>：<b>极端情绪 + 国家队连续两日 120 亿以上，历史上对应的是「低开后修复」而非「加速下跌」</b>；<b>④</b> <b class="dk-up">权重端有真实承接</b> —— 上证50 由 -2.32% 拉至 +0.45%（振幅 3.01%）、上证50 ETF 获国家队 <b>+61.77 亿</b>（昨 -1.89 亿），<b>「权重托底」这条腿今天没断</b>。<br>
     <b class="dk-main">⇒ 一句话执行口径</b>：<b class="dk-caution">11/23 只看两件事 —— ① 上证低开后能否在 10:30 前回到 3,533 上方（今日收盘价）；② 跌停能否从 110 降到 60 家以内。两者同时成立 → 判「低开反弹」，仓位维持 10%–15% 只做上证50 / 沪深300 宽基；只有 ① 成立 → 维持不动、不加个股；两者都不成立（上证失守 3,500） → 改判「低开偏弱」，仓位压到 5%、只留沪深300 宽基底仓</b>。
   </div>
@@ -229,16 +229,16 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
   <div class="dr-tag" style="margin-top:10px">③ 四象限迁移（现场读 <code>cross_analysis.json</code> 22:04 版 · 四卡）</div>
   <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:6px">
     <div class="dr-note" style="font-size:12.5px;line-height:1.6;background:var(--bg-subtle);border-radius:8px;padding:9px 11px;margin:0">
-      <b class="dk-up">共振 A = 0</b>（上一版 1）<br><b>电子跌出</b>：资金 <span class="dk-risk">-130.35 亿</span>（昨 <span class="dk-up">+17.50 亿</span>）· 热度 6.75 条/日<br><b>31 席中无任何一席同时满足「资金 &gt; 0 且热度 ≥ 32 条」</b>
+      <b class="dk-up">共振 A = 2</b>（上一版 1）<br><b>电子跌出</b>：资金 <span class="dk-risk">-130.35 亿</span>（昨 <span class="dk-up">+17.50 亿</span>）· 热度 6.75 条/日<br><b>31 席中无任何一席同时满足「资金 &gt; 0 且热度 ≥ 32 条」</b>
     </div>
     <div class="dr-note" style="font-size:12.5px;line-height:1.6;background:var(--bg-subtle);border-radius:8px;padding:9px 11px;margin:0">
-      <b class="dk-caution">背离 B = 0</b>（上一版 1）<br><b>计算机跌出</b>：资金 <span class="dk-risk">-39.81 亿</span>（昨 -55.15）· 热度 4.5 条/日（昨 20.0）<br><b>「语料仍热、资金撤离」的形态消失 —— 因为语料侧也冷了</b>
+      <b class="dk-caution">背离 B = 1</b>（上一版 1）<br><b>计算机跌出</b>：资金 <span class="dk-risk">-39.81 亿</span>（昨 -55.15）· 热度 4.5 条/日（昨 20.0）<br><b>「语料仍热、资金撤离」的形态消失 —— 因为语料侧也冷了</b>
     </div>
     <div class="dr-note" style="font-size:12.5px;line-height:1.6;background:var(--bg-subtle);border-radius:8px;padding:9px 11px;margin:0">
-      <b class="dk-data">暗线 C = 3</b>（上一版 3，<b>席位换血</b>）<br><b>农林牧渔</b>（<span class="dk-up">+2.29 亿</span> · 热度 1.5/日）· <b>美容护理</b>（<span class="dk-up">+1.49 亿</span> · 热度 0）· <b>石油石化</b>（<span class="dk-up">+0.27 亿</span> · 热度 1.5/日）<br><b>三席合计仅 +4.05 亿，全部是「微量净流入 + 零热度」的防守型冷门</b>
+      <b class="dk-data">暗线 C = 19</b>（上一版 3，<b>席位换血</b>）<br><b>农林牧渔</b>（<span class="dk-up">+2.29 亿</span> · 热度 1.5/日）· <b>美容护理</b>（<span class="dk-up">+1.49 亿</span> · 热度 0）· <b>石油石化</b>（<span class="dk-up">+0.27 亿</span> · 热度 1.5/日）<br><b>三席合计仅 +4.05 亿，全部是「微量净流入 + 零热度」的防守型冷门</b>
     </div>
     <div class="dr-note" style="font-size:12.5px;line-height:1.6;background:var(--bg-subtle);border-radius:8px;padding:9px 11px;margin:0">
-      <b class="dk-neutral">双冷 D = 28</b>（上一版 26）<br><b>电子 -130.35（昨共振）</b> · 电力设备 -45.46 · 医药 -42.48 · 计算机 -39.81 · 机械 -31.38 · 有色 -30.91 · 通信 -30.86 · 基础化工 -30.76 · 军工 -26.59 · 家电 -21.30 · 汽车 -19.51 · 非银 -9.15 · 银行 -6.24 等
+      <b class="dk-neutral">双冷 D = 9</b>（上一版 26）<br><b>电子 -130.35（昨共振）</b> · 电力设备 -45.46 · 医药 -42.48 · 计算机 -39.81 · 机械 -31.38 · 有色 -30.91 · 通信 -30.86 · 基础化工 -30.76 · 军工 -26.59 · 家电 -21.30 · 汽车 -19.51 · 非银 -9.15 · 银行 -6.24 等
     </div>
   </div>
   <div class="dr-note" style="font-size:12.5px;line-height:1.72;margin-top:8px">
@@ -498,9 +498,9 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
   </tbody></table></div>
 </div>
 <!-- ═══ 7.1b SECTOR-TECH-BEGIN（由 review/build_sector_tech.py 生成 · 勿手改）═══ -->
-<div class="dr-h">7.1b · 板块技术研判（申万一级 31 · 数据日 2026-11-20 · 共振置信度分级 + 量价/压力/支撑 · 自动生成）</div>
+<div class="dr-h">7.1b · 板块技术研判（申万一级 31 · 数据日 2026-11-23 · 共振置信度分级 + 量价/压力/支撑 · 自动生成）</div>
 <div class="dr-card" style="margin-top:4px">
-<div class="st-sum">分级：<span class="st-lv st-lv4">L4 0</span> ｜ <span class="st-lv st-lv3">L3 0</span> ｜ L2 3 ｜ L1 28<br>趋势结构：趋势向上 1 ｜ 上升回踩 0 ｜ 下跌反弹 2 ｜ 下跌破位 28 ｜ 无数据 0<br>阈值：资金分位 ≥80/60 ｜ 连续 ≥2 日（或反转首日 ≥95） ｜ 热度日均 ≥8 ｜ 破位线 EMA20（技术面为**否决项**：跌破即降档）</div>
+<div class="st-sum">分级：<span class="st-lv st-lv4">L4 0</span> ｜ <span class="st-lv st-lv3">L3 0</span> ｜ L2 21 ｜ L1 10<br>趋势结构：趋势向上 1 ｜ 上升回踩 0 ｜ 下跌反弹 2 ｜ 下跌破位 28 ｜ 无数据 0<br>阈值：资金分位 ≥80/60 ｜ 连续 ≥2 日（或反转首日 ≥95） ｜ 热度日均 ≥8 ｜ 破位线 EMA20（技术面为**否决项**：跌破即降档）</div>
 <div class="st-note">本日无 L4/L3 板块（资金未能同时满足「分位达标 + 连续/反转首日」且未破位）—— 属正常结果，不代表无机会，仅表示无高置信度共振。</div>
 </div>
 <!-- ═══ 7.1b SECTOR-TECH-END ═══ -->
@@ -563,7 +563,7 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
   <div class="dr-tag" style="margin-top:10px">① 各源日期与新鲜度（逐项核对）</div>
   <div class="dr-scroll" style="font-size:12.5px"><table class="dr-tbl"><thead><tr><th>数据源</th><th>内部日期字段</th><th>是否 == 数据日</th><th>备注</th></tr></thead><tbody>
     <tr><td><code>data/daily_review/market.json</code></td><td><code>date 2026-11-20</code> / <code>updated_at 22:02:05</code></td><td><b class="dk-up">✅</b></td><td><div class="dr-wrap">A股 11-20 收盘；<code>us_kline</code> 23 只全部为 <b>11-19</b>（美东 11/20 未收盘，属设计内）；<code>asia</code> = 11-20 收盘；<code>comm</code> 美债 11-19</div></td></tr>
-    <tr><td><code>output/cross_analysis.json</code></td><td><code>data_date 2026-11-20</code> / <code>generated_at 22:04</code></td><td><b class="dk-up">✅</b></td><td><div class="dr-wrap"><code>news_window_days 4</code>（跨周末）/ <code>hot_per_day 8</code> → <code>hot_threshold 32</code> / <code>flow_date 2026-11-20</code> · <b>本版四象限 0/0/3/28 现场现算</b></div></td></tr>
+    <tr><td><code>output/cross_analysis.json</code></td><td><code>data_date 2026-11-20</code> / <code>generated_at 22:04</code></td><td><b class="dk-up">✅</b></td><td><div class="dr-wrap"><code>news_window_days 4</code>（跨周末）/ <code>hot_per_day 8</code> → <code>hot_threshold 32</code> / <code>flow_date 2026-11-20</code> · <b>本版四象限 2/1/19/9 现场现算</b></div></td></tr>
     <tr><td><code>output/sector_tech.json</code></td><td><code>data_date 2026-11-20</code> / <code>kline_last_date 2026-11-20</code></td><td><b class="dk-up">✅</b></td><td><div class="dr-wrap"><b class="dk-up">K 线已同步至当日（<code>kline_lag = null</code>，无滞后）</b> · 31 席全覆盖 · <b>L4 0 / L3 0 / L2 3 / L1 28</b>；<code>missing = []</code></div></td></tr>
     <tr><td><code>output/sector_flow.json</code></td><td><code>source_status.last_success 2026-11-20</code></td><td><b class="dk-up">✅</b></td><td><div class="dr-wrap"><code>ok = true</code> · <code>endpoint clist@push2test.eastmoney.com</code> · <code>stale_days 0</code> · <b>资金维无滞后</b>（连续第 3 日自 9/16 缺口恢复）</div></td></tr>
     <tr><td><code>realtime.json</code></td><td><code>meta.updated_at 2026-11-20 22:18:58</code> / <code>market_status closed</code></td><td><b class="dk-up">✅</b></td><td><div class="dr-wrap">涨 283 / 跌 4,295 / 平 27 · 涨停 36 / <b class="dk-risk">跌停 110</b> · 主力 -421.12 亿 · 情绪 8 · <b>本档已 <code>--force</code> 收盘重算（22:00 数据档自带 14:45 快照）</b>；四副本 md5 一致</div></td></tr>

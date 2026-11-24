@@ -1,83 +1,48 @@
 {
-  "generated_at": "2026-11-21 22:05",
+  "generated_at": "2026-11-23 18:30",
   "session": "close",
-  "data_date": "2026-11-20",
-  "for_date": "2026-11-23",
+  "data_date": "2026-11-23",
+  "for_date": "2026-11-24",
   "data_date_note": "",
   "warnings": [],
   "span": [
-    "2026-11-21",
-    "2026-11-22",
-    "2026-11-23"
+    "2026-11-24"
   ],
-  "span_days": 3,
+  "span_days": 1,
   "display_days": [
-    "2026-11-20",
-    "2026-11-21",
-    "2026-11-22",
-    "2026-11-23"
+    "2026-11-23",
+    "2026-11-24"
   ],
-  "display_text": "11/20–11/23",
-  "span_is_weekend_cross": true,
-  "span_text": "11/21–11/23",
+  "display_text": "11/23 + 11/24",
+  "span_is_weekend_cross": false,
+  "span_text": "11/24",
   "carry": {
-    "from_data_date": "2026-11-20",
-    "ref": "output/feed_review_2026-11-20.json",
+    "from_data_date": "2026-11-23",
+    "ref": "output/feed_review_2026-11-23.json",
     "exists": true,
-    "gap_days": 3,
+    "gap_days": 1,
     "stale": false,
-    "bias": "偏空",
-    "bias_score": -2,
+    "bias": "中性",
+    "bias_score": 1,
     "t1_focus": [
-      "上证低开后 10:30 前能否回到 3,533.79（11/20 收盘）上方",
-      "跌停能否从 110 降到 60 家以内",
-      "上证 3,500.83（11/20 日内低 + 整数关）是否失守",
-      "上证50 2,709.06（11/20 日内低）—— 权重托底这条腿是否断",
-      "周末美股 11/20 收盘与 Anthropic 首日定价（北京 11/21 05:00）"
+      "跟踪金钻起涨 8 只回踩确认"
     ],
     "risks": [],
     "headline": ""
   },
   "layers": {
-    "base": "2026-11-20 A股收盘（基准层）",
-    "overnight": "美东 2026-11-20 收盘（北京 2026-11-21 早间到达）",
-    "premarket": "2026-11-23 今早日韩实时 + 盘前新闻/投喂增量"
+    "base": "2026-11-23 A股收盘（基准层）",
+    "overnight": "美东 2026-11-23 收盘（北京 2026-11-24 早间到达）",
+    "premarket": "2026-11-24 今早日韩实时 + 盘前新闻/投喂增量"
   },
   "market_state": {
-    "date": "2026-11-20",
-    "run_date": "2026-11-21",
+    "date": "2026-11-23",
+    "run_date": "2026-11-24",
     "preopen_partial": null,
-    "us_kline": true,
+    "us_kline": false,
     "asia": true
   },
   "covered": [
-    {
-      "date": "2026-11-20",
-      "weekday": "周五",
-      "is_trading_day": true,
-      "news": 303,
-      "feeds": 0,
-      "reports": 565,
-      "macro": true
-    },
-    {
-      "date": "2026-11-21",
-      "weekday": "周六",
-      "is_trading_day": false,
-      "news": 289,
-      "feeds": 0,
-      "reports": 188,
-      "macro": true
-    },
-    {
-      "date": "2026-11-22",
-      "weekday": "周日",
-      "is_trading_day": false,
-      "news": 0,
-      "feeds": 0,
-      "reports": 0,
-      "macro": false
-    },
     {
       "date": "2026-11-23",
       "weekday": "周一",
@@ -86,13 +51,25 @@
       "feeds": 0,
       "reports": 0,
       "macro": false
+    },
+    {
+      "date": "2026-11-24",
+      "weekday": "周二",
+      "is_trading_day": true,
+      "news": 0,
+      "feeds": 0,
+      "reports": 0,
+      "macro": true
     }
   ],
   "totals": {
-    "news": 592,
+    "news": 0,
     "feeds": 0,
-    "reports": 753,
-    "covered_days": 4
+    "reports": 0,
+    "covered_days": 2
   },
-  "missing": []
+  "missing": [
+    "market_thermometer.json 数据日 2026-11-20 落后于基准日 2026-11-23",
+    "2026-11-23（周一·交易日）新闻池 0 条"
+  ]
 }

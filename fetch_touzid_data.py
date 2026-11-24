@@ -118,6 +118,23 @@ def _write_both(name, obj):
         _atomic(p, obj)
     print(f"  ✅ {name} ({os.path.getsize(os.path.join(OUT, name))/1024:.1f} KB)")
 
+# 🔴 2026-11-24 修：乐咕对 akshare 内置 UA（Chrome/114 Windows）返回 403，
+#   ⇒ stock_a_all_pb / stock_a_ttm_lyr 全部失败 ⇒ 温度计 data_day 锚定不到最新数据日，
+#   长期停在旧日期且不报错（有值但永远旧）。实测换 macOS Chrome/124 + Referer 后 200，
+#   末行 = 2026-11-23。此处只 patch UA/Referer，不改 akshare 代码。
+def _patch_legulegu():
+    ua = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+          "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
+    try:
+        from akshare.stock_feature import stock_a_indicator as _sai
+        h = getattr(_sai, "headers", None)
+        if isinstance(h, dict):
+            h["User-Agent"] = ua
+            h["Referer"] = "https://legulegu.com/"
+    except Exception as e:
+        print(f"  ⚠️  乐咕 UA 补丁未生效: {type(e).__name__} {str(e)[:80]}")
+
+
 def _safe(fn, default=None, retries=2):
     for i in range(retries):
         try:
@@ -131,6 +148,7 @@ def _safe(fn, default=None, retries=2):
 # ═══════════════════════════════ 块① 市场温度计 ═══════════════════════════════
 def build_thermometer():
     print("\n📊 块① 市场温度计")
+    _patch_legulegu()
     import akshare as ak
 
     # 1. 全A PB 分布（乐咕，含近10年分位历史）
@@ -680,7 +698,19 @@ def _spot_from_gtimg():
                     continue
                 try:
                     pe = float(f[39]) if f[39] else None
-                    pb = float(f[43]) if f[43] else None
+                    # 🔴 2026-11-24：腾讯字段表变更 —— PB 由 f[43] 迁到 f[46]，
+                    #   f[43] 现恒为 0.00（茅台/工行/招行实测均为 0）⇒ pbs 恒空 ⇒ IndexError。
+                    #   优先取 f[46]，回退 f[43] 兼容旧格式。
+                    pb = None
+                    for _idx in (46, 43):
+                        if len(f) > _idx and f[_idx]:
+                            try:
+                                _v = float(f[_idx])
+                                if _v > 0:
+                                    pb = _v
+                                    break
+                            except Exception:
+                                pass
                     mv = float(f[44]) if f[44] else None
                     if pe and pe > 0:
                         pes.append(pe)
@@ -698,6 +728,10 @@ def _spot_from_gtimg():
         return None
     pes.sort()
     pbs.sort()
+    if not pes or not pbs:
+        print(f"  ⚠️  gtimg 快照 PE/PB 样本为空（pe={len(pes)} pb={len(pbs)}）→ 仅取总市值")
+        return {"total_mv_yi": round(total_mv, 0), "pe_median": None,
+                "pb_median": None, "n": n}
     return {"total_mv_yi": round(total_mv, 0),
             "pe_median": round(pes[len(pes) // 2], 2),
             "pb_median": round(pbs[len(pbs) // 2], 2),
