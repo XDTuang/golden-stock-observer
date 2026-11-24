@@ -22,6 +22,7 @@ import argparse
 import base64
 import json
 import os
+import shutil
 import sys
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
@@ -170,6 +171,114 @@ def cmd_encrypt(purge: bool) -> int:
     return 0
 
 
+def manifest_files() -> list[str]:
+    """受保护清单：以 protected.json 为权威，缺失时回退到扫描结果"""
+    if os.path.exists(MANIFEST):
+        try:
+            return json.load(open(MANIFEST, encoding="utf-8"))["files"]
+        except Exception:
+            pass
+    return resolve()
+
+
+# 发布到站点根时优先采用 deploy 精简版的例外。
+# 根目录 signals.json 历史上存在「未 slim 的全量」（18MB），直接加密会把体积带进线上，
+# 因此固定取 deploy 侧的精简密文。
+PREFER_DEPLOY = {"signals.json"}
+
+
+def cmd_sync_root() -> int:
+    """把密文同步到站点根目录并删除根目录明文。
+
+    背景：GitHub Pages 服务的是 main 分支根目录，deploy/ 只是构建产物，
+    发布时必须把 *.enc 与 auth/ 同步上去，否则：
+      ① 根目录明文仍可被直取（保护形同虚设）
+      ② 根 index.html 的拦截层改写请求为 *.enc 后 404（页面数据全空）
+    """
+    key = load_key()
+    files = manifest_files()
+    if not files:
+        print("⚠️  受保护清单为空，跳过根目录同步")
+        return 1
+    n_use = n_re = n_del = 0
+    for rel in files:
+        rootp = os.path.join(BASE, rel)
+        root_enc = rootp + ENC_SUFFIX
+        dep_enc = enc_path(rel)
+        os.makedirs(os.path.dirname(rootp) or BASE, exist_ok=True)
+
+        use_deploy = rel in PREFER_DEPLOY and os.path.exists(dep_enc)
+        if os.path.exists(rootp) and not use_deploy:
+            blob = seal(key, open(rootp, "rb").read())
+            with open(root_enc, "wb") as f:
+                f.write(blob)
+            if not os.path.exists(dep_enc):       # deploy 侧缺失则补齐，保持两侧同源
+                with open(dep_enc, "wb") as f:
+                    f.write(blob)
+            n_re += 1
+        elif os.path.exists(dep_enc):
+            shutil.copy2(dep_enc, root_enc)
+            n_use += 1
+        else:
+            print(f"  ❌ {rel}: 根目录与 deploy 均无源文件，无法发布")
+            return 1
+
+        if os.path.exists(rootp):
+            os.remove(rootp)
+            n_del += 1
+
+    auth_src = os.path.join(DEPLOY, "auth")
+    if os.path.isdir(auth_src):
+        auth_dst = os.path.join(BASE, "auth")
+        os.makedirs(auth_dst, exist_ok=True)
+        for name in sorted(os.listdir(auth_src)):
+            shutil.copy2(os.path.join(auth_src, name), os.path.join(auth_dst, name))
+
+    print(f"📤 根目录同步完成：沿用 deploy {n_use} · 重加密 {n_re} · 删除明文 {n_del} · auth 已同步")
+    remain = [r for r in files if os.path.exists(os.path.join(BASE, r))]
+    if remain:
+        print(f"❌ 仍有 {len(remain)} 个明文残留：{remain[:5]}")
+        return 1
+    return 0
+
+
+def cmd_stage_plain() -> int:
+    """为本地门禁临时把受保护文件解密到工作区（跑完必须 --unstage-plain）。
+
+    必要性：14 道门禁直接 open() 根目录文件。明文下线后，部分门禁会因文件缺失
+    而**静默跳过**（空转通过）——比报错更危险。此命令让门禁看到与改造前一致的环境。
+    """
+    key = load_key()
+    files = manifest_files()
+    n = 0
+    for rel in files:
+        src = os.path.join(DEPLOY, rel + ENC_SUFFIX)
+        if not os.path.exists(src):
+            continue
+        plain = unseal(key, open(src, "rb").read())
+        # 根目录 + deploy 双侧都要还原：门禁多在比对「root ↔ deploy 副本」
+        for dst in (os.path.join(BASE, rel), os.path.join(DEPLOY, rel)):
+            os.makedirs(os.path.dirname(dst) or BASE, exist_ok=True)
+            with open(dst, "wb") as f:
+                f.write(plain)
+        n += 1
+    print(f"🔓 已解密 {n} 个受保护文件到工作区（root + deploy，仅供门禁，勿提交）")
+    return 0
+
+
+def cmd_unstage_plain() -> int:
+    """删除上一步解密出来的明文，恢复密文态"""
+    files = manifest_files()
+    n = 0
+    for rel in files:
+        for dst in (os.path.join(BASE, rel), os.path.join(DEPLOY, rel)):
+            if os.path.exists(dst + ENC_SUFFIX) and os.path.exists(dst):
+                os.remove(dst)
+                n += 1
+    print(f"🔒 已清除 {n} 个临时明文（root + deploy）")
+    return 0
+
+
 def cmd_check() -> int:
     """校验（不可空转）：
       ① 清单内每个文件必须存在 .enc
@@ -247,6 +356,9 @@ def main() -> None:
     g.add_argument("--encrypt", action="store_true")
     g.add_argument("--check", action="store_true")
     g.add_argument("--decrypt", metavar="DIR")
+    g.add_argument("--sync-root", dest="sync_root", action="store_true")
+    g.add_argument("--stage-plain", dest="stage_plain", action="store_true")
+    g.add_argument("--unstage-plain", dest="unstage_plain", action="store_true")
     ap.add_argument("--purge", action="store_true", help="加密后删除明文")
     a = ap.parse_args()
 
@@ -258,6 +370,12 @@ def main() -> None:
         sys.exit(cmd_check())
     if a.decrypt:
         sys.exit(cmd_decrypt(a.decrypt))
+    if a.sync_root:
+        sys.exit(cmd_sync_root())
+    if a.stage_plain:
+        sys.exit(cmd_stage_plain())
+    if a.unstage_plain:
+        sys.exit(cmd_unstage_plain())
 
 
 if __name__ == "__main__":

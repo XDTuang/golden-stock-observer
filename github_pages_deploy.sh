@@ -126,7 +126,10 @@ cp -R "$DEPLOY/index.html" .
 if [ -f "$DEPLOY/signals.json" ]; then
   cp "$DEPLOY/signals.json" signals.json
 fi
-cp -R "$DEPLOY/lh_calendar.json" .
+# lh_calendar 明文已在密文化改造中下线，deploy 侧只剩 .enc；缺文件时跳过（否则 set -e 中断）
+if [ -f "$DEPLOY/lh_calendar.json" ]; then
+  cp "$DEPLOY/lh_calendar.json" .
+fi
 # 清空根 output/ 后仅复制前端真正 fetch 的精简文件，避免把 kline_raw 等重型文件带上 Pages
 # 先保留门控数据（gate_scan.py 产出，slim_signals 不处理；否则会被下方 rm -rf 清掉）
 cp -R output/gate_data.json "$DEPLOY/output/gate_data.json" 2>/dev/null || true
@@ -155,7 +158,9 @@ mkdir -p output
 cp -R "$DEPLOY/output/." output/
 cp -R "$DEPLOY/build_manifest.json" .
 touch .nojekyll
-echo "  ✓ 已同步站点文件到根目录"
+# 🔐 站点根目录才是 Pages 实际服务的目录：密文上架、明文下线必须在此完成
+"$PYTHON" tool/protect_assets.py --sync-root
+echo "  ✓ 已同步站点文件到根目录（含核心数据密文化）"
 
 # ── Step 4: 提交并推送（GitHub Pages 直接服务分支根目录）──
 echo ""
@@ -163,6 +168,8 @@ echo "🚀 Step 4: 提交并推送 ..."
 # 失效 index stat 缓存，防止 racy-git 漏提交（与主站 history / 副站数据同理）
 git update-index --really-refresh 2>/dev/null || true
 git add -A
+find . -name "*.enc" -not -path "./.git/*" -not -path "./_backups/*" -print0 \
+  | while IFS= read -r -d '' f; do git add -f "$f"; done
 git add -f index.html signals.json lh_calendar.json \
   output/top10_history.json output/sector_flow.json output/national_team_etf.json \
   output/golden_diamond.json output/golden_diamond_history.json output/sector_golden_diamond_history.json \

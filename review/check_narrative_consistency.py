@@ -87,6 +87,31 @@ def _load_data_key():
     return None
 
 
+def _write_sealed(path, text):
+    """--fix 写回：落明文 → 加密到 <path>.enc 与 deploy 对应副本 → 删除明文。
+
+    受保护数据已密文化，若仍按旧写法直接写明文，会把明文重新放回站点根目录，
+    等于静默撤销真鉴权。故此处必须写回密文态。
+    """
+    key = _load_data_key()
+    if not key:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(text)
+        print("  ⚠️  无密钥，已写入明文（请随后运行 tool/protect_assets.py --sync-root）")
+        return
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+    data = text.encode("utf-8")
+    rel = os.path.relpath(path, ROOT)
+    for tgt in (path + ".enc", os.path.join(ROOT, "deploy", rel) + ".enc"):
+        os.makedirs(os.path.dirname(tgt), exist_ok=True)
+        nonce = os.urandom(12)
+        with open(tgt, "wb") as f:
+            f.write(nonce + AESGCM(key).encrypt(nonce, data, None))
+    for stale in (path, os.path.join(ROOT, "deploy", rel)):
+        if os.path.exists(stale):
+            os.remove(stale)
+
+
 def _materialize(path):
     """返回可读路径：明文优先；否则用 <path>.enc 解密到临时副本；都无则 None"""
     if os.path.exists(path):
@@ -281,14 +306,17 @@ def main():
     fix_resolved = False
 
     # ── 前置：文件在位 ─────────────────────────────────────
-    for p in (ANALYSIS, CROSS):
-        if not os.path.exists(p):
-            print(c("r", f"❌ 缺少文件：{os.path.relpath(p, ROOT)}"))
+    # 受保护数据已密文化：主源/数据源一律走 _materialize（明文优先，否则解 .enc）
+    ana_path = _materialize(ANALYSIS)
+    cross_path = _materialize(CROSS)
+    for p, real in ((ANALYSIS, ana_path), (CROSS, cross_path)):
+        if not real:
+            print(c("r", f"❌ 缺少文件：{os.path.relpath(p, ROOT)}（明文与 .enc 均不可用）"))
             return 1
 
-    true_q, meta = quadrant_true()
+    true_q, meta = quadrant_true(path=cross_path)
     true_str = fmt(true_q)
-    text = open(ANALYSIS, encoding="utf-8").read()
+    text = open(ana_path, encoding="utf-8").read()
     bom_ok = text.startswith("\ufeff")
 
     print("═" * 74)
@@ -444,22 +472,17 @@ def main():
             out = out[:s] + rep + out[e:]
         n = n_full + n_slash + n_card
         if n:
-            with open(ANALYSIS, "w", encoding="utf-8") as f:
-                f.write(out)
-            # 同步 deploy
-            if os.path.exists(DEPLOY_ANALYSIS):
-                with open(DEPLOY_ANALYSIS, "w", encoding="utf-8") as f:
-                    f.write(out)
+            _write_sealed(ANALYSIS, out)      # 明文不再落盘，直接写回密文态
             print("─" * 74)
             print(c("g", f"  🔧 --fix 已替换 {n} 处（全式 {n_full} / 简写 {n_slash}"
                          f" / 四卡 {n_card}）→ 当前值 {true_str}"))
-            print("     （历史引用未动；root + deploy 已同步写入）")
+            print("     （历史引用未动；root + deploy 密文已同步重写）")
             print(c("y", "     ⚠️ 仍需人工/agent 复核归因句与结论层表述，并重跑排版门禁"))
         else:
             print("─" * 74)
             print("  🔧 --fix：无需替换（当前值已与数据一致）")
         # 修完复检
-        text2 = open(ANALYSIS, encoding="utf-8").read()
+        text2 = open(_materialize(ANALYSIS) or ANALYSIS, encoding="utf-8").read()
         hits2 = scan(text2)
         cur2 = [h for h in hits2 if h["kind"] == "cur" and h["form"] != "card"]
         cards2 = [h for h in hits2 if h["kind"] == "cur" and h["form"] == "card"]
