@@ -67,9 +67,13 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # output/ 与 deploy/ 均在 .gitignore 中，必须用 -f 强制添加
-          git add -f output/daily_review_news.json output/cross_analysis.json
-          git add -f deploy/output/daily_review_news.json deploy/output/cross_analysis.json
+          # output/ 与 deploy/ 均在 .gitignore 中，必须用 -f 强制添加。
+          # 🔴 逐个判存在：产物被前置守卫跳过时，裸 `git add -f 不存在的路径` 会 pathspec fatal，
+          #    整个推送步骤瞬间退红（与真实业务失败无法区分）。
+          for f in output/daily_review_news.json output/cross_analysis.json \
+                   deploy/output/daily_review_news.json deploy/output/cross_analysis.json; do
+            [ -f "$f" ] && git add -f "$f" || true
+          done
           if ! git diff --cached --quiet; then
             DDB_DATA_KEY="${{ secrets.DDB_DATA_KEY }}" python tool/protect_assets.py --encrypt --purge
             bash tool/ci_restage.sh

@@ -45,8 +45,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # 线上 fetch 路径为根目录 output/feed_review_latest.json（/output/ 与 /deploy/ 均被 gitignore，需 -f）
-          cp output/feed_review_latest.json deploy/output/feed_review_latest.json
-          git add -f output/feed_review_latest.json output/feed_review_*.json
+          # 🔴 逐个判存在：裸 `git add -f` + 未命中的通配符都会 pathspec fatal（见 realtime #1229）
+          [ -f output/feed_review_latest.json ] && cp output/feed_review_latest.json deploy/output/feed_review_latest.json || true
+          for f in output/feed_review_latest.json output/feed_review_*.json; do
+            [ -f "$f" ] && git add -f "$f" || true
+          done
           DDB_DATA_KEY="${{ secrets.DDB_DATA_KEY }}" python tool/protect_assets.py --encrypt --purge
           bash tool/ci_restage.sh
           git diff --cached --quiet || git commit -m "chore(feed): 云端投喂复盘补跑 $(date +%F)"
