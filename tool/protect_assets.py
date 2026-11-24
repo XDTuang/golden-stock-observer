@@ -380,6 +380,77 @@ def cmd_decrypt(outdir: str) -> int:
     return 0
 
 
+def cmd_rotate_key(admin_pw: str, vip_pw: str) -> int:
+    """轮换 data_key：解全部密文 → 换新密钥重加密 → 重包装凭据 → 同步根目录。
+
+    用途：密钥疑似泄露时彻底作废旧加密口令（不是改密码，是换数据密钥）。
+    失败安全：先把全部明文落到临时目录，任何一步失败都能据此重建。
+    """
+    import time
+    import tempfile
+
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import ddb_auth as A
+
+    if os.environ.get("DDB_DATA_KEY", "").strip():
+        print("❌ 环境变量 DDB_DATA_KEY 非空：rotate 会读错密钥，请先 unset")
+        return 1
+    if not admin_pw or not vip_pw:
+        print("❌ 需同时提供 --admin-password 与 --vip-password（重包装凭据必须解 KEK）")
+        return 1
+
+    old = load_key()
+    files = resolve_expected()
+    if not files:
+        print("⚠️  受保护清单为空，中止")
+        return 1
+
+    staging = tempfile.mkdtemp(prefix="ddb_rotate_")
+    plain: dict[str, bytes] = {}
+    for rel in files:
+        p = enc_path(rel)
+        if not os.path.exists(p):
+            print(f"❌ 缺少密文 deploy/{rel}{ENC_SUFFIX}，中止（未做任何修改）")
+            return 1
+        with open(p, "rb") as f:
+            data = unseal(old, f.read())
+        plain[rel] = data
+        with open(os.path.join(staging, rel.replace("/", "__")), "wb") as f:
+            f.write(data)
+    print(f"🔓 已解密 {len(plain)} 个文件（暂存 {staging}，失败可据此重建）")
+
+    new = os.urandom(32)
+    for rel, data in plain.items():
+        with open(enc_path(rel), "wb") as f:
+            f.write(seal(new, data))
+    print(f"🔐 已用新密钥重加密 {len(plain)} 个文件")
+
+    keys = A.load_keys()
+    keys["data_key"] = base64.b64encode(new).decode()
+    keys["rotated"] = time.strftime("%Y-%m-%d %H:%M:%S")
+    for level, pw in (("admin", admin_pw), ("vip", vip_pw)):
+        old_cred = A.read_cred(level)
+        cred = A.build_cred(level, pw, keys, old_cred.get("exp"))
+        A.write_json(os.path.join(A.AUTH_DIR, f"{level}.json"), cred)
+        print(f"🔑 auth/{level}.json 已重包装（salt 重随机）")
+    A.write_accounts(keys, vip_exp=A.read_cred("vip").get("exp"),
+                     updated=keys["rotated"])
+    A.save_keys(keys)
+
+    if cmd_sync_root() != 0:
+        print("❌ 根目录同步失败，但 deploy 侧已换新密钥；修复后重跑 --sync-root")
+        return 1
+
+    out = os.path.join(BASE, ".secret", "NEW_DATA_KEY.txt")
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    with open(out, "w", encoding="utf-8") as f:
+        f.write(base64.b64encode(new).decode() + "\n")
+    os.chmod(out, 0o600)
+    print(f"\n🆕 新 DDB_DATA_KEY → {os.path.relpath(out, BASE)}（chmod 600）")
+    print("   取完填 GitHub Secret 后请删除该文件；旧密钥已完全失效")
+    return 0
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="核心资产加密 / 校验")
     g = ap.add_mutually_exclusive_group(required=True)
@@ -390,6 +461,10 @@ def main() -> None:
     g.add_argument("--sync-root", dest="sync_root", action="store_true")
     g.add_argument("--stage-plain", dest="stage_plain", action="store_true")
     g.add_argument("--unstage-plain", dest="unstage_plain", action="store_true")
+    g.add_argument("--rotate-key", dest="rotate_key", action="store_true",
+                   help="轮换 data_key（需 --admin-password / --vip-password）")
+    ap.add_argument("--admin-password", dest="admin_password")
+    ap.add_argument("--vip-password", dest="vip_password")
     ap.add_argument("--purge", action="store_true", help="加密后删除明文")
     a = ap.parse_args()
 
@@ -407,6 +482,8 @@ def main() -> None:
         sys.exit(cmd_stage_plain())
     if a.unstage_plain:
         sys.exit(cmd_unstage_plain())
+    if a.rotate_key:
+        sys.exit(cmd_rotate_key(a.admin_password, a.vip_password))
 
 
 if __name__ == "__main__":
