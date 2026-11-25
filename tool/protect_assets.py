@@ -24,6 +24,7 @@ import hashlib
 import json
 import os
 import shutil
+import subprocess
 import sys
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
@@ -151,6 +152,27 @@ def cmd_verify_key() -> int:
               "② 是否带多余空白/换行 ③ 轮换后 Secret 是否已更新")
         return 1
     print(f"✓ 密钥可用：{msg}")
+    return 0
+
+
+def cmd_assert_staged_clean() -> int:
+    """断言 git 暂存区里没有受保护文件的明文。
+
+    为什么需要：sync-root 会把根目录明文删掉，但「删除」必须被 git 记录成删除，
+    提交里才不会留下明文。ci_restage 里 `git add -u` 只要有个 path 不在索引里就整条 fatal，
+    而失败被 `|| true` 吞掉 → 删除没记到、明文照进仓库（2026-11-25 realtime.json 真实发生）。
+    这条断言是最后一道闸：有明文就非 0 退出，推送步骤直接红。
+    """
+    files = set(manifest_files())
+    out = subprocess.run(["git", "diff", "--cached", "--name-only", "--diff-filter=AM"],
+                         cwd=BASE, capture_output=True, text=True)
+    staged = [l.strip() for l in out.stdout.splitlines() if l.strip()]
+    bad = [p for p in staged if p in files]
+    if bad:
+        print("✗ 暂存区存在受保护明文：" + ", ".join(bad[:5]) + (f" 等 {len(bad)} 个" if len(bad) > 5 else ""))
+        print("  排查：sync-root 后的明文删除没被 git add -u 记录（pathspec 失败被吞）")
+        return 1
+    print(f"✓ 暂存区无受保护明文（清单 {len(files)} 条 / 暂存 {len(staged)} 个文件）")
     return 0
 
 
@@ -550,6 +572,8 @@ def main() -> None:
     g.add_argument("--sync-root", dest="sync_root", action="store_true")
     g.add_argument("--verify-key", dest="verify_key", action="store_true",
                    help="校验当前密钥能否解密仓库现有密文（不写文件）")
+    g.add_argument("--assert-staged-clean", dest="assert_staged_clean", action="store_true",
+                   help="断言 git 暂存区无受保护明文（CI 推送前 fail-closed）")
     g.add_argument("--stage-plain", dest="stage_plain", action="store_true")
     g.add_argument("--unstage-plain", dest="unstage_plain", action="store_true")
     g.add_argument("--rotate-key", dest="rotate_key", action="store_true",
@@ -573,6 +597,8 @@ def main() -> None:
         sys.exit(cmd_sync_root())
     if a.verify_key:
         sys.exit(cmd_verify_key())
+    if a.assert_staged_clean:
+        sys.exit(cmd_assert_staged_clean())
     if a.stage_plain:
         sys.exit(cmd_stage_plain())
     if a.unstage_plain:

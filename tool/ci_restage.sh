@@ -32,7 +32,19 @@ echo "[ci_restage] 同步密文到站点根目录"
 
 echo "[ci_restage] 暂存明文删除（deploy + 根目录）"
 git add -u -- deploy data output auth 2>/dev/null || true
-git add -u -- signals.json lh_calendar.json realtime.json index.html 2>/dev/null || true
+# 🔴 2026-11-25（第二个根因）：原来写成
+#     `git add -u -- signals.json lh_calendar.json realtime.json index.html 2>/dev/null || true`
+#    只要**其中任意一个 path 不在索引里**，整条命令就 `fatal: pathspec ... did not match`（exit 128），
+#    而 `|| true` 把失败吞掉 → sync-root 已删除的根目录明文**没有被记录成删除**，
+#    于是明文随提交上线（realtime-monitor 11/25 09:45 就真的把 realtime.json 推成了明文）。
+#    改为逐条处理：文件在 → 加入；不在 → 从索引剔除（对「刚暂存又刚被删」同样有效）。
+for f in signals.json lh_calendar.json realtime.json index.html; do
+  if [ -e "$f" ]; then
+    git add -f -- "$f" 2>/dev/null || true
+  else
+    git rm -r --cached -q --ignore-unmatch -- "$f" 2>/dev/null || true
+  fi
+done
 
 echo "[ci_restage] 暂存全部密文"
 # 根目录与 deploy 下的 .enc 均被 .gitignore 覆盖，必须逐个 -f 点名
@@ -45,6 +57,11 @@ for f in deploy/auth/admin.json deploy/auth/vip.json deploy/auth/accounts.enc de
          tool/ddb_auth.py tool/protect_assets.py tool/ci_restage.sh .gitignore; do
   [ -e "$f" ] && git add -f "$f"
 done
+
+# 🔴 fail-closed：暂存区里一旦出现受保护清单中的明文，立刻失败。
+#    上面那条 pathspec 坑的后果就是「明细不报错、明文照进仓库」，只能靠事后断言兜住。
+echo "[ci_restage] 断言暂存区无受保护明文"
+"$PY" tool/protect_assets.py --assert-staged-clean
 
 echo "[ci_restage] 当前暂存概览"
 git diff --cached --name-only | wc -l | awk '{print "  暂存文件数: " $1}'
