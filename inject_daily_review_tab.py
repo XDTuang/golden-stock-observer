@@ -91,32 +91,77 @@ function renderDailyReview() {
   if (window._drInit) return; window._drInit = true;
   const mkt = document.getElementById('drMarket');
   const ana = document.getElementById('drAnalysis');
-  const loadAna = (d) => {
+  /* 🔴 2026-11-25 修复（用户复报「table 依旧加载分析区失败」）——旧实现有三个结构性缺陷：
+     ① 「取 HTML」与 14 个渲染步骤共用同一条 promise 链的同一个 catch ⇒ 任一步骤抛错
+        （哪怕只是某张表算不出）都会把**整块**分析区替换成「加载失败」，看起来像数据全丢；
+     ② 失败后 window._drInit 仍为 true ⇒ 再点 tab 也不重试，只能刷新整页 —— 这是「依旧失败」的直接原因；
+     ③ 未登录/会话过期时 fetch 抛 LOCKED，与真实故障同一句话，无法判断到底是密码问题还是数据问题。
+     治本 = 分步 try/catch（单步失败只记录、不清空）+ 失败可重试 + LOCKED 单独文案 + 构建号自证。 */
+  const DR_BUILD = '2026-11-25r2';
+  const anaStep = (name, fn, fails) => {
+    try { if (typeof fn === 'function') fn(); }
+    catch (e) { fails.push(name + '→' + ((e && e.message) || e)); }
+  };
+  const anaRetryBtn = () => '<b style="cursor:pointer;color:var(--blue)" onclick="window._drInit=false;renderDailyReview()">重试</b>';
+  const loadAna = (d, retry) => {
     if (!ana) return;
+    retry = retry || 0;
     const q = (d && d.quotes) || {};
     fetch('./data/daily_review/analysis.html', { cache: 'no-store' }).then(r => {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
+      if (!r.ok) {
+        const u = (r.url || '').replace(location.origin, '');
+        throw new Error('HTTP ' + r.status + (u ? ' · ' + u : ''));
+      }
       return r.text();
     }).then(t => {
+      if (!t || t.length < 200) throw new Error('内容为空或过短（' + (t ? t.length : 0) + ' 字符）');
       // 保留 analysis.html 的"3·隔夜美股复盘"模块（含 agent 推演结论），
       // 仅用 market.json.us_kline 把双日表数据+说明日期刷新到最新（drRefreshUsDualDayTables）
       ana.innerHTML = t;
-      drScopeInjectedStyles(ana);
-      drFillTables(q);
-      drFixHeader(d);
-      drAIndexSummary(d);
-      drAsiaTable(d);
-      if (d && d.us_kline) drRefreshUsDualDayTables(d);
-      if (d && d.comm) drRefreshCommRates(d);
-      drDeriveSections(d);
-      drLoadTop10();
-      drLoadDiamond();
-      drLoadNewsPool();
-      drLoadWindow();
-      drLoadSelfCheck();
-      drLoadObs();
+      const fails = [];
+      anaStep('样式作用域', () => drScopeInjectedStyles(ana), fails);
+      anaStep('行情表', () => drFillTables(q), fails);
+      anaStep('头部日期', () => drFixHeader(d), fails);
+      anaStep('1·A股摘要', () => drAIndexSummary(d), fails);
+      anaStep('2·日韩表', () => drAsiaTable(d), fails);
+      if (d && d.us_kline) anaStep('3·美股双日', () => drRefreshUsDualDayTables(d), fails);
+      if (d && d.comm) anaStep('3·商品汇率', () => drRefreshCommRates(d), fails);
+      anaStep('0/7·推导卡', () => drDeriveSections(d), fails);
+      anaStep('前一日TOP10', () => drLoadTop10(), fails);
+      anaStep('当日金钻', () => drLoadDiamond(), fails);
+      anaStep('6·新闻池', () => drLoadNewsPool(), fails);
+      anaStep('信息窗口', () => drLoadWindow(), fails);
+      anaStep('自检', () => drLoadSelfCheck(), fails);
+      anaStep('观测池', () => drLoadObs(), fails);
+      window._drAnaFails = fails;
+      if (fails.length) {
+        const bar = document.createElement('div');
+        bar.className = 'dr-note';
+        bar.style.cssText = 'background:var(--orange-bg,#fff4e5);border-left:3px solid var(--orange,#f59e0b);padding:8px 12px;border-radius:6px;margin:0 0 8px';
+        bar.innerHTML = '<b>部分模块未渲染（其余内容正常）：</b>' + fails.join('；') +
+          ' <span style="color:var(--text-muted)">[' + DR_BUILD + ']</span> ' + anaRetryBtn();
+        ana.insertBefore(bar, ana.firstChild);
+      }
+      console.info('[每日复盘] 分析区渲染完成 · 失败步骤 ' + fails.length + ' · ' + DR_BUILD, fails);
     }).catch(err => {
-      ana.innerHTML = `<p class="dr-note">分析区加载失败：${err}</p>`;
+      const msg = (err && err.message) || String(err);
+      const unlocked = !!(window.DDB && window.DDB.keys && window.DDB.keys());
+      // 一次性锁必须复位，否则用户再点 tab 也不会重试（旧行为的根因）
+      window._drInit = false;
+      if (!unlocked || /LOCKED/.test(msg)) {
+        ana.innerHTML = '<p class="dr-note">🔒 分析区需登录后加载（当前会话未解锁数据密钥）。<br>' +
+          '请在上方登录框输入密码；若已登录仍见此提示，点 ' + anaRetryBtn() + ' 即可重新解密。</p>';
+        return;
+      }
+      if (retry < 2) {   // CDN 抖动 / 首次解锁竞态：退避各重试一次，勿直接报死
+        ana.innerHTML = '<p class="dr-note">分析区加载中…（第 ' + (retry + 1) + ' 次重试）</p>';
+        setTimeout(() => { window._drInit = true; loadAna(d, retry + 1); }, 1200 * (retry + 1));
+        return;
+      }
+      ana.innerHTML = '<p class="dr-note">分析区加载失败：' + msg + '<br>' +
+        '<span style="color:var(--text-muted)">构建 ' + DR_BUILD + ' ｜ ' + anaRetryBtn() +
+        '；若反复失败请强刷（Cmd/Ctrl+Shift+R）后再看。</span></p>';
+      console.error('[每日复盘] 分析区加载失败', err);
     });
   };
   if (mkt) {
@@ -132,7 +177,12 @@ function renderDailyReview() {
       // 保留 analysis.html 的"3"模块，仅刷新数据
       loadAna(d);
     }).catch(err => {
-      mkt.innerHTML = `<p class="dr-note">行情加载失败：${err}</p>`;
+      const em = (err && err.message) || String(err);
+      const unlocked = !!(window.DDB && window.DDB.keys && window.DDB.keys());
+      window._drInit = false;   // 复位一次性锁，允许登录后/点 tab 再试
+      mkt.innerHTML = (!unlocked || /LOCKED/.test(em))
+        ? '<p class="dr-note">🔒 行情区需登录后加载（当前会话未解锁数据密钥）。若已登录仍见此提示，点 ' + anaRetryBtn() + '。</p>'
+        : '<p class="dr-note">行情加载失败：' + em + '（构建 ' + DR_BUILD + ' ｜ ' + anaRetryBtn() + '）</p>';
       loadAna();
     });
   } else {

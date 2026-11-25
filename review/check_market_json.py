@@ -36,6 +36,17 @@ for k, v in uk.items():
         errs.append('us_kline.%s.latest.close 为 null（V3 双日表会显示「—」）' % k)
     if pr.get('date') is None or lt.get('date') is None:
         warns.append('us_kline.%s 缺日期' % k)
+    # 🔴 2026-11-25 新增：**类型守卫**（字符串 vs 数值）
+    #   事故：11/25 market.json 里 us_dji.prev.chg_pct = "3.01"（字符串，腾讯口径混入），
+    #   每日复盘 drDeriveSections 里 `usChg.toFixed(2)` 抛 TypeError：usChg.toFixed is not a function
+    #   ⇒ 旧实现整条渲染链共用一个 catch ⇒ **整块分析区变「分析区加载失败」**（用户当日复报）。
+    #   值非 null 但类型错 = 既有判据全放行、页面必崩的盲区，故单独列出。
+    for _tag, _seg in (('prev', pr), ('latest', lt)):
+        for _fld in ('close', 'chg_pct'):
+            _v = _seg.get(_fld)
+            if _v is not None and not isinstance(_v, (int, float)):
+                errs.append('us_kline.%s.%s.%s 类型 = %s（须为数值；字符串会让前端 .toFixed/.toLocaleString 抛 TypeError）'
+                            % (k, _tag, _fld, type(_v).__name__))
 
 q = d.get('quotes') or {}
 if not q: errs.append('quotes 为空')

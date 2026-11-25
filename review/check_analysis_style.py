@@ -132,7 +132,11 @@ for f in ['index.html', 'index_template.html', 'deploy/index.html']:
     except FileNotFoundError:
         note7.append(f'⚠️ 缺少 {f}'); ok7 = False; continue
     has_fn = 'function drScopeInjectedStyles' in t
-    has_call = 'drScopeInjectedStyles(ana);' in t
+    # 🔴 2026-11-25：判据由「字面量 'drScopeInjectedStyles(ana);'」改为正则。
+    #    原因：分析区渲染改成「分步 try/catch」（anaStep('样式作用域', () => drScopeInjectedStyles(ana), fails)）
+    #    后，调用被包进箭头函数、末尾是 , 而非 ;  ⇒ 旧判据**假红**（调用其实在位）。
+    #    守卫要守「有没有调用」，不该绑定分号/包裹形式；配合 `function drScopeInjectedStyles` 已足够定位。
+    has_call = re.search(r'drScopeInjectedStyles\s*\(\s*ana\s*\)', t) is not None
     if not (has_fn and has_call):
         note7.append(f'⚠️ {f}: 定义={has_fn} 调用={has_call}（应均 True；缺失会导致 analysis.html 注入样式污染整站宽度/配色）')
         ok7 = False

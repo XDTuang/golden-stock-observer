@@ -215,15 +215,22 @@ def main():
         sys.exit(1)
 
     # 环境：上证当日涨跌（market.json）+ 隔夜美股（us_kline 道指）
+    # 🔴 2026-11-25 两处修复：
+    #   ① market.json 已密文化 —— 直接 read_text 明文恒 FileNotFoundError，被 except 吞掉后
+    #      sh_chg / us_chg **永远为 None**（不报错、不空白，只是环境因子失效）；
+    #   ② chg_pct 可能为字符串 "3.01"（腾讯口径混入）—— abs('3.01') 抛 TypeError。
+    #   ⇒ 统一走 secure_io 读 + float() 归一。
     sh_chg = us_chg = None
     try:
-        mkt = json.loads((BASE / "data" / "daily_review" / "market.json").read_text(encoding="utf-8"))
+        sys.path.insert(0, str(BASE / "tool"))
+        from secure_io import load_json_any
+        mkt = load_json_any("data/daily_review/market.json", {})
         q = mkt.get("quotes", {}).get("a_sh", {})
-        if q and "error" not in q:
+        if q and "error" not in q and q.get("chg_pct") is not None:
             sh_chg = float(q["chg_pct"])
         uk = mkt.get("us_kline", {}).get("us_dji", {})
-        if uk.get("prev"):
-            us_chg = uk["prev"]["chg_pct"]
+        if uk.get("prev") and uk["prev"].get("chg_pct") is not None:
+            us_chg = float(uk["prev"]["chg_pct"])
     except Exception:
         pass
 
