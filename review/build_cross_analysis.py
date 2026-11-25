@@ -86,6 +86,22 @@ VERDICT_RAW = {"共振": "真共振", "背离": "背离", "暗线": "暗线", "�
 
 
 def load(p):
+    """读 JSON：明文 → 同名 .enc 解密 → 直读 → None。
+
+    🔴 2026-11-25 事故：核心产物已密文化，旧实现只会 open() 明文 ⇒ CI 里
+    window_latest / sector_flow / market / daily_news_window **全部读不到**，
+    于是算出空壳（data_date=""、items=[]）并**覆盖**上一份完整产物。
+    实测 11/25 13:06 的 run 把四象限 0/3/16/12 覆盖成 0/0/0/0（页面不报错，只是全空）。
+    """
+    rel = os.path.relpath(p, BASE) if os.path.isabs(p) else p
+    try:
+        sys.path.insert(0, os.path.join(BASE, "tool"))
+        from secure_io import load_json_any
+        d = load_json_any(rel, None)
+        if d is not None:
+            return d
+    except Exception:
+        pass
     if not os.path.exists(p):
         return None
     try:
@@ -250,6 +266,15 @@ def main():
         "items": rows,
     }
 
+    # 🔴 空结果拒绝覆盖（2026-11-25）：数据源不可用/盘中抢跑时算不出四象限。
+    #    旧实现照写空壳 ⇒ 把上一份完整产物覆盖成 0/0/0/0（不报错、页面只是全空）。
+    #    宁可保留旧产物 + 大声失败（exit 1），也不要用空壳冒充新数据。
+    if not payload.get("data_date") or not rows:
+        print("✗ 拒绝写入 cross_analysis：data_date=%r，items=%d（数据源不可用或盘中抢跑）"
+              % (payload.get("data_date"), len(rows)))
+        print(f"  已保留现有 {OUT_PATH} 不变（不生成空壳）")
+        return 1
+
     os.makedirs(OUT_DIR, exist_ok=True)
     with open(OUT_PATH, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
@@ -261,4 +286,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main() or 0)
