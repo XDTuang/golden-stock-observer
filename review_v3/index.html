@@ -416,6 +416,90 @@ DDB.patchFetch();
 })();
 /* ===== DDB-ADMIN-V1 END ===== */
 </script>
+<script>
+/* ===== DDB-GATE-V1 START · V3 独立版登录门（缺此块 = 全板块恒空白）
+   实测 2026-11-25 线上：hdDate = "market.json 加载失败"、DDB.keys() 为空、页面无输入框。
+   根因：解密层有了，但主站登录浮层不在注入范围内，且密钥只存 sessionStorage（按标签页隔离）。
+   做法：DOMContentLoaded → DDB.restore()；无钥则浮层 → unlock 成功 → location.reload()。
+   ========================================================================== */
+(function(){
+  var LV = 'admin', busy = false;
+  function msg(e){
+    var m = (e && e.message) || String(e);
+    if (/BAD_PASSWORD/.test(m)) return '密码错误';
+    if (/EXPIRED/.test(m)) return '该账号已过期';
+    if (/CRED_MISSING/.test(m)) return '凭据文件缺失（auth/*.json 未部署或路径不对）';
+    if (/NO_WEBCRYPTO/.test(m)) return '浏览器不支持 WebCrypto（需 https 环境）';
+    return '登录失败：' + m;
+  }
+  function paint(){
+    var bs = document.querySelectorAll('#v3Gate [data-lv]');
+    for (var i = 0; i < bs.length; i++){
+      var on = bs[i].getAttribute('data-lv') === LV;
+      bs[i].style.cssText = 'flex:1;padding:7px 0;border-radius:8px;border:1px solid ' +
+        (on ? '#4c8bf5' : '#d7dce6') + ';background:' + (on ? '#eef4ff' : '#fff') +
+        ';color:' + (on ? '#1b64d8' : '#6b7280') + ';font-size:13px;font-weight:600;cursor:pointer';
+    }
+  }
+  function go(){
+    if (busy) return;
+    var pw = (document.getElementById('v3Pw') || {}).value || '';
+    var em = document.getElementById('v3Em');
+    if (!pw){ if (em) em.textContent = '请输入密码'; return; }
+    busy = true;
+    if (em){ em.textContent = '正在解密…'; em.style.color = '#6b7280'; }
+    DDB.unlock(LV, pw).then(function(){
+      location.reload();
+    }).catch(function(e){
+      busy = false;
+      if (em){ em.textContent = msg(e); em.style.color = '#e74c3c'; }
+    });
+  }
+  function show(){
+    if (document.getElementById('v3Gate')) return;
+    var w = document.createElement('div');
+    w.id = 'v3Gate';
+    w.style.cssText = 'position:fixed;inset:0;z-index:2147483000;background:rgba(6,10,20,.82);' +
+      'display:flex;align-items:center;justify-content:center;padding:16px;' +
+      'font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif';
+    w.innerHTML =
+      '<div style="width:100%;max-width:330px;background:#fff;border-radius:14px;padding:22px 20px 18px;' +
+        'box-shadow:0 20px 60px rgba(0,0,0,.45);color:#1a1f2e">' +
+        '<div style="font-size:16px;font-weight:700;margin-bottom:6px">每日复盘 V3 · 独立版</div>' +
+        '<div style="font-size:12px;color:#6b7280;line-height:1.65;margin-bottom:14px">' +
+          '数据已加密，登录后在本机解密。与主站同一套密码。</div>' +
+        '<div style="display:flex;gap:8px;margin-bottom:12px">' +
+          '<button data-lv="admin">管理员</button><button data-lv="vip">VIP</button></div>' +
+        '<input id="v3Pw" type="password" placeholder="请输入密码" autocomplete="current-password" ' +
+          'style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d7dce6;' +
+          'border-radius:8px;font-size:14px;outline:none">' +
+        '<div id="v3Em" style="min-height:18px;font-size:12px;color:#e74c3c;margin:6px 0 4px"></div>' +
+        '<button id="v3Go" style="width:100%;padding:11px 0;border:0;border-radius:9px;background:#4c8bf5;' +
+          'color:#fff;font-size:14px;font-weight:600;cursor:pointer">登 录</button>' +
+        '<div style="font-size:11px;color:#9ca3af;margin-top:10px;line-height:1.6">' +
+          '若已登录但仍空白，刷新本页即可。</div>' +
+      '</div>';
+    document.body.appendChild(w);
+    var bs = w.querySelectorAll('[data-lv]');
+    for (var i = 0; i < bs.length; i++){
+      bs[i].onclick = function(){ LV = this.getAttribute('data-lv'); paint(); };
+    }
+    paint();
+    w.querySelector('#v3Go').onclick = go;
+    w.querySelector('#v3Pw').addEventListener('keydown', function(ev){
+      if (ev.key === 'Enter') go();
+    });
+    setTimeout(function(){ var p = document.getElementById('v3Pw'); if (p) p.focus(); }, 60);
+  }
+  function init(){
+    if (!window.DDB || !DDB.restore){ show(); return; }
+    DDB.restore().then(function(k){ if (!k) show(); }).catch(function(){ show(); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+/* ===== DDB-GATE-V1 END ===== */
+</script>
 </head>
 <body data-page-node-id="diswtc00oVu1rWGdYaUaAo">
 <div class="wrap" data-page-node-id="CBTEzufLEkFXuZiDtgWTR4">
