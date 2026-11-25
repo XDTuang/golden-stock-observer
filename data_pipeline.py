@@ -263,10 +263,23 @@ def update_top10_history(results, max_days=20):
     top10_path = os.path.join(os.path.dirname(__file__), "output", "top10_history.json")
     
     # 加载已有历史
-    if os.path.exists(top10_path):
-        with open(top10_path, "r") as f:
-            history = json.load(f)
-    else:
+    # 🔴 2026-11-25：明文被加密下线后原「只读明文」让 20 天 TOP10 历史归零成 1 天。
+    history = None
+    try:
+        _tool = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tool")
+        if _tool not in sys.path:
+            sys.path.insert(0, _tool)
+        from secure_io import load_json_any  # noqa: PLC0415
+        history = load_json_any(top10_path, None)
+    except Exception:  # noqa: BLE001
+        history = None
+    if history is None:
+        if os.path.exists(top10_path):
+            with open(top10_path, "r") as f:
+                history = json.load(f)
+        else:
+            history = {}
+    if not isinstance(history, dict):
         history = {}
     
     # 获取当前日期

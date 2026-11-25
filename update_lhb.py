@@ -25,10 +25,14 @@ def main():
         date_str = datetime.now().strftime('%Y-%m-%d')
 
     cal_path = w.OUTPUT_FILE
-    cal = {}
-    if os.path.exists(cal_path):
-        with open(cal_path, encoding='utf-8') as f:
-            cal = json.load(f)
+    # 🔴 2026-11-25：明文被加密下线后，原「只读明文」让 30 天日历归零成 1 天。
+    _tool = os.path.join(BASE, "tool")
+    if _tool not in sys.path:
+        sys.path.insert(0, _tool)
+    from secure_io import load_json_any  # noqa: PLC0415
+    cal = load_json_any(cal_path, {}) or {}
+    if not isinstance(cal, dict):
+        cal = {}
 
     print(f"现有日历: {len(cal)} 天，最新 {max(cal.keys()) if cal else '无'}")
     day = w.generate_calendar(date_str)

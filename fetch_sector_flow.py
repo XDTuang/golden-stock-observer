@@ -408,7 +408,19 @@ def probe_source(verbose=True):
 
 # ── 存取 ────────────────────────────────────────────────────────────────
 def load_history():
-    d = _load_json(OUTPUT_FILE, None)
+    # 🔴 2026-11-25：加密后明文被 purge → 只读明文会让 20 天资金流历史归零。
+    #    优先 secure_io（明文 → .enc 解密 → deploy），失败再退回原逻辑。
+    d = None
+    try:
+        _tool = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tool")
+        if _tool not in sys.path:
+            sys.path.insert(0, _tool)
+        from secure_io import load_json_any  # noqa: PLC0415
+        d = load_json_any(OUTPUT_FILE, None)
+    except Exception:  # noqa: BLE001
+        d = None
+    if d is None:
+        d = _load_json(OUTPUT_FILE, None)
     return d if isinstance(d, dict) and "history" in d else {"history": {}, "last_updated": None}
 
 

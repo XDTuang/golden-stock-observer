@@ -158,10 +158,26 @@ def recompute_trends(history: dict):
 
 
 def load_history():
-    if os.path.exists(OUTPUT_FILE):
+    """读历史（明文 → .enc 解密 → deploy）。
+
+    🔴 2026-11-25：加密上线后明文被 purge，原「只读明文」让 215 天历史归零、
+       每天重建为仅当天 1 天。改用 secure_io 读密文。
+    """
+    d = None
+    try:
+        _tool = os.path.join(SCRIPT_DIR, "tool")
+        if _tool not in sys.path:
+            sys.path.insert(0, _tool)
+        from secure_io import load_json_any  # noqa: PLC0415
+        d = load_json_any(OUTPUT_FILE, None)
+    except Exception:  # noqa: BLE001
+        d = None
+    if d is None and os.path.exists(OUTPUT_FILE):
         with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {"history": {}, "last_updated": None}
+            d = json.load(f)
+    if not isinstance(d, dict) or "history" not in d:
+        return {"history": {}, "last_updated": None}
+    return d
 
 
 def save_history(data: dict):
