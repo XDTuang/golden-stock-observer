@@ -79,8 +79,12 @@ jobs:
           #    LATEST 恒为空 → 闸门失效 → 四条 cron 各跑一遍全量（配额×4 + 推送撞车）。
           #    改为「明文优先，否则解 signals.json.enc」。任何一步失败都退化为「需要更新」（失败开放），
           #    宁可多跑一次，不可漏更新。
-          LATEST=$(python3 - <<'PY' || true
-          import json, subprocess
+          # 🔴 2026-11-25 补充「收盘定稿」判据：只认 15:00 之后生成的数据为已完成。
+          #    否则盘中手动 --force 跑一次就会把 TODAY 写进 freshness，随后 17:45 的 cron
+          #    因闸门命中而跳过 ⇒ 当天收盘数据永远缺失（页面有数，但那是盘中快照，
+          #    与「生成日 ≠ 数据日」同型）。判定口径以 generated_at 的小时数为准。
+          INFO=$(python3 - <<'PY' || true
+          import json, subprocess, datetime
           d = {}
           try:
               d = json.load(open('signals.json', encoding='utf-8'))
@@ -93,16 +97,33 @@ jobs:
                   d = json.loads(out.stdout)
               except Exception:
                   d = {}
-          print(d.get('freshness', {}).get('latest_data_date', '') or '')
+          dd = str(d.get('freshness', {}).get('latest_data_date', '') or '')
+          g = str(d.get('generated_at', '') or '')
+          final = 'no'
+          if len(g) >= 16:
+              try:
+                  ts = datetime.datetime.strptime(g[:19], '%Y-%m-%d %H:%M:%S')
+                  final = 'yes' if ts.hour >= 15 else 'no'
+              except Exception:
+                  final = 'no'
+          print(f"{dd}|{g[:19]}|{final}")
           PY
           )
-          echo "今日=$TODAY  仓库已落库最新数据日期=$LATEST"
-          if [ "$LATEST" = "$TODAY" ] && [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+          LATEST=${INFO%%|*}
+          REST=${INFO#*|}
+          GEN=${REST%%|*}
+          FINAL=${REST#*|}
+          echo "今日=$TODAY  落库数据日=$LATEST  生成于=$GEN  收盘定稿=$FINAL"
+          if [ "$LATEST" = "$TODAY" ] && [ "$FINAL" = "yes" ] && [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
-            echo "ℹ️ 今日数据已更新 → 跳过本次运行（节省 Actions 配额）"
+            echo "ℹ️ 今日收盘数据已落库 → 跳过本次运行（节省 Actions 配额）"
           else
             echo "skip=false" >> "$GITHUB_OUTPUT"
-            echo "▶️ 需要更新（或为手动强制触发）"
+            if [ "$LATEST" = "$TODAY" ] && [ "$FINAL" != "yes" ]; then
+              echo "▶️ 今日仅有盘中快照（生成于 ${GEN}，早于 15:00）→ 仍需收盘后重跑"
+            else
+              echo "▶️ 需要更新（或为手动强制触发）"
+            fi
           fi
 
       - name: Verify API Reachability
