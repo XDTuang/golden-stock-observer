@@ -69,6 +69,13 @@ PROTECTED = [
     "output/top10_history.json",
     "output/valuation_band.json",
     "output/vix_panel.json",
+    # 🔴 2026-11-25：V3 独立版专用产物。V3 注入鉴权块后，白名单会把这些
+    #    `/output/*.json` 改写为 `.json.enc` —— 若不加进清单，登录后反而 404。
+    "output/v3_reasoning_latest.json",
+    "output/obs_panel.json",
+    "output/obs_scenarios.json",
+    "output/daily_review_news.json",
+    "output/backtest_v3.json",
     "output/window_latest.json",
     # output/ 指数K线（_idxKlineFiles 映射）
     "output/sh_index_kline.json",

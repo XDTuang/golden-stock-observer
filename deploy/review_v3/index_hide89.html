@@ -119,6 +119,303 @@ table.obs-stbl td.ob-p{text-align:center;white-space:nowrap;font-weight:700;font
 @media (max-width:640px){.obs-grid{grid-template-columns:1fr}}
 /* /OBS-FOLD-CSS v3-1 */
 </style>
+<script>
+/* ===== DDB-AUTH-V1 START · 真鉴权（PBKDF2-SHA256 + AES-GCM 密钥包装 + 数据解密）=====
+   要点：
+   1. 源码不含任何密码；密码仅用于本地派生 KEK，验证 = 解开 verifier。
+   2. 数据以密文（*.enc）上架；登录后用解包出的 dataKey 在前端解密。
+   3. 覆写 window.fetch 统一拦截，无需改动各业务 fetch 调用点。
+   4. 会话存 sessionStorage（关闭标签即失效），不写 localStorage 明文密钥。
+   ================================================================================ */
+var DDB = (function(){
+  var SESS = 'ddb_session_v1';
+  var _keys = null, _authCache = {}, _restoring = null;
+  var _nativeFetch = window.fetch.bind(window);
+  var _enc = new TextEncoder(), _dec = new TextDecoder();
+
+  function b64d(s){ var b = atob(s), u = new Uint8Array(b.length); for(var i=0;i<b.length;i++) u[i]=b.charCodeAt(i); return u; }
+  function b64e(u){ var s=''; for(var i=0;i<u.length;i++) s+=String.fromCharCode(u[i]); return btoa(s); }
+  function S(){ return window.crypto && window.crypto.subtle; }
+
+  function pbkdf2(pw, salt, iter){
+    return S().importKey('raw', _enc.encode(pw), 'PBKDF2', false, ['deriveKey']).then(function(km){
+      return S().deriveKey({name:'PBKDF2', salt:salt, iterations:iter, hash:'SHA-256'},
+                           km, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+    });
+  }
+  function gcmDec(key, blob){
+    return S().decrypt({name:'AES-GCM', iv:blob.slice(0,12)}, key, blob.slice(12))
+             .then(function(buf){ return new Uint8Array(buf); });
+  }
+  function gcmEnc(key, data){
+    var iv = crypto.getRandomValues(new Uint8Array(12));
+    return S().encrypt({name:'AES-GCM', iv:iv}, key, data).then(function(ct){
+      var out = new Uint8Array(12 + ct.byteLength);
+      out.set(iv, 0); out.set(new Uint8Array(ct), 12); return out;
+    });
+  }
+  function importAes(raw){ return S().importKey('raw', raw, {name:'AES-GCM'}, false, ['encrypt','decrypt']); }
+
+  function loadCred(level){
+    if(_authCache[level]) return Promise.resolve(_authCache[level]);
+    return _nativeFetch('auth/' + level + '.json?_=' + Date.now(), {cache:'no-store'})
+      .then(function(r){ if(!r.ok) throw new Error('CRED_MISSING'); return r.json(); })
+      .then(function(j){ _authCache[level] = j; return j; });
+  }
+
+  function unlock(level, password){
+    if(!S()) return Promise.reject(new Error('NO_WEBCRYPTO'));
+    return loadCred(level).then(function(cred){
+      return pbkdf2(password, b64d(cred.salt), cred.iter).then(function(kek){
+        return gcmDec(kek, b64d(cred.verifier)).then(function(vp){
+          if(_dec.decode(vp) !== 'ddb-auth-v1|' + level) throw new Error('BAD_PASSWORD');
+          if(cred.exp && Date.now() > Date.parse(cred.exp)) throw new Error('EXPIRED');
+          return gcmDec(kek, b64d(cred.wrap_data)).then(function(dkRaw){
+            var pAk = cred.wrap_admin
+              ? gcmDec(kek, b64d(cred.wrap_admin)).catch(function(){ return null; })
+              : Promise.resolve(null);
+            return pAk.then(function(akRaw){
+              return Promise.all([importAes(dkRaw), akRaw ? importAes(akRaw) : null])
+                .then(function(ks){
+                  _keys = {level:level, exp:cred.exp || null, data:ks[0], admin:ks[1],
+                           _dk:dkRaw, _ak:akRaw};
+                  persist();
+                  return _keys;
+                });
+            });
+          });
+        });
+      });
+    });
+  }
+
+  function persist(){
+    if(!_keys) return;
+    try{
+      sessionStorage.setItem(SESS, JSON.stringify({
+        level:_keys.level, exp:_keys.exp, dk:b64e(_keys._dk),
+        ak:_keys._ak ? b64e(_keys._ak) : null, at:Date.now()
+      }));
+    }catch(e){}
+  }
+
+  function restore(){
+    if(_keys) return Promise.resolve(_keys);
+    if(_restoring) return _restoring;
+    var raw = null;
+    try{ raw = JSON.parse(sessionStorage.getItem(SESS) || 'null'); }catch(e){}
+    if(!raw || !raw.dk) return Promise.resolve(null);
+    if(raw.exp && Date.now() > Date.parse(raw.exp)){ sessionStorage.removeItem(SESS); return Promise.resolve(null); }
+    _restoring = Promise.all([importAes(b64d(raw.dk)), raw.ak ? importAes(b64d(raw.ak)) : null])
+      .then(function(ks){
+        _keys = {level:raw.level, exp:raw.exp, data:ks[0], admin:ks[1],
+                 _dk:b64d(raw.dk), _ak: raw.ak ? b64d(raw.ak) : null};
+        _restoring = null; return _keys;
+      })
+      .catch(function(){ _restoring = null; try{ sessionStorage.removeItem(SESS); }catch(e){} return null; });
+    return _restoring;
+  }
+
+  function lock(){ _keys = null; try{ sessionStorage.removeItem(SESS); }catch(e){} }
+
+  /* 受保护路径：仅拦同源相对请求，其余原样放行 */
+  function targetOf(url){
+    var u;
+    try{ u = new URL(url, location.href); }catch(e){ return null; }
+    if(u.origin !== location.origin) return null;
+    var p = u.pathname;
+    var hit = /\/output\/[^\/]+\.json$/.test(p)
+           || /\/(signals|lh_calendar|realtime)\.json$/.test(p)
+           || /\/data\/daily_review\/(market\.json|analysis\.html)$/.test(p);
+    return hit ? p + '.enc' : null;
+  }
+  function ctype(p){
+    if(/\.html\.enc$/.test(p)) return 'text/html; charset=utf-8';
+    if(/\.json\.enc$/.test(p)) return 'application/json; charset=utf-8';
+    return 'application/octet-stream';
+  }
+
+  var _patched = false;
+  function patchFetch(){
+    if(_patched) return; _patched = true;
+    window.fetch = function(input, init){
+      var url = (typeof input === 'string') ? input : (input && input.url) || '';
+      var t = targetOf(url);
+      if(!t) return _nativeFetch(input, init);
+      return restore().then(function(k){
+        if(!k) return Promise.reject(new Error('LOCKED'));
+        return _nativeFetch(t + '?_=' + Date.now(), {cache:'no-store', credentials:'same-origin'});
+      }).then(function(r){
+        if(!r || !r.ok) return r;                       /* 404 等交调用方自行兜底 */
+        return r.arrayBuffer().then(function(buf){
+          return gcmDec(_keys.data, new Uint8Array(buf)).then(function(plain){
+            return new Response(plain, {status:200, headers:{'Content-Type': ctype(t)}});
+          });
+        });
+      });
+    };
+  }
+
+  return {
+    unlock: unlock, restore: restore, lock: lock, patchFetch: patchFetch,
+    targetOf: targetOf, gcmEnc: gcmEnc, gcmDec: gcmDec, importAes: importAes,
+    pbkdf2: pbkdf2, loadCred: loadCred, b64d: b64d, b64e: b64e,
+    keys: function(){ return _keys; },
+    hasAdmin: function(){ return !!(_keys && _keys.admin); }
+  };
+})();
+DDB.patchFetch();
+/* ===== DDB-AUTH-V1 END ===== */
+</script>
+<script>
+/* ===== DDB-ADMIN-V1 START · 管理员账号管理（改 VIP 密码 / 到期日 / 强制下线）=====
+   前提：管理员登录后 DDB.keys()._dk 持有 DK_DATA 原始字节，_keys.admin 为 DK_ADMIN。
+   凭据生成全在本地完成，仅通过 GitHub contents API 提交 deploy/auth/*.json。
+   ============================================================================= */
+(function(){
+  function pwOf(sel){ var el = document.querySelector(sel); return el ? el.value : ''; }
+  function q(id){ return document.getElementById(id); }
+
+  function ghHeaders(tk){
+    return {'Authorization':'Bearer '+tk, 'Accept':'application/vnd.github+json',
+            'Content-Type':'application/json'};
+  }
+  // 带 sha 的更新（已存在文件必须提供 sha）
+  async function ghPut(path, text, msg){
+    var tk = (typeof drFeedToken === 'function') ? drFeedToken() : '';
+    if(!tk) throw new Error('未配置 GitHub Token（先在投喂面板 ⚙️ 里保存）');
+    var api = 'https://api.github.com/repos/XDTuang/golden-stock-observer/contents/' +
+              path.split('/').map(encodeURIComponent).join('/');
+    var sha = null;
+    var g = await fetch(api + '?ref=main', {headers: ghHeaders(tk), cache:'no-store'});
+    if(g.ok){ var j = await g.json(); sha = j.sha; }
+    var body = {message: msg, content: btoa(unescape(encodeURIComponent(text))), branch: 'main'};
+    if(sha) body.sha = sha;
+    var r = await fetch(api, {method:'PUT', headers: ghHeaders(tk), body: JSON.stringify(body)});
+    var rj = await r.json().catch(function(){ return {}; });
+    if(!r.ok) throw new Error((rj && rj.message) || ('HTTP ' + r.status));
+    return rj.commit ? rj.commit.sha : '';
+  }
+
+  async function buildVipCred(newPwd, expStr){
+    var ks = DDB.keys();
+    if(!ks || !ks._dk) throw new Error('数据密钥未解锁');
+    // 读取现有凭据（不受保护，直接取）
+    var cur = await (await fetch('auth/vip.json?_=' + Date.now(), {cache:'no-store'})).json();
+    if(!newPwd){ cur.exp = expStr; return cur; }   // 只改到期日：exp 为明文，无需重算密钥
+    var iter = cur.iter || 310000;
+    var salt = crypto.getRandomValues(new Uint8Array(16));
+    var kek = await DDB.pbkdf2(newPwd, salt, iter);
+    var verifier = await DDB.gcmEnc(kek, new TextEncoder().encode('ddb-auth-v1|vip'));
+    var wrapData = await DDB.gcmEnc(kek, ks._dk);
+    return {
+      v: 1, level: 'vip', kdf: 'PBKDF2-SHA256', iter: iter,
+      salt: DDB.b64e(salt),
+      verifier: DDB.b64e(verifier),
+      wrap_data: DDB.b64e(wrapData),
+      exp: expStr
+    };
+  }
+
+  async function buildAccounts(expStr){
+    var ks = DDB.keys();
+    if(!ks || !ks.admin) throw new Error('缺少管理员密钥');
+    var table = {v:1, updated:new Date().toISOString().slice(0,19).replace('T',' '),
+      accounts:[
+        {level:'admin', label:'管理员', exp:null, note:'全量权限 + 账号管理'},
+        {level:'vip', label:'VIP', exp:expStr, note:'受限 tab + 投喂锁定'}
+      ]};
+    var blob = await DDB.gcmEnc(ks.admin, new TextEncoder().encode(JSON.stringify(table)));
+    return {v:1, blob: DDB.b64e(blob)};
+  }
+
+  function log(msg, cls){
+    var el = q('ddbAdmLog'); if(!el) return;
+    el.innerHTML += '<div style="color:' + (cls === 'err' ? '#f87171' : cls === 'ok' ? '#4ade80' : '#9aa7bd') +
+                    '">' + msg + '</div>';
+  }
+
+  async function onSave(){
+    var exp = pwOf('#ddbAdmExp');
+    var p1 = pwOf('#ddbAdmPwd'), p2 = pwOf('#ddbAdmPwd2');
+    if(!exp){ log('请填写到期日', 'err'); return; }
+    if(p1 || p2){
+      if(p1 !== p2){ log('两次输入的密码不一致', 'err'); return; }
+      if(p1.length < 8) log('⚠️ 密码少于 8 位，强度不足（仍可继续）', 'warn');
+    }else{
+      log('· 未填新密码 → 仅更新到期日（密钥保持不变）');
+    }
+    var expFull = exp.length === 10 ? exp + 'T23:59:59+08:00' : exp;
+    var btn = q('ddbAdmSave'); if(btn){ btn.disabled = true; btn.textContent = '生成中…'; }
+    try{
+      log('· 生成本地凭据（PBKDF2 310k）…');
+      var cred = await buildVipCred(p1, expFull);
+      var acc = await buildAccounts(expFull);
+      log('· 提交 deploy/auth/vip.json');
+      await ghPut('deploy/auth/vip.json', JSON.stringify(cred, null, 2) + '\n',
+                  'auth: VIP 凭据更新（密码重置 + 到期 ' + exp + '）');
+      log('· 提交 deploy/auth/accounts.enc');
+      await ghPut('deploy/auth/accounts.enc', JSON.stringify(acc, null, 2) + '\n',
+                  'auth: VIP 到期日 ' + exp + '（accounts.enc 同步）');
+      log('✅ 已提交。GitHub Pages 约 1 分钟后生效；VIP 用户需用新密码重新登录。', 'ok');
+      q('ddbAdmPwd').value = ''; q('ddbAdmPwd2').value = '';
+    }catch(e){
+      log('❌ ' + (e && e.message ? e.message : e), 'err');
+    }finally{
+      if(btn){ btn.disabled = false; btn.textContent = '保存并发布'; }
+    }
+  }
+
+  function openPanel(){
+    if(q('ddbAdmModal')){ q('ddbAdmModal').style.display = 'flex'; return; }
+    var ks = DDB.keys();
+    var m = document.createElement('div');
+    m.id = 'ddbAdmModal';
+    m.style.cssText = 'position:fixed;inset:0;background:rgba(6,10,18,.8);z-index:10001;display:flex;align-items:center;justify-content:center;padding:16px';
+    m.innerHTML =
+      '<div style="width:min(520px,100%);background:var(--bg-card,#111827);border:1px solid var(--border,#2b3a5c);border-radius:14px;padding:18px;color:var(--text,#e8edf7);font-size:13px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
+        '<b style="font-size:15px">⚙️ 账号管理 · 管理员</b>' +
+        '<span id="ddbAdmClose" style="cursor:pointer;color:var(--text-muted,#9aa7bd)">✕</span></div>' +
+      '<div style="color:var(--text-muted,#9aa7bd);margin-bottom:10px">当前：' + (ks ? ks.level : '-') +
+        ' · 数据密钥已解锁 · VIP 到期 ' + (ks && ks.exp ? ks.exp.slice(0,10) : '—') + '</div>' +
+      '<label style="display:block;margin:10px 0 4px">VIP 到期日</label>' +
+      '<input id="ddbAdmExp" type="date" value="2026-12-15" style="width:100%;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px">' +
+      '<label style="display:block;margin:10px 0 4px">VIP 新密码</label>' +
+      '<input id="ddbAdmPwd" type="password" placeholder="设定新的 VIP 密码（≥8 位）" style="width:100%;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px">' +
+      '<input id="ddbAdmPwd2" type="password" placeholder="再次输入" style="width:100%;margin-top:6px;background:#0f1626;border:1px solid #2b3a5c;border-radius:8px;color:#e8edf7;padding:8px 10px">' +
+      '<div id="ddbAdmLog" style="margin-top:10px;max-height:120px;overflow:auto;font-size:12px;line-height:1.7"></div>' +
+      '<div style="display:flex;gap:8px;margin-top:12px">' +
+        '<button id="ddbAdmSave" style="flex:1;padding:8px;border-radius:8px;border:0;background:#6366f1;color:#fff;cursor:pointer">保存并发布</button>' +
+        '<button id="ddbAdmLock" style="padding:8px 12px;border-radius:8px;border:1px solid #2b3a5c;background:#0f1626;color:#e8edf7;cursor:pointer">强制下线（本机）</button>' +
+      '</div></div>';
+    document.body.appendChild(m);
+    q('ddbAdmClose').onclick = function(){ m.style.display = 'none'; };
+    q('ddbAdmSave').onclick = onSave;
+    q('ddbAdmLock').onclick = function(){ DDB.lock(); try{ localStorage.removeItem('doudou_auth'); }catch(e){} location.reload(); };
+    var cur = document.querySelector('#ddbAdmExp');
+    if(ks && ks.exp && cur) cur.value = ks.exp.slice(0,10);
+  }
+
+  function mount(){
+    if(!DDB.hasAdmin()) return;
+    if(q('ddbAdmBtn')) return;
+    var b = document.createElement('button');
+    b.id = 'ddbAdmBtn';
+    b.textContent = '⚙️ 管理';
+    b.title = '账号管理（仅管理员可见）';
+    b.style.cssText = 'position:fixed;right:16px;bottom:16px;z-index:10000;padding:8px 14px;' +
+      'border-radius:20px;border:1px solid var(--border,#2b3a5c);background:var(--bg-card,#111827);' +
+      'color:var(--text,#e8edf7);cursor:pointer;font-size:12px;box-shadow:0 4px 14px rgba(0,0,0,.35)';
+    b.onclick = openPanel;
+    document.body.appendChild(b);
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
+  else mount();
+})();
+/* ===== DDB-ADMIN-V1 END ===== */
+</script>
 </head>
 <body data-page-node-id="diswtc00oVu1rWGdYaUaAo">
 <div class="wrap" data-page-node-id="CBTEzufLEkFXuZiDtgWTR4">
