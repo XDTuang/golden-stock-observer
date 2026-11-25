@@ -20,6 +20,7 @@ fail-closed：密钥缺失、清单文件既无明文也无密文 → 非 0 退�
 """
 import argparse
 import base64
+import hashlib
 import json
 import os
 import shutil
@@ -96,6 +97,63 @@ def load_key() -> bytes:
     sys.exit("✗ 未找到密钥：请设置 DDB_DATA_KEY 或先生成 .secret/keys.json")
 
 
+def key_fp(key: bytes) -> str:
+    """密钥指纹（sha256 前 12 位）——只用来核对「CI 用的是不是同一把钥」，不泄漏密钥"""
+    return hashlib.sha256(key).hexdigest()[:12]
+
+
+# 密钥自检样本：仓库里长期存在、且必然由当前 data_key 加密的密文。
+# 只取少数几个，避免大文件拖慢 CI。
+VERIFY_SAMPLES = ["signals.json", "output/cross_analysis.json", "realtime.json"]
+
+
+def _sample_blob(rel: str):
+    """找一个可用的密文样本路径（deploy 优先，其次站点根）"""
+    for p in (enc_path(rel), os.path.join(BASE, rel + ENC_SUFFIX)):
+        if os.path.exists(p):
+            return p
+    return None
+
+
+def verify_key(key: bytes) -> tuple[bool, str]:
+    """用现成密文验证密钥是否真的匹配。
+
+    要点：AES-GCM **加密**永不失败（错钥也能加出垃圾密文），只有解密会 InvalidTag。
+    所以「加密成功」不能证明密钥正确；必须拿历史密文试解一次。
+    返回 (ok, 说明)。没有任何样本时返回 ok=True（无从校验，放行）。
+    """
+    aes = AESGCM(key)
+    used = []
+    for rel in VERIFY_SAMPLES:
+        p = _sample_blob(rel)
+        if not p:
+            continue
+        blob = open(p, "rb").read()
+        if len(blob) <= 28:
+            continue
+        try:
+            aes.decrypt(blob[:12], blob[12:], None)
+        except Exception:
+            return False, (f"{rel}（{os.path.relpath(p, BASE)}）解密失败 InvalidTag → "
+                           f"当前密钥与仓库密文不是同一把")
+        used.append(rel)
+    if not used:
+        return True, "无密文样本，跳过密钥比对"
+    return True, f"指纹 {key_fp(key)}，已验 {len(used)} 个样本（{', '.join(used)}）"
+
+
+def cmd_verify_key() -> int:
+    key = load_key()
+    ok, msg = verify_key(key)
+    if not ok:
+        print(f"✗ 密钥校验失败：{msg}")
+        print("  排查：① GitHub Secret DDB_DATA_KEY 是否为本机 .secret/keys.json 里的 data_key "
+              "② 是否带多余空白/换行 ③ 轮换后 Secret 是否已更新")
+        return 1
+    print(f"✓ 密钥可用：{msg}")
+    return 0
+
+
 def resolve() -> list[str]:
     """返回 deploy 下实际存在的受保护文件（相对路径）"""
     out = []
@@ -167,6 +225,14 @@ def cmd_list() -> int:
 
 def cmd_encrypt(purge: bool) -> int:
     key = load_key()
+    # 🔴 fail-closed：先证明这把钥能解历史密文，再拿它加密。
+    #    否则错钥（Secret 粘错/轮换未同步）会把全部数据重新加密成谁也解不开的垃圾，
+    #    而且加密过程本身不报错 → 站点静默变空（不报错不空白家族）。
+    ok, msg = verify_key(key)
+    if not ok:
+        print(f"✗ 拒绝加密：{msg}")
+        print("  已中止，未改动任何文件。修好密钥后重跑（或改用 tool/protect_assets.py --rotate-key）。")
+        return 2
     files = resolve()
     if not files:
         print("⚠️  清单为空（deploy/ 下未找到受保护文件）")
@@ -482,6 +548,8 @@ def main() -> None:
     g.add_argument("--cat", metavar="REL", help="输出单个受保护文件内容（明文优先，否则解 .enc）")
     g.add_argument("--decrypt", metavar="DIR")
     g.add_argument("--sync-root", dest="sync_root", action="store_true")
+    g.add_argument("--verify-key", dest="verify_key", action="store_true",
+                   help="校验当前密钥能否解密仓库现有密文（不写文件）")
     g.add_argument("--stage-plain", dest="stage_plain", action="store_true")
     g.add_argument("--unstage-plain", dest="unstage_plain", action="store_true")
     g.add_argument("--rotate-key", dest="rotate_key", action="store_true",
@@ -503,6 +571,8 @@ def main() -> None:
         sys.exit(cmd_decrypt(a.decrypt))
     if a.sync_root:
         sys.exit(cmd_sync_root())
+    if a.verify_key:
+        sys.exit(cmd_verify_key())
     if a.stage_plain:
         sys.exit(cmd_stage_plain())
     if a.unstage_plain:

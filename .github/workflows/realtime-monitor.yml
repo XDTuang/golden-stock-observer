@@ -43,6 +43,8 @@ jobs:
     timeout-minutes: 25
     env:
       TZ: Asia/Shanghai
+      # 🔴 2026-11-25：密钥必须在作业环境里，供 ci_restage.sh 的 --sync-root / --verify-key 使用
+      DDB_DATA_KEY: ${{ secrets.DDB_DATA_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -105,7 +107,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "ℹ️ 数据无变化，跳过推送"
           else
-            DDB_DATA_KEY="${{ secrets.DDB_DATA_KEY }}" python tool/protect_assets.py --encrypt --purge
+            python tool/protect_assets.py --encrypt --purge
             bash tool/ci_restage.sh
             git commit -m "实时盯盘数据: $(date '+%Y-%m-%d %H:%M')"
             # 防冲突：本机兜底/其它 workflow 并发提交。

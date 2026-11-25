@@ -15,6 +15,9 @@ jobs:
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      # 🔴 2026-11-25：密钥必须在作业环境里，供 ci_restage.sh 的 --sync-root / --verify-key 使用
+      DDB_DATA_KEY: ${{ secrets.DDB_DATA_KEY }}
     steps:
       - name: 检出仓库
         uses: actions/checkout@v4
@@ -41,11 +44,16 @@ jobs:
           if git diff --cached --quiet; then
             echo "无新数据，跳过提交"
           else
-            DDB_DATA_KEY="${{ secrets.DDB_DATA_KEY }}" python tool/protect_assets.py --encrypt --purge
+            python tool/protect_assets.py --encrypt --purge
             bash tool/ci_restage.sh
             git commit -m "chore: 回购隐含收益每日更新 $(date +%F)"
             # 防冲突：本机兜底/其它 workflow 并发提交时避免 push 失败
-            git pull --rebase origin main || true
+            for i in 1 2 3; do
+              if git pull --rebase origin main; then break; fi
+              echo "⚠️ rebase 失败（第 $i 次），abort 后退避重试"
+              git rebase --abort 2>/dev/null || true
+              sleep 15
+            done
             git push
             echo "已推送更新"
           fi

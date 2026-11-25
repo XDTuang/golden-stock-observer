@@ -13,6 +13,20 @@ set -euo pipefail
 
 PY="${PYTHON:-python}"
 
+# 🔴 2026-11-25 根因修复：本脚本由 7 条 workflow 的推送步骤调用，而密钥原先只
+#   `DDB_DATA_KEY=… python tool/protect_assets.py --encrypt` 这一条命令前置注入，
+#   **没有导出到步骤环境** → 本脚本里的 --sync-root 取不到密钥、又找不到 .secret
+#   → `✗ 未找到密钥` + set -e → 推送步骤每次必失败（7 条链全线断更，页面 0 更新）。
+#   现在：① 缺钥立即给出可读原因 ② 同步前先验钥，避免错钥把数据重新加密成谁也解不开的垃圾。
+if [ -z "${DDB_DATA_KEY:-}" ] && [ ! -f .secret/keys.json ]; then
+  echo "✗ [ci_restage] 取不到 data_key：CI 必须在步骤/作业 env 注入 DDB_DATA_KEY（GitHub Secret）" >&2
+  echo "   本地则需存在 .secret/keys.json。已中止，未做任何改动。" >&2
+  exit 1
+fi
+
+echo "[ci_restage] 校验密钥（能否解密仓库现有密文）"
+"$PY" tool/protect_assets.py --verify-key
+
 echo "[ci_restage] 同步密文到站点根目录"
 "$PY" tool/protect_assets.py --sync-root
 

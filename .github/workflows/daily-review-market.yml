@@ -15,6 +15,8 @@ jobs:
       contents: write
     env:
       TZ: Asia/Shanghai
+      # 🔴 2026-11-25：密钥必须在作业环境里，供 ci_restage.sh 的 --sync-root / --verify-key 使用
+      DDB_DATA_KEY: ${{ secrets.DDB_DATA_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -69,7 +71,7 @@ jobs:
             echo "no changes (market.json unchanged)"
             exit 0
           fi
-          DDB_DATA_KEY="${{ secrets.DDB_DATA_KEY }}" python tool/protect_assets.py --encrypt --purge
+          python tool/protect_assets.py --encrypt --purge
           bash tool/ci_restage.sh
           git commit -m "daily-review: update market quotes + 三星/海力士收盘 $(date +%F)"
           for i in 1 2 3 4 5; do

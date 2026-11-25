@@ -37,6 +37,9 @@ jobs:
       # 研报数据源（知识星球 api.zsxq.com）。在仓库 Settings→Secrets 配置 ZSXQ_ACCESS_TOKEN。
       # 未配置时 report_analysis.py 会保留本机已推的研报数据、不覆盖、不中断主流程。
       ZSXQ_ACCESS_TOKEN: ${{ secrets.ZSXQ_ACCESS_TOKEN }}
+      # 🔴 2026-11-25：密钥必须在作业环境里，供 ci_restage.sh 的 --sync-root / --verify-key 使用
+      #    原先只内联在 --encrypt 那一条命令上 → ci_restage 取不到钥 → 推送步骤每次必失败
+      DDB_DATA_KEY: ${{ secrets.DDB_DATA_KEY }}
 
     steps:
       - name: Checkout
@@ -57,6 +60,13 @@ jobs:
         run: |
           pip install pandas numpy requests akshare cryptography
           python -c "import cryptography; print('cryptography', cryptography.__version__)"
+
+      # 🔴 2026-11-25：密钥自检前移。原先只有推送步骤用钥，Secret 粘错要等 40 分钟
+      #   流水线跑完才失败，报错还是 InvalidTag / 未找到密钥，看不出「哪把钥」。
+      #   这里 30 秒内给结论 + 指纹；与本机 `python tool/protect_assets.py --verify-key`
+      #   的指纹一致即可，不一致就是 Secret 填错（重粘，勿改仓库）。
+      - name: 密钥自检（Secret 与仓库密文是否同一把）
+        run: python tool/protect_assets.py --verify-key
 
       # 冗余 cron 会一日多次触发；若今日数据已落库则直接跳过，避免重复消耗配额/分钟数
       - name: 幂等闸门（今日已完成则跳过）
@@ -181,7 +191,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "无更改，跳过推送"
           else
-            DDB_DATA_KEY="${{ secrets.DDB_DATA_KEY }}" python tool/protect_assets.py --encrypt --purge
+            python tool/protect_assets.py --encrypt --purge
             bash tool/ci_restage.sh
             git commit -m "数据更新: $(date '+%Y-%m-%d %H:%M') (GitHub Actions)"
             # 防冲突：本机 launchd 兜底 / 其它 workflow 可能在此期间推过提交。

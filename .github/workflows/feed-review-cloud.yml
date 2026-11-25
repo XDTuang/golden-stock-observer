@@ -18,6 +18,8 @@ jobs:
       contents: write
     env:
       TZ: Asia/Shanghai
+      # 🔴 2026-11-25：密钥必须在作业环境里，供 ci_restage.sh 的 --sync-root / --verify-key 使用
+      DDB_DATA_KEY: ${{ secrets.DDB_DATA_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -50,9 +52,14 @@ jobs:
           for f in output/feed_review_latest.json output/feed_review_*.json; do
             [ -f "$f" ] && git add -f "$f" || true
           done
-          DDB_DATA_KEY="${{ secrets.DDB_DATA_KEY }}" python tool/protect_assets.py --encrypt --purge
+          python tool/protect_assets.py --encrypt --purge
           bash tool/ci_restage.sh
           git diff --cached --quiet || git commit -m "chore(feed): 云端投喂复盘补跑 $(date +%F)"
           # 防冲突：本机兜底/其它 workflow 并发提交时避免 push 失败
-          git pull --rebase origin main || true
+          for i in 1 2 3; do
+            if git pull --rebase origin main; then break; fi
+            echo "⚠️ rebase 失败（第 $i 次），abort 后退避重试"
+            git rebase --abort 2>/dev/null || true
+            sleep 15
+          done
           git push

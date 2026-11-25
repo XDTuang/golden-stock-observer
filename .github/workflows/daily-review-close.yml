@@ -23,6 +23,8 @@ jobs:
       contents: write
     env:
       TZ: Asia/Shanghai
+      # 🔴 2026-11-25：密钥必须在作业环境里，供 ci_restage.sh 的 --sync-root / --verify-key 使用
+      DDB_DATA_KEY: ${{ secrets.DDB_DATA_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -73,11 +75,18 @@ jobs:
             [ -f "$f" ] && git add -f "$f" || true
           done
           if ! git diff --cached --quiet; then
-            # push 前先 rebase，避免与其他任务（daily-update 17:45）并发提交造成非快进拒绝
-            git pull --rebase origin main || echo "⚠️ rebase 失败，尝试直接推送"
-            DDB_DATA_KEY="${{ secrets.DDB_DATA_KEY }}" python tool/protect_assets.py --encrypt --purge
+            # 🔴 2026-11-25：原「提交前 pull --rebase」在暂存区非空时必报
+            #    "cannot pull with rebase: Your index contains uncommitted changes"，
+            #    错误被 `|| echo` 吞掉后照样 push → 并发时被拒。改为提交后再 rebase 重试。
+            python tool/protect_assets.py --encrypt --purge
             bash tool/ci_restage.sh
             git commit -m "daily-review: 收盘后补抓 T 日行情+新闻池+宏观 $(date +%F)"
+            for i in 1 2 3; do
+              if git pull --rebase origin main; then break; fi
+              echo "⚠️ rebase 失败（第 $i 次），abort 后退避重试"
+              git rebase --abort 2>/dev/null || true
+              sleep 15
+            done
             git push
           else
             echo "no changes (market.json unchanged)"
