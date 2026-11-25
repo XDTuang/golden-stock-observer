@@ -1,0 +1,368 @@
+{
+ "meta": {
+  "updated_at": "2026-11-25 09:45:24",
+  "data_date": "2026-11-25",
+  "market_status": "trading",
+  "algorithm": "1.1.0",
+  "next_hint": "每 30 分钟自动刷新（交易日 9:30-15:00，GitHub Actions 驱动）"
+ },
+ "L0": {
+  "indexes": [
+   {
+    "code": "000001",
+    "name": "上证指数",
+    "price": 3520.34,
+    "chg_pct": -0.79,
+    "turnover_yi": 1282.1,
+    "high": 3524.51,
+    "low": 3508.39
+   },
+   {
+    "code": "399001",
+    "name": "深证成指",
+    "price": 10347.84,
+    "chg_pct": -0.73,
+    "turnover_yi": 1563.3,
+    "high": 10363.16,
+    "low": 10268.61
+   },
+   {
+    "code": "399006",
+    "name": "创业板指",
+    "price": 2254.73,
+    "chg_pct": -1.06,
+    "turnover_yi": 777.7,
+    "high": 2259.27,
+    "low": 2230.7
+   },
+   {
+    "code": "000688",
+    "name": "科创50",
+    "price": 1210.85,
+    "chg_pct": -3.14,
+    "turnover_yi": 176.6,
+    "high": 1218.69,
+    "low": 1202.0
+   },
+   {
+    "code": "000300",
+    "name": "沪深300",
+    "price": 3930.51,
+    "chg_pct": -0.84,
+    "turnover_yi": 718.6,
+    "high": 3937.33,
+    "low": 3915.56
+   },
+   {
+    "code": "000905",
+    "name": "中证500",
+    "price": 6056.39,
+    "chg_pct": -0.92,
+    "turnover_yi": 419.8,
+    "high": 6070.0,
+    "low": 6012.06
+   }
+  ],
+  "breadth": {
+   "up": 2957,
+   "down": 1484,
+   "flat": 164,
+   "ratio": 1.99,
+   "limit_up": 49,
+   "limit_down": 4,
+   "main_net_yi": -45.99,
+   "turnover_yi": 2404.8,
+   "total": 4605
+  }
+ },
+ "L1": {
+  "sentiment": {
+   "score": 39,
+   "S1": 50,
+   "S2": 41,
+   "S3": 15,
+   "S4": 42,
+   "inputs": {
+    "ratio": 1.99,
+    "limit_up": 49,
+    "avg_idx_pct": -1.25,
+    "main_net_yi": -45.99
+   }
+  },
+  "state": {
+   "state": "weak",
+   "label": "弱势回调",
+   "note": "防守为主，仅小仓低吸，严格止损",
+   "score": 39
+  }
+ },
+ "L2": {
+  "range": [
+   25,
+   40
+  ],
+  "note": "弱势回调，防守为主，严格止损",
+  "rules": [
+   "单票仓位 ≤ 10%",
+   "单一板块集中度 ≤ 30%",
+   "账户回撤 > 5% 强制降半仓",
+   "情绪分 ≥ 85 触发追高禁令（只允许回踩低吸）"
+  ]
+ },
+ "L3": {
+  "sectors": [
+   {
+    "name": "商贸零售",
+    "net_yi": 2.55,
+    "jumbo_yi": 2.08,
+    "block_yi": 0.47,
+    "pct": 9.41
+   },
+   {
+    "name": "面板",
+    "net_yi": 2.43,
+    "jumbo_yi": 2.9,
+    "block_yi": -0.47,
+    "pct": 12.31
+   },
+   {
+    "name": "一般零售",
+    "net_yi": 2.13,
+    "jumbo_yi": 1.76,
+    "block_yi": 0.37,
+    "pct": 10.65
+   },
+   {
+    "name": "渔业",
+    "net_yi": 2.1,
+    "jumbo_yi": 1.94,
+    "block_yi": 0.16,
+    "pct": 22.55
+   },
+   {
+    "name": "水产养殖",
+    "net_yi": 2.07,
+    "jumbo_yi": 1.94,
+    "block_yi": 0.14,
+    "pct": 23.71
+   },
+   {
+    "name": "农林牧渔",
+    "net_yi": 2.03,
+    "jumbo_yi": 2.96,
+    "block_yi": -0.93,
+    "pct": 4.54
+   },
+   {
+    "name": "百货",
+    "net_yi": 1.76,
+    "jumbo_yi": 1.79,
+    "block_yi": -0.03,
+    "pct": 13.13
+   },
+   {
+    "name": "公用事业",
+    "net_yi": 1.7,
+    "jumbo_yi": 0.62,
+    "block_yi": 1.08,
+    "pct": 5.31
+   },
+   {
+    "name": "电机Ⅲ",
+    "net_yi": 1.35,
+    "jumbo_yi": 1.4,
+    "block_yi": -0.05,
+    "pct": 10.65
+   },
+   {
+    "name": "电机Ⅱ",
+    "net_yi": 1.31,
+    "jumbo_yi": 1.4,
+    "block_yi": -0.09,
+    "pct": 9.73
+   },
+   {
+    "name": "化学原料",
+    "net_yi": 1.23,
+    "jumbo_yi": 1.66,
+    "block_yi": -0.43,
+    "pct": 5.91
+   },
+   {
+    "name": "化学制药",
+    "net_yi": 1.15,
+    "jumbo_yi": 1.06,
+    "block_yi": 0.09,
+    "pct": 2.16
+   },
+   {
+    "name": "电力",
+    "net_yi": 1.14,
+    "jumbo_yi": 0.35,
+    "block_yi": 0.79,
+    "pct": 4.55
+   },
+   {
+    "name": "食品饮料",
+    "net_yi": 1.13,
+    "jumbo_yi": 0.38,
+    "block_yi": 0.74,
+    "pct": 2.88
+   },
+   {
+    "name": "医药生物",
+    "net_yi": 1.06,
+    "jumbo_yi": 0.94,
+    "block_yi": 0.12,
+    "pct": 0.59
+   },
+   {
+    "name": "原料药",
+    "net_yi": 1.04,
+    "jumbo_yi": 1.02,
+    "block_yi": 0.02,
+    "pct": 10.2
+   },
+   {
+    "name": "氮肥",
+    "net_yi": 1.02,
+    "jumbo_yi": 0.78,
+    "block_yi": 0.23,
+    "pct": 28.89
+   },
+   {
+    "name": "中药Ⅱ",
+    "net_yi": 1.01,
+    "jumbo_yi": 0.65,
+    "block_yi": 0.36,
+    "pct": 5.99
+   },
+   {
+    "name": "中药Ⅲ",
+    "net_yi": 1.01,
+    "jumbo_yi": 0.65,
+    "block_yi": 0.36,
+    "pct": 6.19
+   },
+   {
+    "name": "白酒Ⅱ",
+    "net_yi": 0.89,
+    "jumbo_yi": 0.24,
+    "block_yi": 0.65,
+    "pct": 7.4
+   }
+  ],
+  "mainline": "商贸零售(+2.55亿) → 面板(+2.43亿) → 一般零售(+2.13亿)",
+  "resonance": [
+   "全市场涨停 49 只，情绪有温度"
+  ],
+  "conc": {
+   "lead": "商贸零售",
+   "ratio": 1.05,
+   "alert": false
+  }
+ },
+ "L4": {
+  "candidates": [
+   {
+    "code": "sz300394",
+    "name": "天孚通信",
+    "zdf": 7.29,
+    "zljlr": 3.7,
+    "lb": 5.55,
+    "hsl": 2.0,
+    "turnover_yi": 27.26,
+    "price": 130.43,
+    "stype": "GP-A-CYB",
+    "type": "中继观察"
+   },
+   {
+    "code": "sz000725",
+    "name": "京东方Ａ",
+    "zdf": 1.58,
+    "zljlr": 2.24,
+    "lb": 4.14,
+    "hsl": 0.63,
+    "turnover_yi": 9.86,
+    "price": 4.49,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   },
+   {
+    "code": "sz002196",
+    "name": "方正电机",
+    "zdf": 6.76,
+    "zljlr": 1.33,
+    "lb": 18.72,
+    "hsl": 11.59,
+    "turnover_yi": 5.55,
+    "price": 9.64,
+    "stype": "GP-A",
+    "type": "中继观察"
+   },
+   {
+    "code": "sh600519",
+    "name": "贵州茅台",
+    "zdf": -0.37,
+    "zljlr": 1.01,
+    "lb": 1.38,
+    "hsl": 0.04,
+    "turnover_yi": 6.41,
+    "price": 1454.54,
+    "stype": "GP-A",
+    "type": "低吸候选"
+   }
+  ],
+  "filters": "四道关：①非ST ②当日涨幅<8%(不追高) ③主力净流入>1亿 ④成交额>5亿",
+  "trade_note": "入选仅作观察池：回踩MA5企稳分批(2批)，破入场-5%或MA20止损，事件利空即止"
+ },
+ "L5": {
+  "alerts": [
+   {
+    "level": "green",
+    "type": "正常",
+    "msg": "未触发预警信号，按状态机规则执行即可"
+   }
+  ]
+ },
+ "ETF": {
+  "flows": [
+   {
+    "code": "sh510300",
+    "opendate": "2026-11-24",
+    "net_yi": -6.47,
+    "chg_pct": 0.25
+   },
+   {
+    "code": "sh510050",
+    "opendate": "2026-11-24",
+    "net_yi": -1.17,
+    "chg_pct": 0.59
+   },
+   {
+    "code": "sh588000",
+    "opendate": "2026-11-24",
+    "net_yi": -16.14,
+    "chg_pct": 1.62
+   },
+   {
+    "code": "sz159915",
+    "opendate": "2026-11-24",
+    "net_yi": 12.06,
+    "chg_pct": 0.0
+   },
+   {
+    "code": "sh510500",
+    "opendate": "2026-11-24",
+    "net_yi": 0.53,
+    "chg_pct": -0.31
+   },
+   {
+    "code": "sz159949",
+    "opendate": "2026-11-24",
+    "net_yi": 0.83,
+    "chg_pct": 0.1
+   }
+  ]
+ }
+}
