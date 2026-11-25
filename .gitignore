@@ -54,3 +54,6 @@ logs/
 # ── 真鉴权密钥（绝不可入库；丢失 = 全部密文不可解）──
 .secret/
 *.keys.json
+
+# 🔴 2026-11-25：该文件必须只以 realtime.json.enc 形式入库（曾因 ci_restage 的 pathspec 失败明文上线）
+realtime.json
