@@ -36,6 +36,14 @@ TARGETS = [
     os.path.join("deploy", "review_v3", "index_hide89.html"),
 ]
 
+# 🔴 V3 在子目录 /review_v3/，块里的相对路径 'auth/xxx.json' 会被解析成
+#    /review_v3/auth/xxx.json → 404 → 登录报 CRED_MISSING。
+#    注入时做一处定向替换（主站块不动，保持唯一来源）。
+V3_PATCHES = [
+    ("_nativeFetch('auth/' + level + '.json",
+     "_nativeFetch('../auth/' + level + '.json"),
+]
+
 START_MARK = "/* ===== DDB-AUTH-V1 START"
 END_MARK = "/* ===== DDB-ADMIN-V1 END ===== */"
 HEAD_END = "</head>"
@@ -101,6 +109,11 @@ def main() -> int:
     if not block:
         print("❌ index.html 里找不到 DDB-AUTH/ADMIN 块")
         return 1
+    for a, b in V3_PATCHES:
+        if a not in block:
+            print(f"❌ 适配失败：块内找不到 {a[:40]!r}（主站块结构变了？）")
+            return 1
+        block = block.replace(a, b)
 
     ok_all = True
     for t in TARGETS:

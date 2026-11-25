@@ -158,7 +158,7 @@ var DDB = (function(){
 
   function loadCred(level){
     if(_authCache[level]) return Promise.resolve(_authCache[level]);
-    return _nativeFetch('auth/' + level + '.json?_=' + Date.now(), {cache:'no-store'})
+    return _nativeFetch('../auth/' + level + '.json?_=' + Date.now(), {cache:'no-store'})
       .then(function(r){ if(!r.ok) throw new Error('CRED_MISSING'); return r.json(); })
       .then(function(j){ _authCache[level] = j; return j; });
   }
