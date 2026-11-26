@@ -32,6 +32,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 
 try:
     from cryptography.hazmat.primitives.ciphers.aead import AESGCM  # noqa: F401
@@ -123,15 +124,28 @@ def check(target: _dt.date | None, do_fetch: bool) -> dict:
     res = {"target": str(target), "for_date_expected": str(next_trading_day(target)),
            "ok": False, "problems": [], "notes": [], "code": 1}
 
-    if do_fetch and not git_lock_present():
-        try:
-            subprocess.run(["git", "fetch", "-q", "origin", "main"], cwd=BASE,
-                           timeout=90, check=True,
-                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        except Exception as e:  # 网络问题不致命：用现有 origin/main 影子
-            res["notes"].append(f"fetch 失败（用现有 origin/main 影子）：{e}")
-    elif git_lock_present():
-        res["notes"].append("本地 git 被占用（index.lock/rebase）→ 跳过 fetch，用现有 origin/main 影子")
+    # fetch：与 08:40 推演档 / 08:30 数据档的写窗口重叠 → 带重试；拿不到新 ref 就**降级为「无法判定」**
+    # 而不是「未上线」（宁可少报，不可误报 —— 误报会让用户对告警脱敏）
+    stale_ref = False
+    if do_fetch:
+        last_err = None
+        for attempt in range(3):
+            if git_lock_present():
+                last_err = "本地 git 被占用（index.lock / rebase）"
+                time.sleep(4)
+                continue
+            try:
+                subprocess.run(["git", "fetch", "-q", "origin", "main"], cwd=BASE,
+                               timeout=90, check=True,
+                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                last_err = None
+                break
+            except Exception as e:
+                last_err = f"fetch 失败：{e}"
+                time.sleep(4)
+        if last_err:
+            stale_ref = True
+            res["notes"].append(f"{last_err} → 本次用现有 origin/main 影子，结论可能滞后")
 
     try:
         key = load_key()
@@ -191,6 +205,11 @@ def check(target: _dt.date | None, do_fetch: bool) -> dict:
     if res["code"] != 2:
         res["ok"] = not res["problems"]
         res["code"] = 0 if res["ok"] else 1
+        if not res["ok"] and stale_ref:
+            # origin/main 影子可能滞后（08:40 档正在推）→ 不冤枉夜间档，先报「无法判定」
+            res["code"] = 2
+            res["ok"] = False
+            res["notes"].append("origin/main 影子可能滞后 → 不判「未上线」，请在 09:05 后复跑确认")
     return res
 
 

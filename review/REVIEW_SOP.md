@@ -377,6 +377,10 @@ python3 review/check_narrative_consistency.py  # 🆕 **叙述 ↔ 数据一致�
 python3 review/check_night_push.py            # 判定「上一交易日」的收盘推演是否真的到了 origin/main
 python3 review/check_night_push.py --date 2026-11-24   # 指定复盘日（补发核对 / 反向测试）
 python3 review/check_night_push.py --json     # 机读（退出码 0 已上线 / 1 未上线 / 2 无法判定）
+
+> 🔴 **退出码 2 的两个来源**：① 密钥/解密/解析失败；② **本地 git 被占用（08:40 档正在推）导致
+> `origin/main` 影子可能滞后** —— 此时即使判出「不符」也**只报 2、不报 1**，避免在推演档写窗口内误报。
+> 判据纪律：**宁可少报，不可误报**（误报会让用户对告警脱敏，比不报更糟）。
 ```
 
 **为什么单独一道、且刻意不进 `run_gates.sh`**：它判的是**昨天**的结果。塞进发布链会出现
