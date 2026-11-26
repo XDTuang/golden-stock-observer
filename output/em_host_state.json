@@ -1,9 +1,9 @@
 {
- "preferred": "push2.eastmoney.com",
- "updated_at": "2026-11-26T09:15:44",
+ "preferred": "push2test.eastmoney.com",
+ "updated_at": "2026-11-26T09:45:59",
  "ok_hosts": {
   "push2test.eastmoney.com": {
-   "ok_at": "2026-11-25T14:45:40"
+   "ok_at": "2026-11-26T09:45:59"
   },
   "push2.eastmoney.com": {
    "ok_at": "2026-11-26T09:15:44"
@@ -16,9 +16,9 @@
    "last_fail_at": "2026-11-26T09:15:42"
   },
   "push2.eastmoney.com": {
-   "count": 1,
-   "last_detail": "HTTP 502",
-   "last_fail_at": "2026-11-25T14:15:52"
+   "count": 2,
+   "last_detail": "ReadTimeout: HTTPSConnectionPool(host='push2delay.eastmoney.com', port=443): Read timed out. ",
+   "last_fail_at": "2026-11-26T09:45:58"
   }
  }
 }
