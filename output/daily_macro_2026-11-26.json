@@ -1,6 +1,6 @@
 {
   "date": "2026-11-26",
-  "generated_at": "2026-11-26 02:44",
+  "generated_at": "2026-11-26 09:06",
   "china": {
     "pmi": {
       "latest": {
@@ -45,7 +45,14 @@
       "rows": 226
     },
     "lpr": {
-      "error": "macro_china_lpr 已在 1.20.48 更名为 interest_rate_lpr_em，请改用 ak.interest_rate_lpr_em；参数与返回的列也可能有调整，用 ak.i"
+      "latest": {
+        "TRADE_DATE": "2026-11-20",
+        "LPR1Y": 3.0,
+        "LPR5Y": 3.5,
+        "RATE_1": 4.35,
+        "RATE_2": 4.9
+      },
+      "rows": 1578
     }
   },
   "us": {
@@ -54,70 +61,275 @@
       "source": "百度经济日历 news_economic_baidu",
       "window_days": 7,
       "lookback_days": 45,
-      "lookback_used_to": null,
-      "days_fetched": 45,
-      "as_of": "2026-11-26 02:44",
-      "indicators": {}
+      "lookback_used_to": "2026-11-06",
+      "days_fetched": 21,
+      "as_of": "2026-11-26 09:06",
+      "indicators": {
+        "CPI 同比": [
+          {
+            "event": "美国10月CPI年率未季调(%)",
+            "value": "",
+            "forecast": "",
+            "previous": "3.7",
+            "importance": 0,
+            "release_date": "2026-11-10",
+            "release_time": "21:30",
+            "days_ago": 16,
+            "is_fresh": false
+          }
+        ],
+        "核心 CPI": [
+          {
+            "event": "美国10月核心CPI年率未季调(%)",
+            "value": "",
+            "forecast": "",
+            "previous": "2.6",
+            "importance": 0,
+            "release_date": "2026-11-10",
+            "release_time": "21:30",
+            "days_ago": 16,
+            "is_fresh": false
+          }
+        ],
+        "CPI 月率": [
+          {
+            "event": "美国10月CPI月率季调后(%)",
+            "value": "0.4",
+            "forecast": "0.3",
+            "previous": "0.6",
+            "importance": 1,
+            "release_date": "2026-11-10",
+            "release_time": "21:30",
+            "days_ago": 16,
+            "is_fresh": false
+          }
+        ],
+        "核心CPI月率": [
+          {
+            "event": "美国10月核心CPI月率季调后(%)",
+            "value": "0.3",
+            "forecast": "0.2",
+            "previous": "0.3",
+            "importance": 1,
+            "release_date": "2026-11-10",
+            "release_time": "21:30",
+            "days_ago": 16,
+            "is_fresh": false
+          }
+        ],
+        "非农": [
+          {
+            "event": "美国10月非农就业人口变动季调后(万)",
+            "value": "16.5",
+            "forecast": "6.5",
+            "previous": "6.0",
+            "importance": 2,
+            "release_date": "2026-11-06",
+            "release_time": "21:30",
+            "days_ago": 20,
+            "is_fresh": false
+          }
+        ],
+        "失业率": [
+          {
+            "event": "美国10月失业率(%)",
+            "value": "4.1",
+            "forecast": "4.2",
+            "previous": "4.2",
+            "importance": 2,
+            "release_date": "2026-11-06",
+            "release_time": "21:30",
+            "days_ago": 20,
+            "is_fresh": false
+          }
+        ],
+        "ADP 就业": [
+          {
+            "event": "美国截至11月7日当周ADP就业周度发布变动(万人)",
+            "value": "2.1",
+            "forecast": "",
+            "previous": "2.38",
+            "importance": 2,
+            "release_date": "2026-11-24",
+            "release_time": "21:15",
+            "days_ago": 2,
+            "is_fresh": true
+          }
+        ],
+        "核心 PCE": [
+          {
+            "event": "美国10月核心PCE物价指数年率(%)",
+            "value": "3.3",
+            "forecast": "3.2",
+            "previous": "3.1212",
+            "importance": 2,
+            "release_date": "2026-11-25",
+            "release_time": "21:30",
+            "days_ago": 1,
+            "is_fresh": true
+          },
+          {
+            "event": "美国第三季度核心PCE物价指数年化季率修正值(%)",
+            "value": "2.5",
+            "forecast": "2.5",
+            "previous": "3.6",
+            "importance": 2,
+            "release_date": "2026-11-25",
+            "release_time": "21:30",
+            "days_ago": 1,
+            "is_fresh": true
+          }
+        ],
+        "初请失业金": [
+          {
+            "event": "美国截至11月21日当周初请失业金人数(万)",
+            "value": "18.9",
+            "forecast": "20.0",
+            "previous": "20.3",
+            "importance": 2,
+            "release_date": "2026-11-25",
+            "release_time": "21:30",
+            "days_ago": 1,
+            "is_fresh": true
+          }
+        ],
+        "GDP": [
+          {
+            "event": "美国第三季度GDP价格指数季率修正值(%)",
+            "value": "1.9",
+            "forecast": "2.3",
+            "previous": "2.3",
+            "importance": 2,
+            "release_date": "2026-11-25",
+            "release_time": "21:30",
+            "days_ago": 1,
+            "is_fresh": true
+          },
+          {
+            "event": "美国第三季度GDP隐性平减指数季率-季调后修正值(%)",
+            "value": "2.7",
+            "forecast": "",
+            "previous": "5.8",
+            "importance": 2,
+            "release_date": "2026-11-25",
+            "release_time": "21:30",
+            "days_ago": 1,
+            "is_fresh": true
+          }
+        ],
+        "零售销售": [
+          {
+            "event": "美国10月零售销售月率(%)",
+            "value": "0.2",
+            "forecast": "0.2",
+            "previous": "0.8",
+            "importance": 2,
+            "release_date": "2026-11-17",
+            "release_time": "21:30",
+            "days_ago": 9,
+            "is_fresh": true
+          },
+          {
+            "event": "美国10月核心零售销售月率(%)",
+            "value": "0.6",
+            "forecast": "0.4",
+            "previous": "0.9",
+            "importance": 2,
+            "release_date": "2026-11-17",
+            "release_time": "21:30",
+            "days_ago": 9,
+            "is_fresh": true
+          }
+        ]
+      }
     },
-    "indicators": {},
+    "indicators": {
+      "核心PCE": [
+        {
+          "title": "美国核心PCE同比涨幅创近三年新高 锁定美联储12月再加息前景",
+          "evidence": [
+            "美国核心PCE同比涨幅创近三年新高 锁定美联储12月再加息前景 【美国核心PCE同比涨幅创近三年新高 锁定美联储12月再加息前景】美国最新公布的关键通胀指标进一步偏离美联储的2%目"
+          ],
+          "date": "2026-11-26",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-11-26 02:55:57",
+          "source": "东财全球"
+        }
+      ],
+      "CPI": [
+        {
+          "title": "俄罗斯10月CPI环比上涨0.99% 同比上涨6.87%",
+          "evidence": [
+            "俄罗斯10月CPI环比上涨0.99% 同比上涨6.87% 俄罗斯10月CPI环比上涨0.99%，预期上涨1.15%"
+          ],
+          "date": "2026-11-26",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-11-26 00:03:03",
+          "source": "东财全球"
+        }
+      ],
+      "美联储/利率": [
+        {
+          "title": "美联储重磅！最青睐通胀指标超预期 12月加息概率升高",
+          "evidence": [
+            "美联储重磅！最青睐通胀指标超预期 12月加息概率升高 【美联储重磅！最青睐通胀指标超预期 12月加息概率升高】最新公布的数据显示，美国通胀在10月进一步偏离联邦公开市场委员会FOM",
+            "作为美联储年终会议前最后一个物价指标，这进一步强化了市场对12月再次加息的预期，也引发了对2027年央行还需采取多少紧缩措施的疑问"
+          ],
+          "date": "2026-11-26",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-11-26 07:13:41",
+          "source": "东财全球"
+        },
+        {
+          "title": "美联储12月加息25个基点的概率为97.2%",
+          "evidence": [
+            "美联储12月加息25个基点的概率为97.2% 【美联储12月加息25个基点的概率为97.2%】据CME“美联储观察”，美联储12月加息25个基点的概率为97.2%，维持利率不变的概",
+            "美联储到明年1月维持利率不变的概率1%，累计加息25个基点的概率36.5%，累计加息50个基点的概率为62.5%"
+          ],
+          "date": "2026-11-26",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-11-26 06:45:17",
+          "source": "东财全球"
+        },
+        {
+          "title": "美国核心PCE同比涨幅创近三年新高 锁定美联储12月再加息前景",
+          "evidence": [
+            "美国核心PCE同比涨幅创近三年新高 锁定美联储12月再加息前景 【美国核心PCE同比涨幅创近三年新高 锁定美联储12月再加息前景】美国最新公布的关键通胀指标进一步偏离美联储的2%目"
+          ],
+          "date": "2026-11-26",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-11-26 02:55:57",
+          "source": "东财全球"
+        }
+      ],
+      "美债收益率": [
+        {
+          "title": "美债收益率触及两个月低点",
+          "evidence": [
+            "美债收益率触及两个月低点 【美债收益率触及两个月低点】美国国债各期限品种全线上涨，2年期至10年期美债收益率一度均下跌至少10个基点，触及两个月来低点"
+          ],
+          "date": "2026-11-26",
+          "days_ago": 0,
+          "is_fresh": true,
+          "time": "2026-11-26 03:12:24",
+          "source": "东财全球"
+        }
+      ]
+    },
     "stale": [
-      "核心PCE",
       "整体PCE",
-      "CPI",
       "非农",
       "初请失业金",
       "耐用品订单",
-      "美国GDP",
-      "美联储/利率",
-      "美债收益率"
+      "美国GDP"
     ],
     "log": [
-      "日历 2026-11-26 失败: AttributeError",
-      "日历 2026-11-25 失败: AttributeError",
-      "日历 2026-11-24 失败: AttributeError",
-      "日历 2026-11-23 失败: AttributeError",
-      "日历 2026-11-22 失败: AttributeError",
-      "日历 2026-11-21 失败: AttributeError",
-      "日历 2026-11-20 失败: AttributeError",
-      "日历 2026-11-19 失败: AttributeError",
-      "日历 2026-11-18 失败: AttributeError",
-      "日历 2026-11-17 失败: AttributeError",
-      "日历 2026-11-16 失败: AttributeError",
-      "日历 2026-11-15 失败: AttributeError",
-      "日历 2026-11-14 失败: AttributeError",
-      "日历 2026-11-13 失败: AttributeError",
-      "日历 2026-11-12 失败: AttributeError",
-      "日历 2026-11-11 失败: AttributeError",
-      "日历 2026-11-10 失败: AttributeError",
-      "日历 2026-11-09 失败: AttributeError",
-      "日历 2026-11-08 失败: AttributeError",
-      "日历 2026-11-07 失败: AttributeError",
-      "日历 2026-11-06 失败: AttributeError",
-      "日历 2026-11-05 失败: AttributeError",
-      "日历 2026-11-04 失败: AttributeError",
-      "日历 2026-11-03 失败: AttributeError",
-      "日历 2026-11-02 失败: AttributeError",
-      "日历 2026-11-01 失败: AttributeError",
-      "日历 2026-10-31 失败: AttributeError",
-      "日历 2026-10-30 失败: AttributeError",
-      "日历 2026-10-29 失败: AttributeError",
-      "日历 2026-10-28 失败: AttributeError",
-      "日历 2026-10-27 失败: AttributeError",
-      "日历 2026-10-26 失败: AttributeError",
-      "日历 2026-10-25 失败: AttributeError",
-      "日历 2026-10-24 失败: AttributeError",
-      "日历 2026-10-23 失败: AttributeError",
-      "日历 2026-10-22 失败: AttributeError",
-      "日历 2026-10-21 失败: AttributeError",
-      "日历 2026-10-20 失败: AttributeError",
-      "日历 2026-10-19 失败: AttributeError",
-      "日历 2026-10-18 失败: AttributeError",
-      "日历 2026-10-17 失败: AttributeError",
-      "日历 2026-10-16 失败: AttributeError",
-      "日历 2026-10-15 失败: AttributeError",
-      "日历 2026-10-14 失败: AttributeError",
-      "日历 2026-10-13 失败: AttributeError",
-      "新闻池 0 条 → 窗口内(7日) 0 条；命中 0 指标"
+      "新闻池 600 条 → 窗口内(7日) 206 条；命中 4 指标"
     ]
   }
 }
