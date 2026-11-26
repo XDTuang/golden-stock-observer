@@ -370,6 +370,37 @@ python3 review/check_narrative_consistency.py  # 🆕 **叙述 ↔ 数据一致�
 > `if VIX_ONLY / elif THERMO_ONLY` 链式判断而只跑 VIX、温度计被静默跳过**（云端链与盘前都中招）→
 > 已改 `_resolve_blocks()` 独立生效，并用 `--list-blocks` 做**行为级**验证。
 > 判据纪律：这类「有值但永远旧」的缺陷**只比对日期抓不住** → 守卫必须跑代码（参照 `rich()` 行为级测试）。
+
+## 🆕 第十五道：夜间上线守卫（2026-11-26 增 · **非阻断 · 只报告**）
+
+```bash
+python3 review/check_night_push.py            # 判定「上一交易日」的收盘推演是否真的到了 origin/main
+python3 review/check_night_push.py --date 2026-11-24   # 指定复盘日（补发核对 / 反向测试）
+python3 review/check_night_push.py --json     # 机读（退出码 0 已上线 / 1 未上线 / 2 无法判定）
+```
+
+**为什么单独一道、且刻意不进 `run_gates.sh`**：它判的是**昨天**的结果。塞进发布链会出现
+「昨天没推 → 阻断今天补发」的死循环（2026-11-26 就是这种局面：11-25 夜间两档空跑，早间在补发）。
+它的正确位置是**晨间告警**（已并入 08:50「云端自动任务失败晨报」），不是发布闸门。
+
+**判据（真跑代码，读 origin/main 的「解密后内容」）**
+1. `output/v3_reasoning_latest.json.enc` → `data_date == 上一交易日` 且 `for_date == 其下一交易日`
+2. `data/daily_review/analysis.html.enc` → 段内 `data-review-date` **唯一值 == 上一交易日**（且 ≥10 处）
+3. 软提示：V3 `generated` 早于复盘日 15:00 → 疑似旧版被重加密顶上来
+
+> 🔴 **为什么不能用「远端最近有没有提交这些文件」判**：云端 CI 凌晨会把产物**重新加密提交**
+> （`--encrypt` 每次 nonce 都变）→ **无新数据也会产生提交**，按提交名 / 文件 mtime 判必然假绿。
+> 这与铁律 22「生成日 ≠ 数据日」是同一家族，只有**解密后读字段**才判得准。
+>
+> 🔴 **为什么加这道（2026-11-25 事故）**：22:00 与 22:15 两档**触发了但空跑** ——
+> `automations.run.finished` 有记录、无 error/warn、`/tmp/*.out` 止于 19:30、
+> `find -newermt 20:00 ! -newermt 次日09:00` **零文件变动** → 本地零待推提交，远端只剩云端 CI。
+> 既有两道自检都盖不住它：**21:40 健康自检跑在 22:15 之前**，**08:50 晨报原只看 GitHub Actions**。
+>
+> 🔴 **本机解释器坑（写脚本时踩到）**：本机 `python3` **没有 cryptography**，脚本需自动 re-exec 到
+> `$PY`。判「是否已在替代解释器里」**不能用 realpath 比对** —— `envs/default/bin/python` 是
+> **指向同一 3.13 二进制的 symlink**，realpath 相同 → 会误判「同一个解释器」而放弃重跑（静默失败）。
+> 正确做法 = **env 标记防重入**（`DDB_PY_REEXEC`）。
 > VIX 另有 CBOE 官方延时报价兜底（CSV 发布滞后约 1 日），**仅在美东 16:15 结算后**才把报价当收盘写入。
 > 🆕 **温度计频率口径（2026-09-23 修）**：`market_thermometer.history` **分指标口径** —— PE/PB/国债 = **月频**（乐咕月序列 + 当月滚动点，~62 点），破净率 = **日频**（乐咕 REST 日序列，2005 起，已并入 ~1200 点）。
 > 前端 `renderThermoChart` 按 `hist.filter(h => h[metric] != null)` 过滤，故日频行（仅带 date/below_net_ratio 两键）对其他指标不可见。
